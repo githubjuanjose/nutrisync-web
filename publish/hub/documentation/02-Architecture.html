@@ -1,0 +1,109 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Technical Architecture — NutriSync Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+h4{font-size:16px;font-weight:800;margin:20px 0 6px;}
+p{margin:10px 0;}
+a{color:var(--coral-deep);}
+strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:'SF Mono',Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:14px 0;padding:12px 18px;background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;color:#5d524b;}
+blockquote p{margin:4px 0;}
+ul,ol{margin:10px 0;padding-left:24px;}
+li{margin:5px 0;}
+li.task{list-style:none;margin-left:-22px;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;position:sticky;top:0;}
+tbody tr:nth-child(even){background:var(--cream);}
+.pill{display:inline-block;background:#FDE6DD;color:var(--coral-deep);font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;}
+</style></head><body>
+<div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><a href="index.html">← All documents</a></div>
+<div class="wrap"><h1>NutriSync — Technical Architecture Plan</h1>
+<p><strong>Targets:</strong> iOS, Android, and Web from one codebase, EU/CH data residency, AI personalization, pilot-ready in 2026 Q1–Q2. <strong>Principle:</strong> ship one product across mobile + web without maintaining three teams. Optimize for a 1-developer start (per GTM roadmap) that scales to a real team.</p>
+<hr>
+<h2>1. Recommended stack (and why)</h2>
+<h3>Client — one codebase, three surfaces</h3>
+<p><strong>Expo + React Native + <code>react-native-web</code></strong>, organized as a monorepo with <strong>Expo Router</strong>.</p>
+<ul><li>Mobile (iOS/Android) is the primary surface — the deck is phone-first. React Native gives native apps.</li><li><code>react-native-web</code> renders the same components as a responsive web app, so the marketing-to-app web experience and the mobile app share UI. The current site is a Lovable landing/waitlist page; the *product* web app is this.</li><li>Expo removes most native build pain (EAS Build/Submit/Update) — ideal for a lean team.</li></ul>
+<blockquote><p>Analogy: think of the shared UI layer like a <strong>universal power adapter</strong> — one set of components, and the platform "prongs" (iOS, Android, web) just slot in.</p></blockquote>
+<p><strong>Alternative considered:</strong> Flutter (great UI, but Dart and a smaller hiring pool); or native iOS + native Android + Next.js web (best fidelity, 3× the work — wrong for a solo start). Recommendation stands: <strong>Expo RN universal</strong>.</p>
+<h3>Backend — managed first, portable later</h3>
+<p><strong>Phase 1 (MVP):</strong> <strong>Supabase</strong> (managed Postgres + Auth + Row-Level Security + Storage + Edge Functions), hosted in the <strong>EU region</strong>.</p>
+<ul><li>Postgres is the right home for relational cycle/log/recipe data.</li><li>Auth + RLS gives per-user data isolation out of the box — important for health data.</li><li>Edge Functions host the recommendation endpoint and any server-side AI calls (keys never touch the client).</li></ul>
+<p><strong>Phase 2 (scale / B2B):</strong> introduce a dedicated <strong>API service (NestJS or FastAPI)</strong> in front of Postgres when you need complex B2B seat logic, audit logging, and the data "flywheel." Supabase stays as the DB; you graduate the business logic into your own service. This keeps you from being locked in.</p>
+<h3>AI personalization layer — a service boundary, not a hardwire</h3>
+<p>Expose recommendations behind a single internal API: <code>POST /recommendations { userId, date } → ranked actions/meals</code>.</p>
+<ul><li><strong>MVP:</strong> rules-based engine over the cycle-content model (phase × profile × preferences) + lightweight ranking. Deterministic, explainable, clinician-reviewable.</li><li><strong>Upgrade path:</strong> swap the engine for an LLM/ML service (the deck references <strong>Apertus AI</strong>) behind the same contract — clients don't change. Keep prompts/models server-side; log inputs/outputs for the insight loop (consented, de-identified).</li></ul>
+<blockquote><p>Analogy: the recommender is a <strong>swappable engine in the same chassis</strong> — rules today, ML tomorrow, the dashboard (client) never knows.</p></blockquote>
+<h3>Cross-cutting</h3>
+<ul><li><strong>Payments:</strong> RevenueCat over App Store / Play / Stripe — one subscription state across platforms for the €5.99 premium tier and free/premium gating.</li><li><strong>Analytics/product:</strong> Amplitude or PostHog (EU) for the retention/engagement metrics in the PRD.</li><li><strong>Push:</strong> Expo Notifications.</li><li><strong>Errors/observability:</strong> Sentry.</li></ul>
+<h2>2. High-level system diagram</h2>
+<pre><code>            ┌─────────────────────────────────────────────┐
+            │      Expo / React Native (universal)         │
+            │   iOS app   ·   Android app   ·   Web app     │
+            │     shared UI + Expo Router navigation        │
+            └───────────────┬─────────────────────────────┘
+                            │ HTTPS (JWT)
+              ┌─────────────┴───────────────┐
+              │        Supabase (EU)         │
+              │  Auth · Postgres+RLS · Store │
+              │      Edge Functions          │
+              └───┬───────────────┬──────────┘
+                  │               │
+        ┌─────────┴───┐   ┌───────┴──────────────┐
+        │ Recommend.  │   │ Integrations          │
+        │ service     │   │ RevenueCat · Amplitude│
+        │ (rules→ML)  │   │ Sentry · Push         │
+        │ Apertus AI  │   └──────────────────────┘
+        └─────────────┘</code></pre>
+<h2>3. Data model (core entities)</h2>
+<pre><code>User(id, email, locale, created_at, subscription_tier, org_id?)
+Profile(user_id, dob, goals[], dietary_prefs[], allergies[], activity_level)
+CycleProfile(user_id, last_period_start, avg_cycle_len=28, avg_period_len=5)
+CycleLog(id, user_id, date, type[period|symptom|mood|energy], value, notes)
+  → current phase + cycle day are DERIVED from CycleProfile + latest CycleLog
+Phase(key[menstrual|follicular|ovulatory|luteal], guidance, nutrition_focus, training_focus, sources[])
+Recipe(id, title, kcal, prep_min, category, macros, ingredients[], steps[], phase_affinity[], evidence[])
+MealLog(id, user_id, date, meal_slot, recipe_id?, kcal)
+ActivityLog(id, user_id, date, steps, water_glasses, workouts[])
+Recommendation(id, user_id, date, kind[meal|action], ref_id, score, rationale)
+Post(id, author_id, body, topic, created_at)   Article(id, title, body, tags[], author)
+Reaction(id, user_id, target_type, target_id)   Comment(...)
+Org(id, name, seats, plan)  Membership(org_id, user_id, role)   // B2B
+Consent(user_id, scope, granted_at)  // GDPR/FADP audit trail</code></pre>
+<p><strong>Derivation rule (the heart of the app):</strong> <code>cycle_day = (today − last_period_start) mod avg_cycle_len + 1</code>, mapped to a <code>Phase</code>. All Home, Meal, and Recommendation content keys off this. Phase boundaries personalize as the user logs real data.</p>
+<h2>4. Privacy &amp; compliance (build-time requirements)</h2>
+<ul><li><strong>Special-category data</strong> (menstrual/health) under GDPR &amp; Swiss FADP. Required from day one: explicit, granular <strong>consent records</strong> (<code>Consent</code> table), data <strong>export</strong> and <strong>erasure</strong> endpoints, data minimization, EU/CH residency (Supabase EU project).</li><li><strong>RLS everywhere:</strong> a user can only read/write their own rows; org admins see aggregate, never individual cycle data.</li><li><strong>No selling cycle data; no third-party ad SDKs on health screens.</strong> Make "your data is yours" a visible product feature (a PRD differentiator).</li><li>Server-side secrets only; AI calls proxied through Edge Functions.</li><li>Clinical content review workflow + evidence tagging before publish.</li></ul>
+<h2>5. Repository structure (monorepo)</h2>
+<pre><code>nutrisync/
+├─ apps/
+│  ├─ mobile/         # Expo RN app (iOS/Android) — also web via RN-web
+│  └─ web/            # optional Next.js marketing/web shell (or RN-web export)
+├─ packages/
+│  ├─ ui/             # shared design-system components (tokens from Figma)
+│  ├─ core/           # cycle math, types, recommendation client
+│  └─ config/         # eslint, tsconfig, tailwind/tamagui tokens
+├─ supabase/
+│  ├─ migrations/     # SQL schema + RLS policies
+│  └─ functions/      # Edge Functions: /recommendations, /export, /erase
+└─ docs/              # PRD, architecture, this folder</code></pre>
+<h2>6. Build sequence for the MVP</h2>
+<ol><li><strong>Foundation:</strong> monorepo + Expo app shell + Supabase EU project + Auth + design tokens from Figma.</li><li><strong>Cycle engine:</strong> <code>CycleProfile</code>, phase derivation, Home screen with phase ring.</li><li><strong>Content:</strong> <code>Phase</code> + <code>Recipe</code> schema, seed clinician-reviewed phase content + recipe set; Meal Plans screen.</li><li><strong>Logging:</strong> meal/activity/cycle logging + Progress screen.</li><li><strong>Recommendations:</strong> rules-based service behind the <code>/recommendations</code> contract.</li><li><strong>Community (read + react), Profile, consent/export/erase, paywall (RevenueCat), analytics.</strong></li><li><strong>Pilot hardening:</strong> instrumentation for the PRD metrics, employer seat stub for B2B pilots.</li></ol>
+<h2>7. Key risks / decisions to lock</h2>
+<ul><li><strong>Apertus AI</strong> integration model (hosted vs. self-run; data residency, latency, cost).</li><li>Recipe content sourcing (license vs. original vs. partner) — legal + cost.</li><li>Tamagui vs. plain RN-web styling for the shared <code>ui</code> package (perf vs. simplicity).</li><li>When to graduate from Supabase logic into a dedicated API service (likely at B2B scale, 2027).</li></ul></div></body></html>

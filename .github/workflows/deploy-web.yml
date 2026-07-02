@@ -1,0 +1,29 @@
+name: Deploy Web to Cloudflare Pages
+
+# Auto-deploys the marketing site + web app on every push to main.
+# Mirror of the mobile OTA pipeline: push → live, no manual wrangler.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "publish/**"
+      - ".github/workflows/deploy-web.yml"
+  workflow_dispatch: {}   # lets you trigger a deploy by hand from the Actions tab
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy publish --project-name=nutrisync-collective --branch=main

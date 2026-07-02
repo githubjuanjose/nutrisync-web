@@ -1,0 +1,112 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Team Testing &amp; Access Guide — NutriSync Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+h4{font-size:16px;font-weight:800;margin:20px 0 6px;}
+p{margin:10px 0;}
+a{color:var(--coral-deep);}
+strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:'SF Mono',Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:14px 0;padding:12px 18px;background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;color:#5d524b;}
+blockquote p{margin:4px 0;}
+ul,ol{margin:10px 0;padding-left:24px;}
+li{margin:5px 0;}
+li.task{list-style:none;margin-left:-22px;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;position:sticky;top:0;}
+tbody tr:nth-child(even){background:var(--cream);}
+.pill{display:inline-block;background:#FDE6DD;color:var(--coral-deep);font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;}
+</style></head><body>
+<div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><a href="index.html">← All documents</a></div>
+<div class="wrap"><h1>NutriSync — Team Testing &amp; Access Guide</h1>
+<p>For the founding team to <strong>try the web apps</strong> and <strong>install the mobile app on real phones</strong> — works across countries (you in Greece, team in Spain), because everything is shared over the internet, not a local network.</p>
+<p>Two ways to test the mobile app:</p>
+<ul><li><strong>A. Expo Go (live dev)</strong> — fastest, for day-to-day development. Each person installs one app, scans a QR, and sees changes instantly.</li><li><strong>B. EAS Build / Update (shareable test builds)</strong> — a real installable app (Android <code>.apk</code> / iOS via TestFlight) shared by a link. Best for non-technical testers and stakeholders.</li></ul>
+<blockquote><p>Analogy: <strong>Expo Go is like screen-sharing your running app</strong> (great while building); <strong>EAS Build is like shipping a sealed product sample</strong> (great for testers who just want to tap an icon).</p></blockquote>
+<hr>
+<h2>0. One-time prerequisites</h2>
+<p><strong>Everyone (developers):</strong></p>
+<ol><li>Install <strong>Node.js 18 LTS+</strong> — https://nodejs.org</li><li>Install <strong>Git</strong> — https://git-scm.com</li><li>Create a free <strong>Expo account</strong> — https://expo.dev/signup (one shared org account recommended, e.g. <code>nutrisync</code>)</li><li>On their <strong>phone</strong>, install <strong>Expo Go</strong>: iOS App Store / Google Play</li></ol>
+<p><strong>Testers (non-developers):</strong> just need a phone + the link you send them (Section B). Nothing else.</p>
+<hr>
+<h2>A. Run &amp; share the app live with Expo Go</h2>
+<h3>A1. Run locally (developer)</h3>
+<pre><code>git clone &lt;your-repo-url&gt; nutrisync
+cd nutrisync/apps/mobile
+npm install
+npx expo start</code></pre>
+<p>A QR code appears in the terminal/browser. On the same Wi-Fi, scan it with <strong>Expo Go</strong> (Android) or the <strong>Camera app</strong> (iOS) → the app opens.</p>
+<h3>A2. Share across networks (Greece ↔ Spain) — tunnel mode</h3>
+<p>Same Wi-Fi isn't possible across countries, so use a <strong>tunnel</strong> (routes through Expo's servers, no network config):</p>
+<pre><code>npx expo start --tunnel</code></pre>
+<p>Send the QR or the <code>exp://…</code> link to the team in Spain. They open it in <strong>Expo Go</strong> and see your running app live, wherever they are. (First run may ask to install <code>@expo/ngrok</code> — accept.)</p>
+<blockquote><p>Note: tunnel needs your laptop running <code>expo start</code>. For always-available testing that doesn't depend on your machine, use <strong>B</strong>.</p></blockquote>
+<hr>
+<h2>B. Shareable test builds with EAS (recommended for testers)</h2>
+<p>EAS (Expo Application Services) builds the app in the cloud and gives you a <strong>link/QR anyone can use</strong> — no laptop required, perfect for a distributed team.</p>
+<h3>B1. One-time setup (developer)</h3>
+<pre><code>npm install -g eas-cli
+eas login                      # use the shared Expo account
+cd nutrisync/apps/mobile
+eas build:configure            # creates eas.json with build profiles</code></pre>
+<h3>B2. Android — easiest path (installable APK)</h3>
+<pre><code>eas build --platform android --profile preview</code></pre>
+<ul><li>Produces a downloadable <strong><code>.apk</code></strong> + a page with a <strong>QR code/link</strong>.</li><li>Send the link to the team. On Android: tap → allow "install from unknown sources" → install. Done.</li><li>This is the fastest way for Spain testers to get the app on a real phone.</li></ul>
+<h3>B3. iOS — via TestFlight (Apple requirement)</h3>
+<pre><code>eas build --platform ios --profile preview
+eas submit --platform ios       # uploads to App Store Connect → TestFlight</code></pre>
+<ul><li>Requires an <strong>Apple Developer account</strong> ($99/yr) for the org.</li><li>Add testers' emails as <strong>Internal/External testers</strong> in TestFlight; they install Apple's <strong>TestFlight</strong> app and accept the invite.</li><li>iOS can't sideload like Android, so TestFlight is the standard route.</li></ul>
+<h3>B4. Instant updates without rebuilding — EAS Update (OTA)</h3>
+<p>After the first build is installed, push JS/UI changes over-the-air:</p>
+<pre><code>eas update --branch preview --message "tweak Home screen"</code></pre>
+<p>Testers just reopen the app and get the latest — no reinstall. Use this for rapid iteration with the Spain team.</p>
+<h3>Suggested <code>eas.json</code> profiles (created by <code>build:configure</code>, tune as needed)</h3>
+<pre><code>{
+  "build": {
+    "preview": { "distribution": "internal", "channel": "preview",
+      "android": { "buildType": "apk" } },
+    "production": { "channel": "production" }
+  }
+}</code></pre>
+<hr>
+<h2>C. Access the WEB apps</h2>
+<p>You have three web surfaces in <code>nutrisync/web/</code> + <code>nutrisync/prototype/</code>. Two ways to share them:</p>
+<h3>C1. Open locally (instant, no internet sharing)</h3>
+<p>Just double-click these files (they need no build step):</p>
+<ul><li><code>web/marketing/index.html</code> — marketing site + waitlist</li><li><code>web/app/index.html</code> — responsive product web app</li><li><code>prototype/index.html</code> — high-fidelity phone prototype</li><li><code>web/business-case/index.html</code> — protected business-case site *(placeholder gate)*</li></ul>
+<h3>C2. Put them online for the team (recommended) — pick ONE</h3>
+<p>All free and take minutes:</p>
+<p><strong>Option 1 — Netlify Drop (no account needed):</strong></p>
+<ol><li>Go to https://app.netlify.com/drop</li><li>Drag the <code>web/</code> folder (or each subfolder) onto the page.</li><li>You get a public URL like <code>https://nutrisync-app.netlify.app</code> — share it with Spain.</li></ol>
+<p><strong>Option 2 — Vercel:</strong></p>
+<pre><code>npm i -g vercel
+cd nutrisync/web/app
+vercel            # follow prompts → returns a shareable URL</code></pre>
+<p><strong>Option 3 — GitHub Pages (ties into your repo):</strong></p>
+<ol><li>Push the repo to GitHub.</li><li>Repo → Settings → Pages → deploy from <code>main</code> <code>/web</code>.</li><li>URL: <code>https://&lt;org&gt;.github.io/nutrisync/...</code></li></ol>
+<blockquote><p>For the <strong>business-case site</strong>, don't rely on the placeholder password — put real access control in front (Cloudflare Access email allowlist, backlog item H2) before sharing externally.</p></blockquote>
+<h3>C3. The web app and mobile app, longer term</h3>
+<p>At production time the React Native app also runs on web via <strong>Expo Web</strong> (<code>npx expo start --web</code>), so a single codebase serves iOS, Android, <strong>and</strong> the responsive web app — this is the "one entry point" in the backlog (Epic F). The standalone HTML web apps here are for immediate review and stakeholder demos.</p>
+<hr>
+<h2>D. Quick "send to the team in Spain" checklist</h2>
+<ul><li class="task">☐ Repo pushed to GitHub; invite the team as collaborators.</li><li class="task">☐ They install Node, Git, Expo Go, and run <code>npm install</code> in <code>apps/mobile</code>.</li><li class="task">☐ For live dev: you run <code>npx expo start --tunnel</code>, share the QR.</li><li class="task">☐ For standalone testing: run <code>eas build -p android --profile preview</code>, send the APK link (Android) and/or TestFlight invite (iOS).</li><li class="task">☐ Deploy <code>web/</code> to Netlify/Vercel; share the URLs.</li><li class="task">☐ Iterate with <code>eas update</code> (OTA) — no reinstalls.</li></ul>
+<h2>E. Costs to be aware of</h2>
+<ul><li>Expo account, Expo Go, EAS Update, Netlify/Vercel hobby: <strong>free</strong>.</li><li>EAS Build: generous free tier; paid for high build volume.</li><li><strong>Apple Developer Program: $99/yr</strong> (required for any iOS/TestFlight testing).</li><li>Google Play (only when you publish to the store, not for APK testing): $25 one-time.</li></ul>
+<h2>F. Troubleshooting</h2>
+<ul><li><strong>QR won't load in Expo Go</strong> → use <code>--tunnel</code>; ensure phone has internet.</li><li><strong>Android "can't install"</strong> → enable "install unknown apps" for the browser/Files app.</li><li><strong>iOS build needs credentials</strong> → <code>eas build</code> will prompt to let Expo manage Apple credentials; say yes (needs the Apple Developer account).</li><li><strong>Different SDK versions</strong> → make sure everyone is on the same Expo SDK (this project: SDK 51) to avoid Expo Go mismatches.</li></ul></div></body></html>

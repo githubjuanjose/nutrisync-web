@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Spec Implementation Plan — NutriSync Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+h4{font-size:16px;font-weight:800;margin:20px 0 6px;}
+p{margin:10px 0;}
+a{color:var(--coral-deep);}
+strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:'SF Mono',Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:14px 0;padding:12px 18px;background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;color:#5d524b;}
+blockquote p{margin:4px 0;}
+ul,ol{margin:10px 0;padding-left:24px;}
+li{margin:5px 0;}
+li.task{list-style:none;margin-left:-22px;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;position:sticky;top:0;}
+tbody tr:nth-child(even){background:var(--cream);}
+.pill{display:inline-block;background:#FDE6DD;color:var(--coral-deep);font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;}
+</style></head><body>
+<div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><a href="index.html">← All documents</a></div>
+<div class="wrap"><h1>NutriSync — Developer Spec → Implementation Plan &amp; Coverage</h1>
+<p>Source: <strong>NutriSync Collective — Complete Product &amp; Developer Specification, v1.0 (June 2026)</strong>, 29 pages. This plan extracts the user stories/functionality, records what is <strong>already built</strong> in this repo, and lays out the build waves to reach a fully operational app. The spec is the single source of truth; where it conflicts with earlier inferences (e.g. luteal colour), the spec wins.</p>
+<p>Status legend: ✅ done · 🟡 partial/foundation · ⬜ to build.</p>
+<hr>
+<h2>0. Corrections the spec forced (apply everywhere)</h2>
+<ul><li><strong>Brand primary is <code>#E8472A</code></strong> (not <code>#EA5740</code>); background cream <strong><code>#F5F2EB</code></strong>. → updated in <code>apps/mobile/src/theme.ts</code> and <code>packages/core/tokens.mjs</code>.</li><li><strong>Phase colours (authoritative):</strong> Menstrual <code>#E8472A</code> · Follicular <code>#6B9E6B</code> (sage) · Ovulatory <code>#D4A017</code> (gold) · <strong>Luteal <code>#7B5EA7</code> (purple/lavender)</strong>. My earlier prototypes showed luteal as pink — <strong>now corrected</strong> in tokens.</li><li><strong>Five scoring phases</strong>, not four: menstrual, follicular, ovulatory, <strong>early_luteal</strong>, <strong>late_luteal</strong>. → <code>packages/core/cas.mjs</code>.</li><li><strong>Bottom nav:</strong> Calendar · Meals (NutriLog) · Movement (MovementLog) · Progress (+ Home). Earlier app used Home/Meals/Progress/Community/Profile — <strong>realign</strong>.</li><li><strong>The Nutri mascot</strong> (round orange character, 4 avatar variants) is a first-class brand element — must be added.</li></ul>
+<h2>1. What's already built against the spec</h2>
+<ul><li>✅ <strong>CAS engine</strong> — <code>packages/core/cas.mjs</code> implements §5.2 phase model and §6 all five components with the exact scoring tables, real-time-ready pure functions, and the §16 rules (phase-before-score, no-penalise-aligned, contraception cap, blocked when no period start). <strong>34/34 unit tests pass</strong> (<code>packages/core/cas.test.mjs</code>), including the §6.7 worked example.</li><li>✅ <strong>Design tokens</strong> — <code>packages/core/tokens.mjs</code> + RN <code>theme.ts</code> locked to §2.</li><li>✅ <strong>Database schema</strong> — <code>supabase/migrations/0002_devspec_schema.sql</code> implements all 8 tables of §14 with RLS per §16.</li><li>🟡 <strong>App shell &amp; signature screens</strong> — Expo RN app + responsive web app exist (Home ring, meals, progress, community, profile) but predate the spec: need IA realignment, phase-colour correction, CAS wiring, and the spec's richer screens.</li><li>🟡 <strong>Recommendation Edge Function</strong> — exists as a stub; must be replaced by the real-time CAS recompute (§15) + spec food-filtering rules (§3.9, §7.3).</li></ul>
+<h2>2. User stories by module → status</h2>
+<h3>Onboarding (§3) ⬜</h3>
+<ul><li>As a new user I create an account and name my Nutri, so the app feels personal. ⬜</li><li>As a user I answer <strong>Cycle Info (8 steps)</strong> incl. <strong>last period start date</strong> (the critical field), so phases can be calculated. ⬜ *(spec flags the date as missing from wireframe but required)*</li><li>As a user I provide <strong>Health (4)</strong>, <strong>Nutrition prefs (4)</strong>, <strong>NutriGoal</strong>, <strong>Nutri avatar</strong>, <strong>city</strong>, and <strong>consent</strong>, so every recommendation is filtered to me. ⬜</li><li>As a user my answers <strong>cascade</strong> (vegan removes salmon, nut allergy removes almonds, PCOS prioritises low-GI, etc., §3.9) at the data layer. ⬜</li><li>Acceptance: no health row persists without consent; BMR computed via Mifflin-St Jeor but <strong>never shown as calories</strong> (§3.4). ⬜</li></ul>
+<h3>Daily Mood &amp; Energy gate (§4) ⬜</h3>
+<ul><li>As a user, each calendar day on first open I log <strong>mood</strong> then <strong>energy</strong> on vertical pill sliders, feeding CAS C2 &amp; C5. ⬜ (show once/day; check if already logged.)</li></ul>
+<h3>Home (§5) 🟡→⬜</h3>
+<ul><li>As a user I see today's <strong>phase + cycle day</strong> ring (arc colour = phase colour), greeting, week strip, <strong>edit period</strong> + <strong>edit health</strong>, bottom nav. 🟡 (ring exists; needs phase colours, cycle-synced badge, IA, edit-health.)</li><li><code>cycle_day = today − last_period_start + 1</code>, auto, never manual (§5.2). ✅ in <code>cas.mjs</code>.</li></ul>
+<h3>CAS (§6) ✅ engine / ⬜ UI wiring</h3>
+<ul><li>As a user my <strong>CAS (0–100)</strong> updates <strong>in real time</strong> as I log (§15). ✅ engine; ⬜ wire writes → recompute → <code>daily_scores</code> upsert.</li><li>CSS (Cycle Stability Score, §6.8) — donut on Progress; MVP = rolling avg of last 3 cycle CAS averages; full logic post-MVP. ⬜ (mark future in code.)</li></ul>
+<h3>NutriLog / Meals (§7) 🟡→⬜</h3>
+<ul><li>As a user I see <strong>Daily Tip / Body Insight</strong> that change <strong>every day</strong> (indexed by cycle_day, modulated by NutriGoal), a <strong>Nutri Basics checklist pre-checked</strong>, and a <strong>TODAY'S MEAL</strong> free-text log. ⬜</li><li>Food lists filtered by diet/allergies/conditions <strong>before display</strong> (§7.3). ⬜ Checking recalculates C3 in real time. ⬜</li><li>Full phase food content (§7.4) → seed <code>nutrition_checklist</code> content library. ⬜</li></ul>
+<h3>MovementLog (§8) ⬜</h3>
+<ul><li>As a user I see phase movement tips + a <strong>9-item checklist (pre-checked)</strong> + free-text log; highest-intensity checked drives C4 + C2 sub-5. ⬜</li></ul>
+<h3>Edit Period (§9) ⬜</h3>
+<ul><li>As a user I log flow, mood-state, pain, digestion, breasts, cravings, skin, sleep, energy, body changes, repro, libido, birth control, <strong>sex log</strong>, notes — feeding biomarkers + pattern recognition. ⬜</li><li>Sleep→C2-sub3 mapping (§9.3), cravings→appetite (§9.4), <strong>sex log → calendar star</strong> (■ protected / ★ unprotected, private). ⬜</li><li>Pattern recognition after 2 cycles → Progress insights (§9.5). ⬜</li></ul>
+<h3>Edit Health / NutriGoals (§10) ⬜</h3>
+<ul><li>As a user I view/edit allergies &amp; conditions; my <strong>NutriGoal is locked until completed_cycles ≥ 2</strong> (§10.2). ⬜</li></ul>
+<h3>Calendar (§11) 🟡→⬜</h3>
+<ul><li>Today banner + phase pill + month grid with <strong>phase-colour dots</strong>, <strong>dashed predicted period</strong>, legend, selected-day insight, sex-log stars, <strong>Cycle History</strong> year view. ⬜</li><li>Tap past/today → Edit Period prefilled; future → predictions, no logging (§11.4). ⬜</li></ul>
+<h3>Progress (§12) 🟡→⬜</h3>
+<ul><li>CAS summary card + 5 mini component rings; CSS donut; <strong>CAS History</strong> (weekly/monthly/yearly, line chart, score-by-phase bars, contributors); biomarker snapshot; cycle insights. ⬜ (current Progress screen is a simpler placeholder.)</li></ul>
+<h3>Settings (§13) 🟡→⬜</h3>
+<ul><li>Personal info, <strong>Nutri avatar picker</strong>, sign-in &amp; security (2FA, sessions), data privacy (download/delete, toggles), community privacy, send feedback. 🟡 (profile/privacy stub exists.)</li></ul>
+<h3>Personalisation engine (§3.9, §7.3, §16) ⬜</h3>
+<ul><li>As any user, dietary restrictions/allergies/conditions/NutriGoal <strong>filter and modulate</strong> all food, movement, tip, and insight content at the data layer. ⬜ (rules documented; implement as a content-filter service.)</li></ul>
+<h3>Longitudinal intelligence (§6.3, §6.8, §9.5) ⬜</h3>
+<ul><li>After <strong>3 full cycles</strong>, biomarker scoring switches from population norms to the user's <strong>own per-phase averages</strong> (<code>user_phase_averages</code>). ⬜ (schema ready; logic to build.)</li></ul>
+<h2>3. Non-negotiable rules (§16) — implement as guardrails/tests</h2>
+<ol><li>Phase determined <strong>before</strong> score; no <code>last_period_start_date</code> → C1 = 0 and CAS blocked. ✅ (engine + test)</li><li><strong>Never penalise aligned symptoms</strong> (low energy menstrual, high appetite luteal, fragmented sleep/variable mood late-luteal = full marks). ✅ (engine + test)</li><li><strong>Checklists default checked</strong>; user unchecks what they didn't do. ⬜ (UI)</li><li>Fitness opt-out → <strong>10/20 passive</strong>. ✅ (engine)</li><li>NutriGoal <strong>locked 2 cycles</strong>. ⬜ (UI + <code>completed_cycles</code>)</li><li><strong>All data user-scoped</strong>, RLS on every table. ✅ (schema)</li><li>Sex-log stars (■/★), calendar-only, private. ⬜</li><li><strong>CSS ≠ CAS</strong> — daily alignment vs cross-cycle stability. (documented; CSS post-MVP)</li><li><strong>Daily content changes every day</strong> within a phase (indexed by cycle_day). ⬜ (content model)</li><li>Personalisation overrides phase defaults at the data layer. ⬜</li><li>Cycle-length personalisation (not fixed 28). ✅ (engine)</li><li>After 3 cycles → personal averages. ⬜</li><li><strong>BMR internal only</strong> — never show calories. ⬜ (enforce in UI)</li><li>NutriGoal modulates every tip/insight/food. ⬜</li></ol>
+<h2>4. Build waves (recommended)</h2>
+<p><strong>Wave A — Foundations (done/this pass):</strong> ✅ CAS engine + tests · ✅ tokens · ✅ schema. Next: wire CAS recompute Edge Function (§15) and the content-filter service (§3.9).</p>
+<p><strong>Wave B — Core daily loop (P0):</strong> Onboarding (account → Nutri → cycle date → prefs → consent) · Mood/Energy gate · Home (phase ring, correct colours, edit period/health) · NutriLog (tips + pre-checked checklist + meal log + C3 wiring) · MovementLog (checklist + C4 wiring) · live CAS on Home/Progress.</p>
+<p><strong>Wave C — Depth (P1):</strong> Edit Period full logging + sex-log stars · Calendar (month grid, predictions, history) · Progress (CAS history, CSS donut, contributors, biomarker snapshot) · Settings (avatar, security, privacy, feedback).</p>
+<p><strong>Wave D — Intelligence (P1→P2):</strong> Pattern recognition (2 cycles) · personal per-phase averages (3 cycles) · full CSS computation · NutriGoal modulation depth.</p>
+<p><strong>Cross-cutting:</strong> every screen consumes <code>packages/core</code> tokens + <code>cas.mjs</code>; food/movement content seeded from §7.4 / §8.3; all writes go through RLS; analytics events feed the admin MIS.</p>
+<h2>5. Content &amp; assets still needed from the team</h2>
+<ul><li>Final <strong>Nutri mascot</strong> artwork (4 avatar variants) + animations for the onboarding/loading sequences.</li><li>The full <strong>per-cycle-day content library</strong> (Daily Tip + Body Insight for days 1–28+, × NutriGoal) — clinically reviewed.</li><li>Confirm CAS sub-metric edge values where the spec's worked example is illustrative (it cites 23/25 biomarkers; the engine computes deterministically from the published tables).</li><li>The two extra <strong>Canva slides</strong> (deck PDF has 19; Canva has 21) if they differ.</li></ul>
+<h2>6. Files delivered in this pass</h2>
+<ul><li><code>packages/core/cas.mjs</code> — CAS engine (spec §5–6, §15–16).</li><li><code>packages/core/cas.test.mjs</code> — 34 passing unit tests.</li><li><code>packages/core/tokens.mjs</code> — canonical tokens (spec §2).</li><li><code>apps/mobile/src/theme.ts</code> — RN tokens corrected to spec.</li><li><code>supabase/migrations/0002_devspec_schema.sql</code> — 8-table schema + RLS (spec §14, §16).</li><li><code>docs/07-Spec-Implementation-Plan.md</code> — this document.</li></ul></div></body></html>

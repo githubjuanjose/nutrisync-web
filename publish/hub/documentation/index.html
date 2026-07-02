@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>NutriSync — Documentation</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+h4{font-size:16px;font-weight:800;margin:20px 0 6px;}
+p{margin:10px 0;}
+a{color:var(--coral-deep);}
+strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:'SF Mono',Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:14px 0;padding:12px 18px;background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;color:#5d524b;}
+blockquote p{margin:4px 0;}
+ul,ol{margin:10px 0;padding-left:24px;}
+li{margin:5px 0;}
+li.task{list-style:none;margin-left:-22px;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;position:sticky;top:0;}
+tbody tr:nth-child(even){background:var(--cream);}
+.pill{display:inline-block;background:#FDE6DD;color:var(--coral-deep);font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;}
+
+.hero{background:linear-gradient(150deg,#f59d83,#ea5740 55%,#9c5746);color:#fff;padding:54px 24px;border-radius:0 0 28px 28px;}
+.hero h1{color:#fff;}.hero p{opacity:.95;max-width:640px;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;}
+.card{display:block;background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;text-decoration:none;color:inherit;transition:transform .12s,box-shadow .12s;}
+.card:hover{transform:translateY(-3px);box-shadow:0 20px 40px -28px rgba(0,0,0,.4);}
+.ct{font-weight:800;font-size:17px;}.cd{color:#6f655e;font-size:13.5px;margin-top:5px;}
+.sec{font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--coral-deep);margin:34px 0 4px;}
+@media(max-width:640px){.grid{grid-template-columns:1fr;}}
+</style></head><body>
+<div class="hero"><div style="max-width:860px;margin:0 auto;"><div style="font-weight:300;letter-spacing:6px;">NUTRISYNC</div>
+<h1>Project Documentation</h1><p>Everything for NutriSync — product, architecture, platform backlog, testing, design readiness, business requirements, plus the live web apps and prototype. Double-click any card.</p></div></div>
+<div class="wrap" style="padding-top:24px;">
+<div class="sec">📄 Documents</div>
+<div class="grid"><a class="card" href="01-PRD.html"><div class="ct">Product Requirements (PRD)</div><div class="cd">The product spec: problem, users, scope, metrics, data model.</div></a><a class="card" href="02-Architecture.html"><div class="ct">Technical Architecture</div><div class="cd">Stack, system design, data model, privacy, build sequence.</div></a><a class="card" href="03-Platform-Backlog.html"><div class="ct">Platform & Infra Backlog</div><div class="cd">CI/CD, secure cloud, connectors, admin, business-case site + cloud recommendation.</div></a><a class="card" href="04-Team-Testing-Guide.html"><div class="ct">Team Testing & Access Guide</div><div class="cd">How the team tries the web apps and installs the mobile app (Expo / EAS).</div></a><a class="card" href="05-Design-Review-and-Readiness.html"><div class="ct">Design Review & Readiness</div><div class="cd">Figma review + everything needed to make the app fully operational.</div></a><a class="card" href="06-Business-Requirements.html"><div class="ct">Business Requirements</div><div class="cd">Requirements by workflow with intent + slide-7 coverage (PO verification).</div></a><a class="card" href="07-Spec-Implementation-Plan.html"><div class="ct">Spec Implementation Plan</div><div class="cd">Developer-spec user stories → build status, CAS engine, tokens, schema.</div></a><a class="card" href="09-Mobile-Beyond-Figma-Requirements.html"><div class="ct">Mobile — Beyond-Figma Requirements</div><div class="cd">Apple Health / Apple Watch &amp; other wearable connectors, data export, deletion &amp; account closure, auth &amp; more.</div></a><a class="card" href="10-Expo-Publishing-Guide.html"><div class="ct">Expo Build &amp; Publishing Guide</div><div class="cd">Test on real phones + publish to App Store &amp; Google Play with EAS (build, submit, OTA, store &amp; health-data requirements).</div></a><a class="card" href="backlog.html"><div class="ct">Backlog (importable)</div><div class="cd">All 65 epics/stories — sortable table.</div></a><a class="card" href="business-requirements.html"><div class="ct">Business Requirements Tracker</div><div class="cd">PO sign-off tracker by workflow.</div></a></div>
+<div class="sec">🚀 Live apps & prototype</div>
+<div class="grid"><a class="card" href="../web/index.html"><div class="ct">🌐 Unified web (one site)</div><div class="cd">Commercial + app + investors + admin behind one entry point.</div></a><a class="card" href="../web/index.html#/app"><div class="ct">📱 Web app entry</div><div class="cd">The transactional product app.</div></a><a class="card" href="../web/index.html#/investors"><div class="ct">🔒 Investor business case</div><div class="cd">Designed web presentation (code: nutrisync2026).</div></a><a class="card" href="../web/index.html#/admin"><div class="ct">🛠️ Admin MIS console</div><div class="cd">KPIs, subscriptions, business-case tracking (code: admin2026).</div></a><a class="card" href="../prototype/index.html"><div class="ct">✨ Phone prototype</div><div class="cd">High-fidelity mobile mock.</div></a></div>
+<p style="margin-top:30px;color:#6f655e;font-size:13px;">Markdown sources live in <code>docs/</code>. This folder mirrors them as HTML. Regenerate with <code>node documentation/_build.js</code>.</p>
+</div></body></html>

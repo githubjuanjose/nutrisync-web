@@ -1,0 +1,171 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Expo Publishing Guide — NutriSync Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+p{margin:10px 0;}a{color:var(--coral-deep);}strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:"SF Mono",Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+ul,ol{margin:10px 0;padding-left:24px;}li{margin:5px 0;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;}tbody tr:nth-child(even){background:var(--cream);}
+</style></head><body>
+<div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><a href="index.html">← All documents</a></div>
+<div class="wrap">
+<h1 id="nutrisync--expo-build--publishing-guide">NutriSync — Expo build &amp; publishing guide</h1>
+<p>Everything needed to test the app on real phones and publish it to the App Store and Google Play, using <strong>Expo Application Services (EAS)</strong>. Written for the current Expo SDK 51 project in <code>/mobile</code>.</p>
+<hr />
+<h2 id="0-accounts-you-need-once">0. Accounts you need (once)</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Account</th>
+<th>Cost</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Expo</strong> account</td>
+<td>Free</td>
+<td>Runs EAS Build/Submit/Update. Sign up at expo.dev.</td>
+</tr>
+<tr class="even">
+<td><strong>Apple Developer Program</strong></td>
+<td><strong>$99 / year</strong></td>
+<td>Required to build a real iOS app, use TestFlight, and ship to the App Store.</td>
+</tr>
+<tr class="odd">
+<td><strong>Google Play Console</strong></td>
+<td><strong>$25 one-time</strong></td>
+<td>Required to publish on Android / Play internal testing.</td>
+</tr>
+</tbody>
+</table>
+<p>You can do <strong>all testing</strong> (Expo Go + internal builds) before paying for the stores; the fees are only needed for TestFlight / store distribution.</p>
+<hr />
+<h2 id="1-tools">1. Tools</h2>
+<pre><code>npm install -g eas-cli
+eas login            # sign in to your Expo account
+cd mobile
+npm install
+</code></pre>
+<p>Link the project to your Expo account (creates the EAS project + writes the id into app config):</p>
+<pre><code>eas init
+</code></pre>
+<hr />
+<h2 id="2-fastest-path--test-today-with-expo-go-no-build-no-fees">2. Fastest path — test today with Expo Go (no build, no fees)</h2>
+<pre><code>cd mobile
+npx expo start
+</code></pre>
+<p>Scan the QR with the <strong>Expo Go</strong> app (iOS App Store / Google Play). Live reload on save. This is how the team in <strong>Greece &amp; Spain</strong> can try it immediately — send them the QR or the <code>exp://</code> link. Limitation: Expo Go can't run custom native modules (e.g. HealthKit), so once we add wearable connectors you'll move to a <strong>development build</strong> (next section).</p>
+<hr />
+<h2 id="3-development-build-internal-for-native-features--device-testing">3. Development build (internal, for native features + device testing)</h2>
+<p>A development build is your own app binary with the dev tools baked in — needed once we add native modules (HealthKit, notifications, biometrics).</p>
+<pre><code># iOS (installs to registered devices or a simulator)
+eas build --profile development --platform ios
+
+# Android (installs an .apk on any device)
+eas build --profile development --platform android
+</code></pre>
+<p>EAS returns a URL/QR; open it on the phone to install. Then run <code>npx expo start --dev-client</code> and the build connects to your Metro bundler.</p>
+<p>For iOS physical devices you must register them first:</p>
+<pre><code>eas device:create        # sends a link the tester opens on their iPhone
+</code></pre>
+<hr />
+<h2 id="4-preview-build-shareable-no-store--best-for-beta-testers">4. Preview build (shareable, no store) — best for beta testers</h2>
+<p>Gives a standalone install your co-founders can run without Expo Go or Metro.</p>
+<pre><code>eas build --profile preview --platform all
+</code></pre>
+<ul>
+<li><strong>Android:</strong> produces an <code>.apk</code> — share the link, tap to install.</li>
+<li><strong>iOS:</strong> internal distribution requires the testers' devices registered on your Apple account (<code>eas device:create</code>), or use <strong>TestFlight</strong> (section 6) which is smoother for iOS.</li>
+</ul>
+<hr />
+<h2 id="5-production-build-store-ready-binaries">5. Production build (store-ready binaries)</h2>
+<pre><code>eas build --profile production --platform all
+</code></pre>
+<p>Produces an <code>.aab</code> (Android App Bundle) and a <code>.ipa</code> (iOS). <code>autoIncrement</code> bumps the build number each time. Credentials (signing keys, provisioning) are generated and stored by EAS — say <strong>yes</strong> when it offers to manage them.</p>
+<hr />
+<h2 id="6-submit-to-the-stores--eas-submit">6. Submit to the stores — <code>eas submit</code></h2>
+<p>Fill the placeholders in <code>mobile/eas.json</code> → <code>submit.production</code> first (Apple ID, App Store Connect app id, Apple Team id; Android service-account JSON).</p>
+<pre><code># iOS → App Store Connect / TestFlight
+eas submit --profile production --platform ios --latest
+
+# Android → Play Console (internal track by default)
+eas submit --profile production --platform android --latest
+</code></pre>
+<h3 id="ios-first-time-setup">iOS first-time setup</h3>
+<ol>
+<li>In <strong>App Store Connect</strong> create the app (bundle id <code>com.nutrisync.app</code>).</li>
+<li><code>eas submit</code> uploads the build; it appears in <strong>TestFlight</strong> after Apple processing (~15 min).</li>
+<li>Add your team as <strong>internal testers</strong> in TestFlight → they get the app on their iPhones. This is the recommended way to get the Greece/Spain team on iOS.</li>
+</ol>
+<h3 id="android-first-time-setup">Android first-time setup</h3>
+<ol>
+<li>In <strong>Play Console</strong> create the app.</li>
+<li>Create a <strong>service account</strong> (Google Cloud → grant it Play Console access), download the JSON, save as <code>mobile/google-service-account.json</code> (git-ignored).</li>
+<li><code>eas submit</code> pushes to the <strong>internal testing</strong> track → add testers by email; they install from a Play link.</li>
+</ol>
+<hr />
+<h2 id="7-over-the-air-ota-updates--ship-js-fixes-without-a-new-store-build">7. Over-the-air (OTA) updates — ship JS fixes without a new store build</h2>
+<p>Because this is a JS/Expo app, most changes (screens, logic, copy) can go out instantly:</p>
+<pre><code>eas update --branch production --message &quot;onboarding copy fix&quot;
+</code></pre>
+<p>Installed apps pick it up on next launch — no store review. (Native changes still need a new build.) The <code>channel</code> fields in <code>eas.json</code> map builds to update branches.</p>
+<hr />
+<h2 id="8-store-listing-assets--metadata-prepare-in-parallel">8. Store listing assets &amp; metadata (prepare in parallel)</h2>
+<ul>
+<li><strong>App icon</strong> 1024×1024 (no alpha), splash screen — add under <code>app.json</code> → <code>icon</code>/<code>splash</code>.</li>
+<li><strong>Screenshots</strong> per device size (6.7" iPhone, 5.5", iPad; Android phone/tablet).</li>
+<li>Name, subtitle, description, keywords, support URL, marketing URL (<code>nutrisynccollective.com</code>).</li>
+<li><strong>Privacy Policy URL</strong> (required — health app), age rating, data-safety form.</li>
+</ul>
+<h3 id="health-data-specifics-dont-skip--these-are-review-gates">Health-data specifics (don't skip — these are review gates)</h3>
+<ul>
+<li><strong>Apple:</strong> a <strong>Privacy Policy</strong> is mandatory; complete <strong>App Privacy</strong> "Nutrition/Health &amp; Fitness" data types; provide HealthKit usage strings (<code>NSHealthShareUsageDescription</code>) once HealthKit is added; HealthKit data must not be used for advertising.</li>
+<li><strong>Apple requires in-app account deletion</strong> — the Settings "Delete account" flow must ship before approval (see doc 09, §B2).</li>
+<li><strong>Google Play Data safety</strong> form must declare health data collection, encryption in transit, and the deletion path.</li>
+</ul>
+<hr />
+<h2 id="9-versioning">9. Versioning</h2>
+<ul>
+<li><code>app.json</code> → <code>version</code> is the user-facing version (e.g. <code>1.0.0</code>).</li>
+<li>Build numbers auto-increment via <code>autoIncrement</code> in the production profile.</li>
+<li>Bump <code>version</code> for each store release; use <code>eas update</code> for in-between JS patches.</li>
+</ul>
+<hr />
+<h2 id="10-typical-release-checklist">10. Typical release checklist</h2>
+<ol>
+<li><code>npm run typecheck</code> (or CI) is green.</li>
+<li><code>eas update</code> to staging channel → smoke test on a preview build.</li>
+<li><code>eas build --profile production --platform all</code>.</li>
+<li><code>eas submit ... --latest</code> for both platforms.</li>
+<li>iOS: add build to a TestFlight group; Android: promote internal → closed/production.</li>
+<li>Fill/refresh store metadata, screenshots, privacy answers.</li>
+<li>Submit for review; use <code>eas update</code> for hotfixes after launch.</li>
+</ol>
+<hr />
+<h2 id="reference">Reference</h2>
+<ul>
+<li>EAS Build: <a href="https://docs.expo.dev/build/introduction/">https://docs.expo.dev/build/introduction/</a></li>
+<li>EAS Submit: <a href="https://docs.expo.dev/submit/introduction/">https://docs.expo.dev/submit/introduction/</a></li>
+<li>EAS Update (OTA): <a href="https://docs.expo.dev/eas-update/introduction/">https://docs.expo.dev/eas-update/introduction/</a></li>
+<li>Internal distribution: <a href="https://docs.expo.dev/build/internal-distribution/">https://docs.expo.dev/build/internal-distribution/</a></li>
+<li>App Store deployment: <a href="https://docs.expo.dev/deploy/submit-to-app-stores/">https://docs.expo.dev/deploy/submit-to-app-stores/</a></li>
+<li>Apple in-app account deletion policy: <a href="https://developer.apple.com/support/offering-account-deletion-in-your-app/">https://developer.apple.com/support/offering-account-deletion-in-your-app/</a></li>
+</ul>
+</div></body></html>
