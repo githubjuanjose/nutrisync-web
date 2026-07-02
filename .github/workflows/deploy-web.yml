@@ -1,15 +1,12 @@
 name: Deploy Web to Cloudflare Pages
 
-# Auto-deploys the marketing site + web app on every push to main.
-# Mirror of the mobile OTA pipeline: push → live, no manual wrangler.
-
 on:
   push:
     branches: [main]
     paths:
       - "publish/**"
       - ".github/workflows/deploy-web.yml"
-  workflow_dispatch: {}   # lets you trigger a deploy by hand from the Actions tab
+  workflow_dispatch: {}
 
 jobs:
   deploy:
@@ -20,6 +17,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
