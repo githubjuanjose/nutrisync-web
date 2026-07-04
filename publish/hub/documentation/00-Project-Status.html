@@ -146,7 +146,11 @@ tbody tr:nth-child(even){background:var(--cream);}
 <li><code>githubjuanjose/nutrisync-web</code> — marketing site + web app + gated hub + Cloudflare deploy pipeline.</li>
 </ul>
 <h2>Recent changelog</h2>
-<p><strong>Latest session (Wave 1 + Epic E foundation):</strong>
+<p><strong>Bilingual + Design-merge session:</strong>
+- <strong>Bilingual EN/ES</strong> live across web <em>and</em> mobile — language selector on both; decoupled <code>i18n/</code> catalogs; canonical values stay English so CAS/analytics are unaffected. 120+ mobile strings translated.
+- <strong>Translations review page</strong> in the Builders hub — founders read every label EN-beside-ES, amend the Spanish, and export <code>es.json</code>.
+- <strong><code>integrate.py</code></strong> — one command re-applies the here-only layer (consent, admin, error-hide, docs, i18n keys, translations page) onto any fresh Design export, so web merges are a ~2-minute job.</p>
+<p><strong>Wave 1 + Epic E foundation:</strong>
 - <strong>Full account deletion (Epic D4)</strong> — <code>delete-account</code> Edge Function deployed; erases user data <em>and</em> auth identity server-side (service key never leaves the server). Mobile delete button wired with a safe fallback.
 - <strong>Cookie/consent layer (Epic D8)</strong> — privacy-first banner on the web (essential-only by default, granular analytics/personalization opt-ins, choice stored).
 - <strong>Admin console now live (Epic G2)</strong> — real Total Users + DAU/WAU/MAU via an admin-gated, aggregate-only <code>admin_kpis()</code> function; auto-promote trigger for the admin allowlist. Business/financial figures stay modelled until a billing system exists.
