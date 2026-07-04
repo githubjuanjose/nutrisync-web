@@ -298,4 +298,49 @@ tbody tr:nth-child(even){background:var(--cream);}
 <li><strong>Android APK for the Madrid testers (recommended, no paid account):</strong> <code>eas build --profile preview --platform android</code> → shareable download link/QR. Install once; thereafter every GitHub push reaches testers over-the-air via the Epic B mobile pipeline.</li>
 <li><strong>iOS TestFlight (unblock enrollment):</strong> enroll in the paid <strong>Apple Developer Program ($99/yr)</strong> — a free Apple account has no "team" and cannot sign or distribute. Once enrolled: <code>eas build --platform ios --profile production</code> → <code>eas submit --platform ios --latest</code> → TestFlight (External testing = one-time Beta App Review). Bundle id <code>com.nutrisync.app</code>; export-compliance is pre-answered.</li>
 </ol>
-<p>The <strong>AWS migration (Epics A/C/I)</strong> is the subsequent step, triggered when B2B scale demands it — not a prerequisite for the current pilot.</p></div></body></html>
+<p>The <strong>AWS migration (Epics A/C/I)</strong> is the subsequent step, triggered when B2B scale demands it — not a prerequisite for the current pilot.</p>
+<hr />
+<h2>Product feature tracks (beyond platform)</h2>
+<p>Alongside the infrastructure epics above, these product tracks sit on the roadmap. Status as of July 2026:</p>
+<table>
+<thead>
+<tr>
+<th>Track</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bilingual EN/ES</strong></td>
+<td>✅ Done (web + mobile)</td>
+<td>Decoupled <code>i18n/</code> catalogs; language selector on both surfaces; canonical values stay English. Founders review Spanish wording via the <strong>Translations</strong> page in the Builders hub, then export <code>es.json</code>.</td>
+</tr>
+<tr>
+<td><strong>Localization workflow</strong></td>
+<td>✅ Done</td>
+<td>Founder-editable Translations review tool; <code>integrate.py</code> keeps web + mobile catalogs in sync on each Design export.</td>
+</tr>
+<tr>
+<td><strong>Custom domain (F7)</strong></td>
+<td>⬜ Pending</td>
+<td>Publish on the branded NutriSync domain (Cloudflare Pages → Custom domains). ~15-min DNS task.</td>
+</tr>
+<tr>
+<td><strong>Monetization / subscriptions (WF-10)</strong></td>
+<td>⬜ Not built</td>
+<td>Billing system (e.g. Stripe) → premium gating, real MRR/churn in the admin console. Prerequisite for the "· model" KPIs going live.</td>
+</tr>
+<tr>
+<td><strong>Community (WF-7)</strong></td>
+<td>⬜ Not built</td>
+<td>Feed, cycle-status sharing, streaks — the Community Privacy controls already exist in-app as the settings surface.</td>
+</tr>
+<tr>
+<td><strong>Native wearable sync (Epic E adapters)</strong></td>
+<td>⬜ Deferred</td>
+<td>Apple Health / Health Connect need a native dev build; foundation + consent UI already shipped behind the <code>connectors</code> flag.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sequencing view:</strong> bilingual and the localization workflow are done. The next product build with real revenue impact is <strong>monetization</strong> (it also unblocks the live admin financial KPIs). Community and native wearables are later-stage. Custom domain is a quick your-side task, independent of all of the above.</p></div></body></html>

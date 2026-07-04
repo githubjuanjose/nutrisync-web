@@ -19,22 +19,16 @@
   </noscript>
 <style id="ns-err-hide">#__bundler_err{display:none!important}</style><style id="ns-consent-css">
 #ns-consent{position:fixed;left:16px;right:16px;bottom:16px;z-index:99998;background:#fff;border:1px solid #EADFD5;border-radius:16px;box-shadow:0 20px 50px -20px rgba(0,0,0,.35);padding:18px 20px;max-width:640px;margin:0 auto;font-family:'Inter',system-ui,sans-serif;color:#241D1A}
-#ns-consent h4{margin:0 0 6px;font-size:15px;font-weight:800}
-#ns-consent p{margin:0 0 12px;font-size:13px;color:#736862;line-height:1.5}
-#ns-consent .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-#ns-consent button{border:none;border-radius:24px;padding:10px 18px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit}
-#ns-consent .accept{background:linear-gradient(135deg,#E8472A,#F4876F);color:#fff}
-#ns-consent .reject{background:#F3EBE4;color:#241D1A}
-#ns-consent .prefs{background:none;color:#C73A20;text-decoration:underline;padding:10px 6px}
-#ns-consent .opts{margin:6px 0 12px;display:none}
-#ns-consent .opt{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid #F0E7DF;font-size:13px}
-#ns-consent .opt small{color:#736862;display:block;font-size:11.5px}
+#ns-consent h4{margin:0 0 6px;font-size:15px;font-weight:800}#ns-consent p{margin:0 0 12px;font-size:13px;color:#736862;line-height:1.5}
+#ns-consent .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}#ns-consent button{border:none;border-radius:24px;padding:10px 18px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit}
+#ns-consent .accept{background:linear-gradient(135deg,#E8472A,#F4876F);color:#fff}#ns-consent .reject{background:#F3EBE4;color:#241D1A}#ns-consent .prefs{background:none;color:#C73A20;text-decoration:underline;padding:10px 6px}
+#ns-consent .opts{margin:6px 0 12px;display:none}#ns-consent .opt{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid #F0E7DF;font-size:13px}#ns-consent .opt small{color:#736862;display:block;font-size:11.5px}
 </style>
 <script id="ns-consent-js">(function(){var KEY="nutrisync.consent.v1";
 function have(){try{return JSON.parse(localStorage.getItem(KEY));}catch(e){return null;}}
 function save(c){c.ts=new Date().toISOString();c.version=1;try{localStorage.setItem(KEY,JSON.stringify(c));}catch(e){}window.__nsConsent=c;var b=document.getElementById("ns-consent");if(b)b.remove();}
 function build(){if(have()){window.__nsConsent=have();return;}var d=document.createElement("div");d.id="ns-consent";
-d.innerHTML='<h4>Your privacy</h4><p>We use essential cookies to run NutriSync. Optional analytics &amp; personalization help us improve — they are <b>off by default</b>.</p>'
+d.innerHTML='<h4>Your privacy</h4><p>We use essential cookies to run NutriSync. Optional analytics &amp; personalization help us improve - they are <b>off by default</b>.</p>'
 +'<div class="opts" id="ns-opts"><div class="opt"><span>Essential<small>Required for the app to work</small></span><span>Always on</span></div>'
 +'<div class="opt"><span>Analytics<small>Anonymous usage to fix bugs</small></span><input type="checkbox" id="ns-an"></div>'
 +'<div class="opt"><span>Personalization<small>Tailors tips to your patterns</small></span><input type="checkbox" id="ns-pe"></div></div>'

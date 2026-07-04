@@ -1,4 +1,7 @@
-# NutriSync — Release Notes / Change Log
+# NutriSync — Release Notes
+
+## 2026-07-04 — Footer redesign
+- Slimmer 3-row footer: brand + Team Access (Investors/Builders) chips + Product/Company/Legal columns; single "Stay in sync" bar with newsletter form, App Store / Google Play badges and IG · LinkedIn · TikTok side by side; one-line disclaimer. / Change Log
 **Package date:** July 3, 2026 · **Contents:** `index.html` (marketing) + `app.html` (web application) + `i18n/` (language resources) + `hub/` (team documents) + `assets/`
 
 This package is self-contained and static — deploy by dragging the folder into Cloudflare Pages (see `README-PUBLISH.md`).
