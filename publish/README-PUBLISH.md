@@ -3,8 +3,8 @@
 One site, ready for Cloudflare:
 
 - `index.html` — **the marketing site** (entry point): hero, platform, science, pricing, "See NutriSync in action", team, waitlist — everything as built.
-  - **Health Flows now has two views**: a Mobile app / Web app toggle. Mobile cards open the phone prototype in-page; Web cards open the live responsive web app at the matching journey.
-  - Every **"Open the app"** button → `app.html`.
+  - **Health Flows has two views**: a Mobile app / Web app toggle — both are **prototypes**. Mobile cards open the phone prototype in-page; Web cards open the web app in **prototype mode** (`app.html#demo-<screen>`): full navigation on demo data, no account needed, with a "Prototype · demo data" badge.
+  - Every **"Open the app"** button → `app.html` (the **live** product: real sign-up/login against Supabase).
   - Footer **Team access** (Investors / Builders, code `123456`) still works, including the embedded hub documents.
   - Footer **"Prototype"** link keeps the original phone prototype reachable for the team.
 - `app.html` — **the responsive customer web application**: mobile-first (bottom tabs → icon rail → sidebar).
