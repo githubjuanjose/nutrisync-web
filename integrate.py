@@ -146,6 +146,20 @@ if os.path.exists(tp):
             if old in s: open(hub, "w", encoding="utf-8").write(s.replace(old, old + "\n      " + pill, 1))
     print("- Translations page + hub pill")
 
+# Founders' waitlist dashboard (admin-gated read via admin_waitlist RPC).
+wl = os.path.join(ASSETS, "waitlist.html")
+if os.path.exists(wl):
+    w = open(wl, encoding="utf-8").read().replace("__NS_URL__", URL).replace("__NS_KEY__", KEY)
+    open(os.path.join(PUB, "hub", "waitlist.html"), "w", encoding="utf-8").write(w)
+    hub = os.path.join(PUB, "hub", "full-hub-gated-site.html")
+    if os.path.exists(hub):
+        s = open(hub, encoding="utf-8").read()
+        if "waitlist.html" not in s:
+            old = '<button class="htab" id="bt2" onclick="bldTab(2)">📚 Project documentation</button>'
+            pill = '<a class="htab" href="waitlist.html" target="_blank" style="text-decoration:none;display:inline-flex;align-items:center">📋 Waitlist</a>'
+            if old in s: open(hub, "w", encoding="utf-8").write(s.replace(old, old + "\n      " + pill, 1))
+    print("- Waitlist dashboard + hub pill")
+
 dd = os.path.join(ASSETS, "docs")
 if os.path.isdir(dd):
     dst = os.path.join(PUB, "hub", "documentation"); os.makedirs(dst, exist_ok=True); n = 0

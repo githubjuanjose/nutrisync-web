@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Waitlist — NutriSync Founders</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--good:#2E9E6B;--emerald:#0FA968;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.55;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 22px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.wrap{max-width:1040px;margin:0 auto;padding:26px 22px 80px;}
+h1{font-size:27px;font-weight:900;letter-spacing:-.4px;margin:0 0 4px;}
+.sub{color:var(--muted);font-size:14px;margin:0 0 22px;}
+.stats{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 20px;}
+.stat{flex:1;min-width:150px;background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:16px 18px;}
+.stat .n{font-size:30px;font-weight:900;line-height:1;}
+.stat .l{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin-top:6px;}
+.stat.total{background:linear-gradient(135deg,#0FA968,#12C07A);border:none;color:#fff;}
+.stat.total .l{color:rgba(255,255,255,.9);}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 14px;}
+.toolbar input[type=search]{flex:1;min-width:200px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;font-size:14px;font-family:inherit;outline:none;}
+.toolbar select{padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:13.5px;font-family:inherit;background:#fff;}
+.btn{border:none;border-radius:10px;padding:10px 16px;font-weight:700;font-size:13.5px;cursor:pointer;font-family:inherit;}
+.btn-exp{background:var(--ink);color:#fff;}
+.btn-exp:hover{background:#000;}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px;}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:middle;}
+th{background:var(--coral);color:#fff;font-weight:700;font-size:12px;letter-spacing:.4px;cursor:pointer;user-select:none;position:sticky;top:57px;}
+tbody tr:nth-child(even){background:var(--cream);}
+.tag{display:inline-block;font-size:11px;font-weight:800;padding:3px 9px;border-radius:20px;text-transform:capitalize;}
+.tag.marketing_site{background:#FDE6DD;color:var(--coral-deep);}
+.tag.newsletter{background:#E4F0FF;color:#2563EB;}
+.tag.legacy_import{background:#E7F6EE;color:var(--emerald);}
+.tag.other{background:#EFEAE4;color:var(--muted);}
+.empty,.gate{max-width:380px;margin:60px auto;text-align:center;color:var(--muted);}
+.gate .box{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px 24px;box-shadow:0 18px 44px -26px rgba(0,0,0,.4);text-align:left;}
+.gate h3{margin:0 0 4px;font-size:18px;color:var(--ink);}
+.gate p{font-size:13px;margin:0 0 14px;}
+.gate input{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:9px;font-size:14px;font-family:inherit;}
+.gate button{width:100%;background:var(--coral);color:#fff;border:none;border-radius:10px;padding:12px;font-weight:800;font-size:15px;cursor:pointer;}
+.err{color:var(--coral-deep);font-size:12.5px;min-height:16px;margin-top:6px;}
+.muted{color:var(--muted);font-size:12.5px;}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand"><b>NUTRISYNC</b> · Waitlist</div>
+  <a href="full-hub-gated-site.html">← Builders hub</a>
+</div>
+<div class="wrap">
+  <div id="gate" class="gate" style="display:none">
+    <div class="box">
+      <h3>Founders sign-in</h3>
+      <p class="muted">The waitlist holds personal emails, so it is admin-only. Sign in with your NutriSync founder account.</p>
+      <input id="em" type="email" placeholder="Email" autocomplete="username"/>
+      <input id="pw" type="password" placeholder="Password" autocomplete="current-password"/>
+      <button id="go">Sign in</button>
+      <div id="gerr" class="err"></div>
+    </div>
+  </div>
+
+  <div id="app" style="display:none">
+    <h1>Waitlist</h1>
+    <p class="sub">Everyone who has joined the NutriSync waitlist — legacy signups and new ones captured from the live site.</p>
+    <div class="stats" id="stats"></div>
+    <div class="toolbar">
+      <input id="q" type="search" placeholder="Search email or name…"/>
+      <select id="src">
+        <option value="">All sources</option>
+        <option value="marketing_site">Marketing site</option>
+        <option value="newsletter">Newsletter</option>
+        <option value="legacy_import">Legacy import</option>
+      </select>
+      <button class="btn btn-exp" id="exp">⤓ Export CSV</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table id="tbl">
+        <thead><tr>
+          <th data-k="email">Email</th>
+          <th data-k="full_name">Name</th>
+          <th data-k="joined_at">Joined</th>
+          <th data-k="source">Source</th>
+        </tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <p class="muted" id="count" style="margin-top:12px"></p>
+  </div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const U="__NS_URL__", K="__NS_KEY__";
+const sb = createClient(U, K);
+const $ = i => document.getElementById(i);
+let ALL = [], sortK = 'joined_at', sortDir = -1;
+
+function fmtDate(s){ if(!s) return '—'; const d=new Date(s); return isNaN(d)?'—':d.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'}); }
+function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function srcClass(s){ return ['marketing_site','newsletter','legacy_import'].includes(s)?s:'other'; }
+
+function stats(){
+  const by = {};
+  ALL.forEach(r => { const s=r.source||'other'; by[s]=(by[s]||0)+1; });
+  const cards = [`<div class="stat total"><div class="n">${ALL.length}</div><div class="l">Total signups</div></div>`];
+  [['legacy_import','Legacy'],['marketing_site','Marketing site'],['newsletter','Newsletter']].forEach(([k,lab])=>{
+    if(by[k]) cards.push(`<div class="stat"><div class="n">${by[k]}</div><div class="l">${lab}</div></div>`);
+  });
+  $('stats').innerHTML = cards.join('');
+}
+
+function view(){
+  const q = $('q').value.trim().toLowerCase();
+  const src = $('src').value;
+  let rows = ALL.filter(r =>
+    (!src || (r.source||'')===src) &&
+    (!q || (r.email||'').toLowerCase().includes(q) || (r.full_name||'').toLowerCase().includes(q))
+  );
+  rows.sort((a,b)=>{
+    let x=a[sortK], y=b[sortK];
+    if(sortK==='joined_at'){ x=x?new Date(x).getTime():0; y=y?new Date(y).getTime():0; }
+    else { x=(x||'').toString().toLowerCase(); y=(y||'').toString().toLowerCase(); }
+    return x<y?-1*sortDir : x>y?1*sortDir : 0;
+  });
+  $('rows').innerHTML = rows.map(r=>`<tr>
+    <td>${esc(r.email)}</td>
+    <td>${esc(r.full_name)||'<span class="muted">—</span>'}</td>
+    <td>${fmtDate(r.joined_at||r.created_at)}</td>
+    <td><span class="tag ${srcClass(r.source)}">${esc((r.source||'other').replace('_',' '))}</span></td>
+  </tr>`).join('') || `<tr><td colspan="4" class="muted" style="text-align:center;padding:26px">No matches.</td></tr>`;
+  $('count').textContent = `Showing ${rows.length} of ${ALL.length}`;
+  return rows;
+}
+
+function exportCSV(){
+  const rows = view();
+  const head = ['email','full_name','joined_at','source','created_at'];
+  const lines = [head.join(',')].concat(rows.map(r=>head.map(k=>{
+    let v = r[k]==null?'':String(r[k]);
+    if(/[",\n]/.test(v)) v='"'+v.replace(/"/g,'""')+'"';
+    return v;
+  }).join(',')));
+  const blob = new Blob([lines.join('\n')], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `nutrisync-waitlist-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+}
+
+async function load(){
+  const { data, error } = await sb.rpc('admin_waitlist');
+  if(error){
+    if(/not authorized/i.test(error.message)){
+      $('app').style.display='none';
+      $('gate').style.display='block';
+      $('gerr').textContent='That account is not a NutriSync admin.';
+    }
+    return;
+  }
+  ALL = Array.isArray(data)?data:[];
+  $('gate').style.display='none';
+  $('app').style.display='block';
+  stats(); view();
+}
+
+$('go').addEventListener('click', async ()=>{
+  $('gerr').textContent='';
+  const { error } = await sb.auth.signInWithPassword({ email:$('em').value.trim(), password:$('pw').value });
+  if(error){ $('gerr').textContent=error.message; return; }
+  load();
+});
+$('pw').addEventListener('keydown', e=>{ if(e.key==='Enter') $('go').click(); });
+$('q').addEventListener('input', view);
+$('src').addEventListener('change', view);
+$('exp').addEventListener('click', exportCSV);
+document.querySelectorAll('#tbl th').forEach(th=>th.addEventListener('click',()=>{
+  const k=th.dataset.k; if(!k) return;
+  if(sortK===k) sortDir*=-1; else { sortK=k; sortDir = k==='joined_at'?-1:1; }
+  view();
+}));
+
+(async ()=>{
+  const { data:{ session } } = await sb.auth.getSession();
+  if(session) load(); else $('gate').style.display='block';
+})();
+</script>
+</body>
+</html>
