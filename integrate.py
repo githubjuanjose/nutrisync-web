@@ -103,6 +103,42 @@ if os.path.exists(idx):
         open(idx, "w", encoding="utf-8").write(ih.replace("</head>", WL + "</head>", 1))
         print("- marketing waitlist/newsletter capture (index.html)")
 
+# Builders room "Founder Tools" header row (Waitlist / Translations / Change Log).
+# These are TOOLS, not documents, so they belong at the room-header level, not inside
+# the Documentation tab. The compiled bundle's room tabs (Overview/Documentation/
+# Admin·MIS/Backlog) aren't rewireable, so we inject a card row right under the
+# Builders tab bar (anchored via the unique "Admin · MIS" button) and keep it in
+# place across the bundle's re-renders with a MutationObserver.
+if os.path.exists(idx):
+    ih = open(idx, encoding="utf-8").read()
+    if "ns-founder-tools" not in ih:
+        FT = ('<script id="ns-founder-tools">(function(){'
+          'var C=[{h:"hub/waitlist.html",e:"\\uD83D\\uDCCB",t:"Waitlist",d:"Signups + CSV export",'
+          'bg:"linear-gradient(135deg,#0FA968,#12C07A)"},'
+          '{h:"hub/translations.html",e:"\\uD83C\\uDF10",t:"Translations",d:"Review & edit EN/ES",'
+          'bg:"linear-gradient(135deg,#E8472A,#F4876F)"},'
+          '{h:"hub/documentation/08-Change-Log.html",e:"\\uD83E\\uDDFE",t:"Change Log",'
+          'd:"Web & app changes",bg:"#241D1A"}];'
+          'function card(x){return \'<a href="\'+x.h+\'" target="_blank" style="flex:1;min-width:150px;'
+          'display:flex;align-items:center;gap:10px;text-decoration:none;background:\'+x.bg+\';color:#fff;'
+          'border-radius:14px;padding:13px 15px;box-shadow:0 12px 26px -16px rgba(0,0,0,.5)">'
+          '<span style="font-size:20px">\'+x.e+\'</span><span><span style="font-weight:800;font-size:14px;'
+          'display:block">\'+x.t+\'</span><span style="font-size:11.5px;opacity:.92">\'+x.d+\'</span></span></a>\';}'
+          'function build(){if(document.getElementById("ns-ft-row"))return;'
+          'var bs=document.querySelectorAll("button"),mis=null,i;'
+          'for(i=0;i<bs.length;i++){if(/Admin\\s*[\\u00B7.]\\s*MIS/.test(bs[i].textContent||"")){mis=bs[i];break;}}'
+          'if(!mis)return;var bar=mis.parentElement;if(!bar||!bar.parentElement)return;'
+          'var row=document.createElement("div");row.id="ns-ft-row";row.style.cssText="margin:14px 0 6px";'
+          'row.innerHTML=\'<div style="font-size:12px;letter-spacing:.14em;font-weight:700;color:#E8472A;'
+          'margin:0 0 10px">FOUNDER TOOLS</div><div style="display:flex;gap:12px;flex-wrap:wrap">\''
+          '+C.map(card).join("")+\'</div>\';bar.parentElement.insertBefore(row,bar.nextSibling);}'
+          'var o=new MutationObserver(function(){build();});'
+          'function start(){build();o.observe(document.body,{childList:true,subtree:true});}'
+          'if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start();'
+          '})();</script>')
+        open(idx, "w", encoding="utf-8").write(ih.replace("</head>", FT + "</head>", 1))
+        print("- Builders 'Founder Tools' header row (index.html)")
+
 adm = os.path.join(PUB, "hub", "admin-mis-console.html")
 if os.path.exists(adm):
     h = open(adm, encoding="utf-8").read()
