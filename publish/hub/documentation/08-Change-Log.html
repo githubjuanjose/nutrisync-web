@@ -122,11 +122,16 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <hr />
 <h2>Log (newest first)</h2>
-<h3>2026-07-06 · App polish — bigger back arrow + web-app exit</h3>
+<h3>2026-07-06 · Design Brief doc added</h3>
 <ul>
-<li><strong>Build:</strong> <code>nutrisync-app-onboarding-fix2.zip</code> (mobile OTA) · <code>nutrisync-web-0607_v10.52.zip</code> (web)</li>
+<li><strong>Build:</strong> <code>nutrisync-web-0607_v10.54.zip</code></li>
+<li><strong>Docs:</strong> added <strong>Design Brief — Open Requests</strong> (<code>12-Design-Brief-Open-Requests</code>) to Builders → Documentation — a copy-paste brief of the compiled-bundle fixes for Design (web-app exit, small back buttons, onboarding back/restart, hub nav, error overlay). Mirrors <em>Open Design requests</em> in this log.</li>
+</ul>
+<h3>2026-07-06 · App polish — bigger back arrow + prominent web-app exit</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-app-onboarding-fix2.zip</code> (mobile OTA) · <code>nutrisync-web-0607_v10.53.zip</code> (web)</li>
 <li><strong>Mobile:</strong> the onboarding progress-bar back control is now a bold <strong>«</strong> double-chevron (larger icon + larger tap target) — the old thin chevron was too small to see.</li>
-<li><strong>Web:</strong> injected a persistent <strong>"‹ Back to site"</strong> link into the web app (<code>app.html</code>) so users can leave the app journeys and return to the marketing site (there was no route back before). Also logged <strong>Open Design request #3</strong> for a proper in-header placement.</li>
+<li><strong>Web:</strong> added a <strong>prominent "← Back to site" button</strong> to the web app (<code>app.html</code>, top-right, solid coral) so users can always leave the app journeys and return to the marketing site — there was no route back before, and the first (subtle) version was hard to spot. Injected via <code>integrate.py</code>; logged <strong>Open Design request #3</strong> for a proper in-header placement.</li>
 <li><strong>Platform:</strong> none.</li>
 </ul>
 <h3>2026-07-06 · Change Log — build filenames added</h3>
