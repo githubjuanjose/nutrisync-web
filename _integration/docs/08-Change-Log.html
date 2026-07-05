@@ -124,6 +124,13 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-06 · v11.5 — Multilingual expanded to 12 (Spain co-official) + MT decided</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-web-0607_v11.5.zip</code></li>
+<li><strong>Docs:</strong> added the <strong>Spain co-official</strong> languages — Catalan, Basque, Galician, <strong>Valencian</strong>, <strong>Aranese</strong> — bringing the plan to <strong>12 languages</strong>. Locked the <strong>machine-translation-first-pass → native-review</strong> decision, with a per-family engine strategy: European set MT <strong>from English</strong> (Google/DeepL); Iberian set MT <strong>from Spanish</strong> via <strong>Apertium</strong> (Valencian = Catalan <em>valencia</em> variety; Aranese = Occitan; Basque = heaviest review). Updated Design Brief §6 + backlog.</li>
+<li><strong>Handoff:</strong> 10 skeleton locale files now (<code>fr/it/de/nl/el/ca/eu/gl/va/oc-aran.json</code>) plus <code>mt_translate.py</code> — a runnable MT script with per-language engine routing, placeholder + brand-noun protection, and a mismatch-fallback report.</li>
+<li><strong>Web/Mobile:</strong> no functional change yet — spec + scaffolding only.</li>
+</ul>
 <h3>2026-07-06 · v11.4 — Multilingual (7 languages) spec + skeletons</h3>
 <ul>
 <li><strong>Build:</strong> <code>nutrisync-web-0607_v11.4.zip</code></li>
