@@ -13,6 +13,16 @@ Assets it needs live next to it in ./_integration/ :
     _integration/docs/*.html         the current hub documentation to overlay
     _integration/mob_keys.json       {"en":{...},"es":{...}} mobile i18n additions
 """
+# ---------------------------------------------------------------------------
+# WEB → MOBILE crossover rule (what to also do to the native app per web pack):
+#   Design packs are WEB-ONLY (no mobile code). For each pack, check:
+#     • Marketing footer / hero / web-app chrome  -> web-only, mobile untouched
+#     • Wording in the shared i18n `app` section   -> re-sync into mobile bundle
+#     • Brand tokens (phase colours, brand orange)  -> apply to mobile theme.ts
+#     • A new product screen/feature in the design  -> build natively in the RN app
+#   Only touch the mobile app (and ship nutrisync-app-full.zip OTA) when something
+#   actually crosses over. Full rule + log: hub docs -> "Change Log — Web & App".
+# ---------------------------------------------------------------------------
 import os, re, json, shutil, sys
 
 ROOT   = os.path.dirname(os.path.abspath(__file__))

@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Change Log — Web & App — NutriSync Docs</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+h4{font-size:16px;font-weight:800;margin:20px 0 6px;}
+p{margin:10px 0;}
+a{color:var(--coral-deep);}
+strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:'SF Mono',Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:14px 0;padding:12px 18px;background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;color:#5d524b;}
+blockquote p{margin:4px 0;}
+ul,ol{margin:10px 0;padding-left:24px;}
+li{margin:5px 0;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;}
+tbody tr:nth-child(even){background:var(--cream);}
+.pill{display:inline-block;background:#FDE6DD;color:var(--coral-deep);font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;}
+.card{display:block;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:10px 0;text-decoration:none;color:var(--ink);transition:.15s;}
+.card:hover{border-color:var(--coral);background:var(--cream);}
+.card .t{font-weight:800;font-size:16px;color:var(--coral-deep);}
+.card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
+.sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
+</style></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><a href="index.html">← All documents</a></div><div class="wrap"><h1>Change Log — Web &amp; App (traceability)</h1>
+<p>A single running record of changes across <strong>both surfaces</strong> — the web platform (marketing + web app + hub) and the native mobile apps — plus the backend/platform. It exists so anyone can trace <em>what changed, where, when, and whether it crossed over</em> between web and mobile.</p>
+<p>Sources that feed this log: Design's <code>CHANGELOG.md</code> in each web pack, our integration pass (<code>integrate.py</code>), and the mobile app builds.</p>
+<h2>How web ↔ mobile sync works (read this first)</h2>
+<p>Design ships <strong>web-only</strong> packs (marketing <code>index.html</code> + web <code>app.html</code> + <code>i18n/</code> + <code>hub/</code>). They contain <strong>no mobile code</strong>, so web changes do <strong>not</strong> automatically reach the native app. For every pack we check what actually applies to mobile:</p>
+<table>
+<thead>
+<tr>
+<th>Design change type</th>
+<th>Crosses to mobile?</th>
+<th>What we do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Marketing footer / hero / layout, web-app chrome</td>
+<td>❌ No</td>
+<td>Nothing — web-only, separate native app</td>
+</tr>
+<tr>
+<td>Wording in the shared <code>app</code> section of <code>i18n</code></td>
+<td>✅ Yes</td>
+<td>Re-sync those strings into the mobile i18n bundle</td>
+</tr>
+<tr>
+<td>Brand tokens (phase colours, brand orange, fonts)</td>
+<td>✅ Yes</td>
+<td>Apply to the mobile <code>theme.ts</code></td>
+</tr>
+<tr>
+<td>A new product screen / feature in the app design</td>
+<td>✅ Yes</td>
+<td>Build it natively in the React Native app</td>
+</tr>
+</tbody>
+</table>
+<p>If something crosses over, we ship a fresh <code>nutrisync-app-full.zip</code> (OTA). If nothing does, we say so and only the web is pushed.</p>
+<h2>Deploy channels</h2>
+<ul>
+<li><strong>Web:</strong> GitHub <code>nutrisync-web</code> → Cloudflare Pages (auto-deploy on push).</li>
+<li><strong>Mobile:</strong> GitHub <code>nutrisync-app</code> → EAS Update (OTA, <code>production</code> channel) on push.</li>
+</ul>
+<hr />
+<h2>Log (newest first)</h2>
+<h3>2026-07-04 · Web pack v10.40 — footer redesign</h3>
+<ul>
+<li><strong>Web:</strong> slim 3-row footer (brand + Team Access chips + Product/Company/Legal columns + single "Stay in sync" bar with store badges &amp; socials); bigger header logo. Re-integrated our layer (consent, admin KPIs, i18n keys, Translations page + docs button).</li>
+<li><strong>Mobile:</strong> <strong>no change</strong> — verified: footer is web-only; mobile header logo already enlarged; shared i18n diff = 0 strings.</li>
+<li><strong>Platform:</strong> none.</li>
+</ul>
+<h3>2026-07-04 · Documentation &amp; backlog refresh</h3>
+<ul>
+<li><strong>Web:</strong> backlog doc gained Product feature tracks (bilingual, monetization, community, custom domain); Project Status changelog updated; Translations button made prominent at the top of the docs index.</li>
+<li><strong>Mobile:</strong> n/a.</li>
+<li><strong>Platform:</strong> <code>integrate.py</code> established as the one-command re-integration for every Design pack.</li>
+</ul>
+<h3>2026-07-04 · Bilingual EN/ES + Design bilingual pack</h3>
+<ul>
+<li><strong>Web:</strong> Design's bilingual pack integrated — EN/ES across marketing + web app, decoupled <code>i18n/</code> catalogs, language selector, wearables screen, mobile-fit fixes, 2× logos. Founder <strong>Translations review page</strong> added to the hub.</li>
+<li><strong>Mobile:</strong> full EN/ES i18n wired — <code>LanguageProvider</code> + <code>t()</code>, language selector in App Preferences, <strong>121 strings</strong> translated across every screen (incl. 83 mobile-specific keys added to the shared catalog under <code>app.mob</code>). Shipped OTA.</li>
+<li><strong>Platform:</strong> i18n kept in sync web ↔ mobile via the shared catalog.</li>
+</ul>
+<h3>2026-07-03 · Wave 1 + Epic E foundation</h3>
+<ul>
+<li><strong>Mobile:</strong> Edit Health, Notification Center, App/Nutritional Preferences; bigger brand lockup (home + gate); full-account deletion wired; Connected Devices (wearables) foundation behind a feature flag (OFF).</li>
+<li><strong>Platform:</strong> full account deletion <strong>Edge Function</strong> deployed (data + auth erasure); cookie/<strong>consent</strong> layer on web; admin console wired to <strong>live KPIs</strong> (aggregate-only, admin-gated); <code>health_signal</code> + <code>connected_providers</code> schema.</li>
+<li><strong>Web:</strong> consent banner, admin live wiring, error-overlay hidden.</li>
+</ul>
+<h3>2026-07-02 · Web app live + CI/CD</h3>
+<ul>
+<li><strong>Web:</strong> Claude Design web app stitched to Supabase; marketing + gated hub live on <code>nutrisync-collective</code>; auto-deploy pipeline (GitHub → Cloudflare Pages).</li>
+<li><strong>Mobile:</strong> OTA pipeline (GitHub → EAS Update) live; Android test build produced.</li>
+<li><strong>Platform:</strong> Supabase (EU) backend serving both surfaces; CAS engine writing <code>daily_scores</code>.</li>
+</ul>
+<hr />
+<h2>How to add an entry</h2>
+<p>When a new web pack lands or a mobile build ships, add a dated block at the top with three lines — <strong>Web</strong>, <strong>Mobile</strong>, <strong>Platform</strong> — noting what changed and, crucially, whether it crossed between surfaces. Keep canonical values English (see the i18n contract).</p></div></body></html>
