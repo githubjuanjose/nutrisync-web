@@ -235,13 +235,13 @@ tbody tr:nth-child(even){background:var(--cream);}
 <li><strong>F2 (P0, S)</strong> — Session-aware entry: no session → login; session without a cycle → onboarding; else → home. <em>AC: session-aware routing; deep links preserved.</em> — <em>✅ done.</em></li>
 <li><strong>F3 (P0, M)</strong> — Shared auth/session on the same Supabase identity across surfaces. <em>AC: single sign-in.</em> — <em>✅ done.</em></li>
 <li><strong>F4 (P0, S)</strong> — Shared design tokens (Figma-aligned) across marketing, web app, and React Native. <em>AC: one token source; consistent brand.</em> — <em>substantially done via the shared Claude Design/Figma system.</em></li>
-<li><strong>F5 (P1, S)</strong> — Waitlist → onboarding handoff. <em>AC: waitlisted emails convert without re-entry.</em> — <em>fast-follow.</em></li>
+<li><strong>F5 (P1, S)</strong> — Waitlist → onboarding handoff. <em>AC: waitlisted emails convert without re-entry.</em> — <em>◑ mostly done: a live <code>public.waitlist</code> table (RLS-private, anon-insert), the marketing-site + newsletter fields now </em><em>persist</em><em> signups (tagged by source), </em><em>~140 legacy signups migrated</em><em> from an old Supabase project, and a </em><em>Founders' Waitlist dashboard</em><em> in the Builders hub with full </em><em>CRUD + CSV export</em><em> (admin-gated, with undo). Remaining: the auto-convert-to-onboarding handoff (pre-fill a waitlisted email into signup).</em></li>
 <li><strong>F6 (P1, S)</strong> — Funnel analytics + A/B (EU analytics). <em>AC: signup funnel measured end-to-end.</em> — <em>fast-follow.</em></li>
 <li><strong>F7 (P0, S)</strong> — <strong>Publish on the NutriSync custom domain</strong> (e.g. <code>nutrisynccollective.com</code>) instead of <code>*.pages.dev</code>: Cloudflare <strong>Pages → Custom domains → Add</strong>, point the domain's DNS at Pages, force HTTPS, and redirect the <code>pages.dev</code> URL to it. <em>AC: site served on the branded domain with valid TLS; both apex and <code>www</code> resolve; old URL 301s to the new one.</em> — <strong>pending</strong> — the site is live on <code>nutrisync-collective.pages.dev</code> today; this is a ~15-min DNS task once you pick/confirm the domain.</li>
 </ul>
 <p><em>Cleanup note:</em> the account still contains stale artifacts — an old <code>nutrisync-web.pages.dev</code> project and a broken <code>nutrisync</code> Worker. Neither is in use; both are safely deletable.</p>
 <h2>Epic G — Web admin application (MIS / KPIs)  <em>(P1)</em></h2>
-<p><strong>Current status: ◑ Live KPIs wired.</strong> The console now pulls <strong>real aggregates</strong> — Total Users and DAU/WAU/MAU — through an admin-gated, aggregate-only <code>admin_kpis()</code> function (SECURITY DEFINER; returns counts, never PII; refuses non-admins). An <code>admins</code> allowlist plus an auto-promote trigger manage access. Business/financial figures (MRR, subscriptions, revenue) stay <strong>modelled</strong> and are clearly labelled, because there is no billing system yet to read from — they become live via the same pattern once payments exist. Remaining: role tiers, Cloudflare Zero Trust gating on the admin path, and connector/ops panels.</p>
+<p><strong>Current status: ◑ Live KPIs wired.</strong> The console now pulls <strong>real aggregates</strong> — Total Users and DAU/WAU/MAU — through an admin-gated, aggregate-only <code>admin_kpis()</code> function (SECURITY DEFINER; returns counts, never PII; refuses non-admins). An <code>admins</code> allowlist plus an auto-promote trigger manage access. A second admin surface is now live too: the <strong>Founders' Waitlist dashboard</strong> (Builders hub) — searchable/sortable signup list with per-source counts, <strong>full CRUD</strong> (add/edit/delete with confirm + undo) and <strong>CSV export</strong>, admin-gated via <code>admin_waitlist_crud.sql</code> RLS policies. Business/financial figures (MRR, subscriptions, revenue) stay <strong>modelled</strong> and are clearly labelled, because there is no billing system yet to read from — they become live via the same pattern once payments exist. Remaining: role tiers, Cloudflare Zero Trust gating on the admin path, and connector/ops panels.</p>
 <blockquote>
 <p>Goal: an internal admin app (Cloudflare Zero-Trust protected) to run the business — access, subscriptions, and the business case.</p>
 </blockquote>
@@ -311,6 +311,16 @@ tbody tr:nth-child(even){background:var(--cream);}
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><strong>Waitlist &amp; signups</strong></td>
+<td>✅ Done (capture + admin)</td>
+<td>Live <code>public.waitlist</code> table; marketing + newsletter capture; ~140 legacy signups migrated; Founders' CRUD dashboard (search/filter/export/undo) in the Builders hub. Auto-convert-to-onboarding handoff pending (F5).</td>
+</tr>
+<tr>
+<td><strong>DB change safety</strong></td>
+<td>✅ Done</td>
+<td>Backup-first runbook (<code>11-DB-Changes-Runbook</code>) + in-dashboard undo; every data/schema SQL now leads with a backup and ends with a verify step.</td>
+</tr>
 <tr>
 <td><strong>Bilingual EN/ES</strong></td>
 <td>✅ Done (web + mobile)</td>
