@@ -121,6 +121,12 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-06 · Waitlist dashboard — full CRUD</h3>
+<ul>
+<li><strong>Builders hub:</strong> the Founders' Waitlist dashboard is now editable — <strong>Add signup</strong> (email, name, source, joined date), <strong>Edit</strong> any row, and <strong>Delete</strong> with confirm, alongside the existing search / filter / CSV export. Admin-gated end to end.</li>
+<li><strong>Platform:</strong> new <code>admin_waitlist_crud.sql</code> adds admin-only SELECT/INSERT/UPDATE/DELETE RLS policies on <code>public.waitlist</code> (checks <code>public.admins</code>). Public marketing-form inserts still work; the list stays private to non-admins. The dashboard now reads the table directly (needs row <code>id</code> for edit/delete) and falls back to the read-only <code>admin_waitlist()</code> RPC (with a "read-only" banner) if the CRUD SQL hasn't been run yet.</li>
+<li><strong>Mobile:</strong> n/a.</li>
+</ul>
 <h3>2026-07-06 · Onboarding navigation — mobile fixed, web spec'd</h3>
 <ul>
 <li><strong>Mobile:</strong> onboarding now has full back/restart. <strong>Back</strong> works on every step (including the consent step, which previously blocked it); the <strong>Android hardware back</strong> button steps within the wizard instead of leaving the app; and a <strong>"Start over"</strong> control (with a confirm) resets to step 1 and clears answers. New strings <code>mob.startOver</code> / <code>mob.startOverBody</code> added EN + ES. Ships OTA.</li>
