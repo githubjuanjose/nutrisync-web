@@ -924,7 +924,9 @@
       "personalInfo": "Información personal",
       "activeWord": "Activo",
       "currentDevice": "Dispositivo actual",
-      "loginDetails": "DATOS DE ACCESO"
+      "loginDetails": "DATOS DE ACCESO",
+      "startOver": "Empezar de nuevo",
+      "startOverBody": "Esto borra tus respuestas hasta ahora y te lleva al primer paso."
     }
   },
   "marketing": {

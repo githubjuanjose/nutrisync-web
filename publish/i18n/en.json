@@ -605,7 +605,9 @@
       "personalInfo": "Personal Information",
       "activeWord": "Active",
       "currentDevice": "Current device",
-      "loginDetails": "LOGIN DETAILS"
+      "loginDetails": "LOGIN DETAILS",
+      "startOver": "Start over",
+      "startOverBody": "This clears your answers so far and takes you back to the first step."
     }
   },
   "marketing": {

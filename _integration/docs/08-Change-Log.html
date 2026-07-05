@@ -110,7 +110,8 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p><strong>Rule of thumb:</strong> ask Design only for <strong>design / structure / navigation</strong>. Do <strong>not</strong> ask Design to build the Translations page, Change Log, admin wiring, or consent — those live in the integration layer (and Design can't do the backend ones). Never upload our integrated build back to Design as a "source".</p>
 <h2>Open Design requests (for the next pack)</h2>
 <ol>
-<li>✅ <strong>Hub room navigation</strong> — <em>delivered in the 2026-07-06 pack</em>: sticky room tabs, a persistent Investor↔Builder switcher + "Back to site", in-room "← Overview" back control, and the gate only at hub entry.</li>
+<li>◑ <strong>Hub room navigation — round 2 (still gaps).</strong> The 07-06 pack added sticky room tabs + the Investor↔Builder switcher (good), but deeper navigation is still one-way: opening a card/section and using an in-page "back" (or the browser Back button) can still drop the user to the site landing instead of the previous view. Asks: (a) an in-page <strong>back within every card/section</strong> that returns to that room's previous view (Overview or the card grid), never the landing; (b) wire the <strong>browser Back button</strong> (History API) so it steps <em>within</em> the hub rather than exiting; (c) moving card→card→section never forces a return to Start.</li>
+<li><strong>Web onboarding — Back on every step + Start over.</strong> The wizard has step-back logic internally (<code>obStep → obIdx−1</code>) but: (a) the <strong>Back</strong> control is missing/inconsistent on some steps — show it on every step after the first; (b) there is <strong>no "Start over"</strong> — add one that resets to step 1 and clears entered answers; (c) map the <strong>browser Back button</strong> to the previous step instead of leaving the flow. (For reference, this is exactly what the <em>mobile</em> onboarding now does — Back on all steps, hardware-Back handled, and a "Start over" with confirm.)</li>
 <li><strong>Strip the dev error overlay</strong> — remove the <code>__bundler_err</code> debug overlay from production exports (we currently hide it via <code>integrate.py</code>; removing it at source ends that re-application). <em>Still open in the 2026-07-06 pack.</em></li>
 </ol>
 <h2>Deploy channels</h2>
@@ -120,6 +121,12 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-06 · Onboarding navigation — mobile fixed, web spec'd</h3>
+<ul>
+<li><strong>Mobile:</strong> onboarding now has full back/restart. <strong>Back</strong> works on every step (including the consent step, which previously blocked it); the <strong>Android hardware back</strong> button steps within the wizard instead of leaving the app; and a <strong>"Start over"</strong> control (with a confirm) resets to step 1 and clears answers. New strings <code>mob.startOver</code> / <code>mob.startOverBody</code> added EN + ES. Ships OTA.</li>
+<li><strong>Web:</strong> reviewed <code>app.html</code> — the wizard has step-back logic but Back is inconsistent across steps and there is no "Start over"; and the hub's deeper card/section back-navigation still drops to the landing. Both are in Design's compiled bundle, so logged as <strong>Open Design requests #1 and #2</strong> with precise specs (mirroring the mobile behaviour).</li>
+<li><strong>Platform:</strong> none.</li>
+</ul>
 <h3>2026-07-06 · Waitlist — legacy migration + live capture</h3>
 <ul>
 <li><strong>Platform:</strong> created <code>public.waitlist</code> (email · joined_at · source, unique on <code>lower(email)</code>, RLS on: anon <strong>insert</strong> allowed, no public read). Migrated <strong>~140 signups</strong> from a legacy Supabase project via a staging table + deduped <code>insert … on conflict do nothing</code>; imported rows tagged <code>source='legacy_import'</code>.</li>

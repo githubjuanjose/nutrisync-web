@@ -82,7 +82,9 @@
     "personalInfo": "Personal Information",
     "activeWord": "Active",
     "currentDevice": "Current device",
-    "loginDetails": "LOGIN DETAILS"
+    "loginDetails": "LOGIN DETAILS",
+    "startOver": "Start over",
+    "startOverBody": "This clears your answers so far and takes you back to the first step."
   },
   "es": {
     "save": "Guardar",
@@ -167,6 +169,8 @@
     "personalInfo": "Información personal",
     "activeWord": "Activo",
     "currentDevice": "Dispositivo actual",
-    "loginDetails": "DATOS DE ACCESO"
+    "loginDetails": "DATOS DE ACCESO",
+    "startOver": "Empezar de nuevo",
+    "startOverBody": "Esto borra tus respuestas hasta ahora y te lleva al primer paso."
   }
 }
