@@ -139,6 +139,29 @@ if os.path.exists(idx):
         open(idx, "w", encoding="utf-8").write(ih.replace("</head>", FT + "</head>", 1))
         print("- Builders 'Founder Tools' header row (index.html)")
 
+# Web app → "Back to site" exit. The compiled app.html has no route back to the
+# marketing site (index.html). We inject a small persistent link (kept in place with
+# a MutationObserver) — it just navigates to the sibling index.html, no bundle rewire.
+ap = os.path.join(PUB, "app.html")
+if os.path.exists(ap):
+    ap_s = open(ap, encoding="utf-8").read()
+    if "ns-exit-site" not in ap_s:
+        EX = ('<script id="ns-exit-site">(function(){'
+          'function add(){if(document.getElementById("ns-exit-btn"))return;'
+          'var a=document.createElement("a");a.id="ns-exit-btn";a.href="index.html";'
+          'a.title="Back to the NutriSync site";a.innerHTML="\\u2039\\u00A0Back to site";'
+          'a.style.cssText="position:fixed;left:14px;bottom:78px;z-index:99996;'
+          'background:rgba(36,29,26,.9);color:#fff;font-family:\'Inter\',system-ui,sans-serif;'
+          'font-size:12.5px;font-weight:700;text-decoration:none;padding:8px 14px;border-radius:22px;'
+          'box-shadow:0 10px 26px -12px rgba(0,0,0,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)";'
+          'document.body.appendChild(a);}'
+          'var o=new MutationObserver(function(){add();});'
+          'function start(){add();o.observe(document.body,{childList:true});}'
+          'if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start();'
+          '})();</script>')
+        open(ap, "w", encoding="utf-8").write(ap_s.replace("</head>", EX + "</head>", 1))
+        print("- Web app 'Back to site' exit link (app.html)")
+
 adm = os.path.join(PUB, "hub", "admin-mis-console.html")
 if os.path.exists(adm):
     h = open(adm, encoding="utf-8").read()

@@ -112,6 +112,7 @@ tbody tr:nth-child(even){background:var(--cream);}
 <ol>
 <li>◑ <strong>Hub room navigation — round 2 (still gaps).</strong> The 07-06 pack added sticky room tabs + the Investor↔Builder switcher (good), but deeper navigation is still one-way: opening a card/section and using an in-page "back" (or the browser Back button) can still drop the user to the site landing instead of the previous view. Asks: (a) an in-page <strong>back within every card/section</strong> that returns to that room's previous view (Overview or the card grid), never the landing; (b) wire the <strong>browser Back button</strong> (History API) so it steps <em>within</em> the hub rather than exiting; (c) moving card→card→section never forces a return to Start.</li>
 <li><strong>Web onboarding — Back on every step + Start over.</strong> The wizard has step-back logic internally (<code>obStep → obIdx−1</code>) but: (a) the <strong>Back</strong> control is missing/inconsistent on some steps — show it on every step after the first; (b) there is <strong>no "Start over"</strong> — add one that resets to step 1 and clears entered answers; (c) map the <strong>browser Back button</strong> to the previous step instead of leaving the flow. (For reference, this is exactly what the <em>mobile</em> onboarding now does — Back on all steps, hardware-Back handled, and a "Start over" with confirm.)</li>
+<li><strong>Web app — native "Back to site" exit.</strong> From inside the web app (<code>app.html</code>) there's no route back to the marketing site. We've injected a stopgap floating "‹ Back to site" link via <code>integrate.py</code>; Design should add a proper exit in the app header/sidebar (e.g. on the NutriSync logo, or a menu item).</li>
 <li><strong>Strip the dev error overlay</strong> — remove the <code>__bundler_err</code> debug overlay from production exports (we currently hide it via <code>integrate.py</code>; removing it at source ends that re-application). <em>Still open in the 2026-07-06 pack.</em></li>
 </ol>
 <h2>Deploy channels</h2>
@@ -121,8 +122,21 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-06 · App polish — bigger back arrow + web-app exit</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-app-onboarding-fix2.zip</code> (mobile OTA) · <code>nutrisync-web-0607_v10.52.zip</code> (web)</li>
+<li><strong>Mobile:</strong> the onboarding progress-bar back control is now a bold <strong>«</strong> double-chevron (larger icon + larger tap target) — the old thin chevron was too small to see.</li>
+<li><strong>Web:</strong> injected a persistent <strong>"‹ Back to site"</strong> link into the web app (<code>app.html</code>) so users can leave the app journeys and return to the marketing site (there was no route back before). Also logged <strong>Open Design request #3</strong> for a proper in-header placement.</li>
+<li><strong>Platform:</strong> none.</li>
+</ul>
+<h3>2026-07-06 · Change Log — build filenames added</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-web-0607_v10.51.zip</code></li>
+<li><strong>Docs:</strong> every log entry now carries a <strong>Build</strong> line naming the package (zip) — and any SQL / Edge Function — it shipped in, for release traceability. Older pre-<code>v10.4x</code> builds are referenced by their actual filenames where tracked.</li>
+</ul>
 <h3>2026-07-06 · Waitlist dashboard — undo/rollback + DB runbook</h3>
 <ul>
+<li><strong>Build:</strong> <code>nutrisync-web-0607_v10.50.zip</code></li>
 <li><strong>Builders hub:</strong> every Add / Edit / Delete now runs <strong>confirm → execute → Undo</strong>. A rollback bar appears for ~9s and reverses the action — re-inserts a deleted row (exact copy), restores previous values on an edit, or removes a just-added row. Edits and deletes ask Yes/No first.</li>
 <li><strong>Docs:</strong> added <strong>Database Changes Runbook</strong> (<code>11-DB-Changes-Runbook</code>) to Builders → Documentation — the backup-first rule (snapshot → change → verify → restore) plus the dashboard's in-app undo. Backing convention also lives in <code>backend/DB-CHANGES-RUNBOOK.md</code>.</li>
 <li><strong>Convention:</strong> going forward, every data-/schema-changing SQL we hand over leads with a backup step and ends with a verify step.</li>
@@ -130,18 +144,21 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <h3>2026-07-06 · Waitlist dashboard — full CRUD</h3>
 <ul>
+<li><strong>Build:</strong> <code>nutrisync-web-0607_v10.49.zip</code> + SQL <code>backend/admin_waitlist_crud.sql</code></li>
 <li><strong>Builders hub:</strong> the Founders' Waitlist dashboard is now editable — <strong>Add signup</strong> (email, name, source, joined date), <strong>Edit</strong> any row, and <strong>Delete</strong> with confirm, alongside the existing search / filter / CSV export. Admin-gated end to end.</li>
 <li><strong>Platform:</strong> new <code>admin_waitlist_crud.sql</code> adds admin-only SELECT/INSERT/UPDATE/DELETE RLS policies on <code>public.waitlist</code> (checks <code>public.admins</code>). Public marketing-form inserts still work; the list stays private to non-admins. The dashboard now reads the table directly (needs row <code>id</code> for edit/delete) and falls back to the read-only <code>admin_waitlist()</code> RPC (with a "read-only" banner) if the CRUD SQL hasn't been run yet.</li>
 <li><strong>Mobile:</strong> n/a.</li>
 </ul>
 <h3>2026-07-06 · Onboarding navigation — mobile fixed, web spec'd</h3>
 <ul>
+<li><strong>Build:</strong> <code>nutrisync-app-onboarding-fix.zip</code> (mobile OTA) · <code>nutrisync-web-0607_v10.48.zip</code> (web)</li>
 <li><strong>Mobile:</strong> onboarding now has full back/restart. <strong>Back</strong> works on every step (including the consent step, which previously blocked it); the <strong>Android hardware back</strong> button steps within the wizard instead of leaving the app; and a <strong>"Start over"</strong> control (with a confirm) resets to step 1 and clears answers. New strings <code>mob.startOver</code> / <code>mob.startOverBody</code> added EN + ES. Ships OTA.</li>
 <li><strong>Web:</strong> reviewed <code>app.html</code> — the wizard has step-back logic but Back is inconsistent across steps and there is no "Start over"; and the hub's deeper card/section back-navigation still drops to the landing. Both are in Design's compiled bundle, so logged as <strong>Open Design requests #1 and #2</strong> with precise specs (mirroring the mobile behaviour).</li>
 <li><strong>Platform:</strong> none.</li>
 </ul>
 <h3>2026-07-06 · Waitlist — legacy migration + live capture</h3>
 <ul>
+<li><strong>Build:</strong> live capture <code>nutrisync-web-0607_v10.45.zip</code> · dashboard <code>_v10.46.zip</code> · Founder Tools row <code>_v10.47.zip</code> · SQL <code>backend/admin_waitlist.sql</code> (migration itself run in Supabase, no build)</li>
 <li><strong>Platform:</strong> created <code>public.waitlist</code> (email · joined_at · source, unique on <code>lower(email)</code>, RLS on: anon <strong>insert</strong> allowed, no public read). Migrated <strong>~140 signups</strong> from a legacy Supabase project via a staging table + deduped <code>insert … on conflict do nothing</code>; imported rows tagged <code>source='legacy_import'</code>.</li>
 <li><strong>Web:</strong> the marketing site's waitlist <strong>and</strong> newsletter fields now persist to <code>public.waitlist</code> (tagged <code>marketing_site</code> / <code>newsletter</code>). Wired in <code>integrate.py</code> as a delegated capture-phase listener (the compiled bundle's own <code>{{ }}</code> handlers aren't rewireable), POSTing via PostgREST with the public anon key; shows a lightweight "You're on the list ✓" toast and treats duplicates as already-subscribed.</li>
 <li><strong>Builders hub:</strong> new <strong>Founders' Waitlist dashboard</strong> (<code>hub/waitlist.html</code>) — total + per-source counts, searchable/sortable list of signups, and <strong>CSV export</strong>. Admin-gated: reads via the new <code>admin_waitlist()</code> SECURITY DEFINER function (checks <code>public.admins</code>), so the list stays RLS-private to everyone else.</li>
@@ -150,42 +167,49 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <h3>2026-07-06 · Web pack (05072026) — hub room navigation fixed</h3>
 <ul>
+<li><strong>Build:</strong> <code>nutrisync-web-0607_v10.44.zip</code> (from Design pack <code>Nutrisync marketing website revamp_05072026.zip</code>)</li>
 <li><strong>Web:</strong> Design delivered the hub navigation fix requested on 07-04. Inside the Investor and Builder rooms the room tabs are now <strong>sticky</strong> (Overview / Business case / MIS · and Overview / Documentation / Admin·MIS / Backlog stay visible while scrolling); a <strong>room switcher</strong> in the header lets you jump Investor↔Builder or "← Back to site" directly; the in-room <strong>"← Overview"</strong> control returns to that room's Overview instead of the landing page; and the <code>123456</code> gate only appears at hub entry, never re-locking on tab/room switches. Re-integrated our layer over the fresh export (consent, admin live KPIs, mobile i18n keys, error-overlay hide, Translations page + docs CTAs, current Change Log).</li>
 <li><strong>Mobile / Platform:</strong> <strong>no change</strong> — verified: nav fix is web-hub-only; shared <code>i18n</code> <code>app</code> diff = 0 strings; no brand-token or new-screen changes. Native app untouched.</li>
 <li><strong>Still open with Design:</strong> strip the <code>__bundler_err</code> dev error overlay at source (we continue to hide it via <code>integrate.py</code>).</li>
 </ul>
 <h3>2026-07-04 · Known issue logged — hub room navigation <em>(resolved 07-06)</em></h3>
 <ul>
+<li><strong>Build:</strong> <code>nutrisync-web-0407_v10.43.zip</code></li>
 <li><strong>Web:</strong> inside the Investor/Builder rooms there's no direct Investor↔Builder switch and the tab bar isn't sticky, so leaving/switching sections forces a return to the landing page. Handled in Design's compiled bundle — spec handed to Design (see <em>Open Design requests</em>).</li>
 <li><strong>Mobile / Platform:</strong> n/a.</li>
 <li><strong>Also added:</strong> the <em>Who fixes what</em> ownership boundary + <em>Open Design requests</em> sections above, and Change Log / Translations cards at the top of the Builder → Documentation tab.</li>
 </ul>
 <h3>2026-07-04 · Web pack v10.40 — footer redesign</h3>
 <ul>
+<li><strong>Build:</strong> <code>nutrisync-web-0407_v10.40.zip</code> (from Design pack <code>Nutrisync marketing website revamp_0407_v10.40.zip</code>)</li>
 <li><strong>Web:</strong> slim 3-row footer (brand + Team Access chips + Product/Company/Legal columns + single "Stay in sync" bar with store badges &amp; socials); bigger header logo. Re-integrated our layer (consent, admin KPIs, i18n keys, Translations page + docs button).</li>
 <li><strong>Mobile:</strong> <strong>no change</strong> — verified: footer is web-only; mobile header logo already enlarged; shared i18n diff = 0 strings.</li>
 <li><strong>Platform:</strong> none.</li>
 </ul>
 <h3>2026-07-04 · Documentation &amp; backlog refresh</h3>
 <ul>
+<li><strong>Build:</strong> part of the 07-04 web builds (<code>nutrisync-web-0407_*</code> series)</li>
 <li><strong>Web:</strong> backlog doc gained Product feature tracks (bilingual, monetization, community, custom domain); Project Status changelog updated; Translations button made prominent at the top of the docs index.</li>
 <li><strong>Mobile:</strong> n/a.</li>
 <li><strong>Platform:</strong> <code>integrate.py</code> established as the one-command re-integration for every Design pack.</li>
 </ul>
 <h3>2026-07-04 · Bilingual EN/ES + Design bilingual pack</h3>
 <ul>
+<li><strong>Build:</strong> Design bilingual pack (integrated web build, 07-04) · mobile via OTA</li>
 <li><strong>Web:</strong> Design's bilingual pack integrated — EN/ES across marketing + web app, decoupled <code>i18n/</code> catalogs, language selector, wearables screen, mobile-fit fixes, 2× logos. Founder <strong>Translations review page</strong> added to the hub.</li>
 <li><strong>Mobile:</strong> full EN/ES i18n wired — <code>LanguageProvider</code> + <code>t()</code>, language selector in App Preferences, <strong>121 strings</strong> translated across every screen (incl. 83 mobile-specific keys added to the shared catalog under <code>app.mob</code>). Shipped OTA.</li>
 <li><strong>Platform:</strong> i18n kept in sync web ↔ mobile via the shared catalog.</li>
 </ul>
 <h3>2026-07-03 · Wave 1 + Epic E foundation</h3>
 <ul>
+<li><strong>Build:</strong> <code>nutrisync-web-stitched.zip</code> (web) · mobile via OTA · SQL <code>backend/admin_kpis.sql</code>, <code>admin_auto_promote.sql</code>, <code>health_connectors.sql</code>, Edge Function <code>delete-account</code></li>
 <li><strong>Mobile:</strong> Edit Health, Notification Center, App/Nutritional Preferences; bigger brand lockup (home + gate); full-account deletion wired; Connected Devices (wearables) foundation behind a feature flag (OFF).</li>
 <li><strong>Platform:</strong> full account deletion <strong>Edge Function</strong> deployed (data + auth erasure); cookie/<strong>consent</strong> layer on web; admin console wired to <strong>live KPIs</strong> (aggregate-only, admin-gated); <code>health_signal</code> + <code>connected_providers</code> schema.</li>
 <li><strong>Web:</strong> consent banner, admin live wiring, error-overlay hidden.</li>
 </ul>
 <h3>2026-07-02 · Web app live + CI/CD</h3>
 <ul>
+<li><strong>Build:</strong> <code>nutrisync-web-latest.zip</code> (initial stitched web) · mobile via OTA</li>
 <li><strong>Web:</strong> Claude Design web app stitched to Supabase; marketing + gated hub live on <code>nutrisync-collective</code>; auto-deploy pipeline (GitHub → Cloudflare Pages).</li>
 <li><strong>Mobile:</strong> OTA pipeline (GitHub → EAS Update) live; Android test build produced.</li>
 <li><strong>Platform:</strong> Supabase (EU) backend serving both surfaces; CAS engine writing <code>daily_scores</code>.</li>
