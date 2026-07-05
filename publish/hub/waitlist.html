@@ -67,6 +67,10 @@ tbody tr:nth-child(even){background:var(--cream);}
 .rowbtns .cancel{background:#F3EBE4;color:var(--ink);}
 .rowbtns .save{background:var(--coral);color:#fff;}
 .merr{color:var(--coral-deep);font-size:12.5px;min-height:16px;margin-top:4px;}
+/* undo bar */
+.undobar{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:300;background:#241D1A;color:#fff;border-radius:12px;padding:12px 18px;display:none;align-items:center;gap:18px;box-shadow:0 16px 40px -18px rgba(0,0,0,.6);font-size:13.5px;max-width:92vw;}
+.undobar.on{display:flex;}
+.undobar button{background:none;border:none;color:#FFC7B3;font-weight:800;font-size:13.5px;cursor:pointer;font-family:inherit;text-decoration:underline;white-space:nowrap;}
 </style>
 </head>
 <body>
@@ -142,6 +146,9 @@ tbody tr:nth-child(even){background:var(--cream);}
   </div>
 </div>
 
+<!-- Undo (rollback) bar -->
+<div class="undobar" id="undoBar"><span id="undoMsg"></span><button id="undoBtn">Undo</button></div>
+
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 const U="https://nebkqncvapelrarruyqb.supabase.co", K="sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau";
@@ -207,6 +214,15 @@ function exportCSV(){
   a.click();
 }
 
+/* ---- Undo (rollback) bar ---- */
+let undoTimer=null;
+function showUndo(msg, undoFn){
+  clearTimeout(undoTimer);
+  const bar=$('undoBar'); $('undoMsg').textContent=msg; bar.classList.add('on');
+  $('undoBtn').onclick=async()=>{ clearTimeout(undoTimer); bar.classList.remove('on'); await undoFn(); await load(); };
+  undoTimer=setTimeout(()=>bar.classList.remove('on'), 9000);
+}
+
 /* ---- CRUD ---- */
 function openAdd(){
   editId=null; $('mTitle').textContent='Add signup';
@@ -228,23 +244,51 @@ async function save(){
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ $('mErr').textContent='Enter a valid email.'; return; }
   const payload={ email, full_name:$('mName').value.trim()||null, source:$('mSource').value,
                   joined_at:$('mJoined').value?new Date($('mJoined').value).toISOString():null };
-  $('mSave').disabled=true; $('mErr').textContent='';
-  let error;
-  if(editId){ ({error}=await sb.from('waitlist').update(payload).eq('id',editId)); }
-  else { ({error}=await sb.from('waitlist').insert(payload)); }
-  $('mSave').disabled=false;
-  if(error){
-    $('mErr').textContent = /duplicate|unique/i.test(error.message) ? 'That email is already on the list.' : error.message;
-    return;
+
+  if(editId){
+    // Update: Yes/No confirm -> execute -> offer rollback to previous values.
+    const prev = ALL.find(x=>String(x.id)===String(editId));
+    if(!confirm(`Save these changes to ${payload.email}?`)) return;
+    $('mSave').disabled=true; $('mErr').textContent='';
+    const { error } = await sb.from('waitlist').update(payload).eq('id',editId);
+    $('mSave').disabled=false;
+    if(error){ $('mErr').textContent = /duplicate|unique/i.test(error.message) ? 'That email is already on the list.' : error.message; return; }
+    closeModal(); await load();
+    if(prev){
+      const revert={ email:prev.email, full_name:prev.full_name, joined_at:prev.joined_at, source:prev.source };
+      showUndo(`Updated ${payload.email}.`, async()=>{
+        const { error:e2 } = await sb.from('waitlist').update(revert).eq('id',editId);
+        if(e2) alert('Undo failed: '+e2.message);
+      });
+    }
+  } else {
+    // Add: execute -> offer rollback (delete the row we just added).
+    $('mSave').disabled=true; $('mErr').textContent='';
+    const { data, error } = await sb.from('waitlist').insert(payload).select('id').single();
+    $('mSave').disabled=false;
+    if(error){ $('mErr').textContent = /duplicate|unique/i.test(error.message) ? 'That email is already on the list.' : error.message; return; }
+    closeModal(); await load();
+    const newId = data && data.id;
+    if(newId) showUndo(`Added ${payload.email}.`, async()=>{
+      const { error:e2 } = await sb.from('waitlist').delete().eq('id',newId);
+      if(e2) alert('Undo failed: '+e2.message);
+    });
   }
-  closeModal(); await load();
 }
 async function del(id){
+  // Delete: Yes/No confirm -> execute -> offer rollback (re-insert the exact row).
   const r = ALL.find(x=>String(x.id)===String(id));
-  if(!confirm(`Remove ${r?r.email:'this signup'} from the waitlist? This cannot be undone.`)) return;
+  if(!confirm(`Delete ${r?r.email:'this signup'} from the waitlist?`)) return;
   const { error } = await sb.from('waitlist').delete().eq('id',id);
   if(error){ alert('Could not delete: '+error.message); return; }
   await load();
+  if(r){
+    const snap = { id:r.id, email:r.email, full_name:r.full_name, joined_at:r.joined_at, source:r.source, created_at:r.created_at };
+    showUndo(`Deleted ${r.email}.`, async()=>{
+      const { error:e2 } = await sb.from('waitlist').insert(snap);
+      if(e2) alert('Undo failed: '+e2.message);
+    });
+  }
 }
 
 async function load(){

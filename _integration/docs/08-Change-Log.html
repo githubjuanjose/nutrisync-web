@@ -121,6 +121,13 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-06 · Waitlist dashboard — undo/rollback + DB runbook</h3>
+<ul>
+<li><strong>Builders hub:</strong> every Add / Edit / Delete now runs <strong>confirm → execute → Undo</strong>. A rollback bar appears for ~9s and reverses the action — re-inserts a deleted row (exact copy), restores previous values on an edit, or removes a just-added row. Edits and deletes ask Yes/No first.</li>
+<li><strong>Docs:</strong> added <strong>Database Changes Runbook</strong> (<code>11-DB-Changes-Runbook</code>) to Builders → Documentation — the backup-first rule (snapshot → change → verify → restore) plus the dashboard's in-app undo. Backing convention also lives in <code>backend/DB-CHANGES-RUNBOOK.md</code>.</li>
+<li><strong>Convention:</strong> going forward, every data-/schema-changing SQL we hand over leads with a backup step and ends with a verify step.</li>
+<li><strong>Mobile:</strong> n/a.</li>
+</ul>
 <h3>2026-07-06 · Waitlist dashboard — full CRUD</h3>
 <ul>
 <li><strong>Builders hub:</strong> the Founders' Waitlist dashboard is now editable — <strong>Add signup</strong> (email, name, source, joined date), <strong>Edit</strong> any row, and <strong>Delete</strong> with confirm, alongside the existing search / filter / CSV export. Admin-gated end to end.</li>
