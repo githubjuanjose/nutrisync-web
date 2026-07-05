@@ -110,8 +110,8 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p><strong>Rule of thumb:</strong> ask Design only for <strong>design / structure / navigation</strong>. Do <strong>not</strong> ask Design to build the Translations page, Change Log, admin wiring, or consent — those live in the integration layer (and Design can't do the backend ones). Never upload our integrated build back to Design as a "source".</p>
 <h2>Open Design requests (for the next pack)</h2>
 <ol>
-<li><strong>Hub room navigation</strong> — make the room tab bar sticky; add a persistent Investor↔Builder switcher + "Back to site"; ensure in-room "back" returns to the room Overview, not the landing page.</li>
-<li><strong>Strip the dev error overlay</strong> — remove the <code>__bundler_err</code> debug overlay from production exports (we currently hide it via <code>integrate.py</code>; removing it at source ends that re-application).</li>
+<li>✅ <strong>Hub room navigation</strong> — <em>delivered in the 2026-07-06 pack</em>: sticky room tabs, a persistent Investor↔Builder switcher + "Back to site", in-room "← Overview" back control, and the gate only at hub entry.</li>
+<li><strong>Strip the dev error overlay</strong> — remove the <code>__bundler_err</code> debug overlay from production exports (we currently hide it via <code>integrate.py</code>; removing it at source ends that re-application). <em>Still open in the 2026-07-06 pack.</em></li>
 </ol>
 <h2>Deploy channels</h2>
 <ul>
@@ -120,7 +120,13 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <hr />
 <h2>Log (newest first)</h2>
-<h3>2026-07-04 · Known issue logged — hub room navigation <em>(pending Design)</em></h3>
+<h3>2026-07-06 · Web pack (05072026) — hub room navigation fixed</h3>
+<ul>
+<li><strong>Web:</strong> Design delivered the hub navigation fix requested on 07-04. Inside the Investor and Builder rooms the room tabs are now <strong>sticky</strong> (Overview / Business case / MIS · and Overview / Documentation / Admin·MIS / Backlog stay visible while scrolling); a <strong>room switcher</strong> in the header lets you jump Investor↔Builder or "← Back to site" directly; the in-room <strong>"← Overview"</strong> control returns to that room's Overview instead of the landing page; and the <code>123456</code> gate only appears at hub entry, never re-locking on tab/room switches. Re-integrated our layer over the fresh export (consent, admin live KPIs, mobile i18n keys, error-overlay hide, Translations page + docs CTAs, current Change Log).</li>
+<li><strong>Mobile / Platform:</strong> <strong>no change</strong> — verified: nav fix is web-hub-only; shared <code>i18n</code> <code>app</code> diff = 0 strings; no brand-token or new-screen changes. Native app untouched.</li>
+<li><strong>Still open with Design:</strong> strip the <code>__bundler_err</code> dev error overlay at source (we continue to hide it via <code>integrate.py</code>).</li>
+</ul>
+<h3>2026-07-04 · Known issue logged — hub room navigation <em>(resolved 07-06)</em></h3>
 <ul>
 <li><strong>Web:</strong> inside the Investor/Builder rooms there's no direct Investor↔Builder switch and the tab bar isn't sticky, so leaving/switching sections forces a return to the landing page. Handled in Design's compiled bundle — spec handed to Design (see <em>Open Design requests</em>).</li>
 <li><strong>Mobile / Platform:</strong> n/a.</li>

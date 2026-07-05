@@ -1,8 +1,21 @@
-# NutriSync — Release Notes
+# NutriSync — Release Notes / Change Log
 
-## 2026-07-04 — Footer redesign
-- Slimmer 3-row footer: brand + Team Access (Investors/Builders) chips + Product/Company/Legal columns; single "Stay in sync" bar with newsletter form, App Store / Google Play badges and IG · LinkedIn · TikTok side by side; one-line disclaimer. / Change Log
-**Package date:** July 3, 2026 · **Contents:** `index.html` (marketing) + `app.html` (web application) + `i18n/` (language resources) + `hub/` (team documents) + `assets/`
+## 2026-07-06 — Hub room navigation
+- **Sticky room tabs:** Overview / Business case / MIS (Investors) and Overview / Documentation / Admin·MIS / Backlog (Builders) now live inside the sticky room header — always visible while scrolling any document; switching a tab returns you to the top.
+- **Room switcher in header:** Investors · Builders · ← Back to site — jump Investor↔Builder directly without returning to the landing page.
+- **Back control:** "← Overview" (and the active room pill) returns to that room's Overview; only "← Back to site" exits to the landing.
+- **Gate at entry only:** the 123456 access gate appears when entering the hub from the site; switching rooms or tabs inside never re-locks.
+
+## 2026-07-04 — Footer & branding
+- **Footer redesign (slimmer, 3 rows):**
+  - Row 1 — brand block (logo + paragraph + **Team Access**: Investors / Builders chips side by side) next to Product · Company · Legal columns.
+  - Row 2 — single "STAY IN SYNC" bar: newsletter email + orange button, **App Store / Google Play badges and Instagram · LinkedIn · TikTok all on one line**.
+  - Row 3 — one-line disclaimer.
+- **Logo prominence:** header logo enlarged to 50 px with a larger NUTRISYNC wordmark on the main page.
+
+---
+
+**Package date:** July 4, 2026 · **Contents:** `index.html` (marketing) + `app.html` (web application) + `i18n/` (language resources) + `hub/` (team documents) + `assets/`
 
 This package is self-contained and static — deploy by dragging the folder into Cloudflare Pages (see `README-PUBLISH.md`).
 
