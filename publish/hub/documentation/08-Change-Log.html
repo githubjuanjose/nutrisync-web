@@ -124,6 +124,15 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-06 · v11.6 — Multilingual to 14 (+ 中文/日本語); mobile + tool built</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-web-0607_v11.6.zip</code> (web) · <code>nutrisync-app-i18n-14.zip</code> (mobile OTA)</li>
+<li><strong>Scope:</strong> added <strong>Chinese (<code>zh</code>)</strong> and <strong>Japanese (<code>ja</code>)</strong> → <strong>14 languages</strong>. Flagged the <strong>CJK web-font</strong> requirement for Design (Noto Sans SC/JP or system fallback).</li>
+<li><strong>Mobile (done):</strong> <code>LanguageProvider</code> now carries the 14-language registry with <strong>OS-language default</strong> (via <code>expo-localization</code>, required defensively so OTA never crashes) and English fallback per locale; App Preferences shows the <strong>two-pill (English + OS/current) + dropdown</strong> selector. <code>expo-localization</code> added to <code>package.json</code>.</li>
+<li><strong>Builders tool (done):</strong> the Translations page is now a <strong>14-language reviewer</strong> — pick a language, see the MT beside the English source (yellow = still equal to English, pink = blank), filter/only-untranslated, and export that one <code>xx.json</code>.</li>
+<li><strong>Handoff:</strong> 12 skeletons now (<code>…/zh.json</code>, <code>ja.json</code>) + <code>mt_translate.py</code> routes ZH/JA through the from-English engine.</li>
+<li><strong>Platform:</strong> i18n stays English-canonical; each locale falls back to English until its catalog is published.</li>
+</ul>
 <h3>2026-07-06 · v11.5 — Multilingual expanded to 12 (Spain co-official) + MT decided</h3>
 <ul>
 <li><strong>Build:</strong> <code>nutrisync-web-0607_v11.5.zip</code></li>

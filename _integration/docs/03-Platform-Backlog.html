@@ -327,9 +327,9 @@ tbody tr:nth-child(even){background:var(--cream);}
 <td>Decoupled <code>i18n/</code> catalogs; language selector on both surfaces; canonical values stay English. Founders review Spanish wording via the <strong>Translations</strong> page in the Builders hub, then export <code>es.json</code>.</td>
 </tr>
 <tr>
-<td><strong>Multilingual — 12 languages</strong></td>
-<td>⬜ In progress</td>
-<td>EN/ES/FR/IT/DE/NL/EL + Spain co-official CA/EU/GL/VA(lencian)/Aranese. Selector = two pills (English + OS language, OS default) + dropdown for the rest. <strong>MT first pass → native review (locked):</strong> European set MT from English (Google/DeepL); Iberian set MT from Spanish via <strong>Apertium</strong> (Valencian = Catalan variety; Aranese = Occitan; Basque = heaviest review). <strong>Design:</strong> selector UX + web translations. <strong>Us:</strong> mobile selector/OS-default, bundle <code>app</code> strings, extend Translations tool 2→12. 10 skeletons + <code>mt_translate.py</code> generated. See Design Brief §6.</td>
+<td><strong>Multilingual — 14 languages</strong></td>
+<td>◑ In progress</td>
+<td>EN/ES/FR/IT/DE/NL/EL + Spain co-official CA/EU/GL/VA/Aranese + <strong>ZH/JA</strong>. Selector = two pills (English + OS language, OS default) + dropdown. <strong>MT first pass → native review (locked):</strong> European+East-Asian MT from English (Google/DeepL); Iberian MT from Spanish via <strong>Apertium</strong>. <strong>CJK font</strong> needed on web for ZH/JA. <strong>Us — done:</strong> mobile 14-lang registry + OS-default + two-pill/dropdown selector; Translations tool extended 2→14 (per-language reviewer + export); 12 skeletons + <code>mt_translate.py</code>. <strong>Design:</strong> selector UX + web translations + CJK font. See Design Brief §6.</td>
 </tr>
 <tr>
 <td><strong>Localization workflow</strong></td>
