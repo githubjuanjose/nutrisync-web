@@ -124,6 +124,13 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-06 · Web pack v11.2 — auth/onboarding back-to-site pill</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-web-0607_v11.2.zip</code> (integrated) · Design raw pack: <code>nutrisync-web-design-0607_v11.2.zip</code></li>
+<li><strong>Web:</strong> small polish over v11.1 — Design added a floating <strong>"← Back to site" pill (bottom-right)</strong> on the auth/onboarding screens (also on mobile). Only <code>app.html</code> changed (+150 bytes); <code>index.html</code> and all i18n are byte-identical to v11.1. Re-integrated our layer; stopgap exit still stands down (native present).</li>
+<li><strong>Naming:</strong> Design now prefixes raw packs <code>nutrisync-web-design-0607_vX.Y.zip</code>; our integrated deployable drops the <code>design-</code> (<code>nutrisync-web-0607_vX.Y.zip</code>). Deploy the one <strong>without</strong> <code>design-</code>.</li>
+<li><strong>Mobile:</strong> <strong>no change</strong> — shared app-section i18n diff = 0.</li>
+</ul>
 <h3>2026-07-06 · Web pack v11.1 — error overlay root-caused (brief closed)</h3>
 <ul>
 <li><strong>Build:</strong> <code>nutrisync-web-0607_v11.1.zip</code> (Design pack now uses our version naming)</li>
@@ -237,4 +244,8 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <hr />
 <h2>How to add an entry</h2>
-<p>When a new web pack lands or a mobile build ships, add a dated block at the top with three lines — <strong>Web</strong>, <strong>Mobile</strong>, <strong>Platform</strong> — noting what changed and, crucially, whether it crossed between surfaces. Keep canonical values English (see the i18n contract).</p></div></body></html>
+<p>When a new web pack lands or a mobile build ships, add a dated block at the top with three lines — <strong>Web</strong>, <strong>Mobile</strong>, <strong>Platform</strong> — noting what changed and, crucially, whether it crossed between surfaces. Include a <strong>Build</strong> line naming the package(s) it shipped in. Keep canonical values English (see the i18n contract).</p>
+<p><strong>Build naming (avoid deploying the wrong file):</strong>
+- <strong>Design raw pack</strong> (input, not deployable on its own): <code>nutrisync-web-design-0607_vX.Y.zip</code>.
+- <strong>Integrated deployable</strong> (what we actually push — Design's pack + our layer via <code>integrate.py</code>): <code>nutrisync-web-0607_vX.Y.zip</code> (no <code>design-</code>).
+- Always deploy the one <strong>without</strong> <code>design-</code>.</p></div></body></html>
