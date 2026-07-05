@@ -69,6 +69,50 @@ tbody tr:nth-child(even){background:var(--cream);}
 </tbody>
 </table>
 <p>If something crosses over, we ship a fresh <code>nutrisync-app-full.zip</code> (OTA). If nothing does, we say so and only the web is pushed.</p>
+<h2>Who fixes what — Design vs Integration (ownership)</h2>
+<p>Design edits its own <strong>source canvas</strong> and re-exports a fresh compiled web bundle. It cannot ingest our integrated output as a new source, and it cannot produce backend/ops features. So we keep a clean split — Design owns the pixels, we own the wiring — and <code>integrate.py</code> bridges them on every export.</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Owner</th>
+<th>Maintained by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Web visual / structure / <strong>navigation</strong> (incl. hub room nav)</td>
+<td><strong>Design</strong></td>
+<td>Fix in Design's canvas → re-export</td>
+</tr>
+<tr>
+<td>Backend wiring, consent banner, admin live KPIs, error-hide</td>
+<td><strong>Integration (here)</strong></td>
+<td><code>integrate.py</code> re-applies each export</td>
+</tr>
+<tr>
+<td>Added hub pages (Translations tool, this Change Log, docs CTAs)</td>
+<td><strong>Integration (here)</strong></td>
+<td><code>integrate.py</code></td>
+</tr>
+<tr>
+<td>Mobile app (screens, i18n, logo, theme)</td>
+<td><strong>Mobile repo (here)</strong></td>
+<td><code>nutrisync-app</code> build → OTA</td>
+</tr>
+<tr>
+<td>Shared copy/wording (<code>i18n/*.json</code>)</td>
+<td><strong>Shared</strong></td>
+<td>Founders edit via the Translations page; kept EN-canonical</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rule of thumb:</strong> ask Design only for <strong>design / structure / navigation</strong>. Do <strong>not</strong> ask Design to build the Translations page, Change Log, admin wiring, or consent — those live in the integration layer (and Design can't do the backend ones). Never upload our integrated build back to Design as a "source".</p>
+<h2>Open Design requests (for the next pack)</h2>
+<ol>
+<li><strong>Hub room navigation</strong> — make the room tab bar sticky; add a persistent Investor↔Builder switcher + "Back to site"; ensure in-room "back" returns to the room Overview, not the landing page.</li>
+<li><strong>Strip the dev error overlay</strong> — remove the <code>__bundler_err</code> debug overlay from production exports (we currently hide it via <code>integrate.py</code>; removing it at source ends that re-application).</li>
+</ol>
 <h2>Deploy channels</h2>
 <ul>
 <li><strong>Web:</strong> GitHub <code>nutrisync-web</code> → Cloudflare Pages (auto-deploy on push).</li>
@@ -76,6 +120,12 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-04 · Known issue logged — hub room navigation <em>(pending Design)</em></h3>
+<ul>
+<li><strong>Web:</strong> inside the Investor/Builder rooms there's no direct Investor↔Builder switch and the tab bar isn't sticky, so leaving/switching sections forces a return to the landing page. Handled in Design's compiled bundle — spec handed to Design (see <em>Open Design requests</em>).</li>
+<li><strong>Mobile / Platform:</strong> n/a.</li>
+<li><strong>Also added:</strong> the <em>Who fixes what</em> ownership boundary + <em>Open Design requests</em> sections above, and Change Log / Translations cards at the top of the Builder → Documentation tab.</li>
+</ul>
 <h3>2026-07-04 · Web pack v10.40 — footer redesign</h3>
 <ul>
 <li><strong>Web:</strong> slim 3-row footer (brand + Team Access chips + Product/Company/Legal columns + single "Stay in sync" bar with store badges &amp; socials); bigger header logo. Re-integrated our layer (consent, admin KPIs, i18n keys, Translations page + docs button).</li>
