@@ -36,7 +36,7 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>Fixes that live in Design's <strong>compiled web bundle</strong> (marketing <code>index.html</code> + web app <code>app.html</code>). We can only patch around these from the integration layer; Design should fix them at the source so they survive each re-export. This is the shareable version of the <em>Open Design requests</em> tracked in the Change Log.</p>
 <p>Hand this straight to Design.</p>
 <blockquote>
-<p><strong>Status:</strong> <strong>all 5 items closed</strong> ✅. Items 1–4 delivered in the 0607v02.53 pack; item 5 (error overlay) <strong>root-caused and resolved in v11.1</strong> (a typo'd mood-icon asset was the trigger; fixed, with a zero-console-errors audit — the <code>display:none</code> rule is kept as an intentional safety net).</p>
+<p><strong>Status:</strong> items 1–5 <strong>closed</strong> ✅ (1–4 in the 0607v02.53 pack; item 5 error overlay root-caused in v11.1). <strong>Item 6 (Multilingual — 7 languages) is NEW and open</strong> — see below.</p>
 </blockquote>
 <hr />
 <h2>1 · Web app — "Back to site" exit ✅ delivered (0607v02.53)</h2>
@@ -61,5 +61,22 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <h2>5 · Remove the dev error overlay ✅ resolved (v11.1)</h2>
 <p>Root-caused rather than masked: the overlay only fires on a real asset miss, and the one genuine miss (a typo'd mood-icon, <code>mischevious</code>→<code>mischievous</code>) was fixed at source. A full asset audit confirms zero console errors on both pages. The <code>#__bundler_err{display:none}</code> rule is retained deliberately as a production safety net — a debug overlay should never reach users even if an asset regresses.</p>
+<hr />
+<hr />
+<h2>6 · Multilingual — 7 languages (NEW · open)</h2>
+<p>Expand from EN/ES to <strong>7 languages</strong>: English, Spanish, French, Italian, German, Dutch, Greek.</p>
+<p><strong>Language selector — confirmed UX (marketing nav, web-app login, Settings card):</strong>
+- <strong>Two pills, always visible:</strong> <code>[English]</code> + <code>[OS language]</code>.
+  - The second pill is the <strong>device/OS language</strong> when it's in the supported set, and it is the <strong>default selection</strong> on first load.
+  - <strong>Edge case:</strong> if the OS language is English or unsupported → fall back to the pair <code>[English] [Español]</code> with <strong>English selected</strong>.
+- <strong>A dropdown (▾) beside the pills</strong> lists <strong>the remaining</strong> supported languages, <strong>alphabetically</strong>, to switch to any of them (the chosen one takes the second pill's slot for that session).
+- Persist the choice in <code>localStorage.ns_locale</code> (shared web ↔ app). <strong>Backend values stay canonical English</strong> so CAS/analytics are unaffected.
+- <strong>Greek is non-Latin</strong> — confirm the chosen fonts include Greek glyph coverage.</p>
+<p><strong>Ownership for this feature:</strong>
+- <strong>Design</strong> — the pill + dropdown UX above, in the compiled bundle; and the <strong>professional FR/IT/DE/NL/EL translations</strong> for the customer-facing web (app + marketing + prototype), as done for Spanish.
+- <strong>Integration (here)</strong> — the same selector logic + OS default in the <strong>mobile</strong> app; bundling each new language's <code>app</code> strings into the mobile catalogs (a real crossover); extending the founder <strong>Translations tool</strong> from 2 → 7 languages; <code>integrate.py</code> carries the new locale files and keeps values English-canonical.
+- <strong>Founders</strong> — native review/QA of each language before ship.
+- <strong>Decision to lock first</strong> — translation source: professional vs machine-translation + native review (recommended: professional / native review for health content).</p>
+<p><strong>Skeletons provided:</strong> <code>fr.json</code>, <code>it.json</code>, <code>de.json</code>, <code>nl.json</code>, <code>el.json</code> — same key structure as <code>en.json</code> (613 keys incl. mobile), English placeholders. Design/the translator fills the values in place; the mobile side and the founder tool are ready to receive them.</p>
 <hr />
 <p><strong>Note on workflow:</strong> the marketing site and web app are the compiled bundle Design exports. Each of the above should be fixed in the <strong>source design</strong>, then re-exported as a normal pack — we re-apply our integration layer (<code>integrate.py</code>) on top. See <em>Change Log → Who fixes what (Design vs Integration)</em> for the ownership split.</p></div></body></html>
