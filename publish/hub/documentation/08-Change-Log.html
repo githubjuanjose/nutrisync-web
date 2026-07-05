@@ -120,6 +120,12 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-06 · Waitlist — legacy migration + live capture</h3>
+<ul>
+<li><strong>Platform:</strong> created <code>public.waitlist</code> (email · joined_at · source, unique on <code>lower(email)</code>, RLS on: anon <strong>insert</strong> allowed, no public read). Migrated <strong>~140 signups</strong> from a legacy Supabase project via a staging table + deduped <code>insert … on conflict do nothing</code>; imported rows tagged <code>source='legacy_import'</code>.</li>
+<li><strong>Web:</strong> the marketing site's waitlist <strong>and</strong> newsletter fields now persist to <code>public.waitlist</code> (tagged <code>marketing_site</code> / <code>newsletter</code>). Wired in <code>integrate.py</code> as a delegated capture-phase listener (the compiled bundle's own <code>{{ }}</code> handlers aren't rewireable), POSTing via PostgREST with the public anon key; shows a lightweight "You're on the list ✓" toast and treats duplicates as already-subscribed.</li>
+<li><strong>Mobile:</strong> n/a.</li>
+</ul>
 <h3>2026-07-06 · Web pack (05072026) — hub room navigation fixed</h3>
 <ul>
 <li><strong>Web:</strong> Design delivered the hub navigation fix requested on 07-04. Inside the Investor and Builder rooms the room tabs are now <strong>sticky</strong> (Overview / Business case / MIS · and Overview / Documentation / Admin·MIS / Backlog stay visible while scrolling); a <strong>room switcher</strong> in the header lets you jump Investor↔Builder or "← Back to site" directly; the in-room <strong>"← Overview"</strong> control returns to that room's Overview instead of the landing page; and the <code>123456</code> gate only appears at hub entry, never re-locking on tab/room switches. Re-integrated our layer over the fresh export (consent, admin live KPIs, mobile i18n keys, error-overlay hide, Translations page + docs CTAs, current Change Log).</li>

@@ -67,6 +67,42 @@ for f in ("index.html", "app.html"):
 app = open(os.path.join(PUB, "app.html"), encoding="utf-8").read()
 URL = re.search(r"https://[a-z0-9]+\.supabase\.co", app).group(0)
 KEY = re.search(r"sb_publishable_[^'\"]+", app).group(0)
+
+# marketing waitlist + newsletter capture -> public.waitlist (index.html only).
+# Compiled-bundle handlers ({{ onEmail }}/{{ subscribeNl }}) are not rewireable
+# from outside, so we delegate on document (capture phase, survives re-renders):
+# on any button click, grab the sibling <input>'s email and POST it via PostgREST
+# with the public anon key (RLS "anyone can join waitlist" insert policy allows it).
+idx = os.path.join(PUB, "index.html")
+if os.path.exists(idx):
+    ih = open(idx, encoding="utf-8").read()
+    if "ns-waitlist-js" not in ih:
+        WL = ('<script id="ns-waitlist-js">(function(){var U="__U__",K="__K__";'
+          'function v(e){return /^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(e);}'
+          'function toast(m){var t=document.createElement("div");t.textContent=m;'
+          't.style.cssText="position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:99999;'
+          'background:#241D1A;color:#fff;font-family:\'Inter\',system-ui,sans-serif;font-size:13.5px;'
+          'font-weight:600;padding:11px 18px;border-radius:24px;box-shadow:0 14px 30px -12px rgba(0,0,0,.5);'
+          'opacity:0;transition:opacity .25s";document.body.appendChild(t);'
+          'requestAnimationFrame(function(){t.style.opacity="1";});'
+          'setTimeout(function(){t.style.opacity="0";setTimeout(function(){t.remove();},300);},2600);}'
+          'document.addEventListener("click",function(e){'
+          'var btn=e.target.closest&&e.target.closest("button,[role=button]");if(!btn)return;'
+          'var input=null,node=btn,i;for(i=0;i<4&&node;i++){node=node.parentElement;'
+          'if(node){input=node.querySelector("input");if(input)break;}}'
+          'if(!input)return;var email=(input.value||"").trim().toLowerCase();if(!v(email))return;'
+          'if(btn.__nsSent===email)return;btn.__nsSent=email;'
+          'var src=/you@email\\.com/.test(input.placeholder||"")?"newsletter":"marketing_site";'
+          'fetch(U+"/rest/v1/waitlist",{method:"POST",headers:{"apikey":K,"Authorization":"Bearer "+K,'
+          '"Content-Type":"application/json","Prefer":"return=minimal"},'
+          'body:JSON.stringify({email:email,source:src})}).then(function(r){'
+          'if(r.status===201){toast("You\'re on the list \\u2713");}'
+          'else if(r.status===409){toast("You\'re already subscribed \\u2713");}'
+          'else{btn.__nsSent=null;}}).catch(function(){btn.__nsSent=null;});},true);})();</script>')
+        WL = WL.replace("__U__", URL).replace("__K__", KEY)
+        open(idx, "w", encoding="utf-8").write(ih.replace("</head>", WL + "</head>", 1))
+        print("- marketing waitlist/newsletter capture (index.html)")
+
 adm = os.path.join(PUB, "hub", "admin-mis-console.html")
 if os.path.exists(adm):
     h = open(adm, encoding="utf-8").read()
