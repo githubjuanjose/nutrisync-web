@@ -114,8 +114,9 @@ tbody tr:nth-child(even){background:var(--cream);}
 <li>✅ <strong>Web onboarding — Back on every step + Start over</strong> — <em>delivered in 0607v02.53</em>: Back on every step, a new "Start over" (resets to step 1, clears answers), and the browser Back button steps the wizard back.</li>
 <li>✅ <strong>Web app — native "Back to site" exit</strong> — <em>delivered in 0607v02.53</em>: sidebar item + brand-rail pill + a Settings row (covers mobile). Our stopgap floating button now <strong>auto-disables</strong> when the native control is present (<code>integrate.py</code> checks for it).</li>
 <li>✅ <strong>Web app — bigger back controls</strong> — <em>delivered in 0607v02.53</em>: in-app back links are now 44px pills; onboarding back is 44px with a 24px chevron.</li>
-<li>◑ <strong>Strip the dev error overlay</strong> — Design's CHANGELOG says stripped, but <code>__bundler_err</code> is <strong>still present</strong> in the 0607v02.53 export (count 3). We continue to hide it via <code>integrate.py</code>. <em>Still open — please remove the overlay element itself from production builds.</em></li>
+<li>✅ <strong>Dev error overlay — root-caused</strong> — <em>resolved in v11.1</em>: the overlay only fires on a real asset miss; Design found the one genuine miss (a Figma-typo'd mood icon, <code>mischevious</code> → <code>mischievous</code>), fixed it, and audited every dynamically-referenced asset — both pages now load with <strong>zero console errors</strong>. The <code>#__bundler_err{display:none}</code> rule is retained deliberately as a production safety net (a debug overlay should never reach users even if an asset regresses); nothing triggers it today.</li>
 </ol>
+<p><em>All Design brief items are now closed.</em></p>
 <h2>Deploy channels</h2>
 <ul>
 <li><strong>Web:</strong> GitHub <code>nutrisync-web</code> → Cloudflare Pages (auto-deploy on push).</li>
@@ -123,6 +124,13 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-06 · Web pack v11.1 — error overlay root-caused (brief closed)</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-web-0607_v11.1.zip</code> (Design pack now uses our version naming)</li>
+<li><strong>Web:</strong> Design closed the last brief item — the bundler error overlay was <strong>root-caused, not masked</strong>: the trigger was a single typo'd mood-icon asset (<code>mischevious</code>→<code>mischievous</code>), now fixed; a full asset audit confirms zero console errors on both <code>index.html</code> and <code>app.html</code>. The <code>#__bundler_err{display:none}</code> rule is kept as an intentional safety net. Re-integrated our layer; our own error-hide is now redundant-but-harmless.</li>
+<li><strong>All 5 Design brief items are now closed.</strong></li>
+<li><strong>Mobile:</strong> <strong>no change</strong> — shared app-section i18n diff = 0 (added/removed/changed all empty).</li>
+</ul>
 <h3>2026-07-06 · Web pack (0607v02.53) — Design brief fixes landed</h3>
 <ul>
 <li><strong>Build:</strong> <code>nutrisync-web-0607_v10.55.zip</code> (from Design pack <code>Nutrisync marketing website revamp_0607v02.53.zip</code>)</li>

@@ -36,7 +36,7 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>Fixes that live in Design's <strong>compiled web bundle</strong> (marketing <code>index.html</code> + web app <code>app.html</code>). We can only patch around these from the integration layer; Design should fix them at the source so they survive each re-export. This is the shareable version of the <em>Open Design requests</em> tracked in the Change Log.</p>
 <p>Hand this straight to Design.</p>
 <blockquote>
-<p><strong>Status (0607v02.53 pack):</strong> items 1–4 <strong>delivered at source</strong> ✅. Item 5 (error overlay) <strong>still open</strong> — the <code>__bundler_err</code> element is still in the export.</p>
+<p><strong>Status:</strong> <strong>all 5 items closed</strong> ✅. Items 1–4 delivered in the 0607v02.53 pack; item 5 (error overlay) <strong>root-caused and resolved in v11.1</strong> (a typo'd mood-icon asset was the trigger; fixed, with a zero-console-errors audit — the <code>display:none</code> rule is kept as an intentional safety net).</p>
 </blockquote>
 <hr />
 <h2>1 · Web app — "Back to site" exit ✅ delivered (0607v02.53)</h2>
@@ -59,8 +59,7 @@ tbody tr:nth-child(even){background:var(--cream);}
 <li>wire the <strong>browser Back button</strong> to step within the hub rather than exit;</li>
 <li>moving card → card → section should never force a return to Start.</li>
 </ul>
-<h2>5 · Remove the dev error overlay ◑ STILL OPEN (0607v02.53)</h2>
-<p>Production exports <strong>still include</strong> the <code>__bundler_err</code> debug overlay (a red "[bundle] error" box) — it's present in the 0607v02.53 export despite being marked done. Please remove the overlay <strong>element itself</strong> from production builds.
-<em>We currently hide it via CSS on our side; removing it at source ends that workaround.</em></p>
+<h2>5 · Remove the dev error overlay ✅ resolved (v11.1)</h2>
+<p>Root-caused rather than masked: the overlay only fires on a real asset miss, and the one genuine miss (a typo'd mood-icon, <code>mischevious</code>→<code>mischievous</code>) was fixed at source. A full asset audit confirms zero console errors on both pages. The <code>#__bundler_err{display:none}</code> rule is retained deliberately as a production safety net — a debug overlay should never reach users even if an asset regresses.</p>
 <hr />
 <p><strong>Note on workflow:</strong> the marketing site and web app are the compiled bundle Design exports. Each of the above should be fixed in the <strong>source design</strong>, then re-exported as a normal pack — we re-apply our integration layer (<code>integrate.py</code>) on top. See <em>Change Log → Who fixes what (Design vs Integration)</em> for the ownership split.</p></div></body></html>

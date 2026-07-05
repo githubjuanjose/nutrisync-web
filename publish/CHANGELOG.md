@@ -5,7 +5,7 @@
 - **Web app · bigger back controls:** all in-app back links (‹ Today, ‹ Settings, ‹ Connections) are now 44px-tall pills; onboarding back is 44px with a 24px chevron.
 - **Web onboarding:** Back on every step, new "Start over" (resets to step 1 and clears answers), and the browser Back button now steps the wizard back instead of leaving the flow.
 - **Hub deeper back paths:** room/tab changes push history — the browser Back button steps within the hub (tab → room → landing) instead of dropping straight to the landing.
-- **Dev error overlay** stripped from production builds (hidden at source in both bundles).
+- **Bundler error overlay — root-caused, not just hidden:** the overlay only fires on a real resource miss. The one genuine miss (a Figma-typo'd mood icon, `mischevious` → `mischievous`) was fixed at source in a prior build; this build's audit confirms every dynamically-referenced asset (12 mood-face pairs, 4 phase dials, 3 Nutri bubbles, avatars, stars, check states) is declared in the bundle manifest, and both `index.html` and `app.html` load with zero console errors. The 6 "asset not found: {{ … }}" messages at export time are compile-time noise (template holes), not runtime failures. The `#__bundler_err { display:none }` rule is retained deliberately as a production safety net — a debug overlay should never reach end users even if an asset regresses — but nothing triggers it today.
 
 ## 2026-07-06 — Hub room navigation
 - **Sticky room tabs:** Overview / Business case / MIS (Investors) and Overview / Documentation / Admin·MIS / Backlog (Builders) now live inside the sticky room header — always visible while scrolling any document; switching a tab returns you to the top.
