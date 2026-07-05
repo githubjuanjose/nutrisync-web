@@ -522,6 +522,8 @@
         ]
       }
     },
+    "backToSite": "Back to site",
+    "obStartOver": "Start over",
     "mob": {
       "save": "Save",
       "notes": "Add notes",

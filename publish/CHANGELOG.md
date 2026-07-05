@@ -1,5 +1,12 @@
 # NutriSync — Release Notes / Change Log
 
+## 2026-07-06 — Navigation & polish (dev-brief fixes, at source)
+- **Web app · Back to site:** persistent controls — sidebar item (icon + label, collapses with the rail), "← Back to site" pill on the auth/onboarding brand rails, and a Back-to-site row next to Log out in Settings (covers mobile). Replaces the stopgap floating button.
+- **Web app · bigger back controls:** all in-app back links (‹ Today, ‹ Settings, ‹ Connections) are now 44px-tall pills; onboarding back is 44px with a 24px chevron.
+- **Web onboarding:** Back on every step, new "Start over" (resets to step 1 and clears answers), and the browser Back button now steps the wizard back instead of leaving the flow.
+- **Hub deeper back paths:** room/tab changes push history — the browser Back button steps within the hub (tab → room → landing) instead of dropping straight to the landing.
+- **Dev error overlay** stripped from production builds (hidden at source in both bundles).
+
 ## 2026-07-06 — Hub room navigation
 - **Sticky room tabs:** Overview / Business case / MIS (Investors) and Overview / Documentation / Admin·MIS / Backlog (Builders) now live inside the sticky room header — always visible while scrolling any document; switching a tab returns you to the top.
 - **Room switcher in header:** Investors · Builders · ← Back to site — jump Investor↔Builder directly without returning to the landing page.

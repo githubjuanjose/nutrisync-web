@@ -110,10 +110,11 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p><strong>Rule of thumb:</strong> ask Design only for <strong>design / structure / navigation</strong>. Do <strong>not</strong> ask Design to build the Translations page, Change Log, admin wiring, or consent — those live in the integration layer (and Design can't do the backend ones). Never upload our integrated build back to Design as a "source".</p>
 <h2>Open Design requests (for the next pack)</h2>
 <ol>
-<li>◑ <strong>Hub room navigation — round 2 (still gaps).</strong> The 07-06 pack added sticky room tabs + the Investor↔Builder switcher (good), but deeper navigation is still one-way: opening a card/section and using an in-page "back" (or the browser Back button) can still drop the user to the site landing instead of the previous view. Asks: (a) an in-page <strong>back within every card/section</strong> that returns to that room's previous view (Overview or the card grid), never the landing; (b) wire the <strong>browser Back button</strong> (History API) so it steps <em>within</em> the hub rather than exiting; (c) moving card→card→section never forces a return to Start.</li>
-<li><strong>Web onboarding — Back on every step + Start over.</strong> The wizard has step-back logic internally (<code>obStep → obIdx−1</code>) but: (a) the <strong>Back</strong> control is missing/inconsistent on some steps — show it on every step after the first; (b) there is <strong>no "Start over"</strong> — add one that resets to step 1 and clears entered answers; (c) map the <strong>browser Back button</strong> to the previous step instead of leaving the flow. (For reference, this is exactly what the <em>mobile</em> onboarding now does — Back on all steps, hardware-Back handled, and a "Start over" with confirm.)</li>
-<li><strong>Web app — native "Back to site" exit.</strong> From inside the web app (<code>app.html</code>) there's no route back to the marketing site. We've injected a stopgap floating "‹ Back to site" link via <code>integrate.py</code>; Design should add a proper exit in the app header/sidebar (e.g. on the NutriSync logo, or a menu item).</li>
-<li><strong>Strip the dev error overlay</strong> — remove the <code>__bundler_err</code> debug overlay from production exports (we currently hide it via <code>integrate.py</code>; removing it at source ends that re-application). <em>Still open in the 2026-07-06 pack.</em></li>
+<li>✅ <strong>Hub room navigation</strong> — <em>delivered in the 0607v02.53 pack</em>: room/tab changes now push History, so the browser Back button steps within the hub (tab → room → landing) instead of dropping to the landing.</li>
+<li>✅ <strong>Web onboarding — Back on every step + Start over</strong> — <em>delivered in 0607v02.53</em>: Back on every step, a new "Start over" (resets to step 1, clears answers), and the browser Back button steps the wizard back.</li>
+<li>✅ <strong>Web app — native "Back to site" exit</strong> — <em>delivered in 0607v02.53</em>: sidebar item + brand-rail pill + a Settings row (covers mobile). Our stopgap floating button now <strong>auto-disables</strong> when the native control is present (<code>integrate.py</code> checks for it).</li>
+<li>✅ <strong>Web app — bigger back controls</strong> — <em>delivered in 0607v02.53</em>: in-app back links are now 44px pills; onboarding back is 44px with a 24px chevron.</li>
+<li>◑ <strong>Strip the dev error overlay</strong> — Design's CHANGELOG says stripped, but <code>__bundler_err</code> is <strong>still present</strong> in the 0607v02.53 export (count 3). We continue to hide it via <code>integrate.py</code>. <em>Still open — please remove the overlay element itself from production builds.</em></li>
 </ol>
 <h2>Deploy channels</h2>
 <ul>
@@ -122,6 +123,13 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-06 · Web pack (0607v02.53) — Design brief fixes landed</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-web-0607_v10.55.zip</code> (from Design pack <code>Nutrisync marketing website revamp_0607v02.53.zip</code>)</li>
+<li><strong>Web:</strong> Design fixed 4 of the 5 brief items at source — native <strong>Back to site</strong> (sidebar + brand rail + Settings), <strong>44px back controls</strong> everywhere, <strong>web onboarding</strong> Back on every step + Start over + browser-Back, and <strong>hub deeper back paths</strong> (History-based browser Back within the hub). Re-integrated our layer; the stopgap floating exit button now <strong>auto-disables</strong> because the native control is present.</li>
+<li><strong>Still open:</strong> the <code>__bundler_err</code> dev error overlay is <em>still in the export</em> (we keep hiding it) — re-flagged as Open Design request #5.</li>
+<li><strong>Mobile:</strong> <strong>no change</strong> — verified: 2 new shared strings (<code>backToSite</code>, <code>obStartOver</code>) are web-app-only; mobile already has its own <code>mob.startOver</code>. Shared app-section diff otherwise 0.</li>
+</ul>
 <h3>2026-07-06 · Design Brief doc added</h3>
 <ul>
 <li><strong>Build:</strong> <code>nutrisync-web-0607_v10.54.zip</code></li>

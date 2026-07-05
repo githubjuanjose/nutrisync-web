@@ -145,7 +145,9 @@ if os.path.exists(idx):
 ap = os.path.join(PUB, "app.html")
 if os.path.exists(ap):
     ap_s = open(ap, encoding="utf-8").read()
-    if "ns-exit-site" not in ap_s:
+    # Only inject the stopgap if Design's export has no native "Back to site" control.
+    # (Design added native exits in the 0607v02.53 pack, so this now no-ops.)
+    if "ns-exit-site" not in ap_s and "Back to site" not in ap_s:
         EX = ('<script id="ns-exit-site">(function(){'
           'function add(){if(document.getElementById("ns-exit-btn"))return;'
           'var a=document.createElement("a");a.id="ns-exit-btn";a.href="index.html";'

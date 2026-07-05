@@ -841,6 +841,8 @@
         ]
       }
     },
+    "backToSite": "Volver al sitio",
+    "obStartOver": "Empezar de nuevo",
     "mob": {
       "save": "Guardar",
       "notes": "Añadir notas",
