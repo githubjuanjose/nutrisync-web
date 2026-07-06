@@ -1,5 +1,9 @@
 # NutriSync — Release Notes / Change Log
 
+## 2026-07-06 — Catalan marketing site live
+- **The marketing page (and the phone prototype inside it) is now fully translated in Catalan** — `i18n/ca.json` carries the `marketing` (283 keys) and `catalog` (335 entries) sections. Catalan is now complete end-to-end.
+- Marketing + web-app live: EN, ES, FR, DE, IT, NL, EL, CA · next: EU (Euskara), OC (Aranés), VAL (Valencià), GL (Galego), ZH, JA.
+
 ## 2026-07-06 — Catalan live in the web app
 - **Catalan (Català) app pack shipped** (`i18n/ca.json`) — CA now appears in the web-app selector; its marketing section follows next.
 - Web-app live: EN, ES, FR, DE, IT, NL, EL, CA · marketing live: EN, ES, FR, DE, IT, NL, EL.
