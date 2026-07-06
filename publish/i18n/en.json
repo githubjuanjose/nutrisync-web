@@ -181,7 +181,9 @@
       "alertConfirmDelete": "Delete your account and all data? This cannot be undone.",
       "alertDeleted": "Your data has been deleted. Sign-in record removal completes within 30 days.",
       "alertDeactivate": "During beta, deactivation is handled by support — email hello@nutrisynccollective.com.",
-      "alertDemoAccount": "Demo mode — account actions need the live backend."
+      "alertDemoAccount": "Demo mode — account actions need the live backend.",
+      "backToSite": "Back to site",
+      "obStartOver": "Start over"
     },
     "dows": [
       "SUN",
@@ -522,8 +524,6 @@
         ]
       }
     },
-    "backToSite": "Back to site",
-    "obStartOver": "Start over",
     "mob": {
       "save": "Save",
       "notes": "Add notes",

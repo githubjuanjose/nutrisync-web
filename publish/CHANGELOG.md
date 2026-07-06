@@ -1,5 +1,41 @@
 # NutriSync — Release Notes / Change Log
 
+## 2026-07-06 — German marketing site live
+- **The marketing page (and the phone prototype inside it) is now fully translated in German** — `i18n/de.json` carries the `marketing` (283 keys) and `catalog` (335 entries) sections, same contract as French. Data-only change; no rebuild.
+- Marketing live: EN, ES, FR, DE · web-app live: EN, ES, FR, DE, IT, NL, EL · next: IT/NL/EL marketing, then CA, EU, OC, VAL, GL, ZH, JA packs.
+
+## 2026-07-06 — French marketing site live
+- **The marketing page (and the phone prototype inside it) is now fully translated in French** — `i18n/fr.json` carries the `marketing` (283 keys) and `catalog` (335 entries) sections. Picking FR translates hero, sections, pricing, footer, gallery cards and prototype screens; Investor & Builder rooms stay EN/ES by design.
+- The last hardcoded ES/EN copy in the marketing engine (science section, Nutri intro, check-in gate, calendars, tip labels) now routes through the language packs — German, Italian, Dutch and Greek marketing sections can ship as data only.
+
+## 2026-07-06 — Marketing selector parity
+- Language pills and dropdown now show **ISO codes** (EN · ES · FR · DE · IT · NL · EL …) instead of full names, on both the marketing site and the web app.
+- The marketing page's language selector matches the web app: [EN] + [OS language / ES] pills and a ▾ dropdown listing every language the web app supports. Picking one applies it across site ↔ app (shared `ns_locale`).
+- Transitional: marketing-page copy falls back to English for languages whose marketing translation hasn't shipped yet — those sections are rolling out per language. Investor & Builder rooms remain English/Spanish by design.
+
+## 2026-07-06 — Selector: Español as standing second pill
+- When the device/OS language is English (or not yet supported), the second pill now defaults to **Español** instead of leaving a lone English pill with Spanish tucked in the dropdown. Two pills are always visible: [English] + [OS language, or Español].
+
+## 2026-07-06 — Languages: Dutch & Greek live · registry grows to 14
+- **Dutch (Nederlands) and Greek (Ελληνικά) are live in the web app** (`i18n/nl.json`, `i18n/el.json`).
+- **Chinese (中文, continental) and Japanese (日本語) added to the supported set** — 14 languages total; each appears in the selector once its pack ships.
+- Shipped: EN, ES, FR, DE, IT, NL, EL · pending: CA, EU, OC (Aranés), VAL, GL, ZH, JA — plus marketing-site sections per language (marketing page gates to EN/ES until then). Investor & Builder rooms stay EN/ES by design.
+
+## 2026-07-06 — Hotfix: marketing page load error · Italian live
+- **Fixed `index.html` failing to boot** ("Unexpected token ':'") — a malformed expression introduced with the 12-language registry in the marketing logic; both bundles now compile-checked before packaging.
+- **Italian (Italiano) is live in the web app** (`i18n/it.json`). Shipped: EN, ES, FR, DE, IT · pending: NL, EL, CA, EU, OC, VAL, GL.
+
+## 2026-07-06 — Languages: registry grows to 12 · German live
+- **Supported set is now 12 languages:** Aranés, Català, Deutsch, English, Español, Euskara, Français, Galego, Italiano, Nederlands, Valencià, Ελληνικά. Each appears in the selector automatically once its `i18n/<code>.json` pack ships.
+- **German (Deutsch) is live in the web app** — full professional du-form translation (`i18n/de.json`). Shipped packs so far: EN, ES (built-in), FR, DE. Pending: IT, NL, EL, CA, EU, OC, VAL, GL — plus the marketing-site sections per language.
+- Scope confirmed: language packs are shared across web and mobile apps and cover both prototypes; **Investor & Builder rooms stay English/Spanish only**.
+
+## 2026-07-06 — Languages: 7-language system + new selector
+- **Language selector (marketing nav, web-app login, Settings):** two pills always visible — **[English] + [OS language]** — with a **▾ dropdown** listing the remaining supported languages alphabetically (Deutsch, Español, Français, Italiano, Nederlands, Ελληνικά). Picking from the dropdown applies the language and takes the second pill's slot. Choice persists (`ns_locale`), shared web ↔ app; backend values stay canonical English.
+- **OS-language default:** first load with no saved choice follows the device language when supported.
+- **French (Français) is live in the web app** — full professional translation (`i18n/fr.json`), covering auth, onboarding, daily loop, phase content, wearables, privacy & security. German, Italian, Dutch and Greek packs — and the marketing-site translations — land next; each appears in the selector automatically once its pack ships.
+- i18n architecture: languages load as decoupled `i18n/<code>.json` packs (no rebuild needed); missing keys fall back to English.
+
 ## 2026-07-06 — Navigation & polish (dev-brief fixes, at source)
 - **Web app · Back to site:** persistent controls — sidebar item (icon + label, collapses with the rail), a floating "← Back to site" pill fixed at the **bottom-right corner** of the auth/onboarding screens (also on mobile), and a Back-to-site row next to Log out in Settings. Replaces the stopgap floating button.
 - **Web app · bigger back controls:** all in-app back links (‹ Today, ‹ Settings, ‹ Connections) are now 44px-tall pills; onboarding back is 44px with a 24px chevron.
