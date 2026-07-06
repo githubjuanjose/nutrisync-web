@@ -1,5 +1,14 @@
 # NutriSync — Release Notes / Change Log
 
+## 2026-07-06 — Valencian marketing packed · Aranese live in the web app
+- This pack (v11.25) is the first to ship the **Valencian marketing translation** (merged in the previous build) — Valencian is complete end-to-end.
+- **Aranese (Aranés, Occitan of Val d'Aran) app pack shipped** (`i18n/oc.json`) — OC now appears in the web-app selector; its marketing section follows next. **Native-speaker review strongly recommended before production.**
+- Web-app live: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL, VAL, OC · marketing live: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL, VAL · remaining: OC marketing, ZH, JA.
+
+## 2026-07-06 — Valencian marketing site live
+- **The marketing page (and the phone prototype inside it) is now fully translated in Valencian** — `i18n/val.json` carries the `marketing` (283 keys) and `catalog` (335 entries) sections. Valencian is now complete end-to-end.
+- Marketing + web-app live: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL, VAL · remaining: OC (Aranés), ZH, JA.
+
 ## 2026-07-06 — Valencian live in the web app
 - **Valencian (Valencià, AVL forms) app pack shipped** (`i18n/val.json`) — VAL now appears in the web-app selector; its marketing section follows next.
 - Web-app live: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL, VAL · marketing live: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL.
