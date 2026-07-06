@@ -190,7 +190,9 @@
       "alertConfirmDelete": "Kontua eta datu guztiak ezabatu? Ezin da desegin.",
       "alertDeleted": "Zure datuak ezabatu dira. Kredentzialen ezabaketa 30 egunetan osatzen da.",
       "alertDeactivate": "Beta bitartean, desaktibazioa laguntza-taldeak kudeatzen du — idatzi hello@nutrisynccollective.com helbidera.",
-      "alertDemoAccount": "Demo modua — kontu-ekintzek backend bizia behar dute."
+      "alertDemoAccount": "Demo modua — kontu-ekintzek backend bizia behar dute.",
+      "welTo": "Ongi etorri",
+      "welP": "Hemen zaude zure gorputzak asmakizunak baino gehiago merezi duelako. Sinkroniza ditzagun zure elikadura eta mugimendua zure erritmo naturalarekin."
     },
     "dows": [
       "IG",
@@ -894,7 +896,7 @@
     "ftPrivacy": "Pribatutasuna · DBEO",
     "ftTerms": "Baldintzak",
     "ftRights": "Zure datu-eskubideak",
-    "ftDisclaimer": "NutriSync-ek ongizate- eta hezkuntza-gidaritza eskaintzen du, ez aholku medikoa. © 2026 NutriSync Collective · Maitasunez egina Madrilen, Singapurren eta Tesalonikan.",
+    "ftDisclaimer": "NutriSync-ek ongizate- eta hezkuntza-gidaritza eskaintzen du, ez aholku medikoa. © 2026 NutriSync Collective · Maitasunez egina Madrilen.",
     "pxWelcomeTitle": "Ongi etorri NutriSync-era",
     "pxWelcomeP": "Hemen zaude zure gorputzak asmakizunak baino gehiago merezi duelako. Sinkroniza ditzagun zure elikadura eta mugimendua zure erritmo naturalarekin.",
     "pxTagline": "sinkronizatu zikloa, elikatu burua",

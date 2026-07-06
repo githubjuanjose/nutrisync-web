@@ -190,7 +190,9 @@
       "alertConfirmDelete": "Eliminar a túa conta e todos os datos? Non se pode desfacer.",
       "alertDeleted": "Os teus datos elimináronse. A retirada das credenciais complétase en 30 días.",
       "alertDeactivate": "Durante a beta, a desactivación xestiónase co soporte — escribe a hello@nutrisynccollective.com.",
-      "alertDemoAccount": "Modo demo — as accións da conta precisan o backend en produción."
+      "alertDemoAccount": "Modo demo — as accións da conta precisan o backend en produción.",
+      "welTo": "Benvida a",
+      "welP": "Estás aquí porque o teu corpo merece algo mellor cás adiviñas. Sincronicemos a túa nutrición e o teu movemento co teu ritmo natural."
     },
     "dows": [
       "DOM",
@@ -894,7 +896,7 @@
     "ftPrivacy": "Privacidade · RXPD",
     "ftTerms": "Condicións",
     "ftRights": "Os teus dereitos sobre os datos",
-    "ftDisclaimer": "NutriSync ofrece orientación de benestar e educativa, non consello médico. © 2026 NutriSync Collective · Feito con agarimo en Madrid, Singapur e Tesalónica.",
+    "ftDisclaimer": "NutriSync ofrece orientación de benestar e educativa, non consello médico. © 2026 NutriSync Collective · Feito con agarimo en Madrid.",
     "pxWelcomeTitle": "Benvida a NutriSync",
     "pxWelcomeP": "Estás aquí porque o teu corpo merece algo mellor cás adiviñas. Sincronicemos a túa nutrición e o teu movemento co teu ritmo natural.",
     "pxTagline": "sincroniza o ciclo, alimenta a mente",

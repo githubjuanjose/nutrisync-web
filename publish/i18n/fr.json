@@ -190,7 +190,9 @@
       "alertDeactivate": "Pendant la bêta, la désactivation passe par le support — écris à hello@nutrisynccollective.com.",
       "alertDemoAccount": "Mode démo — les actions de compte nécessitent le backend en production.",
       "backToSite": "Retour au site",
-      "obStartOver": "Recommencer"
+      "obStartOver": "Recommencer",
+      "welTo": "Bienvenue sur",
+      "welP": "Tu es ici parce que ton corps mérite mieux que des devinettes. Synchronisons ta nutrition et ton mouvement avec ton rythme naturel."
     },
     "dows": [
       "DIM",
@@ -894,7 +896,7 @@
     "ftPrivacy": "Confidentialité · RGPD",
     "ftTerms": "Conditions",
     "ftRights": "Tes droits sur tes données",
-    "ftDisclaimer": "NutriSync propose un accompagnement bien-être et éducatif, pas un avis médical. © 2026 NutriSync Collective · Fait avec soin à Madrid, Singapour et Thessalonique.",
+    "ftDisclaimer": "NutriSync propose un accompagnement bien-être et éducatif, pas un avis médical. © 2026 NutriSync Collective · Fait avec soin à Madrid.",
     "pxWelcomeTitle": "Bienvenue sur NutriSync",
     "pxWelcomeP": "Tu es ici parce que ton corps mérite mieux que des devinettes. Synchronisons ta nutrition et ton mouvement avec ton rythme naturel.",
     "pxTagline": "synchronise ton cycle, nourris ton esprit",

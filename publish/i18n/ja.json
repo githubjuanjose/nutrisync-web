@@ -190,9 +190,19 @@
       "alertConfirmDelete": "アカウントと全データを削除しますか？この操作は取り消せません。",
       "alertDeleted": "データを削除しました。認証情報の削除は30日以内に完了します。",
       "alertDeactivate": "ベータ期間中の停止はサポート経由で——hello@nutrisynccollective.com までご連絡ください。",
-      "alertDemoAccount": "デモモード——アカウント操作には本番バックエンドが必要です。"
+      "alertDemoAccount": "デモモード——アカウント操作には本番バックエンドが必要です。",
+      "welTo": "ようこそ",
+      "welP": "あなたがここにいるのは、体が推測よりも良いものに値するから。栄養と運動を、あなた本来のリズムにシンクさせましょう。"
     },
-    "dows": ["日", "月", "火", "水", "木", "金", "土"],
+    "dows": [
+      "日",
+      "月",
+      "火",
+      "水",
+      "木",
+      "金",
+      "土"
+    ],
     "phaseNames": {
       "menstrual": "月経期",
       "follicular": "卵胞期",
@@ -223,25 +233,67 @@
         "insight": "エネルギーは月間最低ライン——夜を守り、修復は睡眠に任せましょう。",
         "moveCopy": "リカバリーの日——リストラティブヨガかゆっくり散歩。",
         "chips": [
-          { "label": "15〜25分", "hot": true },
-          { "label": "やさしく", "hot": false }
+          {
+            "label": "15〜25分",
+            "hot": true
+          },
+          {
+            "label": "やさしく",
+            "hot": false
+          }
         ],
         "mvTitle": "リストラティブヨガ",
         "mvCopy": "今日の運動は温かいお風呂のように——がんばらずに巡りを良くします。",
         "mvParts": [
-          { "label": "呼吸 + キャットカウ", "mins": "5分" },
-          { "label": "陰ヨガ · 股関節と背中", "mins": "15分" },
-          { "label": "壁に脚上げ", "mins": "5分" }
+          {
+            "label": "呼吸 + キャットカウ",
+            "mins": "5分"
+          },
+          {
+            "label": "陰ヨガ · 股関節と背中",
+            "mins": "15分"
+          },
+          {
+            "label": "壁に脚上げ",
+            "mins": "5分"
+          }
         ],
         "week": [
-          { "label": "火 · リストラティブヨガ", "state": "今日", "today": true },
-          { "label": "木 · ゆっくり散歩", "state": "予定", "done": false },
-          { "label": "土 · やさしいストレッチ", "state": "予定", "done": false }
+          {
+            "label": "火 · リストラティブヨガ",
+            "state": "今日",
+            "today": true
+          },
+          {
+            "label": "木 · ゆっくり散歩",
+            "state": "予定",
+            "done": false
+          },
+          {
+            "label": "土 · やさしいストレッチ",
+            "state": "予定",
+            "done": false
+          }
         ],
         "meals": [
-          { "emoji": "🥣", "name": "温かいオートミール、デーツとカカオ", "slot": "朝食", "tag": "鉄分" },
-          { "emoji": "🍲", "name": "レンズ豆とほうれん草の煮込み", "slot": "昼食", "tag": "鉄分 + 葉酸" },
-          { "emoji": "🍛", "name": "サーモン、さつまいもと青菜", "slot": "夕食", "tag": "オメガ3" }
+          {
+            "emoji": "🥣",
+            "name": "温かいオートミール、デーツとカカオ",
+            "slot": "朝食",
+            "tag": "鉄分"
+          },
+          {
+            "emoji": "🍲",
+            "name": "レンズ豆とほうれん草の煮込み",
+            "slot": "昼食",
+            "tag": "鉄分 + 葉酸"
+          },
+          {
+            "emoji": "🍛",
+            "name": "サーモン、さつまいもと青菜",
+            "slot": "夕食",
+            "tag": "オメガ3"
+          }
         ],
         "mealWhy": [
           "鉄分が生理で失った分を補い始めます。",
@@ -258,25 +310,67 @@
         "insight": "エストロゲン上昇中——今週は学びが定着しやすく、筋肉もつきやすい。難しいことは今のうちに。",
         "moveCopy": "エネルギー構築中——早歩き + 軽い体幹。",
         "chips": [
-          { "label": "20〜30分", "hot": true },
-          { "label": "ほどほど", "hot": false }
+          {
+            "label": "20〜30分",
+            "hot": true
+          },
+          {
+            "label": "ほどほど",
+            "hot": false
+          }
         ],
         "mvTitle": "早歩き + 体幹",
         "mvCopy": "エストロゲンに合わせて少しずつ——今日は強度よりリズムを。",
         "mvParts": [
-          { "label": "ウォームアップ · 楽なペース", "mins": "5分" },
-          { "label": "早歩き · 一定ペース", "mins": "15分" },
-          { "label": "体幹サーキット · 2周", "mins": "8分" }
+          {
+            "label": "ウォームアップ · 楽なペース",
+            "mins": "5分"
+          },
+          {
+            "label": "早歩き · 一定ペース",
+            "mins": "15分"
+          },
+          {
+            "label": "体幹サーキット · 2周",
+            "mins": "8分"
+          }
         ],
         "week": [
-          { "label": "水 · 早歩き + 体幹", "state": "今日", "today": true },
-          { "label": "金 · 軽い筋トレ", "state": "予定", "done": false },
-          { "label": "日 · フローヨガ", "state": "予定", "done": false }
+          {
+            "label": "水 · 早歩き + 体幹",
+            "state": "今日",
+            "today": true
+          },
+          {
+            "label": "金 · 軽い筋トレ",
+            "state": "予定",
+            "done": false
+          },
+          {
+            "label": "日 · フローヨガ",
+            "state": "予定",
+            "done": false
+          }
         ],
         "meals": [
-          { "emoji": "🥣", "name": "オーバーナイトオーツ、亜麻仁と柑橘", "slot": "朝食", "tag": "ビタミンC" },
-          { "emoji": "🥙", "name": "発芽穀物のチキンサラダ", "slot": "昼食", "tag": "赤身タンパク質" },
-          { "emoji": "🍲", "name": "豆腐と青菜のヌードルボウル", "slot": "夕食", "tag": "鉄分" }
+          {
+            "emoji": "🥣",
+            "name": "オーバーナイトオーツ、亜麻仁と柑橘",
+            "slot": "朝食",
+            "tag": "ビタミンC"
+          },
+          {
+            "emoji": "🥙",
+            "name": "発芽穀物のチキンサラダ",
+            "slot": "昼食",
+            "tag": "赤身タンパク質"
+          },
+          {
+            "emoji": "🍲",
+            "name": "豆腐と青菜のヌードルボウル",
+            "slot": "夕食",
+            "tag": "鉄分"
+          }
         ],
         "mealWhy": [
           "ビタミンCがエネルギー上昇期の鉄吸収を高めます。",
@@ -293,25 +387,67 @@
         "insight": "エストロゲンは今日がピーク——自信も社交エネルギーも満タン。大事な話は今日に。",
         "moveCopy": "パワー全開の日——HIITか高重量。",
         "chips": [
-          { "label": "30〜40分", "hot": true },
-          { "label": "高強度", "hot": false }
+          {
+            "label": "30〜40分",
+            "hot": true
+          },
+          {
+            "label": "高強度",
+            "hot": false
+          }
         ],
         "mvTitle": "HIITインターバル",
         "mvCopy": "回復力は今がいちばん——今日は強度を攻めてOK。この上限はあなたが勝ち取ったもの。",
         "mvParts": [
-          { "label": "ウォームアップ · ダイナミック", "mins": "5分" },
-          { "label": "インターバル · 40秒全力 / 80秒回復 ×8", "mins": "24分" },
-          { "label": "クールダウン · ストレッチ", "mins": "8分" }
+          {
+            "label": "ウォームアップ · ダイナミック",
+            "mins": "5分"
+          },
+          {
+            "label": "インターバル · 40秒全力 / 80秒回復 ×8",
+            "mins": "24分"
+          },
+          {
+            "label": "クールダウン · ストレッチ",
+            "mins": "8分"
+          }
         ],
         "week": [
-          { "label": "月 · 筋トレ", "state": "完了", "done": true },
-          { "label": "水 · HIITインターバル", "state": "今日", "today": true },
-          { "label": "金 · モビリティと体幹", "state": "予定", "done": false }
+          {
+            "label": "月 · 筋トレ",
+            "state": "完了",
+            "done": true
+          },
+          {
+            "label": "水 · HIITインターバル",
+            "state": "今日",
+            "today": true
+          },
+          {
+            "label": "金 · モビリティと体幹",
+            "state": "予定",
+            "done": false
+          }
         ],
         "meals": [
-          { "emoji": "🥣", "name": "ギリシャヨーグルト、ベリーとかぼちゃの種", "slot": "朝食", "tag": "亜鉛" },
-          { "emoji": "🥗", "name": "サーモンとキヌアのボウル", "slot": "昼食", "tag": "オメガ3" },
-          { "emoji": "🍜", "name": "青菜たっぷり炒め", "slot": "夕食", "tag": "B6 + 食物繊維" }
+          {
+            "emoji": "🥣",
+            "name": "ギリシャヨーグルト、ベリーとかぼちゃの種",
+            "slot": "朝食",
+            "tag": "亜鉛"
+          },
+          {
+            "emoji": "🥗",
+            "name": "サーモンとキヌアのボウル",
+            "slot": "昼食",
+            "tag": "オメガ3"
+          },
+          {
+            "emoji": "🍜",
+            "name": "青菜たっぷり炒め",
+            "slot": "夕食",
+            "tag": "B6 + 食物繊維"
+          }
         ],
         "mealWhy": [
           "亜鉛が排卵前後のLHサージを支えます。",
@@ -328,25 +464,67 @@
         "insight": "プロゲステロン上昇でセロトニンは低下——マグネシウム豊富な夕食と早めの就寝が、明日の体感を変えます。",
         "moveCopy": "ほどほどに、着実に——筋トレか坂道ウォーク。",
         "chips": [
-          { "label": "25〜35分", "hot": true },
-          { "label": "ほどほど", "hot": false }
+          {
+            "label": "25〜35分",
+            "hot": true
+          },
+          {
+            "label": "ほどほど",
+            "hot": false
+          }
         ],
         "mvTitle": "安定した筋トレ",
         "mvCopy": "テンポはなめらかに、休憩はたっぷり——今週は記録より継続を。",
         "mvParts": [
-          { "label": "ウォームアップ · モビリティ", "mins": "6分" },
-          { "label": "全身筋トレ · 3周", "mins": "20分" },
-          { "label": "仕上げのウォーク · 楽に", "mins": "8分" }
+          {
+            "label": "ウォームアップ · モビリティ",
+            "mins": "6分"
+          },
+          {
+            "label": "全身筋トレ · 3周",
+            "mins": "20分"
+          },
+          {
+            "label": "仕上げのウォーク · 楽に",
+            "mins": "8分"
+          }
         ],
         "week": [
-          { "label": "月 · 筋トレ", "state": "完了", "done": true },
-          { "label": "木 · 坂道ウォーク", "state": "今日", "today": true },
-          { "label": "日 · モビリティ", "state": "予定", "done": false }
+          {
+            "label": "月 · 筋トレ",
+            "state": "完了",
+            "done": true
+          },
+          {
+            "label": "木 · 坂道ウォーク",
+            "state": "今日",
+            "today": true
+          },
+          {
+            "label": "日 · モビリティ",
+            "state": "予定",
+            "done": false
+          }
         ],
         "meals": [
-          { "emoji": "🍳", "name": "卵、アボカドと雑穀トースト", "slot": "朝食", "tag": "B6" },
-          { "emoji": "🥘", "name": "ターキーとさつまいものボウル", "slot": "昼食", "tag": "スローカーボ" },
-          { "emoji": "🍮", "name": "ダークチョコのチアプディング", "slot": "夕食", "tag": "マグネシウム" }
+          {
+            "emoji": "🍳",
+            "name": "卵、アボカドと雑穀トースト",
+            "slot": "朝食",
+            "tag": "B6"
+          },
+          {
+            "emoji": "🥘",
+            "name": "ターキーとさつまいものボウル",
+            "slot": "昼食",
+            "tag": "スローカーボ"
+          },
+          {
+            "emoji": "🍮",
+            "name": "ダークチョコのチアプディング",
+            "slot": "夕食",
+            "tag": "マグネシウム"
+          }
         ],
         "mealWhy": [
           "プロゲステロン上昇期のセロトニンをB6が支えます。",
@@ -356,35 +534,127 @@
       }
     },
     "ob": [
-      { "q": "NutriSync に来た理由は？", "help": "Nutri が最初に何を優先するかが決まります。", "type": "choice", "key": "obGoal", "opts": [
-        { "k": "Balance my energy", "label": "エネルギーのバランスを整えたい" },
-        { "k": "Ease PMS & symptoms", "label": "PMSと症状をやわらげたい" },
-        { "k": "Train smarter with my cycle", "label": "サイクルに合わせて賢くトレーニングしたい" },
-        { "k": "Understand my body better", "label": "自分の体をもっと知りたい" }
-      ] },
-      { "q": "サイクルは規則的ですか？", "help": "不規則はよくあること——どちらでも Nutri は適応します。", "type": "choice", "key": "obReg", "opts": [
-        { "k": "Like clockwork", "label": "時計のように正確" },
-        { "k": "Mostly regular", "label": "だいたい規則的" },
-        { "k": "Pretty unpredictable", "label": "かなり予測しづらい" },
-        { "k": "Not sure", "label": "わからない" }
-      ] },
-      { "q": "前回の生理はいつ始まりましたか？", "help": "フェーズ検出の基準点になります。", "type": "date", "key": "obDate" },
-      { "q": "サイクルの長さは？", "help": "生理初日から次の生理初日まで数えます。", "type": "choice", "key": "obLen", "opts": [
-        { "k": "21–24 days", "label": "21〜24日" },
-        { "k": "25–30 days", "label": "25〜30日" },
-        { "k": "31–35 days", "label": "31〜35日" },
-        { "k": "Not sure", "label": "わからない" }
-      ] },
-      { "q": "守りたい食事スタイルは？", "help": "食事提案は常にあなたのスタイルに合わせます。", "type": "choice", "key": "obDiet", "opts": [
-        { "k": "No restrictions", "label": "制限なし" },
-        { "k": "Vegetarian", "label": "ベジタリアン" },
-        { "k": "Vegan", "label": "ヴィーガン" },
-        { "k": "Gluten-free", "label": "グルテンフリー" },
-        { "k": "Dairy-free", "label": "乳製品フリー" }
-      ] },
-      { "q": "あなたの体について少しだけ", "help": "分量とエネルギー必要量の調整にだけ使います——評価には使いません。", "type": "numbers" },
-      { "q": "あなたの Nutri を選ぶ", "help": "全フェーズを一緒に歩む相棒。いつでも変更できます。", "type": "avatar" },
-      { "q": "あなたのデータ、あなたのルール", "help": "同意なしに共有されることはありません。", "type": "consent" }
+      {
+        "q": "NutriSync に来た理由は？",
+        "help": "Nutri が最初に何を優先するかが決まります。",
+        "type": "choice",
+        "key": "obGoal",
+        "opts": [
+          {
+            "k": "Balance my energy",
+            "label": "エネルギーのバランスを整えたい"
+          },
+          {
+            "k": "Ease PMS & symptoms",
+            "label": "PMSと症状をやわらげたい"
+          },
+          {
+            "k": "Train smarter with my cycle",
+            "label": "サイクルに合わせて賢くトレーニングしたい"
+          },
+          {
+            "k": "Understand my body better",
+            "label": "自分の体をもっと知りたい"
+          }
+        ]
+      },
+      {
+        "q": "サイクルは規則的ですか？",
+        "help": "不規則はよくあること——どちらでも Nutri は適応します。",
+        "type": "choice",
+        "key": "obReg",
+        "opts": [
+          {
+            "k": "Like clockwork",
+            "label": "時計のように正確"
+          },
+          {
+            "k": "Mostly regular",
+            "label": "だいたい規則的"
+          },
+          {
+            "k": "Pretty unpredictable",
+            "label": "かなり予測しづらい"
+          },
+          {
+            "k": "Not sure",
+            "label": "わからない"
+          }
+        ]
+      },
+      {
+        "q": "前回の生理はいつ始まりましたか？",
+        "help": "フェーズ検出の基準点になります。",
+        "type": "date",
+        "key": "obDate"
+      },
+      {
+        "q": "サイクルの長さは？",
+        "help": "生理初日から次の生理初日まで数えます。",
+        "type": "choice",
+        "key": "obLen",
+        "opts": [
+          {
+            "k": "21–24 days",
+            "label": "21〜24日"
+          },
+          {
+            "k": "25–30 days",
+            "label": "25〜30日"
+          },
+          {
+            "k": "31–35 days",
+            "label": "31〜35日"
+          },
+          {
+            "k": "Not sure",
+            "label": "わからない"
+          }
+        ]
+      },
+      {
+        "q": "守りたい食事スタイルは？",
+        "help": "食事提案は常にあなたのスタイルに合わせます。",
+        "type": "choice",
+        "key": "obDiet",
+        "opts": [
+          {
+            "k": "No restrictions",
+            "label": "制限なし"
+          },
+          {
+            "k": "Vegetarian",
+            "label": "ベジタリアン"
+          },
+          {
+            "k": "Vegan",
+            "label": "ヴィーガン"
+          },
+          {
+            "k": "Gluten-free",
+            "label": "グルテンフリー"
+          },
+          {
+            "k": "Dairy-free",
+            "label": "乳製品フリー"
+          }
+        ]
+      },
+      {
+        "q": "あなたの体について少しだけ",
+        "help": "分量とエネルギー必要量の調整にだけ使います——評価には使いません。",
+        "type": "numbers"
+      },
+      {
+        "q": "あなたの Nutri を選ぶ",
+        "help": "全フェーズを一緒に歩む相棒。いつでも変更できます。",
+        "type": "avatar"
+      },
+      {
+        "q": "あなたのデータ、あなたのルール",
+        "help": "同意なしに共有されることはありません。",
+        "type": "consent"
+      }
     ],
     "provSync": {
       "apple": "6:40 に同期",
@@ -411,28 +681,90 @@
       "歩数と日常活動"
     ],
     "readLists": {
-      "apple": ["睡眠時間とステージ", "心拍変動（HRV）", "安静時心拍", "ワークアウトと消費エネルギー"],
-      "oura": ["睡眠ステージと効率", "レディネスとHRV", "体温トレンド", "活動レベル"],
-      "garmin": ["ワークアウトと負荷", "歩数と運動強度分", "睡眠とストレススコア"],
-      "fitbit": ["アクティビティと歩数", "睡眠ステージ", "心拍"],
-      "whoop": ["負荷と回復", "睡眠負債", "HRVと安静時心拍"],
-      "gfit": ["歩数とハートポイント", "ワークアウト", "睡眠セッション"]
+      "apple": [
+        "睡眠時間とステージ",
+        "心拍変動（HRV）",
+        "安静時心拍",
+        "ワークアウトと消費エネルギー"
+      ],
+      "oura": [
+        "睡眠ステージと効率",
+        "レディネスとHRV",
+        "体温トレンド",
+        "活動レベル"
+      ],
+      "garmin": [
+        "ワークアウトと負荷",
+        "歩数と運動強度分",
+        "睡眠とストレススコア"
+      ],
+      "fitbit": [
+        "アクティビティと歩数",
+        "睡眠ステージ",
+        "心拍"
+      ],
+      "whoop": [
+        "負荷と回復",
+        "睡眠負債",
+        "HRVと安静時心拍"
+      ],
+      "gfit": [
+        "歩数とハートポイント",
+        "ワークアウト",
+        "睡眠セッション"
+      ]
     },
     "consentRows": [
-      { "label": "パーソナライズド・インサイト", "desc": "記録を分析し、あなた仕様のガイドを届けることを Nutri に許可します。" },
-      { "label": "匿名化リサーチ", "desc": "非識別化データで女性の健康研究に貢献します。" },
-      { "label": "プロダクトの最新情報", "desc": "NutriSync の新機能をときどきお知らせします。" }
+      {
+        "label": "パーソナライズド・インサイト",
+        "desc": "記録を分析し、あなた仕様のガイドを届けることを Nutri に許可します。"
+      },
+      {
+        "label": "匿名化リサーチ",
+        "desc": "非識別化データで女性の健康研究に貢献します。"
+      },
+      {
+        "label": "プロダクトの最新情報",
+        "desc": "NutriSync の新機能をときどきお知らせします。"
+      }
     ],
     "sessions": [
-      { "d": "MacBook Pro · Safari", "loc": "リスボン, PT · 現在", "me": true, "other": false },
-      { "d": "iPhone 15 · NutriSync アプリ", "loc": "リスボン, PT · 2時間前", "me": false, "other": true },
-      { "d": "iPad Air · Safari", "loc": "ポルト, PT · 3月8日", "me": false, "other": true }
+      {
+        "d": "MacBook Pro · Safari",
+        "loc": "リスボン, PT · 現在",
+        "me": true,
+        "other": false
+      },
+      {
+        "d": "iPhone 15 · NutriSync アプリ",
+        "loc": "リスボン, PT · 2時間前",
+        "me": false,
+        "other": true
+      },
+      {
+        "d": "iPad Air · Safari",
+        "loc": "ポルト, PT · 3月8日",
+        "me": false,
+        "other": true
+      }
     ],
-    "sessionLive": { "d": "このブラウザ", "loc": "たった今" },
+    "sessionLive": {
+      "d": "このブラウザ",
+      "loc": "たった今"
+    },
     "winsDemo": [
-      { "t": "12日連続で記録", "d": "自己最長——予測がどんどん正確に。" },
-      { "t": "排卵週のエネルギー +18%", "d": "直近2サイクルとの比較。" },
-      { "t": "フェーズに合った3回のワークアウト", "d": "今週のすべてのセッションが理想の窓に収まりました。" }
+      {
+        "t": "12日連続で記録",
+        "d": "自己最長——予測がどんどん正確に。"
+      },
+      {
+        "t": "排卵週のエネルギー +18%",
+        "d": "直近2サイクルとの比較。"
+      },
+      {
+        "t": "フェーズに合った3回のワークアウト",
+        "d": "今週のすべてのセッションが理想の窓に収まりました。"
+      }
     ],
     "calBannerA": "次の生理は",
     "calBannerB": "頃の見込み——Nutri は2日前から鉄分と癒やしの食事へシフトします。",
@@ -564,7 +896,7 @@
     "ftPrivacy": "プライバシー · GDPR",
     "ftTerms": "利用規約",
     "ftRights": "データに関する権利",
-    "ftDisclaimer": "NutriSync はウェルネスと教育のガイドであり、医療アドバイスではありません。© 2026 NutriSync Collective · マドリード、シンガポール、テッサロニキより心を込めて。",
+    "ftDisclaimer": "NutriSync はウェルネスと教育のガイドであり、医療アドバイスではありません。© 2026 NutriSync Collective · マドリードで心を込めて作られました。",
     "pxWelcomeTitle": "NutriSync へようこそ",
     "pxWelcomeP": "あなたがここにいるのは、体が推測よりも良いものに値するから。栄養と運動を、あなた本来のリズムにシンクさせましょう。",
     "pxTagline": "サイクルをシンクして、心と体に栄養を",
@@ -715,90 +1047,373 @@
     "dnProgress": "プログレス",
     "dnCalendar": "カレンダー",
     "dnSettings": "設定",
-    "pxIntros": ["こんにちは {name} さん——あなたのガイドです。", "わたしは Nutri。名前はいつでも変えられます。", "心地よく、安心できる場所にするのがわたしの役目。", "栄養を、あなたのリズムにシンクさせましょう。", "はじめる前に、簡単な質問をいくつか…"],
+    "pxIntros": [
+      "こんにちは {name} さん——あなたのガイドです。",
+      "わたしは Nutri。名前はいつでも変えられます。",
+      "心地よく、安心できる場所にするのがわたしの役目。",
+      "栄養を、あなたのリズムにシンクさせましょう。",
+      "はじめる前に、簡単な質問をいくつか…"
+    ],
     "pxAllsetFmt": "準備完了、{name}さん！",
     "pxGateMoodQ": "今日の気分はどう？",
     "pxGateEnergyQ": "今日のエネルギーはどう？",
     "pxGateNext": "次へ",
     "pxGateSync": "シンク",
-    "dows7": ["月", "火", "水", "木", "金", "土", "日"],
-    "calLetters": ["日", "月", "火", "水", "木", "金", "土"],
+    "dows7": [
+      "月",
+      "火",
+      "水",
+      "木",
+      "金",
+      "土",
+      "日"
+    ],
+    "calLetters": [
+      "日",
+      "月",
+      "火",
+      "水",
+      "木",
+      "金",
+      "土"
+    ],
     "calMonth": "2026年7月"
   },
   "catalog": {
-    "Getting started": "はじめの一歩", "4 screens": "4画面", "Meet Nutri & onboarding": "Nutri と出会う & オンボーディング", "8 screens": "8画面",
-    "Your daily loop": "毎日のループ", "6 screens": "6画面", "Insight, connections & privacy": "インサイト・連携・プライバシー", "7 screens": "7画面",
-    "sign in · sign up · onboarding": "ログイン · 登録 · オンボーディング", "check-in to evening log": "朝のチェックインから夜の記録まで",
-    "Insight & planning": "インサイトとプランニング", "trends and the month ahead": "トレンドとひと月先", "Settings & privacy": "設定とプライバシー", "account, devices, data": "アカウント・デバイス・データ",
-    "Welcome": "ようこそ", "Splash · logo + tagline": "スプラッシュ · ロゴ + タグライン", "Log in": "ログイン", "Welcome back — email & password": "おかえりなさい——メールとパスワード",
-    "Create account": "アカウント作成", "Name, email, password": "氏名・メール・パスワード", "You're all set": "準備完了", "Confirmation with Nutri": "Nutri と確認",
-    "Meet Nutri": "Nutri と出会う", "5-step guided intro": "5ステップのガイド付き紹介", "Cycle Info": "サイクル情報", "8 steps · length, symptoms, colour": "8ステップ · 長さ・症状・色",
-    "Health": "健康", "Conditions & contraception": "疾患と避妊", "Nutrition": "栄養", "Diet, weight, height, age": "食事・体重・身長・年齢",
-    "Pick your primary goal": "主な目標を選ぶ", "Choose your Nutri": "Nutri を選ぶ", "City": "都市", "Where are you based": "お住まいはどこですか",
-    "Consent": "同意", "Your data stays yours": "データは常にあなたのもの", "Mood & Energy": "気分とエネルギー", "Before-we-sync gate": "シンク前のチェックイン",
-    "Home · Cycle": "ホーム · サイクル", "Phase ring + CAS score": "フェーズリング + CASスコア", "Nutri Basics checklist + meals": "Nutri Basics チェックリスト + 食事",
-    "Movement checklist + tips": "ムーブメントのチェックリスト + ヒント", "Edit Period": "生理を編集", "Rich daily symptom log": "充実の毎日症状ログ",
-    "Edit Health": "健康情報を編集", "Conditions & NutriGoals": "疾患と NutriGoals", "Progress": "プログレス", "Cycle Alignment dashboard": "サイクル同調ダッシュボード",
-    "Calendar": "カレンダー", "Month grid with phase dots": "フェーズドット付き月間グリッド", "Settings": "設定", "Profile, security, privacy": "プロフィール・セキュリティ・プライバシー",
-    "Connected apps": "連携済みアプリ", "8 providers · per-metric sync": "8プロバイダ · 指標ごとの同期", "Connect a device": "デバイスを連携",
-    "Permission-priming flow": "許可導入フロー", "Data & Privacy": "データとプライバシー", "Consent, export, delete": "同意・エクスポート・削除",
-    "Security": "セキュリティ", "2FA, passkeys, sessions": "二要素認証・パスキー・セッション",
-    "Any email — opens the demo persona": "任意のメールでデモペルソナがひらきます", "Starts the first-run journey": "初回ジャーニーが始まります",
-    "8 steps · goal to consent": "8ステップ · 目標から同意まで", "Confirmation with your Nutri": "あなたの Nutri と確認",
-    "Daily check-in": "毎日のチェックイン", "Mood & energy, two taps": "気分とエネルギー、2タップで", "Today · Home": "今日 · ホーム",
-    "Phase hero + Cycle Alignment": "フェーズヒーロー + サイクル同調", "Phase-tuned meals + hydration": "フェーズ調整の食事 + 水分補給",
-    "Movement": "ムーブメント", "Session plan + week view": "セッションプラン + 週ビュー", "Flow, mood, symptoms, notes": "経血量・気分・症状・メモ",
-    "Allergies, conditions, NutriGoal": "アレルギー・疾患・NutriGoal", "CAS trend + weekly wins": "CASトレンド + 今週のハイライト",
-    "Phase-coloured month grid": "フェーズ色の月間グリッド", "Profile, Nutri, notifications": "プロフィール・Nutri・通知",
-    "6 providers, per-metric control": "6プロバイダ、指標ごとに管理", "2FA + active sessions": "二要素認証 + アクティブセッション",
-    "Nutrition alignment": "栄養の同調", "Biomarker signals": "バイオマーカーシグナル", "Fitness match": "フィットネス適合",
-    "Fitness alignment": "フィットネスの同調", "Phase confidence": "フェーズ確度", "Fitness & recovery": "フィットネスと回復", "Phase detection": "フェーズ検出", "Logging consistency": "記録の継続", "Logging streak": "連続記録",
-    "Biomarkers · Phase": "バイオマーカー · フェーズ", "Biomarkers · Fitness": "バイオマーカー · フィットネス", "Fitness · Recovery": "フィットネス · 回復",
-    "Steps · Sleep": "歩数 · 睡眠", "Biomarkers · Sleep": "バイオマーカー · 睡眠", "Skin-temp · Phase": "皮膚温 · フェーズ", "Auto-fills Movement": "ムーブメントを自動入力",
-    "Onboarding": "オンボーディング", "Onboarding · Cycle": "オンボーディング · サイクル", "Onboarding · Health": "オンボーディング · 健康", "Onboarding · Nutrition": "オンボーディング · 栄養", "Onboarding · NutriGoal": "オンボーディング · NutriGoal", "Onboarding · Avatar": "オンボーディング · アバター", "Onboarding · City": "オンボーディング · 都市", "Onboarding · Consent": "オンボーディング · 同意",
-    "Lentils": "レンズ豆", "Baby spinach": "ベビーほうれん草", "Salmon": "サーモン", "Pumpkin seeds": "かぼちゃの種", "Dark chocolate": "ダークチョコレート", "Bell peppers": "パプリカ", "Oats": "オーツ麦", "Ginger tea": "しょうが茶",
-    "Chicken breast": "鶏むね肉", "Kefir": "ケフィア", "Broccoli": "ブロッコリー", "Eggs": "卵", "Sauerkraut": "ザワークラウト", "Raspberries": "ラズベリー", "Citrus": "柑橘類",
-    "Berries": "ベリー類", "Olive oil": "オリーブオイル", "Green tea": "緑茶", "Chickpeas": "ひよこ豆", "Turmeric": "ターメリック",
-    "Sweet potato": "さつまいも", "Bananas": "バナナ", "Almonds": "アーモンド", "Greek yogurt": "ギリシャヨーグルト", "Fennel": "フェンネル", "Black beans": "黒豆",
-    "Iron": "鉄分", "Magnesium": "マグネシウム", "Vitamin C": "ビタミンC", "Complex carbs": "複合炭水化物", "Anti-inflam.": "抗炎症", "Protein": "タンパク質", "Fermented": "発酵", "Fiber": "食物繊維", "Microbiome": "マイクロバイオーム", "Whole grain": "全粒穀物", "Fresh": "フレッシュ", "Antioxidant": "抗酸化", "Cruciferous": "アブラナ科", "Calcium": "カルシウム", "Anti-bloat": "むくみ対策", "Serotonin": "セロトニン",
-    "Gentle yoga": "やさしいヨガ", "Walking": "ウォーキング", "Mobility": "モビリティ", "Rest day": "休息日", "Strength training": "筋力トレーニング", "Group class": "グループレッスン", "Running": "ランニング", "Heavy lifting": "高重量トレーニング", "Sport": "スポーツ", "Light strength": "軽い筋トレ",
-    "Restore": "リストア", "Light": "軽め", "Recovery": "回復", "Build": "ビルド", "Moderate": "ほどほど", "High": "高", "Peak": "ピーク",
-    "calm": "おだやか", "content": "満ちたりた", "worried": "心配", "anxious": "不安", "happy": "うれしい", "mad": "イライラ", "sad": "かなしい", "nervous": "緊張", "brainfog": "頭がぼんやり", "distracted": "気が散る", "mischievous": "おちゃめ", "clear": "クリア",
-    "Pain": "痛み", "Digestion": "消化", "Breasts": "胸", "Cravings": "食欲", "Skin": "肌", "Sleep Quality": "睡眠の質", "Energy": "エネルギー", "Body Changes": "体の変化", "Reproductive": "リプロダクティブヘルス",
-    "Uterine cramps": "子宮のけいれん", "Muscle soreness": "筋肉痛", "Lower back pain": "腰の痛み", "Pelvic aches": "骨盤まわりの不快感", "Headaches/Migraines": "頭痛・片頭痛", "Joint pain": "関節痛",
-    "Bloating": "むくみ・張り", "Nausea": "吐き気", "Constipation": "便秘", "Loose stool": "軟便", "Breast tenderness": "胸の張り・痛み", "Breast fullness": "胸の張り感",
-    "Mild": "軽い", "Random": "気まぐれ", "Carbs": "炭水化物", "Strong": "強い", "Sweet": "甘いもの", "Acne": "ニキビ", "Oily": "オイリー", "Sensitivity": "敏感", "Dry": "乾燥", "Rash/Irritation": "赤み・刺激",
-    "Very Poor": "とても悪い", "Okay": "ふつう", "Restless": "浅い", "Restful": "ぐっすり", "Deep": "深い", "Fatigue": "疲労感", "High energy": "元気いっぱい", "Low stamina": "スタミナ不足", "Water retention": "水分貯留", "Temperature sensitivity": "温度への敏感さ", "Increased discharge": "おりものの増加", "Mid-cycle spotting": "周期中間の少量出血",
-    "Are your cycles regular or irregular?": "サイクルは規則的？不規則？", "Regular": "規則的", "Irregular": "不規則", "Short cycles": "短め", "Long cycles": "長め", "Unsure": "わからない",
-    "Common symptoms during your period?": "生理中によくある症状は？", "Select all that apply.": "当てはまるものをすべて選択。", "Back pain": "背中の痛み", "Mood changes": "気分の変化", "Cramps": "生理痛", "Headache": "頭痛", "None": "なし",
-    "When did your last period start?": "前回の生理はいつ始まりましたか？", "The single most important detail — it powers your daily cycle day.": "いちばん大切な情報——毎日のサイクル日数の基準になります。",
-    "Notice energy changes across your cycle?": "サイクルの中でエネルギーの変化を感じますか？", "Yes": "はい", "Somewhat": "少し",
-    "Do you currently track your cycle?": "現在サイクルを記録していますか？", "Yes, with an app": "はい、アプリで", "Yes, manually": "はい、手動で",
-    "Confident identifying your cycle phase?": "今のフェーズを自信を持って判断できますか？", "Very confident": "自信がある", "Not confident": "あまり自信がない",
-    "What does your period usually look like?": "生理はいつもどんな様子ですか？", "Light pink": "薄いピンク", "Red": "赤", "Dark red": "暗い赤", "Brown": "茶色", "Spotting": "少量出血",
-    "Symptoms you experience regularly?": "よくある症状は？", "Insomnia": "不眠", "Mood swings": "気分の波", "Hair loss": "抜け毛", "Weight gain": "体重増加", "Night sweats": "寝汗",
-    "Any diagnosed conditions?": "診断された疾患はありますか？", "Fibroids": "子宮筋腫", "Ovarian cysts": "卵巣のう胞", "Infertility": "不妊", "Perimenopause": "更年期移行期",
-    "Do you use hormonal contraception?": "ホルモン避妊を使っていますか？", "Yes, currently": "はい、現在", "Not anymore": "以前は", "Never": "使ったことがない",
-    "Any specific nutrition plan?": "特定の食事プランはありますか？", "Balanced": "バランス型", "Vegetarian": "ベジタリアン", "Low carb": "低炭水化物", "Pescatarian": "ペスカタリアン", "Vegan": "ヴィーガン", "No diet": "特になし",
-    "Any food allergies?": "食物アレルギーはありますか？", "We filter every recommendation for these.": "すべての提案をこれに合わせて調整します。", "Dairy": "乳製品", "Nuts": "ナッツ", "Fish": "魚", "Wheat": "小麦", "Soy": "大豆",
-    "A few quick numbers": "簡単な数字をいくつか", "Used privately to tailor guidance — never shown as calories.": "ガイド調整のためだけに使用——カロリー表示はしません。",
-    "What's your primary goal?": "主な目標は？", "This shapes every tip and food you see.": "表示されるすべてのヒントと食材が変わります。",
-    "Reduce PMS symptoms": "PMS症状を軽くしたい", "Feel emotionally balanced": "気持ちのバランスを整えたい", "More stable energy": "エネルギーを安定させたい", "Fewer mood crashes": "気分の落ち込みを減らしたい",
-    "Your companion across the app.": "アプリ全体を通じたあなたの相棒。", "Where are you based?": "お住まいはどこですか？", "Helps us localise your tips.": "ヒントのローカライズに役立ちます。",
-    "Enter NutriSync": "NutriSync をひらく", "Next": "次へ",
-    "Sleep · HRV · Heart rate · Workouts": "睡眠 · HRV · 心拍 · ワークアウト", "Skin-temp · Sleep · Readiness": "皮膚温 · 睡眠 · レディネス", "Fitness · Recovery · HRV": "フィットネス · 回復 · HRV", "Steps · Sleep · Heart rate": "歩数 · 睡眠 · 心拍", "Auto-fills MovementLog": "MovementLog を自動入力",
-    "✓ Connected": "✓ 連携済み", "Connect": "連携",
-    "Sleep stages": "睡眠ステージ", "Heart-rate variability": "心拍変動", "Resting heart rate": "安静時心拍", "Skin temperature": "皮膚温", "Steps & activity": "歩数と活動", "Workouts": "ワークアウト",
-    "Cycle & symptom data": "サイクルと症状のデータ", "Powers phase detection and your CAS": "フェーズ検出と CAS の基盤に", "Goals & preferences": "目標と好み", "Tailors your daily guidance": "毎日のガイドを調整", "Anonymised research": "匿名化リサーチ", "Helps improve NutriSync for everyone": "みんなの NutriSync 改善に貢献",
-    "Madrid, ES · active now": "マドリード, ES · 現在", "Madrid, ES · 2h ago": "マドリード, ES · 2時間前", "Barcelona, ES · 3d ago": "バルセロナ, ES · 3日前",
-    "On point": "好調", "7 days": "7日間", "2 items missed": "2項目が未達", "Midday energy": "昼のエネルギー", "Watch caffeine": "カフェインに注意",
-    "Meals": "食事", "Cycle": "サイクル",
-    "Iron, omega-3 & warming foods to replenish.": "鉄分・オメガ3・温かい食事で補給を。", "Rest, walking and gentle mobility.": "休息、ウォーキング、やさしいモビリティ。",
-    "Lean protein & fermented foods as energy climbs.": "エネルギー上昇期は赤身タンパク質と発酵食品を。", "Build intensity — strength and cardio.": "強度を積み上げて——筋トレと有酸素。",
-    "Antioxidants & anti-inflammatory foods at the peak.": "ピーク期は抗酸化・抗炎症の食材を。", "Peak output — HIIT and personal bests.": "最大出力——HIITと自己ベスト。",
-    "Magnesium & complex carbs to steady mood.": "マグネシウムと複合炭水化物で気分を安定。", "Ease off — steady movement, then rest.": "ペースダウン——着実に動いて、そして休む。",
-    "TODAY'S TIP": "今日のヒント", "BODY INSIGHT": "ボディインサイト",
-    "menstrual": "月経期", "follicular": "卵胞期", "ovulatory": "排卵期", "luteal": "黄体期",
-    "Menstrual": "月経期", "Follicular": "卵胞期", "Ovulatory": "排卵期", "Luteal": "黄体期"
+    "Getting started": "はじめの一歩",
+    "4 screens": "4画面",
+    "Meet Nutri & onboarding": "Nutri と出会う & オンボーディング",
+    "8 screens": "8画面",
+    "Your daily loop": "毎日のループ",
+    "6 screens": "6画面",
+    "Insight, connections & privacy": "インサイト・連携・プライバシー",
+    "7 screens": "7画面",
+    "sign in · sign up · onboarding": "ログイン · 登録 · オンボーディング",
+    "check-in to evening log": "朝のチェックインから夜の記録まで",
+    "Insight & planning": "インサイトとプランニング",
+    "trends and the month ahead": "トレンドとひと月先",
+    "Settings & privacy": "設定とプライバシー",
+    "account, devices, data": "アカウント・デバイス・データ",
+    "Welcome": "ようこそ",
+    "Splash · logo + tagline": "スプラッシュ · ロゴ + タグライン",
+    "Log in": "ログイン",
+    "Welcome back — email & password": "おかえりなさい——メールとパスワード",
+    "Create account": "アカウント作成",
+    "Name, email, password": "氏名・メール・パスワード",
+    "You're all set": "準備完了",
+    "Confirmation with Nutri": "Nutri と確認",
+    "Meet Nutri": "Nutri と出会う",
+    "5-step guided intro": "5ステップのガイド付き紹介",
+    "Cycle Info": "サイクル情報",
+    "8 steps · length, symptoms, colour": "8ステップ · 長さ・症状・色",
+    "Health": "健康",
+    "Conditions & contraception": "疾患と避妊",
+    "Nutrition": "栄養",
+    "Diet, weight, height, age": "食事・体重・身長・年齢",
+    "Pick your primary goal": "主な目標を選ぶ",
+    "Choose your Nutri": "Nutri を選ぶ",
+    "City": "都市",
+    "Where are you based": "お住まいはどこですか",
+    "Consent": "同意",
+    "Your data stays yours": "データは常にあなたのもの",
+    "Mood & Energy": "気分とエネルギー",
+    "Before-we-sync gate": "シンク前のチェックイン",
+    "Home · Cycle": "ホーム · サイクル",
+    "Phase ring + CAS score": "フェーズリング + CASスコア",
+    "Nutri Basics checklist + meals": "Nutri Basics チェックリスト + 食事",
+    "Movement checklist + tips": "ムーブメントのチェックリスト + ヒント",
+    "Edit Period": "生理を編集",
+    "Rich daily symptom log": "充実の毎日症状ログ",
+    "Edit Health": "健康情報を編集",
+    "Conditions & NutriGoals": "疾患と NutriGoals",
+    "Progress": "プログレス",
+    "Cycle Alignment dashboard": "サイクル同調ダッシュボード",
+    "Calendar": "カレンダー",
+    "Month grid with phase dots": "フェーズドット付き月間グリッド",
+    "Settings": "設定",
+    "Profile, security, privacy": "プロフィール・セキュリティ・プライバシー",
+    "Connected apps": "連携済みアプリ",
+    "8 providers · per-metric sync": "8プロバイダ · 指標ごとの同期",
+    "Connect a device": "デバイスを連携",
+    "Permission-priming flow": "許可導入フロー",
+    "Data & Privacy": "データとプライバシー",
+    "Consent, export, delete": "同意・エクスポート・削除",
+    "Security": "セキュリティ",
+    "2FA, passkeys, sessions": "二要素認証・パスキー・セッション",
+    "Any email — opens the demo persona": "任意のメールでデモペルソナがひらきます",
+    "Starts the first-run journey": "初回ジャーニーが始まります",
+    "8 steps · goal to consent": "8ステップ · 目標から同意まで",
+    "Confirmation with your Nutri": "あなたの Nutri と確認",
+    "Daily check-in": "毎日のチェックイン",
+    "Mood & energy, two taps": "気分とエネルギー、2タップで",
+    "Today · Home": "今日 · ホーム",
+    "Phase hero + Cycle Alignment": "フェーズヒーロー + サイクル同調",
+    "Phase-tuned meals + hydration": "フェーズ調整の食事 + 水分補給",
+    "Movement": "ムーブメント",
+    "Session plan + week view": "セッションプラン + 週ビュー",
+    "Flow, mood, symptoms, notes": "経血量・気分・症状・メモ",
+    "Allergies, conditions, NutriGoal": "アレルギー・疾患・NutriGoal",
+    "CAS trend + weekly wins": "CASトレンド + 今週のハイライト",
+    "Phase-coloured month grid": "フェーズ色の月間グリッド",
+    "Profile, Nutri, notifications": "プロフィール・Nutri・通知",
+    "6 providers, per-metric control": "6プロバイダ、指標ごとに管理",
+    "2FA + active sessions": "二要素認証 + アクティブセッション",
+    "Nutrition alignment": "栄養の同調",
+    "Biomarker signals": "バイオマーカーシグナル",
+    "Fitness match": "フィットネス適合",
+    "Fitness alignment": "フィットネスの同調",
+    "Phase confidence": "フェーズ確度",
+    "Fitness & recovery": "フィットネスと回復",
+    "Phase detection": "フェーズ検出",
+    "Logging consistency": "記録の継続",
+    "Logging streak": "連続記録",
+    "Biomarkers · Phase": "バイオマーカー · フェーズ",
+    "Biomarkers · Fitness": "バイオマーカー · フィットネス",
+    "Fitness · Recovery": "フィットネス · 回復",
+    "Steps · Sleep": "歩数 · 睡眠",
+    "Biomarkers · Sleep": "バイオマーカー · 睡眠",
+    "Skin-temp · Phase": "皮膚温 · フェーズ",
+    "Auto-fills Movement": "ムーブメントを自動入力",
+    "Onboarding": "オンボーディング",
+    "Onboarding · Cycle": "オンボーディング · サイクル",
+    "Onboarding · Health": "オンボーディング · 健康",
+    "Onboarding · Nutrition": "オンボーディング · 栄養",
+    "Onboarding · NutriGoal": "オンボーディング · NutriGoal",
+    "Onboarding · Avatar": "オンボーディング · アバター",
+    "Onboarding · City": "オンボーディング · 都市",
+    "Onboarding · Consent": "オンボーディング · 同意",
+    "Lentils": "レンズ豆",
+    "Baby spinach": "ベビーほうれん草",
+    "Salmon": "サーモン",
+    "Pumpkin seeds": "かぼちゃの種",
+    "Dark chocolate": "ダークチョコレート",
+    "Bell peppers": "パプリカ",
+    "Oats": "オーツ麦",
+    "Ginger tea": "しょうが茶",
+    "Chicken breast": "鶏むね肉",
+    "Kefir": "ケフィア",
+    "Broccoli": "ブロッコリー",
+    "Eggs": "卵",
+    "Sauerkraut": "ザワークラウト",
+    "Raspberries": "ラズベリー",
+    "Citrus": "柑橘類",
+    "Berries": "ベリー類",
+    "Olive oil": "オリーブオイル",
+    "Green tea": "緑茶",
+    "Chickpeas": "ひよこ豆",
+    "Turmeric": "ターメリック",
+    "Sweet potato": "さつまいも",
+    "Bananas": "バナナ",
+    "Almonds": "アーモンド",
+    "Greek yogurt": "ギリシャヨーグルト",
+    "Fennel": "フェンネル",
+    "Black beans": "黒豆",
+    "Iron": "鉄分",
+    "Magnesium": "マグネシウム",
+    "Vitamin C": "ビタミンC",
+    "Complex carbs": "複合炭水化物",
+    "Anti-inflam.": "抗炎症",
+    "Protein": "タンパク質",
+    "Fermented": "発酵",
+    "Fiber": "食物繊維",
+    "Microbiome": "マイクロバイオーム",
+    "Whole grain": "全粒穀物",
+    "Fresh": "フレッシュ",
+    "Antioxidant": "抗酸化",
+    "Cruciferous": "アブラナ科",
+    "Calcium": "カルシウム",
+    "Anti-bloat": "むくみ対策",
+    "Serotonin": "セロトニン",
+    "Gentle yoga": "やさしいヨガ",
+    "Walking": "ウォーキング",
+    "Mobility": "モビリティ",
+    "Rest day": "休息日",
+    "Strength training": "筋力トレーニング",
+    "Group class": "グループレッスン",
+    "Running": "ランニング",
+    "Heavy lifting": "高重量トレーニング",
+    "Sport": "スポーツ",
+    "Light strength": "軽い筋トレ",
+    "Restore": "リストア",
+    "Light": "軽め",
+    "Recovery": "回復",
+    "Build": "ビルド",
+    "Moderate": "ほどほど",
+    "High": "高",
+    "Peak": "ピーク",
+    "calm": "おだやか",
+    "content": "満ちたりた",
+    "worried": "心配",
+    "anxious": "不安",
+    "happy": "うれしい",
+    "mad": "イライラ",
+    "sad": "かなしい",
+    "nervous": "緊張",
+    "brainfog": "頭がぼんやり",
+    "distracted": "気が散る",
+    "mischievous": "おちゃめ",
+    "clear": "クリア",
+    "Pain": "痛み",
+    "Digestion": "消化",
+    "Breasts": "胸",
+    "Cravings": "食欲",
+    "Skin": "肌",
+    "Sleep Quality": "睡眠の質",
+    "Energy": "エネルギー",
+    "Body Changes": "体の変化",
+    "Reproductive": "リプロダクティブヘルス",
+    "Uterine cramps": "子宮のけいれん",
+    "Muscle soreness": "筋肉痛",
+    "Lower back pain": "腰の痛み",
+    "Pelvic aches": "骨盤まわりの不快感",
+    "Headaches/Migraines": "頭痛・片頭痛",
+    "Joint pain": "関節痛",
+    "Bloating": "むくみ・張り",
+    "Nausea": "吐き気",
+    "Constipation": "便秘",
+    "Loose stool": "軟便",
+    "Breast tenderness": "胸の張り・痛み",
+    "Breast fullness": "胸の張り感",
+    "Mild": "軽い",
+    "Random": "気まぐれ",
+    "Carbs": "炭水化物",
+    "Strong": "強い",
+    "Sweet": "甘いもの",
+    "Acne": "ニキビ",
+    "Oily": "オイリー",
+    "Sensitivity": "敏感",
+    "Dry": "乾燥",
+    "Rash/Irritation": "赤み・刺激",
+    "Very Poor": "とても悪い",
+    "Okay": "ふつう",
+    "Restless": "浅い",
+    "Restful": "ぐっすり",
+    "Deep": "深い",
+    "Fatigue": "疲労感",
+    "High energy": "元気いっぱい",
+    "Low stamina": "スタミナ不足",
+    "Water retention": "水分貯留",
+    "Temperature sensitivity": "温度への敏感さ",
+    "Increased discharge": "おりものの増加",
+    "Mid-cycle spotting": "周期中間の少量出血",
+    "Are your cycles regular or irregular?": "サイクルは規則的？不規則？",
+    "Regular": "規則的",
+    "Irregular": "不規則",
+    "Short cycles": "短め",
+    "Long cycles": "長め",
+    "Unsure": "わからない",
+    "Common symptoms during your period?": "生理中によくある症状は？",
+    "Select all that apply.": "当てはまるものをすべて選択。",
+    "Back pain": "背中の痛み",
+    "Mood changes": "気分の変化",
+    "Cramps": "生理痛",
+    "Headache": "頭痛",
+    "None": "なし",
+    "When did your last period start?": "前回の生理はいつ始まりましたか？",
+    "The single most important detail — it powers your daily cycle day.": "いちばん大切な情報——毎日のサイクル日数の基準になります。",
+    "Notice energy changes across your cycle?": "サイクルの中でエネルギーの変化を感じますか？",
+    "Yes": "はい",
+    "Somewhat": "少し",
+    "Do you currently track your cycle?": "現在サイクルを記録していますか？",
+    "Yes, with an app": "はい、アプリで",
+    "Yes, manually": "はい、手動で",
+    "Confident identifying your cycle phase?": "今のフェーズを自信を持って判断できますか？",
+    "Very confident": "自信がある",
+    "Not confident": "あまり自信がない",
+    "What does your period usually look like?": "生理はいつもどんな様子ですか？",
+    "Light pink": "薄いピンク",
+    "Red": "赤",
+    "Dark red": "暗い赤",
+    "Brown": "茶色",
+    "Spotting": "少量出血",
+    "Symptoms you experience regularly?": "よくある症状は？",
+    "Insomnia": "不眠",
+    "Mood swings": "気分の波",
+    "Hair loss": "抜け毛",
+    "Weight gain": "体重増加",
+    "Night sweats": "寝汗",
+    "Any diagnosed conditions?": "診断された疾患はありますか？",
+    "Fibroids": "子宮筋腫",
+    "Ovarian cysts": "卵巣のう胞",
+    "Infertility": "不妊",
+    "Perimenopause": "更年期移行期",
+    "Do you use hormonal contraception?": "ホルモン避妊を使っていますか？",
+    "Yes, currently": "はい、現在",
+    "Not anymore": "以前は",
+    "Never": "使ったことがない",
+    "Any specific nutrition plan?": "特定の食事プランはありますか？",
+    "Balanced": "バランス型",
+    "Vegetarian": "ベジタリアン",
+    "Low carb": "低炭水化物",
+    "Pescatarian": "ペスカタリアン",
+    "Vegan": "ヴィーガン",
+    "No diet": "特になし",
+    "Any food allergies?": "食物アレルギーはありますか？",
+    "We filter every recommendation for these.": "すべての提案をこれに合わせて調整します。",
+    "Dairy": "乳製品",
+    "Nuts": "ナッツ",
+    "Fish": "魚",
+    "Wheat": "小麦",
+    "Soy": "大豆",
+    "A few quick numbers": "簡単な数字をいくつか",
+    "Used privately to tailor guidance — never shown as calories.": "ガイド調整のためだけに使用——カロリー表示はしません。",
+    "What's your primary goal?": "主な目標は？",
+    "This shapes every tip and food you see.": "表示されるすべてのヒントと食材が変わります。",
+    "Reduce PMS symptoms": "PMS症状を軽くしたい",
+    "Feel emotionally balanced": "気持ちのバランスを整えたい",
+    "More stable energy": "エネルギーを安定させたい",
+    "Fewer mood crashes": "気分の落ち込みを減らしたい",
+    "Your companion across the app.": "アプリ全体を通じたあなたの相棒。",
+    "Where are you based?": "お住まいはどこですか？",
+    "Helps us localise your tips.": "ヒントのローカライズに役立ちます。",
+    "Enter NutriSync": "NutriSync をひらく",
+    "Next": "次へ",
+    "Sleep · HRV · Heart rate · Workouts": "睡眠 · HRV · 心拍 · ワークアウト",
+    "Skin-temp · Sleep · Readiness": "皮膚温 · 睡眠 · レディネス",
+    "Fitness · Recovery · HRV": "フィットネス · 回復 · HRV",
+    "Steps · Sleep · Heart rate": "歩数 · 睡眠 · 心拍",
+    "Auto-fills MovementLog": "MovementLog を自動入力",
+    "✓ Connected": "✓ 連携済み",
+    "Connect": "連携",
+    "Sleep stages": "睡眠ステージ",
+    "Heart-rate variability": "心拍変動",
+    "Resting heart rate": "安静時心拍",
+    "Skin temperature": "皮膚温",
+    "Steps & activity": "歩数と活動",
+    "Workouts": "ワークアウト",
+    "Cycle & symptom data": "サイクルと症状のデータ",
+    "Powers phase detection and your CAS": "フェーズ検出と CAS の基盤に",
+    "Goals & preferences": "目標と好み",
+    "Tailors your daily guidance": "毎日のガイドを調整",
+    "Anonymised research": "匿名化リサーチ",
+    "Helps improve NutriSync for everyone": "みんなの NutriSync 改善に貢献",
+    "Madrid, ES · active now": "マドリード, ES · 現在",
+    "Madrid, ES · 2h ago": "マドリード, ES · 2時間前",
+    "Barcelona, ES · 3d ago": "バルセロナ, ES · 3日前",
+    "On point": "好調",
+    "7 days": "7日間",
+    "2 items missed": "2項目が未達",
+    "Midday energy": "昼のエネルギー",
+    "Watch caffeine": "カフェインに注意",
+    "Meals": "食事",
+    "Cycle": "サイクル",
+    "Iron, omega-3 & warming foods to replenish.": "鉄分・オメガ3・温かい食事で補給を。",
+    "Rest, walking and gentle mobility.": "休息、ウォーキング、やさしいモビリティ。",
+    "Lean protein & fermented foods as energy climbs.": "エネルギー上昇期は赤身タンパク質と発酵食品を。",
+    "Build intensity — strength and cardio.": "強度を積み上げて——筋トレと有酸素。",
+    "Antioxidants & anti-inflammatory foods at the peak.": "ピーク期は抗酸化・抗炎症の食材を。",
+    "Peak output — HIIT and personal bests.": "最大出力——HIITと自己ベスト。",
+    "Magnesium & complex carbs to steady mood.": "マグネシウムと複合炭水化物で気分を安定。",
+    "Ease off — steady movement, then rest.": "ペースダウン——着実に動いて、そして休む。",
+    "TODAY'S TIP": "今日のヒント",
+    "BODY INSIGHT": "ボディインサイト",
+    "menstrual": "月経期",
+    "follicular": "卵胞期",
+    "ovulatory": "排卵期",
+    "luteal": "黄体期",
+    "Menstrual": "月経期",
+    "Follicular": "卵胞期",
+    "Ovulatory": "排卵期",
+    "Luteal": "黄体期"
   }
 }

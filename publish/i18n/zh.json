@@ -190,9 +190,19 @@
       "alertConfirmDelete": "删除账号及全部数据？此操作无法撤销。",
       "alertDeleted": "你的数据已删除。登录凭证将在 30 天内完全移除。",
       "alertDeactivate": "测试期间，停用账号请联系支持——hello@nutrisynccollective.com。",
-      "alertDemoAccount": "演示模式——账号操作需要正式后端。"
+      "alertDemoAccount": "演示模式——账号操作需要正式后端。",
+      "welTo": "欢迎来到",
+      "welP": "你来到这里，是因为你的身体值得比猜测更好的答案。让我们把营养与运动同步到你的自然节律。"
     },
-    "dows": ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
+    "dows": [
+      "周日",
+      "周一",
+      "周二",
+      "周三",
+      "周四",
+      "周五",
+      "周六"
+    ],
     "phaseNames": {
       "menstrual": "月经期",
       "follicular": "卵泡期",
@@ -223,25 +233,67 @@
         "insight": "精力处于每月最低点——保护好你的夜晚，让睡眠完成修复。",
         "moveCopy": "恢复日——修复瑜伽或慢走。",
         "chips": [
-          { "label": "15–25 分钟", "hot": true },
-          { "label": "轻柔", "hot": false }
+          {
+            "label": "15–25 分钟",
+            "hot": true
+          },
+          {
+            "label": "轻柔",
+            "hot": false
+          }
         ],
         "mvTitle": "修复瑜伽",
         "mvCopy": "今天的运动应该像泡个热水澡——促进循环，毫不费力。",
         "mvParts": [
-          { "label": "呼吸 + 猫牛式", "mins": "5 分钟" },
-          { "label": "阴瑜伽序列 · 髋与背", "mins": "15 分钟" },
-          { "label": "靠墙抬腿", "mins": "5 分钟" }
+          {
+            "label": "呼吸 + 猫牛式",
+            "mins": "5 分钟"
+          },
+          {
+            "label": "阴瑜伽序列 · 髋与背",
+            "mins": "15 分钟"
+          },
+          {
+            "label": "靠墙抬腿",
+            "mins": "5 分钟"
+          }
         ],
         "week": [
-          { "label": "周二 · 修复瑜伽", "state": "今天", "today": true },
-          { "label": "周四 · 慢走", "state": "已计划", "done": false },
-          { "label": "周六 · 轻柔拉伸", "state": "已计划", "done": false }
+          {
+            "label": "周二 · 修复瑜伽",
+            "state": "今天",
+            "today": true
+          },
+          {
+            "label": "周四 · 慢走",
+            "state": "已计划",
+            "done": false
+          },
+          {
+            "label": "周六 · 轻柔拉伸",
+            "state": "已计划",
+            "done": false
+          }
         ],
         "meals": [
-          { "emoji": "🥣", "name": "热燕麦粥配椰枣与可可", "slot": "早餐", "tag": "铁" },
-          { "emoji": "🍲", "name": "扁豆菠菜炖菜", "slot": "午餐", "tag": "铁 + 叶酸" },
-          { "emoji": "🍛", "name": "三文鱼、红薯与绿叶菜", "slot": "晚餐", "tag": "OMEGA-3" }
+          {
+            "emoji": "🥣",
+            "name": "热燕麦粥配椰枣与可可",
+            "slot": "早餐",
+            "tag": "铁"
+          },
+          {
+            "emoji": "🍲",
+            "name": "扁豆菠菜炖菜",
+            "slot": "午餐",
+            "tag": "铁 + 叶酸"
+          },
+          {
+            "emoji": "🍛",
+            "name": "三文鱼、红薯与绿叶菜",
+            "slot": "晚餐",
+            "tag": "OMEGA-3"
+          }
         ],
         "mealWhy": [
           "铁开始补回经期流失的部分。",
@@ -258,25 +310,67 @@
         "insight": "雌激素上升——这周学得更快、练得更有效。把难事安排在现在。",
         "moveCopy": "精力构建中——快走 + 轻核心。",
         "chips": [
-          { "label": "20–30 分钟", "hot": true },
-          { "label": "适中", "hot": false }
+          {
+            "label": "20–30 分钟",
+            "hot": true
+          },
+          {
+            "label": "适中",
+            "hot": false
+          }
         ],
         "mvTitle": "快走 + 核心",
         "mvCopy": "随雌激素逐步加量——今天节奏优先于强度。",
         "mvParts": [
-          { "label": "热身 · 轻松配速", "mins": "5 分钟" },
-          { "label": "快走 · 匀速", "mins": "15 分钟" },
-          { "label": "核心循环 · 2 组", "mins": "8 分钟" }
+          {
+            "label": "热身 · 轻松配速",
+            "mins": "5 分钟"
+          },
+          {
+            "label": "快走 · 匀速",
+            "mins": "15 分钟"
+          },
+          {
+            "label": "核心循环 · 2 组",
+            "mins": "8 分钟"
+          }
         ],
         "week": [
-          { "label": "周三 · 快走 + 核心", "state": "今天", "today": true },
-          { "label": "周五 · 轻力量", "state": "已计划", "done": false },
-          { "label": "周日 · 流瑜伽", "state": "已计划", "done": false }
+          {
+            "label": "周三 · 快走 + 核心",
+            "state": "今天",
+            "today": true
+          },
+          {
+            "label": "周五 · 轻力量",
+            "state": "已计划",
+            "done": false
+          },
+          {
+            "label": "周日 · 流瑜伽",
+            "state": "已计划",
+            "done": false
+          }
         ],
         "meals": [
-          { "emoji": "🥣", "name": "隔夜燕麦、亚麻籽与柑橘", "slot": "早餐", "tag": "维生素 C" },
-          { "emoji": "🥙", "name": "鸡肉沙拉配发芽谷物", "slot": "午餐", "tag": "瘦蛋白" },
-          { "emoji": "🍲", "name": "豆腐蔬菜面碗", "slot": "晚餐", "tag": "铁" }
+          {
+            "emoji": "🥣",
+            "name": "隔夜燕麦、亚麻籽与柑橘",
+            "slot": "早餐",
+            "tag": "维生素 C"
+          },
+          {
+            "emoji": "🥙",
+            "name": "鸡肉沙拉配发芽谷物",
+            "slot": "午餐",
+            "tag": "瘦蛋白"
+          },
+          {
+            "emoji": "🍲",
+            "name": "豆腐蔬菜面碗",
+            "slot": "晚餐",
+            "tag": "铁"
+          }
         ],
         "mealWhy": [
           "维生素 C 在精力上升时增强铁的吸收。",
@@ -293,25 +387,67 @@
         "insight": "雌激素今天到达顶点——自信与社交能量满格。把重要对话安排在今天。",
         "moveCopy": "力量巅峰日——HIIT 或大重量。",
         "chips": [
-          { "label": "30–40 分钟", "hot": true },
-          { "label": "高强度", "hot": false }
+          {
+            "label": "30–40 分钟",
+            "hot": true
+          },
+          {
+            "label": "高强度",
+            "hot": false
+          }
         ],
         "mvTitle": "HIIT 间歇",
         "mvCopy": "你的身体此刻恢复最快——今天可以冲强度，这个上限是你赢来的。",
         "mvParts": [
-          { "label": "热身 · 动态", "mins": "5 分钟" },
-          { "label": "间歇 · 8 × 40 秒冲刺 / 80 秒放松", "mins": "24 分钟" },
-          { "label": "放松 · 拉伸", "mins": "8 分钟" }
+          {
+            "label": "热身 · 动态",
+            "mins": "5 分钟"
+          },
+          {
+            "label": "间歇 · 8 × 40 秒冲刺 / 80 秒放松",
+            "mins": "24 分钟"
+          },
+          {
+            "label": "放松 · 拉伸",
+            "mins": "8 分钟"
+          }
         ],
         "week": [
-          { "label": "周一 · 力量", "state": "已完成", "done": true },
-          { "label": "周三 · HIIT 间歇", "state": "今天", "today": true },
-          { "label": "周五 · 灵活性与核心", "state": "已计划", "done": false }
+          {
+            "label": "周一 · 力量",
+            "state": "已完成",
+            "done": true
+          },
+          {
+            "label": "周三 · HIIT 间歇",
+            "state": "今天",
+            "today": true
+          },
+          {
+            "label": "周五 · 灵活性与核心",
+            "state": "已计划",
+            "done": false
+          }
         ],
         "meals": [
-          { "emoji": "🥣", "name": "希腊酸奶、莓果与南瓜籽", "slot": "早餐", "tag": "锌" },
-          { "emoji": "🥗", "name": "三文鱼藜麦碗", "slot": "午餐", "tag": "OMEGA-3" },
-          { "emoji": "🍜", "name": "绿叶蔬菜快炒", "slot": "晚餐", "tag": "B6 + 膳食纤维" }
+          {
+            "emoji": "🥣",
+            "name": "希腊酸奶、莓果与南瓜籽",
+            "slot": "早餐",
+            "tag": "锌"
+          },
+          {
+            "emoji": "🥗",
+            "name": "三文鱼藜麦碗",
+            "slot": "午餐",
+            "tag": "OMEGA-3"
+          },
+          {
+            "emoji": "🍜",
+            "name": "绿叶蔬菜快炒",
+            "slot": "晚餐",
+            "tag": "B6 + 膳食纤维"
+          }
         ],
         "mealWhy": [
           "锌支持排卵前后的 LH 峰值。",
@@ -328,25 +464,67 @@
         "insight": "孕激素上升时血清素下降——一顿富含镁的晚餐和早点入睡，会改变明天的感受。",
         "moveCopy": "适中而平稳——力量或坡道快走。",
         "chips": [
-          { "label": "25–35 分钟", "hot": true },
-          { "label": "适中", "hot": false }
+          {
+            "label": "25–35 分钟",
+            "hot": true
+          },
+          {
+            "label": "适中",
+            "hot": false
+          }
         ],
         "mvTitle": "平稳力量",
         "mvCopy": "保持流畅的节奏和充分的休息——这周坚持优先于突破。",
         "mvParts": [
-          { "label": "热身 · 灵活性", "mins": "6 分钟" },
-          { "label": "全身力量 · 3 组", "mins": "20 分钟" },
-          { "label": "结束步行 · 轻松", "mins": "8 分钟" }
+          {
+            "label": "热身 · 灵活性",
+            "mins": "6 分钟"
+          },
+          {
+            "label": "全身力量 · 3 组",
+            "mins": "20 分钟"
+          },
+          {
+            "label": "结束步行 · 轻松",
+            "mins": "8 分钟"
+          }
         ],
         "week": [
-          { "label": "周一 · 力量", "state": "已完成", "done": true },
-          { "label": "周四 · 坡道快走", "state": "今天", "today": true },
-          { "label": "周日 · 灵活性", "state": "已计划", "done": false }
+          {
+            "label": "周一 · 力量",
+            "state": "已完成",
+            "done": true
+          },
+          {
+            "label": "周四 · 坡道快走",
+            "state": "今天",
+            "today": true
+          },
+          {
+            "label": "周日 · 灵活性",
+            "state": "已计划",
+            "done": false
+          }
         ],
         "meals": [
-          { "emoji": "🍳", "name": "鸡蛋、牛油果与谷物吐司", "slot": "早餐", "tag": "B6" },
-          { "emoji": "🥘", "name": "火鸡红薯碗", "slot": "午餐", "tag": "慢碳水" },
-          { "emoji": "🍮", "name": "黑巧克力奇亚布丁", "slot": "晚餐", "tag": "镁" }
+          {
+            "emoji": "🍳",
+            "name": "鸡蛋、牛油果与谷物吐司",
+            "slot": "早餐",
+            "tag": "B6"
+          },
+          {
+            "emoji": "🥘",
+            "name": "火鸡红薯碗",
+            "slot": "午餐",
+            "tag": "慢碳水"
+          },
+          {
+            "emoji": "🍮",
+            "name": "黑巧克力奇亚布丁",
+            "slot": "晚餐",
+            "tag": "镁"
+          }
         ],
         "mealWhy": [
           "孕激素上升时，B6 支持血清素。",
@@ -356,35 +534,127 @@
       }
     },
     "ob": [
-      { "q": "是什么把你带到 NutriSync？", "help": "这决定 Nutri 优先为你呈现什么。", "type": "choice", "key": "obGoal", "opts": [
-        { "k": "Balance my energy", "label": "平衡我的精力" },
-        { "k": "Ease PMS & symptoms", "label": "缓解经前综合征与症状" },
-        { "k": "Train smarter with my cycle", "label": "顺着周期更聪明地训练" },
-        { "k": "Understand my body better", "label": "更了解我的身体" }
-      ] },
-      { "q": "你的周期规律吗？", "help": "不规律很常见——Nutri 都能适应。", "type": "choice", "key": "obReg", "opts": [
-        { "k": "Like clockwork", "label": "像时钟一样准" },
-        { "k": "Mostly regular", "label": "基本规律" },
-        { "k": "Pretty unpredictable", "label": "相当难预测" },
-        { "k": "Not sure", "label": "不确定" }
-      ] },
-      { "q": "你上次月经是什么时候开始的？", "help": "这是阶段识别的锚点。", "type": "date", "key": "obDate" },
-      { "q": "你的周期通常多长？", "help": "从一次月经第 1 天数到下一次第 1 天。", "type": "choice", "key": "obLen", "opts": [
-        { "k": "21–24 days", "label": "21–24 天" },
-        { "k": "25–30 days", "label": "25–30 天" },
-        { "k": "31–35 days", "label": "31–35 天" },
-        { "k": "Not sure", "label": "不确定" }
-      ] },
-      { "q": "有需要遵循的饮食模式吗？", "help": "餐食推荐会始终贴合你的模式。", "type": "choice", "key": "obDiet", "opts": [
-        { "k": "No restrictions", "label": "无限制" },
-        { "k": "Vegetarian", "label": "素食" },
-        { "k": "Vegan", "label": "纯素" },
-        { "k": "Gluten-free", "label": "无麸质" },
-        { "k": "Dairy-free", "label": "无乳制品" }
-      ] },
-      { "q": "聊聊你的身体", "help": "仅用于校准分量与能量需求——绝不评判。", "type": "numbers" },
-      { "q": "选择你的 Nutri", "help": "陪你走过每个阶段的伙伴。随时可以更换。", "type": "avatar" },
-      { "q": "你的数据，你做主", "help": "未经你同意，绝不分享。", "type": "consent" }
+      {
+        "q": "是什么把你带到 NutriSync？",
+        "help": "这决定 Nutri 优先为你呈现什么。",
+        "type": "choice",
+        "key": "obGoal",
+        "opts": [
+          {
+            "k": "Balance my energy",
+            "label": "平衡我的精力"
+          },
+          {
+            "k": "Ease PMS & symptoms",
+            "label": "缓解经前综合征与症状"
+          },
+          {
+            "k": "Train smarter with my cycle",
+            "label": "顺着周期更聪明地训练"
+          },
+          {
+            "k": "Understand my body better",
+            "label": "更了解我的身体"
+          }
+        ]
+      },
+      {
+        "q": "你的周期规律吗？",
+        "help": "不规律很常见——Nutri 都能适应。",
+        "type": "choice",
+        "key": "obReg",
+        "opts": [
+          {
+            "k": "Like clockwork",
+            "label": "像时钟一样准"
+          },
+          {
+            "k": "Mostly regular",
+            "label": "基本规律"
+          },
+          {
+            "k": "Pretty unpredictable",
+            "label": "相当难预测"
+          },
+          {
+            "k": "Not sure",
+            "label": "不确定"
+          }
+        ]
+      },
+      {
+        "q": "你上次月经是什么时候开始的？",
+        "help": "这是阶段识别的锚点。",
+        "type": "date",
+        "key": "obDate"
+      },
+      {
+        "q": "你的周期通常多长？",
+        "help": "从一次月经第 1 天数到下一次第 1 天。",
+        "type": "choice",
+        "key": "obLen",
+        "opts": [
+          {
+            "k": "21–24 days",
+            "label": "21–24 天"
+          },
+          {
+            "k": "25–30 days",
+            "label": "25–30 天"
+          },
+          {
+            "k": "31–35 days",
+            "label": "31–35 天"
+          },
+          {
+            "k": "Not sure",
+            "label": "不确定"
+          }
+        ]
+      },
+      {
+        "q": "有需要遵循的饮食模式吗？",
+        "help": "餐食推荐会始终贴合你的模式。",
+        "type": "choice",
+        "key": "obDiet",
+        "opts": [
+          {
+            "k": "No restrictions",
+            "label": "无限制"
+          },
+          {
+            "k": "Vegetarian",
+            "label": "素食"
+          },
+          {
+            "k": "Vegan",
+            "label": "纯素"
+          },
+          {
+            "k": "Gluten-free",
+            "label": "无麸质"
+          },
+          {
+            "k": "Dairy-free",
+            "label": "无乳制品"
+          }
+        ]
+      },
+      {
+        "q": "聊聊你的身体",
+        "help": "仅用于校准分量与能量需求——绝不评判。",
+        "type": "numbers"
+      },
+      {
+        "q": "选择你的 Nutri",
+        "help": "陪你走过每个阶段的伙伴。随时可以更换。",
+        "type": "avatar"
+      },
+      {
+        "q": "你的数据，你做主",
+        "help": "未经你同意，绝不分享。",
+        "type": "consent"
+      }
     ],
     "provSync": {
       "apple": "6:40 已同步",
@@ -411,28 +681,90 @@
       "步数与日常活动"
     ],
     "readLists": {
-      "apple": ["睡眠时长与阶段", "心率变异性（HRV）", "静息心率", "训练与活动能量"],
-      "oura": ["睡眠阶段与效率", "准备度与 HRV", "体温趋势", "活动水平"],
-      "garmin": ["训练与负荷", "步数与强度分钟", "睡眠与压力分数"],
-      "fitbit": ["活动与步数", "睡眠阶段", "心率"],
-      "whoop": ["负荷与恢复", "睡眠欠债", "HRV 与静息心率"],
-      "gfit": ["步数与心肺点数", "训练", "睡眠时段"]
+      "apple": [
+        "睡眠时长与阶段",
+        "心率变异性（HRV）",
+        "静息心率",
+        "训练与活动能量"
+      ],
+      "oura": [
+        "睡眠阶段与效率",
+        "准备度与 HRV",
+        "体温趋势",
+        "活动水平"
+      ],
+      "garmin": [
+        "训练与负荷",
+        "步数与强度分钟",
+        "睡眠与压力分数"
+      ],
+      "fitbit": [
+        "活动与步数",
+        "睡眠阶段",
+        "心率"
+      ],
+      "whoop": [
+        "负荷与恢复",
+        "睡眠欠债",
+        "HRV 与静息心率"
+      ],
+      "gfit": [
+        "步数与心肺点数",
+        "训练",
+        "睡眠时段"
+      ]
     },
     "consentRows": [
-      { "label": "个性化洞察", "desc": "允许 Nutri 分析你的记录，提供量身指引。" },
-      { "label": "匿名化研究", "desc": "以去标识化数据支持女性健康研究。" },
-      { "label": "产品动态", "desc": "偶尔发送 NutriSync 新功能消息。" }
+      {
+        "label": "个性化洞察",
+        "desc": "允许 Nutri 分析你的记录，提供量身指引。"
+      },
+      {
+        "label": "匿名化研究",
+        "desc": "以去标识化数据支持女性健康研究。"
+      },
+      {
+        "label": "产品动态",
+        "desc": "偶尔发送 NutriSync 新功能消息。"
+      }
     ],
     "sessions": [
-      { "d": "MacBook Pro · Safari", "loc": "里斯本, PT · 现在", "me": true, "other": false },
-      { "d": "iPhone 15 · NutriSync 应用", "loc": "里斯本, PT · 2 小时前", "me": false, "other": true },
-      { "d": "iPad Air · Safari", "loc": "波尔图, PT · 3月8日", "me": false, "other": true }
+      {
+        "d": "MacBook Pro · Safari",
+        "loc": "里斯本, PT · 现在",
+        "me": true,
+        "other": false
+      },
+      {
+        "d": "iPhone 15 · NutriSync 应用",
+        "loc": "里斯本, PT · 2 小时前",
+        "me": false,
+        "other": true
+      },
+      {
+        "d": "iPad Air · Safari",
+        "loc": "波尔图, PT · 3月8日",
+        "me": false,
+        "other": true
+      }
     ],
-    "sessionLive": { "d": "本浏览器", "loc": "刚刚" },
+    "sessionLive": {
+      "d": "本浏览器",
+      "loc": "刚刚"
+    },
     "winsDemo": [
-      { "t": "连续记录 12 天", "d": "你的最长纪录——预测越来越准。" },
-      { "t": "排卵周精力 +18%", "d": "与你最近两个周期相比。" },
-      { "t": "3 次训练契合阶段", "d": "本周每次训练都落在理想窗口。" }
+      {
+        "t": "连续记录 12 天",
+        "d": "你的最长纪录——预测越来越准。"
+      },
+      {
+        "t": "排卵周精力 +18%",
+        "d": "与你最近两个周期相比。"
+      },
+      {
+        "t": "3 次训练契合阶段",
+        "d": "本周每次训练都落在理想窗口。"
+      }
     ],
     "calBannerA": "下次月经预计在",
     "calBannerB": "前后——Nutri 会提前两天把饮食转向铁质和抚慰食物。",
@@ -564,7 +896,7 @@
     "ftPrivacy": "隐私 · GDPR",
     "ftTerms": "条款",
     "ftRights": "你的数据权利",
-    "ftDisclaimer": "NutriSync 提供健康与教育指引，不构成医疗建议。© 2026 NutriSync Collective · 用心制作于马德里、新加坡、塞萨洛尼基。",
+    "ftDisclaimer": "NutriSync 提供健康与教育指引，不构成医疗建议。© 2026 NutriSync Collective · 用心制作于马德里。",
     "pxWelcomeTitle": "欢迎来到 NutriSync",
     "pxWelcomeP": "你来到这里，是因为你的身体值得比猜测更好的答案。让我们把营养与运动同步到你的自然节律。",
     "pxTagline": "同步周期，滋养身心",
@@ -715,90 +1047,373 @@
     "dnProgress": "进度",
     "dnCalendar": "日历",
     "dnSettings": "设置",
-    "pxIntros": ["你好 {name}——来认识你的向导。", "我叫 Nutri。你随时可以给我改名。", "我在这里，让一切温暖而安心。", "让我们把营养同步到你的节律。", "开始前，只有几个简单的问题…"],
+    "pxIntros": [
+      "你好 {name}——来认识你的向导。",
+      "我叫 Nutri。你随时可以给我改名。",
+      "我在这里，让一切温暖而安心。",
+      "让我们把营养同步到你的节律。",
+      "开始前，只有几个简单的问题…"
+    ],
     "pxAllsetFmt": "一切就绪，{name}！",
     "pxGateMoodQ": "今天心情怎么样？",
     "pxGateEnergyQ": "今天精力怎么样？",
     "pxGateNext": "下一步",
     "pxGateSync": "同步",
-    "dows7": ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
-    "calLetters": ["日", "一", "二", "三", "四", "五", "六"],
+    "dows7": [
+      "周一",
+      "周二",
+      "周三",
+      "周四",
+      "周五",
+      "周六",
+      "周日"
+    ],
+    "calLetters": [
+      "日",
+      "一",
+      "二",
+      "三",
+      "四",
+      "五",
+      "六"
+    ],
     "calMonth": "2026年7月"
   },
   "catalog": {
-    "Getting started": "新手入门", "4 screens": "4 个界面", "Meet Nutri & onboarding": "认识 Nutri 与引导设置", "8 screens": "8 个界面",
-    "Your daily loop": "你的每日循环", "6 screens": "6 个界面", "Insight, connections & privacy": "洞察、连接与隐私", "7 screens": "7 个界面",
-    "sign in · sign up · onboarding": "登录 · 注册 · 引导设置", "check-in to evening log": "从早间签到到晚间记录",
-    "Insight & planning": "洞察与规划", "trends and the month ahead": "趋势与未来一个月", "Settings & privacy": "设置与隐私", "account, devices, data": "账号、设备、数据",
-    "Welcome": "欢迎", "Splash · logo + tagline": "启动页 · 标志 + 标语", "Log in": "登录", "Welcome back — email & password": "欢迎回来——邮箱与密码",
-    "Create account": "创建账号", "Name, email, password": "姓名、邮箱、密码", "You're all set": "一切就绪", "Confirmation with Nutri": "与 Nutri 的确认",
-    "Meet Nutri": "认识 Nutri", "5-step guided intro": "5 步引导介绍", "Cycle Info": "周期信息", "8 steps · length, symptoms, colour": "8 步 · 周期长度、症状、颜色",
-    "Health": "健康", "Conditions & contraception": "疾病与避孕", "Nutrition": "营养", "Diet, weight, height, age": "饮食、体重、身高、年龄",
-    "Pick your primary goal": "选择你的主要目标", "Choose your Nutri": "选择你的 Nutri", "City": "城市", "Where are you based": "你在哪里",
-    "Consent": "授权", "Your data stays yours": "你的数据始终属于你", "Mood & Energy": "情绪与精力", "Before-we-sync gate": "同步前签到",
-    "Home · Cycle": "首页 · 周期", "Phase ring + CAS score": "阶段环 + CAS 分数", "Nutri Basics checklist + meals": "Nutri Basics 清单 + 餐食",
-    "Movement checklist + tips": "运动清单 + 贴士", "Edit Period": "编辑经期", "Rich daily symptom log": "详尽的每日症状记录",
-    "Edit Health": "编辑健康", "Conditions & NutriGoals": "疾病与 NutriGoals", "Progress": "进度", "Cycle Alignment dashboard": "周期同步仪表盘",
-    "Calendar": "日历", "Month grid with phase dots": "带阶段标记的月历", "Settings": "设置", "Profile, security, privacy": "资料、安全、隐私",
-    "Connected apps": "已连接的应用", "8 providers · per-metric sync": "8 个平台 · 按指标同步", "Connect a device": "连接设备",
-    "Permission-priming flow": "权限引导流程", "Data & Privacy": "数据与隐私", "Consent, export, delete": "授权、导出、删除",
-    "Security": "安全", "2FA, passkeys, sessions": "双重验证、通行密钥、会话",
-    "Any email — opens the demo persona": "任意邮箱——打开演示角色", "Starts the first-run journey": "开启首次使用之旅",
-    "8 steps · goal to consent": "8 步 · 从目标到授权", "Confirmation with your Nutri": "与你的 Nutri 确认",
-    "Daily check-in": "每日签到", "Mood & energy, two taps": "情绪与精力，两次点击", "Today · Home": "今天 · 首页",
-    "Phase hero + Cycle Alignment": "阶段主卡 + 周期同步", "Phase-tuned meals + hydration": "阶段定制餐食 + 补水",
-    "Movement": "运动", "Session plan + week view": "训练计划 + 周视图", "Flow, mood, symptoms, notes": "流量、情绪、症状、备注",
-    "Allergies, conditions, NutriGoal": "过敏、疾病、NutriGoal", "CAS trend + weekly wins": "CAS 趋势 + 每周成就",
-    "Phase-coloured month grid": "按阶段着色的月历", "Profile, Nutri, notifications": "资料、Nutri、通知",
-    "6 providers, per-metric control": "6 个平台，按指标控制", "2FA + active sessions": "双重验证 + 活跃会话",
-    "Nutrition alignment": "营养同步", "Biomarker signals": "生物指标信号", "Fitness match": "体能匹配",
-    "Fitness alignment": "体能同步", "Phase confidence": "阶段置信度", "Fitness & recovery": "体能与恢复", "Phase detection": "阶段识别", "Logging consistency": "记录坚持度", "Logging streak": "连续记录",
-    "Biomarkers · Phase": "生物指标 · 阶段", "Biomarkers · Fitness": "生物指标 · 体能", "Fitness · Recovery": "体能 · 恢复",
-    "Steps · Sleep": "步数 · 睡眠", "Biomarkers · Sleep": "生物指标 · 睡眠", "Skin-temp · Phase": "皮温 · 阶段", "Auto-fills Movement": "自动填充运动",
-    "Onboarding": "引导设置", "Onboarding · Cycle": "引导 · 周期", "Onboarding · Health": "引导 · 健康", "Onboarding · Nutrition": "引导 · 营养", "Onboarding · NutriGoal": "引导 · NutriGoal", "Onboarding · Avatar": "引导 · 形象", "Onboarding · City": "引导 · 城市", "Onboarding · Consent": "引导 · 授权",
-    "Lentils": "扁豆", "Baby spinach": "嫩菠菜", "Salmon": "三文鱼", "Pumpkin seeds": "南瓜籽", "Dark chocolate": "黑巧克力", "Bell peppers": "彩椒", "Oats": "燕麦", "Ginger tea": "姜茶",
-    "Chicken breast": "鸡胸肉", "Kefir": "开菲尔", "Broccoli": "西兰花", "Eggs": "鸡蛋", "Sauerkraut": "酸菜", "Raspberries": "树莓", "Citrus": "柑橘",
-    "Berries": "莓果", "Olive oil": "橄榄油", "Green tea": "绿茶", "Chickpeas": "鹰嘴豆", "Turmeric": "姜黄",
-    "Sweet potato": "红薯", "Bananas": "香蕉", "Almonds": "杏仁", "Greek yogurt": "希腊酸奶", "Fennel": "茴香", "Black beans": "黑豆",
-    "Iron": "铁", "Magnesium": "镁", "Vitamin C": "维生素 C", "Complex carbs": "复合碳水", "Anti-inflam.": "抗炎", "Protein": "蛋白质", "Fermented": "发酵", "Fiber": "膳食纤维", "Microbiome": "微生物组", "Whole grain": "全谷物", "Fresh": "新鲜", "Antioxidant": "抗氧化", "Cruciferous": "十字花科", "Calcium": "钙", "Anti-bloat": "消胀", "Serotonin": "血清素",
-    "Gentle yoga": "轻柔瑜伽", "Walking": "步行", "Mobility": "灵活性", "Rest day": "休息日", "Strength training": "力量训练", "Group class": "团体课", "Running": "跑步", "Heavy lifting": "大重量", "Sport": "运动", "Light strength": "轻力量",
-    "Restore": "修复", "Light": "轻松", "Recovery": "恢复", "Build": "进阶", "Moderate": "适中", "High": "高", "Peak": "巅峰",
-    "calm": "平静", "content": "满足", "worried": "担忧", "anxious": "焦虑", "happy": "开心", "mad": "生气", "sad": "难过", "nervous": "紧张", "brainfog": "脑雾", "distracted": "分心", "mischievous": "俏皮", "clear": "清晰",
-    "Pain": "疼痛", "Digestion": "消化", "Breasts": "乳房", "Cravings": "馋嘴", "Skin": "皮肤", "Sleep Quality": "睡眠质量", "Energy": "精力", "Body Changes": "身体变化", "Reproductive": "生殖健康",
-    "Uterine cramps": "子宫痉挛", "Muscle soreness": "肌肉酸痛", "Lower back pain": "下背疼痛", "Pelvic aches": "骨盆不适", "Headaches/Migraines": "头痛/偏头痛", "Joint pain": "关节疼痛",
-    "Bloating": "腹胀", "Nausea": "恶心", "Constipation": "便秘", "Loose stool": "稀便", "Breast tenderness": "乳房触痛", "Breast fullness": "乳房胀满",
-    "Mild": "轻微", "Random": "随机", "Carbs": "碳水", "Strong": "强烈", "Sweet": "甜食", "Acne": "痘痘", "Oily": "出油", "Sensitivity": "敏感", "Dry": "干燥", "Rash/Irritation": "红疹/刺激",
-    "Very Poor": "很差", "Okay": "还行", "Restless": "不安稳", "Restful": "安稳", "Deep": "深沉", "Fatigue": "疲劳", "High energy": "精力充沛", "Low stamina": "耐力不足", "Water retention": "水肿", "Temperature sensitivity": "体温敏感", "Increased discharge": "分泌物增多", "Mid-cycle spotting": "周期中点滴出血",
-    "Are your cycles regular or irregular?": "你的周期规律吗？", "Regular": "规律", "Irregular": "不规律", "Short cycles": "周期偏短", "Long cycles": "周期偏长", "Unsure": "不确定",
-    "Common symptoms during your period?": "经期常见症状？", "Select all that apply.": "选择所有符合项。", "Back pain": "背痛", "Mood changes": "情绪波动", "Cramps": "痉挛", "Headache": "头痛", "None": "无",
-    "When did your last period start?": "上次月经何时开始？", "The single most important detail — it powers your daily cycle day.": "最重要的一项——它驱动你的每日周期天数。",
-    "Notice energy changes across your cycle?": "是否察觉周期中的精力变化？", "Yes": "是", "Somewhat": "有一点",
-    "Do you currently track your cycle?": "目前在记录周期吗？", "Yes, with an app": "是，用应用", "Yes, manually": "是，手动",
-    "Confident identifying your cycle phase?": "能自信判断所处阶段吗？", "Very confident": "很自信", "Not confident": "不太自信",
-    "What does your period usually look like?": "你的经期通常什么样？", "Light pink": "浅粉", "Red": "红色", "Dark red": "深红", "Brown": "棕色", "Spotting": "点滴出血",
-    "Symptoms you experience regularly?": "经常出现的症状？", "Insomnia": "失眠", "Mood swings": "情绪起伏", "Hair loss": "脱发", "Weight gain": "体重增加", "Night sweats": "夜间盗汗",
-    "Any diagnosed conditions?": "有确诊的疾病吗？", "Fibroids": "子宫肌瘤", "Ovarian cysts": "卵巢囊肿", "Infertility": "不孕", "Perimenopause": "围绝经期",
-    "Do you use hormonal contraception?": "是否使用激素避孕？", "Yes, currently": "是，目前在用", "Not anymore": "已停用", "Never": "从未",
-    "Any specific nutrition plan?": "有特定饮食计划吗？", "Balanced": "均衡", "Vegetarian": "素食", "Low carb": "低碳水", "Pescatarian": "鱼素", "Vegan": "纯素", "No diet": "无",
-    "Any food allergies?": "有食物过敏吗？", "We filter every recommendation for these.": "我们会据此筛选每条推荐。", "Dairy": "乳制品", "Nuts": "坚果", "Fish": "鱼类", "Wheat": "小麦", "Soy": "大豆",
-    "A few quick numbers": "几个简单数字", "Used privately to tailor guidance — never shown as calories.": "仅私下用于定制指引——绝不显示为卡路里。",
-    "What's your primary goal?": "你的主要目标是什么？", "This shapes every tip and food you see.": "它决定你看到的每条贴士与食物。",
-    "Reduce PMS symptoms": "减轻经前症状", "Feel emotionally balanced": "情绪更平衡", "More stable energy": "精力更稳定", "Fewer mood crashes": "更少情绪低谷",
-    "Your companion across the app.": "陪你贯穿整个应用的伙伴。", "Where are you based?": "你在哪里？", "Helps us localise your tips.": "帮我们本地化你的贴士。",
-    "Enter NutriSync": "进入 NutriSync", "Next": "下一步",
-    "Sleep · HRV · Heart rate · Workouts": "睡眠 · HRV · 心率 · 训练", "Skin-temp · Sleep · Readiness": "皮温 · 睡眠 · 准备度", "Fitness · Recovery · HRV": "体能 · 恢复 · HRV", "Steps · Sleep · Heart rate": "步数 · 睡眠 · 心率", "Auto-fills MovementLog": "自动填充 MovementLog",
-    "✓ Connected": "✓ 已连接", "Connect": "连接",
-    "Sleep stages": "睡眠阶段", "Heart-rate variability": "心率变异性", "Resting heart rate": "静息心率", "Skin temperature": "皮肤温度", "Steps & activity": "步数与活动", "Workouts": "训练",
-    "Cycle & symptom data": "周期与症状数据", "Powers phase detection and your CAS": "驱动阶段识别与你的 CAS", "Goals & preferences": "目标与偏好", "Tailors your daily guidance": "定制你的每日指引", "Anonymised research": "匿名化研究", "Helps improve NutriSync for everyone": "帮助为所有人改进 NutriSync",
-    "Madrid, ES · active now": "马德里, ES · 当前活跃", "Madrid, ES · 2h ago": "马德里, ES · 2 小时前", "Barcelona, ES · 3d ago": "巴塞罗那, ES · 3 天前",
-    "On point": "状态在线", "7 days": "7 天", "2 items missed": "漏掉 2 项", "Midday energy": "午间精力", "Watch caffeine": "注意咖啡因",
-    "Meals": "餐食", "Cycle": "周期",
-    "Iron, omega-3 & warming foods to replenish.": "铁、omega-3 与温热食物，帮你补足。", "Rest, walking and gentle mobility.": "休息、步行与轻柔活动。",
-    "Lean protein & fermented foods as energy climbs.": "精力上升期的瘦蛋白与发酵食物。", "Build intensity — strength and cardio.": "逐步加量——力量与有氧。",
-    "Antioxidants & anti-inflammatory foods at the peak.": "顶点期的抗氧化与抗炎食物。", "Peak output — HIIT and personal bests.": "巅峰输出——HIIT 与个人纪录。",
-    "Magnesium & complex carbs to steady mood.": "镁与复合碳水，稳住情绪。", "Ease off — steady movement, then rest.": "放缓节奏——平稳运动，然后休息。",
-    "TODAY'S TIP": "今日贴士", "BODY INSIGHT": "身体洞察",
-    "menstrual": "月经期", "follicular": "卵泡期", "ovulatory": "排卵期", "luteal": "黄体期",
-    "Menstrual": "月经期", "Follicular": "卵泡期", "Ovulatory": "排卵期", "Luteal": "黄体期"
+    "Getting started": "新手入门",
+    "4 screens": "4 个界面",
+    "Meet Nutri & onboarding": "认识 Nutri 与引导设置",
+    "8 screens": "8 个界面",
+    "Your daily loop": "你的每日循环",
+    "6 screens": "6 个界面",
+    "Insight, connections & privacy": "洞察、连接与隐私",
+    "7 screens": "7 个界面",
+    "sign in · sign up · onboarding": "登录 · 注册 · 引导设置",
+    "check-in to evening log": "从早间签到到晚间记录",
+    "Insight & planning": "洞察与规划",
+    "trends and the month ahead": "趋势与未来一个月",
+    "Settings & privacy": "设置与隐私",
+    "account, devices, data": "账号、设备、数据",
+    "Welcome": "欢迎",
+    "Splash · logo + tagline": "启动页 · 标志 + 标语",
+    "Log in": "登录",
+    "Welcome back — email & password": "欢迎回来——邮箱与密码",
+    "Create account": "创建账号",
+    "Name, email, password": "姓名、邮箱、密码",
+    "You're all set": "一切就绪",
+    "Confirmation with Nutri": "与 Nutri 的确认",
+    "Meet Nutri": "认识 Nutri",
+    "5-step guided intro": "5 步引导介绍",
+    "Cycle Info": "周期信息",
+    "8 steps · length, symptoms, colour": "8 步 · 周期长度、症状、颜色",
+    "Health": "健康",
+    "Conditions & contraception": "疾病与避孕",
+    "Nutrition": "营养",
+    "Diet, weight, height, age": "饮食、体重、身高、年龄",
+    "Pick your primary goal": "选择你的主要目标",
+    "Choose your Nutri": "选择你的 Nutri",
+    "City": "城市",
+    "Where are you based": "你在哪里",
+    "Consent": "授权",
+    "Your data stays yours": "你的数据始终属于你",
+    "Mood & Energy": "情绪与精力",
+    "Before-we-sync gate": "同步前签到",
+    "Home · Cycle": "首页 · 周期",
+    "Phase ring + CAS score": "阶段环 + CAS 分数",
+    "Nutri Basics checklist + meals": "Nutri Basics 清单 + 餐食",
+    "Movement checklist + tips": "运动清单 + 贴士",
+    "Edit Period": "编辑经期",
+    "Rich daily symptom log": "详尽的每日症状记录",
+    "Edit Health": "编辑健康",
+    "Conditions & NutriGoals": "疾病与 NutriGoals",
+    "Progress": "进度",
+    "Cycle Alignment dashboard": "周期同步仪表盘",
+    "Calendar": "日历",
+    "Month grid with phase dots": "带阶段标记的月历",
+    "Settings": "设置",
+    "Profile, security, privacy": "资料、安全、隐私",
+    "Connected apps": "已连接的应用",
+    "8 providers · per-metric sync": "8 个平台 · 按指标同步",
+    "Connect a device": "连接设备",
+    "Permission-priming flow": "权限引导流程",
+    "Data & Privacy": "数据与隐私",
+    "Consent, export, delete": "授权、导出、删除",
+    "Security": "安全",
+    "2FA, passkeys, sessions": "双重验证、通行密钥、会话",
+    "Any email — opens the demo persona": "任意邮箱——打开演示角色",
+    "Starts the first-run journey": "开启首次使用之旅",
+    "8 steps · goal to consent": "8 步 · 从目标到授权",
+    "Confirmation with your Nutri": "与你的 Nutri 确认",
+    "Daily check-in": "每日签到",
+    "Mood & energy, two taps": "情绪与精力，两次点击",
+    "Today · Home": "今天 · 首页",
+    "Phase hero + Cycle Alignment": "阶段主卡 + 周期同步",
+    "Phase-tuned meals + hydration": "阶段定制餐食 + 补水",
+    "Movement": "运动",
+    "Session plan + week view": "训练计划 + 周视图",
+    "Flow, mood, symptoms, notes": "流量、情绪、症状、备注",
+    "Allergies, conditions, NutriGoal": "过敏、疾病、NutriGoal",
+    "CAS trend + weekly wins": "CAS 趋势 + 每周成就",
+    "Phase-coloured month grid": "按阶段着色的月历",
+    "Profile, Nutri, notifications": "资料、Nutri、通知",
+    "6 providers, per-metric control": "6 个平台，按指标控制",
+    "2FA + active sessions": "双重验证 + 活跃会话",
+    "Nutrition alignment": "营养同步",
+    "Biomarker signals": "生物指标信号",
+    "Fitness match": "体能匹配",
+    "Fitness alignment": "体能同步",
+    "Phase confidence": "阶段置信度",
+    "Fitness & recovery": "体能与恢复",
+    "Phase detection": "阶段识别",
+    "Logging consistency": "记录坚持度",
+    "Logging streak": "连续记录",
+    "Biomarkers · Phase": "生物指标 · 阶段",
+    "Biomarkers · Fitness": "生物指标 · 体能",
+    "Fitness · Recovery": "体能 · 恢复",
+    "Steps · Sleep": "步数 · 睡眠",
+    "Biomarkers · Sleep": "生物指标 · 睡眠",
+    "Skin-temp · Phase": "皮温 · 阶段",
+    "Auto-fills Movement": "自动填充运动",
+    "Onboarding": "引导设置",
+    "Onboarding · Cycle": "引导 · 周期",
+    "Onboarding · Health": "引导 · 健康",
+    "Onboarding · Nutrition": "引导 · 营养",
+    "Onboarding · NutriGoal": "引导 · NutriGoal",
+    "Onboarding · Avatar": "引导 · 形象",
+    "Onboarding · City": "引导 · 城市",
+    "Onboarding · Consent": "引导 · 授权",
+    "Lentils": "扁豆",
+    "Baby spinach": "嫩菠菜",
+    "Salmon": "三文鱼",
+    "Pumpkin seeds": "南瓜籽",
+    "Dark chocolate": "黑巧克力",
+    "Bell peppers": "彩椒",
+    "Oats": "燕麦",
+    "Ginger tea": "姜茶",
+    "Chicken breast": "鸡胸肉",
+    "Kefir": "开菲尔",
+    "Broccoli": "西兰花",
+    "Eggs": "鸡蛋",
+    "Sauerkraut": "酸菜",
+    "Raspberries": "树莓",
+    "Citrus": "柑橘",
+    "Berries": "莓果",
+    "Olive oil": "橄榄油",
+    "Green tea": "绿茶",
+    "Chickpeas": "鹰嘴豆",
+    "Turmeric": "姜黄",
+    "Sweet potato": "红薯",
+    "Bananas": "香蕉",
+    "Almonds": "杏仁",
+    "Greek yogurt": "希腊酸奶",
+    "Fennel": "茴香",
+    "Black beans": "黑豆",
+    "Iron": "铁",
+    "Magnesium": "镁",
+    "Vitamin C": "维生素 C",
+    "Complex carbs": "复合碳水",
+    "Anti-inflam.": "抗炎",
+    "Protein": "蛋白质",
+    "Fermented": "发酵",
+    "Fiber": "膳食纤维",
+    "Microbiome": "微生物组",
+    "Whole grain": "全谷物",
+    "Fresh": "新鲜",
+    "Antioxidant": "抗氧化",
+    "Cruciferous": "十字花科",
+    "Calcium": "钙",
+    "Anti-bloat": "消胀",
+    "Serotonin": "血清素",
+    "Gentle yoga": "轻柔瑜伽",
+    "Walking": "步行",
+    "Mobility": "灵活性",
+    "Rest day": "休息日",
+    "Strength training": "力量训练",
+    "Group class": "团体课",
+    "Running": "跑步",
+    "Heavy lifting": "大重量",
+    "Sport": "运动",
+    "Light strength": "轻力量",
+    "Restore": "修复",
+    "Light": "轻松",
+    "Recovery": "恢复",
+    "Build": "进阶",
+    "Moderate": "适中",
+    "High": "高",
+    "Peak": "巅峰",
+    "calm": "平静",
+    "content": "满足",
+    "worried": "担忧",
+    "anxious": "焦虑",
+    "happy": "开心",
+    "mad": "生气",
+    "sad": "难过",
+    "nervous": "紧张",
+    "brainfog": "脑雾",
+    "distracted": "分心",
+    "mischievous": "俏皮",
+    "clear": "清晰",
+    "Pain": "疼痛",
+    "Digestion": "消化",
+    "Breasts": "乳房",
+    "Cravings": "馋嘴",
+    "Skin": "皮肤",
+    "Sleep Quality": "睡眠质量",
+    "Energy": "精力",
+    "Body Changes": "身体变化",
+    "Reproductive": "生殖健康",
+    "Uterine cramps": "子宫痉挛",
+    "Muscle soreness": "肌肉酸痛",
+    "Lower back pain": "下背疼痛",
+    "Pelvic aches": "骨盆不适",
+    "Headaches/Migraines": "头痛/偏头痛",
+    "Joint pain": "关节疼痛",
+    "Bloating": "腹胀",
+    "Nausea": "恶心",
+    "Constipation": "便秘",
+    "Loose stool": "稀便",
+    "Breast tenderness": "乳房触痛",
+    "Breast fullness": "乳房胀满",
+    "Mild": "轻微",
+    "Random": "随机",
+    "Carbs": "碳水",
+    "Strong": "强烈",
+    "Sweet": "甜食",
+    "Acne": "痘痘",
+    "Oily": "出油",
+    "Sensitivity": "敏感",
+    "Dry": "干燥",
+    "Rash/Irritation": "红疹/刺激",
+    "Very Poor": "很差",
+    "Okay": "还行",
+    "Restless": "不安稳",
+    "Restful": "安稳",
+    "Deep": "深沉",
+    "Fatigue": "疲劳",
+    "High energy": "精力充沛",
+    "Low stamina": "耐力不足",
+    "Water retention": "水肿",
+    "Temperature sensitivity": "体温敏感",
+    "Increased discharge": "分泌物增多",
+    "Mid-cycle spotting": "周期中点滴出血",
+    "Are your cycles regular or irregular?": "你的周期规律吗？",
+    "Regular": "规律",
+    "Irregular": "不规律",
+    "Short cycles": "周期偏短",
+    "Long cycles": "周期偏长",
+    "Unsure": "不确定",
+    "Common symptoms during your period?": "经期常见症状？",
+    "Select all that apply.": "选择所有符合项。",
+    "Back pain": "背痛",
+    "Mood changes": "情绪波动",
+    "Cramps": "痉挛",
+    "Headache": "头痛",
+    "None": "无",
+    "When did your last period start?": "上次月经何时开始？",
+    "The single most important detail — it powers your daily cycle day.": "最重要的一项——它驱动你的每日周期天数。",
+    "Notice energy changes across your cycle?": "是否察觉周期中的精力变化？",
+    "Yes": "是",
+    "Somewhat": "有一点",
+    "Do you currently track your cycle?": "目前在记录周期吗？",
+    "Yes, with an app": "是，用应用",
+    "Yes, manually": "是，手动",
+    "Confident identifying your cycle phase?": "能自信判断所处阶段吗？",
+    "Very confident": "很自信",
+    "Not confident": "不太自信",
+    "What does your period usually look like?": "你的经期通常什么样？",
+    "Light pink": "浅粉",
+    "Red": "红色",
+    "Dark red": "深红",
+    "Brown": "棕色",
+    "Spotting": "点滴出血",
+    "Symptoms you experience regularly?": "经常出现的症状？",
+    "Insomnia": "失眠",
+    "Mood swings": "情绪起伏",
+    "Hair loss": "脱发",
+    "Weight gain": "体重增加",
+    "Night sweats": "夜间盗汗",
+    "Any diagnosed conditions?": "有确诊的疾病吗？",
+    "Fibroids": "子宫肌瘤",
+    "Ovarian cysts": "卵巢囊肿",
+    "Infertility": "不孕",
+    "Perimenopause": "围绝经期",
+    "Do you use hormonal contraception?": "是否使用激素避孕？",
+    "Yes, currently": "是，目前在用",
+    "Not anymore": "已停用",
+    "Never": "从未",
+    "Any specific nutrition plan?": "有特定饮食计划吗？",
+    "Balanced": "均衡",
+    "Vegetarian": "素食",
+    "Low carb": "低碳水",
+    "Pescatarian": "鱼素",
+    "Vegan": "纯素",
+    "No diet": "无",
+    "Any food allergies?": "有食物过敏吗？",
+    "We filter every recommendation for these.": "我们会据此筛选每条推荐。",
+    "Dairy": "乳制品",
+    "Nuts": "坚果",
+    "Fish": "鱼类",
+    "Wheat": "小麦",
+    "Soy": "大豆",
+    "A few quick numbers": "几个简单数字",
+    "Used privately to tailor guidance — never shown as calories.": "仅私下用于定制指引——绝不显示为卡路里。",
+    "What's your primary goal?": "你的主要目标是什么？",
+    "This shapes every tip and food you see.": "它决定你看到的每条贴士与食物。",
+    "Reduce PMS symptoms": "减轻经前症状",
+    "Feel emotionally balanced": "情绪更平衡",
+    "More stable energy": "精力更稳定",
+    "Fewer mood crashes": "更少情绪低谷",
+    "Your companion across the app.": "陪你贯穿整个应用的伙伴。",
+    "Where are you based?": "你在哪里？",
+    "Helps us localise your tips.": "帮我们本地化你的贴士。",
+    "Enter NutriSync": "进入 NutriSync",
+    "Next": "下一步",
+    "Sleep · HRV · Heart rate · Workouts": "睡眠 · HRV · 心率 · 训练",
+    "Skin-temp · Sleep · Readiness": "皮温 · 睡眠 · 准备度",
+    "Fitness · Recovery · HRV": "体能 · 恢复 · HRV",
+    "Steps · Sleep · Heart rate": "步数 · 睡眠 · 心率",
+    "Auto-fills MovementLog": "自动填充 MovementLog",
+    "✓ Connected": "✓ 已连接",
+    "Connect": "连接",
+    "Sleep stages": "睡眠阶段",
+    "Heart-rate variability": "心率变异性",
+    "Resting heart rate": "静息心率",
+    "Skin temperature": "皮肤温度",
+    "Steps & activity": "步数与活动",
+    "Workouts": "训练",
+    "Cycle & symptom data": "周期与症状数据",
+    "Powers phase detection and your CAS": "驱动阶段识别与你的 CAS",
+    "Goals & preferences": "目标与偏好",
+    "Tailors your daily guidance": "定制你的每日指引",
+    "Anonymised research": "匿名化研究",
+    "Helps improve NutriSync for everyone": "帮助为所有人改进 NutriSync",
+    "Madrid, ES · active now": "马德里, ES · 当前活跃",
+    "Madrid, ES · 2h ago": "马德里, ES · 2 小时前",
+    "Barcelona, ES · 3d ago": "巴塞罗那, ES · 3 天前",
+    "On point": "状态在线",
+    "7 days": "7 天",
+    "2 items missed": "漏掉 2 项",
+    "Midday energy": "午间精力",
+    "Watch caffeine": "注意咖啡因",
+    "Meals": "餐食",
+    "Cycle": "周期",
+    "Iron, omega-3 & warming foods to replenish.": "铁、omega-3 与温热食物，帮你补足。",
+    "Rest, walking and gentle mobility.": "休息、步行与轻柔活动。",
+    "Lean protein & fermented foods as energy climbs.": "精力上升期的瘦蛋白与发酵食物。",
+    "Build intensity — strength and cardio.": "逐步加量——力量与有氧。",
+    "Antioxidants & anti-inflammatory foods at the peak.": "顶点期的抗氧化与抗炎食物。",
+    "Peak output — HIIT and personal bests.": "巅峰输出——HIIT 与个人纪录。",
+    "Magnesium & complex carbs to steady mood.": "镁与复合碳水，稳住情绪。",
+    "Ease off — steady movement, then rest.": "放缓节奏——平稳运动，然后休息。",
+    "TODAY'S TIP": "今日贴士",
+    "BODY INSIGHT": "身体洞察",
+    "menstrual": "月经期",
+    "follicular": "卵泡期",
+    "ovulatory": "排卵期",
+    "luteal": "黄体期",
+    "Menstrual": "月经期",
+    "Follicular": "卵泡期",
+    "Ovulatory": "排卵期",
+    "Luteal": "黄体期"
   }
 }

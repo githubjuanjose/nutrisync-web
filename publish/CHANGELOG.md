@@ -1,5 +1,46 @@
 # NutriSync — Release Notes / Change Log
 
+## 2026-07-07 — Footer disclaimer: Madrid only (v11.41)
+- Disclaimer reverted to “… Made with care in Madrid.” in the built-in EN/ES **and all 12 language packs** (each in its own language; Greek article and Japanese phrasing hand-corrected after the automated trim).
+
+## 2026-07-07 — Mobile watermark QA + footer wings (v11.40)
+- **Mobile-width QA (390 px) of every watermark**: hero, Problem, Science, CAS card, Connected Health, Pricing and Team all read cleanly with text fully legible. One failure found and fixed — **Platform (“Everything in one place”)** had its wings at 38% section height, which on mobile's tall card stack landed far below the header; repositioned to the header's right edge (coral, 10%).
+- **Footer no longer watermark-free**: the old 4% flat logo is now the white wings mark at 8% — full brand coverage, every section + footer.
+
+## 2026-07-07 — Watermarks visible everywhere (v11.39)
+- **Fixed invisible watermarks**: the Problem, Everything-in-one-place (Platform) and Connected Health wings were painting behind the page background (stacking-context bug) — they now show as intended.
+- **New wings added**: Team (“Built by women, for women” — coral, right edge), the See-NutriSync-in-action section behind BOTH prototype tabs (coral left behind the mobile grid · ink right behind the web grid), and the opened phone-prototype backdrop (fixed ink mark, lower right of the desk).
+- Every section of the marketing page now carries a visible brand watermark, always behind content.
+
+## 2026-07-07 — Brand watermarks: stronger + every section (v11.38)
+- **Existing wings watermarks made more visible**: hero 8→12%, science band 5→9%, Health Flows gallery 5→9%, pricing 6→10%.
+- **New wings watermarks added** so every major section carries the brand: the Problem (ink, right), the CAS orange card (white, bottom-left), Platform (coral, left), and Connected Health (ink, bottom-right) — all masked/faded, never touching content. Team keeps its solid mark; the closing CTA keeps its animated wings.
+
+## 2026-07-07 — Onboarding radial sweep + Escape-to-close (v11.37)
+- **Onboarding wizard** (8-step questionnaire) and the **Connect-a-device** permission screen moved onto the radial-peach background — no screen in the prototype remains on the old linear gradient.
+- **Escape key closes the language popovers** on desktop, in both the marketing/prototype and the web app (complements click-outside-to-close).
+
+## 2026-07-07 — Popover polish + Meet-Nutri / All-set sweep (v11.36)
+- **Language popovers now close on any click/tap outside** (all five locations, web + prototype) and show **4 rows** before scrolling.
+- **Meet-Nutri and All-set screens** moved off the old linear gradient onto the radial-peach background — the whole pre-auth journey (Welcome → Log in → Create → Meet Nutri → All set) now shares one Figma-matched backdrop.
+
+## 2026-07-07 — Login/Create Figma sweep · named demo nav · scrollable language menu (v11.35)
+- **Phone Login & Create Account aligned with the Figma/Welcome vocabulary**: radial-peach background, Poppins-Medium titles (38 px), “Create / account” two-tone with **account in brand orange**, softer grey body copy.
+- **Demo-flow bar now shows screen names** (translated in all 14 languages — e.g. “Edit Period”, “已连接的应用”) instead of the n/18 counter.
+- **Language menu no longer floods the screen**: the ⋯ dropdown is now a compact popover showing ~5 languages with the rest scrollable — applied in all five selector locations (marketing nav, phone Welcome, web-app Welcome, Log-in/Sign-up, Settings), now listing full language names.
+- **i18n completeness**: `welTo`/`welP` welcome keys back-filled into all 12 add-on packs (derived from each pack's own marketing copy), so the web-app Welcome is translated everywhere — no more English fallback.
+
+## 2026-07-07 — Phone-prototype Welcome matched to Figma + language selector (v11.34)
+- **Selector repositioned (v11.34):** the language pills now sit in small type just below the welcome copy — they no longer overlap the status-bar antenna/battery icons.
+- **Welcome Page now mirrors the Figma design** (and the web app): centered layout on the soft radial-peach background, wings mark enlarged to 156 px, “Welcome to” in Poppins Medium black with **NutriSync in brand orange**, centered grey body copy, and centered pill buttons — orange-gradient Create account, solid-white Log in.
+- **Language selector added to the phone prototype**: same EN + OS-language pills + ▾ dropdown as the web app, top-right of the Welcome screen — all 14 languages, persisted across the prototype.
+- **For the mobile app build**: this Welcome spec (layout, sizes, colors) and the shared `i18n/*.json` packs apply 1:1 — the mobile team should mirror this screen and reuse the packs as-is.
+
+## 2026-07-07 — Welcome screen + full prototype flow navigation (v11.32)
+- **Phone prototype Welcome aligned with the web design**: “NutriSync” renders in brand orange in the title across all 14 languages, and the Create-account button is now translated (was hardcoded English).
+- **Web app now opens on a Welcome screen** matching the Figma design — black wings mark, black + orange title, orange Create-account / white Log-in pills, and the full language selector (pills + ▾) available before signing in.
+- **Demo flows navigate back & forth**: web #demo mode gets a floating bottom bar — Back to site · ‹ · n / 18 · › — and **swipe left/right** moves between screens; the phone prototype keeps its ‹ › arrows + ← Gallery and now also supports **swipe gestures**.
+
 ## 2026-07-06 — Logo pass (v11.30): favicons + gallery & team brand marks
 - **Browser-tab identity:** favicon + apple-touch-icon (NutriSync wings) added to both the marketing site and the web app.
 - Faint ink wings watermark behind the **Health Flows** gallery header; small coral wings mark introducing the **Team** section.

@@ -127,6 +127,16 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-07 · Web pack v11.41 + mobile Welcome selector &amp; back-nav</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-web-0607_v11.41.zip</code> (integrated) · Design raw <code>nutrisync-web-design-0707_v11.41.zip</code> · <code>nutrisync-app-welcome-i18n.zip</code> (mobile OTA)</li>
+<li><strong>Web (Design):</strong> brand <strong>watermarks on every section + footer</strong> (mobile-width QA at 390px; Platform-section mark repositioned), footer disclaimer → <strong>"Made with care in Madrid"</strong> localized in all 12 packs, language-popover polish (scrollable, click/Escape-to-close, full names). Also added the <code>welTo</code>/<code>welP</code> welcome strings to all 12 packs. Re-integrated our layer.</li>
+<li><strong>Mobile (our side — Design handed us the Welcome spec):</strong></li>
+<li><strong>Language selector on the landing</strong> — added to the <strong>Welcome</strong> and <strong>Login/Create</strong> screens (shared <code>LanguagePicker</code>: two ISO pills + dropdown of all available languages). The landing previously had no way to switch language.</li>
+<li><strong>Back navigation</strong> — added a <strong>‹ Back</strong> on the Auth screen (Login/Create → Welcome), which previously had no way back.</li>
+<li>Welcome title/paragraph now use the shared <code>welTo</code>/<code>welP</code> keys (translated in every pack); bundled those keys into the 12 add-on mobile catalogs.</li>
+<li><strong>Also fixed earlier this session:</strong> mobile boot crash <code>supabaseKey is required</code> — the public anon key is now baked into <code>config.ts</code> so the app boots from a fresh clone without <code>.env</code>.</li>
+</ul>
 <h3>2026-07-06 · v11.30 — Japanese live · all 14 languages complete</h3>
 <ul>
 <li><strong>Build:</strong> <code>nutrisync-web-0607_v11.30.zip</code> (integrated) · Design raw <code>nutrisync-web-design-0607_v11.30.zip</code> · <code>nutrisync-app-i18n-ja.zip</code> (mobile OTA)</li>
