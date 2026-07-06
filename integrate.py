@@ -236,4 +236,15 @@ if os.path.isdir(dd):
         if f.endswith(".html"): shutil.copy(os.path.join(dd, f), os.path.join(dst, f)); n += 1
     print("- overlaid %d hub documents" % n)
 
+# Cloudflare Pages cache policy: force browsers to revalidate HTML + language
+# files so new deploys and newly-shipped language packs appear immediately
+# (the ~660KB app.html otherwise caches hard and shows a stale UI/selector).
+# Static assets (js/css/images/fonts) keep normal caching.
+open(os.path.join(PUB, "_headers"), "w", encoding="utf-8").write(
+    "/\n  Cache-Control: public, max-age=0, must-revalidate\n"
+    "/*.html\n  Cache-Control: public, max-age=0, must-revalidate\n"
+    "/hub/*\n  Cache-Control: public, max-age=0, must-revalidate\n"
+    "/i18n/*\n  Cache-Control: public, max-age=0, must-revalidate\n")
+print("- _headers cache policy (revalidate HTML + i18n)")
+
 print("\nIntegration complete - review, then commit + push.")

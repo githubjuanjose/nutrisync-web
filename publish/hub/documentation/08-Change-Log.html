@@ -124,6 +124,14 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-06 · v11.22 — Galician live + cache-busting headers</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-web-0607_v11.22.zip</code> (integrated) · Design raw <code>nutrisync-web-design-0607_v11.22.zip</code> · <code>nutrisync-app-i18n-gl.zip</code> (mobile OTA)</li>
+<li><strong>Web:</strong> <strong>Galician (<code>gl</code>)</strong> now live in the web app (10th language). Galician marketing pending.</li>
+<li><strong>Cache fix:</strong> <code>integrate.py</code> now writes a Cloudflare Pages <strong><code>_headers</code></strong> file forcing browsers to <strong>revalidate HTML + <code>/i18n/*</code></strong> on every load (<code>max-age=0, must-revalidate</code>). This stops the stale-<code>app.html</code> issue where new deploys / new language packs didn't appear until a hard-refresh — verified the live app already had all switches and translated correctly; this makes it show without manual cache-clearing.</li>
+<li><strong>Mobile (crossover):</strong> bundled Galician <code>app</code> and registered <code>gl</code>; existing app sections unchanged.</li>
+<li><strong>Remaining packs:</strong> Galician marketing, then Valencian, Aranese, Chinese, Japanese.</li>
+</ul>
 <h3>2026-07-06 · Web pack v11.21 — Basque marketing (Basque complete)</h3>
 <ul>
 <li><strong>Build:</strong> <code>nutrisync-web-0607_v11.21.zip</code> (integrated) · Design raw <code>nutrisync-web-design-0607_v11.21.zip</code></li>
