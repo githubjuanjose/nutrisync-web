@@ -124,6 +124,13 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-06 · Web pack v11.17 — Greek &amp; Dutch marketing (7 core langs complete)</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-web-0607_v11.17.zip</code> (integrated) · Design raw <code>nutrisync-web-design-0607_v11.17.zip</code></li>
+<li><strong>Web:</strong> <strong>Greek + Dutch marketing</strong> translations added. All <strong>7 core languages</strong> (EN, ES, FR, DE, IT, NL, EL) are now complete <strong>end-to-end</strong> — marketing + phone prototype + web app. Pending packs: CA, EU, GL, VA, Aranés, ZH, JA.</li>
+<li><strong>Mobile:</strong> <strong>no change</strong> — <code>app</code>-section i18n byte-identical for all 7 languages; the new marketing is web-only.</li>
+<li><strong>Note (i18n visibility):</strong> verified the integration does <strong>not</strong> drop web-app translations — our integrated <code>app.html</code> is Design's <code>app.html</code> plus only a <code>&lt;head&gt;</code> consent banner + error-CSS; the i18n fetch/apply code and all language files are intact. If the deployed web app shows only marketing translated, it's a stale/cached <code>app.html</code> or an un-deployed build, not the integration — a clean redeploy + hard-refresh resolves it.</li>
+</ul>
 <h3>2026-07-06 · Mobile selector aligned to ISO codes</h3>
 <ul>
 <li><strong>Build:</strong> <code>nutrisync-app-i18n-iso.zip</code> (mobile OTA) · <code>nutrisync-web-0607_v11.16.zip</code> (docs)</li>

@@ -1,5 +1,13 @@
 # NutriSync — Release Notes / Change Log
 
+## 2026-07-06 — Greek marketing site live
+- **The marketing page (and the phone prototype inside it) is now fully translated in Greek** — `i18n/el.json` carries the `marketing` (283 keys) and `catalog` (335 entries) sections. Data-only change; no rebuild.
+- Marketing live: EN, ES, FR, DE, IT, NL, EL · web-app live: EN, ES, FR, DE, IT, NL, EL — the seven core languages are now complete end-to-end. Next: CA, EU, OC, VAL, GL, ZH, JA packs (app + marketing).
+
+## 2026-07-06 — Dutch marketing site live
+- **The marketing page (and the phone prototype inside it) is now fully translated in Dutch** — `i18n/nl.json` carries the `marketing` (283 keys) and `catalog` (335 entries) sections. Data-only change; no rebuild.
+- Marketing live: EN, ES, FR, DE, IT, NL · web-app live: EN, ES, FR, DE, IT, NL, EL · next: EL marketing, then CA, EU, OC, VAL, GL, ZH, JA packs.
+
 ## 2026-07-06 — Italian marketing site live
 - **The marketing page (and the phone prototype inside it) is now fully translated in Italian** — `i18n/it.json` carries the `marketing` (283 keys) and `catalog` (335 entries) sections. Data-only change; no rebuild.
 - Marketing live: EN, ES, FR, DE, IT · web-app live: EN, ES, FR, DE, IT, NL, EL · next: NL/EL marketing, then CA, EU, OC, VAL, GL, ZH, JA packs.
