@@ -115,7 +115,9 @@ if os.path.exists(idx):
         FT = ('<script id="ns-founder-tools">(function(){'
           'var C=[{h:"hub/waitlist.html",e:"\\uD83D\\uDCCB",t:"Waitlist",d:"Signups + CSV export",'
           'bg:"linear-gradient(135deg,#0FA968,#12C07A)"},'
-          '{h:"hub/translations.html",e:"\\uD83C\\uDF10",t:"Translations",d:"Review & edit EN/ES",'
+          '{h:"hub/review.html",e:"\\u2705",t:"Review",d:"Founders\\u2019 checklist",'
+          'bg:"linear-gradient(135deg,#B7791F,#D69E2E)"},'
+          '{h:"hub/translations.html",e:"\\uD83C\\uDF10",t:"Translations",d:"14-language review",'
           'bg:"linear-gradient(135deg,#E8472A,#F4876F)"},'
           '{h:"hub/documentation/08-Change-Log.html",e:"\\uD83E\\uDDFE",t:"Change Log",'
           'd:"Web & app changes",bg:"#241D1A"}];'
@@ -206,6 +208,12 @@ if os.path.exists(tp):
             pill = '<a class="htab" href="translations.html" target="_blank" style="text-decoration:none;display:inline-flex;align-items:center">🌐 Translations (EN/ES)</a>'
             if old in s: open(hub, "w", encoding="utf-8").write(s.replace(old, old + "\n      " + pill, 1))
     print("- Translations page + hub pill")
+
+# Founders' review checklist (static, no backend).
+rv = os.path.join(ASSETS, "review.html")
+if os.path.exists(rv):
+    shutil.copy(rv, os.path.join(PUB, "hub", "review.html"))
+    print("- Founders' review checklist page")
 
 # Founders' waitlist dashboard (admin-gated read via admin_waitlist RPC).
 wl = os.path.join(ASSETS, "waitlist.html")
