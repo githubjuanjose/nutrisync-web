@@ -1,5 +1,9 @@
 # NutriSync — Release Notes / Change Log
 
+## 2026-07-06 — Basque live in the web app
+- **Basque (Euskara) app pack shipped** (`i18n/eu.json`) — EU now appears in the web-app selector; its marketing section follows next. Native-speaker review recommended before production.
+- Web-app live: EN, ES, FR, DE, IT, NL, EL, CA, EU · marketing live: EN, ES, FR, DE, IT, NL, EL, CA.
+
 ## 2026-07-06 — Catalan marketing site live
 - **The marketing page (and the phone prototype inside it) is now fully translated in Catalan** — `i18n/ca.json` carries the `marketing` (283 keys) and `catalog` (335 entries) sections. Catalan is now complete end-to-end.
 - Marketing + web-app live: EN, ES, FR, DE, IT, NL, EL, CA · next: EU (Euskara), OC (Aranés), VAL (Valencià), GL (Galego), ZH, JA.
