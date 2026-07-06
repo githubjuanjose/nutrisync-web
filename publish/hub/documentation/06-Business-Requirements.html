@@ -6,6 +6,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helv
 .topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
 .topbar .brand b{font-weight:800;}
 .topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.navbtns{display:flex;gap:16px;align-items:center;}
+.navbtns a:first-child{padding:5px 12px;border:1px solid var(--line);border-radius:20px;}
+.navbtns a:first-child:hover{border-color:var(--coral);background:var(--cream);}
 .wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
 h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
 h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
@@ -32,7 +35,7 @@ tbody tr:nth-child(even){background:var(--cream);}
 .card .t{font-weight:800;font-size:16px;color:var(--coral-deep);}
 .card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
 .sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
-</style></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><a href="index.html">← All documents</a></div><div class="wrap"><h1>NutriSync — Business Requirements by User Workflow</h1>
+</style></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>NutriSync — Business Requirements by User Workflow</h1>
 <p>Purpose: a Product-Owner-verifiable list of business requirements for every user workflow, each with its <strong>intent</strong> (the "why"), and a check that <strong>web + apps</strong> deliver the <strong>nine capabilities from slide 7</strong> of the deck.</p>
 <p>As of <strong>July 2026</strong>, most of the core product is built and running on real data across <strong>both</strong> the native mobile app (Expo SDK 54) and the live web app (Cloudflare Pages, wired to the same Supabase backend). This rewrite keeps every workflow and the capability matrix, but each requirement now carries a <strong>Built?</strong> signal reflecting reality — so POs verify against what actually ships, not against a plan.</p>
 <p>How to use: POs review each requirement, confirm the intent is right, and mark the <strong>Verify</strong> column (✅ met / ⚠️ partial / ❌ missing) per surface. The <strong>Built?</strong> column is our current honest read; the <strong>Verify</strong> column is the PO's sign-off. The companion <code>business-requirements.csv</code> is the tracker.</p>
