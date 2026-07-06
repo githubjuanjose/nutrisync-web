@@ -1,5 +1,13 @@
 # NutriSync — Release Notes / Change Log
 
+## 2026-07-06 — Valencian live in the web app
+- **Valencian (Valencià, AVL forms) app pack shipped** (`i18n/val.json`) — VAL now appears in the web-app selector; its marketing section follows next.
+- Web-app live: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL, VAL · marketing live: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL.
+
+## 2026-07-06 — Galician marketing site live
+- **The marketing page (and the phone prototype inside it) is now fully translated in Galician** — `i18n/gl.json` carries the `marketing` (283 keys) and `catalog` (335 entries) sections. Galician is now complete end-to-end.
+- Marketing + web-app live: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL · next: VAL (Valencià), OC (Aranés), ZH, JA.
+
 ## 2026-07-06 — Galician live in the web app
 - **Galician (Galego) app pack shipped** (`i18n/gl.json`) — GL now appears in the web-app selector; its marketing section follows next.
 - Web-app live: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL · marketing live: EN, ES, FR, DE, IT, NL, EL, CA, EU.
