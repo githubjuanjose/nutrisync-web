@@ -1,5 +1,18 @@
 # NutriSync — Release Notes / Change Log
 
+## 2026-07-06 — Logo pass (v11.30): favicons + gallery & team brand marks
+- **Browser-tab identity:** favicon + apple-touch-icon (NutriSync wings) added to both the marketing site and the web app.
+- Faint ink wings watermark behind the **Health Flows** gallery header; small coral wings mark introducing the **Team** section.
+- Brand moments now: header logo · hero / science / pricing / gallery watermarks · team mark · animated CTA wings · footer logo · favicons.
+
+## 2026-07-06 — Brand watermarks across the marketing page (v11.29)
+- Faded NutriSync wings watermarks now appear in three places: the **hero** (coral, top-right, fading downward), the dark **science band** (white, right edge, fading left) and the **pricing section** (coral, bottom-left, fading upward) — subtle 5–8% opacity brand moments that complement the enlarged header logo and the animated wings in the closing CTA.
+
+## 2026-07-06 — Japanese (日本語) live · 14/14 languages complete · hero brand watermark
+- **Japanese shipped in one pack** — `i18n/ja.json` carries `app`, `marketing` and `catalog` sections. JA appears in both selectors; web app, marketing page and phone prototype fully translated.
+- **The language rollout is complete: all 14 supported languages live end-to-end** (EN, ES, FR, DE, IT, NL, EL, CA, EU, GL, VAL, OC, ZH, JA). Aranese & Basque: native-speaker review recommended before production. Investor & Builder rooms stay EN/ES by design.
+- **Brand presence:** large faded NutriSync wings watermark added behind the hero (top-right, fading out downward) — complements the enlarged header logo and the animated wings in the closing CTA.
+
 ## 2026-07-06 — Chinese (中文) live end-to-end
 - **Simplified Chinese (continental) shipped in one pack** — `i18n/zh.json` carries `app`, `marketing` and `catalog` sections. ZH now appears in both selectors; web app, marketing page and phone prototype are fully translated.
 - Live end-to-end: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL, VAL, OC, ZH · remaining: JA (日本語).
