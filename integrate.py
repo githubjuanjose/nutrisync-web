@@ -121,7 +121,7 @@ if os.path.exists(idx):
           'bg:"linear-gradient(135deg,#E8472A,#F4876F)"},'
           '{h:"hub/documentation/08-Change-Log.html",e:"\\uD83E\\uDDFE",t:"Change Log",'
           'd:"Web & app changes",bg:"#241D1A"}];'
-          'function card(x){return \'<a href="\'+x.h+\'" target="_blank" style="flex:1;min-width:150px;'
+          'function card(x){return \'<a href="\'+x.h+\'" style="flex:1;min-width:150px;'
           'display:flex;align-items:center;gap:10px;text-decoration:none;background:\'+x.bg+\';color:#fff;'
           'border-radius:14px;padding:13px 15px;box-shadow:0 12px 26px -16px rgba(0,0,0,.5)">'
           '<span style="font-size:20px">\'+x.e+\'</span><span><span style="font-weight:800;font-size:14px;'
@@ -165,6 +165,15 @@ if os.path.exists(ap):
           '})();</script>')
         open(ap, "w", encoding="utf-8").write(ap_s.replace("</head>", EX + "</head>", 1))
         print("- Web app 'Back to site' exit link (app.html)")
+
+# The site is public — strip the "Demo access — use code 123456" hint from the
+# hub gates (the 123456 code still works; it's just no longer advertised on-screen).
+if os.path.exists(idx):
+    ih = open(idx, encoding="utf-8").read()
+    new = re.sub(r'Demo access[\s\S]{0,240}?use code 123456<\\u002Fbutton>', '', ih)
+    new = re.sub(r'Demo access[\s\S]{0,240}?use code 123456</button>', '', new)
+    if new != ih:
+        open(idx, "w", encoding="utf-8").write(new); print("- removed public demo-code hint")
 
 adm = os.path.join(PUB, "hub", "admin-mis-console.html")
 if os.path.exists(adm):

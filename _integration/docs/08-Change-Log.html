@@ -127,6 +127,14 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-06 · v11.28 — Founder Tools cards open in-place · Unicode verified</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-web-0607_v11.28.zip</code> (supersedes v11.27 — includes Chinese)</li>
+<li><strong>Builders hub:</strong> the Founder Tools cards (Waitlist / Review / Translations / Change Log) now open <strong>in the same tab</strong> instead of a new one (<code>target="_blank"</code> removed). They were working, but a new tab is easy to miss / can be popup-blocked — so they felt dead. Confirmed via live test that same-tab clicks aren't intercepted by the room's SPA; browser Back returns to the room.</li>
+<li><strong>Public site:</strong> removed the <strong>"Demo access — use code 123456"</strong> hint from the hub gates (site is public). <code>integrate.py</code> strips it from the compiled bundle; the <code>123456</code> code still works, it's just no longer shown on-screen. Share it out-of-band.</li>
+<li><strong>Platform — Unicode/CJK verified end-to-end:</strong> live round-trip proved Postgres stores CJK (3 bytes/char) + emoji (4 bytes) natively; both frontends are UTF-8 with no ASCII-only input validation on user text. Added <code>backend/unicode-check.sql</code>.</li>
+<li><strong>Mobile:</strong> none.</li>
+</ul>
 <h3>2026-07-06 · Web pack v11.27 — Chinese live (web app + mobile)</h3>
 <ul>
 <li><strong>Build:</strong> <code>nutrisync-web-0607_v11.27.zip</code> (integrated) · Design raw <code>nutrisync-web-design-0607_v11.27.zip</code> · <code>nutrisync-app-i18n-zh.zip</code> (mobile OTA)</li>
