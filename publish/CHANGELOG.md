@@ -1,5 +1,9 @@
 # NutriSync — Release Notes / Change Log
 
+## 2026-07-06 — Chinese (中文) live end-to-end
+- **Simplified Chinese (continental) shipped in one pack** — `i18n/zh.json` carries `app`, `marketing` and `catalog` sections. ZH now appears in both selectors; web app, marketing page and phone prototype are fully translated.
+- Live end-to-end: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL, VAL, OC, ZH · remaining: JA (日本語).
+
 ## 2026-07-06 — Aranese marketing site live
 - **The marketing page (and the phone prototype inside it) is now fully translated in Aranese** — `i18n/oc.json` carries the `marketing` (283 keys) and `catalog` (335 entries) sections. Aranese is complete end-to-end. **Native-speaker review strongly recommended before production.**
 - Marketing + web-app live: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL, VAL, OC · remaining: ZH (中文), JA (日本語).
