@@ -461,6 +461,27 @@ _patch(APH, [
      'style=\\"display: flex; gap: 8px; justify-content: space-between; align-items: center; background: #fff; border: 1px solid #EDE0D2; border-radius: 18px; padding: 12px; margin-top: 18px;\\"', False),
 ], "W21 circular day buttons (shared strip)")
 
+# F16 (confirmed by POs + verified: PCOS officially renamed PMOS, May 2026) —
+# display "PMOS" everywhere while KEEPING the stored canonical key 'PCOS' so no
+# existing user data breaks. dsp() falls back to the raw key for languages
+# without a label, so the ternary covers EN + all untranslated locales at once.
+_patch(APH, [
+    ("label: dsp('condLabels', c), onToggle:",
+     "label: (dsp('condLabels', c) === 'PCOS' ? 'PMOS' : dsp('condLabels', c)), onToggle:", False),
+    ("condLabels: { PCOS: 'SOP',", "condLabels: { PCOS: 'PMOS',", False),
+], "F16 PCOS -> PMOS labels (web app)")
+_patch(IDX, [
+    ("'Fibroids', 'Endometriosis', 'PCOS',", "'Fibroids', 'Endometriosis', 'PMOS',", False),
+], "F16 PMOS in demo onboarding options")
+_es = os.path.join(PUB, "i18n", "es.json")
+if os.path.exists(_es):
+    _d = json.load(open(_es, encoding="utf-8"))
+    _cl = _d.get("app", {}).get("condLabels")
+    if _cl and _cl.get("PCOS") != "PMOS":
+        _cl["PCOS"] = "PMOS"
+        json.dump(_d, open(_es, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+        print("- F16 i18n/es.json condLabels PMOS")
+
 # W1 — forgot-password link
 _patch(APH, [
     (r'(cursor: pointer;)\\">\{\{ t\.forgot \}\}', r'\1\\" id=\\"ns-forgot\\">{{ t.forgot }}', True),

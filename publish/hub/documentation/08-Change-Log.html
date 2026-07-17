@@ -173,6 +173,15 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-17 · PO Round 1 — Iteration 5 · F16 PCOS → PMOS (web + mobile)</h3>
+<ul>
+<li><strong>Builds:</strong> <code>nutrisync-web-0607_v11.42-po5.zip</code> · <code>nutrisync-app-pmos-fix.zip</code> (OTA)</li>
+<li><strong>Context (verified):</strong> PCOS was officially renamed <strong>PMOS — polyendocrine metabolic ovarian syndrome</strong> on 12 May 2026 by a 56-organization coalition (Endocrine Society, AE-PCOS et al.). PO instruction: display PMOS wherever PCOS appeared.</li>
+<li><strong>Data contract preserved:</strong> stored canonical keys stay <code>PCOS</code>/<code>pcos</code> so no existing user rows break; only display labels change. Mobile <code>norm()</code> aliases the legacy token so old logs still match.</li>
+<li><strong>Web:</strong> condition chips show PMOS in every language (translated label when present, PMOS fallback otherwise); ES label SOP → PMOS; demo onboarding options updated.</li>
+<li><strong>Mobile:</strong> Edit Health chip now PMOS + legacy alias; ES label updated.</li>
+<li><strong>→ doc 12:</strong> translators to provide the localized PMOS terminology for the other 12 languages.</li>
+</ul>
 <h3>2026-07-17 · PO Round 1 — Iteration 4 (web) · W21 circular day strip</h3>
 <ul>
 <li><strong>Build:</strong> <code>nutrisync-web-0607_v11.42-po4.zip</code></li>
