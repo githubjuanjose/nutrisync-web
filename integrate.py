@@ -374,6 +374,30 @@ _patch(IDX, [
      r'<a href=\\"https://www.tiktok.com/@nutrisyncc\\" target=\\"_blank\\" rel=\\"noopener\\" aria-label=\\"TikTok\\"', True),
 ], "W4 socials complete (LinkedIn + Instagram + TikTok)")
 
+# W8-live — replace the static count with the live waitlist_count() RPC at runtime.
+# The template's "140+" stays as the no-JS/SSR fallback; once the RPC responds, every
+# element showing exactly "140+" is updated to the real number (never lower than 140).
+if os.path.exists(IDX):
+    _lw = ('<script id="ns-live-waitlist">(function(){var U="__U__",K="__K__";'
+      'fetch(U+"/rest/v1/rpc/waitlist_count",{method:"POST",headers:{"apikey":K,"Authorization":"Bearer "+K,"Content-Type":"application/json"},body:"{}"})'
+      '.then(function(r){return r.json();}).then(function(n){'
+      'if(typeof n!=="number"||n<140)return;var txt=n+"+";'
+      'function sweep(){var els=document.querySelectorAll("strong,b,span,div");'
+      'for(var i=0;i<els.length;i++){var e=els[i];'
+      'if(e.childElementCount===0&&e.textContent.trim()==="140+")e.textContent=txt;}}'
+      'sweep();new MutationObserver(sweep).observe(document.body,{childList:true,subtree:true});'
+      '}).catch(function(){});})();</script>').replace("__U__", URL).replace("__K__", KEY)
+    _ih = open(IDX, encoding="utf-8", errors="surrogateescape").read()
+    if "ns-live-waitlist" not in _ih:
+        open(IDX, "w", encoding="utf-8", errors="surrogateescape").write(_ih.replace("</head>", _lw + "</head>", 1))
+        print("- W8-live waitlist count wired (marketing)")
+    _inv = os.path.join(PUB, "hub", "investors-business-case.html")
+    if os.path.exists(_inv):
+        _s2 = open(_inv, encoding="utf-8").read()
+        if "ns-live-waitlist" not in _s2:
+            open(_inv, "w", encoding="utf-8").write(_s2.replace("</body>", _lw + "</body>", 1))
+            print("- W8-live waitlist count wired (investor)")
+
 # W8 — waitlist stat 130 → 140+ (marketing stats bar + investor page)
 _patch(IDX, [
     (r'130<\\u002Fstrong>&nbsp; \{\{ t\.trWaitlist \}\}', r'140+<\\u002Fstrong>&nbsp; {{ t.trWaitlist }}', True),

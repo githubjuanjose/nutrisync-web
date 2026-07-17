@@ -173,6 +173,15 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-17 · R2-K — final APPFEEDBACK cleanup (mobile)</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-app-r2k-cleanup.zip</code> (OTA — contains all batches)</li>
+<li><strong>F49 ✅</strong> Onboarding diet options now include Gluten-free, Dairy-free and Other.</li>
+<li><strong>F20 ✅</strong> New onboarding step after nutrition preference: "What's your primary goal?" with the four NutriGoals; the choice persists to <code>users.nutrigoal</code> and immediately drives the recommendation engine's +2 goal ranking. (Swipe-carousel styling = Design polish pass.)</li>
+<li><strong>F18 ✅</strong> The Nutri now floats (gentle 3.2s loop) on the onboarding screens.</li>
+<li><strong>F25 ✅</strong> Check-in gate: mood/energy respond to <strong>slide gestures</strong> (drag up = higher, down = lower); taps still work.</li>
+<li><strong>F1 ⚠ confirmed open</strong> — onboarding questions/options are hardcoded EN in <code>steps.ts</code> (chrome is translated, content isn't). Needs a steps↔<code>ob</code> i18n mapping pass — queued with the next translation round alongside the new NutriLog/Movement labels.</li>
+</ul>
 <h3>2026-07-17 · Round-1 final answers wired (web)</h3>
 <ul>
 <li><strong>Build:</strong> <code>nutrisync-web-1707_v11.43-po7.zip</code></li>
