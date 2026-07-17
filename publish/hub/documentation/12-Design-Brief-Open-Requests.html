@@ -91,4 +91,10 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p><strong>Skeletons provided (12 files):</strong> <code>fr/it/de/nl/el/ca/eu/gl/va/oc-aran/zh/ja.json</code> — same key structure as <code>en.json</code> (613 keys incl. mobile), placeholders. Design/the translator (or <code>mt_translate.py</code>) fills the values in place; the mobile side and the founder tool are ready to receive them.</p>
 <p><strong>Mobile side (done, ours):</strong> the app already ships the 14-language registry with <strong>OS-language default</strong> and the two-pill + dropdown selector; each locale falls back to English until its catalog lands. The founder <strong>Translations tool</strong> is now a 14-language reviewer (pick a language, MT beside English source, per-language export).</p>
 <hr />
-<p><strong>Note on workflow:</strong> the marketing site and web app are the compiled bundle Design exports. Each of the above should be fixed in the <strong>source design</strong>, then re-exported as a normal pack — we re-apply our integration layer (<code>integrate.py</code>) on top. See <em>Change Log → Who fixes what (Design vs Integration)</em> for the ownership split.</p></div></body></html>
+<p><strong>Note on workflow:</strong> the marketing site and web app are the compiled bundle Design exports. Each of the above should be fixed in the <strong>source design</strong>, then re-exported as a normal pack — we re-apply our integration layer (<code>integrate.py</code>) on top. See <em>Change Log → Who fixes what (Design vs Integration)</em> for the ownership split.</p>
+<h2>7 · Marketing copy update — 12 locales (NEW · open, from PO Round 1)</h2>
+<p>The EN/ES marketing copy changed in three places (PO feedback 14–16 Jul). The other 12 locale files (<code>i18n/*.json</code> → top-level <code>marketing</code>) still carry the old text and need native translations for:
+- <code>prYears</code>: "Years" → "~4 yrs" (localised)
+- <code>prC2t</code>: "Later diagnoses &amp; delayed care" → "Later diagnoses than men"
+- <code>prC2b</code>: → "Diagnosed ~4 years later than men on average — 4.5y later for metabolic conditions, 2.5y for cancer, 5–6y for conditions like ADHD."
+- <code>casP</code>: append "— and tracks how your alignment improves over time, so you can see the progress you're actually making."</p></div></body></html>

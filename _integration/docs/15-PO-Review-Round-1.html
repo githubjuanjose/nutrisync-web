@@ -1,0 +1,281 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>PO Review — Round 1 — NutriSync Docs</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.navbtns{display:flex;gap:16px;align-items:center;}
+.navbtns a:first-child{padding:5px 12px;border:1px solid var(--line);border-radius:20px;}
+.navbtns a:first-child:hover{border-color:var(--coral);background:var(--cream);}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+h4{font-size:16px;font-weight:800;margin:20px 0 6px;}
+p{margin:10px 0;}
+a{color:var(--coral-deep);}
+strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:'SF Mono',Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:14px 0;padding:12px 18px;background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;color:#5d524b;}
+blockquote p{margin:4px 0;}
+ul,ol{margin:10px 0;padding-left:24px;}
+li{margin:5px 0;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;}
+tbody tr:nth-child(even){background:var(--cream);}
+.pill{display:inline-block;background:#FDE6DD;color:var(--coral-deep);font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;}
+.card{display:block;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:10px 0;text-decoration:none;color:var(--ink);transition:.15s;}
+.card:hover{border-color:var(--coral);background:var(--cream);}
+.card .t{font-weight:800;font-size:16px;color:var(--coral-deep);}
+.card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
+.sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
+</style></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>PO Review — Round 1 (Feedback of 14–16 Jul, Pilar + Lucía)</h1>
+<p><strong>Source:</strong> <code>All_docs_Feedback.docx</code> (APPFEEDBACK + WEBFEEDBACK) + WhatsApp thread + 3 asset drops.
+<strong>PO directive (Lucía 14/7):</strong> implement <strong>WEBFEEDBACK now</strong>; hold APPFEEDBACK until their pass is finished. Pilar (15/7): all app feedback is now in, movement + nutrilog were <strong>completely re-wireframed</strong> (new 4-screen flows + Excel databases delivered).</p>
+<p><strong>Triage legend:</strong> <strong>(a)</strong> integration/mobile layer (we ship it) · <strong>(b)</strong> Design's compiled bundle → goes on doc 12 (Design Brief Open Requests) · <strong>(c)</strong> backend/Supabase.</p>
+<hr />
+<h2>Round 1 — WEBFEEDBACK (active now)</h2>
+<h3>Wave 1 · Bugs / data integrity (POs' priority 1)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Item</th>
+<th>Triage</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>W1 (2.1)</td>
+<td>Forgot password non-functional → wire <code>resetPasswordForEmail()</code> + reset page</td>
+<td>(a)+(c)</td>
+<td>open</td>
+</tr>
+<tr>
+<td>W2 (2.3)</td>
+<td>Movement log auto-selects all activities → user must select; add "Other" free entry</td>
+<td>(b), (a) stopgap possible</td>
+<td>open</td>
+</tr>
+<tr>
+<td>W3 (2.9)</td>
+<td>Flow "Medium" + Mood "Content" pre-selected on Edit Period → nothing pre-selected (corrupts CAS data)</td>
+<td>(b), (a) stopgap possible</td>
+<td>open</td>
+</tr>
+<tr>
+<td>W4 (2.11)</td>
+<td>Footer Instagram/LinkedIn/TikTok static → link real profiles, new tab</td>
+<td>(a) — <strong>need URLs from POs</strong></td>
+<td>open</td>
+</tr>
+<tr>
+<td>W5 (3.3)</td>
+<td>"Founder Tools buttons redirect to site"</td>
+<td>(a) — likely <strong>stale cache / pre-v11.42 test</strong>; tools are live &amp; verified. Ask POs to re-test after hard refresh</td>
+<td>verify</td>
+</tr>
+</tbody>
+</table>
+<h3>Wave 2 · Pricing &amp; stats consistency (needs Pilar decision first)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Item</th>
+<th>Triage</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>W6 (1.6)</td>
+<td>Remove Free tier; Premium €5.99→<strong>€4.99/mo</strong>; Employer unchanged</td>
+<td>(a) runtime patch or (b) proper</td>
+<td><strong>blocked: decision</strong></td>
+</tr>
+<tr>
+<td>W7 (3.1)</td>
+<td>Investor tab shows Free/Plus €7/Care €15 — contradicts 1.6 → reconcile to ONE model</td>
+<td>decision → then (a)</td>
+<td><strong>blocked: decision</strong></td>
+</tr>
+<tr>
+<td>W8 (1.3+3.2)</td>
+<td>Waitlist "130" → "140+" in both stat bars; ideally live Supabase count</td>
+<td>(a) now; (c) live-count RPC as follow-up</td>
+<td>open</td>
+</tr>
+<tr>
+<td>W9 (1.4)</td>
+<td>Diagnosis-delay card: "~4 years later than men" + 4.5y metabolic / 2.5y cancer / 5–6y ADHD</td>
+<td>(a) copy patch; (b) card redesign</td>
+<td>open</td>
+</tr>
+</tbody>
+</table>
+<h3>Wave 3 · Copy &amp; asset swaps (low effort, high visual impact)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Item</th>
+<th>Triage</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>W10 (1.5)</td>
+<td>CAS section: add "tracks improvement over time" sentence (Pilar confirms wording)</td>
+<td>(a)</td>
+<td>open</td>
+</tr>
+<tr>
+<td>W11 (1.7)</td>
+<td>Center Lucía's headshot in circular frame</td>
+<td>(a) CSS patch</td>
+<td>open</td>
+</tr>
+<tr>
+<td>W12 (1.8)</td>
+<td>Hero mockup: placeholder avatar → real Nutri asset, keep floating</td>
+<td>(a) if approved Nutri files located; else (b)</td>
+<td>open — locate asset</td>
+</tr>
+<tr>
+<td>W13 (2.2+2.10)</td>
+<td>Replace placeholder Nutri avatars app-wide (Choose your Nutri, Settings, Check-in)</td>
+<td>(a)/(b) — same asset question as W12</td>
+<td>open</td>
+</tr>
+<tr>
+<td>W14 (1.1)</td>
+<td>Waitlist signup form on marketing + newsletter consent line + GDPR link + inline success state</td>
+<td>(a) — capture layer already exists; add visible form + consent copy</td>
+<td>partial</td>
+</tr>
+</tbody>
+</table>
+<h3>Wave 4 · Features (web app)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Item</th>
+<th>Triage</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>W15 (2.5)</td>
+<td>Meal logging: user logs real meals; 80-food CycleSync DB as suggestions; feeds CAS nutrition</td>
+<td>(b)+(c) — Excel → Supabase tables</td>
+<td>open</td>
+</tr>
+<tr>
+<td>W16 (2.6)</td>
+<td>Progress: per-component CAS breakdown (30/25/20/15/10)</td>
+<td>(b)</td>
+<td>open</td>
+</tr>
+<tr>
+<td>W17 (2.7)</td>
+<td>Progress: Cycle Stability Score (derived from mood/energy logs, trend indicator)</td>
+<td>(b)+(c)</td>
+<td>open</td>
+</tr>
+<tr>
+<td>W18 (2.8)</td>
+<td>"Log period / My period started today" quick action → recalculates cycle day</td>
+<td>(b)+(c)</td>
+<td>open</td>
+</tr>
+<tr>
+<td>W19 (3.3-P1)</td>
+<td>Founder tools phase 1 per doc: Waitlist + Change Log first — <strong>already live</strong>; Review + Translations also live</td>
+<td>done — pending PO re-test</td>
+<td>verify</td>
+</tr>
+</tbody>
+</table>
+<h3>Wave 5 · UI polish to Figma</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Item</th>
+<th>Triage</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>W20 (2.12)</td>
+<td>Energy check-in: numeric 1–5 → interactive battery UI</td>
+<td>(b)</td>
+<td>open</td>
+</tr>
+<tr>
+<td>W21 (2.13)</td>
+<td>Day-of-week strip: pill → circular buttons (shared component)</td>
+<td>(b), (a) CSS stopgap</td>
+<td>open</td>
+</tr>
+<tr>
+<td>W22 (2.14)</td>
+<td>Progress card → Figma: current / weekly / best score</td>
+<td>(b)</td>
+<td>open</td>
+</tr>
+<tr>
+<td>W23 (1.2)</td>
+<td>Wearables phone mockup: use real wireframe UI + auto-cycling animation (illustrative only, no live APIs)</td>
+<td>(b)</td>
+<td>open</td>
+</tr>
+<tr>
+<td>W24</td>
+<td>Remove prototype/wireframe section from public site → replace with consumer-oriented app video</td>
+<td>(a) removal <strong>done</strong> (v11.42b: section → gated Builders "Prototypes"); footer "Prototype" link strip = 1-liner; video section = (b) awaiting video asset</td>
+<td>partial</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>Round 2 — APPFEEDBACK (parked per Lucía until POs confirm; assets already delivered)</h2>
+<p>Grouped, not yet scheduled. Full verbatim table stays in the source docx.</p>
+<ul>
+<li><strong>Welcome/Onboarding:</strong> F1 ES translation gap on onboarding middle text · F2 heart = emoji not wireframe · F12 loading hang · F13/F14 double arrows · F15 remove Start-over · F16 PCOS→"PMOS" (⚠ flag back: PCOS is the medically correct term — confirm this isn't a typo in the feedback) · F17 clickable T&amp;C links · F18 floating Nutri · F19 finish→Home not Calendar · F20 NEW onboarding NutriGoal swipe-select step · F49 add gluten-free/dairy-free/other diets.</li>
+<li><strong>Calendar:</strong> F3 wrong phase math propagating app-wide · F4 year view + phase search + sex-log stars · F20b static avg-cycle/avg-period stats · F21 full visual refinement to reference (premium iOS, soft palette) · F22 missing Saturday dates.</li>
+<li><strong>Home:</strong> F5 random stock profile photo · F6 wrong day/ring % · F7 scrubbable ring · F8 buttons → "Log symptoms"/"NutriGoals" · F12b unified nav-bar icon set (assets delivered in <code>nav bar/</code>) · F23 remove bell · F24 battery icon entry for energy/mood · F25 scroll-not-tap logging · F26 full Home rebuild to reference (clockwise ring, exact gradient stops, interactive scrubbing, fitted phase text).</li>
+<li><strong>Edit Period (→ "Log symptoms"):</strong> F8b log-period button · F9 symptoms don't persist · F10 static date · F27 black background wrong · F28 mood face icons missing · F29 scrollable libido · F30 star fill/stroke states · F31 keyboard covers notes (superseded: notes now separate page) · F38 add sleep rating (1–5 nightly).</li>
+<li><strong>NutriGoals (Edit Health):</strong> F32 background · F33 subheading contrast · F34 goal-circle gradients per PNGs · F35 remove allergies/conditions from screen · F36 remove "I'm not sure yet" · F37 lock icon SVG.</li>
+<li><strong>Progress:</strong> F38b full rebuild to reference + Developer Spec (live 5-component CAS recalc, CSS donut, View History screen w/ Weekly/Monthly/Yearly progressive unlock, biomarker snapshot vs last luteal, insights) · F19b "+X vs last cycle" · F20c Fitness→"Movement" · F21b ring fill matches number · F22b stability gauge · F23b stat formatting · F24b history tabs · F25b remove Energy/Mood/PMS frame · F26b predicted hormone graph · F27b remove bullet tips.</li>
+<li><strong>Settings:</strong> F39 SVG icons not emoji · F40 Nutri profile → Choose Your Nutri · F41 correct Nutri SVGs + selection state · F42 circular red outline · F43 Cycle &amp; Health link wrong · F44 <strong>blocker</strong>: text fields accept one letter at a time · F45 age placement · F46 full Personal Information field set · F47 Send Feedback option · F48 general wireframe fidelity.</li>
+<li><strong>Movement Log rebuild:</strong> 4-screen flow (Daily Tip / Body Insight / Log Movement / Movement History) — wireframes + per-screen assets delivered.</li>
+<li><strong>NutriLog rebuild:</strong> 4-screen flow (Daily Tip / Body Insight / Log Meal w/ Breakfast-Lunch-Dinner-Snacks + search/barcode / Meal History) — wireframes + assets delivered.</li>
+<li><strong>Cross-cutting:</strong> font Glacial→Poppins mismatch note ("Glacial to poppins") · privacy policy page · barcode/photo scanning feasibility (they'll ask "Lucía's dad") · meal-log keyword matching vs Excel foods → CAS.</li>
+</ul>
+<h2>Data drops received (feed Round 1 W15 + Round 2 rebuilds)</h2>
+<ul>
+<li><code>NutriSync_Adaptive_Nutrition_Movement_Database.xlsx</code> — Cycle_Segments, Nutri_Goals, Diet_Types, Health_Conditions, <strong>Food_Database (181 rows × 17 cols)</strong>, <strong>Movement_Database (61 rows)</strong>, 3 example plans. → becomes Supabase content tables.</li>
+<li><code>NutriSync_Daily_Tip_Body_Insight_Content.xlsx</code> — daily-rotating Nutrition/Movement tips (43 each) + Body Insights (33 each) + rotation preview. → daily-rotation content tables.</li>
+<li><code>new nutri log/</code> + <code>new movement log/</code> — full per-screen wireframe PNGs + component assets. <code>nav bar/</code> — unified nav icon set. <code>NutriSync MVP Wireframe (11).zip</code> — full wireframe export.</li>
+</ul>
+<h2>Decisions needed from POs before Wave 2</h2>
+<ol>
+<li><strong>Pricing model</strong> — public 2-tier (€4.99 + employer) vs investor 3-tier (Free/Plus €7/Care €15): which is canonical?</li>
+<li><strong>Social profile URLs</strong> — Instagram/LinkedIn/TikTok links for the footer.</li>
+<li><strong>Nutri asset confirmation</strong> — which files/variant are the approved Nutri characters (for hero, avatars, Settings)?</li>
+<li><strong>"PMOS"</strong> (F16) — confirm; we believe PCOS is intended.</li>
+<li><strong>Newsletter consent</strong> — implied-consent copy vs explicit checkbox (GDPR).</li>
+</ol></div></body></html>

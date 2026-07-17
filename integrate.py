@@ -330,6 +330,153 @@ if os.path.exists(hub):
             open(hub, "w", encoding="utf-8").write(s.replace(old, old + "\n      " + pill, 1))
             print("- Prototypes pill on gated hub nav")
 
+# ═══════════════ PO Review Round 1 — Iteration 1 (W1 W8 W9 W10 W11 W24f) ═══════════════
+# Source: docs/15-PO-Review-Round-1.md. All patches idempotent, applied to the raw
+# bundle text (which stores templates as JS strings — quotes appear as \" and
+# closing tags as </...>). Non-ASCII replacement text uses JS \uXXXX escapes
+# so file encoding never matters.
+def _patch(path, pairs, label):
+    if not os.path.exists(path): return
+    s = open(path, encoding="utf-8", errors="surrogateescape").read()
+    orig = s; n = 0
+    for pat, rep, isre in pairs:
+        if isre:
+            s2 = re.sub(pat, rep, s)
+        else:
+            s2 = s.replace(pat, rep)
+        if s2 != s: n += 1
+        s = s2
+    if s != orig:
+        open(path, "w", encoding="utf-8", errors="surrogateescape").write(s)
+        print("- %s (%d/%d patches)" % (label, n, len(pairs)))
+
+IDX = os.path.join(PUB, "index.html")
+APH = os.path.join(PUB, "app.html")
+INV = os.path.join(PUB, "hub", "investors-business-case.html")
+
+# W8 — waitlist stat 130 → 140+ (marketing stats bar + investor page)
+_patch(IDX, [
+    (r'130<\\u002Fstrong>&nbsp; \{\{ t\.trWaitlist \}\}', r'140+<\\u002Fstrong>&nbsp; {{ t.trWaitlist }}', True),
+], "W8 waitlist 140+ (marketing)")
+_patch(INV, [
+    ('130</b> women waitlist', '140+</b> women waitlist', False),
+    ('130</b> women on the waitlist', '140+</b> women on the waitlist', False),
+], "W8 waitlist 140+ (investor)")
+
+# W9 — diagnosis-delay stat card (EN + ES embedded dicts)
+_patch(IDX, [
+    (r"prYears: 'Years'", r"prYears: '~4 yrs'", True),
+    (r"prC2t: 'Later diagnoses & delayed care'", r"prC2t: 'Later diagnoses than men'", True),
+    (r"prC2b: 'Women[^']*delaying the care they need\.'",
+     r"prC2b: 'Diagnosed ~4 years later than men on average \\u2014 4.5y later for metabolic conditions, 2.5y for cancer, 5\\u20136y for conditions like ADHD.'", True),
+    (r"prYears: 'A[^']{1,4}os'", r"prYears: '~4 a\\u00f1os'", True),
+    (r"prC2t: 'Diagn[^']{1,60}demorada'", r"prC2t: 'Diagn\\u00f3sticos m\\u00e1s tard\\u00edos que los hombres'", True),
+    (r"prC2b: 'Los s[^']*?que necesitan\.'",
+     r"prC2b: 'Diagnosticadas de media ~4 a\\u00f1os m\\u00e1s tarde que los hombres \\u2014 4,5 a\\u00f1os en enfermedades metab\\u00f3licas, 2,5 en c\\u00e1ncer y 5\\u20136 en condiciones como el TDAH.'", True),
+], "W9 diagnosis-delay copy (EN+ES)")
+
+# W10 — CAS section: add the "improvement over time" sentence (EN + ES)
+_patch(IDX, [
+    (r"(casP: 'A live 0[^']*?in real time)\.'",
+     r"\1 \\u2014 and tracks how your alignment improves over time, so you can see the progress you\\u2019re actually making.'", True),
+    (r"(casP: 'Un n[^']*?tiempo real)\.'",
+     r"\1 \\u2014 y mide c\\u00f3mo mejora con el tiempo, para que veas el progreso real que est\\u00e1s logrando.'", True),
+], "W10 CAS improvement sentence (EN+ES)")
+
+# W9+W10 must also land in i18n/en.json + es.json (they override the embedded dicts at load)
+for _lang, _vals in {
+    "en": {"prYears": "~4 yrs", "prC2t": "Later diagnoses than men",
+           "prC2b": "Diagnosed ~4 years later than men on average — 4.5y later for metabolic conditions, 2.5y for cancer, 5–6y for conditions like ADHD.",
+           "_casAdd": " — and tracks how your alignment improves over time, so you can see the progress you’re actually making."},
+    "es": {"prYears": "~4 años", "prC2t": "Diagnósticos más tardíos que los hombres",
+           "prC2b": "Diagnosticadas de media ~4 años más tarde que los hombres — 4,5 años en enfermedades metabólicas, 2,5 en cáncer y 5–6 en condiciones como el TDAH.",
+           "_casAdd": " — y mide cómo mejora con el tiempo, para que veas el progreso real que estás logrando."},
+}.items():
+    _p = os.path.join(PUB, "i18n", _lang + ".json")
+    if os.path.exists(_p):
+        _d = json.load(open(_p, encoding="utf-8"))
+        _mk = _d.get("marketing") or _d.get("app", {}).get("marketing")
+        if _mk:
+            _add = _vals.pop("_casAdd")
+            _mk.update(_vals)
+            if _mk.get("casP") and "progres" not in _mk["casP"] and "progress" not in _mk["casP"]:
+                _mk["casP"] = _mk["casP"].rstrip(".") + "." + _add if not _mk["casP"].endswith(".") else _mk["casP"] + _add
+            json.dump(_d, open(_p, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+            print("- W9/W10 i18n/%s.json marketing keys" % _lang)
+# NOTE: the other 12 locale files keep their old translated stat until Design's
+# translators update them — logged on doc 12 for the next translation round.
+
+# W11 — center Lucía's headshot (apply Design's own crop from the JS team array)
+_patch(IDX, [
+    (r'(alt=\\"Lucia Cebrian\\" style=\\"width: 100%; height: 100%; object-fit: cover; object-position: )center;',
+     r'\g<1>50% 32%; transform: scale(2.15); transform-origin: 50% 34%;', True),
+], "W11 Lucia headshot crop")
+
+# W24f — remove the footer "Prototype" button (last public prototype entry point)
+_patch(IDX, [
+    (r'<button onclick=\\"\{\{ openPrototype \}\}\\"[^>]*>\{\{ t\.ftProto \}\}<\\u002Fbutton>', '', True),
+], "W24f footer Prototype button removed")
+
+# W1 — forgot-password: tag the link, bind it, and ship a reset page
+_patch(APH, [
+    (r'(cursor: pointer;)\\">\{\{ t\.forgot \}\}', r'\1\\" id=\\"ns-forgot\\">{{ t.forgot }}', True),
+], "W1 forgot link tagged")
+if os.path.exists(APH):
+    s = open(APH, encoding="utf-8", errors="surrogateescape").read()
+    if "ns-forgot-pw" not in s:
+        FP = ('<script id="ns-forgot-pw" type="module">\n'
+          "const U='%s',K='%s';\n" % (URL, KEY) +
+          "import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';\n"
+          "const sb=createClient(U,K,{auth:{persistSession:false}});\n"
+          "document.addEventListener('click',async(e)=>{\n"
+          "  const el=e.target.closest('#ns-forgot'); if(!el) return;\n"
+          "  if((location.hash||'').indexOf('demo')>-1){alert('Demo mode \\u2014 password reset works in the live app.');return;}\n"
+          "  let email='';\n"
+          "  document.querySelectorAll('input').forEach(i=>{if(!email&&/@.+\\./.test(i.value||''))email=i.value.trim();});\n"
+          "  if(!email) email=(window.prompt('Enter your account email:')||'').trim();\n"
+          "  if(!email||!/@.+\\./.test(email)) return;\n"
+          "  const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname.replace(/[^\\/]*$/,'')+'reset.html'});\n"
+          "  alert(error?('Could not send reset email: '+error.message):('Reset link sent to '+email+' \\u2014 check your inbox.'));\n"
+          "},true);\n"
+          "</script>")
+        open(APH, "w", encoding="utf-8", errors="surrogateescape").write(s.replace("</head>", FP + "</head>", 1))
+        print("- W1 forgot-password wiring (app.html)")
+
+RESET_HTML = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
+  '<meta name="viewport" content="width=device-width, initial-scale=1"><title>Reset password · NutriSync</title><style>'
+  'body{margin:0;font-family:Poppins,-apple-system,sans-serif;color:#231F20;min-height:100vh;display:flex;align-items:center;justify-content:center;'
+  'background:radial-gradient(circle at 28% 16%,#FDE2D6 0%,#FBEFE6 36%,#FFF8F1 62%,#F9D7BD 100%)}'
+  '.card{background:#fff;border-radius:20px;box-shadow:0 24px 60px -24px rgba(0,0,0,.28);padding:30px 28px;max-width:380px;width:90%}'
+  'h1{font-size:22px;margin:0 0 6px}p{color:#6B615C;font-size:13.5px;line-height:1.5;margin:0 0 16px}'
+  'input{width:100%;box-sizing:border-box;padding:13px 15px;border:1px solid #EADFD5;border-radius:12px;font-size:14.5px;font-family:inherit;margin-bottom:10px}'
+  'button{width:100%;border:none;cursor:pointer;background:linear-gradient(135deg,#EA5740,#F4876F);color:#fff;font-weight:700;font-size:15px;'
+  'padding:14px;border-radius:100px;font-family:inherit}'
+  '#msg{min-height:18px;font-size:12.5px;margin-top:10px}.ok{color:#0FA968}.err{color:#C73A20}'
+  'a{color:#E8472A;font-weight:600;text-decoration:none}</style></head><body><div class="card">'
+  '<h1>Set a new password</h1><p>You followed a reset link — choose a new password for your NutriSync account.</p>'
+  '<input id="p1" type="password" placeholder="New password (6+ characters)"><input id="p2" type="password" placeholder="Repeat new password">'
+  '<button id="go">Save new password</button><div id="msg"></div>'
+  '<p style="margin-top:14px">Done? <a href="app.html">Open the app and log in →</a></p></div>'
+  '<script type="module">\n'
+  "const U='__U__',K='__K__';\n"
+  "import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';\n"
+  "const sb=createClient(U,K);const $=i=>document.getElementById(i);const m=$('msg');\n"
+  "const {data:{session}}=await sb.auth.getSession();\n"
+  "if(!session){m.textContent='This page only works from the link in your reset email (link may have expired).';m.className='err';}\n"
+  "$('go').addEventListener('click',async()=>{m.textContent='';m.className='';\n"
+  "  const a=$('p1').value,b=$('p2').value;\n"
+  "  if(a.length<6){m.textContent='Password must be at least 6 characters.';m.className='err';return;}\n"
+  "  if(a!==b){m.textContent='Passwords do not match.';m.className='err';return;}\n"
+  "  const {error}=await sb.auth.updateUser({password:a});\n"
+  "  if(error){m.textContent=error.message;m.className='err';}\n"
+  "  else{m.textContent='Password updated \\u2713 \\u2014 you can log in now.';m.className='ok';}});\n"
+  '</script></body></html>')
+open(os.path.join(PUB, "reset.html"), "w", encoding="utf-8").write(RESET_HTML.replace("__U__", URL).replace("__K__", KEY))
+print("- W1 reset.html page")
+# ⚠ One-time Supabase step: Auth → URL Configuration → add
+#   https://nutrisync-collective.pages.dev/reset.html  to Redirect URLs.
+# ═══════════════ end PO Round 1 · Iteration 1 ═══════════════
+
 # Cloudflare Pages cache policy: force browsers to revalidate HTML + language
 # files so new deploys and newly-shipped language packs appear immediately
 # (the ~660KB app.html otherwise caches hard and shows a stale UI/selector).

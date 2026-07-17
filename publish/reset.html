@@ -1,0 +1,14 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Reset password · NutriSync</title><style>body{margin:0;font-family:Poppins,-apple-system,sans-serif;color:#231F20;min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 28% 16%,#FDE2D6 0%,#FBEFE6 36%,#FFF8F1 62%,#F9D7BD 100%)}.card{background:#fff;border-radius:20px;box-shadow:0 24px 60px -24px rgba(0,0,0,.28);padding:30px 28px;max-width:380px;width:90%}h1{font-size:22px;margin:0 0 6px}p{color:#6B615C;font-size:13.5px;line-height:1.5;margin:0 0 16px}input{width:100%;box-sizing:border-box;padding:13px 15px;border:1px solid #EADFD5;border-radius:12px;font-size:14.5px;font-family:inherit;margin-bottom:10px}button{width:100%;border:none;cursor:pointer;background:linear-gradient(135deg,#EA5740,#F4876F);color:#fff;font-weight:700;font-size:15px;padding:14px;border-radius:100px;font-family:inherit}#msg{min-height:18px;font-size:12.5px;margin-top:10px}.ok{color:#0FA968}.err{color:#C73A20}a{color:#E8472A;font-weight:600;text-decoration:none}</style></head><body><div class="card"><h1>Set a new password</h1><p>You followed a reset link — choose a new password for your NutriSync account.</p><input id="p1" type="password" placeholder="New password (6+ characters)"><input id="p2" type="password" placeholder="Repeat new password"><button id="go">Save new password</button><div id="msg"></div><p style="margin-top:14px">Done? <a href="app.html">Open the app and log in →</a></p></div><script type="module">
+const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const sb=createClient(U,K);const $=i=>document.getElementById(i);const m=$('msg');
+const {data:{session}}=await sb.auth.getSession();
+if(!session){m.textContent='This page only works from the link in your reset email (link may have expired).';m.className='err';}
+$('go').addEventListener('click',async()=>{m.textContent='';m.className='';
+  const a=$('p1').value,b=$('p2').value;
+  if(a.length<6){m.textContent='Password must be at least 6 characters.';m.className='err';return;}
+  if(a!==b){m.textContent='Passwords do not match.';m.className='err';return;}
+  const {error}=await sb.auth.updateUser({password:a});
+  if(error){m.textContent=error.message;m.className='err';}
+  else{m.textContent='Password updated \u2713 \u2014 you can log in now.';m.className='ok';}});
+</script></body></html>

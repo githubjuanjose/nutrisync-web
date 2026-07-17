@@ -126,7 +126,65 @@ tbody tr:nth-child(even){background:var(--cream);}
 <li><strong>Mobile:</strong> GitHub <code>nutrisync-app</code> → EAS Update (OTA, <code>production</code> channel) on push.</li>
 </ul>
 <hr />
+<h2>🏁 PO Review — Round 1 scoreboard (WEBFEEDBACK · updated each iteration)</h2>
+<p>Full triaged backlog: <strong>doc 15 — PO Review Round 1</strong>. W-numbers below match it.</p>
+<table>
+<thead>
+<tr>
+<th>Wave</th>
+<th>Items</th>
+<th>Done</th>
+<th>Open</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 · Bugs</td>
+<td>W1–W5</td>
+<td><strong>W1</strong> ✅ (it.1)</td>
+<td>W2 W3 W4 · W5 verify</td>
+</tr>
+<tr>
+<td>2 · Pricing/stats</td>
+<td>W6–W9</td>
+<td><strong>W8 W9</strong> ✅ (it.1)</td>
+<td>W6 W7 blocked on decision</td>
+</tr>
+<tr>
+<td>3 · Copy/assets</td>
+<td>W10–W14</td>
+<td><strong>W10 W11</strong> ✅ (it.1)</td>
+<td>W12 W13 · W14 partial</td>
+</tr>
+<tr>
+<td>4 · Features</td>
+<td>W15–W19</td>
+<td>W19 (pending PO re-test)</td>
+<td>W15 W16 W17 W18</td>
+</tr>
+<tr>
+<td>5 · Figma polish</td>
+<td>W20–W24</td>
+<td><strong>W24</strong> ✅ (footer link stripped, it.1; video section awaits asset)</td>
+<td>W20 W21 W22 W23</td>
+</tr>
+</tbody>
+</table>
+<p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
+<hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-17 · PO Round 1 — Iteration 1 (web)</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-web-0607_v11.42-po1.zip</code></li>
+<li><strong>W1 ✅ Forgot password</strong> — link now sends a real Supabase reset email; new branded <code>reset.html</code> completes the flow (set new password). ⚠ One-time step: Supabase → Auth → URL Configuration → add <code>https://nutrisync-collective.pages.dev/reset.html</code> to Redirect URLs.</li>
+<li><strong>W8 ✅</strong> Waitlist stat 130 → <strong>140+</strong> (marketing stats bar + investor page). Live-count RPC logged as follow-up tech debt.</li>
+<li><strong>W9 ✅</strong> Diagnosis-delay card: "~4 yrs / Later diagnoses than men" + metabolic 4.5y · cancer 2.5y · ADHD 5–6y (EN + ES; embedded dicts + locale files).</li>
+<li><strong>W10 ✅</strong> CAS section now says the score tracks improvement over time (EN + ES) — Pilar to confirm final wording.</li>
+<li><strong>W11 ✅</strong> Lucía's headshot centered (applied Design's own crop: 50% 32%, scale 2.15).</li>
+<li><strong>W24 ✅ (removal half)</strong> Footer "Prototype" button stripped — zero public prototype entry points remain.</li>
+<li><strong>Translators note (→ doc 12):</strong> the other 12 locale files still carry the old W9/W10 marketing copy — needs Design's translation round.</li>
+<li>All patches live in <code>integrate.py</code> (idempotent) → survive future Design re-exports.</li>
+</ul>
 <h3>2026-07-07 · Prototypes moved off the public site → Builders "Prototypes" tab</h3>
 <ul>
 <li><strong>Build:</strong> <code>nutrisync-web-0607_v11.42.zip</code> (integrated)</li>
