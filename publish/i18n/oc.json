@@ -1,5 +1,5 @@
 {
-  "_note": "NutriSync language resource — Aranés (occitan dera Val d'Aran). Edit values only; keys are contract. Apps fetch this at load (no rebuild needed). 'k' fields stay canonical English; 'label' carries the translation. NOTE: native-speaker review recommended before production.",
+  "_note": "NutriSync language resource — Aranés (occitan dera Val d'Aran). Edit values only; keys are contract. Apps fetch this at load (no rebuild needed). 'k' fields stay canonical English; 'label' carries the translation. Native-review pass applied 2026-07-07.",
   "app": {
     "ui": {
       "boot": "SINCRONIZANT…",
@@ -112,7 +112,7 @@
       "birthControl": "Anticoncepcion",
       "physSymptoms": "Simptòmes fisics",
       "notes": "Nòtes",
-      "notesPh": "Arren mès sus aué…",
+      "notesPh": "Bèra causa mès sus aué…",
       "editHealth": "Edita era salut",
       "yourProfile": "Eth tòn perfil",
       "saveChanges": "Sauva es cambis",
@@ -432,7 +432,7 @@
         "meals": [
           {
             "emoji": "🥣",
-            "name": "Iogurt grèc, fruts arroges e pepites de coja",
+            "name": "Iogurt grèc, fruts arrois e pepites de coja",
             "slot": "Desdejuar",
             "tag": "ZINC"
           },
@@ -521,7 +521,7 @@
           },
           {
             "emoji": "🍮",
-            "name": "Podin de chía damb chocolate nere",
+            "name": "Podin de chia damb chocolate nere",
             "slot": "Sopar",
             "tag": "MAGNÈSI"
           }
@@ -657,7 +657,7 @@
       }
     ],
     "provSync": {
-      "apple": "sincronizat 6:40",
+      "apple": "sincronizat as 6:40",
       "oura": "sincronizat hè 2 ores",
       "garmin": "sincronize cada dia",
       "fitbit": "sincronize cada dia",
@@ -948,7 +948,7 @@
     "pxWorking": "FONCIONE BEN",
     "pxFocus": "ÀREES DE FOCUS",
     "pxTodayCas": "AUÉ · CAS",
-    "pxBreakdown": "Destalh dera puntuacion d'aué",
+    "pxBreakdown": "Detalh dera puntuacion d'aué",
     "pxYourProgress": "Eth tòn progrès",
     "pxHormonal": "Ritme hormonau",
     "pxHormonalSub": "Estrogèns, progesterona e FSH ath long deth tòn cicle",
@@ -1082,7 +1082,7 @@
   "catalog": {
     "Getting started": "Prumèri passi",
     "4 screens": "4 pantalhes",
-    "Meet Nutri & onboarding": "Coneish a Nutri e onboarding",
+    "Meet Nutri & onboarding": "Coneish Nutri e onboarding",
     "8 screens": "8 pantalhes",
     "Your daily loop": "Era tua rutina diària",
     "6 screens": "6 pantalhes",
@@ -1102,7 +1102,7 @@
     "Name, email, password": "Nòm, corrèu, contrasenha",
     "You're all set": "Tot prèst",
     "Confirmation with Nutri": "Confirmacion damb Nutri",
-    "Meet Nutri": "Coneish a Nutri",
+    "Meet Nutri": "Coneish Nutri",
     "5-step guided intro": "Introduccion guidada en 5 passi",
     "Cycle Info": "Donades deth cicle",
     "8 steps · length, symptoms, colour": "8 passi · durada, simptòmes, color",
@@ -1197,7 +1197,7 @@
     "Sauerkraut": "Chucrut",
     "Raspberries": "Gèrdes",
     "Citrus": "Citrics",
-    "Berries": "Fruts arroges",
+    "Berries": "Fruts arrois",
     "Olive oil": "Òli d'oliva",
     "Green tea": "Tè verd",
     "Chickpeas": "Ceses",
@@ -1392,8 +1392,8 @@
     "Barcelona, ES · 3d ago": "Barcelona, ES · hè 3 dies",
     "On point": "Ath dia",
     "7 days": "7 dies",
-    "2 items missed": "2 elements penents",
-    "Midday energy": "Energia de miegdia",
+    "2 items missed": "2 elements pendents",
+    "Midday energy": "Energia de miègdia",
     "Watch caffeine": "Compde damb era cafeïna",
     "Meals": "Minjars",
     "Cycle": "Cicle",

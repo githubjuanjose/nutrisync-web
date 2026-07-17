@@ -88,7 +88,7 @@
       "lowEnergy": "ENERGIA GUTXIKO EGUNA?",
       "markDone": "Markatu egindakotzat",
       "sessionDone": "✓ Saioa osatuta",
-      "mvAlt": "Aldatu 20 minutuko ibilaldi eta luzaketa leunengatik — iraunkortasunak intentsitatea irabazten du, fase guztietan.",
+      "mvAlt": "Aldatu 20 minutuko ibilaldi eta luzaketa leunengatik — iraunkortasunak intentsitateari irabazten dio, fase guztietan.",
       "progress": "Aurrerapena",
       "casLong": "ZIKLOAREN LERROKATZE PUNTUAZIOA",
       "trend6w": "6 asteko joera",
@@ -207,7 +207,7 @@
       "menstrual": "Hilekoa",
       "follicular": "Folikularra",
       "ovulatory": "Obulazioa",
-      "luteal": "Lutealea"
+      "luteal": "Luteala"
     },
     "navLabels": {
       "home": "Gaur",
@@ -217,7 +217,7 @@
       "calendar": "Egutegia"
     },
     "moodLabels": {
-      "Low": "Behean",
+      "Low": "Apal",
       "Meh": "Hala-hola",
       "Okay": "Ondo",
       "Good": "Oso ondo",
@@ -574,7 +574,7 @@
           },
           {
             "k": "Pretty unpredictable",
-            "label": "Nahiko ezustekoa"
+            "label": "Nahiko aurreikusezina"
           },
           {
             "k": "Not sure",
@@ -657,7 +657,7 @@
       }
     ],
     "provSync": {
-      "apple": "sinkronizatuta 6:40",
+      "apple": "6:40an sinkronizatuta",
       "oura": "sinkronizatuta duela 2 ordu",
       "garmin": "egunero sinkronizatzen da",
       "fitbit": "egunero sinkronizatzen da",
@@ -959,14 +959,14 @@
     "pxAligned1": "Gaur ondo lerrokatuta zaude zure fasearekin:",
     "pxAligned2": "",
     "pxPredicted": "Aurreikusia",
-    "pxLutealT": "24. eguna · Lutealea",
-    "pxLutealP": "Progesterona altu dago eta jaisten hasi da. Heldu magnesioari eta karbohidrato konplexuei, jaitsi intentsitatea, eta espero gosea handitzea — dena normala.",
+    "pxLutealT": "24. eguna · Luteala",
+    "pxLutealP": "Progesterona altu dago eta jaisten hasi da. Heldu magnesioari eta karbohidrato konplexuei, jaitsi intentsitatea, eta espero izan gose handiagoa — dena normala.",
     "pxCalSub": "Zure zikloa, egunez egun mapatua",
     "pxNlSub1": "Zikloarekin sinkronizatutako elikadura zure faserako:",
     "pxNlSub2": "",
     "pxMvSub1": "Entrenatu zure fasearekin",
     "pxMvSub2": ", ez haren aurka",
-    "pxPeriodDate": "2026ko martxoaren 11",
+    "pxPeriodDate": "2026ko martxoaren 11a",
     "pxPeriod": "Hilekoa",
     "pxFlow": "Fluxua",
     "pxMoodMental": "Aldartea eta buru-egoera",
@@ -1220,7 +1220,7 @@
     "Whole grain": "Ale osoa",
     "Fresh": "Freskoa",
     "Antioxidant": "Antioxidatzailea",
-    "Cruciferous": "Krucifera",
+    "Cruciferous": "Kruziferoa",
     "Calcium": "Kaltzioa",
     "Anti-bloat": "Hantura-kontrakoa",
     "Serotonin": "Serotonina",
@@ -1327,7 +1327,7 @@
     "Brown": "Marroia",
     "Spotting": "Orbanak",
     "Symptoms you experience regularly?": "Maiz izaten dituzun sintomak?",
-    "Insomnia": "Insomnioa",
+    "Insomnia": "Loezina",
     "Mood swings": "Aldarte-gorabeherak",
     "Hair loss": "Ile-galera",
     "Weight gain": "Pisu-igoera",
@@ -1410,10 +1410,10 @@
     "menstrual": "hilekoa",
     "follicular": "folikularra",
     "ovulatory": "obulazioa",
-    "luteal": "lutealea",
+    "luteal": "luteala",
     "Menstrual": "Hilekoa",
     "Follicular": "Folikularra",
     "Ovulatory": "Obulazioa",
-    "Luteal": "Lutealea"
+    "Luteal": "Luteala"
   }
 }

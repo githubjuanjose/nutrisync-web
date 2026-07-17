@@ -1,5 +1,11 @@
 # NutriSync — Release Notes / Change Log
 
+## 2026-07-07 — Onboarding language selector + eu/oc native review (v11.42)
+- **Web app**: the onboarding wizard now carries the language selector (EN + OS-language pills + ⋯ popover, top-right) — previously reachable only from Welcome/Log-in/Settings; all 14 languages switchable mid-wizard.
+- **Basque (eu) native-review pass** (11 corrections): `Lutealea→Luteala` (wrong article stem, 4 spots), `Krucifera→Kruziferoa`, `Insomnioa→Loezina`, mood “Low” `Behean→Apal`, “Pretty unpredictable” `ezustekoa→aurreikusezina`, “consistency beats intensity” now takes the dative (`intentsitateari irabazten dio`), time/date phrasing (`6:40an sinkronizatuta`, `martxoaren 11a`), luteal insight re-phrased.
+- **Aranese (oc) native-review pass** (9 corrections): typo `penents→pendents`, `miegdia→miègdia`, `Destalh→Detalh`, dropped the non-Occitan personal “a” (`Coneish Nutri`), gender agreement `fruts arroges→arrois` (2×), `chía→chia`, `sincronizat as 6:40`, notes placeholder now “Bèra causa mès sus aué…”. Distinctive Aranese forms (junhsèga, hèr, hièstra, tath, piòc) verified correct.
+- Both packs’ `_note` now records the review; packs are runtime-fetched so no app rebuild was needed for them.
+
 ## 2026-07-07 — Footer disclaimer: Madrid only (v11.41)
 - Disclaimer reverted to “… Made with care in Madrid.” in the built-in EN/ES **and all 12 language packs** (each in its own language; Greek article and Japanese phrasing hand-corrected after the automated trim).
 

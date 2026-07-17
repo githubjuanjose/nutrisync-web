@@ -127,6 +127,28 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-07 · Prototypes moved off the public site → Builders "Prototypes" tab</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-web-0607_v11.42.zip</code> (integrated)</li>
+<li><strong>What:</strong> the marketing "HEALTH FLOWS · See NutriSync in action" showcase (<code>&lt;section id="screens"&gt;</code>) is prototype material, so it's been removed from the <strong>public</strong> marketing site (section + its nav/hero/footer <code>#screens</code> links stripped at runtime).</li>
+<li><strong>Where it went:</strong> a new gated <strong>Prototypes</strong> entry in the Builders area — a card in the Founder Tools row <em>and</em> a pill on the standalone gated hub nav. Opens <code>hub/prototypes.html</code>, which deep-links all <strong>16</strong> prototype screens (<code>app.html#demo-&lt;route&gt;</code>: login, signup, onboarding, allset, gate, home, nutrilog, movement, editperiod, edithealth, progress, calendar, settings, connections, privacy, security) plus an "Open the web app prototype" entry.</li>
+<li><strong>How (durable):</strong> all via <code>integrate.py</code> (runtime DOM strip + generated hub page), so it survives future Design re-exports. Note: a lone footer "Prototype" text button that launches the app demo directly was left in place — say the word to strip that too.</li>
+</ul>
+<h3>2026-07-07 · Web pack v11.42 — Basque + Aranese native review DONE</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-web-0607_v11.42.zip</code> (integrated) · Design raw <code>nutrisync-web-design-0707_v11.42.zip</code> · <code>nutrisync-app-eu-oc-review.zip</code> (mobile OTA)</li>
+<li><strong>✅ Native review complete:</strong> Design's team did the <strong>Basque (eu, 11 corrections)</strong> and <strong>Aranese (oc, 9 corrections)</strong> native-speaker passes — the two production blockers I'd been tracking are now <strong>cleared</strong>. Corrected <code>eu</code>/<code>oc</code> app strings re-bundled into mobile.</li>
+<li><strong>Web:</strong> the web-app onboarding wizard now carries the language selector (all 14 switchable mid-wizard). Re-integrated our layer.</li>
+<li><strong>Mobile:</strong> crossover = corrected <code>eu</code> (5) + <code>oc</code> (4) app strings only; re-bundled.</li>
+<li><strong>Status:</strong> all 14 languages complete AND reviewed → <strong>ready to move into testing.</strong></li>
+</ul>
+<h3>2026-07-07 · Mobile — Welcome fidelity + radial-peach app-wide</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-app-welcome-design-match.zip</code> (mobile OTA)</li>
+<li><strong>Wings mark:</strong> swapped in Design's <strong>real</strong> ink wings asset (<code>nutri_wings_ink.png</code>) — the previous one was a lookalike ("rays + orb"); removed the overlaid orange orb; centered per Design's Welcome frame.</li>
+<li><strong>Background:</strong> replaced the darker linear peach gradient with <strong>Design's exact soft radial-peach</strong> (<code>radial-gradient(circle at 28% 16%, #FDE2D6 → #FBEFE6 → #FFF8F1 → #F9D7BD)</code>), rendered as a real SVG radial via a shared <code>PeachBg</code>. It now sits behind <strong>every screen</strong> (one background behind the navigator; all screens transparent) — Welcome, Login/Create, onboarding, daily gate, main tabs and settings all share it, matching Design's "no screen on the old linear gradient".</li>
+<li>Carries the earlier Welcome/Login <strong>language selector + back nav</strong> and the <strong><code>supabaseKey</code></strong> boot fix.</li>
+</ul>
 <h3>2026-07-07 · Web pack v11.41 + mobile Welcome selector &amp; back-nav</h3>
 <ul>
 <li><strong>Build:</strong> <code>nutrisync-web-0607_v11.41.zip</code> (integrated) · Design raw <code>nutrisync-web-design-0707_v11.41.zip</code> · <code>nutrisync-app-welcome-i18n.zip</code> (mobile OTA)</li>

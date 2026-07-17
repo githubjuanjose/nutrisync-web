@@ -113,7 +113,9 @@ if os.path.exists(idx):
     ih = open(idx, encoding="utf-8").read()
     if "ns-founder-tools" not in ih:
         FT = ('<script id="ns-founder-tools">(function(){'
-          'var C=[{h:"hub/waitlist.html",e:"\\uD83D\\uDCCB",t:"Waitlist",d:"Signups + CSV export",'
+          'var C=[{h:"hub/prototypes.html",e:"\\uD83D\\uDCF1",t:"Prototypes",d:"Interactive app flows",'
+          'bg:"linear-gradient(135deg,#6D28D9,#8B5CF6)"},'
+          '{h:"hub/waitlist.html",e:"\\uD83D\\uDCCB",t:"Waitlist",d:"Signups + CSV export",'
           'bg:"linear-gradient(135deg,#0FA968,#12C07A)"},'
           '{h:"hub/review.html",e:"\\u2705",t:"Review",d:"Founders\\u2019 checklist",'
           'bg:"linear-gradient(135deg,#B7791F,#D69E2E)"},'
@@ -244,6 +246,89 @@ if os.path.isdir(dd):
     for f in os.listdir(dd):
         if f.endswith(".html"): shutil.copy(os.path.join(dd, f), os.path.join(dst, f)); n += 1
     print("- overlaid %d hub documents" % n)
+
+# ── Prototypes: moved OUT of the public marketing site, INTO the Builders area. ──
+# The marketing bundle's "HEALTH FLOWS / See NutriSync in action" showcase is a
+# single <section id="screens"> (plus nav/hero/footer links to "#screens"). It's
+# prototype material, so we (1) strip that section and its "#screens" links from the
+# PUBLIC site at runtime, and (2) publish a gated hub/prototypes.html that deep-links
+# every screen of the working prototype (app.html#demo-<route>).
+PROTO_GROUPS = [
+    ("Onboarding & sign-up", [("login", "Log in"), ("signup", "Create account"), ("onboarding", "Onboarding wizard"), ("allset", "All set")]),
+    ("Daily experience", [("gate", "Daily check-in gate"), ("home", "Home · Cycle Alignment Score"), ("nutrilog", "NutriLog"), ("movement", "Movement")]),
+    ("Tracking", [("editperiod", "Edit period"), ("edithealth", "Edit health"), ("progress", "Progress"), ("calendar", "Calendar")]),
+    ("Account & privacy", [("settings", "Settings"), ("connections", "Connections"), ("privacy", "Privacy"), ("security", "Security")]),
+]
+_pg = ""
+for _title, _items in PROTO_GROUPS:
+    _cards = "".join(
+        '<a class="pcard" href="../app.html#demo-%s"><span class="pdot"></span>'
+        '<span class="plabel">%s</span><span class="parrow">→</span></a>' % (r, lbl)
+        for r, lbl in _items)
+    _pg += '<div class="pgroup"><div class="pgtitle">%s</div><div class="pgrid">%s</div></div>' % (_title, _cards)
+PROTO_HTML = (
+    '<!doctype html><html lang="en"><head><meta charset="utf-8">'
+    '<meta name="viewport" content="width=device-width, initial-scale=1">'
+    '<title>Prototypes · NutriSync</title><style>'
+    ':root{--coral:#E8472A;--ink:#231F20;--muted:#6B615C;}'
+    '*{box-sizing:border-box}body{margin:0;font-family:Poppins,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;'
+    'color:var(--ink);background:radial-gradient(circle at 28% 16%,#FDE2D6 0%,#FBEFE6 36%,#FFF8F1 62%,#F9D7BD 100%);min-height:100vh}'
+    '.wrap{max-width:860px;margin:0 auto;padding:28px 22px 60px}'
+    '.back{display:inline-block;color:var(--muted);text-decoration:none;font-size:14px;font-weight:600;margin-bottom:18px}'
+    '.back:hover{color:var(--ink)}'
+    '.label{font-size:12px;letter-spacing:.16em;font-weight:700;color:var(--coral)}'
+    'h1{font-size:clamp(26px,4vw,38px);margin:8px 0 8px;line-height:1.05}'
+    '.lead{color:var(--muted);font-size:15px;line-height:1.55;max-width:560px;margin:0 0 18px}'
+    '.enter{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#EA5740,#F4876F);color:#fff;'
+    'text-decoration:none;font-weight:700;font-size:15px;padding:13px 22px;border-radius:100px;box-shadow:0 12px 26px -14px rgba(234,87,64,.7)}'
+    '.pgroup{margin-top:26px}.pgtitle{font-size:12px;letter-spacing:.12em;font-weight:700;color:var(--muted);margin:0 0 10px}'
+    '.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}'
+    '.pcard{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid #EFE3D7;border-radius:13px;'
+    'padding:14px 15px;text-decoration:none;color:var(--ink);box-shadow:0 8px 20px -16px rgba(0,0,0,.4);transition:transform .12s,box-shadow .12s}'
+    '.pcard:hover{transform:translateY(-2px);box-shadow:0 14px 28px -14px rgba(0,0,0,.35)}'
+    '.pdot{width:9px;height:9px;border-radius:50%;background:var(--coral);flex:none}'
+    '.plabel{font-weight:600;font-size:14px;flex:1}.parrow{color:var(--muted);font-weight:700}'
+    '.note{margin-top:30px;color:var(--muted);font-size:12.5px;line-height:1.5}'
+    '</style></head><body><div class="wrap">'
+    '<a class="back" href="full-hub-gated-site.html" onclick="if(history.length>1){history.back();return false;}return true;">‹ Back</a>'
+    '<div class="label">PROTOTYPES</div>'
+    '<h1>See NutriSync in action.</h1>'
+    '<p class="lead">From the first hello to the daily Cycle Alignment Score, step through how NutriSync guides '
+    'nutrition, movement and mood across every phase. Each card opens the working prototype on demo data — '
+    'full navigation, no account needed.</p>'
+    '<a class="enter" href="../app.html">Open the web app prototype →</a>'
+    + _pg +
+    '<p class="note">Prototype runs on demo data in your browser — nothing here writes to a real account. '
+    'This showcase is Builders-only; it is no longer shown on the public marketing site.</p>'
+    '</div></body></html>')
+open(os.path.join(PUB, "hub", "prototypes.html"), "w", encoding="utf-8").write(PROTO_HTML)
+print("- Prototypes hub page (hub/prototypes.html)")
+
+# Strip the HEALTH FLOWS showcase (<section id="screens">) + its #screens links from
+# the PUBLIC marketing site, kept in place across re-renders with a MutationObserver.
+if os.path.exists(idx):
+    ih = open(idx, encoding="utf-8").read()
+    if "ns-move-prototypes" not in ih:
+        MP = ('<script id="ns-move-prototypes">(function(){'
+          'function strip(){var s=document.getElementById("screens");if(s&&s.parentNode)s.parentNode.removeChild(s);'
+          'var a=document.querySelectorAll(\'a[href="#screens"]\'),i;for(i=0;i<a.length;i++){if(a[i].parentNode)a[i].parentNode.removeChild(a[i]);}}'
+          'var o=new MutationObserver(function(){strip();});'
+          'function start(){strip();o.observe(document.body,{childList:true,subtree:true});}'
+          'if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",start);else start();'
+          '})();</script>')
+        open(idx, "w", encoding="utf-8").write(ih.replace("</head>", MP + "</head>", 1))
+        print("- removed HEALTH FLOWS showcase from public site (moved to Builders)")
+
+# Prototypes pill on the standalone gated hub nav.
+hub = os.path.join(PUB, "hub", "full-hub-gated-site.html")
+if os.path.exists(hub):
+    s = open(hub, encoding="utf-8").read()
+    if "prototypes.html" not in s:
+        old = '<button class="htab" id="bt2" onclick="bldTab(2)">📚 Project documentation</button>'
+        pill = '<a class="htab" href="prototypes.html" target="_blank" style="text-decoration:none;display:inline-flex;align-items:center">📱 Prototypes</a>'
+        if old in s:
+            open(hub, "w", encoding="utf-8").write(s.replace(old, old + "\n      " + pill, 1))
+            print("- Prototypes pill on gated hub nav")
 
 # Cloudflare Pages cache policy: force browsers to revalidate HTML + language
 # files so new deploys and newly-shipped language packs appear immediately
