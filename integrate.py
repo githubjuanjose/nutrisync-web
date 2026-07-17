@@ -451,6 +451,16 @@ _patch(APH, [
      "const mvWeekData = authed ? CC.week.map((w) => (w.done && !w.today) ? Object.assign({}, w, { done: false, state: ((CC.week.filter((x) => !x.done && !x.today)[0] || {}).state || w.state) }) : w) : CC.week;", False),
 ], "W2 movement: honest session log + no fake Done history (live)")
 
+# W21 — day-of-week strip: rectangular/pill cells → circular buttons (per wireframe).
+# One shared template + one JS style string drive every use of the strip, so this
+# fixes all screens at once. aspect-ratio keeps the circle round at any width.
+_patch(APH, [
+    ("style: 'flex:1;text-align:center;padding:9px 0;border-radius:12px;'",
+     "style: 'flex:1 1 0;aspect-ratio:1/1;max-width:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:50%;text-align:center;'", False),
+    ('style=\\"display: flex; gap: 8px; background: #fff; border: 1px solid #EDE0D2; border-radius: 18px; padding: 12px; margin-top: 18px;\\"',
+     'style=\\"display: flex; gap: 8px; justify-content: space-between; align-items: center; background: #fff; border: 1px solid #EDE0D2; border-radius: 18px; padding: 12px; margin-top: 18px;\\"', False),
+], "W21 circular day buttons (shared strip)")
+
 # W1 — forgot-password link
 _patch(APH, [
     (r'(cursor: pointer;)\\">\{\{ t\.forgot \}\}', r'\1\\" id=\\"ns-forgot\\">{{ t.forgot }}', True),
