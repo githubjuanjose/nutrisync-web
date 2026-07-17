@@ -420,7 +420,14 @@ _patch(IDX, [
     (r'<button onclick=\\"\{\{ openPrototype \}\}\\"[^>]*>\{\{ t\.ftProto \}\}<\\u002Fbutton>', '', True),
 ], "W24f footer Prototype button removed")
 
-# W1 — forgot-password: tag the link, bind it, and ship a reset page
+# W6 — pricing (Pilar 17/7): standard tier only at €4.99/mo + employer tier.
+# Remove the whole Free/€0 card from the pricing grid and reprice Premium.
+# (W7: the investor page already shows €4.99 Basic + B2B in v11.42 — consistent, no change.)
+_patch(IDX, [
+    # the Free card: white card containing {{ t.przFree }} through its Start-free button
+    (r'<div style=\\"background: #fff;[^"]*?flex-direction: column;\\">\\n\s*<div style=\\"font-weight: 700; font-size: 16px; color: #6B615C;\\">\{\{ t\.przFree \}\}[\s\S]*?\{\{ t\.przStart \}\}<\\u002Fbutton>\\n\s*<\\u002Fdiv>\\n\s*', '', True),
+    ('€5.99', '€4.99', False),
+], "W6 pricing: Free tier removed, €4.99/mo")
 _patch(APH, [
     (r'(cursor: pointer;)\\">\{\{ t\.forgot \}\}', r'\1\\" id=\\"ns-forgot\\">{{ t.forgot }}', True),
 ], "W1 forgot link tagged")
