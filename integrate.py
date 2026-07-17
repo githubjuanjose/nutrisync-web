@@ -400,7 +400,8 @@ for _lang, _vals in {
             _add = _vals.pop("_casAdd")
             _mk.update(_vals)
             if _mk.get("casP") and "progres" not in _mk["casP"] and "progress" not in _mk["casP"]:
-                _mk["casP"] = _mk["casP"].rstrip(".") + "." + _add if not _mk["casP"].endswith(".") else _mk["casP"] + _add
+                # strip the trailing period so the em-dash continues the sentence cleanly
+                _mk["casP"] = _mk["casP"].rstrip(". ") + _add
             json.dump(_d, open(_p, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
             print("- W9/W10 i18n/%s.json marketing keys" % _lang)
 # NOTE: the other 12 locale files keep their old translated stat until Design's
