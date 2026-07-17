@@ -141,8 +141,8 @@ tbody tr:nth-child(even){background:var(--cream);}
 <tr>
 <td>1 · Bugs</td>
 <td>W1–W5</td>
-<td><strong>W1</strong> ✅ (it.1)</td>
-<td>W2 W3 W4 · W5 verify</td>
+<td><strong>W1 W3</strong> ✅ · <strong>W2 ◑</strong> integrity fixed (it.3; selection UI + "Other" ships with Round-2 Movement rebuild)</td>
+<td>W4 (URLs) · W5 verify</td>
 </tr>
 <tr>
 <td>2 · Pricing/stats</td>
@@ -173,6 +173,13 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-17 · PO Round 1 — Iteration 3 (web) · W2+W3 data integrity</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-web-0607_v11.42-po3.zip</code></li>
+<li><strong>W3 ✅ Edit Period pre-fills</strong> — Flow no longer defaults to "Medium" nor Mood to "Content"; nothing is selected until the user taps, and mood saves <code>null</code> (not <code>[null]</code>) when untouched. Mobile app checked — already clean.</li>
+<li><strong>W2 ◑ Movement integrity</strong> — "Mark as done" now writes <strong>one</strong> honest session row (session title) instead of fabricating a checked row per session part; the "This week" list no longer shows hardcoded demo workouts as ✓Done for live accounts (they render as planned). <strong>Remaining half</strong> — per-activity selection + "Other" free-text input — intentionally deferred: it ships with the Round-2 <strong>Movement Log 4-screen rebuild</strong> (wireframes + assets already delivered), rather than hacking selectable rows into a screen about to be replaced.</li>
+<li>CAS unaffected (it reads <code>workout_logged</code>, not the checklist), so scores stay consistent through the change.</li>
+</ul>
 <h3>2026-07-17 · PO Round 1 — Iteration 2 (web) · W6+W7 pricing</h3>
 <ul>
 <li><strong>Build:</strong> <code>nutrisync-web-0607_v11.42-po2.zip</code></li>

@@ -428,6 +428,30 @@ _patch(IDX, [
     (r'<div style=\\"background: #fff;[^"]*?flex-direction: column;\\">\\n\s*<div style=\\"font-weight: 700; font-size: 16px; color: #6B615C;\\">\{\{ t\.przFree \}\}[\s\S]*?\{\{ t\.przStart \}\}<\\u002Fbutton>\\n\s*<\\u002Fdiv>\\n\s*', '', True),
     ('€5.99', '€4.99', False),
 ], "W6 pricing: Free tier removed, €4.99/mo")
+
+# W3 — Edit Period must start with NOTHING pre-selected (data integrity: the old
+# defaults Flow='Medium' / Mood='Content' could be saved without the user ever
+# touching them, corrupting CAS + Cycle Stability inputs). Mobile app already clean.
+_patch(APH, [
+    ("epFlow: 'Medium', epMood: 'Content'", "epFlow: null, epMood: null", False),
+    ("mood_state: [st.epMood],", "mood_state: st.epMood ? [st.epMood] : null,", False),
+], "W3 no pre-selected Flow/Mood (Edit Period)")
+
+# W2 (integrity half) — Movement screen:
+#  (1) "Mark as done" used to fabricate a checked row for EVERY session part; now it
+#      writes ONE honest session row (the session title) — no invented per-part data.
+#  (2) The "This week" list showed hardcoded demo workouts as already Done for live
+#      accounts; for authed users those rows now show as planned instead.
+#  The full redesign (per-activity selection + "Other" input) ships with the Round-2
+#  Movement Log rebuild (wireframes delivered) — tracked on doc 15.
+_patch(APH, [
+    ("if (done) await this.sb.from('movement_checklist').insert(CC.mvParts.map((p) => ({ user_id: uid, date: today, phase: cyc ? cyc.disp : null, item_name: p.label, category_tag: 'session', intensity_level: intensity, checked: true })));",
+     "if (done) await this.sb.from('movement_checklist').insert([{ user_id: uid, date: today, phase: cyc ? cyc.disp : null, item_name: (CC.mvTitle || 'Session'), category_tag: 'session', intensity_level: intensity, checked: true }]);", False),
+    ("const mvWeekData = CC.week;",
+     "const mvWeekData = authed ? CC.week.map((w) => (w.done && !w.today) ? Object.assign({}, w, { done: false, state: ((CC.week.filter((x) => !x.done && !x.today)[0] || {}).state || w.state) }) : w) : CC.week;", False),
+], "W2 movement: honest session log + no fake Done history (live)")
+
+# W1 — forgot-password link
 _patch(APH, [
     (r'(cursor: pointer;)\\">\{\{ t\.forgot \}\}', r'\1\\" id=\\"ns-forgot\\">{{ t.forgot }}', True),
 ], "W1 forgot link tagged")
