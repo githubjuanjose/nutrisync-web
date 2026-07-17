@@ -192,7 +192,12 @@
       "alertDeactivate": "Beta bitartean, desaktibazioa laguntza-taldeak kudeatzen du — idatzi hello@nutrisynccollective.com helbidera.",
       "alertDemoAccount": "Demo modua — kontu-ekintzek backend bizia behar dute.",
       "welTo": "Ongi etorri",
-      "welP": "Hemen zaude zure gorputzak asmakizunak baino gehiago merezi duelako. Sinkroniza ditzagun zure elikadura eta mugimendua zure erritmo naturalarekin."
+      "welP": "Hemen zaude zure gorputzak asmakizunak baino gehiago merezi duelako. Sinkroniza ditzagun zure elikadura eta mugimendua zure erritmo naturalarekin.",
+      "prCurrent": "Oraingoa",
+      "prWeekly": "Asteko batezbestekoa",
+      "prBest": "Onena",
+      "battEmpty": "Hustuta",
+      "battFull": "Kargatuta"
     },
     "dows": [
       "IG",
@@ -770,7 +775,15 @@
     "calBannerB": "— Nutrik zure elikadura burdinara eta plater lasaigarrietara bideratuko du bi egun lehenago.",
     "calBannerNone": "Erregistratu hilekoaren hasiera eta Nutrik hurrengo hilabetea iragarriko du.",
     "calBannerDemo": "Hurrengo hilekoa martxoaren 24aren inguruan espero da — Nutrik zure elikadura burdinara eta plater lasaigarrietara bideratuko du bi egun lehenago.",
-    "calBannerForming": "Iragarpena osatzen ari da — martxoaren 24ko estimazioa zorrozten da erregistratzen duzun egun bakoitzarekin."
+    "calBannerForming": "Iragarpena osatzen ari da — martxoaren 24ko estimazioa zorrozten da erregistratzen duzun egun bakoitzarekin.",
+    "condLabels": {
+      "PCOS": "PMOS",
+      "Endometriosis": "Endometriosia",
+      "Thyroid": "Tiroidea",
+      "Anaemia": "Anemia",
+      "IBS": "Heste narritakorra",
+      "None diagnosed": "Diagnostikorik ez"
+    }
   },
   "marketing": {
     "navBadge": "Hormona-zaintza, azkenean erraza",
@@ -802,9 +815,9 @@
     "prP": "Gizonek ~24 orduko hormona-zikloan funtzionatzen dute; emakumeek ~28 egunekoan, lau fase desberdinekin. Elikadura eta entrenamendu generikoek erabat alde batera uzten dute alde hori — eta emakumeek isilean ordaintzen dute kostua.",
     "prC1t": "Botiken kontrako erreakzio gehiago",
     "prC1b": "Ikerketak eta dosiak gizonezkoetara lerratuta daude, ohiko botikekin emakumeen arriskua handituz.",
-    "prYears": "Urteak",
-    "prC2t": "Diagnostiko berantiarragoak eta arreta atzeratua",
-    "prC2b": "Emakumeen sintomak gutxi aitortzen eta artatzen dira, behar duten arreta atzeratuz.",
+    "prYears": "~4 urte",
+    "prC2t": "Gizonek baino diagnostiko beranduagoak",
+    "prC2b": "Batez beste gizonek baino ~4 urte beranduago diagnostikatuak — 4,5 urte beranduago gaixotasun metabolikoetan, 2,5 minbizian eta 5–6 AGHN bezalako nahasmenduetan.",
     "prAlone": "Bakarrik",
     "prC3t": "Norbere buruarekin esperimentatzera behartuta",
     "prC3b": "Ez dago gidaritza fidagarri eta pertsonalizaturik janariari eta mugimenduari buruz, zikloan zehar.",
@@ -817,7 +830,7 @@
     "casLabel": "ZIKLOAREN LERROKATZE PUNTUAZIOA",
     "casH2a": "Benetan ulertzen zaituen",
     "casH2b": "puntuazio bat.",
-    "casP": "0–100 arteko zenbaki bizi bat, zure biologia, elikadura, mugimendua eta erregistroak irakurtzen dituena — eta zehazki nola igo erakusten duena, denbora errealean.",
+    "casP": "0–100 arteko zenbaki bizi bat, zure biologia, elikadura, mugimendua eta erregistroak irakurtzen dituena — eta zehazki nola igo erakusten duena, denbora errealean — eta zure lerrokatzea denborarekin nola hobetzen den jarraitzen du, benetan egiten ari zaren aurrerapena ikusteko.",
     "casS1": "eguneroko lerrokatzea",
     "casS2n": "Denbora errealean",
     "casS2": "zure erregistroetara egokitzen da",
@@ -1414,6 +1427,7 @@
     "Menstrual": "Hilekoa",
     "Follicular": "Folikularra",
     "Ovulatory": "Obulazioa",
-    "Luteal": "Luteala"
+    "Luteal": "Luteala",
+    "PCOS": "PMOS"
   }
 }

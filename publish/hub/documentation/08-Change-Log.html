@@ -165,14 +165,45 @@ tbody tr:nth-child(even){background:var(--cream);}
 <tr>
 <td>5 · Figma polish</td>
 <td>W20–W24</td>
-<td><strong>W21</strong> ✅ (it.4 stopgap; Design owns final component) · <strong>W24</strong> ✅ (footer link stripped; video section awaits asset)</td>
-<td>W20 W22 W23</td>
+<td><strong>W20 W22 W23</strong> ✅ (Design v11.43 at source) · <strong>W21</strong> ✅ · <strong>W24</strong> ✅ (video section still awaits asset)</td>
+<td>—</td>
 </tr>
 </tbody>
 </table>
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-17 · Design pack 1707_v11.43 — all 7 source requests delivered</h3>
+<ul>
+<li><strong>Builds:</strong> <code>nutrisync-web-1707_v11.43.zip</code> (integrated) · <code>nutrisync-app-r2c-nutrilog.zip</code> includes the ×14 PMOS/mobile crossover</li>
+<li>Design fixed at source: marketing copy ×14 (native translations) · PMOS ×14 · <strong>W20 battery energy UI</strong> · <strong>W22 progress card (Current/Weekly/Best, honest empty rings)</strong> · <strong>W23 auto-cycling hero wireframe</strong> · team photos on local assets · Edit Period/movement integrity fixes. Doc-12 items 1–13 all closed.</li>
+<li>Integration layer verified: patches now <strong>no-op where Design fixed at source</strong> (W3/W9/W10/W11/W24f silent); still applying our downstream-only layer (W6 pricing, W1 forgot-password, W21 day strip, prototypes→Builders move, founder tools, consent, KPIs).</li>
+<li>Mobile crossover: all 13 locale app sections re-bundled (native PMOS labels); caught + fixed <code>es.json</code> still shipping "SOP" at source (flagged back to Design).</li>
+<li><strong>Round 1 scoreboard: 20 of 24 closed.</strong> Remaining: W4 (URLs), W12/W13 (Nutri assets), W14 (consent decision), W15–W18 (sequenced with Round 2), W24 video half, W5 PO re-test.</li>
+</ul>
+<h3>2026-07-17 · R2-C — NutriLog 4-screen rebuild (mobile)</h3>
+<ul>
+<li><strong>Builds:</strong> <code>nutrisync-app-r2c-nutrilog.zip</code> (OTA) · <code>backend/2026-07-18-r2c-meal-type.sql</code> (additive: <code>meal_logs.meal_type</code>)</li>
+<li><strong>Screen 1 · Daily Tip</strong> — "Today" header, Daily Tip/Body Insight tabs, tip card with live phase-day badge + wireframe character asset, Nutri Basics stat cards (Meals Logged x/3 FUEL · Hydration 1.8L VITALITY), "Check off what you eat today" checklist grouped by category (wireframe's 4 first, content team's 5 extra after; top 6/category), wireframe checkbox assets.</li>
+<li><strong>Screen 2 · Body Insight</strong> — insight card, tappable Mood/Energy/Flow quick-log pills (persist to daily_logs), Today's Symptoms multi-select tags, rotating quote card, same checklist.</li>
+<li><strong>Screen 3 · Log Meal</strong> — Breakfast/Lunch/Dinner/Snacks tabs, live food search over <code>content_food</code>, free-text notes, <strong>keyboard-safe input (fixes F31)</strong>, history icon → screen 4. Barcode = future (PO feasibility check pending).</li>
+<li><strong>Screen 4 · Meal History</strong> — Days Streak + Weekly Streak dot cards, reverse-chron days with phase pill and per-slot sections incl. "No entry" states, + Log New Meal.</li>
+<li>All content flows from <code>ns_daily_recs</code> — diet/condition/goal filtering is server-side and shared with web. New <code>lib/recs.ts</code> client. New i18n keys fall back to EN pending the next translation round.</li>
+</ul>
+<h3>2026-07-17 · R2-B — recommendation engine (Supabase RPC)</h3>
+<ul>
+<li><strong>Deliverable:</strong> <code>backend/2026-07-18-r2-reco-engine.sql</code> — the POs' 7-step algorithm as SQL functions, one endpoint for web + mobile.</li>
+<li><code>ns_segment_for_day</code> (pure, testable) · <code>ns_current_segment</code> (user's cycle row, RLS-invoker) · <code>ns_food_candidates</code> / <code>ns_movement_candidates</code> (segment→diet→condition filter, +2 goal/+1 condition/+HormonalBC-boost ranking) · <strong><code>ns_daily_recs(date)</code></strong> → one JSON: segment, rotated daily tips + body insights (both contexts), food-of-the-day (rotates over top-7 ≈ no repeat within a week, zero history storage), full Nutri/Movement Basics grouped by category.</li>
+<li><strong>Tested on real Postgres before delivery</strong> (pglite): 28-day sweep → clean 10-segment partition; vegan+PCOS profile → 85 candidates, 0 diet violations; full RPC returns all 12 keys. R2-A content verified live via REST (153/48/100).</li>
+<li><strong>To apply:</strong> doc-11 runbook — snapshot, run the file in the SQL editor; smoke-test queries are at the bottom of the file.</li>
+</ul>
+<h3>2026-07-17 · Round 2 kickoff — R2-A content schema (Excel → Supabase)</h3>
+<ul>
+<li><strong>Deliverable:</strong> <code>backend/2026-07-17-r2-content-schema.sql</code> (372 statements, transaction-wrapped, re-runnable)</li>
+<li><strong>Tables (all RLS: public read, service-role-only writes):</strong> <code>content_segment</code> (10 cycle segments), <code>content_goal</code> (3), <code>content_diet</code> (8), <code>content_condition</code> (10 incl. Hormonal-BC layer), <code>content_food</code> (<strong>153</strong> items · 9 categories · segment/goal/diet/condition tags · Spain notes), <code>content_movement</code> (<strong>48</strong> items · 4 categories · intensity-matched), <code>content_tip</code> (<strong>100</strong>: 60 daily tips + 40 body insights incl. rotating quotes — 10 segments × 3/2 variants × nutrition+movement; v2 fixed a duplicate-key from the sheets' section rows).</li>
+<li>Encodes the POs' recommendation algorithm inputs verbatim (segment→diet→condition filter, goal +2 / condition +1 ranking, 5–7-day no-repeat) — the engine itself lands with the NutriLog/Movement rebuilds.</li>
+<li><strong>To apply:</strong> doc-11 runbook — Supabase snapshot first, then run the file in the SQL editor; verify query is embedded at the bottom.</li>
+</ul>
 <h3>2026-07-17 · PO Round 1 — Iteration 5 · F16 PCOS → PMOS (web + mobile)</h3>
 <ul>
 <li><strong>Builds:</strong> <code>nutrisync-web-0607_v11.42-po5.zip</code> · <code>nutrisync-app-pmos-fix.zip</code> (OTA)</li>

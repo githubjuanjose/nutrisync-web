@@ -192,7 +192,12 @@
       "alertDeactivate": "Während der Beta läuft die Deaktivierung über den Support — schreib an hello@nutrisynccollective.com.",
       "alertDemoAccount": "Demo-Modus — Kontoaktionen brauchen das Live-Backend.",
       "welTo": "Willkommen bei",
-      "welP": "Du bist hier, weil dein Körper Besseres verdient als Rätselraten. Lass uns deine Ernährung und Bewegung mit deinem natürlichen Rhythmus synchronisieren."
+      "welP": "Du bist hier, weil dein Körper Besseres verdient als Rätselraten. Lass uns deine Ernährung und Bewegung mit deinem natürlichen Rhythmus synchronisieren.",
+      "prCurrent": "Aktuell",
+      "prWeekly": "Wochenschnitt",
+      "prBest": "Bestwert",
+      "battEmpty": "Erschöpft",
+      "battFull": "Aufgeladen"
     },
     "dows": [
       "SO",
@@ -770,7 +775,15 @@
     "calBannerB": "— Nutri stellt deine Ernährung zwei Tage vorher auf Eisen und Wohlfühlessen um.",
     "calBannerNone": "Trage den Beginn deiner Periode ein und Nutri sagt den Monat voraus.",
     "calBannerDemo": "Nächste Periode voraussichtlich um den 24. März — Nutri stellt deine Ernährung zwei Tage vorher auf Eisen und Wohlfühlessen um.",
-    "calBannerForming": "Vorhersage entsteht — deine Schätzung für den 24. März wird mit jedem Eintrag genauer."
+    "calBannerForming": "Vorhersage entsteht — deine Schätzung für den 24. März wird mit jedem Eintrag genauer.",
+    "condLabels": {
+      "PCOS": "PMOS",
+      "Endometriosis": "Endometriose",
+      "Thyroid": "Schilddrüse",
+      "Anaemia": "Anämie",
+      "IBS": "Reizdarm",
+      "None diagnosed": "Keine Diagnose"
+    }
   },
   "marketing": {
     "navBadge": "Hormonelle Fürsorge, endlich einfach",
@@ -802,9 +815,9 @@
     "prP": "Männer laufen auf einem ~24-Stunden-Hormonzyklus; Frauen auf ~28 Tagen mit vier verschiedenen Phasen. Generische Ernährung und Training ignorieren diesen Unterschied komplett — und Frauen zahlen still den Preis.",
     "prC1t": "Mehr unerwünschte Arzneimittelwirkungen",
     "prC1b": "Forschung und Dosierung sind männlich verzerrt — das erhöht das Risiko für Frauen bei gängigen Medikamenten.",
-    "prYears": "Jahre",
-    "prC2t": "Spätere Diagnosen & verzögerte Versorgung",
-    "prC2b": "Die Symptome von Frauen werden zu wenig erkannt und zu wenig versorgt — die nötige Behandlung verzögert sich.",
+    "prYears": "~4 Jahre",
+    "prC2t": "Spätere Diagnosen als bei Männern",
+    "prC2b": "Im Schnitt ~4 Jahre später diagnostiziert als Männer — 4,5 Jahre später bei Stoffwechselerkrankungen, 2,5 bei Krebs, 5–6 bei Störungen wie ADHS.",
     "prAlone": "Allein",
     "prC3t": "Auf Selbstexperimente zurückgeworfen",
     "prC3b": "Keine verlässliche, personalisierte Orientierung zu Essen und Bewegung über den Zyklus hinweg.",
@@ -817,7 +830,7 @@
     "casLabel": "ZYKLUS-ALIGNMENT-SCORE",
     "casH2a": "Ein Score, der",
     "casH2b": "dich wirklich versteht.",
-    "casP": "Eine Live-Zahl von 0–100, die deine Biologie, Ernährung, Bewegung und Einträge liest — und in Echtzeit zeigt, wie du sie nach oben schiebst.",
+    "casP": "Eine Live-Zahl von 0–100, die deine Biologie, Ernährung, Bewegung und Einträge liest — und in Echtzeit zeigt, wie du sie nach oben schiebst — und verfolgt, wie sich deine Ausrichtung mit der Zeit verbessert, damit du den Fortschritt siehst, den du wirklich machst.",
     "casS1": "tägliches Alignment",
     "casS2n": "Echtzeit",
     "casS2": "passt sich deinen Einträgen an",
@@ -1414,6 +1427,7 @@
     "Menstrual": "Menstruation",
     "Follicular": "Follikelphase",
     "Ovulatory": "Ovulationsphase",
-    "Luteal": "Lutealphase"
+    "Luteal": "Lutealphase",
+    "PCOS": "PMOS"
   }
 }

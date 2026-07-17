@@ -1,5 +1,15 @@
 # NutriSync — Release Notes / Change Log
 
+## 2026-07-17 — PO Review Round 1: all 7 source-bundle requests (v11.43)
+- **7 · Marketing copy ×14**: diagnosis-delay stat card (`prYears` “~4 yrs”, `prC2t` “Later diagnoses than men”, `prC2b` full 4.5y/2.5y/5–6y sentence) + `casP` “improvement over time” clause — EN/ES fixed at source, native translations added to all 12 packs (fr/de/it/nl/el/ca/val/eu/gl/oc/zh/ja).
+- **8 · PMOS terminology ×14**: PCOS→PMOS displayed everywhere (stored data keys unchanged): web-app `condLabels` (EN via display-rename, ES + 12 packs localized dicts incl. Endometriosis/Thyroid/Anaemia/IBS), phone-prototype onboarding & Edit-Health chips, pack `catalog` entries.
+- **9 · W20 battery check-in**: “And your energy?” 1–5 buttons → interactive Figma battery (5 segments in a black shell + cap, coral fill, tap or press-drag; 64px targets); still writes `energy` 1–5.
+- **10 · W22 Progress card**: single ring → three circular stats — Current (coral) / Weekly avg (gold) / Best (green). Honest empty states: “—” rings until history exists (weekly needs ≥2 scores in 7 days); “First score on the board” placeholder retired. Demo: 82/78/88.
+- **11 · W23 hero phone mockup**: now a real Home wireframe — phase ring, phase dots, live CAS chip and per-phase Nutrition/Movement focus card — auto-cycling through all 4 phases every 2.8s (days 2/9/14/24, scores 64/71/86/78). Illustrative only, no live APIs.
+- **12 · Team photos**: founder cards re-pointed to local `assets/team/co{1,3,2}_sq.png` (Lucía on the correct square crop); no more stale UUID references.
+- **13 · Source fixes**: Edit Period opens with **no** pre-selected Flow/Mood (`epFlow`/`epMood` init null + reset on entry; save is null-safe) — and “Mark as done” writes **one** session row to `movement_checklist` instead of one per part.
+- New web-app strings (`prCurrent/prWeekly/prBest/battEmpty/battFull`) shipped in EN/ES + all 12 packs.
+
 ## 2026-07-07 — Onboarding language selector + eu/oc native review (v11.42)
 - **Web app**: the onboarding wizard now carries the language selector (EN + OS-language pills + ⋯ popover, top-right) — previously reachable only from Welcome/Log-in/Settings; all 14 languages switchable mid-wizard.
 - **Basque (eu) native-review pass** (11 corrections): `Lutealea→Luteala` (wrong article stem, 4 spots), `Krucifera→Kruziferoa`, `Insomnioa→Loezina`, mood “Low” `Behean→Apal`, “Pretty unpredictable” `ezustekoa→aurreikusezina`, “consistency beats intensity” now takes the dative (`intentsitateari irabazten dio`), time/date phrasing (`6:40an sinkronizatuta`, `martxoaren 11a`), luteal insight re-phrased.

@@ -192,7 +192,12 @@
       "alertDeactivate": "Tijdens de bèta loopt deactivering via support — mail hello@nutrisynccollective.com.",
       "alertDemoAccount": "Demomodus — accountacties vereisen de live backend.",
       "welTo": "Welkom bij",
-      "welP": "Je bent hier omdat je lichaam beter verdient dan giswerk. Laten we je voeding en beweging syncen met je natuurlijke ritme."
+      "welP": "Je bent hier omdat je lichaam beter verdient dan giswerk. Laten we je voeding en beweging syncen met je natuurlijke ritme.",
+      "prCurrent": "Huidig",
+      "prWeekly": "Weekgemiddelde",
+      "prBest": "Beste",
+      "battEmpty": "Leeg",
+      "battFull": "Opgeladen"
     },
     "dows": [
       "ZO",
@@ -770,7 +775,15 @@
     "calBannerB": "— Nutri schakelt je voeding twee dagen vooraf naar ijzer en comfortfood.",
     "calBannerNone": "Log de start van je menstruatie en Nutri voorspelt de maand vooruit.",
     "calBannerDemo": "Volgende menstruatie verwacht rond 24 maart — Nutri schakelt je voeding twee dagen vooraf naar ijzer en comfortfood.",
-    "calBannerForming": "Voorspelling in opbouw — je schatting van 24 maart wordt met elke gelogde dag scherper."
+    "calBannerForming": "Voorspelling in opbouw — je schatting van 24 maart wordt met elke gelogde dag scherper.",
+    "condLabels": {
+      "PCOS": "PMOS",
+      "Endometriosis": "Endometriose",
+      "Thyroid": "Schildklier",
+      "Anaemia": "Bloedarmoede",
+      "IBS": "Prikkelbare darm",
+      "None diagnosed": "Geen diagnose"
+    }
   },
   "marketing": {
     "navBadge": "Hormonale zorg, eindelijk simpel",
@@ -802,9 +815,9 @@
     "prP": "Mannen draaien op een hormooncyclus van ~24 uur; vrouwen op ~28 dagen met vier duidelijk verschillende fasen. Generieke voeding en training negeren dat verschil volledig — en vrouwen betalen stilletjes de prijs.",
     "prC1t": "Meer bijwerkingen van medicijnen",
     "prC1b": "Onderzoek en dosering zijn mannelijk gekleurd, wat het risico voor vrouwen bij gangbare medicijnen verhoogt.",
-    "prYears": "Jaren",
-    "prC2t": "Latere diagnoses & uitgestelde zorg",
-    "prC2b": "De symptomen van vrouwen worden te weinig herkend en bediend, waardoor nodige zorg vertraagt.",
+    "prYears": "~4 jaar",
+    "prC2t": "Later gediagnosticeerd dan mannen",
+    "prC2b": "Gemiddeld ~4 jaar later gediagnosticeerd dan mannen — 4,5 jaar later bij stofwisselingsziekten, 2,5 bij kanker, 5–6 bij aandoeningen zoals ADHD.",
     "prAlone": "Alleen",
     "prC3t": "Aangewezen op zelf experimenteren",
     "prC3b": "Geen betrouwbare, persoonlijke gids voor eten en bewegen door de cyclus heen.",
@@ -817,7 +830,7 @@
     "casLabel": "CYCLUS-ALIGNMENT-SCORE",
     "casH2a": "Eén score die",
     "casH2b": "je echt begrijpt.",
-    "casP": "Een live getal van 0–100 dat je biologie, voeding, beweging en logs leest — en in realtime laat zien hoe je het omhoog duwt.",
+    "casP": "Een live getal van 0–100 dat je biologie, voeding, beweging en logs leest — en in realtime laat zien hoe je het omhoog duwt — en volgt hoe je afstemming met de tijd verbetert, zodat je ziet welke vooruitgang je echt boekt.",
     "casS1": "dagelijkse alignment",
     "casS2n": "Realtime",
     "casS2": "past zich aan je logs aan",
@@ -1414,6 +1427,7 @@
     "Menstrual": "Menstrueel",
     "Follicular": "Folliculair",
     "Ovulatory": "Ovulatoir",
-    "Luteal": "Luteaal"
+    "Luteal": "Luteaal",
+    "PCOS": "PMOS"
   }
 }

@@ -192,7 +192,12 @@
       "alertDeactivate": "Durante a beta, a desactivación xestiónase co soporte — escribe a hello@nutrisynccollective.com.",
       "alertDemoAccount": "Modo demo — as accións da conta precisan o backend en produción.",
       "welTo": "Benvida a",
-      "welP": "Estás aquí porque o teu corpo merece algo mellor cás adiviñas. Sincronicemos a túa nutrición e o teu movemento co teu ritmo natural."
+      "welP": "Estás aquí porque o teu corpo merece algo mellor cás adiviñas. Sincronicemos a túa nutrición e o teu movemento co teu ritmo natural.",
+      "prCurrent": "Actual",
+      "prWeekly": "Media semanal",
+      "prBest": "Mellor",
+      "battEmpty": "Esgotada",
+      "battFull": "Cargada"
     },
     "dows": [
       "DOM",
@@ -770,7 +775,15 @@
     "calBannerB": "— Nutri desprazará a túa alimentación cara ao ferro e os pratos reconfortantes dous días antes.",
     "calBannerNone": "Rexistra o inicio da regra e Nutri predirá o mes que vén.",
     "calBannerDemo": "Próxima regra prevista arredor do 24 de marzo — Nutri desprazará a túa alimentación cara ao ferro e os pratos reconfortantes dous días antes.",
-    "calBannerForming": "Predición en marcha — a estimación do 24 de marzo afínase con cada día que rexistras."
+    "calBannerForming": "Predición en marcha — a estimación do 24 de marzo afínase con cada día que rexistras.",
+    "condLabels": {
+      "PCOS": "PMOS",
+      "Endometriosis": "Endometriose",
+      "Thyroid": "Tiroide",
+      "Anaemia": "Anemia",
+      "IBS": "Colon irritable",
+      "None diagnosed": "Ningún diagnóstico"
+    }
   },
   "marketing": {
     "navBadge": "O coidado hormonal, por fin sinxelo",
@@ -802,9 +815,9 @@
     "prP": "Os homes funcionan cun ciclo hormonal dunhas 24 horas; as mulleres con ~28 días e catro fases distintas. A nutrición e o adestramento xenéricos ignoran por completo esa diferenza — e as mulleres pagan o prezo en silencio.",
     "prC1t": "Máis reaccións adversas aos fármacos",
     "prC1b": "A investigación e as doses teñen nesgo masculino, aumentando o risco para as mulleres con medicamentos comúns.",
-    "prYears": "Anos",
-    "prC2t": "Diagnósticos tardíos e atención demorada",
-    "prC2b": "Os síntomas das mulleres recoñécense e aténdense pouco, atrasando a atención que precisan.",
+    "prYears": "~4 anos",
+    "prC2t": "Diagnósticos máis tardíos ca os homes",
+    "prC2b": "Diagnosticadas de media ~4 anos máis tarde ca os homes — 4,5 anos máis tarde en enfermidades metabólicas, 2,5 en cancro e 5–6 en condicións como o TDAH.",
     "prAlone": "Soas",
     "prC3t": "Deixadas á autoexperimentación",
     "prC3b": "Ningunha guía fiable e personalizada sobre comida e movemento ao longo do ciclo.",
@@ -817,7 +830,7 @@
     "casLabel": "PUNTUACIÓN DE ALIÑAMENTO DO CICLO",
     "casH2a": "Unha puntuación que",
     "casH2b": "te entende de verdade.",
-    "casP": "Un número 0–100 en directo que le a túa bioloxía, nutrición, movemento e rexistros — e mostra exactamente como subilo, en tempo real.",
+    "casP": "Un número 0–100 en directo que le a túa bioloxía, nutrición, movemento e rexistros — e mostra exactamente como subilo, en tempo real — e mide como mellora o teu aliñamento co tempo, para que vexas o progreso real que estás a facer.",
     "casS1": "aliñamento diario",
     "casS2n": "Tempo real",
     "casS2": "adáptase aos teus rexistros",
@@ -1414,6 +1427,7 @@
     "Menstrual": "Menstrual",
     "Follicular": "Folicular",
     "Ovulatory": "Ovulatoria",
-    "Luteal": "Lútea"
+    "Luteal": "Lútea",
+    "PCOS": "PMOS"
   }
 }

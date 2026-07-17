@@ -396,7 +396,9 @@ for _lang, _vals in {
     if os.path.exists(_p):
         _d = json.load(open(_p, encoding="utf-8"))
         _mk = _d.get("marketing") or _d.get("app", {}).get("marketing")
-        if _mk:
+        # Only patch if the OLD copy is still present — from v11.43 Design ships the
+        # corrected copy at source (native-written), which must win over ours.
+        if _mk and _mk.get("prYears") in ("Years", "Años"):
             _add = _vals.pop("_casAdd")
             _mk.update(_vals)
             if _mk.get("casP") and "progres" not in _mk["casP"] and "progress" not in _mk["casP"]:

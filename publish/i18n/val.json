@@ -192,7 +192,12 @@
       "alertDeactivate": "Durant la beta, la desactivació es gestiona amb suport — escriu a hello@nutrisynccollective.com.",
       "alertDemoAccount": "Mode demo — les accions del compte necessiten el backend en producció.",
       "welTo": "Benvinguda a",
-      "welP": "Estàs ací perquè el teu cos mereix més que suposicions. Sincronitzem la teua nutrició i el teu moviment amb el teu ritme natural."
+      "welP": "Estàs ací perquè el teu cos mereix més que suposicions. Sincronitzem la teua nutrició i el teu moviment amb el teu ritme natural.",
+      "prCurrent": "Actual",
+      "prWeekly": "Mitjana setmanal",
+      "prBest": "Millor",
+      "battEmpty": "Esgotada",
+      "battFull": "Carregada"
     },
     "dows": [
       "DG",
@@ -770,7 +775,15 @@
     "calBannerB": "— Nutri desplaçarà la teua alimentació cap al ferro i els plats reconfortants dos dies abans.",
     "calBannerNone": "Registra l'inici de la regla i Nutri predirà el mes que ve.",
     "calBannerDemo": "Pròxima regla prevista cap al 24 de març — Nutri desplaçarà la teua alimentació cap al ferro i els plats reconfortants dos dies abans.",
-    "calBannerForming": "Predicció en marxa — l'estimació del 24 de març s'afina amb cada dia que registres."
+    "calBannerForming": "Predicció en marxa — l'estimació del 24 de març s'afina amb cada dia que registres.",
+    "condLabels": {
+      "PCOS": "PMOS",
+      "Endometriosis": "Endometriosi",
+      "Thyroid": "Tiroide",
+      "Anaemia": "Anèmia",
+      "IBS": "Còlon irritable",
+      "None diagnosed": "Cap diagnòstic"
+    }
   },
   "marketing": {
     "navBadge": "La cura hormonal, per fi senzilla",
@@ -802,9 +815,9 @@
     "prP": "Els homes funcionen amb un cicle hormonal d'unes 24 hores; les dones amb ~28 dies i quatre fases diferents. La nutrició i l'entrenament genèrics ignoren del tot eixa diferència — i les dones en paguen el preu en silenci.",
     "prC1t": "Més reaccions adverses als fàrmacs",
     "prC1b": "La investigació i les dosis tenen biaix masculí, cosa que augmenta el risc per a les dones amb medicaments habituals.",
-    "prYears": "Anys",
-    "prC2t": "Diagnòstics tardans i atenció endarrerida",
-    "prC2b": "Els símptomes de les dones es reconeixen i s'atenen poc, endarrerint l'atenció que necessiten.",
+    "prYears": "~4 anys",
+    "prC2t": "Diagnòstics més tardans que els hòmens",
+    "prC2b": "Diagnosticades de mitjana ~4 anys més tard que els hòmens — 4,5 anys més tard en malalties metabòliques, 2,5 en càncer i 5–6 en condicions com el TDAH.",
     "prAlone": "Soles",
     "prC3t": "Abandonades a l'autoexperimentació",
     "prC3b": "Cap guia fiable i personalitzada sobre menjar i moviment al llarg del cicle.",
@@ -817,7 +830,7 @@
     "casLabel": "PUNTUACIÓ D'ALINEACIÓ DEL CICLE",
     "casH2a": "Una puntuació que",
     "casH2b": "t'entén de veritat.",
-    "casP": "Un número 0–100 en directe que llig la teua biologia, nutrició, moviment i registres — i mostra exactament com fer-lo pujar, en temps real.",
+    "casP": "Un número 0–100 en directe que llig la teua biologia, nutrició, moviment i registres — i mostra exactament com fer-lo pujar, en temps real — i mesura com millora la teua alineació amb el temps, perquè veges el progrés real que estàs fent.",
     "casS1": "alineació diària",
     "casS2n": "Temps real",
     "casS2": "s'adapta als teus registres",
@@ -1414,6 +1427,7 @@
     "Menstrual": "Menstrual",
     "Follicular": "Fol·licular",
     "Ovulatory": "Ovulatòria",
-    "Luteal": "Lútia"
+    "Luteal": "Lútia",
+    "PCOS": "PMOS"
   }
 }

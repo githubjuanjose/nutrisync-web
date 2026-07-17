@@ -192,7 +192,12 @@
       "backToSite": "Retour au site",
       "obStartOver": "Recommencer",
       "welTo": "Bienvenue sur",
-      "welP": "Tu es ici parce que ton corps mérite mieux que des devinettes. Synchronisons ta nutrition et ton mouvement avec ton rythme naturel."
+      "welP": "Tu es ici parce que ton corps mérite mieux que des devinettes. Synchronisons ta nutrition et ton mouvement avec ton rythme naturel.",
+      "prCurrent": "Actuel",
+      "prWeekly": "Moyenne hebdo",
+      "prBest": "Record",
+      "battEmpty": "À plat",
+      "battFull": "Chargée"
     },
     "dows": [
       "DIM",
@@ -770,7 +775,15 @@
     "calBannerB": "— Nutri basculera ton alimentation vers le fer et les plats réconfortants deux jours avant.",
     "calBannerNone": "Consigne le début de tes règles et Nutri prédira le mois à venir.",
     "calBannerDemo": "Prochaines règles attendues vers le 24 mars — Nutri basculera ton alimentation vers le fer et les plats réconfortants deux jours avant.",
-    "calBannerForming": "Prédiction en cours — ton estimation du 24 mars s'affine à chaque journée consignée."
+    "calBannerForming": "Prédiction en cours — ton estimation du 24 mars s'affine à chaque journée consignée.",
+    "condLabels": {
+      "PCOS": "PMOS",
+      "Endometriosis": "Endométriose",
+      "Thyroid": "Thyroïde",
+      "Anaemia": "Anémie",
+      "IBS": "Côlon irritable",
+      "None diagnosed": "Aucun diagnostic"
+    }
   },
   "marketing": {
     "navBadge": "Le soin hormonal, enfin simple",
@@ -802,9 +815,9 @@
     "prP": "Les hommes vivent sur un cycle hormonal d'environ 24 heures ; les femmes sur ~28 jours et quatre phases distinctes. La nutrition et l'entraînement génériques ignorent totalement cette différence — et les femmes en paient le prix en silence.",
     "prC1t": "Plus d'effets indésirables médicamenteux",
     "prC1b": "Recherche et dosages penchent côté masculin, ce qui augmente le risque pour les femmes sur des médicaments courants.",
-    "prYears": "Années",
-    "prC2t": "Diagnostics tardifs, soins retardés",
-    "prC2b": "Les symptômes des femmes sont sous-reconnus et mal pris en charge, retardant les soins nécessaires.",
+    "prYears": "~4 ans",
+    "prC2t": "Des diagnostics plus tardifs que chez les hommes",
+    "prC2b": "Diagnostiquées en moyenne ~4 ans plus tard que les hommes — 4,5 ans pour les maladies métaboliques, 2,5 ans pour le cancer, 5–6 ans pour des troubles comme le TDAH.",
     "prAlone": "Seules",
     "prC3t": "Livrées à l'auto-expérimentation",
     "prC3b": "Aucune référence fiable et personnalisée sur l'alimentation et le mouvement au fil du cycle.",
@@ -817,7 +830,7 @@
     "casLabel": "SCORE D'ALIGNEMENT DU CYCLE",
     "casH2a": "Un score qui",
     "casH2b": "te comprend vraiment.",
-    "casP": "Un chiffre 0–100 en direct qui lit ta biologie, ta nutrition, ton mouvement et tes journaux — puis montre exactement comment le faire monter, en temps réel.",
+    "casP": "Un chiffre 0–100 en direct qui lit ta biologie, ta nutrition, ton mouvement et tes journaux — puis montre exactement comment le faire monter, en temps réel — et suit comment ton alignement s’améliore au fil du temps, pour que tu voies les progrès que tu fais vraiment.",
     "casS1": "alignement quotidien",
     "casS2n": "Temps réel",
     "casS2": "s'adapte à tes journaux",
@@ -1414,6 +1427,7 @@
     "Menstrual": "Menstruelle",
     "Follicular": "Folliculaire",
     "Ovulatory": "Ovulatoire",
-    "Luteal": "Lutéale"
+    "Luteal": "Lutéale",
+    "PCOS": "PMOS"
   }
 }

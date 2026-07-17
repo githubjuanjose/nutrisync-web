@@ -39,7 +39,9 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>Fixes that live in Design's <strong>compiled web bundle</strong> (marketing <code>index.html</code> + web app <code>app.html</code>). We can only patch around these from the integration layer; Design should fix them at the source so they survive each re-export. This is the shareable version of the <em>Open Design requests</em> tracked in the Change Log.</p>
 <p>Hand this straight to Design.</p>
 <blockquote>
-<p><strong>Status:</strong> items 1–5 <strong>closed</strong> ✅ (1–4 in the 0607v02.53 pack; item 5 error overlay root-caused in v11.1). <strong>Item 6 (Multilingual — 14 languages) is NEW and open</strong> — see below.</p>
+<p><strong>Status:</strong> items 1–13 <strong>closed</strong> ✅ (6–13 delivered at source in the 1707_v11.43 pack — marketing copy ×14, PMOS ×14, battery UI, progress card, hero animation, team photos, Edit Period/movement source fixes).
+<strong>New minor:</strong> <code>i18n/es.json → app.condLabels.PCOS</code> still says "SOP" at source (embedded ES dict is fixed); our layer patches it — please align in the next export.
+<em>(previous status line: items 1–5 closed)</em> (1–4 in the 0607v02.53 pack; item 5 error overlay root-caused in v11.1). <strong>Item 6 (Multilingual — 14 languages) is NEW and open</strong> — see below.</p>
 </blockquote>
 <hr />
 <h2>1 · Web app — "Back to site" exit ✅ delivered (0607v02.53)</h2>
@@ -97,4 +99,19 @@ tbody tr:nth-child(even){background:var(--cream);}
 - <code>prYears</code>: "Years" → "~4 yrs" (localised)
 - <code>prC2t</code>: "Later diagnoses &amp; delayed care" → "Later diagnoses than men"
 - <code>prC2b</code>: → "Diagnosed ~4 years later than men on average — 4.5y later for metabolic conditions, 2.5y for cancer, 5–6y for conditions like ADHD."
-- <code>casP</code>: append "— and tracks how your alignment improves over time, so you can see the progress you're actually making."</p></div></body></html>
+- <code>casP</code>: append "— and tracks how your alignment improves over time, so you can see the progress you're actually making."</p>
+<h2>8 · PMOS terminology — 12 locales (NEW · open)</h2>
+<p>PCOS was officially renamed <strong>PMOS</strong> (polyendocrine metabolic ovarian syndrome, May 2026). EN + ES labels are updated in the integrated build (stored data keys unchanged). Please add the correct localized PMOS terminology to the remaining 12 locale files (<code>condLabels</code> and any onboarding/marketing mention), reviewed by native speakers where applicable.</p>
+<h2>9 · Daily Check-in — battery energy UI (W20 · open)</h2>
+<p>Replace the numeric 1–5 button selector on the "And your energy?" check-in step with the interactive <strong>battery</strong> component from the Figma wireframe (tap/drag to fill; same coral palette).
+<em>Acceptance: energy input renders as the Figma battery on web-app check-in; value still maps 1–5 to the existing <code>energy</code> field.</em></p>
+<h2>10 · Progress card — current / weekly / best (W22 · open)</h2>
+<p>Rework the CAS Progress card to the Figma layout showing <strong>current score, weekly score, best score</strong> (three circular stats), replacing the "First score on the board" placeholder copy.
+<em>Acceptance: three score states visible per Figma; empty states used when history is insufficient — never fabricated numbers.</em></p>
+<h2>11 · Hero/wearables phone mockup — real wireframe + animation (W23 · open)</h2>
+<p>The "Hello, Olivia" phone mockup should show the <strong>actual approved wireframe UI</strong> and auto-cycle through states (different cycle days/phases/scores) on a CSS/JS loop. Illustrative only — no live wearable APIs.
+<em>Acceptance: mockup uses real wireframe frames and animates without user interaction.</em></p>
+<h2>12 · Team section — re-export photos with local asset paths (NEW · open)</h2>
+<p>The three team cards reference stale UUID image files not shipped in current packs (they only render because old deploys left files on the server). Lucía's was mis-cropped (fixed in integration by pointing at <code>assets/team/co3_sq.png</code>). Please re-export the team section using the local <code>assets/team/*_sq.png</code> paths for all three founders so a clean deploy can never 404 them.</p>
+<h2>13 · Fix at source: Edit Period defaults + movement checklist (W3/W2 · FYI)</h2>
+<p>Our integration layer now patches these, but please fix in the source so future exports come clean: (a) <code>epFlow</code>/<code>epMood</code> must initialize to <code>null</code> — never pre-selected "Medium"/"Content"; (b) "Mark as done" must not write a checked row per session part (we reduced it to one session row). The full movement redesign is the separate 4-screen rebuild already briefed.</p></div></body></html>

@@ -192,7 +192,12 @@
       "alertDeactivate": "Durante la beta la disattivazione passa dal supporto — scrivi a hello@nutrisynccollective.com.",
       "alertDemoAccount": "Modalità demo — le azioni sull'account richiedono il backend live.",
       "welTo": "Benvenuta su",
-      "welP": "Sei qui perché il tuo corpo merita di meglio delle supposizioni. Sincronizziamo la tua nutrizione e il tuo movimento col tuo ritmo naturale."
+      "welP": "Sei qui perché il tuo corpo merita di meglio delle supposizioni. Sincronizziamo la tua nutrizione e il tuo movimento col tuo ritmo naturale.",
+      "prCurrent": "Attuale",
+      "prWeekly": "Media settimanale",
+      "prBest": "Migliore",
+      "battEmpty": "Scarica",
+      "battFull": "Carica"
     },
     "dows": [
       "DOM",
@@ -770,7 +775,15 @@
     "calBannerB": "— Nutri sposterà la tua alimentazione su ferro e comfort food due giorni prima.",
     "calBannerNone": "Registra l'inizio del ciclo e Nutri prevederà il mese in arrivo.",
     "calBannerDemo": "Prossimo ciclo previsto intorno al 24 marzo — Nutri sposterà la tua alimentazione su ferro e comfort food due giorni prima.",
-    "calBannerForming": "Previsione in formazione — la stima del 24 marzo si affina con ogni giorno registrato."
+    "calBannerForming": "Previsione in formazione — la stima del 24 marzo si affina con ogni giorno registrato.",
+    "condLabels": {
+      "PCOS": "PMOS",
+      "Endometriosis": "Endometriosi",
+      "Thyroid": "Tiroide",
+      "Anaemia": "Anemia",
+      "IBS": "Colon irritabile",
+      "None diagnosed": "Nessuna diagnosi"
+    }
   },
   "marketing": {
     "navBadge": "La cura ormonale, finalmente semplice",
@@ -802,9 +815,9 @@
     "prP": "Gli uomini vivono su un ciclo ormonale di ~24 ore; le donne su ~28 giorni e quattro fasi distinte. Nutrizione e allenamento generici ignorano del tutto questa differenza — e le donne ne pagano il prezzo in silenzio.",
     "prC1t": "Più reazioni avverse ai farmaci",
     "prC1b": "Ricerca e dosaggi pendono verso il maschile, aumentando il rischio per le donne su farmaci comuni.",
-    "prYears": "Anni",
-    "prC2t": "Diagnosi tardive e cure ritardate",
-    "prC2b": "I sintomi delle donne sono poco riconosciuti e poco serviti, ritardando le cure necessarie.",
+    "prYears": "~4 anni",
+    "prC2t": "Diagnosi più tardive rispetto agli uomini",
+    "prC2b": "Diagnosticate in media ~4 anni più tardi degli uomini — 4,5 anni più tardi per le malattie metaboliche, 2,5 per il cancro, 5–6 per condizioni come l’ADHD.",
     "prAlone": "Sole",
     "prC3t": "Lasciate all'auto-sperimentazione",
     "prC3b": "Nessuna guida affidabile e personalizzata su cibo e movimento lungo il ciclo.",
@@ -817,7 +830,7 @@
     "casLabel": "PUNTEGGIO DI ALLINEAMENTO DEL CICLO",
     "casH2a": "Un punteggio che",
     "casH2b": "ti capisce davvero.",
-    "casP": "Un numero 0–100 in tempo reale che legge la tua biologia, nutrizione, movimento e registrazioni — e mostra esattamente come farlo salire, in diretta.",
+    "casP": "Un numero 0–100 in tempo reale che legge la tua biologia, nutrizione, movimento e registrazioni — e mostra esattamente come farlo salire, in diretta — e registra come il tuo allineamento migliora nel tempo, così vedi i progressi che stai davvero facendo.",
     "casS1": "allineamento quotidiano",
     "casS2n": "Tempo reale",
     "casS2": "si adatta alle tue registrazioni",
@@ -1414,6 +1427,7 @@
     "Menstrual": "Mestruale",
     "Follicular": "Follicolare",
     "Ovulatory": "Ovulatoria",
-    "Luteal": "Luteale"
+    "Luteal": "Luteale",
+    "PCOS": "PMOS"
   }
 }
