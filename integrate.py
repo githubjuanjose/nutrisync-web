@@ -407,11 +407,13 @@ for _lang, _vals in {
 # NOTE: the other 12 locale files keep their old translated stat until Design's
 # translators update them — logged on doc 12 for the next translation round.
 
-# W11 — center Lucía's headshot (apply Design's own crop from the JS team array)
+# W11 — center Lucía's headshot. Root cause: the marketing card points at a stale
+# UUID asset (not shipped in current packs, badly cropped). Point it at Design's
+# own well-framed square export instead; plain center crop, no transforms.
 _patch(IDX, [
-    (r'(alt=\\"Lucia Cebrian\\" style=\\"width: 100%; height: 100%; object-fit: cover; object-position: )center;',
-     r'\g<1>50% 32%; transform: scale(2.15); transform-origin: 50% 34%;', True),
-], "W11 Lucia headshot crop")
+    (r'src=\\"8a56a246-0412-42c8-81e5-86aa777ef702\\"( alt=\\"Lucia Cebrian\\")',
+     r'src=\\"assets/team/co3_sq.png\\"\1', True),
+], "W11 Lucia headshot -> assets/team/co3_sq.png")
 
 # W24f — remove the footer "Prototype" button (last public prototype entry point)
 _patch(IDX, [
