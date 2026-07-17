@@ -97,7 +97,7 @@ if os.path.exists(idx):
           'if(!cb&&box){var w=document.createElement("label");'
           'w.style.cssText="display:flex;gap:8px;align-items:flex-start;margin-top:10px;font-size:11.5px;line-height:1.45;color:#8d827a;font-family:Inter,system-ui,sans-serif;cursor:pointer;text-align:left";'
           'w.innerHTML=\'<input type="checkbox" class="ns-consent-cb" style="margin-top:2px;accent-color:#EA5740"/>'
-          '<span>I agree to join the waitlist and receive the NutriSync newsletter. My email is stored securely (GDPR) and I can unsubscribe anytime.<\\u002Fspan>\';'
+          '<span>Yes, I want NutriSync updates \\u2014 launch news, cycle-nutrition tips, and first access to the app. Unsubscribe anytime.<\\u002Fspan>\';'
           'box.appendChild(w);cb=w.querySelector(".ns-consent-cb");'
           'toast("One more step \\u2014 please tick the consent box");btn.__nsSent=null;return;}'
           'if(cb&&!cb.checked){toast("Please tick the consent box first");btn.__nsSent=null;return;}'
@@ -364,11 +364,15 @@ IDX = os.path.join(PUB, "index.html")
 APH = os.path.join(PUB, "app.html")
 INV = os.path.join(PUB, "hub", "investors-business-case.html")
 
-# W4 — footer socials: LinkedIn → real page (PO 17/7). IG/TikTok URLs still pending.
+# W4 — footer socials: all three live (PO 17/7).
 _patch(IDX, [
     (r'<a href=\\"#\\" aria-label=\\"LinkedIn\\"',
      r'<a href=\\"https://www.linkedin.com/company/nutrisync-collective\\" target=\\"_blank\\" rel=\\"noopener\\" aria-label=\\"LinkedIn\\"', True),
-], "W4 LinkedIn footer link")
+    (r'<a href=\\"#\\" aria-label=\\"Instagram\\"',
+     r'<a href=\\"https://www.instagram.com/nutrisync.collective/\\" target=\\"_blank\\" rel=\\"noopener\\" aria-label=\\"Instagram\\"', True),
+    (r'<a href=\\"#\\" aria-label=\\"TikTok\\"',
+     r'<a href=\\"https://www.tiktok.com/@nutrisyncc\\" target=\\"_blank\\" rel=\\"noopener\\" aria-label=\\"TikTok\\"', True),
+], "W4 socials complete (LinkedIn + Instagram + TikTok)")
 
 # W8 — waitlist stat 130 → 140+ (marketing stats bar + investor page)
 _patch(IDX, [

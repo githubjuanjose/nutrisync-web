@@ -141,7 +141,7 @@ tbody tr:nth-child(even){background:var(--cream);}
 <tr>
 <td>1 · Bugs</td>
 <td>W1–W5</td>
-<td><strong>W1 W2 W3</strong> ✅ · <strong>W4 ◑</strong> LinkedIn live (IG/TikTok URLs pending)</td>
+<td><strong>W1 W2 W3</strong> ✅ · <strong>W4</strong> ✅ (all three socials live)</td>
 <td>W5 verify</td>
 </tr>
 <tr>
@@ -173,6 +173,30 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-17 · Round-1 final answers wired (web)</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-web-1707_v11.43-po7.zip</code></li>
+<li><strong>W4 ✅ complete</strong> — footer socials all live, new-tab: Instagram (@nutrisync.collective), LinkedIn (company page), TikTok (@nutrisyncc).</li>
+<li><strong>W14 final copy</strong> — the consent checkbox now carries the founders' exact wording: "Yes, I want NutriSync updates — launch news, cycle-nutrition tips, and first access to the app." (+ "Unsubscribe anytime." retained for GDPR hygiene).</li>
+<li>Privacy policy confirmed <strong>in progress</strong> on the founders' side (unblocks F17 T&amp;C links when it lands); barcode feasibility answered — closed on their side; video still pending, section stays out.</li>
+</ul>
+<h3>2026-07-17 · R2-I + R2-J — Calendar &amp; Progress rebuilds (mobile)</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-app-r2ij-calendar-progress.zip</code> (OTA — contains all prior batches)</li>
+<li><strong>R2-I Calendar:</strong> <strong>F3 ✅</strong> every day computed from the shared lib/cas phase math · <strong>F22 ✅</strong> grid always renders full 7-column weeks (Saturday restored) · <strong>F20b ✅</strong> header stats show the user's real avg cycle/period values · <strong>F21 ✅</strong> soft-wellness restyle: coral/sage/golden/lavender palette, floating white card, segmented cycle progress bar with day knob + "phase begins in N days" note, translucent stat cards, small muted dots, dashed predicted days, orange-gradient today · <strong>F4 ✅</strong> Month/Year toggle (12 mini-months, tap-to-open), phase filter chips (highlights matching days) and ★ marks on intimacy-logged days.</li>
+<li><strong>R2-J Progress:</strong> <strong>F21b ✅</strong> CAS ring fill = exact score/100 · five live component mini-rings from daily_scores · <strong>F20c ✅</strong> "Movement" not "Fitness" · <strong>F19b ✅</strong> "+X vs last cycle" appears only once a completed cycle exists · <strong>F22b ✅</strong> Cycle Stability gauge (Volatile/Stable/Aligned needle from mood/energy consistency — a different metric to CAS, honest "keep syncing" state under 7 days) · <strong>F24b ✅</strong> View History → dedicated screen with Weekly/Monthly/Yearly + the dev-spec progressive unlock (1 cycle / 2 cycles / 90 days), coral line chart with gradient fill, Current/Average/Best rings, Avg/High/Low/Improvement stats, dashed-border avg-by-phase bars + auto-generated phase insight · <strong>F26b ✅</strong> weekly predicted hormone curves (estrogen/progesterone), Monthly/Yearly honest empty states · <strong>F25b ✅</strong> Energy/Mood/PMS frame removed · <strong>F27b ✅</strong> bullet tips removed.</li>
+<li>All values computed from real daily_scores/daily_logs — nothing fabricated; empty states everywhere data is insufficient (dev-spec rule).</li>
+</ul>
+<h3>2026-07-17 · R2-H — Home rebuild: interactive cycle ring (mobile)</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-app-r2h-homering.zip</code> (OTA)</li>
+<li><strong>F26 ✅ (core)</strong> New <code>CycleRingInteractive</code>: progress runs <strong>clockwise</strong> from 12 o'clock with rounded caps; the arc uses the <strong>exact spec gradient</strong> (#570B18 5% → #BD1833 18% → #D34D64 30% → #FF3519 40% → #FE4E28 59% → #FCAD5E 71%, drawn as 72 smoothly interpolated segments — SVG has no angular gradient), remainder white; white knob carries the day number.</li>
+<li><strong>F7 ✅</strong> The ring is a <strong>scrubbable timeline</strong> — drag anywhere on the band to preview any day; day number, phase name and knob position update live; "Back to today" chip restores. Preview only — no data is written.</li>
+<li><strong>F6 ✅</strong> Fill fraction = day/cycle-length (e.g. day 18 of 28 ≈ 64%).</li>
+<li><strong>F26 text-fit ✅</strong> Phase name auto-scales and never touches the ring; wave illustration fixed in the lower half, clipped inside the ring.</li>
+<li><strong>F24 ✅</strong> The energy/mood check-in <strong>never auto-opens</strong>; a battery button (segments = today's energy) sits at the ring's top-right and opens the Gate.</li>
+<li>Remaining F26 nuance for the founders' next pass: exact typography weights/spacings vs the reference screenshot — flagged for their visual check. F25 (slide-to-log inside the Gate) queued with the Gate polish.</li>
+</ul>
 <h3>2026-07-17 · R2-G + Round-1 answers wired (web + mobile)</h3>
 <ul>
 <li><strong>Builds:</strong> <code>nutrisync-web-1707_v11.43-po6.zip</code> · <code>nutrisync-app-r2g-navbar-avatars.zip</code> (OTA)</li>
