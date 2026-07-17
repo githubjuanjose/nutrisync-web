@@ -91,6 +91,16 @@ if os.path.exists(idx):
           'var input=null,node=btn,i;for(i=0;i<4&&node;i++){node=node.parentElement;'
           'if(node){input=node.querySelector("input");if(input)break;}}'
           'if(!input)return;var email=(input.value||"").trim().toLowerCase();if(!v(email))return;'
+          # W14: explicit GDPR consent — checkbox injected next to the input, submission gated on it
+          'var box=input.parentElement&&input.parentElement.parentElement;'
+          'var cb=box&&box.querySelector(".ns-consent-cb");'
+          'if(!cb&&box){var w=document.createElement("label");'
+          'w.style.cssText="display:flex;gap:8px;align-items:flex-start;margin-top:10px;font-size:11.5px;line-height:1.45;color:#8d827a;font-family:Inter,system-ui,sans-serif;cursor:pointer;text-align:left";'
+          'w.innerHTML=\'<input type="checkbox" class="ns-consent-cb" style="margin-top:2px;accent-color:#EA5740"/>'
+          '<span>I agree to join the waitlist and receive the NutriSync newsletter. My email is stored securely (GDPR) and I can unsubscribe anytime.<\\u002Fspan>\';'
+          'box.appendChild(w);cb=w.querySelector(".ns-consent-cb");'
+          'toast("One more step \\u2014 please tick the consent box");btn.__nsSent=null;return;}'
+          'if(cb&&!cb.checked){toast("Please tick the consent box first");btn.__nsSent=null;return;}'
           'if(btn.__nsSent===email)return;btn.__nsSent=email;'
           'var src=/you@email\\.com/.test(input.placeholder||"")?"newsletter":"marketing_site";'
           'fetch(U+"/rest/v1/waitlist",{method:"POST",headers:{"apikey":K,"Authorization":"Bearer "+K,'
@@ -353,6 +363,12 @@ def _patch(path, pairs, label):
 IDX = os.path.join(PUB, "index.html")
 APH = os.path.join(PUB, "app.html")
 INV = os.path.join(PUB, "hub", "investors-business-case.html")
+
+# W4 — footer socials: LinkedIn → real page (PO 17/7). IG/TikTok URLs still pending.
+_patch(IDX, [
+    (r'<a href=\\"#\\" aria-label=\\"LinkedIn\\"',
+     r'<a href=\\"https://www.linkedin.com/company/nutrisync-collective\\" target=\\"_blank\\" rel=\\"noopener\\" aria-label=\\"LinkedIn\\"', True),
+], "W4 LinkedIn footer link")
 
 # W8 — waitlist stat 130 → 140+ (marketing stats bar + investor page)
 _patch(IDX, [

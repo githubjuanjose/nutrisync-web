@@ -141,8 +141,8 @@ tbody tr:nth-child(even){background:var(--cream);}
 <tr>
 <td>1 · Bugs</td>
 <td>W1–W5</td>
-<td><strong>W1 W3</strong> ✅ · <strong>W2 ◑</strong> integrity fixed (it.3; selection UI + "Other" ships with Round-2 Movement rebuild)</td>
-<td>W4 (URLs) · W5 verify</td>
+<td><strong>W1 W2 W3</strong> ✅ · <strong>W4 ◑</strong> LinkedIn live (IG/TikTok URLs pending)</td>
+<td>W5 verify</td>
 </tr>
 <tr>
 <td>2 · Pricing/stats</td>
@@ -153,8 +153,8 @@ tbody tr:nth-child(even){background:var(--cream);}
 <tr>
 <td>3 · Copy/assets</td>
 <td>W10–W14</td>
-<td><strong>W10 W11</strong> ✅ (it.1)</td>
-<td>W12 W13 · W14 partial</td>
+<td><strong>W10 W11 W13 W14</strong> ✅ (W14 explicit checkbox per PO; W13 mobile on official avatars)</td>
+<td>W12 web-side → Design (doc 12 §14)</td>
 </tr>
 <tr>
 <td>4 · Features</td>
@@ -173,6 +173,47 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-17 · R2-G + Round-1 answers wired (web + mobile)</h3>
+<ul>
+<li><strong>Builds:</strong> <code>nutrisync-web-1707_v11.43-po6.zip</code> · <code>nutrisync-app-r2g-navbar-avatars.zip</code> (OTA)</li>
+<li><strong>PO answers:</strong> ① LinkedIn URL → <strong>W4 ◑</strong> footer icon live, new tab (IG/TikTok pending) · ② <strong>official Nutri avatars delivered</strong> · ③ <strong>W14 ✅</strong> waitlist consent = explicit checkbox, injected next to the email input, submission gated, GDPR wording · ④ video "not yet" — section stays out · ⑤ PMOS confirmed (already shipped).</li>
+<li><strong>W12/W13 + F41 artwork ✅ (mobile)</strong> — <code>NutriAvatar</code> now renders the official PNGs (red/pink/yellow/blue; legacy 'coral'/index values mapped); picker grid, Settings header, Personal Info and Home all on official art. NutriLog/Movement daily-tip characters now match the <strong>user's chosen Nutri</strong> (per-variant art). Streak dots → official day_complete/day_incomplete. Web-side swap → Design (doc 12 §14).</li>
+<li><strong>F12 ✅ (R2-G)</strong> — nav bar rebuilt: Design's line-icon set, floating pill bar, taupe → accent-red #E4572E active, order Calendar · NutriLog · <strong>Home (centre)</strong> · Movement · Progress, label "Home".</li>
+</ul>
+<h3>2026-07-17 · R2-F — Settings batch F39–F48 (mobile)</h3>
+<ul>
+<li><strong>Builds:</strong> <code>nutrisync-app-r2f-settings.zip</code> (OTA) · <code>backend/2026-07-18-r2f-users-fields.sql</code> (additive: users.username, users.gender)</li>
+<li><strong>F44 ✅ BLOCKER</strong> — text fields typed one letter at a time. Root cause: the <code>Field</code> component was declared inside the screen component, so every keystroke re-created it and React remounted the input, dropping focus. Hoisted to module scope — typing is continuous.</li>
+<li><strong>F40 ✅</strong> Tapping the Nutri profile (Settings header + Personal Info photo) opens Choose Your Nutri.</li>
+<li><strong>F41 ◑</strong> Picker now loads the saved selection and saving reflects everywhere (Home avatar included). The <em>final</em> Nutri artwork swap still waits on the approved asset files (W12/W13).</li>
+<li><strong>F42 ✅</strong> Selection = thin coral <strong>circular</strong> outline (was a filled rounded square).</li>
+<li><strong>F43 ✅</strong> "Cycle &amp; Health Information" now opens its own page (new screen: cycle anchors + contraception + conditions) instead of Edit Period.</li>
+<li><strong>F45 ✅</strong> Age shown directly under the name (computed from DOB).</li>
+<li><strong>F46 ✅</strong> Personal Information now: edit-photo→Nutri, first/full name, username, email (read-only), DOB, gender, height, weight + link card to Cycle &amp; Health. Saves tolerate the columns migration not being applied yet.</li>
+<li><strong>F47 ✅</strong> "Send Feedback" row (Preferences) → opens a pre-addressed email to hello@nutrisynccollective.com.</li>
+<li><strong>F39 ✅</strong> All Settings emoji icons → clean SVG line-icon set (<code>ui/SettingsIcons</code>); Design can swap paths in place for their final set.</li>
+<li><strong>F48</strong> (general fidelity) stays open — it is the umbrella item, closed by the remaining rebuild batches.</li>
+</ul>
+<h3>2026-07-17 · R2-E — APPFEEDBACK quick wins (mobile)</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-app-r2e-quickwins.zip</code> (OTA, supersedes r2d zip — contains everything)</li>
+<li><strong>F5 ✅</strong> Home avatar was a hardcoded <code>pravatar.cc</code> stock photo → now the user's chosen <strong>Nutri</strong> (new shared <code>ui/NutriAvatar</code> used by Home + Settings picker).</li>
+<li><strong>F8 ✅</strong> Home buttons renamed → "Log symptoms" / "NutriGoals".</li>
+<li><strong>F13 ✅</strong> Onboarding back control: double chevron « → single ‹.</li>
+<li><strong>F14 ✅</strong> Next button no longer shows two arrows (locale labels ship "Next →"; trailing arrows stripped since we render the SVG arrow).</li>
+<li><strong>F15 ✅</strong> "Start over" removed from all onboarding steps per PO feedback.</li>
+<li><strong>F19 ✅</strong> Finishing onboarding lands on <strong>Home</strong> — root cause: the tab navigator had no <code>initialRouteName</code>, defaulting to the first tab (Calendar).</li>
+<li><strong>F23 ✅</strong> Bell icon removed from Home header (Notification Center stays reachable via Settings).</li>
+<li>Parked with reasons: <strong>F17</strong> T&amp;C links need the privacy-policy page to exist first (queued with the "Make privacy policy" item); <strong>F12/F18/F20/F24–F26</strong> are part of the bigger Home/onboarding/nav rebuilds, next batches.</li>
+</ul>
+<h3>2026-07-17 · R2-D — Movement Log 4-screen rebuild (mobile)</h3>
+<ul>
+<li><strong>Builds:</strong> <code>nutrisync-app-r2d-movement.zip</code> (OTA) · <code>backend/2026-07-18-r2d-movement-logs.sql</code> (new <code>movement_logs</code> table, RLS-owned)</li>
+<li><strong>Screens 1+2</strong> — Daily Tip / Body Insight (movement context: recovery need, quote), SESSION 0/1 + STEPS stat cards (steps honest "—" until wearables), grouped checklist (Strength / Cardio / Flexibility &amp; Recovery / Daily Movement, top 6 each) with <strong>individual selection + "+ Other" custom activity</strong> → closes the remaining half of <strong>W2</strong> on mobile. Highest checked intensity still feeds workout_logged/CAS (Scoring Rule 1: more checks ≠ more points).</li>
+<li><strong>Screen 3</strong> — free-text Log Movement, keyboard-safe, history icon → screen 4.</li>
+<li><strong>Screen 4</strong> — Days Logged + Weekly Streak cards; days merge color-coded checked activities and session notes, phase pill per day.</li>
+<li>Content from <code>ns_daily_recs.movement_basics</code> + movement tips/insights; wireframe character assets.</li>
+</ul>
 <h3>2026-07-17 · Design pack 1707_v11.43 — all 7 source requests delivered</h3>
 <ul>
 <li><strong>Builds:</strong> <code>nutrisync-web-1707_v11.43.zip</code> (integrated) · <code>nutrisync-app-r2c-nutrilog.zip</code> includes the ×14 PMOS/mobile crossover</li>
