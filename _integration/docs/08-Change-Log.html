@@ -173,6 +173,16 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-18 · Footer QR now points to the mobile PWA (web)</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-web-1807_v11.45-po3.zip</code> — QR asset regenerated to encode <code>https://m.nutrisynccollective.com</code>; tile click opens the PWA. Doc 12 §18 asks Design to adopt at source.</li>
+</ul>
+<h3>2026-07-18 · 4th surface live — mobile PWA at m.nutrisynccollective.com</h3>
+<ul>
+<li><strong>Surfaces now:</strong> responsive web app · mobile PWA (new) · RN iOS · RN Android — all on the same Supabase.</li>
+<li>The PWA is the RN app itself rendered via react-native-web (Expo web export): parity by construction, rebuilt with "Build NutriSync PWA.command" (kit: date-picker web shim, CSS PeachBg override, PWA manifest + versioned service worker, installable full-screen). Deployed with wrangler to Pages project <code>nutrisync-m</code>.</li>
+<li>Build-pipeline lessons baked into the kit: wrangler skips <code>node_modules</code> paths → font assets moved to <code>assets/vendor</code> with bundle rewrite; rewritten bundles re-hashed so immutable caching can never pin a stale build; SW only caches valid responses and falls back to index on navigations only.</li>
+</ul>
 <h3>2026-07-18 · Access-first entry for Investors/Builders (web)</h3>
 <ul>
 <li><strong>Build:</strong> <code>nutrisync-web-1807_v11.45-po2.zip</code> (supersedes po1)</li>
