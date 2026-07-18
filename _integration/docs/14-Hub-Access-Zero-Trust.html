@@ -36,6 +36,9 @@ tbody tr:nth-child(even){background:var(--cream);}
 .card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
 .sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
 </style></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>Hub Access — Cloudflare Zero Trust</h1>
+<blockquote>
+<p><strong>STATUS: ✅ LIVE since 18 Jul 2026.</strong> App <code>NutriSync Builders Hub</code> protects <code>nutrisynccollective.com/hub</code> with an Allow policy (<code>Founders</code> email allowlist) + One-time PIN, 24h sessions. The <code>123456</code> room code remains as an inner soft layer. Note: the <code>pages.dev</code> alias bypasses Access (different hostname) — it keeps only the soft gate. A www→root redirect rule closes the <code>www</code> side door. To manage access: Cloudflare → Zero Trust → Access → Applications → NutriSync Builders Hub (add/remove founder emails in the Founders policy).</p>
+</blockquote>
 <p>How to replace the client-side <code>123456</code> room gate with <strong>real, server-side</strong> access control on the hub, for when the investor/builder material becomes sensitive.</p>
 <h2>Why</h2>
 <p>The <code>123456</code> gate is <strong>client-side</strong> — the code lives in the page bundle, so anyone who inspects the site can find it. Fine as a soft "team only" nudge, but it is <strong>not</strong> security. <strong>Cloudflare Access</strong> enforces access <strong>before any file is served</strong>, with an email allowlist and an audit log.</p>

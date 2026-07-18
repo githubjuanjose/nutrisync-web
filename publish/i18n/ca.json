@@ -1090,7 +1090,8 @@
       "V",
       "S"
     ],
-    "calMonth": "Juliol de 2026"
+    "calMonth": "Juliol de 2026",
+    "ftScan": "Escaneja per obrir l'app"
   },
   "catalog": {
     "Getting started": "Primers passos",

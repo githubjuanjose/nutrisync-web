@@ -173,6 +173,21 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-18 · Design pack 1807_v11.45 — footer QR at source + disclaimer fix</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-web-1807_v11.45-po1.zip</code> (supersedes all v11.43-po* builds)</li>
+<li>Design delivered doc-12 §15 at source (v11.44+v11.45): footer QR in the top block, 94px white tile, caption ×14 (<code>ftScan</code>), custom-domain URL, evenly distributed columns. Our provisional QR now auto-disables (integrate.py skips injection when the pack carries <code>ftScan</code>).</li>
+<li>EN/ES disclaimer regression fixed at source ("Made with care in Madrid." — Singapore/Thessaloniki gone in all 14 languages).</li>
+<li>Still open at source: §16 support email (pack ships <code>hello@</code>; our layer patches to <code>contact@</code> each build).</li>
+</ul>
+<h3>2026-07-18 · Platform — branch protection on main ✅</h3>
+<ul>
+<li>GitHub rulesets <code>protect-main</code> (Active) on <code>nutrisync-web</code> and <code>nutrisync-app</code>: block force pushes + restrict deletions on the default branch. PRs deliberately NOT required — the one-command deploy scripts push directly to <code>main</code>.</li>
+</ul>
+<h3>2026-07-18 · Platform — Zero Trust on /hub/* ✅</h3>
+<ul>
+<li>Cloudflare Access now gates <code>nutrisynccollective.com/hub/*</code> server-side: <code>Founders</code> email allowlist + One-time PIN by email, 24h sessions (free plan). Verified end-to-end (allowed email in, foreign email denied). Doc 14 updated with the live config + admin instructions. <code>123456</code> stays as inner soft layer; www→root redirect closes the side door; <code>pages.dev</code> alias keeps only the soft gate.</li>
+</ul>
 <h3>2026-07-18 · Custom domain live + live waitlist counter (po8 → po9 hotfix → po10 QR)</h3>
 <ul>
 <li><strong>Build:</strong> <code>nutrisync-web-1807_v11.43-po10.zip</code> (supersedes po7/po8/po9 — delete them from Downloads)</li>
@@ -231,7 +246,7 @@ tbody tr:nth-child(even){background:var(--cream);}
 <li><strong>F43 ✅</strong> "Cycle &amp; Health Information" now opens its own page (new screen: cycle anchors + contraception + conditions) instead of Edit Period.</li>
 <li><strong>F45 ✅</strong> Age shown directly under the name (computed from DOB).</li>
 <li><strong>F46 ✅</strong> Personal Information now: edit-photo→Nutri, first/full name, username, email (read-only), DOB, gender, height, weight + link card to Cycle &amp; Health. Saves tolerate the columns migration not being applied yet.</li>
-<li><strong>F47 ✅</strong> "Send Feedback" row (Preferences) → opens a pre-addressed email to hello@nutrisynccollective.com.</li>
+<li><strong>F47 ✅</strong> "Send Feedback" row (Preferences) → opens a pre-addressed email to contact@nutrisynccollective.com.</li>
 <li><strong>F39 ✅</strong> All Settings emoji icons → clean SVG line-icon set (<code>ui/SettingsIcons</code>); Design can swap paths in place for their final set.</li>
 <li><strong>F48</strong> (general fidelity) stays open — it is the umbrella item, closed by the remaining rebuild batches.</li>
 </ul>

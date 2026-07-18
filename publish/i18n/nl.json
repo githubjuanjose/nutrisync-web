@@ -1090,7 +1090,8 @@
       "V",
       "Z"
     ],
-    "calMonth": "Juli 2026"
+    "calMonth": "Juli 2026",
+    "ftScan": "Scan om de app te openen"
   },
   "catalog": {
     "Getting started": "Aan de slag",

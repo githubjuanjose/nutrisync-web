@@ -1,5 +1,16 @@
 # NutriSync — Release Notes / Change Log
 
+## 2026-07-18 — Footer QR even distribution + EN/ES disclaimer pack fix (v11.45)
+- **Footer top row evenly distributed**: the QR was shoved to the far edge by `margin-left:auto` on a growing columns block, leaving a large gap after LEGAL. Removed it and set the columns+QR container to `justify-content: space-between` (with a slightly wider inter-column gutter) so PRODUCT · COMPANY · LEGAL · QR now spread evenly across the full width, QR still flush-right over the wings.
+- **EN/ES disclaimer regression fixed**: v11.41 trimmed the disclaimer to “…Madrid.” in the built-in EN/ES and the 12 add-on packs, but missed `i18n/en.json` and `i18n/es.json`, which override the built-in at runtime — so EN/ES visitors still saw “Madrid, Singapore, Thessaloniki”. Both packs now read “Made with care in Madrid.” / “Hecho con cariño en Madrid.” (all 14 languages consistent).
+
+## 2026-07-18 — Footer: scan-to-open QR + tighter column grid (v11.44)
+- **QR added to footer top block**, right-aligned as a fourth element beside PRODUCT / COMPANY / LEGAL (top-aligned with the column headers): white rounded tile, 94px, on a soft shadow so it scans off a dark screen; caption **“Scan to open the app”** underneath (localized in all 14 languages). The tile encodes **https://nutrisynccollective.com/app.html** (custom domain) and is itself clickable → opens the app.
+- QR is a real raster asset (`assets/qr_app.png`), generated at build with a self-contained encoder (byte mode, version 3, ECC level M) — bundles cleanly into `index.html` and the standalone.
+- **Tighter footer grid**: column gutters roughly halved (top-row gap 48→30px, inter-column gap ~52/42→18/15px) so brand + PRODUCT/COMPANY/LEGAL read as one grid, with the QR pushed flush right.
+- Store buttons, socials and the STAY IN SYNC row are unchanged. (The integration layer’s temporary small QR next to the store buttons can now be dropped.)
+- New string `marketing.ftScan` added to EN/ES source + all 12 packs.
+
 ## 2026-07-17 — PO Review Round 1: all 7 source-bundle requests (v11.43)
 - **7 · Marketing copy ×14**: diagnosis-delay stat card (`prYears` “~4 yrs”, `prC2t` “Later diagnoses than men”, `prC2b` full 4.5y/2.5y/5–6y sentence) + `casP` “improvement over time” clause — EN/ES fixed at source, native translations added to all 12 packs (fr/de/it/nl/el/ca/val/eu/gl/oc/zh/ja).
 - **8 · PMOS terminology ×14**: PCOS→PMOS displayed everywhere (stored data keys unchanged): web-app `condLabels` (EN via display-rename, ES + 12 packs localized dicts incl. Endometriosis/Thyroid/Anaemia/IBS), phone-prototype onboarding & Edit-Health chips, pack `catalog` entries.

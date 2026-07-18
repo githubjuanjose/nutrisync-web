@@ -374,6 +374,16 @@ _patch(IDX, [
      r'<a href=\\"https://www.tiktok.com/@nutrisyncc\\" target=\\"_blank\\" rel=\\"noopener\\" aria-label=\\"TikTok\\"', True),
 ], "W4 socials complete (LinkedIn + Instagram + TikTok)")
 
+# Support email: the real mailbox is contact@ (founders, 18 Jul). Design's pack
+# still ships hello@ in the deactivation copy (flagged for source fix).
+for _f in ('app.html', 'index.html'):
+    _p = os.path.join(PUB, _f)
+    if os.path.exists(_p):
+        _s = open(_p, encoding='utf-8', errors='surrogateescape').read()
+        if 'hello@nutrisynccollective.com' in _s:
+            open(_p, 'w', encoding='utf-8', errors='surrogateescape').write(_s.replace('hello@nutrisynccollective.com', 'contact@nutrisynccollective.com'))
+            print('- support email hello@ -> contact@ (' + _f + ')')
+
 # Footer QR — scan-to-open the web app (founder request 18 Jul). Not in Design's
 # pack yet (flagged in doc 12 to adopt at source): white tile after the store
 # buttons, links to app.html, QR encodes https://nutrisynccollective.com/app.html.
@@ -385,7 +395,7 @@ if os.path.exists(IDX):
     _esc = _tile.replace('</', '<\\u002F').replace('"', '\\"')
     _anc = 'Google Play<\\u002Fspan><\\u002Fa>'
     _s = open(IDX, encoding="utf-8", errors="surrogateescape").read()
-    if 'ns-qr-app' not in _s and _anc in _s:
+    if 'ns-qr-app' not in _s and 'ftScan' not in _s and _anc in _s:  # skip when the pack ships its own QR (v11.44+)
         open(IDX, "w", encoding="utf-8", errors="surrogateescape").write(_s.replace(_anc, _anc + '\\n          ' + _esc, 1))
         print("- footer QR tile -> app.html")
 
