@@ -374,6 +374,21 @@ _patch(IDX, [
      r'<a href=\\"https://www.tiktok.com/@nutrisyncc\\" target=\\"_blank\\" rel=\\"noopener\\" aria-label=\\"TikTok\\"', True),
 ], "W4 socials complete (LinkedIn + Instagram + TikTok)")
 
+# Footer QR — scan-to-open the web app (founder request 18 Jul). Not in Design's
+# pack yet (flagged in doc 12 to adopt at source): white tile after the store
+# buttons, links to app.html, QR encodes https://nutrisynccollective.com/app.html.
+if os.path.exists(IDX):
+    _QR_SVG = '<svg style="width:100%;height:100%;display:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 33 33" class="segno"><path class="qrline" stroke="#1a1512" d="M2 2.5h7m1 0h2m1 0h1m2 0h1m2 0h2m3 0h7m-29 1h1m5 0h1m1 0h3m2 0h2m2 0h3m2 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m1 0h4m1 0h1m5 0h2m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m4 0h3m1 0h3m2 0h1m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h4m5 0h1m1 0h1m2 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m3 0h1m1 0h1m1 0h1m1 0h2m4 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-19 1h1m1 0h3m3 0h2m-20 1h1m2 0h10m1 0h2m1 0h1m3 0h1m2 0h1m1 0h3m-29 1h3m8 0h5m1 0h3m3 0h2m1 0h2m-27 1h1m4 0h1m1 0h5m2 0h1m1 0h2m1 0h4m2 0h1m-24 1h1m1 0h1m2 0h1m1 0h1m1 0h1m1 0h1m1 0h2m2 0h6m2 0h1m-28 1h1m2 0h4m2 0h1m4 0h1m4 0h1m1 0h1m5 0h1m-29 1h1m1 0h1m1 0h1m2 0h2m2 0h2m1 0h3m4 0h8m-28 1h3m1 0h4m1 0h2m1 0h3m1 0h1m1 0h4m1 0h1m1 0h1m1 0h1m-28 1h1m1 0h1m3 0h4m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h2m1 0h1m1 0h1m-29 1h1m2 0h2m1 0h2m1 0h1m1 0h2m1 0h2m3 0h2m4 0h1m-26 1h1m2 0h1m1 0h1m2 0h2m2 0h1m2 0h1m1 0h5m2 0h1m1 0h2m-28 1h4m1 0h2m2 0h1m1 0h5m1 0h1m1 0h1m1 0h1m2 0h2m2 0h1m-29 1h4m1 0h1m1 0h2m2 0h1m1 0h4m3 0h2m1 0h4m-27 1h3m1 0h1m1 0h1m1 0h3m2 0h1m2 0h12m-20 1h1m1 0h1m1 0h7m1 0h1m3 0h2m-26 1h7m1 0h2m3 0h1m1 0h2m2 0h2m1 0h1m1 0h2m-26 1h1m5 0h1m1 0h2m3 0h1m3 0h4m3 0h1m3 0h1m-29 1h1m1 0h3m1 0h1m1 0h2m1 0h3m2 0h1m2 0h7m1 0h1m-28 1h1m1 0h3m1 0h1m1 0h3m1 0h1m1 0h3m1 0h1m2 0h1m1 0h1m4 0h1m-29 1h1m1 0h3m1 0h1m2 0h1m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1m1 0h2m1 0h3m-29 1h1m5 0h1m4 0h1m2 0h2m5 0h1m3 0h2m1 0h1m-29 1h7m1 0h4m1 0h2m4 0h4"/></svg>'
+    _tile = ('<a id="ns-qr-app" href="app.html" title="Scan to open the NutriSync web app" '
+             'style="display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;'
+             'background:#FFF9F7;border-radius:10px;padding:4px;margin-left:2px;flex:none;">' + _QR_SVG + '</a>')
+    _esc = _tile.replace('</', '<\\u002F').replace('"', '\\"')
+    _anc = 'Google Play<\\u002Fspan><\\u002Fa>'
+    _s = open(IDX, encoding="utf-8", errors="surrogateescape").read()
+    if 'ns-qr-app' not in _s and _anc in _s:
+        open(IDX, "w", encoding="utf-8", errors="surrogateescape").write(_s.replace(_anc, _anc + '\\n          ' + _esc, 1))
+        print("- footer QR tile -> app.html")
+
 # W8-live — replace the static count with the live waitlist_count() RPC at runtime.
 # The template's "140+" stays as the no-JS/SSR fallback; once the RPC responds, every
 # element showing exactly "140+" is updated to the real number (never lower than 140).

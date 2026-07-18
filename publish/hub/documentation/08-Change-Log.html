@@ -173,9 +173,10 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
-<h3>2026-07-18 · Custom domain live + live waitlist counter (po8 → po9 hotfix)</h3>
+<h3>2026-07-18 · Custom domain live + live waitlist counter (po8 → po9 hotfix → po10 QR)</h3>
 <ul>
-<li><strong>Build:</strong> <code>nutrisync-web-1707_v11.43-po9.zip</code> (supersedes po7/po8 — delete both from Downloads)</li>
+<li><strong>Build:</strong> <code>nutrisync-web-1807_v11.43-po10.zip</code> (supersedes po7/po8/po9 — delete them from Downloads)</li>
+<li><strong>Footer QR (new)</strong> — scan-to-open tile next to the store buttons; encodes <code>https://nutrisynccollective.com/app.html</code> (provisional in the integration layer; doc 12 §15 asks Design to adopt it at source).</li>
 <li><strong>Domain 🎉</strong> <code>https://nutrisynccollective.com</code> is live on Cloudflare (nameservers moved from IONOS; <code>pages.dev</code> stays as alias). Docs/hub links updated to the new domain. Pending user checks: Supabase Auth Site URL + <code>reset.html</code> redirect, and MX/email delivery test.</li>
 <li><strong>W8-live</strong> — <code>waitlist_count()</code> RPC (baseline 140 + signups since 14 Jul) drives the public "140+" stat on marketing + investor pages; static text remains the no-JS fallback.</li>
 <li><strong>🐛 po9 hotfix</strong> — po8's counter script used a document-wide MutationObserver; when the RPC returned exactly 140 it rewrote "140+" with the same value, each write re-fired the observer → infinite loop → "Page Unresponsive" and sections/footer missing (race-dependent, both domains). po9 only writes when the number actually changed (&gt;140) and re-sweeps on a bounded 10×1s timer instead of an observer.</li>
