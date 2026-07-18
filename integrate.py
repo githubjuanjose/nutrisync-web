@@ -378,14 +378,21 @@ _patch(IDX, [
 # The template's "140+" stays as the no-JS/SSR fallback; once the RPC responds, every
 # element showing exactly "140+" is updated to the real number (never lower than 140).
 if os.path.exists(IDX):
+    # NOTE (po9 hotfix): the first version of this script used a MutationObserver
+    # that re-swept the whole document on every DOM mutation. When the RPC returned
+    # exactly 140 it rewrote "140+" with "140+", each write re-triggered the
+    # observer -> infinite loop -> "Page Unresponsive" and the footer never
+    # rendered. Now: only write when the value actually CHANGES (n > 140), and
+    # instead of an observer, re-sweep on a bounded timer (10 x 1s) to catch the
+    # SPA's late-rendered sections, then stop. Total work is finite by design.
     _lw = ('<script id="ns-live-waitlist">(function(){var U="__U__",K="__K__";'
       'fetch(U+"/rest/v1/rpc/waitlist_count",{method:"POST",headers:{"apikey":K,"Authorization":"Bearer "+K,"Content-Type":"application/json"},body:"{}"})'
       '.then(function(r){return r.json();}).then(function(n){'
-      'if(typeof n!=="number"||n<140)return;var txt=n+"+";'
+      'if(typeof n!=="number"||n<=140)return;var txt=n+"+";'
       'function sweep(){var els=document.querySelectorAll("strong,b,span,div");'
       'for(var i=0;i<els.length;i++){var e=els[i];'
-      'if(e.childElementCount===0&&e.textContent.trim()==="140+")e.textContent=txt;}}'
-      'sweep();new MutationObserver(sweep).observe(document.body,{childList:true,subtree:true});'
+      'if(e.childElementCount===0&&e.textContent.trim()==="140+"&&e.textContent.trim()!==txt)e.textContent=txt;}}'
+      'sweep();var k=0,iv=setInterval(function(){sweep();if(++k>=10)clearInterval(iv);},1000);'
       '}).catch(function(){});})();</script>').replace("__U__", URL).replace("__K__", KEY)
     _ih = open(IDX, encoding="utf-8", errors="surrogateescape").read()
     if "ns-live-waitlist" not in _ih:
@@ -585,7 +592,8 @@ RESET_HTML = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
 open(os.path.join(PUB, "reset.html"), "w", encoding="utf-8").write(RESET_HTML.replace("__U__", URL).replace("__K__", KEY))
 print("- W1 reset.html page")
 # ⚠ One-time Supabase step: Auth → URL Configuration → add
-#   https://nutrisync-collective.pages.dev/reset.html  to Redirect URLs.
+#   https://nutrisynccollective.com/reset.html  to Redirect URLs
+#   (keep https://nutrisync-collective.pages.dev/reset.html as alias).
 # ═══════════════ end PO Round 1 · Iteration 1 ═══════════════
 
 # Cloudflare Pages cache policy: force browsers to revalidate HTML + language
