@@ -173,6 +173,13 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-18 · Access-first entry for Investors/Builders (web)</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-web-1807_v11.45-po2.zip</code> (supersedes po1)</li>
+<li>Footer Investors/Builders buttons now link straight to the hub pages, so <strong>Cloudflare Access (email + one-time PIN) is the login</strong> — the in-page 6-digit screens are no longer reachable from the public site.</li>
+<li>The hub's inner 123456 gate auto-unlocks on the custom domain (Access already authenticated); on any other host it still asks the code.</li>
+<li>All 28 hub pages now carry a canonical-host script: visits via the <code>pages.dev</code> alias bounce to <code>nutrisynccollective.com</code>, so the unprotected alias no longer bypasses Access.</li>
+</ul>
 <h3>2026-07-18 · Design pack 1807_v11.45 — footer QR at source + disclaimer fix</h3>
 <ul>
 <li><strong>Build:</strong> <code>nutrisync-web-1807_v11.45-po1.zip</code> (supersedes all v11.43-po* builds)</li>

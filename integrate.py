@@ -374,6 +374,53 @@ _patch(IDX, [
      r'<a href=\\"https://www.tiktok.com/@nutrisyncc\\" target=\\"_blank\\" rel=\\"noopener\\" aria-label=\\"TikTok\\"', True),
 ], "W4 socials complete (LinkedIn + Instagram + TikTok)")
 
+# Access-first entry (18 Jul): the marketing 6-digit gate predates Cloudflare
+# Access. Footer Investors/Builders now link STRAIGHT to the hub pages, where
+# Access enforces email+PIN at the edge. The hub's inner 123456 gate auto-unlocks
+# on the custom domain (Access already authenticated); on any other host it still
+# asks the code, and a canonical-host script bounces pages.dev visitors to the
+# custom domain anyway (closing the unprotected-alias side door).
+if os.path.exists(IDX):
+    _s = open(IDX, encoding="utf-8", errors="surrogateescape").read()
+    _n = 0
+    for _a, _b in (
+        ('sc-camel-on-click=\\"{{ openInvestors }}\\"', 'href=\\"hub/investors-business-case.html\\"'),
+        ('sc-camel-on-click=\\"{{ openBuilders }}\\"', 'href=\\"hub/full-hub-gated-site.html\\"'),
+    ):
+        if _a in _s:
+            _s = _s.replace(_a, _b); _n += 1
+    if _n:
+        open(IDX, "w", encoding="utf-8", errors="surrogateescape").write(_s)
+        print("- Access-first: footer Investors/Builders -> direct hub links (%d/2)" % _n)
+
+_CANON = ('<script id="ns-canonical">(function(){var h=location.hostname;'
+  'if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script>')
+_hubdir = os.path.join(PUB, "hub")
+if os.path.isdir(_hubdir):
+    _n = 0
+    for _r, _d, _fs in os.walk(_hubdir):
+        for _f in _fs:
+            if not _f.endswith(".html"):
+                continue
+            _p = os.path.join(_r, _f)
+            _s = open(_p, encoding="utf-8", errors="surrogateescape").read()
+            if "ns-canonical" in _s or "</head>" not in _s:
+                continue
+            open(_p, "w", encoding="utf-8", errors="surrogateescape").write(_s.replace("</head>", _CANON + "</head>", 1))
+            _n += 1
+    if _n:
+        print("- canonical-host redirect on %d hub pages (pages.dev -> custom domain)" % _n)
+
+_gs = os.path.join(PUB, "hub", "full-hub-gated-site.html")
+if os.path.exists(_gs):
+    _s = open(_gs, encoding="utf-8", errors="surrogateescape").read()
+    if "ns-access-unlock" not in _s and "applyAuth" in _s:
+        _u = ('<script id="ns-access-unlock">(function(){var h=location.hostname;'
+              'if(h==="nutrisynccollective.com"||h==="www.nutrisynccollective.com"){'
+              'try{AUTH.inv=true;AUTH.adm=true;applyAuth();}catch(e){}}})();</script>')
+        open(_gs, "w", encoding="utf-8", errors="surrogateescape").write(_s.replace("</body>", _u + "</body>", 1))
+        print("- inner gate auto-unlocks behind Access (custom domain)")
+
 # Support email: the real mailbox is contact@ (founders, 18 Jul). Design's pack
 # still ships hello@ in the deactivation copy (flagged for source fix).
 for _f in ('app.html', 'index.html'):
