@@ -380,10 +380,17 @@ _patch(IDX, [
 # and point the tile's click at the PWA. Asked of Design at source (doc 12).
 import base64 as _b64
 _QR_M_PNG = ('iVBORw0KGgoAAAANSUhEUgAAAlIAAAJSAQMAAAAyEbkwAAAABlBMVEUaFRL///9VhDnGAAACeUlEQVR42u3dQU7DMBAFUIseIEfK1XOkHiBSELS4M2OHglQWSM8raNK3yOJrYo/ddrxsbI3FYrFYLBaLxfoL69ryWB83fF5K9ywf/5UvXD6tt/a6wWKxWP/VumfmJWRtz9V033LsIXJL9spVFovFGnO1V54pM4+POA316vp181o+kassFov1NFdvf+zp9T9ckqssFov161ztI5SpcpXFYrF+lqtpfnV82e9Ju5hfZbFYrOe5mkfK1ZM/0pCrLBaLlXL1ZJTqdE8pOunZ8uxZLBYrzwNsj2aq8Mm9z7Wle8IlucpisViTenVPn6QU7YXrnha51tiCZR6AxWKxSr3a47Td6tWamUdsuNrTza3XtJ49i8Vi5Vw9SpzO2wB6CC/pklxlsVis83q171ptra9SzQ4K2POkgWfPYrFYLfQDlOWqvDi1xa/oB2CxWKyn9WptUu3HXS2TgwIuYSUrJK1cZbFYrFKvPhIynl61Dzf3XqyWa1rPnsVisVpartpam+yuuo/cBpCOcJWrLBaLNS9BW2n1nx9wXRuu9K+yWCzWkKsne//TtGpd2wr1qvlVFovFGurVvKlqm771x1Wq1DwgV1ksFmtWr46Fa5hxbT0843dL84Bnz2KxWO3sPKvZDqwYp+Np2HKVxWKxYr2ax/g7LGvcb3UZNhGoV1ksFms+DzD7jZVa017TzlbzACwWi3WWq/2NPp1ndZTjVk4nBOQqi8VifZer17JKtT72DizlJwWdZ8VisVi/q1fH+dVWDmtVr7JYLNYsV8dtVmkXwOmMq3UrFovFmuRqHut00T8WrrfX/925KywWizXN1deMjcVisVgsFovFerX1DhIYr/RtDcrOAAAAAElFTkSuQmCC')
-_qr_asset = os.path.join(PUB, 'assets', 'qr_app.png')
-if os.path.exists(_qr_asset):
-    open(_qr_asset, 'wb').write(_b64.b64decode(_QR_M_PNG))
-    print('- footer QR asset -> m.nutrisynccollective.com (PWA)')
+# Write to a NEW filename (cache-busting: the old qr_app.png/UUID stays cached
+# in browsers/CDN forever) and re-point the <img> at it.
+_qr_asset = os.path.join(PUB, 'assets', 'qr-m.png')
+open(_qr_asset, 'wb').write(_b64.b64decode(_QR_M_PNG))
+print('- footer QR asset -> assets/qr-m.png (encodes the PWA URL)')
+if os.path.exists(IDX):
+    _s = open(IDX, encoding='utf-8', errors='surrogateescape').read()
+    _s2 = re.sub(r'src=\\"[^"\\]*\\" alt=\\"QR code', r'src=\\"assets/qr-m.png\\" alt=\\"QR code', _s, count=1)
+    if _s2 != _s:
+        open(IDX, 'w', encoding='utf-8', errors='surrogateescape').write(_s2)
+        print('- footer QR img re-pointed to assets/qr-m.png')
 if os.path.exists(IDX):
     _s = open(IDX, encoding='utf-8', errors='surrogateescape').read()
     _a = 'sc-camel-on-click=\\"{{ enterApp }}\\" title=\\"{{ t.ftScan }}\\"'
