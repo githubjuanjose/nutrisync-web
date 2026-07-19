@@ -850,4 +850,31 @@ if os.path.exists(obk):
         n += 1
     print("- onboarding ob.* merged into %d i18n packs" % n)
 
+
+# ---------------------------------------------------------------------------
+# ns-pricing-polish (interim, Design asked to fix at source — doc 12 §19):
+# pricing cards: pin CTAs to the card bottom (a later margin-top:26px was
+# overriding margin-top:auto), give the features list a fixed bottom gap,
+# lift the enterprise card (warm bg + shadow), add check glyphs to features.
+idx = os.path.join(PUB, "index.html")
+if os.path.exists(idx):
+    h = open(idx, encoding="utf-8").read()
+    if "ns-pricing-polish" not in h and "{{ t.przEmp }}" in h:
+        h = h.replace('cursor: pointer; margin-top: 26px;', 'cursor: pointer;')
+        h = h.replace('gap: 10px; font-size: 14.5px; color: #DCD1D7;',
+                      'gap: 10px; font-size: 14.5px; color: #DCD1D7; margin-bottom: 26px;')
+        h = h.replace('gap: 10px; font-size: 14.5px; color: #4A4340;',
+                      'gap: 10px; font-size: 14.5px; color: #4A4340; margin-bottom: 26px;')
+        h = h.replace('background: #fff; border: 1px solid #EADFD0; border-radius: 24px; padding: 30px; display: flex; flex-direction: column;',
+                      'background: #FFFDF8; border: 1px solid #EADFD0; border-radius: 24px; padding: 30px; display: flex; flex-direction: column; box-shadow: 0 30px 60px -30px rgba(60,30,20,.22);')
+        CKP = '<span><span style=\\"color: #F3A38C; font-weight: 700; margin-right: 8px;\\">✓<\\u002Fspan>'
+        CKE = '<span><span style=\\"color: #E8472A; font-weight: 700; margin-right: 8px;\\">✓<\\u002Fspan>'
+        for k in ('przP1', 'przP2', 'przP3', 'przP4'):
+            h = h.replace('<span>{{ t.%s }}' % k, CKP + '{{ t.%s }}' % k)
+        for k in ('przE1', 'przE2', 'przE3'):
+            h = h.replace('<span>{{ t.%s }}' % k, CKE + '{{ t.%s }}' % k)
+        h = h.replace('</body>', '<!-- ns-pricing-polish --></body>', 1)
+        open(idx, "w", encoding="utf-8").write(h)
+        print("- pricing cards polish (CTA alignment + enterprise card depth)")
+
 print("\nIntegration complete - review, then commit + push.")

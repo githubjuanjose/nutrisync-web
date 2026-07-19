@@ -131,25 +131,27 @@ tbody tr:nth-child(even){background:var(--cream);}
 <h3>Phase model</h3>
 <p><code>cycleDay = today − last_period_start + 1</code>, wrapped to cycle length. Five internal phases (menstrual, follicular, ovulatory, early_luteal, late_luteal) collapse to four display phases (Menstrual, Follicular, Ovulatory, Luteal). Phase colours: menstrual <code>#E8472A</code>, follicular <code>#6B9E6B</code>, ovulatory <code>#D4A017</code>, luteal <code>#7B5EA7</code>. Poppins throughout; brand orange <code>#FF5509</code>, orb gradient <code>#FF9269 → #FF5509</code>.</p>
 <h2>2. High-level system diagram (today)</h2>
-<pre><code>   ┌──────────────────┐   ┌──────────────────┐   ┌──────────────────┐
-   │  iOS app         │   │  Android app     │   │  Web app         │
-   │  Expo SDK 54     │   │  Expo SDK 54     │   │  Claude Design   │
-   │  (RN 0.81)       │   │  (RN 0.81)       │   │  bundle          │
-   └────────┬─────────┘   └────────┬─────────┘   └────────┬─────────┘
-            │                      │                      │
-            │            HTTPS (JWT, anon key)            │
-            └──────────────────────┼──────────────────────┘
-                                   │
-                     ┌─────────────┴───────────────┐
-                     │       Supabase (EU)          │
-                     │  Auth · Postgres + RLS       │
-                     │  Edge Functions              │
-                     │  8 core + 3 content tables   │
-                     │  CAS → daily_scores          │
-                     └──────────────────────────────┘
+<pre><code>   ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐
+   │  iOS app     │  │  Android app │  │  Mobile PWA  │  │  Web app         │
+   │  Expo SDK 54 │  │  Expo SDK 54 │  │  RN via      │  │  Claude Design   │
+   │  (RN 0.81)   │  │  (RN 0.81)   │  │  react-      │  │  bundle          │
+   │              │  │              │  │  native-web  │  │                  │
+   └──────┬───────┘  └──────┬───────┘  └──────┬───────┘  └────────┬─────────┘
+          │                 │                 │                   │
+          │              HTTPS (JWT, anon key)                    │
+          └─────────────────┴────────┬────────┴───────────────────┘
+                                     │
+                       ┌─────────────┴───────────────┐
+                       │       Supabase (EU)          │
+                       │  Auth · Postgres + RLS       │
+                       │  Edge Functions              │
+                       │  8 core + 3 content tables   │
+                       │  CAS → daily_scores          │
+                       └──────────────────────────────┘
 
-   Web app + marketing site served from Cloudflare Pages
-   (project: nutrisync-collective)
+   Web app + marketing site: Cloudflare Pages (project nutrisync-collective)
+   Mobile PWA: Cloudflare Pages (project nutrisync-m → m.nutrisynccollective.com)
+   — same RN source as iOS/Android, and today's dev/testing channel (see §0)
 </code></pre>
 <h2>3. Data model</h2>
 <p>Eight core tables plus a small content library, all under RLS (every row scoped to the signed-in user):</p>
