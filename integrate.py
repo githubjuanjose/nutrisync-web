@@ -825,4 +825,29 @@ if os.path.exists(adm):
         open(adm, "w", encoding="utf-8").write(h)
         print("- G3 growth panel + assumptions (admin console)")
 
+
+# ---------------------------------------------------------------------------
+# ns-ob-i18n: Onboarding i18n (ob.*) into the web i18n packs, so the hub Translations tool
+# can review them next to marketing/app/catalog. Source: _integration/ob_keys.json
+# (14 languages, generated from the mobile catalogs). Deep-merged, idempotent.
+obk = os.path.join(ASSETS, "ob_keys.json")
+if os.path.exists(obk):
+    OBALL = json.load(open(obk, encoding="utf-8"))
+    def _deepmerge(dst, src):
+        for k, v in src.items():
+            if isinstance(v, dict) and isinstance(dst.get(k), dict):
+                _deepmerge(dst[k], v)
+            else:
+                dst[k] = v
+    n = 0
+    for lang, ob in OBALL.items():
+        p = os.path.join(PUB, "i18n", lang + ".json")
+        if not os.path.exists(p):
+            continue
+        cat = json.load(open(p, encoding="utf-8"))
+        _deepmerge(cat.setdefault("ob", {}), ob)
+        json.dump(cat, open(p, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+        n += 1
+    print("- onboarding ob.* merged into %d i18n packs" % n)
+
 print("\nIntegration complete - review, then commit + push.")

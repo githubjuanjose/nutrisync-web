@@ -1430,5 +1430,118 @@
     "Ovulatory": "Obulazioa",
     "Luteal": "Luteala",
     "PCOS": "PMOS"
+  },
+  "ob": {
+    "accurate": "Izan ahalik eta zehatzena, NutriSync-ek neurriko emaitzak eman diezazkizun.",
+    "sec": {
+      "cycle_info": "Zikloaren informazioa",
+      "health_condition": "Osasun-egoera",
+      "hormonal_contraceptives": "Antisorgailu hormonalak",
+      "nutritional_preferences": "Elikadura-lehentasunak",
+      "your_nutrigoal": "Zure NutriGoal-a"
+    },
+    "cycleLength": {
+      "q": "Zenbat irauten du zure batez besteko hilekoaren zikloak?",
+      "h": "Hileko baten lehen egunetik hurrengoaren lehen egunera arte.",
+      "opt": {
+        "less_than_21_days": "21 egun baino gutxiago",
+        "21_25_days": "21-25 egun",
+        "26_30_days": "26-30 egun",
+        "31_35_days": "31-35 egun",
+        "other_not_sure": "beste bat/ez nago ziur"
+      }
+    },
+    "periodLength": {
+      "q": "Zenbat egun irauten du normalean zure hilekoak?",
+      "opt": {
+        "1_2_days": "1 - 2 egun",
+        "3_4_days": "3 - 4 egun",
+        "5_7_days": "5 - 7 egun",
+        "7_8_days": "7 - 8 egun",
+        "more_than_8_days": "8 egun baino gehiago"
+      }
+    },
+    "healthCondition": {
+      "q": "Inoiz diagnostikatu al dizute honako egoera hauetakoren bat?",
+      "opt": {
+        "fibroids": "Miomak",
+        "endometriosis": "Endometriosia",
+        "pmos": "PMOS",
+        "ovarian_cysts": "Obulutegiko kisteak",
+        "infertility": "Antzutasuna",
+        "perimenopause": "Perimenopausia",
+        "none_of_the_above": "Aurreko bat ere ez"
+      }
+    },
+    "contraceptives": {
+      "q": "Antisorgailu hormonalik erabiltzen al duzu?",
+      "d": "Adibidez pilula, DIU hormonala, inplantea, partxea edo eraztuna. Zure ziklo naturala aldatzen du, eta Nutri horretara egokitzen da.",
+      "dh": "pilula, DIU hormonala, inplantea, partxea edo eraztuna.",
+      "opt": {
+        "yes": "Bai, orain",
+        "yes_sub": "Metodo hormonal bat erabiltzen ari naiz orain",
+        "past": "Jada ez",
+        "past_sub": "Lehen erabili nuen, baina jada ez",
+        "never": "Inoiz ez",
+        "never_sub": "Ez dut inoiz antisorgailu hormonalik erabili"
+      }
+    },
+    "nutritionDiet": {
+      "q": "Elikadura-plan zehatzen bat jarraitzen al duzu?",
+      "opt": {
+        "balanced_diet": "Dieta orekatua",
+        "keto": "Keto",
+        "vegetarian": "Begetarianoa",
+        "low_carb": "Karbohidrato gutxikoa",
+        "pescatarian": "Peszetarianoa",
+        "vegan": "Beganoa",
+        "gluten_free": "Glutenik gabea",
+        "dairy_free": "Esnekirik gabea",
+        "no_diet": "Dietarik ez",
+        "other": "Beste bat"
+      }
+    },
+    "nutriGoal": {
+      "q": "Zein da zure helburu nagusia?",
+      "opt": {
+        "reduce_physical_pms_symptoms": "PMSaren sintoma fisikoak murriztea",
+        "feel_more_emotionally_balanced": "Emozionalki orekatuago sentitzea",
+        "more_stable_energy_throughout_my_cycle": "Energia egonkorragoa ziklo osoan zehar"
+      }
+    },
+    "beta": {
+      "start": "Has gaitezen",
+      "sub": "Ongi etorri NutriSync beta bertsiora! Probatzen duten lehenengoetakoa zara. Hasierako galdera batzuek datorrena moldatzen laguntzen digute — funtzio batzuk oraindik bidean daude.",
+      "info": "Zure iritziak zuzenean gidatzen du eraikitzen duguna. Zerbait ikusi duzu? Sakatu",
+      "info2": "nahi duzunean Ezarpenetan."
+    },
+    "period": {
+      "h": "Erantzunik garrantzitsuena da: horrekin kalkulatzen dugu zure fasea egunero.",
+      "pick": "Sakatu data bat aukeratzeko"
+    },
+    "city": {
+      "h": "Honek NutriSync-i aholkuak lokalizatzen eta zu hobeto ulertzen laguntzen dio!"
+    },
+    "consent": {
+      "hero": "Zure datuak zureak dira beti",
+      "sub": "Zure ziklo-gidaritza pertsonalizatzeko behar duguna baino ez dugu jasotzen.",
+      "p1t": "Zure zikloa eta sintomak",
+      "p1d": "Otorduak eta mugimendua zure fasearekin sinkronizatzeko.",
+      "p2t": "Helburuak eta lehentasunak",
+      "p2d": "Gomendioak zuri egokitzeko.",
+      "p3t": "Modu seguruan gordeta",
+      "p3d": "Zifratuta, inoiz ez da saltzen, edonoiz ezaba daiteke.",
+      "agree1": "Onartzen ditut NutriSync-en",
+      "and": "eta",
+      "agree2": ", eta baimena ematen dut nire osasun-datuak tratatzeko, nire gidaritza pertsonalizatzeko.",
+      "req": "(Beharrezkoa)",
+      "research": "Nire datu anonimizatuak erabiltzea NutriSync eta emakumeen osasunari buruzko ikerketa hobetzeko.",
+      "opt": "(Aukerakoa)",
+      "cta": "Onartu eta jarraitu"
+    },
+    "done": {
+      "sub": "Nutrik zure lehen fase-plana sortu du zure erantzunetatik. Zure elikadura- eta mugimendu-gidaritza pertsonalizatua prest dago.",
+      "note": "Erantzun hauek edonoiz alda ditzakezu Ezarpenetan."
+    }
   }
 }

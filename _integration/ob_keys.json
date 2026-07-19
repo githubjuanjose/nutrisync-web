@@ -1,0 +1,1584 @@
+{
+ "en": {
+  "accurate": "Be as accurate as possible so NutriSync can give you tailored results.",
+  "sec": {
+   "cycle_info": "Cycle Info",
+   "health_condition": "Health Condition",
+   "hormonal_contraceptives": "Hormonal Contraceptives",
+   "nutritional_preferences": "Nutritional Preferences",
+   "your_nutrigoal": "Your NutriGoal"
+  },
+  "cycleLength": {
+   "q": "How long is your average menstrual cycle?",
+   "h": "From the first day of one period to the first day of the next.",
+   "opt": {
+    "less_than_21_days": "Less than 21 days",
+    "21_25_days": "21-25 days",
+    "26_30_days": "26-30 days",
+    "31_35_days": "31-35 days",
+    "other_not_sure": "other/not sure"
+   }
+  },
+  "periodLength": {
+   "q": "How many days does your period usually last?",
+   "opt": {
+    "1_2_days": "1 - 2 days",
+    "3_4_days": "3 - 4 days",
+    "5_7_days": "5 - 7 days",
+    "7_8_days": "7 - 8 days",
+    "more_than_8_days": "more than 8 days"
+   }
+  },
+  "healthCondition": {
+   "q": "Have you ever been diagnosed with any of the following conditions?",
+   "opt": {
+    "fibroids": "Fibroids",
+    "endometriosis": "Endometriosis",
+    "pmos": "PMOS",
+    "ovarian_cysts": "Ovarian Cysts",
+    "infertility": "Infertility",
+    "perimenopause": "Perimenopause",
+    "none_of_the_above": "None of the above"
+   }
+  },
+  "contraceptives": {
+   "q": "Do you use hormonal contraception?",
+   "d": "Such as the pill, hormonal IUD, implant, patch or ring. It changes your natural cycle, so Nutri adapts to it accordingly.",
+   "dh": "the pill, hormonal IUD, implant, patch or ring.",
+   "opt": {
+    "yes": "Yes, currently",
+    "yes_sub": "I'm using a hormonal method right now",
+    "past": "Not anymore",
+    "past_sub": "I've used one before, but not anymore",
+    "never": "Never",
+    "never_sub": "I've never used hormonal contraception"
+   }
+  },
+  "nutritionDiet": {
+   "q": "Do you follow any specific nutrition plan?",
+   "opt": {
+    "balanced_diet": "Balanced Diet",
+    "keto": "Keto",
+    "vegetarian": "Vegetarian",
+    "low_carb": "Low Carb",
+    "pescatarian": "Pescatarian",
+    "vegan": "Vegan",
+    "gluten_free": "Gluten-free",
+    "dairy_free": "Dairy-free",
+    "no_diet": "No diet",
+    "other": "Other"
+   }
+  },
+  "nutriGoal": {
+   "q": "What's your primary goal?",
+   "opt": {
+    "reduce_physical_pms_symptoms": "Reduce physical PMS symptoms",
+    "feel_more_emotionally_balanced": "Feel more emotionally balanced",
+    "more_stable_energy_throughout_my_cycle": "More stable energy throughout my cycle"
+   }
+  },
+  "beta": {
+   "start": "Lets get Started",
+   "sub": "Welcome to the NutriSync beta! You're among the first to try it. A few onboarding questions help us shape what's coming next, so some features are still on the way.",
+   "info": "Your feedback directly guides what we build. Spot something? Tap",
+   "info2": "anytime in Settings."
+  },
+  "period": {
+   "h": "This is the single most important answer — it's how we work out your phase each day.",
+   "pick": "Tap to choose a date"
+  },
+  "city": {
+   "h": "This helps NutriSync localise tips and get a better understanding of you!"
+  },
+  "consent": {
+   "hero": "Your data stays yours",
+   "sub": "We only collect what's needed to personalise your cycle guidance.",
+   "p1t": "Your Cycle and Symptoms",
+   "p1d": "To sync meals and movement to your phase.",
+   "p2t": "Goals & Preferences",
+   "p2d": "To tailor recommendations to you.",
+   "p3t": "Stored Securely",
+   "p3d": "Encrypted, never sold, deletable any time.",
+   "agree1": "I agree to NutriSync's",
+   "and": "and",
+   "agree2": ", and consent to the processing of my health data to personalise my guidance.",
+   "req": "(Required)",
+   "research": "Use my anonymised data to improve NutriSync and women's health research.",
+   "opt": "(Optional)",
+   "cta": "Agree and Continue"
+  },
+  "done": {
+   "sub": "Nutri has built your first phase plan from your answers. Your personalised nutrition & movement guidance is ready.",
+   "note": "You can update these answers anytime in Settings."
+  }
+ },
+ "es": {
+  "accurate": "Sé lo más precisa posible para que NutriSync te dé resultados a tu medida.",
+  "sec": {
+   "cycle_info": "Información del ciclo",
+   "health_condition": "Condición de salud",
+   "hormonal_contraceptives": "Anticonceptivos hormonales",
+   "nutritional_preferences": "Preferencias nutricionales",
+   "your_nutrigoal": "Tu NutriGoal"
+  },
+  "cycleLength": {
+   "q": "¿Cuánto dura tu ciclo menstrual medio?",
+   "h": "Desde el primer día de una regla hasta el primer día de la siguiente.",
+   "opt": {
+    "less_than_21_days": "Menos de 21 días",
+    "21_25_days": "21-25 días",
+    "26_30_days": "26-30 días",
+    "31_35_days": "31-35 días",
+    "other_not_sure": "otro/no estoy segura"
+   }
+  },
+  "periodLength": {
+   "q": "¿Cuántos días suele durar tu regla?",
+   "opt": {
+    "1_2_days": "1 - 2 días",
+    "3_4_days": "3 - 4 días",
+    "5_7_days": "5 - 7 días",
+    "7_8_days": "7 - 8 días",
+    "more_than_8_days": "más de 8 días"
+   }
+  },
+  "healthCondition": {
+   "q": "¿Te han diagnosticado alguna vez alguna de estas condiciones?",
+   "opt": {
+    "fibroids": "Miomas",
+    "endometriosis": "Endometriosis",
+    "pmos": "PMOS",
+    "ovarian_cysts": "Quistes ováricos",
+    "infertility": "Infertilidad",
+    "perimenopause": "Perimenopausia",
+    "none_of_the_above": "Ninguna de las anteriores"
+   }
+  },
+  "contraceptives": {
+   "q": "¿Usas anticoncepción hormonal?",
+   "d": "Como la píldora, el DIU hormonal, el implante, el parche o el anillo. Cambia tu ciclo natural, así que Nutri se adapta a ello.",
+   "dh": "la píldora, el DIU hormonal, el implante, el parche o el anillo.",
+   "opt": {
+    "yes": "Sí, actualmente",
+    "yes_sub": "Estoy usando un método hormonal ahora mismo",
+    "past": "Ya no",
+    "past_sub": "He usado uno antes, pero ya no",
+    "never": "Nunca",
+    "never_sub": "Nunca he usado anticoncepción hormonal"
+   }
+  },
+  "nutritionDiet": {
+   "q": "¿Sigues algún plan de nutrición concreto?",
+   "opt": {
+    "balanced_diet": "Dieta equilibrada",
+    "keto": "Keto",
+    "vegetarian": "Vegetariana",
+    "low_carb": "Baja en carbohidratos",
+    "pescatarian": "Pescetariana",
+    "vegan": "Vegana",
+    "gluten_free": "Sin gluten",
+    "dairy_free": "Sin lácteos",
+    "no_diet": "Sin dieta",
+    "other": "Otro"
+   }
+  },
+  "nutriGoal": {
+   "q": "¿Cuál es tu objetivo principal?",
+   "opt": {
+    "reduce_physical_pms_symptoms": "Reducir los síntomas físicos del SPM",
+    "feel_more_emotionally_balanced": "Sentirme más equilibrada emocionalmente",
+    "more_stable_energy_throughout_my_cycle": "Energía más estable durante todo mi ciclo"
+   }
+  },
+  "beta": {
+   "start": "Empezamos",
+   "sub": "¡Bienvenida a la beta de NutriSync! Eres de las primeras en probarla. Unas preguntas iniciales nos ayudan a dar forma a lo que viene, así que algunas funciones están aún en camino.",
+   "info": "Tu feedback guía directamente lo que construimos. ¿Ves algo? Toca",
+   "info2": "cuando quieras en Ajustes."
+  },
+  "period": {
+   "h": "Es la respuesta más importante de todas: con ella calculamos tu fase cada día.",
+   "pick": "Toca para elegir una fecha"
+  },
+  "city": {
+   "h": "¡Esto ayuda a NutriSync a localizar los consejos y entenderte mejor!"
+  },
+  "consent": {
+   "hero": "Tus datos siguen siendo tuyos",
+   "sub": "Solo recogemos lo necesario para personalizar tu guía de ciclo.",
+   "p1t": "Tu ciclo y tus síntomas",
+   "p1d": "Para sincronizar comidas y movimiento con tu fase.",
+   "p2t": "Objetivos y preferencias",
+   "p2d": "Para adaptar las recomendaciones a ti.",
+   "p3t": "Guardado de forma segura",
+   "p3d": "Cifrado, nunca se vende y se puede borrar en cualquier momento.",
+   "agree1": "Acepto la",
+   "and": "y los",
+   "agree2": " de NutriSync, y consiento el tratamiento de mis datos de salud para personalizar mi guía.",
+   "req": "(Obligatorio)",
+   "research": "Usar mis datos anonimizados para mejorar NutriSync y la investigación en salud femenina.",
+   "opt": "(Opcional)",
+   "cta": "Aceptar y continuar"
+  },
+  "done": {
+   "sub": "Nutri ha creado tu primer plan de fase a partir de tus respuestas. Tu guía personalizada de nutrición y movimiento está lista.",
+   "note": "Puedes actualizar estas respuestas cuando quieras en Ajustes."
+  }
+ },
+ "fr": {
+  "accurate": "Sois aussi précise que possible pour que NutriSync te donne des résultats sur mesure.",
+  "sec": {
+   "cycle_info": "Infos sur le cycle",
+   "health_condition": "État de santé",
+   "hormonal_contraceptives": "Contraceptifs hormonaux",
+   "nutritional_preferences": "Préférences nutritionnelles",
+   "your_nutrigoal": "Ton NutriGoal"
+  },
+  "cycleLength": {
+   "q": "Quelle est la durée moyenne de ton cycle menstruel ?",
+   "h": "Du premier jour des règles au premier jour des règles suivantes.",
+   "opt": {
+    "less_than_21_days": "Moins de 21 jours",
+    "21_25_days": "21-25 jours",
+    "26_30_days": "26-30 jours",
+    "31_35_days": "31-35 jours",
+    "other_not_sure": "autre/pas sûre"
+   }
+  },
+  "periodLength": {
+   "q": "Combien de jours durent tes règles en général ?",
+   "opt": {
+    "1_2_days": "1 - 2 jours",
+    "3_4_days": "3 - 4 jours",
+    "5_7_days": "5 - 7 jours",
+    "7_8_days": "7 - 8 jours",
+    "more_than_8_days": "plus de 8 jours"
+   }
+  },
+  "healthCondition": {
+   "q": "As-tu déjà reçu un diagnostic pour l'une de ces affections ?",
+   "opt": {
+    "fibroids": "Fibromes",
+    "endometriosis": "Endométriose",
+    "pmos": "PMOS",
+    "ovarian_cysts": "Kystes ovariens",
+    "infertility": "Infertilité",
+    "perimenopause": "Périménopause",
+    "none_of_the_above": "Aucune de ces réponses"
+   }
+  },
+  "contraceptives": {
+   "q": "Utilises-tu une contraception hormonale ?",
+   "d": "Comme la pilule, le DIU hormonal, l'implant, le patch ou l'anneau. Elle modifie ton cycle naturel, donc Nutri s'y adapte.",
+   "dh": "la pilule, le DIU hormonal, l'implant, le patch ou l'anneau.",
+   "opt": {
+    "yes": "Oui, actuellement",
+    "yes_sub": "J'utilise une méthode hormonale en ce moment",
+    "past": "Plus maintenant",
+    "past_sub": "J'en ai utilisé une avant, mais plus maintenant",
+    "never": "Jamais",
+    "never_sub": "Je n'ai jamais utilisé de contraception hormonale"
+   }
+  },
+  "nutritionDiet": {
+   "q": "Suis-tu un plan nutritionnel particulier ?",
+   "opt": {
+    "balanced_diet": "Alimentation équilibrée",
+    "keto": "Keto",
+    "vegetarian": "Végétarienne",
+    "low_carb": "Pauvre en glucides",
+    "pescatarian": "Pescétarienne",
+    "vegan": "Végane",
+    "gluten_free": "Sans gluten",
+    "dairy_free": "Sans produits laitiers",
+    "no_diet": "Aucun régime",
+    "other": "Autre"
+   }
+  },
+  "nutriGoal": {
+   "q": "Quel est ton objectif principal ?",
+   "opt": {
+    "reduce_physical_pms_symptoms": "Réduire les symptômes physiques du SPM",
+    "feel_more_emotionally_balanced": "Me sentir plus équilibrée émotionnellement",
+    "more_stable_energy_throughout_my_cycle": "Une énergie plus stable tout au long de mon cycle"
+   }
+  },
+  "beta": {
+   "start": "C'est parti",
+   "sub": "Bienvenue dans la bêta de NutriSync ! Tu fais partie des premières à l'essayer. Quelques questions nous aident à façonner la suite, certaines fonctionnalités arrivent bientôt.",
+   "info": "Ton retour guide directement ce que nous construisons. Tu remarques quelque chose ? Touche",
+   "info2": "à tout moment dans les Réglages."
+  },
+  "period": {
+   "h": "C'est la réponse la plus importante : elle nous permet de calculer ta phase chaque jour.",
+   "pick": "Touche pour choisir une date"
+  },
+  "city": {
+   "h": "Cela aide NutriSync à localiser les conseils et à mieux te comprendre !"
+  },
+  "consent": {
+   "hero": "Tes données restent les tiennes",
+   "sub": "Nous ne collectons que le nécessaire pour personnaliser ton accompagnement.",
+   "p1t": "Ton cycle et tes symptômes",
+   "p1d": "Pour synchroniser repas et mouvement avec ta phase.",
+   "p2t": "Objectifs et préférences",
+   "p2d": "Pour adapter les recommandations à toi.",
+   "p3t": "Stockage sécurisé",
+   "p3d": "Chiffrées, jamais vendues, supprimables à tout moment.",
+   "agree1": "J'accepte la",
+   "and": "et les",
+   "agree2": " de NutriSync, et je consens au traitement de mes données de santé pour personnaliser mon accompagnement.",
+   "req": "(Obligatoire)",
+   "research": "Utiliser mes données anonymisées pour améliorer NutriSync et la recherche en santé féminine.",
+   "opt": "(Facultatif)",
+   "cta": "Accepter et continuer"
+  },
+  "done": {
+   "sub": "Nutri a créé ton premier plan de phase à partir de tes réponses. Ton accompagnement personnalisé nutrition & mouvement est prêt.",
+   "note": "Tu peux modifier ces réponses à tout moment dans les Réglages."
+  }
+ },
+ "de": {
+  "accurate": "Sei so genau wie möglich, damit NutriSync dir maßgeschneiderte Ergebnisse liefern kann.",
+  "sec": {
+   "cycle_info": "Zyklus-Infos",
+   "health_condition": "Gesundheitszustand",
+   "hormonal_contraceptives": "Hormonelle Verhütung",
+   "nutritional_preferences": "Ernährungspräferenzen",
+   "your_nutrigoal": "Dein NutriGoal"
+  },
+  "cycleLength": {
+   "q": "Wie lang ist dein durchschnittlicher Menstruationszyklus?",
+   "h": "Vom ersten Tag einer Periode bis zum ersten Tag der nächsten.",
+   "opt": {
+    "less_than_21_days": "Weniger als 21 Tage",
+    "21_25_days": "21-25 Tage",
+    "26_30_days": "26-30 Tage",
+    "31_35_days": "31-35 Tage",
+    "other_not_sure": "anders/nicht sicher"
+   }
+  },
+  "periodLength": {
+   "q": "Wie viele Tage dauert deine Periode normalerweise?",
+   "opt": {
+    "1_2_days": "1 - 2 Tage",
+    "3_4_days": "3 - 4 Tage",
+    "5_7_days": "5 - 7 Tage",
+    "7_8_days": "7 - 8 Tage",
+    "more_than_8_days": "mehr als 8 Tage"
+   }
+  },
+  "healthCondition": {
+   "q": "Wurde bei dir jemals eine der folgenden Erkrankungen diagnostiziert?",
+   "opt": {
+    "fibroids": "Myome",
+    "endometriosis": "Endometriose",
+    "pmos": "PMOS",
+    "ovarian_cysts": "Eierstockzysten",
+    "infertility": "Unfruchtbarkeit",
+    "perimenopause": "Perimenopause",
+    "none_of_the_above": "Keine davon"
+   }
+  },
+  "contraceptives": {
+   "q": "Verwendest du hormonelle Verhütung?",
+   "d": "Zum Beispiel die Pille, die Hormonspirale, das Implantat, das Pflaster oder den Ring. Sie verändert deinen natürlichen Zyklus, Nutri passt sich entsprechend an.",
+   "dh": "die Pille, die Hormonspirale, das Implantat, das Pflaster oder den Ring.",
+   "opt": {
+    "yes": "Ja, aktuell",
+    "yes_sub": "Ich verwende gerade eine hormonelle Methode",
+    "past": "Nicht mehr",
+    "past_sub": "Ich habe früher eine verwendet, aber nicht mehr",
+    "never": "Nie",
+    "never_sub": "Ich habe nie hormonell verhütet"
+   }
+  },
+  "nutritionDiet": {
+   "q": "Folgst du einem bestimmten Ernährungsplan?",
+   "opt": {
+    "balanced_diet": "Ausgewogene Ernährung",
+    "keto": "Keto",
+    "vegetarian": "Vegetarisch",
+    "low_carb": "Low Carb",
+    "pescatarian": "Pescetarisch",
+    "vegan": "Vegan",
+    "gluten_free": "Glutenfrei",
+    "dairy_free": "Laktosefrei",
+    "no_diet": "Keine Diät",
+    "other": "Andere"
+   }
+  },
+  "nutriGoal": {
+   "q": "Was ist dein Hauptziel?",
+   "opt": {
+    "reduce_physical_pms_symptoms": "Körperliche PMS-Symptome reduzieren",
+    "feel_more_emotionally_balanced": "Mich emotional ausgeglichener fühlen",
+    "more_stable_energy_throughout_my_cycle": "Stabilere Energie über meinen ganzen Zyklus"
+   }
+  },
+  "beta": {
+   "start": "Los geht's",
+   "sub": "Willkommen bei der NutriSync-Beta! Du gehörst zu den Ersten, die sie ausprobieren. Ein paar Fragen helfen uns, das Kommende zu gestalten — einige Funktionen sind noch unterwegs.",
+   "info": "Dein Feedback bestimmt direkt, was wir bauen. Fällt dir etwas auf? Tippe",
+   "info2": "jederzeit in den Einstellungen."
+  },
+  "period": {
+   "h": "Das ist die wichtigste Antwort überhaupt — damit berechnen wir jeden Tag deine Phase.",
+   "pick": "Tippe, um ein Datum zu wählen"
+  },
+  "city": {
+   "h": "Das hilft NutriSync, Tipps zu lokalisieren und dich besser zu verstehen!"
+  },
+  "consent": {
+   "hero": "Deine Daten bleiben deine",
+   "sub": "Wir erfassen nur, was nötig ist, um deine Zyklus-Begleitung zu personalisieren.",
+   "p1t": "Dein Zyklus und deine Symptome",
+   "p1d": "Um Mahlzeiten und Bewegung mit deiner Phase zu synchronisieren.",
+   "p2t": "Ziele & Präferenzen",
+   "p2d": "Um Empfehlungen auf dich zuzuschneiden.",
+   "p3t": "Sicher gespeichert",
+   "p3d": "Verschlüsselt, nie verkauft, jederzeit löschbar.",
+   "agree1": "Ich akzeptiere NutriSyncs",
+   "and": "und",
+   "agree2": " und willige in die Verarbeitung meiner Gesundheitsdaten zur Personalisierung meiner Begleitung ein.",
+   "req": "(Erforderlich)",
+   "research": "Meine anonymisierten Daten nutzen, um NutriSync und die Frauengesundheitsforschung zu verbessern.",
+   "opt": "(Optional)",
+   "cta": "Zustimmen und fortfahren"
+  },
+  "done": {
+   "sub": "Nutri hat aus deinen Antworten deinen ersten Phasenplan erstellt. Deine persönliche Ernährungs- & Bewegungsbegleitung ist bereit.",
+   "note": "Du kannst diese Antworten jederzeit in den Einstellungen ändern."
+  }
+ },
+ "it": {
+  "accurate": "Sii il più precisa possibile così NutriSync potrà darti risultati su misura.",
+  "sec": {
+   "cycle_info": "Info sul ciclo",
+   "health_condition": "Condizione di salute",
+   "hormonal_contraceptives": "Contraccettivi ormonali",
+   "nutritional_preferences": "Preferenze nutrizionali",
+   "your_nutrigoal": "Il tuo NutriGoal"
+  },
+  "cycleLength": {
+   "q": "Quanto dura in media il tuo ciclo mestruale?",
+   "h": "Dal primo giorno di una mestruazione al primo giorno della successiva.",
+   "opt": {
+    "less_than_21_days": "Meno di 21 giorni",
+    "21_25_days": "21-25 giorni",
+    "26_30_days": "26-30 giorni",
+    "31_35_days": "31-35 giorni",
+    "other_not_sure": "altro/non sono sicura"
+   }
+  },
+  "periodLength": {
+   "q": "Quanti giorni dura di solito la tua mestruazione?",
+   "opt": {
+    "1_2_days": "1 - 2 giorni",
+    "3_4_days": "3 - 4 giorni",
+    "5_7_days": "5 - 7 giorni",
+    "7_8_days": "7 - 8 giorni",
+    "more_than_8_days": "più di 8 giorni"
+   }
+  },
+  "healthCondition": {
+   "q": "Ti è mai stata diagnosticata una delle seguenti condizioni?",
+   "opt": {
+    "fibroids": "Fibromi",
+    "endometriosis": "Endometriosi",
+    "pmos": "PMOS",
+    "ovarian_cysts": "Cisti ovariche",
+    "infertility": "Infertilità",
+    "perimenopause": "Perimenopausa",
+    "none_of_the_above": "Nessuna delle precedenti"
+   }
+  },
+  "contraceptives": {
+   "q": "Usi la contraccezione ormonale?",
+   "d": "Come la pillola, la spirale ormonale, l'impianto, il cerotto o l'anello. Cambia il tuo ciclo naturale, quindi Nutri si adatta di conseguenza.",
+   "dh": "la pillola, la spirale ormonale, l'impianto, il cerotto o l'anello.",
+   "opt": {
+    "yes": "Sì, attualmente",
+    "yes_sub": "Sto usando un metodo ormonale in questo momento",
+    "past": "Non più",
+    "past_sub": "Ne ho usato uno in passato, ma non più",
+    "never": "Mai",
+    "never_sub": "Non ho mai usato contraccezione ormonale"
+   }
+  },
+  "nutritionDiet": {
+   "q": "Segui un piano alimentare specifico?",
+   "opt": {
+    "balanced_diet": "Dieta equilibrata",
+    "keto": "Keto",
+    "vegetarian": "Vegetariana",
+    "low_carb": "Low carb",
+    "pescatarian": "Pescetariana",
+    "vegan": "Vegana",
+    "gluten_free": "Senza glutine",
+    "dairy_free": "Senza latticini",
+    "no_diet": "Nessuna dieta",
+    "other": "Altro"
+   }
+  },
+  "nutriGoal": {
+   "q": "Qual è il tuo obiettivo principale?",
+   "opt": {
+    "reduce_physical_pms_symptoms": "Ridurre i sintomi fisici della sindrome premestruale",
+    "feel_more_emotionally_balanced": "Sentirmi più equilibrata emotivamente",
+    "more_stable_energy_throughout_my_cycle": "Energia più stabile durante tutto il ciclo"
+   }
+  },
+  "beta": {
+   "start": "Iniziamo",
+   "sub": "Benvenuta nella beta di NutriSync! Sei tra le prime a provarla. Alcune domande iniziali ci aiutano a dare forma a ciò che verrà, quindi alcune funzioni sono ancora in arrivo.",
+   "info": "Il tuo feedback guida direttamente ciò che costruiamo. Noti qualcosa? Tocca",
+   "info2": "in qualsiasi momento nelle Impostazioni."
+  },
+  "period": {
+   "h": "È la risposta più importante di tutte: con questa calcoliamo la tua fase ogni giorno.",
+   "pick": "Tocca per scegliere una data"
+  },
+  "city": {
+   "h": "Questo aiuta NutriSync a localizzare i consigli e a capirti meglio!"
+  },
+  "consent": {
+   "hero": "I tuoi dati restano tuoi",
+   "sub": "Raccogliamo solo ciò che serve per personalizzare la tua guida del ciclo.",
+   "p1t": "Il tuo ciclo e i tuoi sintomi",
+   "p1d": "Per sincronizzare pasti e movimento con la tua fase.",
+   "p2t": "Obiettivi e preferenze",
+   "p2d": "Per adattare i consigli a te.",
+   "p3t": "Archiviati in sicurezza",
+   "p3d": "Crittografati, mai venduti, eliminabili in qualsiasi momento.",
+   "agree1": "Accetto la",
+   "and": "e i",
+   "agree2": " di NutriSync, e acconsento al trattamento dei miei dati sanitari per personalizzare la mia guida.",
+   "req": "(Obbligatorio)",
+   "research": "Usa i miei dati anonimizzati per migliorare NutriSync e la ricerca sulla salute femminile.",
+   "opt": "(Facoltativo)",
+   "cta": "Accetta e continua"
+  },
+  "done": {
+   "sub": "Nutri ha creato il tuo primo piano di fase dalle tue risposte. La tua guida personalizzata di nutrizione e movimento è pronta.",
+   "note": "Puoi aggiornare queste risposte in qualsiasi momento nelle Impostazioni."
+  }
+ },
+ "nl": {
+  "accurate": "Wees zo nauwkeurig mogelijk zodat NutriSync je resultaten op maat kan geven.",
+  "sec": {
+   "cycle_info": "Cyclus-info",
+   "health_condition": "Gezondheidstoestand",
+   "hormonal_contraceptives": "Hormonale anticonceptie",
+   "nutritional_preferences": "Voedingsvoorkeuren",
+   "your_nutrigoal": "Jouw NutriGoal"
+  },
+  "cycleLength": {
+   "q": "Hoe lang is je gemiddelde menstruatiecyclus?",
+   "h": "Van de eerste dag van een menstruatie tot de eerste dag van de volgende.",
+   "opt": {
+    "less_than_21_days": "Minder dan 21 dagen",
+    "21_25_days": "21-25 dagen",
+    "26_30_days": "26-30 dagen",
+    "31_35_days": "31-35 dagen",
+    "other_not_sure": "anders/niet zeker"
+   }
+  },
+  "periodLength": {
+   "q": "Hoeveel dagen duurt je menstruatie meestal?",
+   "opt": {
+    "1_2_days": "1 - 2 dagen",
+    "3_4_days": "3 - 4 dagen",
+    "5_7_days": "5 - 7 dagen",
+    "7_8_days": "7 - 8 dagen",
+    "more_than_8_days": "meer dan 8 dagen"
+   }
+  },
+  "healthCondition": {
+   "q": "Is bij jou ooit een van de volgende aandoeningen vastgesteld?",
+   "opt": {
+    "fibroids": "Vleesbomen",
+    "endometriosis": "Endometriose",
+    "pmos": "PMOS",
+    "ovarian_cysts": "Eierstokcysten",
+    "infertility": "Onvruchtbaarheid",
+    "perimenopause": "Perimenopauze",
+    "none_of_the_above": "Geen van bovenstaande"
+   }
+  },
+  "contraceptives": {
+   "q": "Gebruik je hormonale anticonceptie?",
+   "d": "Zoals de pil, het hormoonspiraaltje, het implantaat, de pleister of de ring. Het verandert je natuurlijke cyclus, dus Nutri past zich daarop aan.",
+   "dh": "de pil, het hormoonspiraaltje, het implantaat, de pleister of de ring.",
+   "opt": {
+    "yes": "Ja, momenteel",
+    "yes_sub": "Ik gebruik nu een hormonale methode",
+    "past": "Niet meer",
+    "past_sub": "Ik heb er eerder een gebruikt, maar nu niet meer",
+    "never": "Nooit",
+    "never_sub": "Ik heb nooit hormonale anticonceptie gebruikt"
+   }
+  },
+  "nutritionDiet": {
+   "q": "Volg je een specifiek voedingsplan?",
+   "opt": {
+    "balanced_diet": "Gebalanceerd dieet",
+    "keto": "Keto",
+    "vegetarian": "Vegetarisch",
+    "low_carb": "Koolhydraatarm",
+    "pescatarian": "Pescotarisch",
+    "vegan": "Veganistisch",
+    "gluten_free": "Glutenvrij",
+    "dairy_free": "Zuivelvrij",
+    "no_diet": "Geen dieet",
+    "other": "Anders"
+   }
+  },
+  "nutriGoal": {
+   "q": "Wat is je belangrijkste doel?",
+   "opt": {
+    "reduce_physical_pms_symptoms": "Fysieke PMS-klachten verminderen",
+    "feel_more_emotionally_balanced": "Me emotioneel meer in balans voelen",
+    "more_stable_energy_throughout_my_cycle": "Stabielere energie gedurende mijn hele cyclus"
+   }
+  },
+  "beta": {
+   "start": "Aan de slag",
+   "sub": "Welkom bij de NutriSync-bèta! Je bent een van de eersten die hem probeert. Een paar vragen helpen ons vormgeven wat er komt — sommige functies zijn nog onderweg.",
+   "info": "Jouw feedback stuurt direct wat we bouwen. Zie je iets? Tik op",
+   "info2": "wanneer je wilt in Instellingen."
+  },
+  "period": {
+   "h": "Dit is het allerbelangrijkste antwoord — hiermee berekenen we elke dag je fase.",
+   "pick": "Tik om een datum te kiezen"
+  },
+  "city": {
+   "h": "Dit helpt NutriSync om tips te lokaliseren en jou beter te begrijpen!"
+  },
+  "consent": {
+   "hero": "Jouw gegevens blijven van jou",
+   "sub": "We verzamelen alleen wat nodig is om je cyclusbegeleiding te personaliseren.",
+   "p1t": "Je cyclus en symptomen",
+   "p1d": "Om maaltijden en beweging met je fase te synchroniseren.",
+   "p2t": "Doelen & voorkeuren",
+   "p2d": "Om aanbevelingen op jou af te stemmen.",
+   "p3t": "Veilig opgeslagen",
+   "p3d": "Versleuteld, nooit verkocht, altijd te verwijderen.",
+   "agree1": "Ik ga akkoord met NutriSyncs",
+   "and": "en",
+   "agree2": ", en geef toestemming voor de verwerking van mijn gezondheidsgegevens om mijn begeleiding te personaliseren.",
+   "req": "(Verplicht)",
+   "research": "Gebruik mijn geanonimiseerde gegevens om NutriSync en onderzoek naar vrouwengezondheid te verbeteren.",
+   "opt": "(Optioneel)",
+   "cta": "Akkoord en doorgaan"
+  },
+  "done": {
+   "sub": "Nutri heeft je eerste faseplan gemaakt op basis van je antwoorden. Je persoonlijke voedings- en bewegingsbegeleiding staat klaar.",
+   "note": "Je kunt deze antwoorden altijd bijwerken in Instellingen."
+  }
+ },
+ "el": {
+  "accurate": "Να είσαι όσο πιο ακριβής γίνεται, ώστε το NutriSync να σου δώσει εξατομικευμένα αποτελέσματα.",
+  "sec": {
+   "cycle_info": "Πληροφορίες κύκλου",
+   "health_condition": "Κατάσταση υγείας",
+   "hormonal_contraceptives": "Ορμονική αντισύλληψη",
+   "nutritional_preferences": "Διατροφικές προτιμήσεις",
+   "your_nutrigoal": "Ο NutriGoal σου"
+  },
+  "cycleLength": {
+   "q": "Πόσο διαρκεί κατά μέσο όρο ο εμμηνορροϊκός σου κύκλος;",
+   "h": "Από την πρώτη μέρα μιας περιόδου έως την πρώτη μέρα της επόμενης.",
+   "opt": {
+    "less_than_21_days": "Λιγότερο από 21 ημέρες",
+    "21_25_days": "21-25 ημέρες",
+    "26_30_days": "26-30 ημέρες",
+    "31_35_days": "31-35 ημέρες",
+    "other_not_sure": "άλλο/δεν είμαι σίγουρη"
+   }
+  },
+  "periodLength": {
+   "q": "Πόσες ημέρες διαρκεί συνήθως η περίοδός σου;",
+   "opt": {
+    "1_2_days": "1 - 2 ημέρες",
+    "3_4_days": "3 - 4 ημέρες",
+    "5_7_days": "5 - 7 ημέρες",
+    "7_8_days": "7 - 8 ημέρες",
+    "more_than_8_days": "περισσότερες από 8 ημέρες"
+   }
+  },
+  "healthCondition": {
+   "q": "Έχεις διαγνωστεί ποτέ με κάποια από τις παρακάτω παθήσεις;",
+   "opt": {
+    "fibroids": "Ινομυώματα",
+    "endometriosis": "Ενδομητρίωση",
+    "pmos": "PMOS",
+    "ovarian_cysts": "Κύστες ωοθηκών",
+    "infertility": "Υπογονιμότητα",
+    "perimenopause": "Περιεμμηνόπαυση",
+    "none_of_the_above": "Καμία από τις παραπάνω"
+   }
+  },
+  "contraceptives": {
+   "q": "Χρησιμοποιείς ορμονική αντισύλληψη;",
+   "d": "Όπως το χάπι, το ορμονικό σπιράλ, το εμφύτευμα, το αυτοκόλλητο ή τον δακτύλιο. Αλλάζει τον φυσικό σου κύκλο, οπότε η Nutri προσαρμόζεται ανάλογα.",
+   "dh": "το χάπι, το ορμονικό σπιράλ, το εμφύτευμα, το αυτοκόλλητο ή τον δακτύλιο.",
+   "opt": {
+    "yes": "Ναι, αυτή τη στιγμή",
+    "yes_sub": "Χρησιμοποιώ ορμονική μέθοδο αυτή τη στιγμή",
+    "past": "Όχι πια",
+    "past_sub": "Έχω χρησιμοποιήσει στο παρελθόν, αλλά όχι πια",
+    "never": "Ποτέ",
+    "never_sub": "Δεν έχω χρησιμοποιήσει ποτέ ορμονική αντισύλληψη"
+   }
+  },
+  "nutritionDiet": {
+   "q": "Ακολουθείς κάποιο συγκεκριμένο διατροφικό πλάνο;",
+   "opt": {
+    "balanced_diet": "Ισορροπημένη διατροφή",
+    "keto": "Κετογονική",
+    "vegetarian": "Χορτοφαγική",
+    "low_carb": "Χαμηλή σε υδατάνθρακες",
+    "pescatarian": "Πεσκατεριανή",
+    "vegan": "Vegan",
+    "gluten_free": "Χωρίς γλουτένη",
+    "dairy_free": "Χωρίς γαλακτοκομικά",
+    "no_diet": "Καμία δίαιτα",
+    "other": "Άλλο"
+   }
+  },
+  "nutriGoal": {
+   "q": "Ποιος είναι ο κύριος στόχος σου;",
+   "opt": {
+    "reduce_physical_pms_symptoms": "Μείωση των σωματικών συμπτωμάτων PMS",
+    "feel_more_emotionally_balanced": "Να νιώθω πιο ισορροπημένη συναισθηματικά",
+    "more_stable_energy_throughout_my_cycle": "Πιο σταθερή ενέργεια σε όλο τον κύκλο μου"
+   }
+  },
+  "beta": {
+   "start": "Ας ξεκινήσουμε",
+   "sub": "Καλώς ήρθες στη beta του NutriSync! Είσαι από τις πρώτες που τη δοκιμάζουν. Μερικές ερωτήσεις μας βοηθούν να διαμορφώσουμε ό,τι έρχεται — κάποιες λειτουργίες είναι ακόμα καθ' οδόν.",
+   "info": "Τα σχόλιά σου καθοδηγούν άμεσα ό,τι φτιάχνουμε. Είδες κάτι; Πάτησε",
+   "info2": "όποτε θέλεις στις Ρυθμίσεις."
+  },
+  "period": {
+   "h": "Είναι η πιο σημαντική απάντηση — με αυτήν υπολογίζουμε τη φάση σου κάθε μέρα.",
+   "pick": "Πάτησε για να διαλέξεις ημερομηνία"
+  },
+  "city": {
+   "h": "Αυτό βοηθά το NutriSync να προσαρμόσει τις συμβουλές και να σε καταλάβει καλύτερα!"
+  },
+  "consent": {
+   "hero": "Τα δεδομένα σου παραμένουν δικά σου",
+   "sub": "Συλλέγουμε μόνο ό,τι χρειάζεται για να εξατομικεύσουμε την καθοδήγησή σου.",
+   "p1t": "Ο κύκλος και τα συμπτώματά σου",
+   "p1d": "Για να συγχρονίζουμε γεύματα και κίνηση με τη φάση σου.",
+   "p2t": "Στόχοι & προτιμήσεις",
+   "p2d": "Για να προσαρμόζουμε τις συστάσεις σε σένα.",
+   "p3t": "Ασφαλής αποθήκευση",
+   "p3d": "Κρυπτογραφημένα, δεν πωλούνται ποτέ, διαγράφονται όποτε θέλεις.",
+   "agree1": "Αποδέχομαι την",
+   "and": "και τους",
+   "agree2": " του NutriSync, και συναινώ στην επεξεργασία των δεδομένων υγείας μου για την εξατομίκευση της καθοδήγησής μου.",
+   "req": "(Υποχρεωτικό)",
+   "research": "Χρήση των ανωνυμοποιημένων δεδομένων μου για τη βελτίωση του NutriSync και της έρευνας για τη γυναικεία υγεία.",
+   "opt": "(Προαιρετικό)",
+   "cta": "Αποδοχή και συνέχεια"
+  },
+  "done": {
+   "sub": "Η Nutri έφτιαξε το πρώτο σου πλάνο φάσης από τις απαντήσεις σου. Η εξατομικευμένη καθοδήγηση διατροφής και κίνησης είναι έτοιμη.",
+   "note": "Μπορείς να ενημερώσεις αυτές τις απαντήσεις όποτε θέλεις στις Ρυθμίσεις."
+  }
+ },
+ "ca": {
+  "accurate": "Sigues tan precisa com puguis perquè NutriSync et doni resultats a mida.",
+  "sec": {
+   "cycle_info": "Informació del cicle",
+   "health_condition": "Condició de salut",
+   "hormonal_contraceptives": "Anticonceptius hormonals",
+   "nutritional_preferences": "Preferències nutricionals",
+   "your_nutrigoal": "El teu NutriGoal"
+  },
+  "cycleLength": {
+   "q": "Quant dura el teu cicle menstrual mitjà?",
+   "h": "Des del primer dia d'una regla fins al primer dia de la següent.",
+   "opt": {
+    "less_than_21_days": "Menys de 21 dies",
+    "21_25_days": "21-25 dies",
+    "26_30_days": "26-30 dies",
+    "31_35_days": "31-35 dies",
+    "other_not_sure": "altre/no n'estic segura"
+   }
+  },
+  "periodLength": {
+   "q": "Quants dies sol durar la teva regla?",
+   "opt": {
+    "1_2_days": "1 - 2 dies",
+    "3_4_days": "3 - 4 dies",
+    "5_7_days": "5 - 7 dies",
+    "7_8_days": "7 - 8 dies",
+    "more_than_8_days": "més de 8 dies"
+   }
+  },
+  "healthCondition": {
+   "q": "T'han diagnosticat mai alguna d'aquestes condicions?",
+   "opt": {
+    "fibroids": "Miomes",
+    "endometriosis": "Endometriosi",
+    "pmos": "PMOS",
+    "ovarian_cysts": "Quists ovàrics",
+    "infertility": "Infertilitat",
+    "perimenopause": "Perimenopausa",
+    "none_of_the_above": "Cap de les anteriors"
+   }
+  },
+  "contraceptives": {
+   "q": "Fas servir anticoncepció hormonal?",
+   "d": "Com la píndola, el DIU hormonal, l'implant, el pegat o l'anell. Canvia el teu cicle natural, així que la Nutri s'hi adapta.",
+   "dh": "la píndola, el DIU hormonal, l'implant, el pegat o l'anell.",
+   "opt": {
+    "yes": "Sí, actualment",
+    "yes_sub": "Estic fent servir un mètode hormonal ara mateix",
+    "past": "Ja no",
+    "past_sub": "N'he fet servir abans, però ja no",
+    "never": "Mai",
+    "never_sub": "No he fet servir mai anticoncepció hormonal"
+   }
+  },
+  "nutritionDiet": {
+   "q": "Segueixes algun pla de nutrició concret?",
+   "opt": {
+    "balanced_diet": "Dieta equilibrada",
+    "keto": "Keto",
+    "vegetarian": "Vegetariana",
+    "low_carb": "Baixa en carbohidrats",
+    "pescatarian": "Pescetariana",
+    "vegan": "Vegana",
+    "gluten_free": "Sense gluten",
+    "dairy_free": "Sense lactis",
+    "no_diet": "Sense dieta",
+    "other": "Altres"
+   }
+  },
+  "nutriGoal": {
+   "q": "Quin és el teu objectiu principal?",
+   "opt": {
+    "reduce_physical_pms_symptoms": "Reduir els símptomes físics de la SPM",
+    "feel_more_emotionally_balanced": "Sentir-me més equilibrada emocionalment",
+    "more_stable_energy_throughout_my_cycle": "Energia més estable durant tot el cicle"
+   }
+  },
+  "beta": {
+   "start": "Comencem",
+   "sub": "Benvinguda a la beta de NutriSync! Ets de les primeres a provar-la. Unes quantes preguntes ens ajuden a donar forma al que ve — algunes funcions encara estan en camí.",
+   "info": "El teu feedback guia directament el que construïm. Veus alguna cosa? Toca",
+   "info2": "quan vulguis a Configuració."
+  },
+  "period": {
+   "h": "És la resposta més important de totes: amb aquesta calculem la teva fase cada dia.",
+   "pick": "Toca per triar una data"
+  },
+  "city": {
+   "h": "Això ajuda NutriSync a localitzar els consells i entendre't millor!"
+  },
+  "consent": {
+   "hero": "Les teves dades segueixen sent teves",
+   "sub": "Només recollim el necessari per personalitzar la teva guia de cicle.",
+   "p1t": "El teu cicle i els teus símptomes",
+   "p1d": "Per sincronitzar àpats i moviment amb la teva fase.",
+   "p2t": "Objectius i preferències",
+   "p2d": "Per adaptar les recomanacions a tu.",
+   "p3t": "Desat de forma segura",
+   "p3d": "Xifrat, mai es ven i es pot esborrar en qualsevol moment.",
+   "agree1": "Accepto la",
+   "and": "i els",
+   "agree2": " de NutriSync, i consento el tractament de les meves dades de salut per personalitzar la meva guia.",
+   "req": "(Obligatori)",
+   "research": "Fer servir les meves dades anonimitzades per millorar NutriSync i la recerca en salut femenina.",
+   "opt": "(Opcional)",
+   "cta": "Acceptar i continuar"
+  },
+  "done": {
+   "sub": "La Nutri ha creat el teu primer pla de fase a partir de les teves respostes. La teva guia personalitzada de nutrició i moviment ja està a punt.",
+   "note": "Pots actualitzar aquestes respostes quan vulguis a Configuració."
+  }
+ },
+ "val": {
+  "accurate": "Sigues tan precisa com pugues perquè NutriSync et done resultats a mida.",
+  "sec": {
+   "cycle_info": "Informació del cicle",
+   "health_condition": "Condició de salut",
+   "hormonal_contraceptives": "Anticonceptius hormonals",
+   "nutritional_preferences": "Preferències nutricionals",
+   "your_nutrigoal": "El teu NutriGoal"
+  },
+  "cycleLength": {
+   "q": "Quant dura el teu cicle menstrual mitjà?",
+   "h": "Des del primer dia d'una regla fins al primer dia de la següent.",
+   "opt": {
+    "less_than_21_days": "Menys de 21 dies",
+    "21_25_days": "21-25 dies",
+    "26_30_days": "26-30 dies",
+    "31_35_days": "31-35 dies",
+    "other_not_sure": "altre/no n'estic segura"
+   }
+  },
+  "periodLength": {
+   "q": "Quants dies sol durar la teua regla?",
+   "opt": {
+    "1_2_days": "1 - 2 dies",
+    "3_4_days": "3 - 4 dies",
+    "5_7_days": "5 - 7 dies",
+    "7_8_days": "7 - 8 dies",
+    "more_than_8_days": "més de 8 dies"
+   }
+  },
+  "healthCondition": {
+   "q": "T'han diagnosticat mai alguna d'estes condicions?",
+   "opt": {
+    "fibroids": "Miomes",
+    "endometriosis": "Endometriosi",
+    "pmos": "PMOS",
+    "ovarian_cysts": "Quists ovàrics",
+    "infertility": "Infertilitat",
+    "perimenopause": "Perimenopausa",
+    "none_of_the_above": "Cap de les anteriors"
+   }
+  },
+  "contraceptives": {
+   "q": "Uses anticoncepció hormonal?",
+   "d": "Com la píndola, el DIU hormonal, l'implant, el pegat o l'anell. Canvia el teu cicle natural, així que Nutri s'hi adapta.",
+   "dh": "la píndola, el DIU hormonal, l'implant, el pegat o l'anell.",
+   "opt": {
+    "yes": "Sí, actualment",
+    "yes_sub": "Estic usant un mètode hormonal ara mateix",
+    "past": "Ja no",
+    "past_sub": "N'he usat abans, però ja no",
+    "never": "Mai",
+    "never_sub": "No he usat mai anticoncepció hormonal"
+   }
+  },
+  "nutritionDiet": {
+   "q": "Seguixes algun pla de nutrició concret?",
+   "opt": {
+    "balanced_diet": "Dieta equilibrada",
+    "keto": "Keto",
+    "vegetarian": "Vegetariana",
+    "low_carb": "Baixa en carbohidrats",
+    "pescatarian": "Pescetariana",
+    "vegan": "Vegana",
+    "gluten_free": "Sense gluten",
+    "dairy_free": "Sense lactis",
+    "no_diet": "Sense dieta",
+    "other": "Altres"
+   }
+  },
+  "nutriGoal": {
+   "q": "Quin és el teu objectiu principal?",
+   "opt": {
+    "reduce_physical_pms_symptoms": "Reduir els símptomes físics de la SPM",
+    "feel_more_emotionally_balanced": "Sentir-me més equilibrada emocionalment",
+    "more_stable_energy_throughout_my_cycle": "Energia més estable durant tot el cicle"
+   }
+  },
+  "beta": {
+   "start": "Comencem",
+   "sub": "Benvinguda a la beta de NutriSync! Eres de les primeres a provar-la. Unes quantes preguntes ens ajuden a donar forma al que ve — algunes funcions encara estan en camí.",
+   "info": "El teu feedback guia directament el que construïm. Veus alguna cosa? Toca",
+   "info2": "quan vulgues en Configuració."
+  },
+  "period": {
+   "h": "És la resposta més important de totes: amb esta calculem la teua fase cada dia.",
+   "pick": "Toca per a triar una data"
+  },
+  "city": {
+   "h": "Açò ajuda NutriSync a localitzar els consells i entendre't millor!"
+  },
+  "consent": {
+   "hero": "Les teues dades continuen sent teues",
+   "sub": "Només arrepleguem el necessari per a personalitzar la teua guia de cicle.",
+   "p1t": "El teu cicle i els teus símptomes",
+   "p1d": "Per a sincronitzar menjars i moviment amb la teua fase.",
+   "p2t": "Objectius i preferències",
+   "p2d": "Per a adaptar les recomanacions a tu.",
+   "p3t": "Guardat de forma segura",
+   "p3d": "Xifrat, mai es ven i es pot esborrar en qualsevol moment.",
+   "agree1": "Accepte la",
+   "and": "i els",
+   "agree2": " de NutriSync, i consentisc el tractament de les meues dades de salut per a personalitzar la meua guia.",
+   "req": "(Obligatori)",
+   "research": "Usar les meues dades anonimitzades per a millorar NutriSync i la investigació en salut femenina.",
+   "opt": "(Opcional)",
+   "cta": "Acceptar i continuar"
+  },
+  "done": {
+   "sub": "Nutri ha creat el teu primer pla de fase a partir de les teues respostes. La teua guia personalitzada de nutrició i moviment ja està preparada.",
+   "note": "Pots actualitzar estes respostes quan vulgues en Configuració."
+  }
+ },
+ "gl": {
+  "accurate": "Sé o máis precisa posible para que NutriSync che dea resultados á túa medida.",
+  "sec": {
+   "cycle_info": "Información do ciclo",
+   "health_condition": "Condición de saúde",
+   "hormonal_contraceptives": "Anticonceptivos hormonais",
+   "nutritional_preferences": "Preferencias nutricionais",
+   "your_nutrigoal": "O teu NutriGoal"
+  },
+  "cycleLength": {
+   "q": "Canto dura o teu ciclo menstrual medio?",
+   "h": "Desde o primeiro día dunha regra ata o primeiro día da seguinte.",
+   "opt": {
+    "less_than_21_days": "Menos de 21 días",
+    "21_25_days": "21-25 días",
+    "26_30_days": "26-30 días",
+    "31_35_days": "31-35 días",
+    "other_not_sure": "outro/non estou segura"
+   }
+  },
+  "periodLength": {
+   "q": "Cantos días adoita durar a túa regra?",
+   "opt": {
+    "1_2_days": "1 - 2 días",
+    "3_4_days": "3 - 4 días",
+    "5_7_days": "5 - 7 días",
+    "7_8_days": "7 - 8 días",
+    "more_than_8_days": "máis de 8 días"
+   }
+  },
+  "healthCondition": {
+   "q": "Diagnosticáronche algunha vez algunha destas condicións?",
+   "opt": {
+    "fibroids": "Miomas",
+    "endometriosis": "Endometriose",
+    "pmos": "PMOS",
+    "ovarian_cysts": "Quistes ováricos",
+    "infertility": "Infertilidade",
+    "perimenopause": "Perimenopausa",
+    "none_of_the_above": "Ningunha das anteriores"
+   }
+  },
+  "contraceptives": {
+   "q": "Usas anticoncepción hormonal?",
+   "d": "Como a pílula, o DIU hormonal, o implante, o parche ou o anel. Cambia o teu ciclo natural, así que Nutri adáptase a el.",
+   "dh": "a pílula, o DIU hormonal, o implante, o parche ou o anel.",
+   "opt": {
+    "yes": "Si, actualmente",
+    "yes_sub": "Estou a usar un método hormonal agora mesmo",
+    "past": "Xa non",
+    "past_sub": "Usei un antes, pero xa non",
+    "never": "Nunca",
+    "never_sub": "Nunca usei anticoncepción hormonal"
+   }
+  },
+  "nutritionDiet": {
+   "q": "Segues algún plan de nutrición concreto?",
+   "opt": {
+    "balanced_diet": "Dieta equilibrada",
+    "keto": "Keto",
+    "vegetarian": "Vexetariana",
+    "low_carb": "Baixa en carbohidratos",
+    "pescatarian": "Pescetariana",
+    "vegan": "Vegana",
+    "gluten_free": "Sen glute",
+    "dairy_free": "Sen lácteos",
+    "no_diet": "Sen dieta",
+    "other": "Outro"
+   }
+  },
+  "nutriGoal": {
+   "q": "Cal é o teu obxectivo principal?",
+   "opt": {
+    "reduce_physical_pms_symptoms": "Reducir os síntomas físicos da SPM",
+    "feel_more_emotionally_balanced": "Sentirme máis equilibrada emocionalmente",
+    "more_stable_energy_throughout_my_cycle": "Enerxía máis estable durante todo o meu ciclo"
+   }
+  },
+  "beta": {
+   "start": "Comezamos",
+   "sub": "Benvida á beta de NutriSync! Es das primeiras en probala. Unhas preguntas iniciais axúdannos a dar forma ao que vén — algunhas funcións aínda están en camiño.",
+   "info": "O teu feedback guía directamente o que construímos. Ves algo? Toca",
+   "info2": "cando queiras en Axustes."
+  },
+  "period": {
+   "h": "É a resposta máis importante de todas: con ela calculamos a túa fase cada día.",
+   "pick": "Toca para escoller unha data"
+  },
+  "city": {
+   "h": "Isto axuda a NutriSync a localizar os consellos e a entenderte mellor!"
+  },
+  "consent": {
+   "hero": "Os teus datos seguen sendo teus",
+   "sub": "Só recollemos o necesario para personalizar a túa guía de ciclo.",
+   "p1t": "O teu ciclo e os teus síntomas",
+   "p1d": "Para sincronizar comidas e movemento coa túa fase.",
+   "p2t": "Obxectivos e preferencias",
+   "p2d": "Para adaptar as recomendacións a ti.",
+   "p3t": "Gardado de forma segura",
+   "p3d": "Cifrado, nunca se vende e pódese borrar en calquera momento.",
+   "agree1": "Acepto a",
+   "and": "e os",
+   "agree2": " de NutriSync, e consinto o tratamento dos meus datos de saúde para personalizar a miña guía.",
+   "req": "(Obrigatorio)",
+   "research": "Usar os meus datos anonimizados para mellorar NutriSync e a investigación en saúde feminina.",
+   "opt": "(Opcional)",
+   "cta": "Aceptar e continuar"
+  },
+  "done": {
+   "sub": "Nutri creou o teu primeiro plan de fase a partir das túas respostas. A túa guía personalizada de nutrición e movemento está lista.",
+   "note": "Podes actualizar estas respostas cando queiras en Axustes."
+  }
+ },
+ "eu": {
+  "accurate": "Izan ahalik eta zehatzena, NutriSync-ek neurriko emaitzak eman diezazkizun.",
+  "sec": {
+   "cycle_info": "Zikloaren informazioa",
+   "health_condition": "Osasun-egoera",
+   "hormonal_contraceptives": "Antisorgailu hormonalak",
+   "nutritional_preferences": "Elikadura-lehentasunak",
+   "your_nutrigoal": "Zure NutriGoal-a"
+  },
+  "cycleLength": {
+   "q": "Zenbat irauten du zure batez besteko hilekoaren zikloak?",
+   "h": "Hileko baten lehen egunetik hurrengoaren lehen egunera arte.",
+   "opt": {
+    "less_than_21_days": "21 egun baino gutxiago",
+    "21_25_days": "21-25 egun",
+    "26_30_days": "26-30 egun",
+    "31_35_days": "31-35 egun",
+    "other_not_sure": "beste bat/ez nago ziur"
+   }
+  },
+  "periodLength": {
+   "q": "Zenbat egun irauten du normalean zure hilekoak?",
+   "opt": {
+    "1_2_days": "1 - 2 egun",
+    "3_4_days": "3 - 4 egun",
+    "5_7_days": "5 - 7 egun",
+    "7_8_days": "7 - 8 egun",
+    "more_than_8_days": "8 egun baino gehiago"
+   }
+  },
+  "healthCondition": {
+   "q": "Inoiz diagnostikatu al dizute honako egoera hauetakoren bat?",
+   "opt": {
+    "fibroids": "Miomak",
+    "endometriosis": "Endometriosia",
+    "pmos": "PMOS",
+    "ovarian_cysts": "Obulutegiko kisteak",
+    "infertility": "Antzutasuna",
+    "perimenopause": "Perimenopausia",
+    "none_of_the_above": "Aurreko bat ere ez"
+   }
+  },
+  "contraceptives": {
+   "q": "Antisorgailu hormonalik erabiltzen al duzu?",
+   "d": "Adibidez pilula, DIU hormonala, inplantea, partxea edo eraztuna. Zure ziklo naturala aldatzen du, eta Nutri horretara egokitzen da.",
+   "dh": "pilula, DIU hormonala, inplantea, partxea edo eraztuna.",
+   "opt": {
+    "yes": "Bai, orain",
+    "yes_sub": "Metodo hormonal bat erabiltzen ari naiz orain",
+    "past": "Jada ez",
+    "past_sub": "Lehen erabili nuen, baina jada ez",
+    "never": "Inoiz ez",
+    "never_sub": "Ez dut inoiz antisorgailu hormonalik erabili"
+   }
+  },
+  "nutritionDiet": {
+   "q": "Elikadura-plan zehatzen bat jarraitzen al duzu?",
+   "opt": {
+    "balanced_diet": "Dieta orekatua",
+    "keto": "Keto",
+    "vegetarian": "Begetarianoa",
+    "low_carb": "Karbohidrato gutxikoa",
+    "pescatarian": "Peszetarianoa",
+    "vegan": "Beganoa",
+    "gluten_free": "Glutenik gabea",
+    "dairy_free": "Esnekirik gabea",
+    "no_diet": "Dietarik ez",
+    "other": "Beste bat"
+   }
+  },
+  "nutriGoal": {
+   "q": "Zein da zure helburu nagusia?",
+   "opt": {
+    "reduce_physical_pms_symptoms": "PMSaren sintoma fisikoak murriztea",
+    "feel_more_emotionally_balanced": "Emozionalki orekatuago sentitzea",
+    "more_stable_energy_throughout_my_cycle": "Energia egonkorragoa ziklo osoan zehar"
+   }
+  },
+  "beta": {
+   "start": "Has gaitezen",
+   "sub": "Ongi etorri NutriSync beta bertsiora! Probatzen duten lehenengoetakoa zara. Hasierako galdera batzuek datorrena moldatzen laguntzen digute — funtzio batzuk oraindik bidean daude.",
+   "info": "Zure iritziak zuzenean gidatzen du eraikitzen duguna. Zerbait ikusi duzu? Sakatu",
+   "info2": "nahi duzunean Ezarpenetan."
+  },
+  "period": {
+   "h": "Erantzunik garrantzitsuena da: horrekin kalkulatzen dugu zure fasea egunero.",
+   "pick": "Sakatu data bat aukeratzeko"
+  },
+  "city": {
+   "h": "Honek NutriSync-i aholkuak lokalizatzen eta zu hobeto ulertzen laguntzen dio!"
+  },
+  "consent": {
+   "hero": "Zure datuak zureak dira beti",
+   "sub": "Zure ziklo-gidaritza pertsonalizatzeko behar duguna baino ez dugu jasotzen.",
+   "p1t": "Zure zikloa eta sintomak",
+   "p1d": "Otorduak eta mugimendua zure fasearekin sinkronizatzeko.",
+   "p2t": "Helburuak eta lehentasunak",
+   "p2d": "Gomendioak zuri egokitzeko.",
+   "p3t": "Modu seguruan gordeta",
+   "p3d": "Zifratuta, inoiz ez da saltzen, edonoiz ezaba daiteke.",
+   "agree1": "Onartzen ditut NutriSync-en",
+   "and": "eta",
+   "agree2": ", eta baimena ematen dut nire osasun-datuak tratatzeko, nire gidaritza pertsonalizatzeko.",
+   "req": "(Beharrezkoa)",
+   "research": "Nire datu anonimizatuak erabiltzea NutriSync eta emakumeen osasunari buruzko ikerketa hobetzeko.",
+   "opt": "(Aukerakoa)",
+   "cta": "Onartu eta jarraitu"
+  },
+  "done": {
+   "sub": "Nutrik zure lehen fase-plana sortu du zure erantzunetatik. Zure elikadura- eta mugimendu-gidaritza pertsonalizatua prest dago.",
+   "note": "Erantzun hauek edonoiz alda ditzakezu Ezarpenetan."
+  }
+ },
+ "oc": {
+  "accurate": "Sigues tan precisa coma pogues entà que NutriSync te balhe resultats a mida.",
+  "sec": {
+   "cycle_info": "Informacion deth cicle",
+   "health_condition": "Condicion de salut",
+   "hormonal_contraceptives": "Anticonceptius hormonaus",
+   "nutritional_preferences": "Preferéncies nutricionaus",
+   "your_nutrigoal": "Eth tòn NutriGoal"
+  },
+  "cycleLength": {
+   "q": "Guaire dure eth tòn cicle menstruau de mejana?",
+   "h": "Deth prumèr dia d'ua règla enquath prumèr dia dera seguenta.",
+   "opt": {
+    "less_than_21_days": "Mens de 21 dies",
+    "21_25_days": "21-25 dies",
+    "26_30_days": "26-30 dies",
+    "31_35_days": "31-35 dies",
+    "other_not_sure": "aute/non sò segura"
+   }
+  },
+  "periodLength": {
+   "q": "Guairi dies sòl durar era tua règla?",
+   "opt": {
+    "1_2_days": "1 - 2 dies",
+    "3_4_days": "3 - 4 dies",
+    "5_7_days": "5 - 7 dies",
+    "7_8_days": "7 - 8 dies",
+    "more_than_8_days": "mès de 8 dies"
+   }
+  },
+  "healthCondition": {
+   "q": "T'an diagnosticat bèth còp ua d'aguestes condicions?",
+   "opt": {
+    "fibroids": "Miòmes",
+    "endometriosis": "Endometriòsi",
+    "pmos": "PMOS",
+    "ovarian_cysts": "Quistes ovarics",
+    "infertility": "Infertilitat",
+    "perimenopause": "Perimenopausa",
+    "none_of_the_above": "Cap des anteriores"
+   }
+  },
+  "contraceptives": {
+   "q": "Emplegues anticoncepcion hormonau?",
+   "d": "Coma era pilula, eth DIU hormonau, er implant, eth pegat o er anèth. Càmbie eth tòn cicle naturau, atau que Nutri s'i adapte.",
+   "dh": "era pilula, eth DIU hormonau, er implant, eth pegat o er anèth.",
+   "opt": {
+    "yes": "Òc, actuaument",
+    "yes_sub": "Sò a emplegar un metòde hormonau ara madeish",
+    "past": "Ja non",
+    "past_sub": "N'è emplegat un abantes, mès ja non",
+    "never": "Jamès",
+    "never_sub": "Non è jamès emplegat anticoncepcion hormonau"
+   }
+  },
+  "nutritionDiet": {
+   "q": "Seguisses bèth plan de nutricion concrèt?",
+   "opt": {
+    "balanced_diet": "Dieta equilibrada",
+    "keto": "Keto",
+    "vegetarian": "Vegetariana",
+    "low_carb": "Baisha en carbohidrats",
+    "pescatarian": "Pescetariana",
+    "vegan": "Vegana",
+    "gluten_free": "Sense gluten",
+    "dairy_free": "Sense lactics",
+    "no_diet": "Sense dieta",
+    "other": "Aute"
+   }
+  },
+  "nutriGoal": {
+   "q": "Quin ei eth tòn objectiu principau?",
+   "opt": {
+    "reduce_physical_pms_symptoms": "Redusir es simptòmes fisics deth SPM",
+    "feel_more_emotionally_balanced": "Sentir-me mès equilibrada emocionaument",
+    "more_stable_energy_throughout_my_cycle": "Energia mès establa pendent tot eth cicle"
+   }
+  },
+  "beta": {
+   "start": "Comencem",
+   "sub": "Benvenguda ara beta de NutriSync! Ès des prumères a provar-la. Bères questions mos ajuden a dar forma ath que ven — bères foncions son encara en camin.",
+   "info": "Eth tòn feedback guide dirèctament çò que bastim. Ves quauquarren? Tòca",
+   "info2": "quan volgues en Configuracion."
+  },
+  "period": {
+   "h": "Ei era responsa mès importanta de totes: damb aguesta calculam era tua fasa cada dia.",
+   "pick": "Tòca entà causir ua data"
+  },
+  "city": {
+   "h": "Açò ajude a NutriSync a localizar es conselhs e a compréner-te melhor!"
+  },
+  "consent": {
+   "hero": "Es tues dades seguissen essent tues",
+   "sub": "Sonque recuelhem çò de besonh entà personalizar era tua guida de cicle.",
+   "p1t": "Eth tòn cicle e es tòns simptòmes",
+   "p1d": "Entà sincronizar minjars e movement damb era tua fasa.",
+   "p2t": "Objectius e preferéncies",
+   "p2d": "Entà adaptar es recomanacions a tu.",
+   "p3t": "Guardat de forma segura",
+   "p3d": "Chifrat, non se ven jamès, se pòt esfaçar en tot moment.",
+   "agree1": "Accèpti era",
+   "and": "e es",
+   "agree2": " de NutriSync, e consentisqui eth tractament des mies dades de salut entà personalizar era mia guida.",
+   "req": "(Obligatòri)",
+   "research": "Emplegar es mies dades anonimizades entà melhorar NutriSync e era recèrca en salut femenina.",
+   "opt": "(Opcionau)",
+   "cta": "Acceptar e seguir"
+  },
+  "done": {
+   "sub": "Nutri a creat eth tòn prumèr plan de fasa a partir des tues responses. Era tua guida personalizada de nutricion e movement ei prèsta.",
+   "note": "Pòdes actualizar aguestes responses quan volgues en Configuracion."
+  }
+ },
+ "zh": {
+  "accurate": "请尽量准确填写，这样 NutriSync 才能为你提供量身定制的结果。",
+  "sec": {
+   "cycle_info": "周期信息",
+   "health_condition": "健康状况",
+   "hormonal_contraceptives": "激素避孕",
+   "nutritional_preferences": "饮食偏好",
+   "your_nutrigoal": "你的 NutriGoal"
+  },
+  "cycleLength": {
+   "q": "你的平均月经周期有多长？",
+   "h": "从一次月经的第一天到下一次月经的第一天。",
+   "opt": {
+    "less_than_21_days": "少于 21 天",
+    "21_25_days": "21-25 天",
+    "26_30_days": "26-30 天",
+    "31_35_days": "31-35 天",
+    "other_not_sure": "其他/不确定"
+   }
+  },
+  "periodLength": {
+   "q": "你的经期通常持续几天？",
+   "opt": {
+    "1_2_days": "1 - 2 天",
+    "3_4_days": "3 - 4 天",
+    "5_7_days": "5 - 7 天",
+    "7_8_days": "7 - 8 天",
+    "more_than_8_days": "超过 8 天"
+   }
+  },
+  "healthCondition": {
+   "q": "你是否曾被诊断出以下任何一种情况？",
+   "opt": {
+    "fibroids": "子宫肌瘤",
+    "endometriosis": "子宫内膜异位症",
+    "pmos": "PMOS",
+    "ovarian_cysts": "卵巢囊肿",
+    "infertility": "不孕",
+    "perimenopause": "围绝经期",
+    "none_of_the_above": "以上都没有"
+   }
+  },
+  "contraceptives": {
+   "q": "你使用激素避孕吗？",
+   "d": "例如避孕药、激素宫内节育器、皮下埋植、避孕贴或阴道环。它会改变你的自然周期，Nutri 会相应地进行调整。",
+   "dh": "避孕药、激素宫内节育器、皮下埋植、避孕贴或阴道环",
+   "opt": {
+    "yes": "是，目前在用",
+    "yes_sub": "我目前正在使用激素避孕方法",
+    "past": "已停用",
+    "past_sub": "以前用过，但现在不用了",
+    "never": "从未",
+    "never_sub": "我从未使用过激素避孕"
+   }
+  },
+  "nutritionDiet": {
+   "q": "你是否遵循某种特定的饮食计划？",
+   "opt": {
+    "balanced_diet": "均衡饮食",
+    "keto": "生酮饮食",
+    "vegetarian": "素食",
+    "low_carb": "低碳水",
+    "pescatarian": "鱼素食",
+    "vegan": "纯素食",
+    "gluten_free": "无麸质",
+    "dairy_free": "无乳制品",
+    "no_diet": "没有特定饮食",
+    "other": "其他"
+   }
+  },
+  "nutriGoal": {
+   "q": "你的主要目标是什么？",
+   "opt": {
+    "reduce_physical_pms_symptoms": "减轻经前综合征的身体症状",
+    "feel_more_emotionally_balanced": "情绪更平衡",
+    "more_stable_energy_throughout_my_cycle": "整个周期内精力更稳定"
+   }
+  },
+  "beta": {
+   "start": "开始吧",
+   "sub": "欢迎来到 NutriSync 测试版！你是最早试用的用户之一。几个入门问题将帮助我们塑造未来的功能——有些功能还在路上。",
+   "info": "你的反馈直接决定我们构建什么。发现问题？随时在设置中点击",
+   "info2": "。"
+  },
+  "period": {
+   "h": "这是最重要的一个答案——我们每天靠它计算你所处的周期阶段。",
+   "pick": "点击选择日期"
+  },
+  "city": {
+   "h": "这有助于 NutriSync 本地化建议并更好地了解你！"
+  },
+  "consent": {
+   "hero": "你的数据始终属于你",
+   "sub": "我们只收集为你个性化周期指导所需的信息。",
+   "p1t": "你的周期和症状",
+   "p1d": "让饮食和运动与你的周期阶段同步。",
+   "p2t": "目标与偏好",
+   "p2d": "为你量身定制建议。",
+   "p3t": "安全存储",
+   "p3d": "加密存储，绝不出售，可随时删除。",
+   "agree1": "我同意 NutriSync 的",
+   "and": "和",
+   "agree2": "，并同意处理我的健康数据以个性化我的指导。",
+   "req": "（必选）",
+   "research": "使用我的匿名数据来改进 NutriSync 和女性健康研究。",
+   "opt": "（可选）",
+   "cta": "同意并继续"
+  },
+  "done": {
+   "sub": "Nutri 已根据你的回答生成了你的第一个阶段计划。你的个性化营养与运动指导已准备就绪。",
+   "note": "你可以随时在设置中更新这些回答。"
+  }
+ },
+ "ja": {
+  "accurate": "NutriSync があなたに合った結果をお届けできるよう、できるだけ正確に入力してください。",
+  "sec": {
+   "cycle_info": "周期の情報",
+   "health_condition": "健康状態",
+   "hormonal_contraceptives": "ホルモン避妊",
+   "nutritional_preferences": "食事の好み",
+   "your_nutrigoal": "あなたの NutriGoal"
+  },
+  "cycleLength": {
+   "q": "平均的な月経周期はどのくらいですか？",
+   "h": "生理初日から次の生理初日までの日数です。",
+   "opt": {
+    "less_than_21_days": "21日未満",
+    "21_25_days": "21〜25日",
+    "26_30_days": "26〜30日",
+    "31_35_days": "31〜35日",
+    "other_not_sure": "その他／わからない"
+   }
+  },
+  "periodLength": {
+   "q": "生理は通常何日間続きますか？",
+   "opt": {
+    "1_2_days": "1〜2日",
+    "3_4_days": "3〜4日",
+    "5_7_days": "5〜7日",
+    "7_8_days": "7〜8日",
+    "more_than_8_days": "8日以上"
+   }
+  },
+  "healthCondition": {
+   "q": "次のいずれかの診断を受けたことがありますか？",
+   "opt": {
+    "fibroids": "子宮筋腫",
+    "endometriosis": "子宮内膜症",
+    "pmos": "PMOS",
+    "ovarian_cysts": "卵巣嚢腫",
+    "infertility": "不妊",
+    "perimenopause": "更年期移行期",
+    "none_of_the_above": "どれにも当てはまらない"
+   }
+  },
+  "contraceptives": {
+   "q": "ホルモン避妊を使用していますか？",
+   "d": "ピル、ホルモン付加IUD、インプラント、パッチ、リングなどです。自然な周期が変わるため、Nutri はそれに合わせて調整します。",
+   "dh": "ピル、ホルモン付加IUD、インプラント、パッチ、リング",
+   "opt": {
+    "yes": "はい、現在使用中",
+    "yes_sub": "現在ホルモン避妊法を使用しています",
+    "past": "今は使っていない",
+    "past_sub": "以前使っていましたが、今は使っていません",
+    "never": "一度もない",
+    "never_sub": "ホルモン避妊を使ったことはありません"
+   }
+  },
+  "nutritionDiet": {
+   "q": "特定の食事プランに従っていますか？",
+   "opt": {
+    "balanced_diet": "バランスの良い食事",
+    "keto": "ケト",
+    "vegetarian": "ベジタリアン",
+    "low_carb": "低糖質",
+    "pescatarian": "ペスカタリアン",
+    "vegan": "ヴィーガン",
+    "gluten_free": "グルテンフリー",
+    "dairy_free": "乳製品フリー",
+    "no_diet": "特になし",
+    "other": "その他"
+   }
+  },
+  "nutriGoal": {
+   "q": "一番の目標は何ですか？",
+   "opt": {
+    "reduce_physical_pms_symptoms": "PMSの身体症状を軽減したい",
+    "feel_more_emotionally_balanced": "気持ちをもっと安定させたい",
+    "more_stable_energy_throughout_my_cycle": "周期を通してエネルギーを安定させたい"
+   }
+  },
+  "beta": {
+   "start": "はじめる",
+   "sub": "NutriSync ベータ版へようこそ！あなたは最初に試すユーザーのひとりです。いくつかの質問が今後の開発の方向性を決める助けになります。一部の機能は準備中です。",
+   "info": "あなたのフィードバックが開発を直接導きます。何か気づいたら、設定からいつでも",
+   "info2": "をタップしてください。"
+  },
+  "period": {
+   "h": "これは最も重要な回答です。毎日のフェーズ計算の基礎になります。",
+   "pick": "タップして日付を選択"
+  },
+  "city": {
+   "h": "これにより NutriSync がアドバイスを地域に合わせ、あなたをより深く理解できます！"
+  },
+  "consent": {
+   "hero": "あなたのデータはあなたのもの",
+   "sub": "周期ガイダンスのパーソナライズに必要な情報だけを収集します。",
+   "p1t": "あなたの周期と症状",
+   "p1d": "食事と運動をフェーズに同期させるため。",
+   "p2t": "目標と好み",
+   "p2d": "おすすめをあなたに合わせるため。",
+   "p3t": "安全に保管",
+   "p3d": "暗号化され、販売されることはなく、いつでも削除できます。",
+   "agree1": "NutriSync の",
+   "and": "と",
+   "agree2": "に同意し、ガイダンスのパーソナライズのために健康データの処理に同意します。",
+   "req": "（必須）",
+   "research": "匿名化されたデータを NutriSync と女性の健康研究の向上に使用する。",
+   "opt": "（任意）",
+   "cta": "同意して続ける"
+  },
+  "done": {
+   "sub": "Nutri があなたの回答から最初のフェーズプランを作成しました。あなた専用の栄養と運動のガイダンスの準備ができました。",
+   "note": "これらの回答は設定からいつでも更新できます。"
+  }
+ }
+}

@@ -1543,5 +1543,118 @@
     "Watch caffeine": "Vigila la cafeína",
     "Meals": "Comidas",
     "Cycle": "Ciclo"
+  },
+  "ob": {
+    "accurate": "Sé lo más precisa posible para que NutriSync te dé resultados a tu medida.",
+    "sec": {
+      "cycle_info": "Información del ciclo",
+      "health_condition": "Condición de salud",
+      "hormonal_contraceptives": "Anticonceptivos hormonales",
+      "nutritional_preferences": "Preferencias nutricionales",
+      "your_nutrigoal": "Tu NutriGoal"
+    },
+    "cycleLength": {
+      "q": "¿Cuánto dura tu ciclo menstrual medio?",
+      "h": "Desde el primer día de una regla hasta el primer día de la siguiente.",
+      "opt": {
+        "less_than_21_days": "Menos de 21 días",
+        "21_25_days": "21-25 días",
+        "26_30_days": "26-30 días",
+        "31_35_days": "31-35 días",
+        "other_not_sure": "otro/no estoy segura"
+      }
+    },
+    "periodLength": {
+      "q": "¿Cuántos días suele durar tu regla?",
+      "opt": {
+        "1_2_days": "1 - 2 días",
+        "3_4_days": "3 - 4 días",
+        "5_7_days": "5 - 7 días",
+        "7_8_days": "7 - 8 días",
+        "more_than_8_days": "más de 8 días"
+      }
+    },
+    "healthCondition": {
+      "q": "¿Te han diagnosticado alguna vez alguna de estas condiciones?",
+      "opt": {
+        "fibroids": "Miomas",
+        "endometriosis": "Endometriosis",
+        "pmos": "PMOS",
+        "ovarian_cysts": "Quistes ováricos",
+        "infertility": "Infertilidad",
+        "perimenopause": "Perimenopausia",
+        "none_of_the_above": "Ninguna de las anteriores"
+      }
+    },
+    "contraceptives": {
+      "q": "¿Usas anticoncepción hormonal?",
+      "d": "Como la píldora, el DIU hormonal, el implante, el parche o el anillo. Cambia tu ciclo natural, así que Nutri se adapta a ello.",
+      "dh": "la píldora, el DIU hormonal, el implante, el parche o el anillo.",
+      "opt": {
+        "yes": "Sí, actualmente",
+        "yes_sub": "Estoy usando un método hormonal ahora mismo",
+        "past": "Ya no",
+        "past_sub": "He usado uno antes, pero ya no",
+        "never": "Nunca",
+        "never_sub": "Nunca he usado anticoncepción hormonal"
+      }
+    },
+    "nutritionDiet": {
+      "q": "¿Sigues algún plan de nutrición concreto?",
+      "opt": {
+        "balanced_diet": "Dieta equilibrada",
+        "keto": "Keto",
+        "vegetarian": "Vegetariana",
+        "low_carb": "Baja en carbohidratos",
+        "pescatarian": "Pescetariana",
+        "vegan": "Vegana",
+        "gluten_free": "Sin gluten",
+        "dairy_free": "Sin lácteos",
+        "no_diet": "Sin dieta",
+        "other": "Otro"
+      }
+    },
+    "nutriGoal": {
+      "q": "¿Cuál es tu objetivo principal?",
+      "opt": {
+        "reduce_physical_pms_symptoms": "Reducir los síntomas físicos del SPM",
+        "feel_more_emotionally_balanced": "Sentirme más equilibrada emocionalmente",
+        "more_stable_energy_throughout_my_cycle": "Energía más estable durante todo mi ciclo"
+      }
+    },
+    "beta": {
+      "start": "Empezamos",
+      "sub": "¡Bienvenida a la beta de NutriSync! Eres de las primeras en probarla. Unas preguntas iniciales nos ayudan a dar forma a lo que viene, así que algunas funciones están aún en camino.",
+      "info": "Tu feedback guía directamente lo que construimos. ¿Ves algo? Toca",
+      "info2": "cuando quieras en Ajustes."
+    },
+    "period": {
+      "h": "Es la respuesta más importante de todas: con ella calculamos tu fase cada día.",
+      "pick": "Toca para elegir una fecha"
+    },
+    "city": {
+      "h": "¡Esto ayuda a NutriSync a localizar los consejos y entenderte mejor!"
+    },
+    "consent": {
+      "hero": "Tus datos siguen siendo tuyos",
+      "sub": "Solo recogemos lo necesario para personalizar tu guía de ciclo.",
+      "p1t": "Tu ciclo y tus síntomas",
+      "p1d": "Para sincronizar comidas y movimiento con tu fase.",
+      "p2t": "Objetivos y preferencias",
+      "p2d": "Para adaptar las recomendaciones a ti.",
+      "p3t": "Guardado de forma segura",
+      "p3d": "Cifrado, nunca se vende y se puede borrar en cualquier momento.",
+      "agree1": "Acepto la",
+      "and": "y los",
+      "agree2": " de NutriSync, y consiento el tratamiento de mis datos de salud para personalizar mi guía.",
+      "req": "(Obligatorio)",
+      "research": "Usar mis datos anonimizados para mejorar NutriSync y la investigación en salud femenina.",
+      "opt": "(Opcional)",
+      "cta": "Aceptar y continuar"
+    },
+    "done": {
+      "sub": "Nutri ha creado tu primer plan de fase a partir de tus respuestas. Tu guía personalizada de nutrición y movimiento está lista.",
+      "note": "Puedes actualizar estas respuestas cuando quieras en Ajustes."
+    }
   }
 }

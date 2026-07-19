@@ -1430,5 +1430,118 @@
     "Ovulatory": "排卵期",
     "Luteal": "黄体期",
     "PCOS": "PMOS"
+  },
+  "ob": {
+    "accurate": "请尽量准确填写，这样 NutriSync 才能为你提供量身定制的结果。",
+    "sec": {
+      "cycle_info": "周期信息",
+      "health_condition": "健康状况",
+      "hormonal_contraceptives": "激素避孕",
+      "nutritional_preferences": "饮食偏好",
+      "your_nutrigoal": "你的 NutriGoal"
+    },
+    "cycleLength": {
+      "q": "你的平均月经周期有多长？",
+      "h": "从一次月经的第一天到下一次月经的第一天。",
+      "opt": {
+        "less_than_21_days": "少于 21 天",
+        "21_25_days": "21-25 天",
+        "26_30_days": "26-30 天",
+        "31_35_days": "31-35 天",
+        "other_not_sure": "其他/不确定"
+      }
+    },
+    "periodLength": {
+      "q": "你的经期通常持续几天？",
+      "opt": {
+        "1_2_days": "1 - 2 天",
+        "3_4_days": "3 - 4 天",
+        "5_7_days": "5 - 7 天",
+        "7_8_days": "7 - 8 天",
+        "more_than_8_days": "超过 8 天"
+      }
+    },
+    "healthCondition": {
+      "q": "你是否曾被诊断出以下任何一种情况？",
+      "opt": {
+        "fibroids": "子宫肌瘤",
+        "endometriosis": "子宫内膜异位症",
+        "pmos": "PMOS",
+        "ovarian_cysts": "卵巢囊肿",
+        "infertility": "不孕",
+        "perimenopause": "围绝经期",
+        "none_of_the_above": "以上都没有"
+      }
+    },
+    "contraceptives": {
+      "q": "你使用激素避孕吗？",
+      "d": "例如避孕药、激素宫内节育器、皮下埋植、避孕贴或阴道环。它会改变你的自然周期，Nutri 会相应地进行调整。",
+      "dh": "避孕药、激素宫内节育器、皮下埋植、避孕贴或阴道环",
+      "opt": {
+        "yes": "是，目前在用",
+        "yes_sub": "我目前正在使用激素避孕方法",
+        "past": "已停用",
+        "past_sub": "以前用过，但现在不用了",
+        "never": "从未",
+        "never_sub": "我从未使用过激素避孕"
+      }
+    },
+    "nutritionDiet": {
+      "q": "你是否遵循某种特定的饮食计划？",
+      "opt": {
+        "balanced_diet": "均衡饮食",
+        "keto": "生酮饮食",
+        "vegetarian": "素食",
+        "low_carb": "低碳水",
+        "pescatarian": "鱼素食",
+        "vegan": "纯素食",
+        "gluten_free": "无麸质",
+        "dairy_free": "无乳制品",
+        "no_diet": "没有特定饮食",
+        "other": "其他"
+      }
+    },
+    "nutriGoal": {
+      "q": "你的主要目标是什么？",
+      "opt": {
+        "reduce_physical_pms_symptoms": "减轻经前综合征的身体症状",
+        "feel_more_emotionally_balanced": "情绪更平衡",
+        "more_stable_energy_throughout_my_cycle": "整个周期内精力更稳定"
+      }
+    },
+    "beta": {
+      "start": "开始吧",
+      "sub": "欢迎来到 NutriSync 测试版！你是最早试用的用户之一。几个入门问题将帮助我们塑造未来的功能——有些功能还在路上。",
+      "info": "你的反馈直接决定我们构建什么。发现问题？随时在设置中点击",
+      "info2": "。"
+    },
+    "period": {
+      "h": "这是最重要的一个答案——我们每天靠它计算你所处的周期阶段。",
+      "pick": "点击选择日期"
+    },
+    "city": {
+      "h": "这有助于 NutriSync 本地化建议并更好地了解你！"
+    },
+    "consent": {
+      "hero": "你的数据始终属于你",
+      "sub": "我们只收集为你个性化周期指导所需的信息。",
+      "p1t": "你的周期和症状",
+      "p1d": "让饮食和运动与你的周期阶段同步。",
+      "p2t": "目标与偏好",
+      "p2d": "为你量身定制建议。",
+      "p3t": "安全存储",
+      "p3d": "加密存储，绝不出售，可随时删除。",
+      "agree1": "我同意 NutriSync 的",
+      "and": "和",
+      "agree2": "，并同意处理我的健康数据以个性化我的指导。",
+      "req": "（必选）",
+      "research": "使用我的匿名数据来改进 NutriSync 和女性健康研究。",
+      "opt": "（可选）",
+      "cta": "同意并继续"
+    },
+    "done": {
+      "sub": "Nutri 已根据你的回答生成了你的第一个阶段计划。你的个性化营养与运动指导已准备就绪。",
+      "note": "你可以随时在设置中更新这些回答。"
+    }
   }
 }
