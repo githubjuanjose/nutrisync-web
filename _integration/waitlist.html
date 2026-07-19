@@ -42,6 +42,8 @@ tbody tr:nth-child(even){background:var(--cream);}
 .tag.legacy_import{background:#E7F6EE;color:var(--emerald);}
 .tag.manual{background:#F1E8FF;color:#7C3AED;}
 .tag.other{background:#EFEAE4;color:var(--muted);}
+.tag.conv{background:#E8F7F0;color:#2D6A4F;text-transform:none;}
+.stat.conv .n{color:#2D6A4F;}
 .act{display:inline-flex;gap:6px;}
 .iconbtn{border:1px solid var(--line);background:#fff;border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:14px;line-height:1;display:inline-flex;align-items:center;justify-content:center;}
 .iconbtn:hover{border-color:var(--coral);}
@@ -114,6 +116,7 @@ tbody tr:nth-child(even){background:var(--cream);}
           <th data-k="full_name">Name</th>
           <th data-k="joined_at">Joined</th>
           <th data-k="source">Source</th>
+          <th data-k="converted_at">App user</th>
           <th class="noSort" id="actHead" style="width:96px">Actions</th>
         </tr></thead>
         <tbody id="rows"></tbody>
@@ -163,7 +166,8 @@ function srcClass(s){ return ['marketing_site','newsletter','legacy_import','man
 function stats(){
   const by = {};
   ALL.forEach(r => { const s=r.source||'other'; by[s]=(by[s]||0)+1; });
-  const cards = [`<div class="stat total"><div class="n">${ALL.length}</div><div class="l">Total signups</div></div>`];
+  const conv = ALL.filter(r=>r.converted_at).length;
+  const cards = [`<div class="stat total"><div class="n">${ALL.length}</div><div class="l">Total signups</div></div>`,`<div class="stat conv"><div class="n">${conv}</div><div class="l">Now app users</div></div>`];
   [['legacy_import','Legacy'],['marketing_site','Marketing site'],['newsletter','Newsletter'],['manual','Manual']].forEach(([k,lab])=>{
     if(by[k]) cards.push(`<div class="stat"><div class="n">${by[k]}</div><div class="l">${lab}</div></div>`);
   });
@@ -179,7 +183,7 @@ function view(){
   );
   rows.sort((a,b)=>{
     let x=a[sortK], y=b[sortK];
-    if(sortK==='joined_at'){ x=x?new Date(x).getTime():0; y=y?new Date(y).getTime():0; }
+    if(sortK==='joined_at'||sortK==='converted_at'){ x=x?new Date(x).getTime():0; y=y?new Date(y).getTime():0; }
     else { x=(x||'').toString().toLowerCase(); y=(y||'').toString().toLowerCase(); }
     return x<y?-1*sortDir : x>y?1*sortDir : 0;
   });
@@ -188,10 +192,11 @@ function view(){
     <td>${esc(r.full_name)||'<span class="muted">—</span>'}</td>
     <td>${fmtDate(r.joined_at||r.created_at)}</td>
     <td><span class="tag ${srcClass(r.source)}">${esc((r.source||'other').replace('_',' '))}</span></td>
+    <td>${r.converted_at?`<span class="tag conv" title="Registered ${fmtDate(r.converted_at)}">\u2713 user</span>`:'<span class="muted">\u2014</span>'}</td>
     <td>${CAN_WRITE && r.id ? `<span class="act">
         <button class="iconbtn edit" data-id="${esc(r.id)}" title="Edit">✎</button>
         <button class="iconbtn del" data-id="${esc(r.id)}" title="Delete">🗑</button></span>` : '<span class="muted">—</span>'}</td>
-  </tr>`).join('') || `<tr><td colspan="5" class="muted" style="text-align:center;padding:26px">No matches.</td></tr>`;
+  </tr>`).join('') || `<tr><td colspan="6" class="muted" style="text-align:center;padding:26px">No matches.</td></tr>`;
   $('count').textContent = `Showing ${rows.length} of ${ALL.length}`;
   // wire row actions
   document.querySelectorAll('.iconbtn.edit').forEach(b=>b.onclick=()=>openEdit(b.dataset.id));
@@ -201,7 +206,7 @@ function view(){
 
 function exportCSV(){
   const rows = view();
-  const head = ['email','full_name','joined_at','source','created_at'];
+  const head = ['email','full_name','joined_at','source','created_at','converted_at'];
   const lines = [head.join(',')].concat(rows.map(r=>head.map(k=>{
     let v = r[k]==null?'':String(r[k]);
     if(/[",\n]/.test(v)) v='"'+v.replace(/"/g,'""')+'"';

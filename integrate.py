@@ -757,4 +757,72 @@ open(os.path.join(PUB, "_headers"), "w", encoding="utf-8").write(
     "/i18n/*\n  Cache-Control: public, max-age=0, must-revalidate\n")
 print("- _headers cache policy (revalidate HTML + i18n)")
 
+
+# ---------------------------------------------------------------------------
+# G3 phase 1 (Wave 1): Growth panel with REAL actuals (admin_growth RPC) +
+# editable model assumptions (localStorage, per device) in the admin console.
+# Aggregate-only, no PII; RPC gated on public.admins.
+adm = os.path.join(PUB, "hub", "admin-mis-console.html")
+if os.path.exists(adm):
+    h = open(adm, encoding="utf-8").read()
+    if "ns-growth" not in h:
+        GHTML = (
+          '<div class="panel" id="ns-growth">'
+          '<h3>Growth — real actuals (live)</h3>'
+          '<div style="display:flex;gap:26px;flex-wrap:wrap;margin-bottom:10px;">'
+          '<div class="kpi" style="border:none;padding:4px 0;"><div class="lab">Registered users</div><div class="val" style="font-size:22px;" id="gUsers">—</div></div>'
+          '<div class="kpi" style="border:none;padding:4px 0;"><div class="lab">Waitlist</div><div class="val" style="font-size:22px;" id="gWait">—</div></div>'
+          '<div class="kpi" style="border:none;padding:4px 0;"><div class="lab">Waitlist → users</div><div class="val" style="font-size:22px;" id="gConv">—</div></div>'
+          '<div class="kpi" style="border:none;padding:4px 0;"><div class="lab">Conversion</div><div class="val" style="font-size:22px;" id="gConvPct">—</div></div>'
+          '</div>'
+          '<div class="bars" id="growthBars" style="height:170px;"></div>'
+          '<div class="legend"><span><span class="dot" style="background:var(--coral)"></span> New users / month</span>'
+          '<span><span class="dot" style="background:var(--peach)"></span> Waitlist signups / month</span></div>'
+          '<div style="font-size:12px;color:var(--muted);margin-top:8px;">Live from Supabase (admin_growth) · last 12 months · admin sign-in required.</div>'
+          '</div>'
+          '<div class="panel" id="ns-assump">'
+          '<h3>Model assumptions — editable (saved on this device)</h3>'
+          '<div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;margin-bottom:12px;">'
+          '<label style="font-size:12px;color:var(--muted);">Monthly user growth %<br/><input id="aG" type="number" step="1" min="0" style="width:110px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;font-size:14px;margin-top:4px;"/></label>'
+          '<label style="font-size:12px;color:var(--muted);">Premium share %<br/><input id="aP" type="number" step="0.5" min="0" max="100" style="width:110px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;font-size:14px;margin-top:4px;"/></label>'
+          '<label style="font-size:12px;color:var(--muted);">ARPU €/month<br/><input id="aA" type="number" step="0.01" min="0" style="width:110px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;font-size:14px;margin-top:4px;"/></label>'
+          '</div>'
+          '<table><thead><tr><th>Month</th><th>Users</th><th>Premium</th><th>MRR</th></tr></thead><tbody id="projTable"></tbody></table>'
+          '<div style="font-size:12px;color:var(--muted);margin-top:8px;">Projection = current real user total compounded by your assumptions, 12 months forward. Plan reference: Y1 755 users · €28,068 revenue (Conservative).</div>'
+          '</div>')
+        i = h.find('<h3>Business case tracking')
+        j = h.rfind('<div class="panel">', 0, i)
+        if i > -1 and j > -1:
+            h = h[:j] + GHTML + h[j:]
+        GJS = ('<script type="module" id="ns-growth-js">\n'
+          + "const U='%s',K='%s';\n" % (URL, KEY) +
+          "import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';const sb=createClient(U,K);const $=i=>document.getElementById(i);\n"
+          "const eur=n=>'€'+Math.round(n).toLocaleString('en-US');const num=n=>Number(n).toLocaleString('en-US');\n"
+          "function bars(el,rows){if(!el||!rows||!rows.length)return;const m=Math.max(1,...rows.map(r=>Math.max(r.signups,r.waitlist)));"
+          "el.innerHTML=rows.map(r=>`<div class='barcol'><div style='flex:1;display:flex;align-items:flex-end;gap:3px;width:70%;justify-content:center;'>"
+          "<div class='bar' title='${r.signups} users' style='width:45%;height:${Math.max(2,r.signups/m*100)}%;background:var(--coral);'></div>"
+          "<div class='bar' title='${r.waitlist} waitlist' style='width:45%;height:${Math.max(2,r.waitlist/m*100)}%;background:var(--peach);'></div>"
+          "</div><div class='barlabel'>${r.m.slice(2)}</div></div>`).join('');}\n"
+          "const DEF={g:20,p:10,a:5.99};let TOT=0;\n"
+          "function readA(){try{return{...DEF,...JSON.parse(localStorage.getItem('ns.biz.assump')||'{}')}}catch(e){return DEF}}\n"
+          "function proj(){const a=readA();if($('aG')&&document.activeElement!==$('aG'))$('aG').value=a.g;"
+          "if($('aP')&&document.activeElement!==$('aP'))$('aP').value=a.p;"
+          "if($('aA')&&document.activeElement!==$('aA'))$('aA').value=a.a;"
+          "let u=Math.max(TOT,1),rows='';const now=new Date();"
+          "for(let i=1;i<=12;i++){u=u*(1+a.g/100);const d=new Date(now.getFullYear(),now.getMonth()+i,1);const prem=u*a.p/100;"
+          "rows+=`<tr><td>${d.toLocaleDateString('en-GB',{month:'short',year:'2-digit'})}</td><td>${num(Math.round(u))}</td><td>${num(Math.round(prem))}</td><td>${eur(prem*a.a)}</td></tr>`;}"
+          "if($('projTable'))$('projTable').innerHTML=rows;}\n"
+          "function saveA(){const a={g:+$('aG').value||0,p:+$('aP').value||0,a:+$('aA').value||0};localStorage.setItem('ns.biz.assump',JSON.stringify(a));proj();}\n"
+          "['aG','aP','aA'].forEach(i=>$(i)&&$(i).addEventListener('input',saveA));\n"
+          "async function G(){const{data:{session}}=await sb.auth.getSession();if(!session){proj();return;}"
+          "const{data,error}=await sb.rpc('admin_growth');if(error||!data){proj();return;}"
+          "const t=data.totals;$('gUsers').textContent=num(t.users);$('gWait').textContent=num(t.waitlist);$('gConv').textContent=num(t.converted);"
+          "$('gConvPct').textContent=t.waitlist?Math.round(t.converted/t.waitlist*100)+'%':'—';"
+          "bars($('growthBars'),data.months);TOT=t.users;proj();}\n"
+          "sb.auth.onAuthStateChange(()=>G());G();\n"
+          "</script>\n")
+        h = h.replace("</body>", GJS + "</body>", 1)
+        open(adm, "w", encoding="utf-8").write(h)
+        print("- G3 growth panel + assumptions (admin console)")
+
 print("\nIntegration complete - review, then commit + push.")

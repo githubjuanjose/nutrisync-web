@@ -173,6 +173,19 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>19 Jul 2026 — Wave 1 of the Q3 dev plan (F5 + G3-phase-1 + onboarding i18n) · app v0.12.0-w1 · web po8</h3>
+<p><strong>Backend (2 SQL migrations — snapshot first):</strong>
+- <code>2026-07-19-waitlist-convert.sql</code> — F5 handoff: <code>waitlist.converted_at</code> column, an <code>auth.users</code> INSERT trigger that stamps it whenever a waitlisted email registers (works across all four surfaces, no client code), backfill for existing users, and <code>admin_waitlist()</code> now returns <code>converted_at</code>.
+- <code>2026-07-19-admin-growth.sql</code> — <code>admin_growth()</code> RPC: last-12-months signups + waitlist per month, plus totals (users / waitlist / converted). Aggregate-only, no PII, gated on <code>public.admins</code>.</p>
+<p><strong>Web (po8):</strong>
+- Waitlist dashboard: new <strong>App user</strong> column (✓ when the signup registered), sortable, in CSV export, plus a "Now app users" stat card.
+- Admin console: new <strong>Growth — real actuals</strong> panel (12-month users vs waitlist bars + totals + waitlist→user conversion %) and <strong>Model assumptions</strong> panel — monthly growth %, premium share %, ARPU editable, saved per device (localStorage), 12-month projection table vs the Conservative plan. Both wired via <code>integrate.py</code> (marker <code>ns-growth</code>, idempotent across Design packs).</p>
+<p><strong>Mobile app (v0.12.0-w1, OTA + PWA rebuild):</strong>
+- Onboarding i18n engine: every onboarding string (sections, questions, helpers, option labels/sublabels, beta welcome, consent, all-set) now renders through <code>ob.*</code> keys with English fallback. <strong>Canonical option values stay English</strong> — display-only, so <code>onboardingMap</code>/Supabase parity is untouched.
+- 76 <code>ob.*</code> keys translated into all 13 non-EN catalogs (ES hand-written; FR·DE·IT·NL·EL·CA·VAL·GL·EU·Aranés·ZH·JA machine-first-pass, pending native review). <code>ob-translation-skeleton.json</code> produced for founders/Design review.
+- EN copy fixes in the wizard: "You're data"→"Your data", "reaserch"→"research", "Prefrences"→"Preferences", "Im"→"I'm".
+- <strong>Release gate:</strong> the language selector already only offers bundled catalogs; the MT first pass ships silently behind English defaults until founders sign off the EN copy (then per-language review).</p>
+<p><strong>Post-mortem note:</strong> none — no incidents this wave.</p>
 <h3>2026-07-19 · Backlog sweep + target architecture (doc 19 B3)</h3>
 <ul>
 <li>Old-backlog sweep folded the orphans into the corporate plan's Missing list: consent service (D1–D3/D6), wearable connectors (Epic E), push delivery, waitlist→onboarding handoff (F5), admin business tracker (G3), community (WF-7), remaining 7 language packs + CJK font. Doc 03 stale statuses corrected (F7 domain ✅, D8 cookies ✅, B1 partially ✅).</li>

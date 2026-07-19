@@ -238,7 +238,7 @@ tbody tr:nth-child(even){background:var(--cream);}
 <li><strong>F2 (P0, S)</strong> — Session-aware entry: no session → login; session without a cycle → onboarding; else → home. <em>AC: session-aware routing; deep links preserved.</em> — <em>✅ done.</em></li>
 <li><strong>F3 (P0, M)</strong> — Shared auth/session on the same Supabase identity across surfaces. <em>AC: single sign-in.</em> — <em>✅ done.</em></li>
 <li><strong>F4 (P0, S)</strong> — Shared design tokens (Figma-aligned) across marketing, web app, and React Native. <em>AC: one token source; consistent brand.</em> — <em>substantially done via the shared Claude Design/Figma system.</em></li>
-<li><strong>F5 (P1, S)</strong> — Waitlist → onboarding handoff. <em>AC: waitlisted emails convert without re-entry.</em> — <em>◑ mostly done: a live <code>public.waitlist</code> table (RLS-private, anon-insert), the marketing-site + newsletter fields now </em><em>persist</em><em> signups (tagged by source), </em><em>~140 legacy signups migrated</em><em> from an old Supabase project, and a </em><em>Founders' Waitlist dashboard</em><em> in the Builders hub with full </em><em>CRUD + CSV export</em><em> (admin-gated, with undo). Remaining: the auto-convert-to-onboarding handoff (pre-fill a waitlisted email into signup).</em></li>
+<li><strong>F5 (P1, S)</strong> — Waitlist → onboarding handoff. <em>AC: waitlisted emails convert without re-entry.</em> — <em>◑ mostly done: a live <code>public.waitlist</code> table (RLS-private, anon-insert), the marketing-site + newsletter fields now </em><em>persist</em><em> signups (tagged by source), </em><em>~140 legacy signups migrated</em><em> from an old Supabase project, and a </em><em>Founders' Waitlist dashboard</em><em> in the Builders hub with full </em><em>CRUD + CSV export</em><em> (admin-gated, with undo). </em><em>19 Jul: handoff shipped</em><em> — <code>converted_at</code> + auth trigger + backfill; dashboard shows an App-user column and conversion stats. ✅ done.</em></li>
 <li><strong>F6 (P1, S)</strong> — Funnel analytics + A/B (EU analytics). <em>AC: signup funnel measured end-to-end.</em> — <em>fast-follow.</em></li>
 <li><strong>F7 (P0, S)</strong> — <strong>Publish on the NutriSync custom domain</strong> (e.g. <code>nutrisynccollective.com</code>) instead of <code>*.pages.dev</code>: Cloudflare <strong>Pages → Custom domains → Add</strong>, point the domain's DNS at Pages, force HTTPS, and redirect the <code>pages.dev</code> URL to it. <em>AC: site served on the branded domain with valid TLS; both apex and <code>www</code> resolve; old URL 301s to the new one.</em> — <strong>✅ DONE (18 Jul)</strong> — live on <code>https://nutrisynccollective.com</code> with TLS, www→apex 301, pages.dev canonical-bounced on hub routes.</li>
 </ul>
@@ -251,7 +251,7 @@ tbody tr:nth-child(even){background:var(--cream);}
 <ul>
 <li><strong>G1 (P1, M)</strong> — Admin app shell with role-based access (admin/finance/clinical/support) behind Cloudflare Access / SSO + MFA. <em>AC: no public access; roles enforced server-side; admin actions audit-logged.</em> — <em>shell exists; access control + wiring pending.</em></li>
 <li><strong>G2 (P1, M)</strong> — <strong>MIS KPI dashboard</strong>: DAU·WAU·MAU, signups, retention (D1/D7/D30), subscriptions (free vs premium, MRR, churn), conversion %, B2B seats, CAC/LTV/ARPU vs targets. <em>AC: metrics match source-of-truth analytics; date filters; export.</em> — <em>mock layout present; live data pending.</em></li>
-<li><strong>G3 (P1, M)</strong> — Business-case / financial tracker: revenue vs cost vs profit by year vs plan; user-growth actuals vs targets. <em>AC: editable assumptions; variance vs plan shown.</em> — <em>mock present; wiring pending.</em></li>
+<li><strong>G3 (P1, M)</strong> — Business-case / financial tracker: revenue vs cost vs profit by year vs plan; user-growth actuals vs targets. <em>AC: editable assumptions; variance vs plan shown.</em> — <em>◑ phase 1 live (19 Jul): real growth actuals via <code>admin_growth</code> (12-month users/waitlist, conversion %) + editable assumptions with 12-month projection vs plan. Phase 2 (revenue/cost actuals) waits for payments (Stripe/RevenueCat).</em></li>
 <li><strong>G4 (P1, S)</strong> — Subscription &amp; user admin (no access to raw cycle data). <em>AC: PII access role-gated + logged; cycle data never shown individually.</em></li>
 <li><strong>G5 (P1, S)</strong> — Connector/ops health panel. <em>AC: surfaces E-P2 metrics.</em></li>
 <li><strong>G6 (P2, S)</strong> — Content/clinical review queue. <em>AC: publish workflow with clinical sign-off.</em></li>
@@ -317,7 +317,7 @@ tbody tr:nth-child(even){background:var(--cream);}
 <tr>
 <td><strong>Waitlist &amp; signups</strong></td>
 <td>✅ Done (capture + admin)</td>
-<td>Live <code>public.waitlist</code> table; marketing + newsletter capture; ~140 legacy signups migrated; Founders' CRUD dashboard (search/filter/export/undo) in the Builders hub. Auto-convert-to-onboarding handoff pending (F5).</td>
+<td>Live <code>public.waitlist</code> table; marketing + newsletter capture; ~140 legacy signups migrated; Founders' CRUD dashboard (search/filter/export/undo) in the Builders hub. F5 handoff shipped 19 Jul (auto <code>converted_at</code> via auth trigger + dashboard column).</td>
 </tr>
 <tr>
 <td><strong>DB change safety</strong></td>

@@ -147,9 +147,9 @@ tbody tr:nth-child(even){background:var(--cream);}
 20. Create an Expo <strong>organisation</strong> account for NutriSync; invite the 4.
 21. Transfer the <code>nutrisync-mobile</code> project to the org (Expo supports project transfer); update <code>owner</code> in <code>app.json</code>; verify <code>eas update</code> still publishes to the same channel (test OTA).
 22. Create a <strong>robot token</strong> for future CI instead of personal login.</p>
-<p><strong>P6 · Stores (ties into the pending Apple enrollment)</strong>
-23. Apple Developer Program: enroll as <strong>Organization</strong> with the company D-U-N-S ($99/yr). Then TestFlight distribution (doc 10 guide).
-24. Google Play Console: <strong>company</strong> account ($25 one-off), internal testing track.</p>
+<p><strong>P6 · Stores (pragmatic two-step, since the legal entity is still being formed)</strong>
+23. <strong>Now:</strong> Apple Developer as <strong>Individual</strong> (already paid, verification pending — up to 48h) → unblocks development + TestFlight immediately. <strong>Later:</strong> once the company + D-U-N-S exist, request the <strong>Individual → Organization conversion</strong> via Apple Developer Support (account, apps and testers are preserved; the listing name changes to NutriSync).
+24. Google Play Console: same pattern — individual account now if needed for internal testing; when the company exists, create the company account and use Play's <strong>app transfer</strong> (Play does not convert accounts; it transfers apps between them).</p>
 <p><strong>P7 · Domain registrar &amp; the rest</strong>
 25. IONOS account → company email + credentials to the vault (it remains the registrar even though DNS is at Cloudflare); make sure domain auto-renews with a company card.
 26. When the newsletter/email provider is chosen (Resend/Mailchimp): create under company account from day one.
@@ -318,9 +318,9 @@ tbody tr:nth-child(even){background:var(--cream);}
 20. Crear cuenta de <strong>organización</strong> en Expo; invitar a los 4.
 21. Transferir el proyecto <code>nutrisync-mobile</code> a la organización; actualizar <code>owner</code> en <code>app.json</code>; verificar que <code>eas update</code> sigue publicando al mismo canal (probar un OTA).
 22. Crear un <strong>token robot</strong> para el futuro CI en lugar de login personal.</p>
-<p><strong>P6 · Tiendas (enlaza con el alta de Apple pendiente)</strong>
-23. Apple Developer Program: alta como <strong>Organización</strong> con el D-U-N-S de la empresa (99$/año). Después, distribución TestFlight (guía en doc 10).
-24. Google Play Console: cuenta de <strong>empresa</strong> (25$ una vez), pista de testing interno.</p>
+<p><strong>P6 · Tiendas (dos pasos pragmáticos, dado que la sociedad está en formación)</strong>
+23. <strong>Ahora:</strong> Apple Developer como <strong>Individual</strong> (ya pagado, verificación pendiente — hasta 48h) → desbloquea desarrollo + TestFlight de inmediato. <strong>Después:</strong> cuando existan la sociedad y su D-U-N-S, solicitar a Apple Developer Support la <strong>conversión Individual → Organización</strong> (se conservan cuenta, apps y testers; la ficha pasa a decir NutriSync).
+24. Google Play Console: mismo patrón — cuenta individual ahora si hace falta para testing interno; con la sociedad creada, abrir la cuenta de empresa y usar la <strong>transferencia de apps</strong> de Play (Play no convierte cuentas; transfiere apps entre ellas).</p>
 <p><strong>P7 · Registrador del dominio y resto</strong>
 25. Cuenta de IONOS → email de empresa + credenciales al gestor (sigue siendo el registrador aunque el DNS esté en Cloudflare); asegurar autorrenovación del dominio con tarjeta de empresa.
 26. Cuando se elija proveedor de newsletter (Resend/Mailchimp): crearlo bajo cuenta de empresa desde el día uno.
