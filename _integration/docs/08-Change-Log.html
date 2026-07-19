@@ -173,6 +173,16 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-19 · Ops hygiene: working folder, auto-archiving, rollback runbook (doc 18)</h3>
+<ul>
+<li>Dedicated Cowork-connected working folder <code>~/SKG_AI_Tribe_Projects/NutriSync</code> (inbox/releases/design-packs/feedback/backend-sql/tools/archive/repos); Downloads decommissioned and cleaned (1.6GB of project history sorted in: 94 archived builds, 37 design packs, all feedback rounds, 14 SQL migrations; two stale duplicate git clones verified clean and removed).</li>
+<li>Deploy scripts rewritten: consume from <code>inbox/</code>, auto-archive every deployed zip to <code>releases/</code> (web, app AND pwa-dist). Rollback = old zip → inbox → re-run; Cloudflare Pages additionally offers one-click rollback to ANY previous production deployment (no numeric limit, verified in current docs).</li>
+<li>Backup policy: working folder → Google Drive excluding <code>repos/</code> (GitHub is the code backup). New <strong>doc 18 · Ops Runbook</strong> is the canonical reference for all of it.</li>
+</ul>
+<h3>2026-07-19 · Dedicated working folder (platform hygiene)</h3>
+<ul>
+<li>New shared workspace <code>~/SKG_AI_Tribe_Projects/NutriSync</code> (Cowork-connected): <code>inbox/</code> (builds to deploy) · <code>releases/</code> (every version, rollback points) · <code>design-packs/</code> · <code>feedback/</code> · <code>tools/</code> (the 3 .command scripts + PWA kit) · <code>backend-sql/</code> (migration history) · <code>repos/</code> (git clones). Deploy scripts rewritten to consume from inbox and auto-archive to releases. Backup to Google Drive: everything except <code>repos/</code> (GitHub is the code's backup). Downloads is out of the workflow.</li>
+</ul>
 <h3>2026-07-19 · Builders "Access" page (web)</h3>
 <ul>
 <li><strong>Build:</strong> <code>nutrisync-web-1807_v11.45-po5.zip</code> — new <code>hub/access.html</code> (behind Access itself): the 7 allow-listed emails with owner labels, how the email+PIN login works, where to manage the list (Zero Trust policy — live source of truth), and the note that <code>public.admins</code> (Supabase) is a separate list for KPIs/feedback. Pill added to the gated hub nav.</li>

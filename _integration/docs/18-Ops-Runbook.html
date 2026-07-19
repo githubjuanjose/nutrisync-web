@@ -1,0 +1,153 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Ops Runbook — Deploys, Rollback & Backups — NutriSync Docs</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.navbtns{display:flex;gap:16px;align-items:center;}
+.navbtns a:first-child{padding:5px 12px;border:1px solid var(--line);border-radius:20px;}
+.navbtns a:first-child:hover{border-color:var(--coral);background:var(--cream);}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+h4{font-size:16px;font-weight:800;margin:20px 0 6px;}
+p{margin:10px 0;}
+a{color:var(--coral-deep);}
+strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:'SF Mono',Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:14px 0;padding:12px 18px;background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;color:#5d524b;}
+blockquote p{margin:4px 0;}
+ul,ol{margin:10px 0;padding-left:24px;}
+li{margin:5px 0;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;}
+tbody tr:nth-child(even){background:var(--cream);}
+.pill{display:inline-block;background:#FDE6DD;color:var(--coral-deep);font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;}
+.card{display:block;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:10px 0;text-decoration:none;color:var(--ink);transition:.15s;}
+.card:hover{border-color:var(--coral);background:var(--cream);}
+.card .t{font-weight:800;font-size:16px;color:var(--coral-deep);}
+.card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
+.sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
+</style></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>Ops Runbook — deploys, versioning, rollback &amp; backups</h1>
+<p>The operational bible as of 19 Jul 2026. One page to run the whole platform.</p>
+<h2>The four surfaces</h2>
+<table>
+<thead>
+<tr>
+<th>Surface</th>
+<th>URL / channel</th>
+<th>Current</th>
+<th>Deployed with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Marketing + web app + hub</td>
+<td><code>nutrisynccollective.com</code> (alias <code>nutrisync-collective.pages.dev</code>)</td>
+<td>v11.45-po5</td>
+<td><strong>Deploy NutriSync Web</strong></td>
+</tr>
+<tr>
+<td>Mobile PWA (installable)</td>
+<td><code>m.nutrisynccollective.com</code> (Pages project <code>nutrisync-m</code>)</td>
+<td>app v0.11.0 parity</td>
+<td><strong>Build NutriSync PWA</strong></td>
+</tr>
+<tr>
+<td>iOS app (React Native)</td>
+<td>EAS Update, branch <code>production</code></td>
+<td>v0.11.0</td>
+<td><strong>Deploy NutriSync App</strong></td>
+</tr>
+<tr>
+<td>Android app (React Native)</td>
+<td>same OTA channel</td>
+<td>v0.11.0</td>
+<td><strong>Deploy NutriSync App</strong></td>
+</tr>
+</tbody>
+</table>
+<p>All four share the same Supabase (EU) backend under RLS. The PWA is the RN app
+rendered via react-native-web — parity by construction: re-run its build after
+any app deploy.</p>
+<h2>The working folder (single source of hand-off)</h2>
+<p><code>~/SKG_AI_Tribe_Projects/NutriSync</code> — Cowork-connected (Engineering reads/writes directly).</p>
+<table>
+<thead>
+<tr>
+<th>Folder</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>inbox/</code></td>
+<td>Builds ready to deploy. Scripts consume from here and auto-archive.</td>
+</tr>
+<tr>
+<td><code>releases/</code></td>
+<td><strong>Every shipped version, kept forever</strong> — the rollback points.</td>
+</tr>
+<tr>
+<td><code>design-packs/</code></td>
+<td>All Design deliveries (37 historical + current).</td>
+</tr>
+<tr>
+<td><code>feedback/</code></td>
+<td>Founder review rounds (docs, screenshots, reference images).</td>
+</tr>
+<tr>
+<td><code>backend-sql/</code></td>
+<td>Every SQL migration ever applied (14 files) — DB history.</td>
+</tr>
+<tr>
+<td><code>tools/</code></td>
+<td>The three <code>.command</code> scripts + PWA kit.</td>
+</tr>
+<tr>
+<td><code>archive/</code></td>
+<td>Pre-reorg history: <code>builds/</code> (94 old zips) + <code>misc/</code>.</td>
+</tr>
+<tr>
+<td><code>repos/</code></td>
+<td>Git clones: <code>appdev</code>, <code>webdeploy</code>, <code>pwadev</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Flow:</strong> Engineering drops a build in <code>inbox/</code> → Juanjo runs the Spotlight
+command → deployed + zip auto-moved to <code>releases/</code>. Downloads is out of the loop.</p>
+<h2>Versioning</h2>
+<ul>
+<li>App: semver in <code>app.json</code> (<code>0.11.0</code>), release zips named <code>nutrisync-app-v&lt;semver&gt;-&lt;tag&gt;.zip</code>.</li>
+<li>Web: Design pack version + integration counter (<code>v11.45-po5</code>).</li>
+<li>PWA: inherits the app semver; deployed dist archived as <code>nutrisync-pwa-dist-v&lt;semver&gt;-&lt;date&gt;.zip</code>.</li>
+<li>Nothing in <code>releases/</code> is ever deleted. Superseded ≠ disposable.</li>
+</ul>
+<h2>Rollback (per surface)</h2>
+<p><strong>Web / PWA — two ways:</strong>
+1. <em>Instant (Cloudflare):</em> dashboard → Workers &amp; Pages → project → Deployments → ⋯ → <strong>Rollback to this deployment</strong>. Any successfully-built production deployment is a valid target — no numeric limit, full history retained (per Cloudflare docs, Apr 2026).
+2. <em>From archive:</em> older zip from <code>releases/</code> → <code>inbox/</code> → re-run the deploy command (web), or unzip a <code>pwa-dist</code> archive and <code>npx wrangler pages deploy &lt;dir&gt; --project-name=nutrisync-m</code>.</p>
+<p><strong>App (OTA):</strong> older <code>nutrisync-app-v*.zip</code> from <code>releases/</code> → <code>inbox/</code> → <strong>Deploy NutriSync App</strong>. Phones revert on the next two app opens. (EAS dashboard also keeps every published update, re-publishable.)</p>
+<p><strong>Database:</strong> snapshot-first rule stands (doc 11) — snapshot in the Supabase dashboard before any migration; restore from there if a migration misbehaves.</p>
+<h2>Backups</h2>
+<ul>
+<li><strong>Working folder → Google Drive</strong>, excluding <code>repos/</code> (git clones + <code>node_modules</code> = sync churn; GitHub is the code's backup). Optional skip: <code>archive/builds/</code> if space matters.</li>
+<li><strong>Code:</strong> GitHub (<code>nutrisync-app</code>, <code>nutrisync-web</code>), <code>main</code> protected on both (rulesets: no force-push, no deletion).</li>
+<li><strong>Database:</strong> Supabase automated backups + manual snapshots before migrations.</li>
+<li><strong>Deployments:</strong> Cloudflare retains every Pages deployment; EAS retains every update.</li>
+</ul>
+<h2>Access control (two separate lists)</h2>
+<ol>
+<li><strong>Builders/Investors areas</strong> (<code>/hub/*</code>): Cloudflare Access — email + one-time PIN, 24h sessions. Manage: Zero Trust → Access → Applications → <em>NutriSync Builders Hub</em> → policy <em>Founders</em>. Current allowlist (7): juanjose.cebrian@gmail.com, lcebrian@/pgonzalez@/mgarzon@nutrisynccollective.com, pilargonz05@/cebrianlucia281@/mapigarzon2204@gmail.com. Snapshot page inside the hub: <strong>Access</strong> tab.</li>
+<li><strong>Admin data</strong> (KPIs, waitlist, app feedback RPCs): <code>public.admins</code> table in Supabase (SQL editor). Being on list 1 does NOT grant list 2.</li>
+</ol>
+<p><code>www</code> → apex 301 redirect; <code>pages.dev</code> hub URLs bounce to the custom domain (canonical script), so Access can't be side-stepped.</p>
+<h2>Support email</h2>
+<p><code>contact@nutrisynccollective.com</code> (English "contact") — app, privacy draft and docs all reference it; Design asked to fix <code>hello@</code> at source (doc 12 §16).</p></div></body></html>
