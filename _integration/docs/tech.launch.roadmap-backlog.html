@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>tech.launch.roadmap-backlog — NutriSync</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet"><style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box}body{font-family:'Inter',-apple-system,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px}
+h1{font-size:30px;font-weight:900;letter-spacing:-.5px;margin:0 0 8px}
+h2{font-size:22px;font-weight:800;margin:34px 0 10px;padding-bottom:8px;border-bottom:2px solid var(--line)}
+p{margin:10px 0}em{color:var(--muted)}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px;display:block;overflow-x:auto}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--coral);color:#fff;font-weight:700}tbody tr:nth-child(even){background:var(--cream)}
+ul,ol{margin:10px 0;padding-left:24px}li{margin:5px 0}strong{font-weight:700}
+.top{position:sticky;top:0;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;font-weight:300;letter-spacing:4px;font-size:14px}
+.top b{font-weight:800}
+</style></head><body><div class="top"><b>NUTRISYNC</b> · Roadmaps · 19 Jul 2026</div><div class="wrap"><h1>tech.launch — Launch Readiness Roadmap-Backlog</h1>
+<p><em>Lo que convierte el stack actual en grado producción, y el escalado AWS por triggers. Fuente completa: doc 19, Apéndices B1–B3.</em></p>
+<h2>B1 · Pre-launch (current stack — all prerequisites for going public)</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Tasks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Payments (tech)</td>
+<td>Stripe / RevenueCat integration, entitlements table, webhooks, free-vs-paid gates</td>
+</tr>
+<tr>
+<td>Observability</td>
+<td>Sentry (app+web, EU), uptime checks on 3 hostnames, Supabase log retention, alerting channel</td>
+</tr>
+<tr>
+<td>Security</td>
+<td>WAF rules + Turnstile (signup, waitlist) · per-user quotas on write RPCs · secrets rotation · Dependabot</td>
+</tr>
+<tr>
+<td><strong>DB secure zone</strong></td>
+<td>Supabase network restrictions (no public SQL), SSL enforced, encryption-at-rest verified, service_role vault-only</td>
+</tr>
+<tr>
+<td>Backup discipline</td>
+<td><strong>Restore drill</strong> (actually restore a snapshot and verify) · enable PITR (Supabase Pro)</td>
+</tr>
+<tr>
+<td>Release eng</td>
+<td>Staging env (2nd Supabase project + Pages preview) · CI on org repos (typecheck+tests per PR) · EAS robot token</td>
+</tr>
+<tr>
+<td>Store pipeline</td>
+<td>EAS Build → TestFlight/Play internal → staged rollout, crash-gated</td>
+</tr>
+<tr>
+<td>Compliance ops</td>
+<td>DPIA · registro de tratamientos · DPAs on file · retention jobs · delete-account E2E test</td>
+</tr>
+<tr>
+<td>Support ops</td>
+<td>contact@ ownership + SLA · feedback triage ritual · public status page</td>
+</tr>
+</tbody>
+</table>
+<h2>B2 · AWS scale-up — TRIGGER-based (not a launch prerequisite)</h2>
+<p>Triggers: sustained p95 degradation · Supabase ceilings at ~70% · cost crossover · enterprise requirement.
+<strong>Intermediate first:</strong> Supabase dedicated compute (10–100× headroom, zero migration).
+If fired: AWS landing zone (IAM 3+1, EU-only) → Aurora in private VPC (KMS, Secrets Manager) → logical replication cutover with 30-day Supabase rollback → re-run all of B1 on the new stack.</p>
+<h2>B3 · Target architecture (once migrated)</h2>
+<p>Cloudflare edge unchanged → ALB → ECS Fargate (API · auth · workers) in private subnets → Aurora Multi-AZ (KMS, no public endpoint) · S3 · Secrets Manager · CloudWatch/OTel. Region eu-central-2 (Zurich). The 4 surfaces, deploy commands and RLS model do not change; <code>config.ts</code> is the single switch point.</p></div></body></html>

@@ -167,7 +167,7 @@ tbody tr:nth-child(even){background:var(--cream);}
 </ul>
 <p>The AWS-specific CI/CD items below (ECR, ECS blue/green, gated DB migrations) are the <em>scale-up</em> continuation of this epic and land alongside Epics A and C.</p>
 <ul>
-<li><strong>B1 (P0, S)</strong> — Branch protection, required reviews, CODEOWNERS on both repos. <em>AC: no direct pushes to <code>main</code>; PRs require green CI + 1 review.</em> — <em>pending hardening.</em></li>
+<li><strong>B1 (P0, S)</strong> — Branch protection, required reviews, CODEOWNERS on both repos. <em>AC: no direct pushes to <code>main</code>; PRs require green CI + 1 review.</em> — <em>◑ rulesets live on both repos (no force-push/delete, 19 Jul); PR-required + CI gate deferred until the GitHub org lands (Epic J).</em></li>
 <li><strong>B2 (P0, M)</strong> — Fuller CI on GitHub Actions: lint, typecheck, unit tests, build, SBOM, container image scan (Trivy), secret scan. <em>AC: pipeline fails on critical vulns or leaked secrets; artifacts versioned.</em> — <em>lands with the containerized backend.</em></li>
 <li><strong>B3 (P0, M)</strong> — Container build &amp; push to ECR with immutable tags + image signing (cosign). <em>AC: only signed images deploy to prod.</em> — <em>AWS phase.</em></li>
 <li><strong>B4 (P0, L)</strong> — CD to ECS: deploy to <code>dev</code> on merge, <code>staging</code> on tag, <code>prod</code> on manual approval (GitHub Environments); blue/green or rolling. <em>AC: zero-downtime deploys; one-click rollback; deploy events logged.</em> — <em>AWS phase.</em></li>
@@ -202,7 +202,7 @@ tbody tr:nth-child(even){background:var(--cream);}
 <li><strong>D5 (P0, S)</strong> — Row-Level Security / per-user isolation. <em>AC: cross-user access impossible; verified by tests.</em> — <em>✅ done: RLS scopes every row to <code>auth.uid()</code>.</em></li>
 <li><strong>D6 (P0, S)</strong> — Data classification + retention policy; minimization. <em>AC: each field tagged; retention enforced by jobs.</em> — <em>pending.</em></li>
 <li><strong>D7 (P1, M)</strong> — DPIA, Records of Processing, DPA templates for processors. <em>AC: DPIA signed off before launch; sub-processor list published.</em></li>
-<li><strong>D8 (P1, S)</strong> — Cookie/consent banner (privacy-first defaults) on the web entry point. <em>AC: non-essential off by default; choices logged.</em> — <em>pending — a key remaining blocker.</em></li>
+<li><strong>D8 (P1, S)</strong> — Cookie/consent banner (privacy-first defaults) on the web entry point. <em>AC: non-essential off by default; choices logged.</em> — <em>✅ done (ns-consent layer, off-by-default, choice persisted).</em></li>
 <li><strong>D9 (P1, S)</strong> — "Your data is yours" trust surface in-app. <em>AC: users can view/manage/revoke all consents in Profile.</em> — <em>partly present via the Data Privacy screen (export + delete).</em></li>
 </ul>
 <h2>Epic E — Health &amp; wearable connectors  <em>(P1 — roadmap 2028, foundation earlier)</em></h2>
@@ -240,7 +240,7 @@ tbody tr:nth-child(even){background:var(--cream);}
 <li><strong>F4 (P0, S)</strong> — Shared design tokens (Figma-aligned) across marketing, web app, and React Native. <em>AC: one token source; consistent brand.</em> — <em>substantially done via the shared Claude Design/Figma system.</em></li>
 <li><strong>F5 (P1, S)</strong> — Waitlist → onboarding handoff. <em>AC: waitlisted emails convert without re-entry.</em> — <em>◑ mostly done: a live <code>public.waitlist</code> table (RLS-private, anon-insert), the marketing-site + newsletter fields now </em><em>persist</em><em> signups (tagged by source), </em><em>~140 legacy signups migrated</em><em> from an old Supabase project, and a </em><em>Founders' Waitlist dashboard</em><em> in the Builders hub with full </em><em>CRUD + CSV export</em><em> (admin-gated, with undo). Remaining: the auto-convert-to-onboarding handoff (pre-fill a waitlisted email into signup).</em></li>
 <li><strong>F6 (P1, S)</strong> — Funnel analytics + A/B (EU analytics). <em>AC: signup funnel measured end-to-end.</em> — <em>fast-follow.</em></li>
-<li><strong>F7 (P0, S)</strong> — <strong>Publish on the NutriSync custom domain</strong> (e.g. <code>nutrisynccollective.com</code>) instead of <code>*.pages.dev</code>: Cloudflare <strong>Pages → Custom domains → Add</strong>, point the domain's DNS at Pages, force HTTPS, and redirect the <code>pages.dev</code> URL to it. <em>AC: site served on the branded domain with valid TLS; both apex and <code>www</code> resolve; old URL 301s to the new one.</em> — <strong>pending</strong> — the site is live on <code>nutrisync-collective.pages.dev</code> today; this is a ~15-min DNS task once you pick/confirm the domain.</li>
+<li><strong>F7 (P0, S)</strong> — <strong>Publish on the NutriSync custom domain</strong> (e.g. <code>nutrisynccollective.com</code>) instead of <code>*.pages.dev</code>: Cloudflare <strong>Pages → Custom domains → Add</strong>, point the domain's DNS at Pages, force HTTPS, and redirect the <code>pages.dev</code> URL to it. <em>AC: site served on the branded domain with valid TLS; both apex and <code>www</code> resolve; old URL 301s to the new one.</em> — <strong>✅ DONE (18 Jul)</strong> — live on <code>https://nutrisynccollective.com</code> with TLS, www→apex 301, pages.dev canonical-bounced on hub routes.</li>
 </ul>
 <p><em>Cleanup note:</em> the account still contains stale artifacts — an old <code>nutrisync-web.pages.dev</code> project and a broken <code>nutrisync</code> Worker. Neither is in use; both are safely deletable.</p>
 <h2>Epic G — Web admin application (MIS / KPIs)  <em>(P1)</em></h2>
@@ -341,7 +341,7 @@ tbody tr:nth-child(even){background:var(--cream);}
 </tr>
 <tr>
 <td><strong>Custom domain (F7)</strong></td>
-<td>⬜ Pending</td>
+<td>✅ Done (18 Jul)</td>
 <td>Publish on the branded NutriSync domain (Cloudflare Pages → Custom domains). ~15-min DNS task.</td>
 </tr>
 <tr>
@@ -361,4 +361,8 @@ tbody tr:nth-child(even){background:var(--cream);}
 </tr>
 </tbody>
 </table>
-<p><strong>Sequencing view:</strong> bilingual and the localization workflow are done. The next product build with real revenue impact is <strong>monetization</strong> (it also unblocks the live admin financial KPIs). Community and native wearables are later-stage. Custom domain is a quick your-side task, independent of all of the above.</p></div></body></html>
+<p><strong>Sequencing view:</strong> bilingual and the localization workflow are done. The next product build with real revenue impact is <strong>monetization</strong> (it also unblocks the live admin financial KPIs). Community and native wearables are later-stage. Custom domain is a quick your-side task, independent of all of the above.</p>
+<h2>Epic J · Corporatisation — everything under NutriSync-owned accounts (NEW · 19 Jul)</h2>
+<p>Move all infrastructure off personal accounts: Google Workspace on the domain, GitHub organisation + transfer of <code>nutrisync-app</code>/<code>nutrisync-web</code> (with Cloudflare Pages re-connection), company-held Cloudflare/Supabase/Expo access, Organization enrollment for Apple + company Play Console, IONOS under company identity, team password vault, 3+1 admin model everywhere. Full phased task list, per-platform explainers and access matrix: <strong>doc 19 · Corporate Migration Plan</strong> (EN+ES).</p>
+<h2>Epic K · Production launch readiness + conditional AWS scale-up (NEW · 19 Jul)</h2>
+<p>Pre-launch: payments (Stripe/RevenueCat), observability (Sentry, uptime, alerting), security hardening (WAF/Turnstile, quotas, secrets rotation, backup RESTORE drill + PITR), staging env + CI, store release pipeline, compliance ops (DPIA, DPAs, retention, delete E2E), support ops. AWS migration is trigger-based (latency/plan-ceiling/cost/enterprise), with the Supabase-dedicated intermediate step evaluated first. Full task list: <strong>doc 19 · Appendix B</strong>.</p></div></body></html>

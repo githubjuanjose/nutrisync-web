@@ -173,6 +173,19 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-19 · Backlog sweep + target architecture (doc 19 B3)</h3>
+<ul>
+<li>Old-backlog sweep folded the orphans into the corporate plan's Missing list: consent service (D1–D3/D6), wearable connectors (Epic E), push delivery, waitlist→onboarding handoff (F5), admin business tracker (G3), community (WF-7), remaining 7 language packs + CJK font. Doc 03 stale statuses corrected (F7 domain ✅, D8 cookies ✅, B1 partially ✅).</li>
+<li><strong>Appendix B3</strong>: post-migration target architecture diagram (Cloudflare edge unchanged → ALB → ECS Fargate API/auth/workers → Aurora Multi-AZ in private VPC with KMS, S3, Secrets Manager, CloudWatch/OTel; region eu-central-2 Zurich) with the what-changes/what-doesn't contract.</li>
+</ul>
+<h3>2026-07-19 · Launch readiness + AWS scale-up plan (doc 19 Appendix B, Epic K)</h3>
+<ul>
+<li>Bilingual production-readiness task list added to the corporate plan: payments, observability, hardening (incl. backup restore drill + PITR), staging+CI, store pipeline, compliance/support ops — and the AWS migration reframed as TRIGGER-based (with the Supabase-dedicated intermediate step first), with a concrete cutover plan when it fires. Backlog Epic K.</li>
+</ul>
+<h3>2026-07-19 · Corporatisation plan (doc 19, EN+ES)</h3>
+<ul>
+<li>New backlog Epic J + <strong>doc 19 · Corporate Migration Plan</strong>: phased task list (P0–P8) to move everything to NutriSync-owned accounts — Workspace, GitHub org with repo transfers (incl. the Pages re-connection gotcha), Cloudflare/Supabase/Expo, Organization Apple + company Play, IONOS, team password vault — with the 3+1 access matrix, plain-language "what each platform is for" (GitHub/Cloudflare/Supabase/Expo/stores/IONOS/working folder/backups), and Built·Missing·Production-changes summary. Bilingual; standalone HTML in the working folder.</li>
+</ul>
 <h3>2026-07-19 · Ops hygiene: working folder, auto-archiving, rollback runbook (doc 18)</h3>
 <ul>
 <li>Dedicated Cowork-connected working folder <code>~/SKG_AI_Tribe_Projects/NutriSync</code> (inbox/releases/design-packs/feedback/backend-sql/tools/archive/repos); Downloads decommissioned and cleaned (1.6GB of project history sorted in: 94 archived builds, 37 design packs, all feedback rounds, 14 SQL migrations; two stale duplicate git clones verified clean and removed).</li>

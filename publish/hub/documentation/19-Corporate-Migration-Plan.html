@@ -1,0 +1,521 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Corporate Migration Plan (EN+ES) — NutriSync Docs</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.navbtns{display:flex;gap:16px;align-items:center;}
+.navbtns a:first-child{padding:5px 12px;border:1px solid var(--line);border-radius:20px;}
+.navbtns a:first-child:hover{border-color:var(--coral);background:var(--cream);}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+h4{font-size:16px;font-weight:800;margin:20px 0 6px;}
+p{margin:10px 0;}
+a{color:var(--coral-deep);}
+strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:'SF Mono',Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:14px 0;padding:12px 18px;background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;color:#5d524b;}
+blockquote p{margin:4px 0;}
+ul,ol{margin:10px 0;padding-left:24px;}
+li{margin:5px 0;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;}
+tbody tr:nth-child(even){background:var(--cream);}
+.pill{display:inline-block;background:#FDE6DD;color:var(--coral-deep);font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;}
+.card{display:block;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:10px 0;text-decoration:none;color:var(--ink);transition:.15s;}
+.card:hover{border-color:var(--coral);background:var(--cream);}
+.card .t{font-weight:800;font-size:16px;color:var(--coral-deep);}
+.card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
+.sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
+</style><script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>Corporate Migration Plan / Plan de Migración Corporativa</h1>
+<blockquote>
+<p>Everything the company runs on, moved from personal accounts to <strong>NutriSync-owned accounts</strong>, with the 3 founders + Juanjo (3+1) holding admin access everywhere. English first, Español después.</p>
+</blockquote>
+<hr />
+<h1>ENGLISH</h1>
+<h2>1 · Why this matters</h2>
+<p>Today the platform runs on personal accounts (GitHub <code>githubjuanjose</code>, personal Cloudflare/Supabase/Expo logins). That works for a prototype; for a company it is a <strong>bus-factor and ownership risk</strong>: if one person loses access, the company loses its infrastructure. Goal: every account owned by the company, every credential in a shared vault, <strong>3+1 admins everywhere</strong>, personal accounts out of the critical path.</p>
+<h2>2 · What each platform does (and why we have it)</h2>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>What it is for us</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>GitHub</strong></td>
+<td>Source code home: <code>nutrisync-app</code> (iOS/Android/PWA source) and <code>nutrisync-web</code> (marketing+webapp+hub). Pushing to <code>nutrisync-web</code> triggers the web deploy. <code>main</code> is protected on both.</td>
+<td>The product IS this code. Losing it = losing the product. It is also the code's backup.</td>
+</tr>
+<tr>
+<td><strong>Cloudflare</strong></td>
+<td>Four jobs: (1) DNS for <code>nutrisynccollective.com</code>; (2) <strong>Pages</strong> hosts the web (<code>nutrisync-collective</code>) and the PWA (<code>nutrisync-m</code>) with full deployment history and one-click rollback; (3) <strong>Zero Trust Access</strong> guards <code>/hub/*</code> (founder email + PIN); (4) SSL, caching, www-redirect.</td>
+<td>The front door of everything public, and the lock on everything private.</td>
+</tr>
+<tr>
+<td><strong>Supabase</strong></td>
+<td>The backend: PostgreSQL database (EU), user authentication (incl. email verification), Row-Level Security so each user only reads her own health data, and the RPCs (recommendations engine, waitlist counter, admin KPIs, feedback).</td>
+<td>Holds the special-category health data — the crown jewels, GDPR-wise.</td>
+</tr>
+<tr>
+<td><strong>Expo / EAS</strong></td>
+<td>Builds the native iOS/Android binaries and ships <strong>OTA updates</strong>: JS-level app updates reach phones in minutes without app-store review. Also the base of the PWA build.</td>
+<td>Our 6-updates-in-a-day cadence exists because of OTA.</td>
+</tr>
+<tr>
+<td><strong>Mobile PWA</strong> (<code>m.nutrisynccollective.com</code>)</td>
+<td>The 4th surface: the native app itself compiled to web (react-native-web) and served as an installable Progressive Web App — "Add to Home Screen", full-screen, no app store. Lives on the Pages project <code>nutrisync-m</code>; rebuilt from the app source with one command, so it always matches the native version.</td>
+<td>App-like experience with zero store friction — the footer QR points here. Our fastest distribution channel while store enrollment is pending.</td>
+</tr>
+<tr>
+<td><strong>Apple / TestFlight</strong></td>
+<td>Distributes the iOS app to testers (and later the App Store). Enrollment pending — <strong>enroll as an Organization</strong> (needs the legal entity + D-U-N-S number), so the store listing says NutriSync, not a person.</td>
+<td>Only path onto iPhones.</td>
+</tr>
+<tr>
+<td><strong>Google Play Console</strong></td>
+<td>Same for Android (internal testing → production). Create as a <strong>company account</strong>.</td>
+<td>Only path onto Android at scale.</td>
+</tr>
+<tr>
+<td><strong>Working folder</strong> (<code>NutriSync/</code>)</td>
+<td>The operational file system: builds to deploy (<code>inbox/</code>), every shipped version (<code>releases/</code> = rollback points), design packs, feedback rounds, SQL migration history, deploy tools.</td>
+<td>The company's operational memory; backed up to Drive.</td>
+</tr>
+<tr>
+<td><strong>IONOS</strong></td>
+<td>The domain <strong>registrar</strong>: where <code>nutrisynccollective.com</code> is registered and renewed, and where the mailboxes currently live. DNS was delegated to Cloudflare, but IONOS still owns the registration — if it lapses, the domain (and every URL, email and QR pointing at it) dies.</td>
+<td>Registration + renewal + today's mail hosting. Must be company-owned with auto-renew.</td>
+</tr>
+<tr>
+<td><strong>Google (Workspace)</strong></td>
+<td>To be created: company Google account — email on the domain, shared Drive (backup target for the working folder), shared calendar, and the identity anchor for other services.</td>
+<td>One identity to rule the logins.</td>
+</tr>
+<tr>
+<td><strong>Password vault</strong> (to be chosen)</td>
+<td>Team password manager (1Password/Bitwarden): every shared credential, API key, 2FA recovery code.</td>
+<td>Without it, "3+1 admins" degenerates into credentials in chats.</td>
+</tr>
+</tbody>
+</table>
+<h2>3 · Current backups (already in place)</h2>
+<ul>
+<li><strong>Code</strong> → GitHub (protected branches) — every version in git history.</li>
+<li><strong>Builds</strong> → <code>releases/</code> in the working folder: every app zip since v0.9.0, every deployed web zip, PWA dists. Never deleted.</li>
+<li><strong>Deployments</strong> → Cloudflare Pages keeps every production deployment (rollback to any); EAS keeps every OTA update.</li>
+<li><strong>Database</strong> → Supabase automated backups + manual snapshot before every migration (doc 11 rule).</li>
+<li><strong>Working folder</strong> → Google Drive sync (excluding <code>repos/</code>), to move to the company shared Drive in P1.</li>
+</ul>
+<h2>4 · Migration task list (phased — safe order)</h2>
+<p><strong>P0 · Prerequisites (founders)</strong>
+1. Confirm the legal entity data (name, CIF) — needed for Google Workspace billing, Apple D-U-N-S and Play Console.
+2. Decide the 4 admin identities: <code>pgonzalez@</code>, <code>lcebrian@</code>, <code>mgarzon@</code>, <code>jcebrian@</code> (or equivalents) on the domain.
+3. Pick a <strong>team password manager</strong> (1Password Business / Bitwarden Teams) — every shared credential, 2FA recovery code and API key lives there. This is the single most valuable security upgrade of the whole plan.</p>
+<p><strong>P1 · Google Workspace (company Google account)</strong>
+4. Create Google Workspace on <code>nutrisynccollective.com</code> (Business Starter is enough to start).
+5. Create the 4 user accounts + <code>contact@</code> (as user or alias) + <code>admin@</code> (alias).
+6. ⚠ <strong>Email hosting decision</strong>: mailboxes currently live at IONOS. Moving mail to Google = switching MX records in Cloudflare DNS + migrating existing mail. Plan a low-traffic window; verify <code>contact@</code> delivery after (same test as the domain migration). Alternative: keep IONOS mail and use Workspace only for Drive/identity — decide consciously.
+7. Enforce 2FA for all Workspace users.
+8. Create the shared Drive <strong>"NutriSync Ops"</strong>; re-point the working-folder backup there.</p>
+<p><strong>P2 · GitHub organisation</strong>
+9. Create org (e.g. <code>nutrisync-collective</code>); add the 4 as <strong>Owners</strong>; enforce 2FA at org level.
+10. <strong>Transfer</strong> <code>nutrisync-app</code> and <code>nutrisync-web</code> from <code>githubjuanjose</code> to the org (Settings → Transfer ownership). GitHub keeps redirects, but:
+11. Re-point clone remotes: <code>git remote set-url origin &lt;new-url&gt;</code> in <code>repos/appdev</code> and <code>repos/webdeploy</code>.
+12. <strong>Re-connect Cloudflare Pages</strong> to the transferred <code>nutrisync-web</code> repo (the GitHub App integration does not follow transfers automatically — reinstall the Cloudflare Pages GitHub App on the org and re-link the project). Verify with a test deploy.
+13. Re-create the <code>protect-main</code> rulesets on both repos (verify they survived the transfer; recreate if not).</p>
+<p><strong>P3 · Cloudflare</strong>
+14. Change the account email to a company address (or create a company account and move the domain + both Pages projects + Zero Trust — bigger job; changing the email on the existing account is the pragmatic path).
+15. Add the other 3 as account <strong>members</strong> with Administrator role (Manage Account → Members).
+16. Store the account credentials + 2FA recovery in the vault. Verify Zero Trust, both Pages projects and DNS untouched.</p>
+<p><strong>P4 · Supabase</strong>
+17. In the organisation settings: invite the 4 company emails (Owner/Admin roles), then transfer organisation ownership to a company identity.
+18. Enforce 2FA; store the database password + service_role key <strong>only in the vault</strong> (service_role never leaves it).
+19. Review <code>public.admins</code> allowlist — add the founders' app-login UUIDs so KPIs/feedback work for them.</p>
+<p><strong>P5 · Expo / EAS</strong>
+20. Create an Expo <strong>organisation</strong> account for NutriSync; invite the 4.
+21. Transfer the <code>nutrisync-mobile</code> project to the org (Expo supports project transfer); update <code>owner</code> in <code>app.json</code>; verify <code>eas update</code> still publishes to the same channel (test OTA).
+22. Create a <strong>robot token</strong> for future CI instead of personal login.</p>
+<p><strong>P6 · Stores (ties into the pending Apple enrollment)</strong>
+23. Apple Developer Program: enroll as <strong>Organization</strong> with the company D-U-N-S ($99/yr). Then TestFlight distribution (doc 10 guide).
+24. Google Play Console: <strong>company</strong> account ($25 one-off), internal testing track.</p>
+<p><strong>P7 · Domain registrar &amp; the rest</strong>
+25. IONOS account → company email + credentials to the vault (it remains the registrar even though DNS is at Cloudflare); make sure domain auto-renews with a company card.
+26. When the newsletter/email provider is chosen (Resend/Mailchimp): create under company account from day one.
+27. Figma: Design's project under a NutriSync team with founder access (coordinate with Design).</p>
+<p><strong>P8 · Verification (after each phase — nothing is "done" until this passes)</strong>
+28. Web deploy end-to-end · OTA deploy end-to-end · PWA build+deploy · hub Access login · <code>contact@</code> receives mail · backups landing in the shared Drive · all 4 can log into all consoles · vault contains every credential.</p>
+<h2>5 · Access model target (3+1)</h2>
+<blockquote>
+<p>Juanjo holds the technical super-admin role <strong>on an interim basis, until a CTO (or designated super-admin) is appointed</strong> — at which point these roles transfer to that person following the same handover checklist as this migration (P8 verification included). The founders' access is permanent by design.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Pilar · Lucía · María Paula</th>
+<th>Interim super-admin (Juanjo → future CTO)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Google Workspace</td>
+<td>Admin</td>
+<td>Super Admin</td>
+</tr>
+<tr>
+<td>GitHub org</td>
+<td>Owner</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Cloudflare</td>
+<td>Administrator</td>
+<td>Super Admin (account holder)</td>
+</tr>
+<tr>
+<td>Supabase</td>
+<td>Owner/Admin</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Expo/EAS</td>
+<td>Admin</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Apple / Play</td>
+<td>Admin/App Manager</td>
+<td>Account Holder / Admin</td>
+</tr>
+<tr>
+<td>Password vault</td>
+<td>Member (full)</td>
+<td>Admin</td>
+</tr>
+</tbody>
+</table>
+<h2>6 · Built · Missing · Changes at full production</h2>
+<p><strong>Built (live today):</strong> 4 surfaces (web, PWA, iOS, Android OTA) on one Supabase backend · content DB (153 foods / 48 movements / 100 tips) + segment-aware recommendations engine · CAS scoring · full app feature set through 3 founder-feedback rounds (all 56 Round-3 items closed) · gated Builders/Investors hub with real Access login · live waitlist counter · versioned releases with rollback · documented ops (docs 11, 14, 18).</p>
+<p><strong>Missing (known, queued):</strong> store distribution (TestFlight/Play — blocked on enrollment) · lawyer-approved privacy/terms texts (drafts ready) · marketing video · remaining language packs (7 of 14 live; CA/EU/GL/VA/Aranés/ZH/JA pending + CJK web font) and onboarding steps i18n (F1) · payments (€4.99/employer model → Stripe or RevenueCat, not started) · error monitoring (Sentry) and product analytics (opt-in) · email provider for newsletter · <strong>consent service</strong> (versioned granular scopes with audit trail — D1–D3/D6, beyond today's checkbox) · <strong>wearable/health connectors</strong> (schema + Connected Devices screen built; native Apple Health/Google Fit sync pending — Epic E) · <strong>push notifications</strong> (Notification Center screen exists; delivery infra pending) · waitlist→onboarding auto-handoff (F5) · admin business-case tracker live wiring (G3) · community features (WF-7 — privacy controls already shipped) · multimodal search (backlog).</p>
+<p><strong>Changes at full production:</strong> this migration executed (company-owned everything) · store binaries via EAS Build instead of dev-tunnel testing · payment processing + subscription entitlements in-app · monitoring/alerting + on-call habits · rate limiting and abuse protection on public endpoints · DPIA + registro de tratamientos completed with the lawyer · scale review of Supabase plan (and the doc-02 AWS scale-up target if growth demands it) · Design→Engineering handoff cadence formalised on org repos.</p>
+<hr />
+<h1>ESPAÑOL</h1>
+<h2>1 · Por qué importa</h2>
+<p>Hoy la plataforma corre sobre cuentas personales (GitHub <code>githubjuanjose</code>, logins personales de Cloudflare/Supabase/Expo). Para un prototipo vale; para una empresa es un <strong>riesgo de propiedad y de "factor autobús"</strong>: si una persona pierde el acceso, la empresa pierde su infraestructura. Objetivo: cada cuenta a nombre de la empresa, cada credencial en un gestor compartido, <strong>3+1 administradores en todo</strong>, y las cuentas personales fuera del camino crítico.</p>
+<h2>2 · Para qué sirve cada plataforma</h2>
+<table>
+<thead>
+<tr>
+<th>Plataforma</th>
+<th>Qué es para nosotros</th>
+<th>Por qué importa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>GitHub</strong></td>
+<td>Casa del código: <code>nutrisync-app</code> (fuente de iOS/Android/PWA) y <code>nutrisync-web</code> (marketing+webapp+hub). Un push a <code>nutrisync-web</code> dispara el despliegue web. <code>main</code> protegida en ambos.</td>
+<td>El producto ES este código. Perderlo = perder el producto. Además es el backup del código.</td>
+</tr>
+<tr>
+<td><strong>Cloudflare</strong></td>
+<td>Cuatro funciones: (1) DNS de <code>nutrisynccollective.com</code>; (2) <strong>Pages</strong> aloja la web (<code>nutrisync-collective</code>) y la PWA (<code>nutrisync-m</code>) con historial completo de despliegues y rollback de un clic; (3) <strong>Zero Trust Access</strong> protege <code>/hub/*</code> (email de founder + PIN); (4) SSL, caché, redirección www.</td>
+<td>La puerta de todo lo público y el candado de todo lo privado.</td>
+</tr>
+<tr>
+<td><strong>Supabase</strong></td>
+<td>El backend: base de datos PostgreSQL (UE), autenticación de usuarias (incl. verificación de email), Row-Level Security para que cada usuaria solo lea sus propios datos de salud, y los RPCs (motor de recomendaciones, contador de waitlist, KPIs, feedback).</td>
+<td>Guarda los datos de salud de categoría especial — las joyas de la corona a efectos RGPD.</td>
+</tr>
+<tr>
+<td><strong>Expo / EAS</strong></td>
+<td>Compila los binarios nativos iOS/Android y publica <strong>actualizaciones OTA</strong>: los cambios de la app llegan a los móviles en minutos sin pasar por revisión de tienda. También es la base de la build de la PWA.</td>
+<td>Nuestra cadencia de 6 actualizaciones en un día existe gracias al OTA.</td>
+</tr>
+<tr>
+<td><strong>PWA móvil</strong> (<code>m.nutrisynccollective.com</code>)</td>
+<td>La 4ª superficie: la propia app nativa compilada a web (react-native-web) y servida como Progressive Web App instalable — "Añadir a pantalla de inicio", pantalla completa, sin tiendas. Vive en el proyecto Pages <code>nutrisync-m</code>; se reconstruye desde el código de la app con un comando, así que siempre va a la par de la versión nativa.</td>
+<td>Experiencia de app sin fricción de tiendas — el QR del footer apunta aquí. Nuestro canal de distribución más rápido mientras el alta en las tiendas está pendiente.</td>
+</tr>
+<tr>
+<td><strong>Apple / TestFlight</strong></td>
+<td>Distribuye la app iOS a testers (y luego al App Store). Alta pendiente — <strong>daros de alta como Organización</strong> (requiere entidad legal + número D-U-N-S) para que la ficha diga NutriSync y no una persona.</td>
+<td>Único camino a los iPhone.</td>
+</tr>
+<tr>
+<td><strong>Google Play Console</strong></td>
+<td>Lo mismo para Android (testing interno → producción). Crear como <strong>cuenta de empresa</strong>.</td>
+<td>Único camino a Android a escala.</td>
+</tr>
+<tr>
+<td><strong>Carpeta de trabajo</strong> (<code>NutriSync/</code>)</td>
+<td>El sistema de ficheros operativo: builds por desplegar (<code>inbox/</code>), cada versión publicada (<code>releases/</code> = puntos de rollback), packs de diseño, rondas de feedback, historial SQL, herramientas de despliegue.</td>
+<td>La memoria operativa de la empresa; con backup en Drive.</td>
+</tr>
+<tr>
+<td><strong>IONOS</strong></td>
+<td>El <strong>registrador</strong> del dominio: donde <code>nutrisynccollective.com</code> está registrado y se renueva, y donde viven hoy los buzones de correo. El DNS se delegó a Cloudflare, pero el registro sigue siendo de IONOS — si caduca, muere el dominio (y toda URL, email y QR que apunte a él).</td>
+<td>Registro + renovación + correo actual. Debe ser de la empresa y con autorrenovación.</td>
+</tr>
+<tr>
+<td><strong>Google (Workspace)</strong></td>
+<td>Por crear: la cuenta Google de empresa — correo en el dominio, Drive compartido (destino del backup de la carpeta), calendario, y el ancla de identidad del resto de servicios.</td>
+<td>Una identidad para gobernar todos los logins.</td>
+</tr>
+<tr>
+<td><strong>Gestor de contraseñas</strong> (por elegir)</td>
+<td>Gestor de equipo (1Password/Bitwarden): toda credencial compartida, clave API y código de recuperación 2FA.</td>
+<td>Sin él, el "3+1 admins" degenera en credenciales por chats.</td>
+</tr>
+</tbody>
+</table>
+<h2>3 · Backups actuales (ya en marcha)</h2>
+<ul>
+<li><strong>Código</strong> → GitHub (ramas protegidas) — cada versión en el historial git.</li>
+<li><strong>Builds</strong> → <code>releases/</code> en la carpeta de trabajo: cada zip de app desde v0.9.0, cada web desplegada, los dist de la PWA. No se borra nada.</li>
+<li><strong>Despliegues</strong> → Cloudflare Pages conserva todos los despliegues de producción (rollback a cualquiera); EAS conserva cada OTA.</li>
+<li><strong>Base de datos</strong> → backups automáticos de Supabase + snapshot manual antes de cada migración (regla del doc 11).</li>
+<li><strong>Carpeta de trabajo</strong> → sincronización a Google Drive (excluyendo <code>repos/</code>), a mover al Drive compartido de empresa en la fase P1.</li>
+</ul>
+<h2>4 · Lista de tareas de migración (por fases — orden seguro)</h2>
+<p><strong>P0 · Prerrequisitos (founders)</strong>
+1. Confirmar datos de la entidad legal (denominación, CIF) — hacen falta para la facturación de Workspace, el D-U-N-S de Apple y Play Console.
+2. Decidir las 4 identidades admin: <code>pgonzalez@</code>, <code>lcebrian@</code>, <code>mgarzon@</code>, <code>jcebrian@</code> (o equivalentes) en el dominio.
+3. Elegir <strong>gestor de contraseñas de equipo</strong> (1Password Business / Bitwarden Teams) — toda credencial compartida, código de recuperación 2FA y clave API vive ahí. Es la mejora de seguridad más valiosa de todo el plan.</p>
+<p><strong>P1 · Google Workspace (cuenta Google de empresa)</strong>
+4. Crear Workspace sobre <code>nutrisynccollective.com</code> (Business Starter basta para empezar).
+5. Crear los 4 usuarios + <code>contact@</code> (usuario o alias) + alias <code>admin@</code>.
+6. ⚠ <strong>Decisión de correo</strong>: los buzones viven hoy en IONOS. Mover el correo a Google = cambiar los registros MX en Cloudflare + migrar el correo existente. Planificarlo en ventana tranquila y verificar la entrega a <code>contact@</code> después (mismo test que en la migración del dominio). Alternativa: mantener el correo en IONOS y usar Workspace solo para Drive/identidad — decidirlo conscientemente.
+7. Forzar 2FA a todos los usuarios de Workspace.
+8. Crear el Drive compartido <strong>"NutriSync Ops"</strong> y apuntar allí el backup de la carpeta de trabajo.</p>
+<p><strong>P2 · Organización de GitHub</strong>
+9. Crear la organización (p. ej. <code>nutrisync-collective</code>); añadir a los 4 como <strong>Owners</strong>; exigir 2FA a nivel de organización.
+10. <strong>Transferir</strong> <code>nutrisync-app</code> y <code>nutrisync-web</code> desde <code>githubjuanjose</code> a la organización (Settings → Transfer ownership). GitHub mantiene redirecciones, pero:
+11. Re-apuntar los remotos de los clones: <code>git remote set-url origin &lt;url-nueva&gt;</code> en <code>repos/appdev</code> y <code>repos/webdeploy</code>.
+12. <strong>Reconectar Cloudflare Pages</strong> al repo transferido (la integración GitHub App no sigue a las transferencias: reinstalar la app de Cloudflare Pages en la organización y re-vincular el proyecto). Verificar con un deploy de prueba.
+13. Re-crear los rulesets <code>protect-main</code> en ambos repos (comprobar si sobrevivieron a la transferencia; recrearlos si no).</p>
+<p><strong>P3 · Cloudflare</strong>
+14. Cambiar el email de la cuenta a una dirección de empresa (o crear cuenta de empresa y mover dominio + los dos proyectos Pages + Zero Trust — trabajo mayor; cambiar el email de la cuenta actual es el camino pragmático).
+15. Añadir a las otras 3 como <strong>members</strong> con rol Administrator (Manage Account → Members).
+16. Credenciales + recuperación 2FA al gestor. Verificar que Zero Trust, ambos Pages y el DNS siguen intactos.</p>
+<p><strong>P4 · Supabase</strong>
+17. En la organización: invitar los 4 emails de empresa (roles Owner/Admin) y transferir la propiedad de la organización a una identidad de empresa.
+18. Forzar 2FA; contraseña de la base de datos y clave <code>service_role</code> <strong>solo en el gestor</strong> (la service_role no sale de ahí jamás).
+19. Revisar la allowlist <code>public.admins</code> — añadir los UUID de login de las founders para que KPIs/feedback les funcionen.</p>
+<p><strong>P5 · Expo / EAS</strong>
+20. Crear cuenta de <strong>organización</strong> en Expo; invitar a los 4.
+21. Transferir el proyecto <code>nutrisync-mobile</code> a la organización; actualizar <code>owner</code> en <code>app.json</code>; verificar que <code>eas update</code> sigue publicando al mismo canal (probar un OTA).
+22. Crear un <strong>token robot</strong> para el futuro CI en lugar de login personal.</p>
+<p><strong>P6 · Tiendas (enlaza con el alta de Apple pendiente)</strong>
+23. Apple Developer Program: alta como <strong>Organización</strong> con el D-U-N-S de la empresa (99$/año). Después, distribución TestFlight (guía en doc 10).
+24. Google Play Console: cuenta de <strong>empresa</strong> (25$ una vez), pista de testing interno.</p>
+<p><strong>P7 · Registrador del dominio y resto</strong>
+25. Cuenta de IONOS → email de empresa + credenciales al gestor (sigue siendo el registrador aunque el DNS esté en Cloudflare); asegurar autorrenovación del dominio con tarjeta de empresa.
+26. Cuando se elija proveedor de newsletter (Resend/Mailchimp): crearlo bajo cuenta de empresa desde el día uno.
+27. Figma: el proyecto de Diseño bajo un team NutriSync con acceso de las founders (coordinar con Diseño).</p>
+<p><strong>P8 · Verificación (tras cada fase — nada está "hecho" hasta que esto pasa)</strong>
+28. Deploy web completo · deploy OTA completo · build+deploy de PWA · login de Access al hub · <code>contact@</code> recibe correo · los backups llegan al Drive compartido · los 4 entran en todas las consolas · el gestor contiene todas las credenciales.</p>
+<h2>5 · Modelo de accesos objetivo (3+1)</h2>
+<blockquote>
+<p>Juanjo ejerce el rol de super-admin técnico <strong>con carácter interino, hasta que se nombre un CTO (o super-admin designado)</strong> — en ese momento estos roles se transfieren a esa persona siguiendo la misma checklist de traspaso que esta migración (verificación P8 incluida). El acceso de las founders es permanente por diseño.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Plataforma</th>
+<th>Pilar · Lucía · María Paula</th>
+<th>Super-admin interino (Juanjo → futuro CTO)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Google Workspace</td>
+<td>Admin</td>
+<td>Super Admin</td>
+</tr>
+<tr>
+<td>Organización GitHub</td>
+<td>Owner</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Cloudflare</td>
+<td>Administrator</td>
+<td>Super Admin (titular)</td>
+</tr>
+<tr>
+<td>Supabase</td>
+<td>Owner/Admin</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Expo/EAS</td>
+<td>Admin</td>
+<td>Owner</td>
+</tr>
+<tr>
+<td>Apple / Play</td>
+<td>Admin/App Manager</td>
+<td>Account Holder / Admin</td>
+</tr>
+<tr>
+<td>Gestor de contraseñas</td>
+<td>Miembro (completo)</td>
+<td>Admin</td>
+</tr>
+</tbody>
+</table>
+<h2>6 · Construido · Pendiente · Cambios en producción total</h2>
+<p><strong>Construido (vivo hoy):</strong> 4 superficies (web, PWA, iOS, Android OTA) sobre un único backend Supabase · base de contenidos (153 alimentos / 48 movimientos / 100 tips) + motor de recomendaciones por segmento · scoring CAS · funcionalidad completa de la app tras 3 rondas de feedback de founders (los 56 puntos de la Ronda 3 cerrados) · hub Builders/Investors con login real de Access · contador de waitlist en vivo · versiones archivadas con rollback · operación documentada (docs 11, 14, 18).</p>
+<p><strong>Pendiente (conocido, en cola):</strong> distribución en tiendas (TestFlight/Play — bloqueado por el alta) · textos legales aprobados por abogado (borradores listos) · vídeo de marketing · packs de idioma restantes (7 de 14 vivos; pendientes CA/EU/GL/VA/Aranés/ZH/JA + fuente CJK en web) e i18n del onboarding (F1) · pagos (modelo 4,99€/employer → Stripe o RevenueCat, sin empezar) · monitorización de errores (Sentry) y analítica de producto (opt-in) · proveedor de email para la newsletter · <strong>servicio de consentimiento</strong> (scopes granulares versionados con traza de auditoría — D1–D3/D6, más allá del checkbox actual) · <strong>conectores wearables/salud</strong> (esquema + pantalla Connected Devices construidos; sincronización nativa Apple Health/Google Fit pendiente — Epic E) · <strong>notificaciones push</strong> (la pantalla Notification Center existe; la infraestructura de envío no) · handoff automático waitlist→onboarding (F5) · cableado en vivo del tracker de negocio del admin (G3) · funciones de comunidad (WF-7 — los controles de privacidad ya están) · búsqueda multimodal (backlog).</p>
+<p><strong>Cambios al pasar a producción total:</strong> esta migración ejecutada (todo propiedad de la empresa) · binarios de tienda vía EAS Build en lugar de pruebas por túnel · procesamiento de pagos y suscripciones en la app · monitorización/alertas y hábitos de guardia · rate limiting y protección anti-abuso en los endpoints públicos · DPIA + registro de tratamientos completados con el abogado · revisión de escala del plan de Supabase (y el objetivo AWS del doc 02 si el crecimiento lo exige) · cadencia Diseño→Ingeniería formalizada sobre los repos de la organización.</p>
+<hr />
+<h1>Appendix A · Architecture as built / Apéndice A · Arquitectura construida</h1>
+<h2>EN — How the system fits together</h2>
+<pre><code>                       ┌────────────────────────────────────────────┐
+   users ───────────►  │              CLOUDFLARE (edge)             │
+                       │  DNS · SSL · www→apex 301 · cache rules    │
+                       │  ┌──────────────┐    ┌──────────────────┐  │
+                       │  │ Pages:       │    │ Pages:           │  │
+                       │  │ nutrisync-   │    │ nutrisync-m      │  │
+                       │  │ collective   │    │ (mobile PWA)     │  │
+                       │  │ web+app+hub  │    │ m.nutrisync…com  │  │
+                       │  └──────┬───────┘    └────────┬─────────┘  │
+                       │         │   Zero Trust Access │            │
+                       │         │   guards /hub/*     │            │
+                       └─────────┼─────────────────────┼────────────┘
+   iOS app ──────┐               │                     │
+   Android app ──┤  (EAS OTA)    ▼                     ▼
+                 └──────────►  ┌────────────────────────────┐
+                               │     SUPABASE (EU)          │
+                               │  Postgres + RLS · Auth     │
+                               │  (email verification ON)   │
+                               │  RPCs: recommendations,    │
+                               │  waitlist, admin KPIs,     │
+                               │  feedback                  │
+                               └────────────────────────────┘
+</code></pre>
+<ul>
+<li><strong>Four surfaces, one backend.</strong> Web (marketing + web app + gated hub), installable mobile PWA (the native app compiled to web — parity by construction), and native iOS/Android updated over-the-air in minutes.</li>
+<li><strong>Security model.</strong> Clients only ever hold the public anon key; PostgreSQL <strong>Row-Level Security</strong> guarantees each user reads only her own rows. Admin data flows only through allowlisted, aggregate-only RPCs (no PII). The <code>service_role</code> key never leaves the vault. The founders' hub sits behind Cloudflare Access (email + PIN).</li>
+<li><strong>Data.</strong> Profiles, cycles, daily logs &amp; scores (CAS + 5 components), checklists, the content database (153 foods / 48 movements / 100 tips on segment·diet·condition axes), waitlist, in-app feedback, admin allowlist.</li>
+<li><strong>Recommendations engine.</strong> Server-side SQL: the user's cycle day → segment → filtered and ranked candidates (diet excludes, condition and goal boosts) → one JSON payload per day, deterministic rotation.</li>
+<li><strong>Delivery.</strong> Three one-click commands from the working folder: web (git push → Pages build), app (EAS OTA), PWA (re-export + deploy). Every artifact auto-archived; rollback to any previous version on every surface.</li>
+</ul>
+<h2>ES — Cómo encaja el sistema</h2>
+<ul>
+<li><strong>Cuatro superficies, un backend.</strong> Web (marketing + webapp + hub protegido), PWA móvil instalable (la app nativa compilada a web — paridad por construcción), y las apps nativas iOS/Android actualizadas por OTA en minutos.</li>
+<li><strong>Modelo de seguridad.</strong> Los clientes solo llevan la clave pública anon; la <strong>Row-Level Security</strong> de PostgreSQL garantiza que cada usuaria lee únicamente sus filas. Los datos de administración solo salen por RPCs con allowlist y agregados (sin datos personales). La clave <code>service_role</code> no sale del gestor de contraseñas. El hub de founders está tras Cloudflare Access (email + PIN).</li>
+<li><strong>Datos.</strong> Perfiles, ciclos, registros y puntuaciones diarias (CAS + 5 componentes), checklists, la base de contenidos (153 alimentos / 48 movimientos / 100 tips en ejes segmento·dieta·condición), waitlist, feedback in-app, allowlist de administración.</li>
+<li><strong>Motor de recomendaciones.</strong> SQL en servidor: día de ciclo → segmento → candidatos filtrados y rankeados (exclusiones por dieta, refuerzos por condición y objetivo) → un JSON por día, rotación determinista.</li>
+<li><strong>Entrega.</strong> Tres comandos de un clic desde la carpeta de trabajo: web (git push → build de Pages), app (OTA de EAS), PWA (re-export + deploy). Todo artefacto se archiva solo; rollback a cualquier versión anterior en las tres superficies.</li>
+</ul>
+<p><em>(Diagrama común arriba · Detalle completo: doc 02 · Operación: doc 18)</em></p>
+<hr />
+<h1>Appendix B · Production launch — infrastructure &amp; operational readiness / Apéndice B · Lanzamiento a producción — infraestructura y preparación operativa</h1>
+<h2>EN</h2>
+<h3>B1 · Launch readiness (on the CURRENT stack — prerequisite for going public)</h3>
+<p>The Supabase + Cloudflare stack comfortably serves the early-growth phase; these tasks make it production-grade. All are pre-launch work:</p>
+<p><strong>Payments &amp; business</strong>
+1. Payment processing for the €4.99 + employer model: Stripe (web) and/or RevenueCat (in-app subscriptions across iOS/Android/web) — entitlements table in Supabase, webhook handler, grace periods, invoices.
+2. Pricing/entitlement gates in the app (free-vs-paid feature map).</p>
+<p><strong>Observability &amp; alerting</strong>
+3. Error monitoring: Sentry on app + web (EU data residency), release-tagged so every OTA maps to its errors.
+4. Uptime monitoring on the 3 public hostnames + Supabase health; alerts to a founders channel.
+5. Supabase log retention/drains; basic dashboards (signups, active users, error rate) beyond the current admin KPIs.</p>
+<p><strong>Security hardening</strong>
+6. Rate limiting + bot protection: Cloudflare WAF rules and Turnstile on signup and waitlist; per-user quotas on write RPCs.
+7. Secrets rotation + dependency/vulnerability audit (npm audit + GitHub Dependabot on the org repos).
+8. Backup <strong>restore drill</strong> — actually restore a snapshot to a scratch project and verify (a backup that has never been restored is a hypothesis); enable PITR (Supabase Pro).
+8b. <strong>Database in a secure zone</strong>: enable Supabase network restrictions (database reachable only from allowed IPs — direct SQL access never open to the internet), SSL enforced on every connection, encryption at rest verified, and the anon/service key pair audited (service_role vault-only). Clients keep talking ONLY through the RLS-guarded API — never to the database directly.</p>
+<p><strong>Release engineering</strong>
+9. Staging environment: second Supabase project + Pages preview branch, so migrations and releases rehearse before production.
+10. CI on the GitHub org: typecheck + tests on every PR (GitHub Actions), EAS robot token for builds.
+11. Store release pipeline: EAS Build → TestFlight/Play internal → staged rollout; crash-gated promotion.</p>
+<p><strong>Compliance &amp; support (with the lawyer)</strong>
+12. DPIA + registro de tratamientos; DPAs with Supabase/Cloudflare/Expo on file; retention jobs implemented; delete-account tested end-to-end.
+13. Support operations: contact@ ownership + response target, in-app feedback triage ritual, public status page.</p>
+<h3>B2 · AWS scale-up (CONDITIONAL — trigger-based, not a launch prerequisite)</h3>
+<p>The doc-02 target. Do <strong>not</strong> migrate on a date — migrate on a trigger:</p>
+<p><strong>Triggers (any of):</strong> sustained p95 latency degradation on core RPCs · Supabase plan ceilings (connections/compute) at ~70% · cost crossover where AWS is materially cheaper at our load · an enterprise/partner requirement (e.g. dedicated infra for employer deals).</p>
+<p><strong>Intermediate step first:</strong> Supabase Pro → Team/dedicated compute usually buys 10–100× headroom without any migration. Evaluate before AWS.</p>
+<p><strong>If triggered — migration plan (eu-west/eu-south region, GDPR):</strong>
+14. AWS landing zone: Organizations account under company root, IAM Identity Center with the 3+1 model, billing alerts, EU region only.
+15. Database: RDS/Aurora PostgreSQL <strong>inside a private VPC</strong> — private subnets only, no public endpoint, security groups allowing just the API layer, KMS encryption at rest, credentials in Secrets Manager with rotation; replicate schema + RLS policies + RPCs (they are plain SQL — portable by design); migrate auth (Supabase GoTrue export → Cognito or self-hosted GoTrue).
+16. Data cutover: logical replication → freeze window → switch connection strings (config.ts is the single point) → verify → keep Supabase as rollback for 30 days.
+17. Edge/API layer: PostgREST or a thin API service (ECS/Fargate) replacing Supabase's auto-API; Cloudflare stays as CDN/DNS/Access — no change to the surfaces.
+18. Re-run the FULL launch-readiness checklist (B1) against the new stack + load tests before cutover.</p>
+<h2>ES</h2>
+<h3>B1 · Preparación de lanzamiento (sobre el stack ACTUAL — prerrequisito para abrir al público)</h3>
+<p>El stack Supabase + Cloudflare sirve de sobra la fase inicial de crecimiento; estas tareas lo hacen de grado producción. Todas son trabajo pre-lanzamiento:</p>
+<p><strong>Pagos y negocio</strong>
+1. Procesamiento de pagos para el modelo 4,99€ + employer: Stripe (web) y/o RevenueCat (suscripciones in-app iOS/Android/web) — tabla de entitlements en Supabase, webhooks, periodos de gracia, facturas.
+2. Puertas de precio/entitlement en la app (mapa free vs pago).</p>
+<p><strong>Observabilidad y alertas</strong>
+3. Monitorización de errores: Sentry en app + web (residencia de datos UE), etiquetado por release para que cada OTA mapee a sus errores.
+4. Monitorización de uptime de los 3 hostnames públicos + salud de Supabase; alertas a un canal de founders.
+5. Retención de logs de Supabase; dashboards básicos (altas, usuarias activas, tasa de error) más allá de los KPIs actuales.</p>
+<p><strong>Endurecimiento de seguridad</strong>
+6. Rate limiting + protección anti-bots: reglas WAF de Cloudflare y Turnstile en registro y waitlist; cuotas por usuaria en los RPCs de escritura.
+7. Rotación de secretos + auditoría de dependencias (npm audit + Dependabot en los repos de la organización).
+8. <strong>Simulacro de restauración</strong> de backup — restaurar de verdad un snapshot en un proyecto de prueba y verificarlo (un backup nunca restaurado es una hipótesis); activar PITR (Supabase Pro).
+8b. <strong>Base de datos en zona segura</strong>: activar las restricciones de red de Supabase (la base de datos accesible solo desde IPs permitidas — el acceso SQL directo nunca abierto a internet), SSL obligatorio en toda conexión, cifrado en reposo verificado, y auditoría del par de claves anon/service (la service_role solo en el gestor). Los clientes hablan SOLO a través de la API protegida por RLS — nunca directamente con la base de datos.</p>
+<p><strong>Ingeniería de releases</strong>
+9. Entorno de staging: segundo proyecto Supabase + rama preview de Pages, para ensayar migraciones y releases antes de producción.
+10. CI en la organización de GitHub: typecheck + tests en cada PR (GitHub Actions), token robot de EAS para builds.
+11. Pipeline de tiendas: EAS Build → TestFlight/Play interno → rollout escalonado; promoción condicionada a crashes.</p>
+<p><strong>Cumplimiento y soporte (con el abogado)</strong>
+12. DPIA + registro de tratamientos; DPAs con Supabase/Cloudflare/Expo archivados; trabajos de retención implementados; borrado de cuenta probado de extremo a extremo.
+13. Operativa de soporte: responsable y objetivo de respuesta de contact@, ritual de triaje del feedback in-app, página de estado pública.</p>
+<h3>B2 · Escalado a AWS (CONDICIONAL — por triggers, no es prerrequisito del lanzamiento)</h3>
+<p>El objetivo del doc 02. <strong>No</strong> se migra por fecha — se migra por trigger:</p>
+<p><strong>Triggers (cualquiera):</strong> degradación sostenida de latencia p95 en los RPCs core · techos del plan de Supabase (conexiones/cómputo) al ~70% · cruce de costes donde AWS sea materialmente más barato a nuestra carga · requisito enterprise/partner (p. ej. infraestructura dedicada para acuerdos employer).</p>
+<p><strong>Paso intermedio primero:</strong> Supabase Pro → Team/cómputo dedicado suele dar 10–100× de margen sin migrar nada. Evaluarlo antes que AWS.</p>
+<p><strong>Si se dispara — plan de migración (región eu-west/eu-south, RGPD):</strong>
+14. Landing zone de AWS: cuenta de Organizations bajo raíz de empresa, IAM Identity Center con el modelo 3+1, alertas de facturación, solo región UE.
+15. Base de datos: RDS/Aurora PostgreSQL <strong>dentro de una VPC privada</strong> — solo subredes privadas, sin endpoint público, security groups que permiten únicamente la capa API, cifrado en reposo con KMS, credenciales en Secrets Manager con rotación; replicar esquema + políticas RLS + RPCs (son SQL puro — portables por diseño); migrar auth (export de GoTrue → Cognito o GoTrue auto-alojado).
+16. Corte de datos: replicación lógica → ventana de congelación → cambio de connection strings (config.ts es el punto único) → verificación → mantener Supabase como rollback 30 días.
+17. Capa edge/API: PostgREST o un servicio API ligero (ECS/Fargate) sustituyendo la auto-API de Supabase; Cloudflare sigue como CDN/DNS/Access — las superficies no cambian.
+18. Re-ejecutar la checklist COMPLETA de B1 sobre el stack nuevo + pruebas de carga antes del corte.</p>
+<h3>B3 · Target architecture once migrated / Arquitectura objetivo una vez migrado</h3>
+<pre><code>                    ┌──────────────────────────────────────────────────┐
+  users ─────────►  │            CLOUDFLARE (edge — unchanged)         │
+  (4 surfaces:      │   DNS · CDN · WAF · DDoS · Zero Trust Access     │
+   web, PWA,        └───────────────────────┬──────────────────────────┘
+   iOS, Android)                            │ HTTPS only
+                    ┌───────────────────────▼──────────────────────────┐
+                    │              AWS  eu-central-2 (Zurich)          │
+                    │  ┌────────────────────────────────────────────┐  │
+                    │  │            PUBLIC SUBNET                   │  │
+                    │  │   ALB (TLS termination, health checks)     │  │
+                    │  └───────────────────┬────────────────────────┘  │
+                    │  ┌───────────────────▼────────────────────────┐  │
+                    │  │            PRIVATE SUBNETS (VPC)           │  │
+                    │  │  ECS Fargate services:                     │  │
+                    │  │   · API layer (PostgREST / thin API)       │  │
+                    │  │   · Auth (GoTrue / Cognito adapter)        │  │
+                    │  │   · Workers (retention jobs, exports)      │  │
+                    │  │        │                                   │  │
+                    │  │  Aurora PostgreSQL (Multi-AZ, KMS at rest, │  │
+                    │  │  RLS + RPCs ported 1:1, no public endpoint)│  │
+                    │  └────────────────────────────────────────────┘  │
+                    │   S3 (assets, JSON exports, backups·lifecycle)   │
+                    │   Secrets Manager (rotated creds — no keys in    │
+                    │   code) · CloudWatch + OpenTelemetry (p95,       │
+                    │   error rate, alerts) · AWS Backup (cross-AZ)    │
+                    └──────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>EN — What changes and what doesn't:</strong> the four surfaces, Cloudflare edge, deploy commands and the RLS security model <strong>do not change</strong> — clients keep calling the same API shapes; <code>config.ts</code> is the single switch point. What changes underneath: the database moves into a <strong>private VPC</strong> (Aurora Multi-AZ, KMS, reachable only from the API services), auth runs as our own service, background jobs get a proper worker, secrets rotate in Secrets Manager, and observability becomes first-class (CloudWatch/OTel with alerting). Region <code>eu-central-2</code> (Zurich) per the doc-02 residency target — EU/Swiss health-data guarantees preserved.</p>
+<p><strong>ES — Qué cambia y qué no:</strong> las cuatro superficies, el edge de Cloudflare, los comandos de despliegue y el modelo de seguridad RLS <strong>no cambian</strong> — los clientes siguen llamando a la misma API; <code>config.ts</code> es el único punto de conmutación. Lo que cambia por debajo: la base de datos pasa a una <strong>VPC privada</strong> (Aurora Multi-AZ, KMS, accesible solo desde los servicios API), la autenticación corre como servicio propio, los trabajos de fondo tienen worker de verdad, los secretos rotan en Secrets Manager, y la observabilidad pasa a primera clase (CloudWatch/OTel con alertas). Región <code>eu-central-2</code> (Zúrich) según el objetivo de residencia del doc 02 — garantías UE/Suiza para datos de salud preservadas.</p></div></body></html>

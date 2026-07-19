@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>enterprise.setup-roadmap-backlog — NutriSync</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet"><style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box}body{font-family:'Inter',-apple-system,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px}
+h1{font-size:30px;font-weight:900;letter-spacing:-.5px;margin:0 0 8px}
+h2{font-size:22px;font-weight:800;margin:34px 0 10px;padding-bottom:8px;border-bottom:2px solid var(--line)}
+p{margin:10px 0}em{color:var(--muted)}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px;display:block;overflow-x:auto}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--coral);color:#fff;font-weight:700}tbody tr:nth-child(even){background:var(--cream)}
+ul,ol{margin:10px 0;padding-left:24px}li{margin:5px 0}strong{font-weight:700}
+.top{position:sticky;top:0;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;font-weight:300;letter-spacing:4px;font-size:14px}
+.top b{font-weight:800}
+</style><script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head><body><div class="top"><b>NUTRISYNC</b> · Roadmaps · 19 Jul 2026</div><div class="wrap"><h1>enterprise.setup — Corporatisation Roadmap-Backlog</h1>
+<p><em>Todo bajo cuentas propiedad de NutriSync, con el modelo 3+1 y 2FA en el 100%. Fuente completa: doc 19 (fases P0–P8).</em></p>
+<h2>Principles</h2>
+<p>Company-owned accounts everywhere · 3 founders + interim technical super-admin (Juanjo → future CTO, handover checklist ready) · <strong>2FA mandatory on every account</strong> · every credential + recovery code in a team password vault · personal accounts out of the critical path.</p>
+<h2>Phases</h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Scope</th>
+<th>Key risk / gotcha</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P0</td>
+<td>Legal data (CIF), 4 admin identities, <strong>choose password vault</strong></td>
+<td>Vault first — highest value of the whole plan</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Google Workspace on the domain + shared Drive (backup target)</td>
+<td>⚠ Email hosting decision: move MX from IONOS or keep IONOS mail</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>GitHub org + transfer <code>nutrisync-app</code>/<code>nutrisync-web</code></td>
+<td>⚠ Cloudflare Pages GitHub App must be re-connected after transfer; re-point clone remotes; verify rulesets</td>
+</tr>
+<tr>
+<td>P3</td>
+<td>Cloudflare → company identity + 3 members as Admins</td>
+<td>Verify Zero Trust / Pages / DNS untouched</td>
+</tr>
+<tr>
+<td>P4</td>
+<td>Supabase org ownership + roles; service_role vault-only</td>
+<td>Add founders to <code>public.admins</code> for KPIs/feedback</td>
+</tr>
+<tr>
+<td>P5</td>
+<td>Expo org + project transfer + robot token</td>
+<td>Verify <code>eas update</code> channel with a test OTA</td>
+</tr>
+<tr>
+<td>P6</td>
+<td>Apple <strong>Organization</strong> enrollment (D-U-N-S) + Play <strong>company</strong> account</td>
+<td>Org (not individual) so the store says NutriSync</td>
+</tr>
+<tr>
+<td>P7</td>
+<td>IONOS to company identity + auto-renew; future vendors company-first</td>
+<td>Registrar lapse = domain death</td>
+</tr>
+<tr>
+<td>P8</td>
+<td><strong>Verification</strong>: all deploys E2E, Access login, mail, backups, 4× logins, vault complete</td>
+<td>Nothing is done until P8 passes</td>
+</tr>
+</tbody>
+</table>
+<h2>Pending decisions (founders)</h2>
+<p>Email hosting (IONOS vs Google) · vault choice · org name on GitHub/Expo.</p></div></body></html>

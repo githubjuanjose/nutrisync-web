@@ -36,6 +36,37 @@ tbody tr:nth-child(even){background:var(--cream);}
 .card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
 .sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
 </style></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>NutriSync — Technical Architecture</h1>
+<h2>0. As-built snapshot (19 Jul 2026) — read this first</h2>
+<p>Sections below remain for history; this is the system as it runs today.</p>
+<pre><code>                       ┌────────────────────────────────────────────┐
+   users ───────────►  │              CLOUDFLARE (edge)             │
+                       │  DNS · SSL · www→apex 301 · cache rules    │
+                       │  ┌──────────────┐    ┌──────────────────┐  │
+                       │  │ Pages:       │    │ Pages:           │  │
+                       │  │ nutrisync-   │    │ nutrisync-m      │  │
+                       │  │ collective   │    │ (mobile PWA)     │  │
+                       │  │ web+app+hub  │    │ m.nutrisync…com  │  │
+                       │  └──────┬───────┘    └────────┬─────────┘  │
+                       │         │   Zero Trust Access │            │
+                       │         │   guards /hub/*     │            │
+                       └─────────┼─────────────────────┼────────────┘
+   iOS app ──────┐               │                     │
+   Android app ──┤  (EAS OTA)    ▼                     ▼
+                 └──────────►  ┌────────────────────────────┐
+                               │     SUPABASE (EU)          │
+                               │  Postgres + RLS · Auth     │
+                               │  (email verification ON)   │
+                               │  RPCs: ns_daily_recs,      │
+                               │  waitlist_count, admin_*,  │
+                               │  admin_feedback            │
+                               └────────────────────────────┘
+</code></pre>
+<p><strong>Four surfaces, one backend.</strong> Web app + marketing + gated hub (<code>nutrisynccollective.com</code>), installable mobile PWA (<code>m.</code> — the RN app compiled via react-native-web), and the native iOS/Android apps (Expo SDK 54, updated OTA via EAS, branch <code>production</code>). All speak to the same Supabase project with the public anon key; <strong>RLS</strong> is the security boundary (each user reads only her rows; <code>service_role</code> never ships to clients).</p>
+<p><strong>Data layer (main tables):</strong> <code>users</code> (profile, diet/diet_other, conditions, nutrigoal, nutri_avatar) · <code>cycles</code> · <code>daily_logs</code> (mood/energy/flow/symptoms/sleep/libido/sex_logged/notes) · <code>daily_scores</code> (CAS + 5 components, phase, cycle_day) · <code>checklist</code> tables · content DB <code>content_food</code> (153) / <code>content_movement</code> (48) / <code>content_tip</code> (100) with segment/diet/condition axes · <code>waitlist</code> · <code>feedback</code> (in-app feedback, RLS insert-own) · <code>admins</code> (allowlist for aggregate-only admin RPCs — no PII ever returned).</p>
+<p><strong>Recommendation engine (SQL, server-side):</strong> <code>ns_segment_for_day</code> → <code>ns_daily_recs(date)</code> returns one JSONB with the day's nutrition/movement tips, insights and candidate lists, filtered by segment→diet→condition and ranked (+goal/+condition boosts); deterministic daily rotation.</p>
+<p><strong>Auth flow:</strong> signup accepts any email but the account only activates via the verification link (Supabase Confirm-email ON; app handles resend + unconfirmed logins). Forgot-password → <code>reset.html</code> on the custom domain.</p>
+<p><strong>Deploy pipeline (3 Spotlight commands, from the working folder):</strong> web zip → <code>repos/webdeploy</code> → git push → Pages build; app zip → <code>repos/appdev</code> → <code>eas update</code> (OTA, minutes to phones); PWA = re-export of the app source → <code>wrangler pages deploy</code>. Every deployed artifact auto-archives to <code>releases/</code> (rollback points); Cloudflare/EAS retain every deployment server-side too. Full ops detail: <strong>doc 18</strong>; corporate ownership plan: <strong>doc 19</strong>.</p>
+<hr />
 <p><strong>Reality (July 2026):</strong> iOS, Android, and a live web application, all sharing one Supabase (EU) backend, all shipping continuously from GitHub. This document describes what is live today and separates it clearly from the AWS/Cloudflare scale-up target, which is planned, not built.</p>
 <hr />
 <h2>1. The stack today (and why)</h2>
@@ -181,13 +212,40 @@ tbody tr:nth-child(even){background:var(--cream);}
 <li><strong>Live:</strong> JSON export, in-app delete, RLS. <strong>Pending:</strong> full auth-record deletion (service-role Edge Function) and a formal consent/cookie layer.</li>
 <li>Clinical content review + evidence tagging before publish.</li>
 </ul>
-<h2>9. Scale-up target (planned, NOT built)</h2>
-<p>Phase 1 runs on Supabase (EU) for speed. The scale-up target — for when B2B volume, health-data residency guarantees, and a data flywheel justify the operational cost — is a dedicated cloud footprint:</p>
-<ul>
-<li><strong>AWS</strong> as primary, in the <strong>Zurich region <code>eu-central-2</code></strong> for Swiss/EU health-data residency, behind <strong>Cloudflare</strong> at the edge (CDN / WAF / DDoS / Zero Trust).</li>
-<li>AWS core path: <strong>ALB → ECS Fargate → Aurora Postgres</strong> (private subnet, KMS-encrypted) + <strong>S3</strong> + <strong>Secrets Manager</strong>.</li>
-</ul>
-<p>This is the target architecture, not the current one. Nothing in this section is deployed; Supabase (EU) is the Phase 1 backend by design.</p>
+<h2>9. Future architecture — AWS scale-up target (planned, NOT built)</h2>
+<p>Phase 1 runs on Supabase (EU) by design. The migration is <strong>trigger-based</strong>, not date-based (sustained p95 degradation · Supabase plan ceilings at ~70% · cost crossover · enterprise/partner requirement), and the intermediate step — Supabase dedicated compute — is evaluated first. Full migration runbook: doc 19, Appendix B2.</p>
+<h3>9.1 Target architecture once migrated</h3>
+<pre><code>                    ┌──────────────────────────────────────────────────┐
+  users ─────────►  │            CLOUDFLARE (edge — unchanged)         │
+  (4 surfaces:      │   DNS · CDN · WAF · DDoS · Zero Trust Access     │
+   web, PWA,        └───────────────────────┬──────────────────────────┘
+   iOS, Android)                            │ HTTPS only
+                    ┌───────────────────────▼──────────────────────────┐
+                    │              AWS  eu-central-2 (Zurich)          │
+                    │  ┌────────────────────────────────────────────┐  │
+                    │  │            PUBLIC SUBNET                   │  │
+                    │  │   ALB (TLS termination, health checks)     │  │
+                    │  └───────────────────┬────────────────────────┘  │
+                    │  ┌───────────────────▼────────────────────────┐  │
+                    │  │            PRIVATE SUBNETS (VPC)           │  │
+                    │  │  ECS Fargate services:                     │  │
+                    │  │   · API layer (PostgREST / thin API)       │  │
+                    │  │   · Auth (GoTrue / Cognito adapter)        │  │
+                    │  │   · Workers (retention jobs, exports)      │  │
+                    │  │        │                                   │  │
+                    │  │  Aurora PostgreSQL (Multi-AZ, KMS at rest, │  │
+                    │  │  RLS + RPCs ported 1:1, no public endpoint)│  │
+                    │  └────────────────────────────────────────────┘  │
+                    │   S3 (assets, JSON exports, backups·lifecycle)   │
+                    │   Secrets Manager (rotated creds — no keys in    │
+                    │   code) · CloudWatch + OpenTelemetry (p95,       │
+                    │   error rate, alerts) · AWS Backup (cross-AZ)    │
+                    └──────────────────────────────────────────────────┘
+</code></pre>
+<h3>9.2 The migration contract — what changes and what doesn't</h3>
+<p><strong>Does NOT change:</strong> the four surfaces and their code · Cloudflare edge (DNS/CDN/Access) · the three deploy commands · the RLS security model and the RPC contracts (plain SQL, ported 1:1). Clients keep calling the same API shapes; <code>config.ts</code> is the single switch point.</p>
+<p><strong>Changes underneath:</strong> database moves into a <strong>private VPC</strong> (Aurora Multi-AZ, KMS-encrypted, reachable only from the API services — no public endpoint) · auth runs as our own service (GoTrue export → Cognito or self-hosted) · background jobs get a real worker tier · secrets rotate in Secrets Manager · observability becomes first-class (CloudWatch/OTel, alerting) · region <code>eu-central-2</code> (Zurich) for Swiss/EU health-data residency.</p>
+<p><strong>Cutover plan:</strong> logical replication → freeze window → switch connection strings → verify → Supabase retained as rollback for 30 days. The full launch-readiness checklist (doc 19 B1) re-runs against the new stack before cutover.</p>
 <h2>10. Build sequence — done vs pending</h2>
 <table>
 <thead>
