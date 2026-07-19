@@ -173,6 +173,63 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-07-19 · Builders "Access" page (web)</h3>
+<ul>
+<li><strong>Build:</strong> <code>nutrisync-web-1807_v11.45-po5.zip</code> — new <code>hub/access.html</code> (behind Access itself): the 7 allow-listed emails with owner labels, how the email+PIN login works, where to manage the list (Zero Trust policy — live source of truth), and the note that <code>public.admins</code> (Supabase) is a separate list for KPIs/feedback. Pill added to the gated hub nav.</li>
+</ul>
+<h3>2026-07-19 · PWA synced to v0.11.0 (m.nutrisynccollective.com)</h3>
+<ul>
+<li>"Build NutriSync PWA" re-run from the r3f source: the full Round-3 app (all 56 fixes) is live on the 4th surface. Exactly 3 files changed on deploy (re-hashed bundle + index + versioned SW) — parity by construction, cache-safe by design.</li>
+</ul>
+<h3>2026-07-19 · R3 batch I — v0.11.0-r3f (OTA): Onboarding + two-step activation. ROUND 3 COMPLETE</h3>
+<ul>
+<li><strong>R3-51 ✅ (D1)</strong> two-step activation: signup accepts any email, but the account only activates via the verification link. App ships the "Check your inbox" panel with resend + friendly handling of unconfirmed logins. <strong>Requires the dashboard toggle: Supabase → Authentication → Providers → Email → "Confirm email" ON.</strong></li>
+<li><strong>R3-52 ✅</strong> "None of the above" mutually exclusive with conditions · <strong>R3-53 ✅</strong> PMOS in onboarding steps · <strong>R3-54 ✅</strong> diet "Other" opens a free-text field (stored in new <code>users.diet_other</code> — run <code>diet-other.sql</code>); DIET map completed (gluten-free/dairy-free/other no longer collapse to 'none') · <strong>R3-55 ✅</strong> three NutriGoals in onboarding too · <strong>R3-56 ✅</strong> consent pillars use red outline line icons (cycle/salad/lock), beta-welcome hearts stay (approved copy).</li>
+<li><strong>Round 3: 56/56 items closed</strong> across v0.10.0→v0.11.0 (6 OTAs, 2 SQL migrations, 1 dashboard toggle). All releases archived in <code>releases/</code> for rollback.</li>
+</ul>
+<h3>2026-07-19 · R3 batch H — v0.10.4-r3e (OTA) + feedback table (SQL)</h3>
+<ul>
+<li><strong>R3-45 ✅</strong> Nutri save button full-opacity coral · <strong>R3-46 ✅</strong> chosen Nutri propagates: Home refreshes the profile on every tab focus (gate already fetched per open).</li>
+<li><strong>R3-47 ✅</strong> emoji sweep: Sign-in &amp; Security (key/SMS/FaceID/phone/laptop line icons), Data Privacy (lock banner + download icon), Community Privacy banner → green <code>#E8F7F0</code> box with <code>#2D6A4F</code> text + icon · <strong>R3-48 ✅</strong> stray roadmap note under Active Sessions removed.</li>
+<li><strong>R3-49 ✅</strong> Send Feedback = in-app screen → new <code>public.feedback</code> table (RLS insert/read own; founders read via <code>admin_feedback()</code> RPC gated on the existing <code>public.admins</code> allowlist). Requires <code>feedback-table.sql</code> in the SQL editor. mailto: hand-off gone.</li>
+<li><strong>R3-50 ✅ + R3-55 (partial)</strong> Health Profile/NutriGoals: gradient bg, date header, grey subheading, per-goal gradients, swipe left/right, lock icon (no emoji), allergies/conditions moved out (live in Cycle Health), save errors no longer silent — and the goal list is now the founders' three (4th removed; onboarding side lands with Batch I).</li>
+</ul>
+<h3>2026-07-19 · R3 batch G — v0.10.3-r3d (OTA): NutriLog + Movement CTAs</h3>
+<ul>
+<li><strong>Root cause found:</strong> the "+ Log a meal / + Log movement" buttons EXISTED but sat at bottom:18 — underneath the floating tab bar. Lifted above it (R3-38/42). "Missing button" reports were the nav bar covering them.</li>
+<li><strong>R3-39/43 ✅</strong> "History ›" links on both tabs (Meal History / Movement History screens were built but unreachable); post-log "synced" confirmation already in place; missed days now show the blue Nutri in both histories.</li>
+<li><strong>R3-40/41 ✅</strong> line-icon SVGs above FUEL/VITALITY and SESSION/STEPS (no emojis), "Movement basics" header + "Each one boosts your cycle sync score" subheading.</li>
+</ul>
+<h3>2026-07-19 · R3 batch F — v0.10.2-r3c (OTA): Progress rebuilt</h3>
+<ul>
+<li><strong>R3-29 ✅</strong> orange hero card with name greeting + PHASE·DAY badge, CAS ring inside (white on orange).</li>
+<li><strong>R3-30 ✅</strong> "↑x / ↓x vs last cycle" once a completed cycle exists · <strong>R3-31 ✅</strong> 4th ring relabelled Recovery · <strong>R3-32 ✅</strong> zero-value rings show full track, no floating dot.</li>
+<li><strong>R3-33 ✅</strong> Cycle Stability = simple band-coloured ring (volatile/stable/aligned) with score centre + Current/Last/Best beside — speedometer gauge dropped.</li>
+<li><strong>R3-34 ✅</strong> Energy Stability / Mood / PMS Symptoms row with REAL values (per-metric stability from logged series, PMS rate from symptom logs; honest "—" under 7/3 logged days). New lib fns <code>seriesStability</code>, <code>fetchPmsRate</code>.</li>
+<li><strong>R3-35/36/37 ✅</strong> 4 hormones (Estrogen, LH, FSH, Progesterone) as filled mountain curves, Mon–Sun labels with today highlighted, W/M/Y as segmented pill.</li>
+</ul>
+<h3>2026-07-19 · R3 batch E — v0.10.1-r3b (OTA): Calendar rebuilt</h3>
+<ul>
+<li><strong>R3-18 ✅</strong> page header: back · Calendar · pencil → Cycle Health (edit period dates).</li>
+<li><strong>R3-22 ✅</strong> week starts SUNDAY app-wide in calendar (founder decision D2) · <strong>R3-23 ✅</strong> date numbers in solid phase-coloured circles, future days outlined · <strong>R3-19/20/21 ✅</strong> knob on the bar track, "→ phase begins in Xd", period as range.</li>
+<li><strong>R3-25…28 ✅</strong> Year tab = "Cycle History": big year + Nutri, orange stats bar with REAL values (cycles tracked / avg length / ±variance from logged history, honest "—" before enough data), real-time text search over phase episodes with pagination ("Show more", bounded client derivation; SQL RPC path noted for scale), numbered coloured mini-months, current month highlighted, own layout.</li>
+<li><strong>R3-17 ✅ complete</strong> sex days on calendar: ★ protected / ☆ unprotected (new <code>fetchSexDayTypes</code>).</li>
+</ul>
+<h3>2026-07-19 · R3 batch 1 — v0.10.0-r3a (OTA) + versioning policy</h3>
+<ul>
+<li><strong>Versioning starts:</strong> app now semver'd (<code>0.10.0</code>); every release zip is kept in <code>releases/</code> as a rollback point (baseline <code>app-v0.9.0-baseline-r2k-source.zip</code> archived first). Rollback = deploy the previous release zip via "Deploy NutriSync App".</li>
+<li><strong>048/R3-01 ✅</strong> nav bar icon-only (labels removed — they duplicated the captions baked into the icons).</li>
+<li><strong>041/042/043/R3-06 ✅</strong> Home ring rebuilt to the reference: always-visible gap (≤94%), gradient mapped along the arc (maroon start-cap → bright tip), day badge riding the arc tip.</li>
+<li><strong>R3-07 ✅</strong> smooth continuous scrub · <strong>R3-08 ✅</strong> battery green once logged (resets daily) · <strong>R3-09 ✅</strong> score card styled · <strong>R3-10 ✅</strong> multicolour waves.</li>
+<li><strong>R3-05 ✅</strong> eternal-loading fixed: onboarding check now has an 8s timeout + cached last-known state — boot always resolves.</li>
+<li><strong>R3-12 ✅</strong> gate: gradient bg, chosen Nutri (placeholder photo removed), slide hardened, save errors surfaced.</li>
+<li><strong>R3-14/15/16/17 ✅ (app side)</strong> log symptoms: real date, gradient, notes editor from header pencil, reloads today's log, save failures alert instead of silently discarding. Calendar sex-stars follow in Batch E.</li>
+<li><strong>Decisions:</strong> D1 two-step activation · D2 week starts Sunday · D3 professional text search (paginated, lazy) — multimodal added to backlog.</li>
+</ul>
+<h3>2026-07-19 · PO Review Round 2 ingested (app)</h3>
+<ul>
+<li>Founders' full-app pass (56 findings + 26 screenshots + 3 corrected reference images) triaged into <strong>doc 17</strong> as R3-01…R3-56 in 9 build batches, plus 3 founder decisions (email verification, week-start day, year-search scope). Verified against the current OTA — all findings current. Execution starts with Batch A (global chrome) + the two data-loss majors (symptoms persistence R3-17, boot hang R3-05).</li>
+</ul>
 <h3>2026-07-18 · Footer QR now points to the mobile PWA (web)</h3>
 <ul>
 <li><strong>Build:</strong> <code>nutrisync-web-1807_v11.45-po3.zip</code> — QR asset regenerated to encode <code>https://m.nutrisynccollective.com</code>; tile click opens the PWA. Doc 12 §18 asks Design to adopt at source.</li>

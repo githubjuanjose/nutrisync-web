@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>PO Review — Round 2 — NutriSync Docs</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.navbtns{display:flex;gap:16px;align-items:center;}
+.navbtns a:first-child{padding:5px 12px;border:1px solid var(--line);border-radius:20px;}
+.navbtns a:first-child:hover{border-color:var(--coral);background:var(--cream);}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+h4{font-size:16px;font-weight:800;margin:20px 0 6px;}
+p{margin:10px 0;}
+a{color:var(--coral-deep);}
+strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:'SF Mono',Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:14px 0;padding:12px 18px;background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;color:#5d524b;}
+blockquote p{margin:4px 0;}
+ul,ol{margin:10px 0;padding-left:24px;}
+li{margin:5px 0;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;}
+tbody tr:nth-child(even){background:var(--cream);}
+.pill{display:inline-block;background:#FDE6DD;color:var(--coral-deep);font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;}
+.card{display:block;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:10px 0;text-decoration:none;color:var(--ink);transition:.15s;}
+.card:hover{border-color:var(--coral);background:var(--cream);}
+.card .t{font-weight:800;font-size:16px;color:var(--coral-deep);}
+.card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
+.sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
+</style></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>PO Review — Round 2 (app, 18 Jul)</h1>
+<p>Full-app pass by the founders (screenshots <code>feedback/round2-screens/</code>, corrected reference images in <code>correct-versions/</code>: ENERGY SCORE, MOOD SCORE, Calendar Nav Bar). Founder IDs (F1…f56, with duplicates) kept in brackets; canonical numbering <strong>R3-xx</strong>. Verified against the live OTA (r2k) — findings are current, not stale-build noise.</p>
+<h2>Scoreboard</h2>
+<table>
+<thead>
+<tr>
+<th>Batch</th>
+<th>Items</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A · Global chrome (nav bar, backgrounds, fonts)</td>
+<td>R3-01…04</td>
+<td>✅ complete across batches (icon-only nav, gradients on gate/log/health screens + tab heroes, Poppins ring)</td>
+</tr>
+<tr>
+<td>B · Boot + Home ring</td>
+<td>R3-05…11</td>
+<td>✅ v0.10.0-r3a (041/042/043 ring per reference, smooth scrub, green battery, boot-hang fix, score card, waves)</td>
+</tr>
+<tr>
+<td>C · Check-in gate (Energy/Mood)</td>
+<td>R3-12…13</td>
+<td>✅ v0.10.0-r3a (gradient, chosen Nutri, slide hardened, save errors surfaced)</td>
+</tr>
+<tr>
+<td>D · Log symptoms (Edit Period)</td>
+<td>R3-14…17</td>
+<td>✅ complete (r3a + sex ★/☆ on calendar in r3b)</td>
+</tr>
+<tr>
+<td>E · Calendar (month + year)</td>
+<td>R3-18…28</td>
+<td>✅ v0.10.1-r3b (header+pencil, Sunday-first, coloured day circles, hero fixes, Cycle History year view with real stats + paginated search, sex ★/☆)</td>
+</tr>
+<tr>
+<td>F · Progress</td>
+<td>R3-29…37</td>
+<td>✅ v0.10.2-r3c (orange hero + PHASE·DAY badge, ↑x comparison, Recovery relabel, zero-rings fixed, stability ring, Energy/Mood/PMS row, 4-hormone mountain chart + Mon–Sun, segmented toggle)</td>
+</tr>
+<tr>
+<td>G · NutriLog + Movement CTAs</td>
+<td>R3-38…44</td>
+<td>✅ v0.10.3-r3d (CTAs unhidden from under the tab bar, History links on both tabs, stat icons, Movement basics header + score subheading, blue-Nutri missed days)</td>
+</tr>
+<tr>
+<td>H · Settings + feedback-to-DB</td>
+<td>R3-45…50</td>
+<td>✅ v0.10.4-r3e + <code>feedback-table.sql</code> (save colour, Nutri propagation, icon sweep, green community banner, stray text removed, in-app Feedback → DB, Health Profile/NutriGoals redo, 3 goals)</td>
+</tr>
+<tr>
+<td>I · Onboarding</td>
+<td>R3-51…56</td>
+<td>✅ v0.11.0-r3f + <code>diet-other.sql</code> + Supabase Confirm-email toggle (two-step activation w/ resend, None-exclusive, PMOS, diet Other free-text, 3 goals, consent line icons)</td>
+</tr>
+<tr>
+<td>Decisions needed</td>
+<td>R3-D1…D3</td>
+<td>✅ decided: D1 two-step (loose signup, email-verified activation) · D2 Sunday · D3 pro text search (paginated/lazy; multimodal → backlog)</td>
+</tr>
+</tbody>
+</table>
+<h2>A · Global chrome</h2>
+<ul>
+<li><strong>R3-01</strong> [F11/F26/f38/f41/f46 · bug/major] Bottom nav duplicated labels (icon PNG already contains its label + we render another). Fix: hide the RN tab labels everywhere.</li>
+<li><strong>R3-02</strong> [F12] Centre item should read "Home" not "Today" — resolved by R3-01 (icon carries "Home").</li>
+<li><strong>R3-03</strong> [F14/f28/f42/f45/f39/f56 · visual] Backgrounds inconsistent: several screens flat/dark instead of the soft cream-peach gradient. Fix: one shared gradient backdrop for all main screens; gate/log screens lose the dark grey.</li>
+<li><strong>R3-04</strong> [F13 · visual] Phase name / "DAY x" on the ring render in system font. Fix: force Poppins on ring texts.</li>
+</ul>
+<h2>B · Boot + Home</h2>
+<ul>
+<li><strong>R3-05</strong> [f58 · bug/MAJOR] Loading screen can hang forever on app open (force-quit needed). Add boot timeout + fail-open to Welcome/Home; investigate updates/fonts await.</li>
+<li><strong>R3-06</strong> [F59+F60 · visual/major] Ring: leave a small top gap (progress-arc read) and fix gradient direction/placement per reference screenshot (dark red top-right → lighter toward the gap).</li>
+<li><strong>R3-07</strong> [F8 · perf] Ring scrub: continuous smooth slide (multi-day in one motion), keep "Back to today".</li>
+<li><strong>R3-08</strong> [F57 · perf] Battery pill turns green once today's energy/mood logged; resets next day.</li>
+<li><strong>R3-09</strong> [F7 · visual] Cycle Sync Score card → rounded shadowed card style.</li>
+<li><strong>R3-10</strong> [F10 · visual] Wave inside ring → layered pink/orange/maroon (multi-colour), not flat peach.</li>
+<li><strong>R3-11</strong> [F14] Home gradient lighter/airier (part of R3-03).</li>
+</ul>
+<h2>C · Check-in gate</h2>
+<ul>
+<li><strong>R3-12</strong> [F9 · perf+visual] Gate: gradient background (not dark grey), header text legible, battery/mood respond to vertical slide, avatar = chosen Nutri (not placeholder photo). Match <code>correct-versions/ENERGY SCORE (1).png</code> + <code>MOOD SCORE (1).png</code>.</li>
+<li><strong>R3-13</strong> [F57 overlap] After save, Home battery reflects logged state (see R3-08).</li>
+</ul>
+<h2>D · Log symptoms (Edit Period)</h2>
+<ul>
+<li><strong>R3-14</strong> [f27 · bug/major] Header shows a hardcoded date (11 March) — use today's date.</li>
+<li><strong>R3-15</strong> [f28] Gradient background (part of R3-03).</li>
+<li><strong>R3-16</strong> [f29] Notes: pencil entry at top → dedicated note screen (keyboard never covers input).</li>
+<li><strong>R3-17</strong> [f30 · bug/MAJOR] Logged symptoms don't persist; sex logging must mark calendar: protected = filled ★, unprotected = outline ☆.</li>
+</ul>
+<h2>E · Calendar</h2>
+<ul>
+<li><strong>R3-18</strong> [F15 · bug/major] Month header missing: back arrow + "Calendar" + pencil (edit period start/end, fix wrong dates).</li>
+<li><strong>R3-19</strong> [F16] Day marker sits ON the progress bar track (not floating badge).</li>
+<li><strong>R3-20</strong> [F17] "→ Phase begins in X days" arrow glyph.</li>
+<li><strong>R3-21</strong> [F18] Avg Period as range ("6–7 days").</li>
+<li><strong>R3-22</strong> [F19 · DECISION → R3-D2] Week start: founders ask Sunday (S M T W T F S) — reverses Round-1 Monday-first fix.</li>
+<li><strong>R3-23</strong> [F20] Date numbers inside solid phase-coloured circles (not dot-under-number).</li>
+<li><strong>R3-24</strong> [F21] Phase info card shows the specific date.</li>
+<li><strong>R3-25</strong> [F20b/f21/f22 · bug/major] Year view: "Cycle History" header + big year + profile pic; stats bar (cycles tracked / avg length / variance); search bar (searchable phase history).</li>
+<li><strong>R3-26</strong> [F23] Year mini-months: numbered day cells coloured by phase (legible), not dot rows.</li>
+<li><strong>R3-27</strong> [f24] Highlight current month in Year view.</li>
+<li><strong>R3-28</strong> [F25] Year view drops the Month-tab hero card/toggle/legend — own layout.</li>
+</ul>
+<h2>F · Progress</h2>
+<ul>
+<li><strong>R3-29</strong> [F27/F28 · bug/major] Orange hero card ("Progress / Keep it up, {name}") + PHASE·DAY badge.</li>
+<li><strong>R3-30</strong> [F29] Show "↑x vs last cycle" comparison once data exists (keep honest empty state before).</li>
+<li><strong>R3-31</strong> [F30] Fifth ring relabel back to <strong>Recovery</strong> (wireframe) — was "Movement".</li>
+<li><strong>R3-32</strong> [F31] Zero-value rings show full track with 0 arc (not floating dot).</li>
+<li><strong>R3-33</strong> [F32] Cycle Stability → simple ring/arc "volatile/aligned/stable" + score centre + Current/Last/Best beside (drop speedometer gauge).</li>
+<li><strong>R3-34</strong> [F33 · bug/major] Energy Stability / Mood / PMS Symptoms 3-col stat row missing.</li>
+<li><strong>R3-35</strong> [f35/f36 · visual/major] Hormone chart: 4 hormones (Estrogen, LH, FSH, Progesterone) as filled mountain/area curves, day-of-week x-labels with today highlighted [f37].</li>
+<li><strong>R3-36</strong> [F34] W/M/Y toggle as segmented pill (active = white rounded).</li>
+<li><strong>R3-37</strong> [f39] Background gradient (R3-03).</li>
+</ul>
+<h2>G · NutriLog + Movement</h2>
+<ul>
+<li><strong>R3-38</strong> [F40 · bug/major] NutriLog tab: prominent "+ Log a meal" button → MealLog screen; Meals Logged count live.</li>
+<li><strong>R3-39</strong> [f44] "Meal History" entry on the tab (screen exists) + post-log "synced" confirmation moment + blue Nutri on missed days (per wireframe).</li>
+<li><strong>R3-40</strong> [f43] Icons above Meals Logged / Hydration Rec.</li>
+<li><strong>R3-41</strong> [f47/f48] Movement: icons above Workouts/Steps, "Movement basics" header, subheading "each one boosts your cycle sync score".</li>
+<li><strong>R3-42</strong> [f49 · perf/major] Movement logging: "+ Log Today's Movement" primary button → LogMovement screen (keyboard-safe, saves, confirmation state, feeds Body Insight tab).</li>
+<li><strong>R3-43</strong> [f50 · idea/major] "Movement History" entry on the tab (screen exists — surface it).</li>
+<li><strong>R3-44</strong> [f45/f46] Background + nav (R3-01/03).</li>
+</ul>
+<h2>H · Settings</h2>
+<ul>
+<li><strong>R3-45</strong> [f50a] Save button full-opacity brand colour.</li>
+<li><strong>R3-46</strong> [f50b · bug/major] Chosen Nutri must propagate app-wide (Home header, gate, settings home) immediately after save.</li>
+<li><strong>R3-47</strong> [f51/f53/f54] Replace emoji icons: Sign-in &amp; Security (authenticator/SMS/FaceID/devices), Data Privacy rows + banner; Community Privacy banner → green box <code>#E8F7F0</code>, text/icon <code>#2D6A4F</code>.</li>
+<li><strong>R3-48</strong> [f52] Remove stray text under Active Sessions.</li>
+<li><strong>R3-49</strong> [f55 · perf/major] Send Feedback → in-app screen writing to a new <code>feedback</code> table (RLS: insert own; founders read via hub) — replaces mailto.</li>
+<li><strong>R3-50</strong> [f56 · visual/major] NutriGoals (Health Profile) screen redo: gradient bg, date header, black "Health profile" + grey "NutriGoals" subheading, 2-cycle edit lock note, goal cards as swipeable carousel with correct gradients, "Change goal" disabled until 2 full cycles, keep Save.</li>
+</ul>
+<h2>I · Onboarding</h2>
+<ul>
+<li><strong>R3-51</strong> [F1 · DECISION → R3-D1] Fake emails can register. Recommend enabling Supabase "Confirm email" (verification link) — changes signup flow.</li>
+<li><strong>R3-52</strong> [F2] "None of the above" exclusive with other conditions.</li>
+<li><strong>R3-53</strong> [F5] PCOS → PMOS in steps content (with the steps-i18n pass).</li>
+<li><strong>R3-54</strong> [F3] Diet "Other" → free-text input, keyboard-safe.</li>
+<li><strong>R3-55</strong> [F4] Remove "Fewer PMS mood crashes" NutriGoal (3 goals) here + Home NutriGoals.</li>
+<li><strong>R3-56</strong> [F6] "Your data stays yours" icons: red outline salad/lock per wireframe (not emojis).</li>
+</ul>
+<h2>Decisions needed (founders)</h2>
+<ul>
+<li><strong>R3-D1</strong> Email verification ON? (Supabase Confirm-email: real mailboxes required, adds a "check your inbox" step.)</li>
+<li><strong>R3-D2</strong> Calendar week start: Sunday (this round) vs Monday (Round-1 request F22). Pick one.</li>
+<li><strong>R3-D3</strong> Search bar in Year view [f22]: text-only search OK for v1? (Mic/voice needs native permissions — propose text first.)</li>
+</ul></div></body></html>

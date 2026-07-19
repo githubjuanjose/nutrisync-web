@@ -257,6 +257,59 @@ if os.path.isdir(dd):
         if f.endswith(".html"): shutil.copy(os.path.join(dd, f), os.path.join(dst, f)); n += 1
     print("- overlaid %d hub documents" % n)
 
+# ── Builders "Access" page: who can enter the gated areas + how it works. ──
+# Informational SNAPSHOT (the live source of truth is the Cloudflare Access
+# policy); protected by Access itself, so listing the emails here is safe.
+_ACCESS_EMAILS = [
+    ("juanjose.cebrian@gmail.com", "Juanjo — Engineering"),
+    ("lcebrian@nutrisynccollective.com", "Luc\u00eda — COO (domain)"),
+    ("pgonzalez@nutrisynccollective.com", "Pilar — CEO (domain)"),
+    ("mgarzon@nutrisynccollective.com", "Mar\u00eda Paula — CMO (domain)"),
+    ("pilargonz05@gmail.com", "Pilar — personal"),
+    ("cebrianlucia281@gmail.com", "Luc\u00eda — personal"),
+    ("mapigarzon2204@gmail.com", "Mar\u00eda Paula — personal"),
+]
+_rows = "".join(
+    '<tr><td><code>%s</code></td><td>%s</td></tr>' % (e, w) for e, w in _ACCESS_EMAILS
+)
+_ACCESS_HTML = ('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">'
+  '<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Access \u00b7 NutriSync Builders</title>'
+  '<style>body{font-family:Inter,system-ui,sans-serif;background:#FBF4EE;color:#241D1A;margin:0;line-height:1.6}'
+  '.wrap{max-width:760px;margin:0 auto;padding:40px 22px 80px}'
+  'h1{font-size:30px;font-weight:900;margin:0 0 6px}p{color:#6f655e}'
+  'table{width:100%;border-collapse:collapse;margin:18px 0;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 10px 30px -18px rgba(0,0,0,.25)}'
+  'th{background:#EA5740;color:#fff;text-align:left;padding:10px 14px;font-size:13px}'
+  'td{padding:10px 14px;border-top:1px solid #F0E7DF;font-size:14px}'
+  'code{background:#FBEDE6;color:#9a3a25;padding:2px 7px;border-radius:6px;font-size:.92em}'
+  '.card{background:#fff;border-radius:14px;padding:16px 18px;margin:12px 0;box-shadow:0 10px 30px -18px rgba(0,0,0,.18);font-size:14px}'
+  '.card b{display:block;margin-bottom:4px}'
+  'a{color:#D8452F;font-weight:700}.top{font-size:13px}</style></head><body><div class="wrap">'
+  '<p class="top"><a href="full-hub-gated-site.html">\u2039 Back to Builders</a></p>'
+  '<h1>Who can access Builders &amp; Investors</h1>'
+  '<p>These addresses pass the Cloudflare Access gate (email + one-time PIN) on <code>/hub/*</code>. '
+  'Sessions last 24h. This page is a snapshot \u2014 the live list is the Access policy.</p>'
+  '<table><tr><th>Email</th><th>Who</th></tr>' + _rows + '</table>'
+  '<div class="card"><b>How login works</b>Open any Builders/Investors link \u2192 enter your email \u2192 '
+  'a 6-digit code arrives by email \u2192 you are in for 24h. Only listed addresses receive codes.</div>'
+  '<div class="card"><b>Add / remove someone</b>Cloudflare dashboard \u2192 Zero Trust \u2192 Access \u2192 '
+  'Applications \u2192 <i>NutriSync Builders Hub</i> \u2192 policy <i>Founders</i> \u2192 Include \u2192 Emails. '
+  'Changes apply immediately \u2014 no deploy needed. Keep this page in sync (ask Engineering).</div>'
+  '<div class="card"><b>Related but separate</b>Reading app feedback / admin KPIs uses the <code>public.admins</code> '
+  'allowlist in Supabase (SQL editor) \u2014 being on this page does not grant that automatically.</div>'
+  '</div></body></html>')
+_ap = os.path.join(PUB, "hub", "access.html")
+open(_ap, "w", encoding="utf-8").write(_ACCESS_HTML)
+print("- Builders Access page (hub/access.html)")
+_hub = os.path.join(PUB, "hub", "full-hub-gated-site.html")
+if os.path.exists(_hub):
+    _s = open(_hub, encoding="utf-8").read()
+    if "access.html" not in _s:
+        _old = '<button class="htab" id="bt2" onclick="bldTab(2)">\U0001F4DA Project documentation</button>'
+        _pill = '<a class="htab" href="access.html" target="_blank" style="text-decoration:none;display:inline-flex;align-items:center">\U0001F510 Access</a>'
+        if _old in _s:
+            open(_hub, "w", encoding="utf-8").write(_s.replace(_old, _old + "\n      " + _pill, 1))
+            print("- Access pill on gated hub nav")
+
 # ── Prototypes: moved OUT of the public marketing site, INTO the Builders area. ──
 # The marketing bundle's "HEALTH FLOWS / See NutriSync in action" showcase is a
 # single <section id="screens"> (plus nav/hero/footer links to "#screens"). It's
