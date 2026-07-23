@@ -173,6 +173,48 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>23 Jul 2026 — Round 4 batch r4e: Progress wireframe parity · app v0.12.5-r4e — ROUND 4 COMPLETE (30/30)</h3>
+<ul>
+<li><strong>f28+f23</strong>: header is now FLAT solid coral <code>#E4572E</code> (title + greet + PHASE·DAY badge only); the Cycle Alignment Score moved to its own white/cream card below — coral arc on a light track, score in dark text, comparison ("↑x vs last cycle") in green.</li>
+<li><strong>F18</strong>: the 5 component circles are tappable → modal with the founders' exact copy per component (what it measures + the concrete action to raise it), current/max shown in coral.</li>
+<li><strong>F19</strong>: hormone chart rebuilt — Estrogen yellow, LH red/coral, FSH orange, Progesterone light mauve; each hill has a gradient fill fading to transparent; solid 2px stroke on top; legend moved ABOVE the chart; current day still highlighted on the x-axis.</li>
+<li><strong>f22+f25</strong>: Cycle Stability gauge is a continuous red→orange→yellow gradient arc (also in low-data states — no more flat gray), white knob at the score position, zone words volatile · aligned · stable (no coloured dots, no purple/green).</li>
+<li><strong>f24</strong>: component rings thinner (4.5px) with lighter labels. <strong>f20</strong>: Current/Last cycle/Best values in bold coral. <strong>f21</strong>: populated Energy/Mood/PMS percentages in green. <strong>f27</strong>: active period tab = bold coral text, no white pill.</li>
+<li><strong>f26 (decision)</strong>: View History stays; wireframe update requested from Design.</li>
+<li>New <code>mob.*</code>/explainer strings ship with EN fallbacks; translations follow via the hub Translations tool.</li>
+<li><strong>Round 4 closed: 30/30 items.</strong> Post-round: rebuild the PWA (parity) and re-test 059 on current builds.</li>
+</ul>
+<h3>23 Jul 2026 — Round 4 batch r4d: logs + settings polish · app v0.12.4-r4d</h3>
+<ul>
+<li><strong>f16</strong>: weekly-streak "missed day" now uses the wireframe's own Nutri asset (<code>Group 1171289069</code> → <code>assets/nutrilog/streak-off.png</code>) in Meal + Movement history.</li>
+<li><strong>f17</strong>: saving a meal or workout now opens a proper confirmation screen — green ✓, "Logged!", "recorded and counts toward today", with <strong>Log more</strong> and <strong>Back to Home</strong> buttons (replaces the 1.8s toast that auto-vanished).</li>
+<li><strong>f29 (root cause found)</strong>: the Security screen's 2FA rows rendered the icon KEY as literal text — that was the stray "sms" and the doubled "Face ID" ("faceid" text + "Face ID / Touch ID" label). The map param also shadowed the i18n <code>t</code>. Real SettingsIcons now, all rows aligned on a 30px icon column (sessions rows included).</li>
+<li><strong>f30</strong>: Choose-your-Nutri selection ring is a fixed 126px circle hugging the avatar, always centred (it used to trace the outer grid cell).</li>
+</ul>
+<h3>23 Jul 2026 — Round 4 batch r4c: onboarding goal bubbles + Calendar parity · app v0.12.3-r4c</h3>
+<ul>
+<li><strong>F1</strong>: the onboarding NutriGoal step is now a big swipeable gradient bubble (GoalCarousel: swipe or arrows, dots, the shown orb IS the selection, first goal auto-selected) using the exact wireframe radial gradients — same component as Edit Health. Canonical EN values untouched → i18n and DB parity intact.</li>
+<li><strong>Bonus bug found &amp; fixed</strong>: onboarding's NutriGoal was silently NEVER saved — the old code referenced an undefined <code>userId</code> inside a swallowed try/catch. Now persisted with the real auth user id after saveOnboarding (errors surface).</li>
+<li><strong>F13</strong>: Calendar hero card now uses the wireframe radial — FF7000 core (to 23%) → FF5509 edge (SVG radial, rounded 30).</li>
+<li><strong>F14</strong>: date circles are neutral <code>#FFFAF9</code> with ink numbers (subtle border; today keeps the orange highlight); phase colour no longer floods the dates.</li>
+<li><strong>f15</strong>: NEW cycle-day badge at the top-left of every date — small phase-coloured circle with the cycle-day number (menstrual uses the wireframe gradient DE2A2A→CA4848→CE4A49→FF664F); sex-day stars unchanged.</li>
+</ul>
+<h3>23 Jul 2026 — Round 4 batch r4b: Home wireframe parity · app v0.12.2-r4b</h3>
+<ul>
+<li><strong>Ring rework (f4/f5/f6/F3/f7/f8)</strong>: fixed small gap at the upper-left (never a closed loop, never a variable pie); gradient along the arc with the darkest maroon at the TOP-RIGHT lightening to pale orange toward the gap; day badge FIXED at the start of the gap (left, over the white section) — only its number changes; centre phase text up to 34pt; waves with stronger pink/orange/maroon layering; soft faux-radial white→warm glow behind the ring (concentric circles — avoids the react-native-svg RadialGradient web banding). Drag-to-preview kept (updates text + badge number).</li>
+<li><strong>f2</strong>: shared <code>screenGrad</code> background — full-coral <code>#FE5936</code> at the very top fading to white, transition concentrated near the top — applied to Home, NutriLog, Movement Log, Progress and Log Symptoms.</li>
+<li><strong>F11</strong>: new <code>GoalOrb</code> component with the EXACT wireframe radial gradients per goal (PMS FD410C→FF820B→FFA51E · balance FE7FD4→FF5509 · energy FF5813→FF0086); Edit Health now uses it (onboarding picks it up in r4c/F1).</li>
+<li><strong>F9</strong>: tab-bar icons enlarged 34×30 → 40×35.</li>
+<li><strong>F12</strong>: mood/energy slider drag made much more responsive (threshold 8→3px, 22px per step) — sliding, not just tapping.</li>
+</ul>
+<h3>23 Jul 2026 — Round 4 batch r4a: logging persistence + manual cycle restart · app v0.12.1-r4a</h3>
+<ul>
+<li><strong>F10 (bug)</strong> Symptoms DID save but never reloaded: <code>getTodayLog</code> didn't select the rich fields (mood_state, pain/digestion/skin symptoms, cravings, libido, sex_logged, notes). Now selected → Edit Period prefills today's log, fully editable and re-saveable.</li>
+<li><strong>f31 (feature)</strong> "Log period" button on the Log Symptoms screen → mini calendar (Sunday-first) → picking a date starts a NEW cycle at Day 1 from that date. Each period start now inserts a new <code>cycles</code> row (real cycle history); <code>cycle_length</code> becomes the rolling average of the last ≤6 actual cycle gaps (15–60d sanity window), feeding Progress + the algorithm with real data.</li>
+<li><strong>f31 (engine)</strong> New <code>cycleDayActual</code> — the day counter NEVER auto-wraps at day 28; it keeps counting (29, 30…) until a period is logged. All "today" contexts switched (Home, logs, notifications, Progress, CAS ctx); calendar forecasting keeps the modulo for future-date predictions. <code>phaseForDay</code> treats past-length days as luteal, <code>cycleProgress</code> clamps the ring at full.</li>
+<li><strong>059</strong> Verified not a regression: nav labels are off in shipped code since v0.10 — testers were on a stale build; asked to re-test current.</li>
+<li>No DB migration needed (<code>cycles</code> already supports multiple rows per user).</li>
+</ul>
 <h3>19 Jul 2026 — Doc 20: Community Moderation Policy draft template (web po11)</h3>
 <ul>
 <li>New <strong>doc 20</strong> (ES working draft + EN public mirror): purpose, allowed/forbidden, eating-disorder &amp; crisis protocols, moderator action ladder, reporting mechanics (auto-hide on 2 reports, 24/72h SLA), identity/privacy, publish checklist. Contains <strong>8 ⚠️ DECISION markers for founders</strong> — resolving them + lawyer varnish gates Wave 5 (Community WF-7). DRAFT — not published, not legal advice.</li>
