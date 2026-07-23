@@ -173,6 +173,12 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>23 Jul 2026 — Design pack v11.47 integrated (web po15) + LH recolour in app</h3>
+<ul>
+<li><strong>v11.46/47 from Design</strong>: prototype synced to the shipped-app tokens (ring progress arc + 6-stop palette, white score card under flat header, View History, Movement rename, neutral calendar with per-phase radial badges) — this kills the false-mismatch diffs; hormone legend chips fixed (FSH/Progesterone were swapped).</li>
+<li><strong>Design decisions returned</strong>: LH → <strong>#D93030</strong> (applied to the app chart, ships with v0.13.2); year view = tint-only at 12px (matches our call); waves = parametric spec (4 ellipses rx≈1.15R/ry≈0.28R, waterline at score%) — <strong>pending founders' choice</strong> vs the exact Ellipse-SVG shapes they requested in R5-f2; app keeps the exact SVGs meanwhile.</li>
+<li>Full integration re-run on the fresh pack (all ns-* blocks reapplied: Access-first, QR→PWA, growth panel, pricing polish, ob/mob i18n sections, docs overlay).</li>
+</ul>
 <h3>23 Jul 2026 — Translation debt cleared: 155 mobile strings into the i18n pipeline · app v0.13.2 · web po14</h3>
 <ul>
 <li>Audit found <strong>155 mob.<em>/ui.</em> strings</strong> accumulated since Round 3 that lived only as EN fallbacks in code. All now in the catalogs: EN as source of truth, <strong>ES fully hand-translated</strong>, and the other 12 languages auto-filled where an existing translation matched the same English string (~17/lang); the rest awaits native review.</li>

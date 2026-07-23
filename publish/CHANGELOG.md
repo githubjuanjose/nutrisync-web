@@ -1,5 +1,16 @@
 # NutriSync — Release Notes / Change Log
 
+## 2026-07-23 — Hormone-graph legend colour fix (v11.47)
+- **Legend swatches were swapped.** The hormone-rhythm card's three curves are correct (Estrogen #FF5343, FSH #FF7926, Progesterone #FFC049) but the legend chips under them had FSH and Progesterone's colours reversed — `label-fsh.svg` was painted #FFC049 and `label-progesteron.svg` #FF7926. Swapped both so every legend chip now matches its curve. (This graph plots three hormones only — Estrogen/FSH/Progesterone, per `pxHormonalSub`; LH appears in nutrition copy, not as a curve, so the #5 "Estrogen vs LH share a colour" concern doesn't arise in this asset — all three are already distinct and on-palette.)
+
+## 2026-07-23 — Prototype synced to shipped-app tokens (v11.46)
+Kills the false-mismatch diffs testers were seeing (Round 5 was 64% duplicates). The phone prototype (marketing → Builders → Prototypes) now matches the shipped app:
+- **Home ring** — now a cycle-progress arc using the 6-stop brand palette (FF5338 → FF002A → FF002C → FF8372 → FE4E28 → FCAD5E); the arc grows daily and closes at day ≥ cycle length, with the CAS badge riding the tip. Phase name/day sit on an inner phase disc (readable).
+- **Progress** — score card is now a **white card under a flat #E4572E header**; **"View History"** control added below the Current/7-day/Best block (founder decision f26; toggles a Weekly·Monthly·Yearly "unlocks in the full app" note); **"Movement"** replaces "Recovery" in the contributors list.
+- **Calendar** — neutral **#FFFAF9** date cells; cycle days are now **per-phase radial badges** (menstrual C9354E→FF7A59, follicular 9BC19E→89AC8C, ovulatory FFAB40→E9870A, luteal AD70B1→E0749A); predicted days dashed, today solid ink.
+- **Design decisions returned to the team** — #5 hormone legend: Estrogen keeps #FF5343, **LH shifts to #D93030** (the two must be distinguishable); #4 year-view: **tint-only, no numeric badge** at 12 px cells (numbers need a ≥22 px scrollable year cell); #3 waves: parametric composition spec supplied (clip to ring, 4 ellipses rx≈1.15R/ry≈0.28R, waterline at score%).
+- **Pending (asset edit):** hormone-graph SVG recolor to the confirmed palette (Estrogen #FF5343 / LH #D93030 / FSH #FF7926 / Progesterone #FFC049) — needs the graph re-exported.
+
 ## 2026-07-18 — Footer QR even distribution + EN/ES disclaimer pack fix (v11.45)
 - **Footer top row evenly distributed**: the QR was shoved to the far edge by `margin-left:auto` on a growing columns block, leaving a large gap after LEGAL. Removed it and set the columns+QR container to `justify-content: space-between` (with a slightly wider inter-column gutter) so PRODUCT · COMPANY · LEGAL · QR now spread evenly across the full width, QR still flush-right over the wings.
 - **EN/ES disclaimer regression fixed**: v11.41 trimmed the disclaimer to “…Madrid.” in the built-in EN/ES and the 12 add-on packs, but missed `i18n/en.json` and `i18n/es.json`, which override the built-in at runtime — so EN/ES visitors still saw “Madrid, Singapore, Thessaloniki”. Both packs now read “Made with care in Madrid.” / “Hecho con cariño en Madrid.” (all 14 languages consistent).
