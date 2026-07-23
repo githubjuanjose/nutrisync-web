@@ -877,4 +877,30 @@ if os.path.exists(idx):
         open(idx, "w", encoding="utf-8").write(h)
         print("- pricing cards polish (CTA alignment + enterprise card depth)")
 
+
+# ---------------------------------------------------------------------------
+# ns-mob2-i18n: R3–R5 mobile-only strings (mob.*/ui.* additions) into the web
+# i18n packs so the hub Translations tool can review them (section "mob"/"ui").
+# Source: _integration/mob2_keys.json (EN source + ES hand pass + auto-reused
+# matches per language). Deep-merged, idempotent.
+m2 = os.path.join(ASSETS, "mob2_keys.json")
+if os.path.exists(m2):
+    M2ALL = json.load(open(m2, encoding="utf-8"))
+    def _dm2(dst, src):
+        for k, v in src.items():
+            if isinstance(v, dict) and isinstance(dst.get(k), dict):
+                _dm2(dst[k], v)
+            else:
+                dst[k] = v
+    n = 0
+    for lang, tree in M2ALL.items():
+        p = os.path.join(PUB, "i18n", lang + ".json")
+        if not os.path.exists(p):
+            continue
+        cat = json.load(open(p, encoding="utf-8"))
+        _dm2(cat, tree)
+        json.dump(cat, open(p, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+        n += 1
+    print("- mobile-string (mob/ui) keys merged into %d i18n packs" % n)
+
 print("\nIntegration complete - review, then commit + push.")

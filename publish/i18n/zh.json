@@ -1543,5 +1543,25 @@
       "sub": "Nutri 已根据你的回答生成了你的第一个阶段计划。你的个性化营养与运动指导已准备就绪。",
       "note": "你可以随时在设置中更新这些回答。"
     }
+  },
+  "mob": {
+    "avgByPhase": "各阶段平均分",
+    "best": "最佳",
+    "calendar": "日历",
+    "current": "当前",
+    "cycleAlignmentScore": "周期同步分",
+    "dayShort": "第",
+    "days": "天",
+    "flow": "流量",
+    "healthConditionsCaps": "确诊疾病",
+    "highest": "高",
+    "lastCycle": "上个周期",
+    "logged": "已记录",
+    "lowest": "低落",
+    "movementLbl": "运动",
+    "notesBtn": "备注",
+    "nutrition": "营养",
+    "other": "其他",
+    "today": "今天"
   }
 }

@@ -1543,5 +1543,25 @@
       "sub": "Nutrik zure lehen fase-plana sortu du zure erantzunetatik. Zure elikadura- eta mugimendu-gidaritza pertsonalizatua prest dago.",
       "note": "Erantzun hauek edonoiz alda ditzakezu Ezarpenetan."
     }
+  },
+  "mob": {
+    "avgByPhase": "Batez besteko puntuazioa fase bakoitzeko",
+    "best": "onena",
+    "calendar": "Egutegia",
+    "current": "Unekoa",
+    "cycleAlignmentScore": "ZIKLOAREN LERROKATZE PUNTUAZIOA",
+    "dayShort": "EGUNA",
+    "days": "egun",
+    "flow": "Fluxua",
+    "healthConditionsCaps": "DIAGNOSTIKATUTAKO GAIXOTASUNAK",
+    "highest": "altua",
+    "lastCycle": "Aurreko zikloa",
+    "logged": "erregistratuta",
+    "lowest": "Apal",
+    "movementLbl": "Mugimendua",
+    "notesBtn": "Oharrak",
+    "nutrition": "ELIKADURA",
+    "other": "Beste bat",
+    "today": "GAUR"
   }
 }

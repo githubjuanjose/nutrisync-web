@@ -1543,5 +1543,24 @@
       "sub": "La Nutri ha creat el teu primer pla de fase a partir de les teves respostes. La teva guia personalitzada de nutrició i moviment ja està a punt.",
       "note": "Pots actualitzar aquestes respostes quan vulguis a Configuració."
     }
+  },
+  "mob": {
+    "avgByPhase": "Puntuació mitjana per fase",
+    "best": "rècord",
+    "calendar": "Calendari",
+    "current": "Actual",
+    "cycleAlignmentScore": "PUNTUACIÓ D'ALINEACIÓ DEL CICLE",
+    "dayShort": "DIA",
+    "days": "dies",
+    "flow": "Fluix",
+    "healthConditionsCaps": "CONDICIONS DIAGNOSTICADES",
+    "highest": "alta",
+    "lastCycle": "Cicle anterior",
+    "logged": "registrat",
+    "lowest": "Baixa",
+    "movementLbl": "Moviment",
+    "nutrition": "NUTRICIÓ",
+    "other": "Altres",
+    "today": "AVUI"
   }
 }

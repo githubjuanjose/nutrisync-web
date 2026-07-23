@@ -1543,5 +1543,25 @@
       "sub": "Nutri heeft je eerste faseplan gemaakt op basis van je antwoorden. Je persoonlijke voedings- en bewegingsbegeleiding staat klaar.",
       "note": "Je kunt deze antwoorden altijd bijwerken in Instellingen."
     }
+  },
+  "mob": {
+    "avgByPhase": "Gemiddelde score per fase",
+    "best": "record",
+    "calendar": "Kalender",
+    "current": "Huidig",
+    "cycleAlignmentScore": "CYCLUS-ALIGNMENT-SCORE",
+    "dayShort": "DAG",
+    "days": "dagen",
+    "flow": "Bloedverlies",
+    "healthConditionsCaps": "GEDIAGNOSTICEERDE AANDOENINGEN",
+    "highest": "hoog",
+    "lastCycle": "Vorige cyclus",
+    "logged": "gelogd",
+    "lowest": "Laag",
+    "movementLbl": "Beweging",
+    "notesBtn": "Notities",
+    "nutrition": "VOEDING",
+    "other": "Anders",
+    "today": "VANDAAG"
   }
 }

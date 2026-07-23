@@ -1543,5 +1543,25 @@
       "sub": "Nutri hat aus deinen Antworten deinen ersten Phasenplan erstellt. Deine persönliche Ernährungs- & Bewegungsbegleitung ist bereit.",
       "note": "Du kannst diese Antworten jederzeit in den Einstellungen ändern."
     }
+  },
+  "mob": {
+    "avgByPhase": "Durchschnittsscore je Phase",
+    "best": "Bestwert",
+    "calendar": "Kalender",
+    "current": "Aktuell",
+    "cycleAlignmentScore": "ZYKLUS-ALIGNMENT-SCORE",
+    "dayShort": "TAG",
+    "days": "Tage",
+    "flow": "Blutung",
+    "healthConditionsCaps": "DIAGNOSTIZIERTE ERKRANKUNGEN",
+    "highest": "hoch",
+    "lastCycle": "Letzter Zyklus",
+    "logged": "eingetragen",
+    "lowest": "Tief",
+    "movementLbl": "Bewegung",
+    "notesBtn": "Notizen",
+    "nutrition": "ERNÄHRUNG",
+    "other": "Andere",
+    "today": "HEUTE"
   }
 }

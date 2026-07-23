@@ -1543,5 +1543,25 @@
       "sub": "Nutri creou o teu primeiro plan de fase a partir das túas respostas. A túa guía personalizada de nutrición e movemento está lista.",
       "note": "Podes actualizar estas respostas cando queiras en Axustes."
     }
+  },
+  "mob": {
+    "avgByPhase": "Puntuación media por fase",
+    "best": "récord",
+    "calendar": "Calendario",
+    "current": "Actual",
+    "cycleAlignmentScore": "PUNTUACIÓN DE ALIÑAMENTO DO CICLO",
+    "dayShort": "DÍA",
+    "days": "días",
+    "flow": "Fluxo",
+    "healthConditionsCaps": "CONDICIÓNS DIAGNOSTICADAS",
+    "highest": "alta",
+    "lastCycle": "Ciclo anterior",
+    "logged": "rexistrado",
+    "lowest": "Baixa",
+    "movementLbl": "Movemento",
+    "notesBtn": "Notas",
+    "nutrition": "NUTRICIÓN",
+    "other": "Outro",
+    "today": "HOXE"
   }
 }

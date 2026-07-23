@@ -1543,5 +1543,24 @@
       "sub": "Nutri a creat eth tòn prumèr plan de fasa a partir des tues responses. Era tua guida personalizada de nutricion e movement ei prèsta.",
       "note": "Pòdes actualizar aguestes responses quan volgues en Configuracion."
     }
+  },
+  "mob": {
+    "avgByPhase": "Puntuacion mejana per fasa",
+    "best": "rècord",
+    "calendar": "Calendari",
+    "current": "Actuau",
+    "cycleAlignmentScore": "PUNTUACION D'ALINHAMENT DETH CICLE",
+    "dayShort": "DIA",
+    "days": "dies",
+    "flow": "Flux",
+    "healthConditionsCaps": "CONDICIONS DIAGNOSTICADES",
+    "highest": "nauta",
+    "lastCycle": "Cicle anterior",
+    "logged": "registrat",
+    "lowest": "Baisha",
+    "notesBtn": "Nòtes",
+    "nutrition": "NUTRICION",
+    "other": "Aute",
+    "today": "AUÉ"
   }
 }

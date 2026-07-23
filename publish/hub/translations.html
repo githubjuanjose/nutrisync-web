@@ -32,7 +32,7 @@ textarea.same{border-color:#e6cf9a;background:#fdf7e9;}
   <p>Pick a language, review the machine-translated first pass beside the English source, and amend. Edits save on this device; <b>Export</b> downloads that language file to hand to the team to publish.</p>
   <div class="controls">
     <select id="fLang" title="Language to review"></select>
-    <select id="fSec"><option value="">All sections</option><option value="marketing">Marketing site</option><option value="app">Web app</option><option value="ob">App onboarding</option><option value="catalog">Catalog (lists)</option></select>
+    <select id="fSec"><option value="">All sections</option><option value="marketing">Marketing site</option><option value="app">Web app</option><option value="ob">App onboarding</option><option value="mob">App mobile strings</option><option value="ui">App shared UI</option><option value="catalog">Catalog (lists)</option></select>
     <input type="search" id="fTxt" placeholder="Search key or text..."/>
     <label style="font-size:12.5px;color:var(--muted)"><input type="checkbox" id="fEmpty"/> only untranslated (blank or = English)</label>
     <button class="btn btn-p" id="expT">Export</button>
@@ -88,7 +88,7 @@ function render(){
     if(onlyE&&tv.trim()&&tv.trim()!==ev.trim())continue;
     if(q&&!(e.p.join('.').toLowerCase().indexOf(q)>=0||ev.toLowerCase().indexOf(q)>=0||tv.toLowerCase().indexOf(q)>=0))continue;
     (bySec[e.p[0]]=bySec[e.p[0]]||[]).push(e);shown++;}
-  var label={marketing:'Marketing site',app:'Web app',ob:'App onboarding (mobile + PWA)',catalog:'Catalog (list content)'},order=['marketing','app','ob','catalog'];
+  var label={marketing:'Marketing site',app:'Web app',ob:'App onboarding (mobile + PWA)',mob:'App mobile strings (R3\u2013R5)',ui:'App shared UI',catalog:'Catalog (list content)'},order=['marketing','app','ob','mob','ui','catalog'];
   for(var s=0;s<order.length;s++){var sk=order[s];if(!bySec[sk])continue;
     var h=document.createElement('div');h.className='sec';h.textContent=label[sk]+' — '+bySec[sk].length;rows.appendChild(h);
     var t=document.createElement('table');t.innerHTML='<thead><tr><th>Key</th><th>English</th><th>'+NAME[lang]+'</th></tr></thead>';

@@ -173,6 +173,16 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>23 Jul 2026 — Translation debt cleared: 155 mobile strings into the i18n pipeline · app v0.13.2 · web po14</h3>
+<ul>
+<li>Audit found <strong>155 mob.<em>/ui.</em> strings</strong> accumulated since Round 3 that lived only as EN fallbacks in code. All now in the catalogs: EN as source of truth, <strong>ES fully hand-translated</strong>, and the other 12 languages auto-filled where an existing translation matched the same English string (~17/lang); the rest awaits native review.</li>
+<li>Hub Translations tool gains sections <strong>"App mobile strings (R3–R5)"</strong> and <strong>"App shared UI"</strong> — reviewers translate there next to onboarding/marketing, Export → merged → OTA. <code>feedback/r45-strings-skeleton.json</code> is the offline alternative.</li>
+<li>New integrate.py block <code>ns-mob2-i18n</code> keeps these keys flowing into future Design packs.</li>
+</ul>
+<h3>23 Jul 2026 — v0.13.1: visible app version in Settings</h3>
+<ul>
+<li>Settings now shows "NutriSync vX.Y.Z" at the bottom — testers can confirm they're on the current build before filing feedback (root fix for the stale-build churn that produced 16 duplicate items in Round 5).</li>
+</ul>
 <h3>23 Jul 2026 — Round 5 (r5a): ring re-spec + exact wireframe assets · app v0.13.0-r5a</h3>
 <ul>
 <li>16 of 25 items were Round-4 duplicates (testers on a pre-v0.12.x build) — marked re-test. The 9 real items shipped in one batch; full detail in <strong>doc 22</strong>.</li>

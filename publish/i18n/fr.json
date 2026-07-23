@@ -1543,5 +1543,23 @@
       "sub": "Nutri a créé ton premier plan de phase à partir de tes réponses. Ton accompagnement personnalisé nutrition & mouvement est prêt.",
       "note": "Tu peux modifier ces réponses à tout moment dans les Réglages."
     }
+  },
+  "mob": {
+    "avgByPhase": "Score moyen par phase",
+    "best": "record",
+    "calendar": "Calendrier",
+    "current": "En cours",
+    "cycleAlignmentScore": "SCORE D'ALIGNEMENT DU CYCLE",
+    "dayShort": "JOUR",
+    "days": "jours",
+    "flow": "Flux",
+    "healthConditionsCaps": "PATHOLOGIES DIAGNOSTIQUÉES",
+    "highest": "haute",
+    "lastCycle": "Cycle précédent",
+    "logged": "noté",
+    "lowest": "Bas",
+    "movementLbl": "Mouvement",
+    "other": "Autre",
+    "today": "AUJOURD'HUI"
   }
 }
