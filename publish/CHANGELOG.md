@@ -1,5 +1,14 @@
 # NutriSync — Release Notes / Change Log
 
+## 2026-07-25 — Baseline-ladder states on the prototype Progress screen (v11.49)
+Designed the real versions of the v0.14.1 "personal baseline" experience (PO doc 12 §21), in **both the phone-prototype and the wide-screen desktop-dashboard** Progress renderings so testers see it regardless of viewport and stop logging false mismatches. All EN/ES.
+- **Stat row — Energy Stability / Mood / PMS Symptoms**, three designed states via a ring motif (consistent with the CAS ring): *Building* (days 1–2) fills the ring n/7 in warm amber with the count in the centre and a "Building" caption — reads as a goal in progress, not missing data; *Provisional* (days 3–6) shows the real value in amber #E8930C with a dotted outer ring + a soft "PROVISIONAL" pill (real-but-low-confidence, non-alarming); *Solid* (day 7+) is the confident green percentage (matches r4e-f21, unchanged).
+- **"Baseline set" celebration card** (fires at day 7): warm coral→amber gradient, Nutri featured in a white disc, ✨ headline and the "we measure your progress against you, not an average" line — the user's first win.
+- **CAS comparison line** under the score card: green ▲ / red #D93030 ▼ delta + muted label; wording switches "vs your first week" → "vs last cycle" after the first logged period; before day 7 it shows a 7-dot tracker + "Building your baseline · n/7 days".
+- **Demo aid**: a clearly-marked dashed "Preview · days logged" scrubber (1–7 + ✓) lets reviewers watch the ladder transition without creating an account, with a one-line state caption. Prototype-only chrome, not shipped UI. Present on both the phone and desktop Progress renderings.
+- Copy is provisional EN/ES (per brief); founders can adjust. Other 12 languages fall back to EN on the prototype demo screens as before.
+- Open item for Design: confirmed the Round-5 note — the hormone graph plots 3 curves (Estrogen/FSH/Progesterone), no LH curve, so no Estrogen-vs-LH colour clash in this asset (legend swatch swap already fixed in v11.47).
+
 ## 2026-07-23 — Hormone-graph legend colour fix (v11.47)
 - **Legend swatches were swapped.** The hormone-rhythm card's three curves are correct (Estrogen #FF5343, FSH #FF7926, Progesterone #FFC049) but the legend chips under them had FSH and Progesterone's colours reversed — `label-fsh.svg` was painted #FFC049 and `label-progesteron.svg` #FF7926. Swapped both so every legend chip now matches its curve. (This graph plots three hormones only — Estrogen/FSH/Progesterone, per `pxHormonalSub`; LH appears in nutrition copy, not as a curve, so the #5 "Estrogen vs LH share a colour" concern doesn't arise in this asset — all three are already distinct and on-palette.)
 
