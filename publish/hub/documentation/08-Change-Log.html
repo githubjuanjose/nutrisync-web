@@ -173,6 +173,17 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>26 Jul 2026 — Round 7: auto-restart fully dead + CSS v2 · app v0.15.0-r7 + 1 SQL migration</h3>
+<ul>
+<li><strong>Server no-wrap migration</strong> (<code>2026-07-26-r7-cycle-no-wrap.sql</code>): the recommendations RPC wrapped the cycle day at the length (NutriLog/Movement showed day-1 content) AND picked the cycle row without ORDER BY. Calendar today/past now uses the actual day too; pencil opens "Edit period start date".</li>
+<li><strong>CSS v2</strong> per the founders' formula (baseline = first full cycle, PMS-symptom severe days, locked until reliable — never a default 100); stat block shows CAS · CSS; nutrition needs ≥3 checks for full marks; real session counts.</li>
+<li>Design assets: per-phase hormone SVGs (+ volatility on monthly), btn-history, edit-3, nav icons fill-fixed and bigger.</li>
+<li>Full detail: <strong>doc 24</strong>.</li>
+</ul>
+<h3>25 Jul 2026 — Hotfix v0.14.2: stray text node in GoalOrb</h3>
+<ul>
+<li>"Text strings must be rendered within a <Text> component" on the goal-orb screens: an inline JSX comment left two literal spaces as a text node inside the orb View (R6-f19 edit). Comment moved to its own line; repo-wide sweep found no other occurrences.</li>
+</ul>
 <h3>25 Jul 2026 — Design v11.48/49 integrated (web po17): baseline ladder designed on the prototype</h3>
 <ul>
 <li>Design delivered the §21 wireframes AS working prototype UI, on both the phone and desktop-dashboard Progress renderings: ring-motif stat states (Building n/7 amber ring → Provisional dotted-ring + pill → solid green), coral→amber "Baseline set" celebration card with Nutri, and the dual comparison line ("vs your first week" → "vs last cycle") with a 7-dot pre-baseline tracker. Includes a clearly-marked demo scrubber (Preview · days logged) so reviewers can walk the ladder without an account — prototype-only chrome.</li>

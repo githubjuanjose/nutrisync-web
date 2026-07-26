@@ -1,0 +1,85 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>PO Review — Round 7 (scoreboard) — NutriSync Docs</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.navbtns{display:flex;gap:16px;align-items:center;}
+.navbtns a:first-child{padding:5px 12px;border:1px solid var(--line);border-radius:20px;}
+.navbtns a:first-child:hover{border-color:var(--coral);background:var(--cream);}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+h4{font-size:16px;font-weight:800;margin:20px 0 6px;}
+p{margin:10px 0;}
+a{color:var(--coral-deep);}
+strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:'SF Mono',Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:14px 0;padding:12px 18px;background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;color:#5d524b;}
+blockquote p{margin:4px 0;}
+ul,ol{margin:10px 0;padding-left:24px;}
+li{margin:5px 0;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;}
+tbody tr:nth-child(even){background:var(--cream);}
+.pill{display:inline-block;background:#FDE6DD;color:var(--coral-deep);font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;}
+.card{display:block;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:10px 0;text-decoration:none;color:var(--ink);transition:.15s;}
+.card:hover{border-color:var(--coral);background:var(--cream);}
+.card .t{font-weight:800;font-size:16px;color:var(--coral-deep);}
+.card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
+.sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
+</style></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>PO Review — Round 7 (received 26 Jul 2026)</h1>
+<p>18 items + "bigger nav icons" → all executed in one release, <strong>v0.15.0-r7</strong> (26 Jul),
+plus <strong>1 SQL migration</strong> (<code>2026-07-26-r7-cycle-no-wrap.sql</code> — run before testing).</p>
+<h2>The big one — auto-restart fully dead now (f4/f5/f7)</h2>
+<p>r4a killed the auto-restart in the app's "today" contexts, but TWO spots still wrapped:
+1. <strong>Calendar</strong>: today/past dates now use the ACTUAL day (mirrors Home); only future
+   dates keep the modulo forecast (predicted cycles).
+2. <strong>Server (root cause of f6/f7)</strong>: <code>ns_current_segment</code> — which feeds the daily
+   recommendations — computed the day with <code>mod(len)</code> so NutriLog/Movement flipped to
+   day-1 menstrual content while Home correctly said day 29. It ALSO picked the cycle
+   row with <code>limit 1</code> and <strong>no ORDER BY</strong> (arbitrary row since cycle history exists).
+   Both fixed in the migration: actual day, latest cycle, day&gt;len maps as late luteal.
+3. <strong>f4</strong>: the Calendar pencil now opens <strong>Edit period start date</strong> (mini calendar →
+   manual cycle start via the same engine as Log period) instead of jumping to
+   Settings · Cycle Health. Icon replaced with the edit-3 vector (f3).</p>
+<h2>Scoring corrections</h2>
+<ul>
+<li><strong>f11</strong>: Nutrition component now needs <strong>≥3 checked items</strong> for full marks (was: 1/1 = 30).</li>
+<li><strong>f10</strong>: Sessions stat shows the real count ("2 / 1", "3 / 1") — extra sessions
+  visible but never double the score.</li>
+<li><strong>f13 · CSS v2 (founders' formula)</strong>: CSS = 50 + 50·(0.55·EnergyImpact + 0.45·MoodImpact),
+  Impact = 0.7·volatility-improvement + 0.3·severe-day-improvement vs the <strong>first fully
+  logged cycle</strong> (baseline), current window weighted to the last 7 logged days; severe
+  days from logged <strong>PMS symptoms</strong> (not a mood proxy). <strong>Locked ("Keep syncing") until
+  the baseline exists — never defaults to 100.</strong> CAS is not an input.</li>
+<li><strong>f15</strong>: stat block shows BOTH scores ("CAS · CSS"): Current = this cycle's CAS
+  average + live CSS; Last/Best = CAS cycle averages (per-cycle CSS history accrues
+  once ≥2 completed cycles exist).</li>
+<li><strong>f12</strong>: Movement explainer copy replaced with the founders' exact wording.</li>
+</ul>
+<h2>Visual / assets</h2>
+<ul>
+<li><strong>f16</strong>: hormone charts are now Design's SVGs — weekly view switches by current
+  phase (menstrual/follicular/ovulation/luteal.svg); monthly always shows
+  <code>Hormonal Graph Volatility.svg</code> (monthly unlocked).</li>
+<li><strong>f14</strong>: Cycle Stability title #F03D11 + centre number #FF300C (matches CAS card).</li>
+<li><strong>f17</strong>: gauge label auto-shrinks — "Sigue sincronizando" never clips (all languages).</li>
+<li><strong>f1 + bigger</strong>: nav icons — root cause of the black Progress icon was missing
+  <code>fill="none"</code> on stroke paths (RN defaults fills to black); all five icons fixed and
+  rendered larger (46px).</li>
+<li><strong>f8/f9</strong>: history clock → Design's btn-history glyph in both logs.</li>
+<li><strong>f6/f18</strong>: checklists keep the server's phase-rank order and tag the top items
+  <strong>"Most Recommended"</strong> (nutrition top-3; movement top-3 of the lead category).</li>
+<li><strong>f2</strong>: calendar hero given more right/bottom padding — re-test on device.</li>
+</ul>
+<h2>Re-test notes</h2>
+<p>Run the SQL first, then test past-day-28 accounts: Home, Calendar and NutriLog/Movement
+must all agree (day 29+, luteal content) until a period is logged.</p></div></body></html>
