@@ -173,6 +173,20 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>29 Jul 2026 — Paridad PWA ↔ app auditada · app v0.17.3</h3>
+<ul>
+<li><strong>Auditoría estática + revisión en vivo de m.nutrisynccollective.com</strong> (v0.17.2 confirmado desplegado: peach bg ✓, calendar fix ✓, catálogo ✓, ES ✓, manifest standalone ✓, service worker ✓).</li>
+<li><strong>Fix crítico</strong>: <code>Alert.alert</code> NO existe en react-native-web — los 16 avisos de la app (errores de guardado, "Period logged", confirmaciones de borrado de datos…) eran no-ops silenciosos en la PWA. Nuevo <code>notify()</code> multiplataforma (Alert nativo / alert-confirm web) aplicado en las 8 pantallas.</li>
+<li>BackHandler del onboarding con guard (el stub web podía romper el cleanup).</li>
+<li>Subtítulos de Login/Signup y aviso del Notification Center pasados por t() (quedaban en inglés con la app en ES) — claves en/es.</li>
+<li>pwa-kit: <code>viewport-fit=cover</code> en el postprocess (safe-area correcta en iPhones con notch en modo standalone).</li>
+<li>Divergencias menores aceptadas y documentadas: <code>adjustsFontSizeToFit</code> es no-op en web (posible desbordamiento leve en textos de metas/moods) y el gráfico CAS History usa width % (correcto en web, estable en nativo).</li>
+</ul>
+<h3>29 Jul 2026 — TestFlight vía Warnigo listo para build · app v0.17.2-tf1</h3>
+<ul>
+<li><code>app.json</code> apunta al bundle interino <strong>com.warnigo.nutrisync.beta</strong> (nunca com.nutrisync.app bajo Warnigo), icono 1024×1024 de marca generado (faltaba — bloqueaba el submit), export compliance pre-respondido.</li>
+<li>Doc 26: runbook completo ES — eas build/submit con Apple ID de Warnigo, ficha ASC, Internal vs External testing, OTA, y plan de migración a la cuenta NutriSync definitiva.</li>
+</ul>
 <h3>29 Jul 2026 — Calendario en una pantalla + fix raíz PWA + mobile-first · app v0.17.2 + web po23</h3>
 <ul>
 <li><strong>Bug raíz de la PWA encontrado</strong>: un <code>&lt;Svg&gt;</code> con <code>absoluteFill</code> pero SIN width/height cae al tamaño por defecto del navegador (300×150) en react-native-web — en nativo se mide bien, por eso solo se veía en la PWA. El hero naranja del Calendario "encogía" y los chips Avg cycle/Avg period quedaban fuera de la tarjeta. Fix: tamaño medido por <code>onLayout</code> (válido en ambas plataformas) + color de respaldo. Mismo fix en <code>PeachBg</code> (fondo de Welcome/Login/Onboarding). Auditoría del resto de la app: ningún otro Svg sin tamaño.</li>
