@@ -173,6 +173,15 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>29 Jul 2026 — Round 8 (r8a): period-edit correctness · app v0.16.0-r8a</h3>
+<ul>
+<li>Editing the period start to an earlier date is a CORRECTION (updates the current cycle row — the inserted-row approach was invisible to the server: root cause of "nothing updates"). Client/server share the same current-cycle rule; Settings · Cycle &amp; Health no longer blanket-updates all history rows; every tab refetches the cycle on focus; Calendar maps dates to their own cycle, future keeps counting, pre-history back-projects.</li>
+<li>Also: onboarding research consent persists to the Data &amp; Privacy toggle; keyboard insets on the logs; confirmation orb without outer rings; assorted layout/label fixes. Full detail: <strong>doc 25</strong>. The 20-item i18n sweep is scheduled as r8b (next session).</li>
+</ul>
+<h3>26 Jul 2026 — Hotfix v0.15.1: stray text node in Movement Log (same class as v0.14.2)</h3>
+<ul>
+<li>Inline JSX comment after </Text> left literal spaces as a text node (R7-f10 edit). Comment moved to its own line. Repo sweep clean; this stray-node grep is now part of the standard pre-package verification.</li>
+</ul>
 <h3>26 Jul 2026 — Round 7: auto-restart fully dead + CSS v2 · app v0.15.0-r7 + 1 SQL migration</h3>
 <ul>
 <li><strong>Server no-wrap migration</strong> (<code>2026-07-26-r7-cycle-no-wrap.sql</code>): the recommendations RPC wrapped the cycle day at the length (NutriLog/Movement showed day-1 content) AND picked the cycle row without ORDER BY. Calendar today/past now uses the actual day too; pencil opens "Edit period start date".</li>
