@@ -173,6 +173,14 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>29 Jul 2026 — Round 8 (r8b part 2) · app v0.17.0 — the i18n sweep</h3>
+<ul>
+<li><strong>Content catalog ×14</strong>: the app now bundles the hub catalog (foods, movements, categories, conditions, symptoms — 341 entries/language) and shows food/movement names in the app language. Canonical values stored in Supabase stay English (CAS/analytics parity). Fallback trick: the founders' Excel names embed Spanish in parens ("Apple (Manzana)") — ES shows the parenthetical, other languages the clean English, until the hub fills real translations.</li>
+<li><strong>Hardcoded strings routed through t()</strong>: Settings menu + section titles, Notifications &amp; Reminders (all rows + subs), Edit Period symptom sections (Pain/Digestion/Cravings/Skin) with translated chips, sleep/birth-control options, the 12 mood labels, sex-log rows, meal types (f34: Breakfast/Lunch/Dinner/Snacks). EN + ES shipped; 12 languages pending via hub.</li>
+<li><strong>f18</strong>: Sign In &amp; Security shows the REAL device name (expo-constants) and drops the placeholder "MacBook Pro" row — only real sessions listed until server-side session listing ships.</li>
+<li><strong>Hub</strong>: new <code>mob3_keys.json</code> merged by integrate.py (ns-mob3-i18n) — the Translations tool now lists the 201 catalog names + new mob.* keys; empty values mark pending and never overwrite.</li>
+<li><strong>f23</strong> (calendar hero on device) queda pendiente de verificación de los founders en dispositivo real.</li>
+</ul>
 <h3>29 Jul 2026 — Round 8 (r8b part 1) · app v0.16.1</h3>
 <ul>
 <li><strong>f40</strong>: hormone charts regenerated from Design's NEW Frame SVGs (no weekday labels; monthly <code>monthly-cycle-hormones</code> at the same width as weekly).</li>

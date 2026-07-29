@@ -903,4 +903,36 @@ if os.path.exists(m2):
         n += 1
     print("- mobile-string (mob/ui) keys merged into %d i18n packs" % n)
 
+
+# ---------------------------------------------------------------------------
+# ns-mob3-i18n: r8b sweep — Settings/Notifications/moods/meals UI keys (mob.*)
+# plus the CONTENT CATALOG names (foods + movements + categories) into the web
+# i18n packs so the hub Translations tool lists them. Empty values mark keys
+# PENDING translation and never overwrite existing entries.
+m3 = os.path.join(ASSETS, "mob3_keys.json")
+if os.path.exists(m3):
+    M3ALL = json.load(open(m3, encoding="utf-8"))
+    def _dm3(dst, src):
+        for k, v in src.items():
+            if isinstance(v, dict):
+                node = dst.get(k)
+                if not isinstance(node, dict):
+                    node = {}
+                    dst[k] = node
+                _dm3(node, v)
+            elif v == "":
+                dst.setdefault(k, "")
+            else:
+                dst[k] = v
+    n3 = 0
+    for lang, tree in M3ALL.items():
+        p3 = os.path.join(PUB, "i18n", lang + ".json")
+        if not os.path.exists(p3):
+            continue
+        c3 = json.load(open(p3, encoding="utf-8"))
+        _dm3(c3, tree)
+        json.dump(c3, open(p3, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+        n3 += 1
+    print("- r8b mob3 keys (settings/notifs/moods/meals + content catalog) merged into %d packs" % n3)
+
 print("\nIntegration complete - review, then commit + push.")
