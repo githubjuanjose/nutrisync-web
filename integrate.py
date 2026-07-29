@@ -935,4 +935,20 @@ if os.path.exists(m3):
         n3 += 1
     print("- r8b mob3 keys (settings/notifs/moods/meals + content catalog) merged into %d packs" % n3)
 
+
+# ---------------------------------------------------------------------------
+# ns-mobile-first: founders' decision (29 Jul) — the WEB APP is no longer linked
+# from the public marketing page (mobile-first). Every marketing CTA that used
+# to open app.html now scrolls to the waitlist email signup instead. The web
+# app stays reachable for builders via the hub (Builders room), untouched.
+idxm = os.path.join(PUB, "index.html")
+if os.path.exists(idxm):
+    hm = open(idxm, encoding="utf-8").read()
+    _old = "enterApp: () => { window.location.href = 'app.html'; },"
+    _new = "enterApp: () => { var e = document.querySelector('input[type=email]'); if (e) { e.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(() => { try { e.focus(); } catch (_) {} }, 450); } },"
+    if _old in hm:
+        hm = hm.replace(_old, _new)
+        open(idxm, "w", encoding="utf-8").write(hm)
+        print("- mobile-first gate: marketing CTAs -> waitlist (web app behind the hub)")
+
 print("\nIntegration complete - review, then commit + push.")

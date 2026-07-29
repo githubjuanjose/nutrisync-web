@@ -173,6 +173,13 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>29 Jul 2026 — Calendario en una pantalla + fix raíz PWA + mobile-first · app v0.17.2 + web po23</h3>
+<ul>
+<li><strong>Bug raíz de la PWA encontrado</strong>: un <code>&lt;Svg&gt;</code> con <code>absoluteFill</code> pero SIN width/height cae al tamaño por defecto del navegador (300×150) en react-native-web — en nativo se mide bien, por eso solo se veía en la PWA. El hero naranja del Calendario "encogía" y los chips Avg cycle/Avg period quedaban fuera de la tarjeta. Fix: tamaño medido por <code>onLayout</code> (válido en ambas plataformas) + color de respaldo. Mismo fix en <code>PeachBg</code> (fondo de Welcome/Login/Onboarding). Auditoría del resto de la app: ningún otro Svg sin tamaño.</li>
+<li><strong>Calendario compactado a una pantalla</strong>: 16 espaciados reducidos (hero, toggle, leyenda, tarjeta del mes, celdas, márgenes) — el mes completo cabe en un móvil estándar.</li>
+<li><strong>Leyenda de fases en una fila</strong>: los 4 chips (Menstrual/Follicular/Ovulatory/Luteal) reparten el ancho con flex, sin salto de línea.</li>
+<li><strong>Mobile-first (decisión founders)</strong>: la web-app deja de estar enlazada desde marketing — todos los CTAs "Open the app" llevan ahora al registro de la waitlist (scroll + focus al email). app.html sigue accesible para builders vía hub. Bloque idempotente ns-mobile-first en integrate.py para futuros packs de Design.</li>
+</ul>
 <h3>29 Jul 2026 — Catálogo ×12: primera pasada de traducción · app v0.17.1 + web po22</h3>
 <ul>
 <li>Los 208 nombres de catálogo pendientes (alimentos, movimientos, categorías) ahora tienen <strong>primera pasada de traducción en los 12 idiomas restantes</strong> (fr, de, it, nl, el, ca, val, gl, eu, oc-aranés, zh, ja) — generada por ingeniería como borrador, con variantes valencianas reales (creïlla, bresquilla, clòtxines, titot, bajoqueta) y léxico gascón para el aranés (milhòc, arraga, higa, vairat).</li>
