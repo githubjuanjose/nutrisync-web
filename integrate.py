@@ -951,4 +951,39 @@ if os.path.exists(idxm):
         open(idxm, "w", encoding="utf-8").write(hm)
         print("- mobile-first gate: marketing CTAs -> waitlist (web app behind the hub)")
 
+
+# ---------------------------------------------------------------------------
+# ns-feedback-panel: the in-app "Send Feedback" writes to public.feedback and
+# founders read via admin_feedback() — but the hub never had a panel. Adds a
+# Feedback card to the admin console (same session + RPC pattern as admin_kpis).
+fbp = os.path.join(PUB, "hub", "admin-mis-console.html")
+if os.path.exists(fbp):
+    hf = open(fbp, encoding="utf-8").read()
+    if "ns-feedback-panel" not in hf:
+        panel = (
+            '<!-- ns-feedback-panel -->'
+            '<div class="section" style="padding:26px 0 60px;"><div style="max-width:1080px;margin:0 auto;padding:0 22px;">'
+            '<h2 class="title" style="font-size:22px;margin:0 0 4px;">App Feedback</h2>'
+            '<div style="color:var(--muted);font-size:13px;margin-bottom:14px;">Mensajes de Settings &rarr; Send Feedback (tabla feedback &middot; solo admins)</div>'
+            '<div id="fbList" style="display:flex;flex-direction:column;gap:10px;"><div style="color:var(--muted);font-size:13px;">Cargando&hellip;</div></div>'
+            '</div></div>'
+            '<script type="module">'
+            "import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';"
+            "const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';"
+            "const sb=createClient(U,K);const box=document.getElementById('fbList');"
+            "const esc=t=>t.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));"
+            "(async()=>{const{data:{session}}=await sb.auth.getSession();"
+            "if(!session){box.innerHTML='<div style=\'color:var(--muted);font-size:13px;\'>Inicia sesi&oacute;n de admin arriba para ver el feedback.</div>';return;}"
+            "const{data,error}=await sb.rpc('admin_feedback',{limit_n:200});"
+            "if(error){box.innerHTML='<div style=\'color:var(--muted);font-size:13px;\'>Sin acceso ('+esc(error.message)+')</div>';return;}"
+            "if(!data||!data.length){box.innerHTML='<div style=\'color:var(--muted);font-size:13px;\'>Sin mensajes todav&iacute;a.</div>';return;}"
+            "box.innerHTML=data.map(r=>'<div style=\'background:#fff;border:1px solid #EFE3D7;border-radius:14px;padding:14px 16px;\'>'"
+            "+'<div style=\'font-size:12px;color:var(--muted);margin-bottom:6px;\'>'+new Date(r.created_at).toLocaleString()+' &middot; v'+esc(r.app_version||'?')+' &middot; '+esc(r.platform||'?')+'</div>'"
+            "+'<div style=\'font-size:14px;line-height:1.5;white-space:pre-wrap;\'>'+esc(r.message)+'</div></div>').join('');})();"
+            '</script>'
+        )
+        hf = hf.replace('</body>', panel + '</body>', 1)
+        open(fbp, "w", encoding="utf-8").write(hf)
+        print("- feedback panel added to the admin console (admin_feedback RPC)")
+
 print("\nIntegration complete - review, then commit + push.")

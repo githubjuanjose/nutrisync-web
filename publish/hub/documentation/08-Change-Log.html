@@ -173,6 +173,10 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>29 Jul 2026 — Panel de Feedback en la consola admin · web po26</h3>
+<ul>
+<li>Descubierto al responder "¿a dónde va el feedback?": la app escribe en la tabla <code>feedback</code> y el RPC <code>admin_feedback()</code> existía desde R3-49, pero <strong>ningún panel del hub lo llamaba</strong> — los mensajes se guardaban sin que nadie pudiera leerlos. Añadido panel "App Feedback" a la consola admin (misma sesión/patrón que admin_kpis; solo allowlist de admins). No hay ningún correo implicado; el único buzón público sigue siendo contact@nutrisynccollective.com.</li>
+</ul>
 <h3>29 Jul 2026 — Paridad PWA ↔ app auditada · app v0.17.3</h3>
 <ul>
 <li><strong>Auditoría estática + revisión en vivo de m.nutrisynccollective.com</strong> (v0.17.2 confirmado desplegado: peach bg ✓, calendar fix ✓, catálogo ✓, ES ✓, manifest standalone ✓, service worker ✓).</li>
