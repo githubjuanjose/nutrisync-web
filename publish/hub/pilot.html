@@ -53,6 +53,16 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
     <div style="max-height:340px;overflow:auto"><table id="wl"><thead><tr><th></th><th>Email</th><th>Nombre</th><th>Origen</th><th>Apuntada</th><th>Cuenta</th><th>Cohorte</th></tr></thead><tbody></tbody></table></div>
   </div>
 
+  <h2>1b · Añadir emails a mano (advisory y externas a la waitlist)</h2>
+  <div class="card">
+    <div class="row">
+      <input type="text" id="manualEmails" placeholder="emails separados por coma o salto de línea…" style="flex:1;min-width:260px">
+      <select id="manualCohort"><option value="advisory">advisory</option><option value="wave-1">wave-1</option><option value="wave-2">wave-2</option></select>
+      <button class="pri" onclick="proposeManual()">Proponer →</button>
+    </div>
+    <div class="hint">Para el consejo asesor y gente de confianza que no pasó por la waitlist. Entran al mismo flujo: proponer → validar → CSV.</div>
+  </div>
+
   <h2>2 · Validación de founders + export</h2>
   <div class="card">
     <div class="row">
@@ -127,6 +137,13 @@ function fillCohSelects(){
   $('fbCohort').innerHTML='<option value="">todas las cohortes</option>'+cs.map(c=>`<option>${esc(c)}</option>`).join('');
 }
 window.selPage=on=>document.querySelectorAll('#wl .ck').forEach(c=>c.checked=on);
+window.proposeManual=async()=>{
+  const raw=$('manualEmails').value.split(/[\s,;]+/).map(e=>e.trim().toLowerCase()).filter(e=>/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(e));
+  if(!raw.length)return alert('Pon al menos un email válido.');
+  const{error}=await sb.rpc('admin_pilot_propose',{p_emails:raw,p_cohort:$('manualCohort').value});
+  if(error)return alert(error.message);
+  $('manualEmails').value='';await refreshOv();alert(raw.length+' propuestas → '+$('manualCohort').value);
+};
 window.propose=async()=>{
   const emails=[...document.querySelectorAll('#wl .ck:checked')].map(c=>c.dataset.e);
   if(!emails.length)return alert('Selecciona al menos un email.');
