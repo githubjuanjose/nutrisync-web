@@ -986,4 +986,28 @@ if os.path.exists(fbp):
         open(fbp, "w", encoding="utf-8").write(hf)
         print("- feedback panel added to the admin console (admin_feedback RPC)")
 
+# ---------------------------------------------------------------------------
+# ns-pilot: Pilot tool (cohorts + founder-validated invite batches + cohort
+# feedback). UI snippets are plain files — no escape sequences anywhere.
+pl = os.path.join(ASSETS, "pilot.html")
+if os.path.exists(pl):
+    shutil.copy(pl, os.path.join(PUB, "hub", "pilot.html"))
+    print("- pilot tool copied to hub/pilot.html")
+    _pidx = os.path.join(PUB, "index.html")
+    _pcard = open(os.path.join(ASSETS, "pilot-card.snippet"), encoding="utf-8").read()
+    if os.path.exists(_pidx):
+        _ih = open(_pidx, encoding="utf-8").read()
+        if 'hub/pilot.html' not in _ih and '{h:"hub/waitlist.html"' in _ih:
+            open(_pidx, "w", encoding="utf-8").write(
+                _ih.replace('{h:"hub/waitlist.html"', _pcard + '{h:"hub/waitlist.html"', 1))
+            print("- pilot card added to founder tools")
+    _pgh = os.path.join(PUB, "hub", "full-hub-gated-site.html")
+    _phtab = open(os.path.join(ASSETS, "pilot-htab.snippet"), encoding="utf-8").read()
+    if os.path.exists(_pgh):
+        _hh = open(_pgh, encoding="utf-8").read()
+        if 'pilot.html' not in _hh:
+            open(_pgh, "w", encoding="utf-8").write(
+                _hh.replace('<a class="htab" href="waitlist.html"', _phtab + '<a class="htab" href="waitlist.html"', 1))
+            print("- pilot htab added to hub nav")
+
 print("\nIntegration complete - review, then commit + push.")

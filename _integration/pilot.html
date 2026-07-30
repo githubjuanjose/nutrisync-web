@@ -1,0 +1,166 @@
+<!DOCTYPE html><html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Piloto — NutriSync Founders</title>
+<style>
+:root{--coral:#E8472A;--ink:#231F20;--muted:#8A7F78;--line:#EFE3D7;--bg:#FFFDF8;}
+*{box-sizing:border-box}body{margin:0;font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:var(--ink);}
+.wrap{max-width:1150px;margin:0 auto;padding:26px 20px 80px;}
+h1{font-size:24px;margin:0 0 2px}h2{font-size:17px;margin:26px 0 10px}
+.sub{color:var(--muted);font-size:13px;margin-bottom:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:10px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+button{font-family:inherit;font-weight:700;font-size:13px;border-radius:22px;padding:8px 16px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:none}
+select,input[type=text]{font-family:inherit;font-size:13px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#fff}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px}
+th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.pill{display:inline-block;border-radius:999px;padding:2px 10px;font-size:11px;font-weight:700}
+.p-proposed{background:#FFF3E6;color:#B45309}.p-approved{background:#E6F0FF;color:#1D4ED8}
+.p-invited{background:#EDE9FE;color:#6D28D9}.p-joined{background:#E0F7E5;color:#0F9B57}.p-declined{background:#FEE2E2;color:#B91C1C}
+.coh{display:flex;gap:10px;flex-wrap:wrap}
+.cohCard{flex:1;min-width:160px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.cohCard b{font-size:15px}.cohCard .n{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.7}
+.msg{white-space:pre-wrap;line-height:1.45}
+#gate{display:none;padding:60px 20px;text-align:center;color:var(--muted)}
+.hint{font-size:11.5px;color:var(--muted);margin-top:6px}
+</style></head><body>
+<div class="wrap" id="app" style="display:none">
+  <h1>🚀 Piloto</h1>
+  <div class="sub">Cohortes de testers · lotes de invitación (los aprueban las founders) · feedback segmentado. La app de TestFlight se gestiona en App Store Connect; aquí se decide QUIÉN entra y se sigue el resultado.</div>
+
+  <h2>Cohortes</h2><div class="coh" id="cohorts"></div>
+
+  <h2>1 · Proponer lote desde la waitlist</h2>
+  <div class="card">
+    <div class="row">
+      <input type="text" id="q" placeholder="buscar email/nombre…" style="flex:1;min-width:160px">
+      <select id="fSource"><option value="">origen: todos</option></select>
+      <select id="fConv"><option value="">conversión: todas</option><option value="no">solo SIN cuenta</option><option value="yes">solo CON cuenta</option></select>
+      <select id="fAssigned"><option value="no">sin cohorte aún</option><option value="">todas</option></select>
+      <span class="hint" id="wlCount"></span>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <button onclick="selPage(true)">Seleccionar visibles</button>
+      <button onclick="selPage(false)">Quitar selección</button>
+      <select id="cohortPick">
+        <option value="advisory">advisory</option><option value="wave-1">wave-1</option>
+        <option value="wave-2">wave-2</option><option value="wave-3">wave-3</option>
+      </select>
+      <input type="text" id="cohortNew" placeholder="…o nueva cohorte" style="width:140px">
+      <button class="pri" onclick="propose()">Proponer seleccionados →</button>
+    </div>
+    <div style="max-height:340px;overflow:auto"><table id="wl"><thead><tr><th></th><th>Email</th><th>Nombre</th><th>Origen</th><th>Apuntada</th><th>Cuenta</th><th>Cohorte</th></tr></thead><tbody></tbody></table></div>
+  </div>
+
+  <h2>2 · Validación de founders + export</h2>
+  <div class="card">
+    <div class="row">
+      <select id="rvCohort"></select>
+      <button onclick="setStatus('approved')">✅ Aprobar lote</button>
+      <button onclick="setStatus('declined')">✖ Descartar</button>
+      <button class="pri" onclick="exportTF()">⬇ CSV TestFlight</button>
+      <button onclick="copyEmails()">📋 Copiar emails (Play/otros)</button>
+      <button onclick="setStatus('invited')">✉️ Marcar como invitados</button>
+    </div>
+    <div class="hint">Flujo: proponer → founders aprueban → CSV a App Store Connect → TestFlight → grupo externo de la cohorte → “Marcar como invitados”. “joined” se detecta solo (cuenta creada).</div>
+    <div style="max-height:300px;overflow:auto"><table id="inv"><thead><tr><th></th><th>Email</th><th>Cohorte</th><th>Estado</th><th>Origen</th><th>Cuenta</th></tr></thead><tbody></tbody></table></div>
+  </div>
+
+  <h2>3 · Feedback por cohorte</h2>
+  <div class="card">
+    <div class="row"><select id="fbCohort"><option value="">todas las cohortes</option></select>
+    <button onclick="loadFb()">Actualizar</button></div>
+    <div style="max-height:400px;overflow:auto"><table id="fb"><thead><tr><th>Fecha</th><th>Cohorte</th><th>Email</th><th>Mensaje</th><th>v · plat</th></tr></thead><tbody></tbody></table></div>
+  </div>
+</div>
+<div id="gate">Inicia sesión de founder (Access) y recarga — esta página es solo para admins.</div>
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+const sb=createClient(U,K);const $=i=>document.getElementById(i);
+const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let WL=[],OV={cohorts:[],invites:[]};
+const byEmail=()=>Object.fromEntries(OV.invites.map(i=>[i.email,i]));
+async function boot(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){$('gate').style.display='block';return;}
+  const[wl,ov]=await Promise.all([sb.rpc('admin_waitlist'),sb.rpc('admin_pilot_overview')]);
+  if(wl.error||ov.error){$('gate').style.display='block';$('gate').textContent='Sin acceso: '+esc((wl.error||ov.error).message)+' — ¿SQL 2026-07-30-pilot aplicado y sesión admin?';return;}
+  WL=wl.data||[];OV=ov.data||OV;$('app').style.display='block';
+  const srcs=[...new Set(WL.map(r=>r.source).filter(Boolean))];
+  $('fSource').innerHTML='<option value="">origen: todos</option>'+srcs.map(s=>`<option>${esc(s)}</option>`).join('');
+  renderAll();
+}
+function renderAll(){renderCoh();renderWl();renderInv();fillCohSelects();loadFb();}
+function renderCoh(){
+  const founders={cohort:'founders (TF interno)',proposed:0,approved:0,invited:4,joined:4};
+  const list=[founders,...OV.cohorts];
+  $('cohorts').innerHTML=list.map(c=>`<div class="cohCard"><b>${esc(c.cohort)}</b><div class="n">propuestas ${c.proposed??0} · aprobadas ${c.approved??0}<br>invitadas ${c.invited??0} · <b style="color:#0F9B57">dentro ${c.joined??0}</b></div></div>`).join('')||'<div class="hint">Sin cohortes aún — propón el primer lote abajo.</div>';
+}
+function wlFiltered(){
+  const q=$('q').value.toLowerCase(),src=$('fSource').value,conv=$('fConv').value,asg=$('fAssigned').value,be=byEmail();
+  return WL.filter(r=>{
+    const e=(r.email||'').toLowerCase();
+    if(q&&!e.includes(q)&&!(r.full_name||'').toLowerCase().includes(q))return false;
+    if(src&&r.source!==src)return false;
+    const has=!!r.converted_at;
+    if(conv==='no'&&has)return false;if(conv==='yes'&&!has)return false;
+    if(asg==='no'&&be[e])return false;
+    return true;});
+}
+function renderWl(){
+  const be=byEmail(),rows=wlFiltered();
+  $('wlCount').textContent=rows.length+' de '+WL.length;
+  $('wl').tBodies[0].innerHTML=rows.slice(0,400).map(r=>{const e=(r.email||'').toLowerCase(),pi=be[e];
+    return `<tr><td><input type="checkbox" class="ck" data-e="${esc(e)}"></td><td>${esc(r.email)}</td><td>${esc(r.full_name||'')}</td><td>${esc(r.source||'')}</td><td>${esc((r.created_at||'').slice(0,10))}</td><td>${r.converted_at?'✅':'—'}</td><td>${pi?esc(pi.cohort):''}</td></tr>`;}).join('');
+}
+function renderInv(){
+  const c=$('rvCohort').value;
+  const rows=OV.invites.filter(i=>!c||i.cohort===c);
+  $('inv').tBodies[0].innerHTML=rows.map(i=>{const st=i.converted&&i.status==='invited'?'joined':i.status;
+    return `<tr><td><input type="checkbox" class="ik" data-e="${esc(i.email)}"></td><td>${esc(i.email)}</td><td>${esc(i.cohort)}</td><td><span class="pill p-${st}">${st}</span></td><td>${esc(i.source||'')}</td><td>${i.converted?'✅':'—'}</td></tr>`;}).join('');
+}
+function fillCohSelects(){
+  const cs=[...new Set(OV.invites.map(i=>i.cohort))];
+  $('rvCohort').innerHTML='<option value="">todas</option>'+cs.map(c=>`<option>${esc(c)}</option>`).join('');
+  $('fbCohort').innerHTML='<option value="">todas las cohortes</option>'+cs.map(c=>`<option>${esc(c)}</option>`).join('');
+}
+window.selPage=on=>document.querySelectorAll('#wl .ck').forEach(c=>c.checked=on);
+window.propose=async()=>{
+  const emails=[...document.querySelectorAll('#wl .ck:checked')].map(c=>c.dataset.e);
+  if(!emails.length)return alert('Selecciona al menos un email.');
+  const cohort=$('cohortNew').value.trim()||$('cohortPick').value;
+  const{error}=await sb.rpc('admin_pilot_propose',{p_emails:emails,p_cohort:cohort});
+  if(error)return alert(error.message);
+  await refreshOv();alert(emails.length+' propuestas → '+cohort+'. Ahora valida el lote en la sección 2.');
+};
+async function refreshOv(){const ov=await sb.rpc('admin_pilot_overview');if(!ov.error){OV=ov.data;renderAll();}}
+function invSel(){const s=[...document.querySelectorAll('#inv .ik:checked')].map(c=>c.dataset.e);
+  if(s.length)return s;const c=$('rvCohort').value;
+  return OV.invites.filter(i=>(!c||i.cohort===c)).map(i=>i.email);}
+window.setStatus=async st=>{
+  const emails=invSel();if(!emails.length)return alert('Nada seleccionado.');
+  if(!confirm(st+' → '+emails.length+' emails, ¿seguro?'))return;
+  const{error}=await sb.rpc('admin_pilot_set_status',{p_emails:emails,p_status:st});
+  if(error)return alert(error.message);await refreshOv();
+};
+window.exportTF=()=>{
+  const be=Object.fromEntries(WL.map(r=>[(r.email||'').toLowerCase(),r]));
+  const rows=invSel().map(e=>{const w=be[e]||{};const fn=(w.full_name||'').trim().split(/\s+/);
+    return [fn[0]||'Tester',fn.slice(1).join(' ')||'NutriSync',e].map(x=>'"'+x.replace(/"/g,'""')+'"').join(',');});
+  const csv='First Name,Last Name,Email\n'+rows.join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download='testflight-import.csv';a.click();
+};
+window.copyEmails=async()=>{const e=invSel().join('\n');await navigator.clipboard.writeText(e);alert(e.split('\n').length+' emails copiados.');};
+window.loadFb=async()=>{
+  const c=$('fbCohort').value||null;
+  const{data,error}=await sb.rpc('admin_pilot_feedback',{p_cohort:c});
+  if(error){$('fb').tBodies[0].innerHTML='<tr><td colspan=5>'+esc(error.message)+'</td></tr>';return;}
+  $('fb').tBodies[0].innerHTML=(data||[]).map(r=>`<tr><td>${esc(r.created_at.slice(0,16).replace('T',' '))}</td><td>${esc(r.cohort)}</td><td>${esc(r.email)}</td><td class="msg">${esc(r.message)}</td><td>${esc(r.app_version||'?')} · ${esc(r.platform||'?')}</td></tr>`).join('')||'<tr><td colspan=5 class="hint">Sin mensajes aún.</td></tr>';
+};
+['q','fSource','fConv','fAssigned'].forEach(i=>$(i).addEventListener('input',renderWl));
+$('rvCohort').addEventListener('change',renderInv);
+boot();
+</script></body></html>

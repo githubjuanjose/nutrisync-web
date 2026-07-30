@@ -173,6 +173,21 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>30 Jul 2026 — Gestión del Piloto: cohortes + invitaciones por lotes + feedback segmentado · web po28</h3>
+<ul>
+<li><strong>SQL <code>2026-07-30-pilot.sql</code></strong> (⚠️ aplicar en Supabase): tabla <code>pilot_invites</code> (email→cohorte→estado proposed/approved/invited/joined) + RPCs admin <code>admin_pilot_propose/set_status/overview/feedback</code> — mismo modelo de puertas que la waitlist; "dentro" se detecta solo al crearse la cuenta.</li>
+<li><strong>Hub → página Pilot</strong> (card 🚀 en Builders + pestaña): segmentar la waitlist (origen/antigüedad/conversión), proponer lotes por cohorte (advisory, wave-1…), validación de founders, export <strong>CSV TestFlight</strong> y copia de emails para Play; feedback in-app etiquetado por cohorte.</li>
+<li><strong>Doc 27 — Estrategia del Piloto</strong>: cohortes, mecánica ASC (Internal founders / External por cohorte, CSV import), métricas GTM semanales y ritual de decisión entre olas.</li>
+<li>Incidencia de build: un escape unicode corrupto en integrate.py vació index.html y el hub gateado durante el empaquetado — restaurados de po27 y bloque reescrito con snippets planos (sin secuencias de escape). Verificado: 0 ficheros vacíos, nav completo.</li>
+</ul>
+<h3>29 Jul 2026 (noche) — 🚀 Primera build en TestFlight · cuenta Apple PROPIA aprobada</h3>
+<ul>
+<li>La cuenta Apple Developer individual fue aprobada a mitad del proceso — <strong>el puente Warnigo se descarta sin usar</strong>.</li>
+<li><code>com.nutrisync.app</code> no estaba disponible (registrado en otro team) → bundle definitivo <strong><code>com.nutrisynccollective.app</code></strong> (iOS y Android), alineado con el dominio.</li>
+<li><strong>v0.17.3 (build 1) subida a App Store Connect</strong> — ficha "NutriSync" (App ID 6796082357), team G9W35DBZW9, certificados y provisioning gestionados por EAS.</li>
+<li><strong>API Key de App Store Connect</strong> (rol APP_MANAGER) creada y guardada en EAS → próximos submits sin login de Apple ni 2FA.</li>
+<li>Siguiente: grupo "Founders" en TestFlight Internal + invitaciones.</li>
+</ul>
 <h3>29 Jul 2026 — Panel de Feedback en la consola admin · web po26</h3>
 <ul>
 <li>Descubierto al responder "¿a dónde va el feedback?": la app escribe en la tabla <code>feedback</code> y el RPC <code>admin_feedback()</code> existía desde R3-49, pero <strong>ningún panel del hub lo llamaba</strong> — los mensajes se guardaban sin que nadie pudiera leerlos. Añadido panel "App Feedback" a la consola admin (misma sesión/patrón que admin_kpis; solo allowlist de admins). No hay ningún correo implicado; el único buzón público sigue siendo contact@nutrisynccollective.com.</li>

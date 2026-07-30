@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Estrategia del Piloto — cohortes e invitaciones — NutriSync Docs</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.navbtns{display:flex;gap:16px;align-items:center;}
+.navbtns a:first-child{padding:5px 12px;border:1px solid var(--line);border-radius:20px;}
+.navbtns a:first-child:hover{border-color:var(--coral);background:var(--cream);}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+h4{font-size:16px;font-weight:800;margin:20px 0 6px;}
+p{margin:10px 0;}
+a{color:var(--coral-deep);}
+strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:'SF Mono',Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:14px 0;padding:12px 18px;background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;color:#5d524b;}
+blockquote p{margin:4px 0;}
+ul,ol{margin:10px 0;padding-left:24px;}
+li{margin:5px 0;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;}
+tbody tr:nth-child(even){background:var(--cream);}
+.pill{display:inline-block;background:#FDE6DD;color:var(--coral-deep);font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;}
+.card{display:block;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:10px 0;text-decoration:none;color:var(--ink);transition:.15s;}
+.card:hover{border-color:var(--coral);background:var(--cream);}
+.card .t{font-weight:800;font-size:16px;color:var(--coral-deep);}
+.card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
+.sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
+</style></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>27 · Estrategia del Piloto — cohortes, invitaciones y análisis de feedback</h1>
+<p><strong>Objetivo:</strong> convertir TestFlight (y luego Play) en un piloto medible que alimente el go-to-market: quién activa mejor, qué mensaje convierte, qué duele en el producto — por segmento, no en bruto.</p>
+<h2>1 · Cohortes</h2>
+<table>
+<thead>
+<tr>
+<th>Cohorte</th>
+<th>Quién</th>
+<th>Canal</th>
+<th>Tamaño</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>founders</code></td>
+<td>Las 4 fundadoras/equipo</td>
+<td>TestFlight <strong>Internal</strong> (sin revisión)</td>
+<td>4</td>
+</tr>
+<tr>
+<td><code>advisory</code></td>
+<td>Advisory board y personas de confianza</td>
+<td>TestFlight <strong>External</strong> grupo "Advisory"</td>
+<td>5–15</td>
+</tr>
+<tr>
+<td><code>wave-1</code></td>
+<td>Pre-inscritas waitlist: las más antiguas + origen marketing_site</td>
+<td>External grupo "Wave 1"</td>
+<td>20–30</td>
+</tr>
+<tr>
+<td><code>wave-2+</code></td>
+<td>Resto de waitlist por orden/origen; ampliable</td>
+<td>External grupos "Wave N"</td>
+<td>30–50/ola</td>
+</tr>
+</tbody>
+</table>
+<p>Regla de oro: <strong>cada grupo de TestFlight = una cohorte</strong> — así el origen queda trazado de punta a punta. Las olas pequeñas (20-30) permiten corregir producto y mensaje entre ola y ola.</p>
+<h2>2 · Mecánica de invitación (quién hace qué)</h2>
+<ol>
+<li><strong>Proponer</strong> — en hub → <strong>Pilot</strong> (sección 1): filtrar la waitlist (origen, antigüedad, con/sin cuenta) → seleccionar → "Proponer → cohorte". <em>(Alternativa rápida: Juanjo exporta el CSV de waitlist y Engineering prepara el lote propuesto.)</em></li>
+<li><strong>Validar</strong> — founders revisan el lote en la sección 2 y pulsan <strong>Aprobar</strong> (o descartan personas concretas). Nada sale sin este paso.</li>
+<li><strong>Cargar en TestFlight</strong> — botón <strong>CSV TestFlight</strong> → App Store Connect → NutriSync → TestFlight → grupo externo de la cohorte → <strong>Add Testers → Import from CSV</strong>. Apple envía las invitaciones. Marcar el lote como <strong>invitado</strong> en el hub.</li>
+<li><strong>Android (cuando abra Play Console)</strong> — botón <strong>Copiar emails</strong> → Play Console → Closed testing → lista de testers. Misma cohorte, mismo análisis.</li>
+<li><strong>Seguimiento automático</strong> — "dentro" (joined) se detecta solo: la invitada creó cuenta en Supabase. Sin trabajo manual.</li>
+</ol>
+<p>Notas TestFlight: External requiere <strong>Beta App Review</strong> la primera vez (~24-48 h, ya en marcha con la build 0.17.3); después, los builds nuevos llegan a los grupos sin nueva revisión salvo cambios grandes. Alternativa por enlace público por grupo (con tope de plazas) si preferís no gestionar emails — pero se pierde el matcheo email↔cohorte, así que mejor CSV.</p>
+<h2>3 · Análisis del feedback por cohorte</h2>
+<ul>
+<li><strong>Canal único</strong>: la app (Ajustes → Enviar comentarios) → tabla <code>feedback</code> → hub → Pilot sección 3, <strong>etiquetado por cohorte automáticamente</strong> (join por email de invitación).</li>
+<li><strong>Métricas por cohorte</strong> (semanal, 15 min): embudo invitadas → dentro (activación) · días con registro/usuaria (hábito) · CAS medio · nº y temática de feedback. Las dos primeras salen del propio panel; CAS/uso se añade al panel en fase 2 si el piloto crece.</li>
+<li><strong>Lectura GTM</strong>: si <code>wave-1</code> (marketing_site) activa mejor que <code>advisory</code>, el mensaje de la web funciona; si nadie pasa del onboarding en una cohorte, el problema es producto, no canal. Cada ola ajusta una sola variable (mensaje de invitación, idioma, timing) para poder atribuir.</li>
+<li><strong>Ritual</strong>: revisión semanal founders con el panel → 3 decisiones máximo → se ejecutan antes de la ola siguiente.</li>
+</ul>
+<h2>4 · Estado técnico</h2>
+<ul>
+<li>SQL: <code>2026-07-30-pilot.sql</code> (tabla <code>pilot_invites</code> + 4 RPCs admin-gated; PII solo tras login de founder). <strong>Pendiente de aplicar en Supabase.</strong></li>
+<li>Hub: página <strong>Pilot</strong> (card en Builders + pestaña 🚀) — po28.</li>
+<li>Privacidad: los emails jamás salen del circuito admin; Engineering no los ve salvo que un admin los exporte deliberadamente.</li>
+</ul></div></body></html>

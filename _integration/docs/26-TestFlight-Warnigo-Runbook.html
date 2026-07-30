@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>TestFlight via Warnigo — Runbook — NutriSync Docs</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>TestFlight — Runbook (cuenta propia) — NutriSync Docs</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
 :root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
 *{box-sizing:border-box;}
 body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
@@ -35,36 +35,31 @@ tbody tr:nth-child(even){background:var(--cream);}
 .card .t{font-weight:800;font-size:16px;color:var(--coral-deep);}
 .card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
 .sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
-</style></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>26 · TestFlight vía Warnigo — Runbook</h1>
-<p><strong>Estado:</strong> cuenta Apple Developer de NutriSync pendiente → puente interino con la cuenta de <strong>Warnigo</strong> (aprobada). Bundle interino: <code>com.warnigo.nutrisync.beta</code>. <strong>Nunca</strong> registrar <code>com.nutrisync.app</code> bajo el team de Warnigo — ese id queda reservado para la cuenta definitiva de NutriSync.</p>
-<h2>Qué está ya configurado en el zip (v0.17.2-tf1)</h2>
-<p><code>app.json</code>: <code>ios.bundleIdentifier = com.warnigo.nutrisync.beta</code> · icono 1024×1024 generado desde la marca (<code>assets/icon.png</code>, sin alpha) · <code>usesNonExemptEncryption: false</code> (no preguntará por cifrado) · <code>runtimeVersion: appVersion</code> (los OTA solo llegan a builds de la misma versión). <code>eas.json</code>: perfil <code>production</code> con canal <code>production</code> y <code>autoIncrement</code> remoto del build number.</p>
-<h2>Pasos (los ejecutas tú — credenciales solo tuyas)</h2>
-<ol>
-<li>Despliega el zip en <code>repos/appdev</code> como siempre (script de Spotlight).</li>
-<li>Terminal en el repo: <code>npm i -g eas-cli</code> (si no está) → <code>eas login</code> con <strong>tu cuenta Expo</strong> (el projectId ya está vinculado).</li>
-<li><code>eas build -p ios --profile production</code>
-   - Cuando pida cuenta Apple: <strong>inicia sesión con el Apple ID de WARNIGO</strong>.
-   - EAS registra el bundle <code>com.warnigo.nutrisync.beta</code> en el team Warnigo y genera certificados/perfiles automáticamente → acepta los valores por defecto ("Let EAS manage your credentials").
-   - El build tarda ~15–25 min en la nube de Expo.</li>
-<li><code>eas submit -p ios --latest</code> → de nuevo Apple ID de Warnigo → sube el .ipa a App Store Connect. (Alternativa: descargar el .ipa y subirlo con la app Transporter.)</li>
-<li><strong>App Store Connect</strong> (cuenta Warnigo) → My Apps: si pide crear la ficha, nombre sugerido <strong>"NutriSync Beta"</strong> (si está cogido: "NutriSync EU Beta"), idioma principal English (UK) o Spanish, SKU libre (p. ej. <code>nutrisync-beta-1</code>).</li>
-<li>Pestaña <strong>TestFlight</strong> → el build aparece "Processing" ~10–30 min y pasa a "Ready to Test". No preguntará por export compliance (ya respondido en config).</li>
-<li>Testers — dos vías:
-   - <strong>Internal Testing (recomendada ahora):</strong> crea grupo "Founders" → añade sus emails (Apple ID). Sin revisión de Apple, disponible al instante, hasta 100 personas. Requiere darlas de alta como usuarios del team en ASC (rol App Manager o Developer basta).
-   - <strong>External Testing:</strong> hasta 10.000, pero pasa <strong>Beta App Review</strong> (~24–48 h). Úsala cuando salgáis de círculo founders.</li>
-<li>Las founders: instalan la app <strong>TestFlight</strong> del App Store → aceptan la invitación (email) → instalan NutriSync.</li>
-</ol>
-<h2>Actualizaciones</h2>
+</style></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>26 · TestFlight — Runbook (cuenta propia)</h1>
+<p><strong>Estado 29 Jul 2026, noche:</strong> la cuenta Apple Developer individual de Juanjo (<code>JUAN JOSE CEBRIAN GONZALEZ</code>, team <code>G9W35DBZW9</code>) fue <strong>aprobada</strong> — el puente interino con Warnigo queda <strong>descartado sin usar</strong> (no llegó a crearse build ni ficha bajo Warnigo).</p>
+<h2>Datos definitivos</h2>
 <ul>
-<li><strong>Solo JS/estilos</strong> (lo habitual): <code>eas update --branch production</code> → OTA a los TestFlight builds de la misma versión de app.</li>
-<li><strong>Cambio de versión o nativo:</strong> repetir pasos 3–4 (el build number sube solo).</li>
+<li><strong>Bundle iOS/Android:</strong> <code>com.nutrisynccollective.app</code> — alineado con el dominio real. (<code>com.nutrisync.app</code> resultó no disponible: registrado en otro team de Apple. Higiene pendiente: comprobar en developer.apple.com de Warnigo si quedó allí de un intento temprano y borrarlo.)</li>
+<li><strong>Ficha App Store Connect:</strong> "NutriSync" · ASC App ID <code>6796082357</code>.</li>
+<li><strong>Primera build:</strong> v0.17.3 (build 1), subida 29 Jul.</li>
+<li><strong>API Key de App Store Connect</strong> creada por EAS (rol APP_MANAGER, Key ID <code>L2R72RU8BJ</code>, guardada en EAS servers) → <strong>los próximos <code>eas submit</code> no piden login de Apple ni 2FA.</strong></li>
+<li>Cuenta Expo: <code>expojuanjo</code> · projectId <code>3b124e7e-e7e8-43ed-a54c-b660a07109dc</code>.</li>
 </ul>
-<h2>Migración a la cuenta NutriSync (cuando Apple apruebe)</h2>
-<p>Build con <code>com.nutrisync.app</code> desde la cuenta definitiva → ficha nueva → testers reinstalan desde la nueva invitación → datos intactos (viven en Supabase, la sesión se reabre con email/contraseña). Retirar después el beta de Warnigo (ASC → remove build / delete app).</p>
-<h2>Avisos</h2>
+<h2>Ciclo de publicación (desde ahora)</h2>
 <ul>
-<li>TestFlight interno/beta bajo Warnigo: OK. <strong>Publicación pública en App Store bajo Warnigo: NO</strong> (marca y titularidad deben salir de la cuenta NutriSync).</li>
-<li>Si ASC dice "You must accept the agreements": el Account Holder de Warnigo debe aceptar el Paid/Free Apps agreement en ASC → Agreements.</li>
-<li>2FA del Apple ID de Warnigo a mano durante <code>eas build</code>/<code>submit</code>.</li>
+<li>Cambios <strong>JS/contenido</strong>: <code>eas update --branch production</code> → OTA a los TestFlight de la misma versión, sin rebuild.</li>
+<li>Versión nueva o cambio nativo: subir <code>version</code> en <code>app.json</code> → <code>eas build -p ios --profile production</code> → <code>eas submit -p ios --latest</code> (sin 2FA gracias a la API key).</li>
+</ul>
+<h2>Testers</h2>
+<ul>
+<li>ASC → NutriSync → <strong>TestFlight</strong> → Internal Testing → grupo <strong>"Founders"</strong> → añadir emails (Apple ID de cada una; deben estar como Users del team con rol Developer/App Manager). Instantáneo, sin revisión, hasta 100.</li>
+<li>External Testing (más adelante): hasta 10.000, con Beta App Review (~24-48 h la primera vez).</li>
+<li>Las testers instalan la app <strong>TestFlight</strong> → aceptan la invitación del email → instalan NutriSync.</li>
+</ul>
+<h2>Migración futura a cuenta de empresa</h2>
+<p>Cuando exista la sociedad y su cuenta de organización: transferencia de app en App Store Connect (App Transfer) — se conserva el bundle, la ficha y los testers. Mucho más simple que el plan Warnigo (que exigía bundle nuevo y reinstalación).</p>
+<h2>Seguridad</h2>
+<ul>
+<li>El handoff con credenciales de Warnigo en texto plano (<code>NutriSync-TestFlight-Handoff.md</code>, raíz del proyecto): <strong>borrar</strong> y <strong>rotar</strong> esa contraseña — ya no hace falta para nada.</li>
+<li>La API Key APP_MANAGER vive en EAS servers; revocable en ASC → Users and Access → Integrations.</li>
 </ul></div></body></html>
