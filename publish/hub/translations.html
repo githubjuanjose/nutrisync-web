@@ -124,4 +124,55 @@ document.getElementById('fEmpty').onchange=render;
 document.getElementById('expT').onclick=function(){exportTarget(lang);};
 document.getElementById('reset').onclick=function(){if(confirm('Discard your local edits for '+NAME[lang]+'?')){edits[lang]={};persist();render();}};
 boot();
-</script></body></html>
+</script>
+<!-- ns-content-i18n: contenido del motor diario (tips/insights/citas) -->
+<div style="max-width:1100px;margin:30px auto 80px;padding:0 20px" id="cnt-sec">
+  <h2 style="font-size:19px;margin:0 0 4px">🧠 Contenido del motor diario</h2>
+  <div style="color:#8A7F78;font-size:13px;margin-bottom:12px">Consejos del día, Señal del cuerpo y citas (100 fichas · 408 textos). El español lleva primera pasada de ingeniería — corregid libremente; la app lo muestra al instante. Vacío = se usa el inglés.</div>
+  <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px">
+    <select id="cntLang" style="font-family:inherit;padding:8px 10px;border:1px solid #EFE3D7;border-radius:10px">
+      <option value="es" selected>español</option><option value="fr">français</option><option value="de">Deutsch</option>
+      <option value="it">italiano</option><option value="nl">Nederlands</option><option value="el">ελληνικά</option>
+      <option value="ca">català</option><option value="val">valencià</option><option value="eu">euskara</option>
+      <option value="gl">galego</option><option value="oc">aranés</option><option value="zh">中文</option><option value="ja">日本語</option>
+    </select>
+    <input id="cntQ" placeholder="filtrar…" style="flex:1;font-family:inherit;padding:8px 10px;border:1px solid #EFE3D7;border-radius:10px">
+    <span id="cntN" style="font-size:12px;color:#8A7F78"></span>
+  </div>
+  <div id="cntBody" style="max-height:560px;overflow:auto;background:#fff;border:1px solid #EFE3D7;border-radius:14px"></div>
+</div>
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+const sb=createClient(U,K);const $=i=>document.getElementById(i);
+const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let ROWS=[];
+async function load(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){$('cntBody').innerHTML='<div style="padding:16px;color:#8A7F78;font-size:13px">Inicia sesión de admin para editar el contenido.</div>';return;}
+  const{data,error}=await sb.rpc('admin_content_list',{p_lang:$('cntLang').value});
+  if(error){$('cntBody').innerHTML='<div style="padding:16px;color:#8A7F78;font-size:13px">'+esc(error.message)+' — ¿SQL 2026-07-31 aplicado?</div>';return;}
+  ROWS=data||[];render();
+}
+function render(){
+  const q=$('cntQ').value.toLowerCase();
+  const rows=ROWS.filter(r=>!q||r.id.toLowerCase().includes(q)||(r.en||'').toLowerCase().includes(q)||(r.val||'').toLowerCase().includes(q));
+  $('cntN').textContent=rows.length+' de '+ROWS.length;
+  $('cntBody').innerHTML=rows.slice(0,600).map(r=>
+    '<div style="display:flex;gap:10px;padding:9px 12px;border-bottom:1px solid #F5EBE1;align-items:flex-start">'
+    +'<div style="flex:none;width:110px;font-size:11px;color:#B9ACA4;padding-top:6px">'+esc(r.id)+'<br>'+esc(r.field)+'</div>'
+    +'<div style="flex:1;font-size:12.5px;color:#5f564f;padding-top:6px">'+esc(r.en)+'</div>'
+    +'<textarea data-id="'+esc(r.id)+'" data-f="'+esc(r.field)+'" style="flex:1;font-family:inherit;font-size:12.5px;border:1px solid #EFE3D7;border-radius:8px;padding:6px 8px;min-height:34px">'+esc(r.val||'')+'</textarea>'
+    +'</div>').join('');
+  $('cntBody').querySelectorAll('textarea').forEach(t=>t.addEventListener('blur',async e=>{
+    const el=e.target;
+    const{error}=await sb.rpc('admin_content_set',{p_id:el.dataset.id,p_field:el.dataset.f,p_lang:$('cntLang').value,p_value:el.value});
+    el.style.borderColor=error?'#D93030':'#0F9B57';
+  }));
+}
+$('cntLang').addEventListener('change',load);
+$('cntQ').addEventListener('input',render);
+load();
+</script>
+
+</body></html>

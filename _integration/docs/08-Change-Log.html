@@ -173,6 +173,13 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>31 Jul 2026 — Content-i18n fase 1: el motor diario habla español · SQL + OTA + web po31</h3>
+<ul>
+<li><strong>SQL <code>2026-07-31-content-i18n.sql</code></strong> (⚠️ aplicar): tabla <code>content_text</code>, <code>ns_daily_recs(p_date, p_lang)</code> con fallback EN (clientes antiguos siguen en inglés sin romperse), RPCs de edición admin y <strong>primera pasada ES completa: 408 textos</strong> — los 60 consejos del día, las 40 Señales del cuerpo con sus citas, y los valores típicos (ánimo/energía/flujo/recuperación).</li>
+<li><strong>App (solo JS → OTA, misma versión 0.17.4)</strong>: NutriLog y Movement piden las recomendaciones en el idioma de la app.</li>
+<li><strong>Hub → Translations → sección "Contenido del motor diario"</strong>: las revisoras ven EN + ES editable (y los 12 idiomas restantes vacíos para la fase 2); guardar es soltar el foco. Vacío = inglés.</li>
+<li>Con esto, la queja de Pilar queda cerrada al 100%: interfaz (v0.17.4) + contenido (esta fase) en español.</li>
+</ul>
 <h3>30 Jul 2026 — R9 (feedback de Pilar): español completo en cliente · app v0.17.4 + web po30</h3>
 <ul>
 <li><strong>Catálogo ES explícito al 100%</strong>: los 208 nombres de alimentos/movimientos con traducción española revisada (adiós al fallback de paréntesis, que fallaba en "unsweetened", "general session", etc.) + alérgenos, intensidades y valores de recuperación.</li>
