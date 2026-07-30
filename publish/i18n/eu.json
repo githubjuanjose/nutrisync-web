@@ -1637,7 +1637,20 @@
     "Cardio": "Kardioa",
     "Daily Movement": "Eguneroko mugimendua",
     "Flexibility & Recovery": "Malgutasuna eta errekuperazioa",
-    "Strength": "Indarra"
+    "Strength": "Indarra",
+    "Milk": "",
+    "Shellfish": "",
+    "Peanuts": "",
+    "Tree nuts": "",
+    "Moderate-High": "",
+    "Low": "",
+    "Low-Moderate": "",
+    "Rest": "",
+    "Gentle": "",
+    "Restorative": "",
+    "Mid-High": "",
+    "Mid": "",
+    "Varies": ""
   },
   "ob": {
     "accurate": "Izan ahalik eta zehatzena, NutriSync-ek neurriko emaitzak eman diezazkizun.",

@@ -173,6 +173,19 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>30 Jul 2026 — R9 (feedback de Pilar): español completo en cliente · app v0.17.4 + web po30</h3>
+<ul>
+<li><strong>Catálogo ES explícito al 100%</strong>: los 208 nombres de alimentos/movimientos con traducción española revisada (adiós al fallback de paréntesis, que fallaba en "unsweetened", "general session", etc.) + alérgenos, intensidades y valores de recuperación.</li>
+<li><strong>Preferencias nutricionales</strong>: nota introductoria, tipos de dieta (reutilizan las claves ob.* del onboarding, ya en 14 idiomas) y alérgenos, todo mostrado en el idioma de la app.</li>
+<li><strong>NutriLog/Movement</strong>: badge "MENSTRUAL · DÍA 4" compuesto con claves, valores de Ánimo/Energía/Flujo (Regular/Baja/Ligero…), chips de síntomas (Cólicos, Hinchazón, Fatiga, Dolor de cabeza) e intensidades (Moderada…) traducidos.</li>
+<li><strong>Pendiente conocido (server)</strong>: los textos del Consejo del día / Señal del cuerpo / citas vienen del CONTENIDO en base de datos (solo inglés hoy) — content-i18n es fase propia del backlog; no se arregla en cliente.</li>
+</ul>
+<h3>30 Jul 2026 — Guía Builders para founders + feedback→email</h3>
+<ul>
+<li><strong>GUIA-Builders-Founders.html</strong> (raíz del proyecto, para compartir): cómo entrar (PIN Cloudflare + cuenta de la app; sin contraseñas compartidas), dónde está el feedback (Consola Admin → App Feedback / Pilot → sección 3) y mapa de las 7 secciones con URLs directas.</li>
+<li><strong>Feedback → email sin vendors</strong>: Edge Function <code>feedback-email</code> que envía por <strong>SMTP del propio buzón IONOS</strong> (feedback@ se lo escribe a sí mismo) + trigger pg_net con token en Vault (<code>2026-07-30-feedback-email.sql</code>). Cero proveedores nuevos, cero DNS — descartada la variante Resend. El guardado en el hub nunca depende del email.</li>
+<li>Buzones nuevos: review@/contacto@/feedback@ — ⚠️ crear también alias <strong>contact@</strong> (es el publicado en app, web y legales).</li>
+</ul>
 <h3>30 Jul 2026 — Gestión del Piloto: cohortes + invitaciones por lotes + feedback segmentado · web po28</h3>
 <ul>
 <li><strong>SQL <code>2026-07-30-pilot.sql</code></strong> (⚠️ aplicar en Supabase): tabla <code>pilot_invites</code> (email→cohorte→estado proposed/approved/invited/joined) + RPCs admin <code>admin_pilot_propose/set_status/overview/feedback</code> — mismo modelo de puertas que la waitlist; "dentro" se detecta solo al crearse la cuenta.</li>

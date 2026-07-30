@@ -1637,7 +1637,20 @@
     "Cardio": "Cardio",
     "Daily Movement": "Alltagsbewegung",
     "Flexibility & Recovery": "Beweglichkeit & Erholung",
-    "Strength": "Kraft"
+    "Strength": "Kraft",
+    "Milk": "",
+    "Shellfish": "",
+    "Peanuts": "",
+    "Tree nuts": "",
+    "Moderate-High": "",
+    "Low": "",
+    "Low-Moderate": "",
+    "Rest": "",
+    "Gentle": "",
+    "Restorative": "",
+    "Mid-High": "",
+    "Mid": "",
+    "Varies": ""
   },
   "ob": {
     "accurate": "Sei so genau wie möglich, damit NutriSync dir maßgeschneiderte Ergebnisse liefern kann.",

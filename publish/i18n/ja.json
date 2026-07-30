@@ -1637,7 +1637,20 @@
     "Cardio": "有酸素運動",
     "Daily Movement": "日常の運動",
     "Flexibility & Recovery": "柔軟性と回復",
-    "Strength": "筋力"
+    "Strength": "筋力",
+    "Milk": "",
+    "Shellfish": "",
+    "Peanuts": "",
+    "Tree nuts": "",
+    "Moderate-High": "",
+    "Low": "",
+    "Low-Moderate": "",
+    "Rest": "",
+    "Gentle": "",
+    "Restorative": "",
+    "Mid-High": "",
+    "Mid": "",
+    "Varies": ""
   },
   "ob": {
     "accurate": "NutriSync があなたに合った結果をお届けできるよう、できるだけ正確に入力してください。",

@@ -1637,7 +1637,20 @@
     "Cardio": "有氧运动",
     "Daily Movement": "日常活动",
     "Flexibility & Recovery": "柔韧与恢复",
-    "Strength": "力量"
+    "Strength": "力量",
+    "Milk": "",
+    "Shellfish": "",
+    "Peanuts": "",
+    "Tree nuts": "",
+    "Moderate-High": "",
+    "Low": "",
+    "Low-Moderate": "",
+    "Rest": "",
+    "Gentle": "",
+    "Restorative": "",
+    "Mid-High": "",
+    "Mid": "",
+    "Varies": ""
   },
   "ob": {
     "accurate": "请尽量准确填写，这样 NutriSync 才能为你提供量身定制的结果。",
