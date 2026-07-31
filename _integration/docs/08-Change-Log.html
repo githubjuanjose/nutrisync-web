@@ -173,6 +173,10 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>31 Jul 2026 — Decisiones de identidad APROBADAS (1A·2A·3B·4B) · web po35</h3>
+<ul>
+<li>Founders aprueban el paquete completo de doc 28: Google+Apple Sign-In, MFA obligatorio para admins, biometría ofrecida tras el primer login, y contraseña en retirada suave para nuevas usuarias. Epic K pasa a ejecución (próxima sesión, fases A+B, un único rebuild nativo → TestFlight build 3). Decisiones de pagos (5-8) pendientes.</li>
+</ul>
 <h3>31 Jul 2026 — Doc 29: propuesta de pagos y suscripciones · Epic L · web po34</h3>
 <ul>
 <li>Propuesta en profundidad: <strong>dos raíles obligados por mercado</strong> (IAP de Apple/Google dentro de la app — 15-30%; web libre a ~3-5% con Stripe o Paddle-MoR) unificados en <strong>RevenueCat</strong> → webhook → tabla <code>subscriptions</code> en Supabase + <code>is_premium()</code> para las puertas RLS. Flujos completos de alta (app y web), renovación con gracia, cancelación vía stores/portal (nunca ticket) y baja elegante sin borrar datos. Cobertura inicial EUR/UK/USA/CA/AUS; LATAM por fases (métodos locales solo con cohorte real). Integración de diseño inventariada (doc 12 §22: paywall, patrón candado, Suscripción en Ajustes, success, pricing web). <strong>Prerequisito duro: el raíl web necesita la sociedad</strong> (doc 19); el móvil puede arrancar con la cuenta individual. Epic L en backlog; 4 decisiones a founders. Aclaración: AWS no juega aquí (no tiene motor de suscripciones de consumo).</li>

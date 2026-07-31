@@ -145,7 +145,7 @@ tbody tr:nth-child(even){background:var(--cream);}
 <td>K</td>
 <td>Identity &amp; Authentication (doc 28)</td>
 <td>P1</td>
-<td>◯ proposal ready — founder decisions pending</td>
+<td>✅ approved 1A·2A·3B·4B — implementation next session</td>
 </tr>
 <tr>
 <td>L</td>
@@ -157,14 +157,14 @@ tbody tr:nth-child(even){background:var(--cream);}
 </table>
 <p>Status key: <strong>✅ Done</strong> · <strong>◑ Partial</strong> · <strong>▢ Documented only</strong> · <strong>Not started</strong>.</p>
 <hr />
-<h2>Epic K — Identity &amp; Authentication  <em>(P1 — decision paper: doc 28)</em></h2>
+<h2>Epic K — Identity &amp; Authentication  <em>(P1 — ✅ APPROVED 31 Jul: 1A·2A·3B·4B)</em></h2>
 <p>Sign-in choice, passwordless and access assurance for the pilot and beyond. Full rationale, phasing and founder decisions in <strong>doc 28 — Identity &amp; Authentication Proposal</strong>.</p>
 <ul>
-<li><strong>K1 (P1, M)</strong> — Google + Apple Sign-In (shipped as a pair — App Store rule) with account linking by email. <em>AC: same email across providers resolves to one account; both buttons on app + web.</em> — <em>pending founder GO.</em></li>
-<li><strong>K2 (P1, S)</strong> — Email OTP sign-in (<code>signInWithOtp</code>) as passwordless option and recovery path. <em>AC: OTP works on all surfaces; password login unchanged.</em> — <em>pending.</em></li>
-<li><strong>K3 (P1, S)</strong> — Email verification ON for password sign-ups; <strong>TOTP MFA required for the 4 admin accounts</strong>. <em>AC: no unverified password accounts; hub tools unreachable without MFA for admins.</em> — <em>pending.</em></li>
-<li><strong>K4 (P2, S)</strong> — Minimal access log (login/app-open: user, ts, platform, version; 90-day retention; admin-only RPC). <em>AC: pilot dashboard can answer "who used the app this week".</em> — <em>pending.</em></li>
-<li><strong>K5 (P2, M)</strong> — Biometric app-lock (SecureStore + local auth, opt-in toggle in Sign In &amp; Security; session expiry unchanged). Native rebuild, bundled with K1's entitlement build. — <em>pending.</em></li>
+<li><strong>K1 (P1, M)</strong> — Google + Apple Sign-In (shipped as a pair — App Store rule) with account linking by email. <em>AC: same email across providers resolves to one account; both buttons on app + web.</em> — <strong>GO (1A)</strong>.</li>
+<li><strong>K2 (P1, S)</strong> — Email OTP sign-in (<code>signInWithOtp</code>) as passwordless option and recovery path. <em>AC: OTP works on all surfaces; password stays as fallback.</em> — <strong>GO — new users see providers/OTP first (4B)</strong>.</li>
+<li><strong>K3 (P1, S)</strong> — Email verification ON for password sign-ups; <strong>TOTP MFA required for the 4 admin accounts</strong>. <em>AC: no unverified password accounts; hub tools unreachable without MFA for admins.</em> — <strong>GO — mandatory (2A)</strong>.</li>
+<li><strong>K4 (P2, S)</strong> — Minimal access log (login/app-open: user, ts, platform, version; 90-day retention; admin-only RPC). <em>AC: pilot dashboard can answer "who used the app this week".</em> — <strong>GO</strong>.</li>
+<li><strong>K5 (P2, M)</strong> — Biometric app-lock (SecureStore + local auth, opt-in toggle in Sign In &amp; Security; session expiry unchanged). Native rebuild, bundled with K1's entitlement build. — <strong>GO — offered right after first login, opt-out (3B)</strong>.</li>
 <li><strong>K6 (watchlist)</strong> — Passkeys (WebAuthn) when Supabase support is GA — replaces any custom push-approval idea. — <em>watching.</em></li>
 </ul>
 <h2>Epic L — Payments &amp; Subscriptions  <em>(P1 — decision paper: doc 29)</em></h2>
