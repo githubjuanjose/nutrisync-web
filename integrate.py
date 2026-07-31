@@ -1040,4 +1040,16 @@ if os.path.exists(fidx):
         open(fidx, "w", encoding="utf-8").write(fh)
         print("- footer links wired (contact/careers mailto, science anchor)")
 
+# ---------------------------------------------------------------------------
+# ns-auth-redirects: signup emails always land on production (belt & braces
+# with the dashboard Site URL).
+ap = os.path.join(PUB, "app.html")
+if os.path.exists(ap):
+    ah = open(ap, encoding="utf-8").read()
+    _o = "this.sb.auth.signUp({ email: st.email.trim(), password: st.password, options: { data:"
+    _n = "this.sb.auth.signUp({ email: st.email.trim(), password: st.password, options: { emailRedirectTo: location.origin + '/app.html', data:"
+    if _o in ah and "emailRedirectTo: location.origin" not in ah:
+        open(ap, "w", encoding="utf-8").write(ah.replace(_o, _n))
+        print("- auth signup redirect wired to production")
+
 print("\nIntegration complete - review, then commit + push.")
