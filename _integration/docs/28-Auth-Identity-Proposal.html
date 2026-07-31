@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Identity & Authentication — Proposal — NutriSync Docs</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.navbtns{display:flex;gap:16px;align-items:center;}
+.navbtns a:first-child{padding:5px 12px;border:1px solid var(--line);border-radius:20px;}
+.navbtns a:first-child:hover{border-color:var(--coral);background:var(--cream);}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+h4{font-size:16px;font-weight:800;margin:20px 0 6px;}
+p{margin:10px 0;}
+a{color:var(--coral-deep);}
+strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:'SF Mono',Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:14px 0;padding:12px 18px;background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;color:#5d524b;}
+blockquote p{margin:4px 0;}
+ul,ol{margin:10px 0;padding-left:24px;}
+li{margin:5px 0;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;}
+tbody tr:nth-child(even){background:var(--cream);}
+.pill{display:inline-block;background:#FDE6DD;color:var(--coral-deep);font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;}
+.card{display:block;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:10px 0;text-decoration:none;color:var(--ink);transition:.15s;}
+.card:hover{border-color:var(--coral);background:var(--cream);}
+.card .t{font-weight:800;font-size:16px;color:var(--coral-deep);}
+.card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
+.sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
+</style></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>28 · Identity &amp; Authentication — Proposal</h1>
+<p><strong>Goal:</strong> know reliably <em>who</em> accesses NutriSync, make sign-up/sign-in effortless on every surface, and keep the health-data bar (GDPR art. 9) intact. This document is the decision paper for founders; nothing here is built yet except what is marked LIVE.</p>
+<h2>1. Where we are (LIVE)</h2>
+<p>Supabase Auth with email + password on all four surfaces; sessions persist per device with rotating refresh tokens and the current expiry policy; every data row is protected by RLS keyed to the authenticated user id; admin powers are a separate allowlist (<code>admins</code>) on top of normal accounts. This is sound — the gaps are convenience (typing passwords), recovery (forgotten passwords, as the founders just experienced) and provider choice.</p>
+<h2>2. Proposed additions</h2>
+<h3>2.1 Sign in with Google + Sign in with Apple <em>(phase A — recommended now)</em></h3>
+<p>Supabase supports both natively; the app adds two buttons, the web adds two redirects. Two non-negotiables to plan around: <strong>Apple's rule</strong> — if we offer any third-party login (Google), the App Store <em>requires</em> Sign in with Apple too, so they ship together or not at all; and <strong>account linking</strong> — same email across providers must resolve to one NutriSync account (Supabase identity linking handles this; we enable it deliberately and test it).</p>
+<p>Why it matters for the pilot: the partner recommendation is right — in Indonesia (and broadly on Android) Google Sign-In is the dominant, most reliable path; on iOS, Apple Sign-In removes the password entirely. Both give us a <strong>verified email identity</strong> from the provider, which strengthens "we know who registered".</p>
+<h3>2.2 Email OTP (6-digit code) <em>(phase A)</em></h3>
+<p>Supabase's built-in <code>signInWithOtp</code>: no password to forget, works everywhere email works, and doubles as the recovery path. Password login stays available — OTP is an <em>additional</em> method, and our pilot cohorts can A/B which method women actually prefer (the partner's test matrix: OTP vs Apple vs Google).</p>
+<h3>2.3 Biometrics — Face ID / Touch ID / Android biometrics <em>(phase B)</em></h3>
+<p>Honest framing: biometrics <strong>never replace server authentication</strong> — the phone proves "same person as last time" locally and unlocks the stored session. The right pattern (industry standard for health apps): refresh token in the device's secure enclave (SecureStore/Keystore), app-lock screen gated by <code>expo-local-authentication</code>, optional toggle in Settings → Sign In &amp; Security ("Unlock with Face ID"), password/OTP always available as fallback, session expiry unchanged. Requires a native rebuild (new module + FaceID entitlement) — lands with the next native version, not OTA.</p>
+<h3>2.4 Push-approval sign-in — <strong>recommend against building it</strong></h3>
+<p>A custom "tap the push to approve login" flow means building a device registry, push infrastructure, anti-phishing number matching and recovery paths — bank-grade plumbing for marginal gain over 2.2/2.3. The standards-based replacement is <strong>passkeys (WebAuthn)</strong>: same UX promise (biometric, no password, phishing-proof) with platform support. Supabase's passkey support is not yet GA; we put passkeys on the watchlist and adopt them when it lands, instead of hand-rolling push auth.</p>
+<h3>2.5 Knowing who accesses — assurance &amp; audit <em>(phase A, cheap)</em></h3>
+<ul>
+<li><strong>Email verification ON</strong> for password sign-ups (provider logins arrive verified).</li>
+<li><strong>MFA (TOTP) required for admin accounts</strong> — founders' accounts open PII (waitlist, pilot, feedback); Supabase MFA is built-in; this is the single highest-leverage hardening we can ship.</li>
+<li><strong>Access log, minimal and purpose-bound:</strong> one row per login/app-open — user id, timestamp, platform, app version. Admin-only RPC to read; 90-day retention; documented in the privacy policy. Enough for the pilot ("who is actually using it, on what") without surveillance creep.</li>
+<li>Registration timestamps, provider used, and consent flags already live in <code>auth.users</code> + our tables — the proposal adds nothing that touches art. 9 data.</li>
+</ul>
+<h2>3. Phasing &amp; effort</h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Contents</th>
+<th>Effort</th>
+<th>Native rebuild?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A</strong></td>
+<td>Google + Apple Sign-In, email OTP, email verification, admin TOTP MFA, access log</td>
+<td>1–2 sessions</td>
+<td>Apple Sign-In: yes (entitlement) → bundled with next build</td>
+</tr>
+<tr>
+<td><strong>B</strong></td>
+<td>Biometric app-lock (SecureStore + local auth), Settings toggle</td>
+<td>1 session</td>
+<td>yes — same build as A</td>
+</tr>
+<tr>
+<td><strong>Watchlist</strong></td>
+<td>Passkeys when Supabase GA; SMS OTP only if pilot data demands it (cost + Indonesia deliverability review first)</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>One combined native build ships A+B (version bump, TestFlight build 3); everything else is config + JS/OTA.</p>
+<h2>4. Decisions requested from founders</h2>
+<ol>
+<li>Ship Google <strong>and</strong> Apple Sign-In together in phase A? (Apple's rule makes them a pair.)</li>
+<li>Make TOTP MFA mandatory for the four admin accounts?</li>
+<li>Biometric app-lock default: opt-in (recommended) or opt-out?</li>
+<li>Keep password login long-term, or steer new users to OTP/providers and let passwords fade?</li>
+</ol>
+<h2>5. Compliance notes (for the lawyer pack)</h2>
+<p>Providers receive <em>only</em> authentication traffic — no health data leaves Supabase. Privacy policy gains: list of identity providers, biometric processing note (on-device only, never transmitted — Face ID templates never reach us), access-log purpose &amp; retention. Apple privacy nutrition labels updated at the same time.</p></div></body></html>

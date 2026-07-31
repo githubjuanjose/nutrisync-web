@@ -141,10 +141,26 @@ tbody tr:nth-child(even){background:var(--cream);}
 <td>P1</td>
 <td><strong>Not started</strong></td>
 </tr>
+<tr>
+<td>K</td>
+<td>Identity &amp; Authentication (doc 28)</td>
+<td>P1</td>
+<td>◯ proposal ready — founder decisions pending</td>
+</tr>
 </tbody>
 </table>
 <p>Status key: <strong>✅ Done</strong> · <strong>◑ Partial</strong> · <strong>▢ Documented only</strong> · <strong>Not started</strong>.</p>
 <hr />
+<h2>Epic K — Identity &amp; Authentication  <em>(P1 — decision paper: doc 28)</em></h2>
+<p>Sign-in choice, passwordless and access assurance for the pilot and beyond. Full rationale, phasing and founder decisions in <strong>doc 28 — Identity &amp; Authentication Proposal</strong>.</p>
+<ul>
+<li><strong>K1 (P1, M)</strong> — Google + Apple Sign-In (shipped as a pair — App Store rule) with account linking by email. <em>AC: same email across providers resolves to one account; both buttons on app + web.</em> — <em>pending founder GO.</em></li>
+<li><strong>K2 (P1, S)</strong> — Email OTP sign-in (<code>signInWithOtp</code>) as passwordless option and recovery path. <em>AC: OTP works on all surfaces; password login unchanged.</em> — <em>pending.</em></li>
+<li><strong>K3 (P1, S)</strong> — Email verification ON for password sign-ups; <strong>TOTP MFA required for the 4 admin accounts</strong>. <em>AC: no unverified password accounts; hub tools unreachable without MFA for admins.</em> — <em>pending.</em></li>
+<li><strong>K4 (P2, S)</strong> — Minimal access log (login/app-open: user, ts, platform, version; 90-day retention; admin-only RPC). <em>AC: pilot dashboard can answer "who used the app this week".</em> — <em>pending.</em></li>
+<li><strong>K5 (P2, M)</strong> — Biometric app-lock (SecureStore + local auth, opt-in toggle in Sign In &amp; Security; session expiry unchanged). Native rebuild, bundled with K1's entitlement build. — <em>pending.</em></li>
+<li><strong>K6 (watchlist)</strong> — Passkeys (WebAuthn) when Supabase support is GA — replaces any custom push-approval idea. — <em>watching.</em></li>
+</ul>
 <h2>Epic A — Cloud foundation &amp; secure landing zone  <em>(P0)</em></h2>
 <p><strong>Current status: Not started — Supabase Phase 1 by design.</strong> Today Supabase (EU) provides Postgres, Auth, and Row-Level Security, which covers Phase-1 needs. This epic is the AWS secure landing zone we build when scale and B2B compliance obligations justify it.</p>
 <blockquote>
