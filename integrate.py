@@ -945,9 +945,10 @@ idxm = os.path.join(PUB, "index.html")
 if os.path.exists(idxm):
     hm = open(idxm, encoding="utf-8").read()
     _old = "enterApp: () => { window.location.href = 'app.html'; },"
-    _new = "enterApp: () => { var e = document.querySelector('input[type=email]'); if (e) { e.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(() => { try { e.focus(); } catch (_) {} }, 450); } },"
-    if _old in hm:
-        hm = hm.replace(_old, _new)
+    _old2 = "enterApp: () => { var e = document.querySelector('input[type=email]'); if (e) { e.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(() => { try { e.focus(); } catch (_) {} }, 450); } },"
+    _new = "enterApp: () => { var e = document.querySelector('input[type=email], input[placeholder*=\"@\"]'); if (e) { e.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(() => { try { e.focus(); } catch (_) {} }, 450); } },"
+    if _old in hm or _old2 in hm:
+        hm = hm.replace(_old, _new).replace(_old2, _new)
         open(idxm, "w", encoding="utf-8").write(hm)
         print("- mobile-first gate: marketing CTAs -> waitlist (web app behind the hub)")
 
@@ -1009,5 +1010,34 @@ if os.path.exists(pl):
             open(_pgh, "w", encoding="utf-8").write(
                 _hh.replace('<a class="htab" href="waitlist.html"', _phtab + '<a class="htab" href="waitlist.html"', 1))
             print("- pilot htab added to hub nav")
+
+# ---------------------------------------------------------------------------
+# ns-mfa: MFA enrollment page for admins (Epic K / decision 2A).
+mf = os.path.join(ASSETS, "mfa.html")
+if os.path.exists(mf):
+    shutil.copy(mf, os.path.join(PUB, "hub", "mfa.html"))
+    print("- mfa tool copied to hub/mfa.html")
+    _mgh = os.path.join(PUB, "hub", "full-hub-gated-site.html")
+    _mht = open(os.path.join(ASSETS, "mfa-htab.snippet"), encoding="utf-8").read()
+    if os.path.exists(_mgh):
+        _mh = open(_mgh, encoding="utf-8").read()
+        if 'mfa.html' not in _mh:
+            open(_mgh, "w", encoding="utf-8").write(
+                _mh.replace('<a class="htab" href="pilot.html"', _mht + '<a class="htab" href="pilot.html"', 1))
+            print("- mfa htab added to hub nav")
+
+# ---------------------------------------------------------------------------
+# ns-footer-mailto: wire footer placeholders by template key (labels are i18n vars).
+fidx = os.path.join(PUB, "index.html")
+if os.path.exists(fidx):
+    fh = open(fidx, encoding="utf-8").read()
+    if 'mailto:contact@nutrisynccollective.com' not in fh:
+        import re as _re
+        for _k, _t in (("ftContact", "mailto:contact@nutrisynccollective.com"),
+                       ("ftCareers", "mailto:contact@nutrisynccollective.com?subject=Empleo%20NutriSync")):
+            fh = _re.sub(r'href=\"#\"([^>]*>\{\{ t\.' + _k + r' \}\})', 'href=\"' + _t + '\"\1', fh)
+        fh = fh.replace('href=\"#science\"', 'href=\"#platform\"')
+        open(fidx, "w", encoding="utf-8").write(fh)
+        print("- footer links wired (contact/careers mailto, science anchor)")
 
 print("\nIntegration complete - review, then commit + push.")

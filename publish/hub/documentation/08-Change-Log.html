@@ -173,6 +173,15 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>1 Ago 2026 — Sprint 11 · Epic K construido: identidad completa · app v0.18.0 + web po37</h3>
+<p><em>(A partir de aquí, las iteraciones pasan a llamarse </em><em>sprints</em><em>.)</em></p>
+<ul>
+<li><strong>Login nuevo (4B)</strong>: Apple (id-token nativo, solo iOS) · Google (PKCE con navegador seguro) · código por email (OTP 6 cifras, crea cuenta) — y la contraseña plegada bajo "Prefiero contraseña", con manejo de email-sin-confirmar + reenvío. Cliente Supabase a <code>flowType: pkce</code>.</li>
+<li><strong>Biometría (3B)</strong>: oferta única tras el primer login; BioGate al arranque en frío con Face ID/huella (SecureStore + LocalAuthentication); "Usar contraseña" como salida; jamás bloquea sin hardware enrolado.</li>
+<li><strong>MFA admins (2A)</strong>: <code>is_admin_mfa()</code> — las 11 funciones admin exigen aal2 en cuanto la admin enrola su TOTP; página de alta en hub → 🔐 MFA (QR + verificación).</li>
+<li><strong>Access log (K4)</strong>: <code>log_access</code> en cada arranque con sesión (plataforma+versión, retención 90 días) + <code>admin_access_summary</code> para el piloto.</li>
+<li><strong>Build 3</strong> además estrena el <strong>logo definitivo</strong>. Requiere: SQL 2026-08-01, consolas (runbook doc 30), <code>npx expo install</code> de 4 dependencias y build+submit.</li>
+</ul>
 <h3>31 Jul 2026 — R10 (Lucía + Pilar): gráficas finales de Progress + logo definitivo · app v0.17.4-r10a + web po36</h3>
 <ul>
 <li><strong>Sección de gráficas rediseñada</strong> (spec de Lucía): tarjeta blanca con cabecera "Fase · Días X–Y", <strong>leyenda de hormonas fija</strong> arriba (no cambia entre estados) y <strong>tag interactivo</strong>: al tocar una curva aparece la píldora de la hormona (Estrógeno 🟡 · LH 🔴 · FSH 🟠 · Progesterona 🌹) y se oculta sola — el hit-test usa los polígonos reales extraídos de los SVG de Design (point-in-polygon en runtime).</li>

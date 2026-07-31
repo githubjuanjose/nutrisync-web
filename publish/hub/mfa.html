@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MFA — NutriSync Founders</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.6}
+.w{max-width:560px;margin:0 auto;padding:34px 22px 80px}h1{font-size:22px;margin:0 0 4px}
+p{color:#5f564f;font-size:14px}.c{background:#fff;border:1px solid #EFE3D7;border-radius:16px;padding:18px;margin:14px 0}
+button{font-family:inherit;font-weight:700;font-size:13.5px;border-radius:22px;padding:10px 18px;border:none;cursor:pointer;background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff}
+button.sec{background:#fff;border:1px solid #EFE3D7;color:#241D1A}
+input{font-family:inherit;font-size:14px;padding:10px 12px;border:1px solid #EFE3D7;border-radius:10px;width:100%;box-sizing:border-box;margin:6px 0}
+.ok{color:#0F9B57;font-weight:700}.err{color:#D93030;font-size:13px}
+img.qr{width:190px;height:190px;display:block;margin:10px auto;border:1px solid #EFE3D7;border-radius:12px;padding:8px;background:#fff}
+code{background:#FBEDE6;color:#9a3a25;padding:2px 7px;border-radius:6px;font-size:.9em;word-break:break-all}
+</style></head><body><div class="w">
+<h1>🔐 Doble factor (MFA) de administradora</h1>
+<p>Obligatorio para las 4 cuentas admin (decisión 2A). Se configura una vez con Google Authenticator, 1Password o similar; después, las herramientas del hub pedirán tu sesión reforzada.</p>
+<div class="c" id="box">Cargando…</div>
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+const sb=createClient(U,K);const box=document.getElementById('box');
+const esc=t=>String(t??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+let factorId=null, challengeId=null;
+async function boot(){
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){box.innerHTML='<p>Primero inicia sesión con tu cuenta (por ejemplo en la herramienta Waitlist) y recarga esta página.</p>';return;}
+  const{data,error}=await sb.auth.mfa.listFactors();
+  if(error){box.innerHTML='<p class="err">'+esc(error.message)+'</p>';return;}
+  const tot=(data.totp||[]).find(f=>f.status==='verified');
+  const{data:aal}=await sb.auth.mfa.getAuthenticatorAssuranceLevel();
+  if(tot){
+    if(aal.currentLevel==='aal2'){
+      box.innerHTML='<p class="ok">✅ MFA activo y sesión reforzada (aal2). Todo listo — las herramientas admin funcionan con normalidad.</p>'
+        +'<button class="sec" id="un">Quitar este factor</button>';
+      document.getElementById('un').onclick=async()=>{if(confirm('¿Quitar tu MFA?')){await sb.auth.mfa.unenroll({factorId:tot.id});location.reload();}};
+    }else{
+      box.innerHTML='<p>Tienes MFA configurado. Introduce el código de tu app para reforzar esta sesión:</p>'
+        +'<input id="code" inputmode="numeric" maxlength="6" placeholder="123456"><button id="go">Verificar</button><p class="err" id="e"></p>';
+      document.getElementById('go').onclick=async()=>{
+        const ch=await sb.auth.mfa.challenge({factorId:tot.id});
+        if(ch.error){document.getElementById('e').textContent=ch.error.message;return;}
+        const v=await sb.auth.mfa.verify({factorId:tot.id,challengeId:ch.data.id,code:document.getElementById('code').value.trim()});
+        if(v.error){document.getElementById('e').textContent=v.error.message;return;}
+        location.reload();
+      };
+    }
+    return;
+  }
+  // sin factor → enrolar
+  const en=await sb.auth.mfa.enroll({factorType:'totp',friendlyName:'NutriSync admin'});
+  if(en.error){box.innerHTML='<p class="err">'+esc(en.error.message)+'</p>';return;}
+  factorId=en.data.id;
+  box.innerHTML='<p><b>1.</b> Escanea este QR con Google Authenticator / 1Password:</p>'
+    +'<img class="qr" src="'+en.data.totp.qr_code+'">'
+    +'<p style="font-size:12px">o clave manual: <code>'+esc(en.data.totp.secret)+'</code></p>'
+    +'<p><b>2.</b> Escribe el código de 6 cifras que te muestra:</p>'
+    +'<input id="code" inputmode="numeric" maxlength="6" placeholder="123456"><button id="go">Activar MFA</button><p class="err" id="e"></p>';
+  document.getElementById('go').onclick=async()=>{
+    const ch=await sb.auth.mfa.challenge({factorId});
+    if(ch.error){document.getElementById('e').textContent=ch.error.message;return;}
+    const v=await sb.auth.mfa.verify({factorId,challengeId:ch.data.id,code:document.getElementById('code').value.trim()});
+    if(v.error){document.getElementById('e').textContent=v.error.message;return;}
+    box.innerHTML='<p class="ok">✅ MFA activado y sesión reforzada. Ya puedes usar todas las herramientas.</p>';
+  };
+}
+boot();
+</script></div></body></html>
