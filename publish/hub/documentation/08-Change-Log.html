@@ -173,6 +173,12 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>31 Jul 2026 — Content-i18n fase 2: el motor diario en los 14 idiomas · SQL l12</h3>
+<ul>
+<li><strong><code>2026-07-31-content-i18n-l12.sql</code></strong> (⚠️ aplicar tras la fase 1): primera pasada de los <strong>4.896 textos</strong> restantes — consejos, señales del cuerpo, citas y valores típicos en fr, it, ca, de, nl, el, val (AVL), gl (RAG), eu (batua), oc-aranés (gascón, prioridad de revisión nativa), zh y ja.</li>
+<li>Sin cambios de app ni web: la app ya pide su idioma; las revisoras corrigen en hub → Translations → Contenido.</li>
+<li>Con esto, <strong>todas las superficies y todo el contenido dinámico hablan los 14 idiomas</strong> — cierre completo del frente de traducciones (queda solo revisión humana).</li>
+</ul>
 <h3>31 Jul 2026 — Content-i18n fase 1: el motor diario habla español · SQL + OTA + web po31</h3>
 <ul>
 <li><strong>SQL <code>2026-07-31-content-i18n.sql</code></strong> (⚠️ aplicar): tabla <code>content_text</code>, <code>ns_daily_recs(p_date, p_lang)</code> con fallback EN (clientes antiguos siguen en inglés sin romperse), RPCs de edición admin y <strong>primera pasada ES completa: 408 textos</strong> — los 60 consejos del día, las 40 Señales del cuerpo con sus citas, y los valores típicos (ánimo/energía/flujo/recuperación).</li>
