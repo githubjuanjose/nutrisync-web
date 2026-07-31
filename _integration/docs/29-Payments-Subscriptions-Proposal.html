@@ -1,0 +1,138 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Payments & Subscriptions — In-Depth Proposal — NutriSync Docs</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.navbtns{display:flex;gap:16px;align-items:center;}
+.navbtns a:first-child{padding:5px 12px;border:1px solid var(--line);border-radius:20px;}
+.navbtns a:first-child:hover{border-color:var(--coral);background:var(--cream);}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+h4{font-size:16px;font-weight:800;margin:20px 0 6px;}
+p{margin:10px 0;}
+a{color:var(--coral-deep);}
+strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:'SF Mono',Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:14px 0;padding:12px 18px;background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;color:#5d524b;}
+blockquote p{margin:4px 0;}
+ul,ol{margin:10px 0;padding-left:24px;}
+li{margin:5px 0;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;}
+tbody tr:nth-child(even){background:var(--cream);}
+.pill{display:inline-block;background:#FDE6DD;color:var(--coral-deep);font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;}
+.card{display:block;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:10px 0;text-decoration:none;color:var(--ink);transition:.15s;}
+.card:hover{border-color:var(--coral);background:var(--cream);}
+.card .t{font-weight:800;font-size:16px;color:var(--coral-deep);}
+.card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
+.sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
+</style></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>29 · Payments &amp; Subscriptions — In-Depth Proposal</h1>
+<p><strong>Goal:</strong> a premium subscription that works day one in the Eurozone, UK, Australia, USA, Canada and (phased) LATAM — with renewals, cancellations and refunds handled by proven rails, not by us. Decision paper for founders; nothing is built yet.</p>
+<h2>1. The two market rules that shape everything</h2>
+<p><strong>Rule 1 — In-app digital subscriptions must use the stores.</strong> Apple and Google <em>require</em> that digital goods sold inside the native apps go through In-App Purchase / Play Billing (15% fee up to $1M/yr via the small-business programs, 30% above). A Stripe checkout inside the iOS app for a subscription is a rejection. This is not a choice between "AWS shopping cart or others" — on mobile the rail is imposed.</p>
+<p><strong>Rule 2 — The web is free territory.</strong> On nutrisynccollective.com we can charge with any processor at ~2-3% instead of 15-30%. The classic play (Spotify model): sell on both, steer nothing illegally, and let the web be the margin-friendly door. The app can <em>honor</em> a web-purchased subscription without ever mentioning where to buy.</p>
+<p><strong>Corollary:</strong> we will run <strong>two sales rails with one source of truth</strong> for "is she premium?".</p>
+<p><em>(Why not AWS: Amazon has no consumer cart/subscription product for this use case — Amazon Pay is a wallet button, not a billing engine. The AWS wave in our backlog is about compute, not checkout.)</em></p>
+<h2>2. Recommended architecture</h2>
+<pre><code>   iOS app ──── StoreKit (Apple IAP) ──┐
+   Android ──── Play Billing ──────────┤        webhooks     ┌──────────────────┐
+                                       ├──► RevenueCat ────► │ Supabase          │
+   Web ──────── Stripe Billing or ─────┘   (subscription     │ subscriptions tbl │
+               Paddle (MoR)                 state hub)       │ + is_premium()    │
+                                                             │ RLS gates         │
+                                                             └──────────────────┘
+</code></pre>
+<ul>
+<li><strong>RevenueCat as the subscription hub</strong> (free tier covers us until real revenue; ~1% later — verify current pricing at signup). It unifies receipt validation, renewal/grace/refund state across Apple + Google + Stripe, exposes one "entitlement: premium" flag, and fires webhooks. Hand-rolling this (react-native-iap + server receipt validation + three webhook dialects) is weeks of edge-case work we should not own at this stage.</li>
+<li><strong>Supabase stays the source of truth for the app</strong>: a <code>subscriptions</code> table (user_id, store, product, status, current_period_end, will_renew) updated by RevenueCat webhooks (Edge Function), plus a SQL helper <code>is_premium(uid)</code> used by RLS/RPCs to gate premium features. The app never trusts itself — it asks the backend.</li>
+<li><strong>Web rail — the one real decision (§6):</strong> Stripe (we are the merchant: best rates ~2.5%, but <em>we</em> owe VAT/GST/sales-tax registrations; Stripe Tax calculates, we remit) <strong>vs Paddle / Lemon Squeezy as Merchant of Record</strong> (they are the seller: they handle EU VAT, UK VAT, AUS GST, CA taxes, US sales tax and invoices; fee ~5-7%). For a pre-scale team, <strong>MoR removes an entire tax department</strong>; the stores are already MoR on mobile. Recommendation: <strong>Paddle-style MoR for web at launch, revisit Stripe when web revenue justifies owning tax</strong>.</li>
+</ul>
+<h2>3. Coverage by region (initial scope)</h2>
+<table>
+<thead>
+<tr>
+<th>Region</th>
+<th>Mobile (IAP)</th>
+<th>Web</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Eurozone, UK, USA, Canada, Australia</td>
+<td>Native — stores localize price &amp; currency per storefront, handle taxes</td>
+<td>Stripe/Paddle native; cards + Apple Pay/Google Pay buttons</td>
+</tr>
+<tr>
+<td>LATAM (phase)</td>
+<td>IAP works everywhere the stores operate; store handles local pricing tiers</td>
+<td>Cards work cross-border, but LATAM converts on <strong>local methods</strong> (PIX in Brazil, OXXO/SPEI in Mexico, local wallets). Launch LATAM web = cards only; add a local processor (dLocal / EBANX / Mercado Pago) <strong>only when the LATAM cohort is real</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Pricing: use Apple/Google <strong>price tiers per storefront</strong> and Stripe/Paddle multi-currency price lists — one product, localized price points (LATAM sensitivity: plan regional tiers, not FX conversion).</p>
+<h2>4. Product shape &amp; user flows</h2>
+<p><strong>Offer:</strong> Free tier (current app) + <strong>NutriSync Premium</strong> — monthly and annual (annual with ~35-40% saving badge) + 7-day free trial. Exact prices = founders + tracker assumptions (doc G3).</p>
+<p><strong>A · Becoming a paying user (app):</strong> Onboarding stays free (never paywall registration — health apps die there). Paywall appears at <em>value moments</em>: the yearly Progress view (already a locked card today), advanced insights, and a soft card after the first completed cycle. Tap → Paywall screen → plan choice → native store sheet (Face ID confirms — note the elegance: the biometric decision from doc 28 composes with this) → receipt lands in RevenueCat → webhook flips <code>subscriptions</code> → premium unlocks live, all surfaces at once.</p>
+<p><strong>B · Becoming a paying user (web):</strong> marketing pricing section (exists today, currently waitlist-steered) → checkout hosted by Stripe/Paddle (card, Apple/Google Pay) → webhook → same table. She opens the app: already premium. One subscription per account enforced by the hub (RevenueCat blocks double-billing across stores).</p>
+<p><strong>C · Renewals:</strong> stores/processor auto-charge; webhook refreshes <code>current_period_end</code>. Failed card on web → dunning emails + <strong>grace period</strong> (7 days premium while retrying — standard, avoids rage-churn). App shows a quiet "billing issue" banner only in Settings.</p>
+<p><strong>D · Cancellation:</strong> <em>never a support ticket.</em> In-app "Manage subscription" deep-links to the store's own management sheet (Apple/Google requirement); web portal (Stripe Customer Portal / Paddle equivalent) for web subs. Cancelling = <code>will_renew=false</code>, premium runs to period end, then graceful downgrade (data never deleted — free tier keeps her history, premium features re-lock). Refunds &amp; EU 14-day withdrawal: handled by the store/MoR per their policy; we honor state changes via webhook.</p>
+<h2>5. Design integration (hand-off to Design)</h2>
+<p>New surface inventory (added to doc 12 as §22):</p>
+<ol>
+<li><strong>Paywall screen</strong> — hero with Nutri + benefit bullets phrased in cycle language, two plan cards (annual pre-selected with saving pill), trial CTA ("Prueba 7 días gratis"), "Restore purchases", tiny legal footer (auto-renewal wording the stores require). One screen, both stores.</li>
+<li><strong>Locked-state pattern</strong> — we already have one (Progress yearly lockBox): consolidate it as <em>the</em> premium lock (blur + lock pill + one-line value + "Ver Premium").</li>
+<li><strong>Settings → "Suscripción"</strong> row — state chip (Free / Premium · renews 12 Aug / Billing issue), manage/cancel link, restore.</li>
+<li><strong>Success state</strong> — post-purchase confirmation reusing the SuccessRing pattern ("Premium activo").</li>
+<li><strong>Web pricing page</strong> — connect the existing marketing pricing cards to real checkout (web rail) while app-store steering rules are respected per region.</li>
+<li><strong>Grace/billing banner</strong> — Settings-only, non-nagging.</li>
+</ol>
+<h2>6. Decisions requested from founders</h2>
+<ol>
+<li><strong>Web rail:</strong> Paddle-type Merchant of Record (recommended at launch) vs Stripe direct (better margin, we own taxes)?</li>
+<li><strong>Price points &amp; trial length</strong> per region (feeds the G3 tracker assumptions).</li>
+<li><strong>Which features are Premium</strong> at launch (proposal: yearly/advanced Progress, upcoming wearables, future community perks — the daily loop stays free).</li>
+<li>GO to add <strong>RevenueCat</strong> as the subscription hub.</li>
+</ol>
+<h2>7. Prerequisites &amp; phasing</h2>
+<p><strong>Hard prerequisite:</strong> the web rail (Stripe/Paddle) needs the <strong>company + bank account</strong> (doc 19) — it cannot start on a personal basis. Apple/Google IAP <em>can</em> start on the current individual account (banking + tax forms in App Store Connect) and transfers with the app later.</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Contents</th>
+<th>Depends on</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>P0 — foundation</strong> (can start now)</td>
+<td><code>subscriptions</code> schema + <code>is_premium()</code> + RLS gating + paywall/locked/Settings UI behind a feature flag + RevenueCat account &amp; SDK wiring</td>
+<td>nothing</td>
+</tr>
+<tr>
+<td><strong>P1 — mobile live</strong></td>
+<td>IAP products in both stores, sandbox → TestFlight testing, prices per storefront</td>
+<td>P0 + banking/tax forms in ASC</td>
+</tr>
+<tr>
+<td><strong>P2 — web live</strong></td>
+<td>Paddle-or-Stripe checkout + portal + webhooks</td>
+<td><strong>company registered</strong></td>
+</tr>
+<tr>
+<td><strong>P3 — LATAM depth</strong></td>
+<td>local methods via dLocal/EBANX/MP, regional price tiers review</td>
+<td>real LATAM cohort</td>
+</tr>
+</tbody>
+</table>
+<p>Effort: P0 ≈ 2 sessions · P1 ≈ 2 sessions + store review cycles · P2 ≈ 2 sessions. All gated behind a flag until founders flip it.</p></div></body></html>

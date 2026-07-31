@@ -147,6 +147,12 @@ tbody tr:nth-child(even){background:var(--cream);}
 <td>P1</td>
 <td>◯ proposal ready — founder decisions pending</td>
 </tr>
+<tr>
+<td>L</td>
+<td>Payments &amp; Subscriptions (doc 29)</td>
+<td>P1</td>
+<td>◯ proposal ready — founder decisions + company prerequisite</td>
+</tr>
 </tbody>
 </table>
 <p>Status key: <strong>✅ Done</strong> · <strong>◑ Partial</strong> · <strong>▢ Documented only</strong> · <strong>Not started</strong>.</p>
@@ -160,6 +166,17 @@ tbody tr:nth-child(even){background:var(--cream);}
 <li><strong>K4 (P2, S)</strong> — Minimal access log (login/app-open: user, ts, platform, version; 90-day retention; admin-only RPC). <em>AC: pilot dashboard can answer "who used the app this week".</em> — <em>pending.</em></li>
 <li><strong>K5 (P2, M)</strong> — Biometric app-lock (SecureStore + local auth, opt-in toggle in Sign In &amp; Security; session expiry unchanged). Native rebuild, bundled with K1's entitlement build. — <em>pending.</em></li>
 <li><strong>K6 (watchlist)</strong> — Passkeys (WebAuthn) when Supabase support is GA — replaces any custom push-approval idea. — <em>watching.</em></li>
+</ul>
+<h2>Epic L — Payments &amp; Subscriptions  <em>(P1 — decision paper: doc 29)</em></h2>
+<p>Two imposed rails (Apple/Google IAP in-app · Stripe/Paddle on web) with one source of truth. Full architecture, flows and founder decisions in <strong>doc 29</strong>.</p>
+<ul>
+<li><strong>L1 (P1, M)</strong> — Foundation: <code>subscriptions</code> table + <code>is_premium()</code> + RLS gates + RevenueCat wiring, behind a feature flag. <em>AC: entitlement flips end-to-end in sandbox.</em> — <em>pending founder GO.</em></li>
+<li><strong>L2 (P1, M)</strong> — Paywall + locked-state + Settings "Suscripción" + success state (Design §22). <em>AC: all four screens behind the flag.</em> — <em>pending.</em></li>
+<li><strong>L3 (P1, M)</strong> — Apple + Google IAP products live (trial + monthly/annual, price tiers per storefront); TestFlight/internal-track sandbox pass. — <em>pending banking/tax forms in the store accounts.</em></li>
+<li><strong>L4 (P1, M)</strong> — Web rail: Paddle-type MoR (or Stripe) checkout + customer portal + webhooks → Supabase. — <strong>blocked on company registration (doc 19).</strong></li>
+<li><strong>L5 (P2, S)</strong> — Dunning/grace states + billing banner; cancellation deep-links. — <em>pending.</em></li>
+<li><strong>L6 (P2, S)</strong> — Regional price tiers review (LATAM sensitivity) + G3 tracker hookup (MRR real). — <em>pending.</em></li>
+<li><strong>L7 (P3, M)</strong> — LATAM local methods (dLocal/EBANX/Mercado Pago) when the cohort is real. — <em>watching.</em></li>
 </ul>
 <h2>Epic A — Cloud foundation &amp; secure landing zone  <em>(P0)</em></h2>
 <p><strong>Current status: Not started — Supabase Phase 1 by design.</strong> Today Supabase (EU) provides Postgres, Auth, and Row-Level Security, which covers Phase-1 needs. This epic is the AWS secure landing zone we build when scale and B2B compliance obligations justify it.</p>
