@@ -936,21 +936,6 @@ if os.path.exists(m3):
     print("- r8b mob3 keys (settings/notifs/moods/meals + content catalog) merged into %d packs" % n3)
 
 
-# ---------------------------------------------------------------------------
-# ns-mobile-first: founders' decision (29 Jul) — the WEB APP is no longer linked
-# from the public marketing page (mobile-first). Every marketing CTA that used
-# to open app.html now scrolls to the waitlist email signup instead. The web
-# app stays reachable for builders via the hub (Builders room), untouched.
-idxm = os.path.join(PUB, "index.html")
-if os.path.exists(idxm):
-    hm = open(idxm, encoding="utf-8").read()
-    _old = "enterApp: () => { window.location.href = 'app.html'; },"
-    _new = "enterApp: () => { var e = document.querySelector('input[type=email]'); if (e) { e.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(() => { try { e.focus(); } catch (_) {} }, 450); } },"
-    if _old in hm:
-        hm = hm.replace(_old, _new)
-        open(idxm, "w", encoding="utf-8").write(hm)
-        print("- mobile-first gate: marketing CTAs -> waitlist (web app behind the hub)")
-
 
 # ---------------------------------------------------------------------------
 # ns-feedback-panel: the in-app "Send Feedback" writes to public.feedback and
@@ -1024,5 +1009,44 @@ if os.path.exists(mf):
             open(_mgh, "w", encoding="utf-8").write(
                 _mh.replace('<a class="htab" href="pilot.html"', _mht + '<a class="htab" href="pilot.html"', 1))
             print("- mfa htab added to hub nav")
+
+# ---------------------------------------------------------------------------
+# ns-footer-mailto: wire footer placeholders by template key (labels are i18n vars).
+fidx = os.path.join(PUB, "index.html")
+if os.path.exists(fidx):
+    fh = open(fidx, encoding="utf-8").read()
+    if 'mailto:contact@nutrisynccollective.com' not in fh:
+        import re as _re
+        for _k, _t in (("ftContact", "mailto:contact@nutrisynccollective.com"),
+                       ("ftCareers", "mailto:contact@nutrisynccollective.com?subject=Empleo%20NutriSync")):
+            fh = _re.sub(r'href=\"#\"([^>]*>\{\{ t\.' + _k + r' \}\})', 'href=\"' + _t + '\"\1', fh)
+        fh = fh.replace('href=\"#science\"', 'href=\"#platform\"')
+        open(fidx, "w", encoding="utf-8").write(fh)
+        print("- footer links wired (contact/careers mailto, science anchor)")
+
+# ---------------------------------------------------------------------------
+# ns-auth-redirects: signup emails always land on production (belt & braces
+# with the dashboard Site URL).
+ap = os.path.join(PUB, "app.html")
+if os.path.exists(ap):
+    ah = open(ap, encoding="utf-8").read()
+    _o = "this.sb.auth.signUp({ email: st.email.trim(), password: st.password, options: { data:"
+    _n = "this.sb.auth.signUp({ email: st.email.trim(), password: st.password, options: { emailRedirectTo: location.origin + '/app.html', data:"
+    if _o in ah and "emailRedirectTo: location.origin" not in ah:
+        open(ap, "w", encoding="utf-8").write(ah.replace(_o, _n))
+        print("- auth signup redirect wired to production")
+
+# ---------------------------------------------------------------------------
+# ns-mobile-first (v3, snippet-based): every marketing CTA scrolls to the
+# waitlist email AND shows a coming-soon toast. Snippet file = no escapes.
+idxm = os.path.join(PUB, "index.html")
+if os.path.exists(idxm):
+    hm = open(idxm, encoding="utf-8").read()
+    snip = open(os.path.join(ASSETS, "enterapp.snippet"), encoding="utf-8").read().strip()
+    if "ns-cta-toast" not in hm:
+        hm2, k = __import__("re").subn(r"enterApp: \(\) => \{.*?\},", snip, hm, count=1, flags=__import__("re").S)
+        if k:
+            open(idxm, "w", encoding="utf-8").write(hm2)
+            print("- mobile-first v3: CTA scroll + coming-soon toast")
 
 print("\nIntegration complete - review, then commit + push.")
