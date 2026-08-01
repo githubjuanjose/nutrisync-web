@@ -1049,4 +1049,17 @@ if os.path.exists(idxm):
             open(idxm, "w", encoding="utf-8").write(hm2)
             print("- mobile-first v3: CTA scroll + coming-soon toast")
 
+# ---------------------------------------------------------------------------
+# ns-consent-wait: the consent banner waits until the SPA has painted.
+cwp = os.path.join(PUB, "index.html")
+if os.path.exists(cwp):
+    ch = open(cwp, encoding="utf-8").read()
+    _co = 'document.addEventListener("DOMContentLoaded",build);else build();'
+    _cn = ("var nsShow=function(){var tries=0;var iv=setInterval(function(){var r=document.getElementById('dc-root');"
+           "if((r&&r.children.length>0)||tries++>50){clearInterval(iv);build();}},200);};"
+           "document.addEventListener('DOMContentLoaded',nsShow);if(document.readyState!=='loading'){nsShow();}")
+    if _co in ch:
+        open(cwp, "w", encoding="utf-8").write(ch.replace(_co, _cn, 1))
+        print("- consent banner now waits for first paint")
+
 print("\nIntegration complete - review, then commit + push.")
