@@ -1037,18 +1037,6 @@ if os.path.exists(ap):
         print("- auth signup redirect wired to production")
 
 
-# ---------------------------------------------------------------------------
-# ns-consent-wait: the consent banner waits until the SPA has painted.
-cwp = os.path.join(PUB, "index.html")
-if os.path.exists(cwp):
-    ch = open(cwp, encoding="utf-8").read()
-    _co = 'document.addEventListener("DOMContentLoaded",build);else build();'
-    _cn = ("var nsShow=function(){var tries=0;var iv=setInterval(function(){var r=document.getElementById('dc-root');"
-           "if((r&&r.children.length>0)||tries++>50){clearInterval(iv);build();}},200);};"
-           "document.addEventListener('DOMContentLoaded',nsShow);if(document.readyState!=='loading'){nsShow();}")
-    if _co in ch:
-        open(cwp, "w", encoding="utf-8").write(ch.replace(_co, _cn, 1))
-        print("- consent banner now waits for first paint")
 
 # ---------------------------------------------------------------------------
 # ns-cta-script: standalone CTA interceptor (NEVER touches the engine payload).
@@ -1060,5 +1048,19 @@ if os.path.exists(cix):
         snip = open(os.path.join(ASSETS, "cta-script.html"), encoding="utf-8").read()
         open(cix, "w", encoding="utf-8").write(chh.replace('</body>', snip + '</body>', 1))
         print("- standalone CTA script injected")
+
+# ---------------------------------------------------------------------------
+# ns-consent-wait v2: consent shows only after first paint (semantics fixed).
+cwp = os.path.join(PUB, "index.html")
+if os.path.exists(cwp):
+    ch = open(cwp, encoding="utf-8").read()
+    _clean = "var nsShow=function(){var tries=0;var iv=setInterval(function(){var r=document.getElementById('dc-root');if((r&&r.children.length>0)||tries++>50){clearInterval(iv);build();}},200);};if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',nsShow);}else{nsShow();}"
+    _orig = 'if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",build);else build();'
+    _broken = 'if(document.readyState==="loading")var nsShow=function(){var tries=0;var iv=setInterval(function(){var r=document.getElementById(\'dc-root\');if((r&&r.children.length>0)||tries++>50){clearInterval(iv);build();}},200);};document.addEventListener(\'DOMContentLoaded\',nsShow);if(document.readyState!==\'loading\'){nsShow();}'
+    if _clean not in ch:
+        ch2 = ch.replace(_orig, _clean).replace(_broken, _clean)
+        if ch2 != ch:
+            open(cwp, "w", encoding="utf-8").write(ch2)
+            print("- consent wait-for-paint (v2)")
 
 print("\nIntegration complete - review, then commit + push.")
