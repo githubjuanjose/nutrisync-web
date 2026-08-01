@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>NutriSync · Confirma tu correo de instalación</title>
+<style>
+:root{--coral:#E8472A;--ink:#231F20;--muted:#8A7F78;--line:#EFE3D7;--bg:#FFF4E8;}
+*{box-sizing:border-box}body{margin:0;font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px}
+.card{background:#fff;border-radius:22px;padding:26px 24px;max-width:440px;width:100%;box-shadow:0 10px 40px rgba(0,0,0,.10)}
+h1{font-size:20px;margin:0 0 4px}
+.sub{color:var(--muted);font-size:13.5px;line-height:1.55;margin-bottom:14px}
+.warn{background:#FFF8EF;border:1.5px dashed #E8B072;border-radius:12px;padding:10px 12px;font-size:13px;color:#7A5A33;line-height:1.5;margin:12px 0}
+.help{background:#FDF7F1;border-radius:12px;padding:10px 12px;font-size:12.5px;color:#5A5148;line-height:1.6;margin:10px 0}
+.plats{display:flex;gap:10px;margin:14px 0 10px}
+.plat{flex:1;border:2px solid var(--line);border-radius:14px;padding:12px 8px;text-align:center;font-weight:700;font-size:14px;cursor:pointer;background:#fff}
+.plat.on{border-color:var(--coral);background:#FFF1EC;color:var(--coral)}
+input[type=email]{width:100%;font-family:inherit;font-size:15px;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;margin-top:6px}
+button.go{width:100%;margin-top:14px;font-family:inherit;font-weight:800;font-size:15px;color:#fff;background:linear-gradient(135deg,#FF7600,#FD400C);border:none;border-radius:999px;padding:14px;cursor:pointer}
+button.go:disabled{opacity:.5}
+.ok{display:none;text-align:center;padding:10px 0}
+.ok .big{font-size:44px}
+.err{color:#C73A20;font-size:12.5px;min-height:16px;margin-top:8px}
+.masked{font-weight:700;color:var(--coral)}
+.langsw{float:right;font-size:12px;color:var(--muted);cursor:pointer;text-decoration:underline}
+.brand{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-weight:800;letter-spacing:2px;font-size:13px}
+.foot{margin-top:14px;font-size:11.5px;color:var(--muted);text-align:center;line-height:1.5}
+</style></head><body>
+<div class="card">
+  <div class="brand">🧡 NUTRISYNC <span class="langsw" onclick="swap()" id="lsw">EN</span></div>
+  <div id="form">
+    <h1 data-es="¡Gracias por unirte al piloto!" data-en="Thanks for joining the pilot!">¡Gracias por unirte al piloto!</h1>
+    <div class="sub"><span data-es="Estás en la lista de espera de NutriSync y dentro del piloto. Antes de invitarte, confirma el correo con el que tu móvil instala aplicaciones." data-en="You're on the NutriSync waiting list and in the pilot. Before we invite you, confirm the email your phone uses to install apps.">Estás en la lista de espera de NutriSync y dentro del piloto. Antes de invitarte, confirma el correo con el que tu móvil instala aplicaciones.</span> <span id="who"></span></div>
+    <div class="warn" data-es="⚠ No es (necesariamente) el correo con el que te apuntaste — es tu Apple ID (iPhone) o tu cuenta de Google (Android)." data-en="⚠ It's not (necessarily) the email you signed up with — it's your Apple ID (iPhone) or your Google account (Android).">⚠ No es (necesariamente) el correo con el que te apuntaste — es tu Apple ID (iPhone) o tu cuenta de Google (Android).</div>
+    <div class="plats">
+      <div class="plat" id="pIos" onclick="pick('ios')">📱 iPhone</div>
+      <div class="plat" id="pAnd" onclick="pick('android')">🤖 Android</div>
+    </div>
+    <div class="help" id="helpIos" style="display:none" data-es="<b>Dónde encontrarlo:</b> Ajustes → toca tu nombre (arriba del todo) → el correo bajo tu nombre es tu Apple ID." data-en="<b>Where to find it:</b> Settings → tap your name (at the very top) → the email under your name is your Apple ID."><b>Dónde encontrarlo:</b> Ajustes → toca tu nombre (arriba del todo) → el correo bajo tu nombre es tu Apple ID.</div>
+    <div class="help" id="helpAnd" style="display:none" data-es="<b>Dónde encontrarlo:</b> abre Play Store → toca tu foto (arriba a la derecha) → el correo que aparece es tu cuenta de Google." data-en="<b>Where to find it:</b> open Play Store → tap your photo (top right) → the email shown is your Google account."><b>Dónde encontrarlo:</b> abre Play Store → toca tu foto (arriba a la derecha) → el correo que aparece es tu cuenta de Google.</div>
+    <input type="email" id="mail" placeholder="tucorreo@ejemplo.com" autocomplete="email">
+    <button class="go" id="go" onclick="send()" data-es="Confirmar este correo →" data-en="Confirm this email →">Confirmar este correo →</button>
+    <div class="err" id="err"></div>
+  </div>
+  <div class="ok" id="ok">
+    <div class="big">🎉</div>
+    <h1 data-es="¡Listo! Correo guardado" data-en="Done! Email saved">¡Listo! Correo guardado</h1>
+    <div class="sub" id="next"></div>
+  </div>
+  <div class="foot" data-es="Solo usamos este correo para enviarte la invitación de la app. Datos protegidos — nutrisynccollective.com" data-en="We only use this email to send your app invite. Data protected — nutrisynccollective.com">Solo usamos este correo para enviarte la invitación de la app. Datos protegidos — nutrisynccollective.com</div>
+</div>
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+const sb=createClient(U,K);const $=i=>document.getElementById(i);
+let LANG=(navigator.language||'en').toLowerCase().startsWith('es')?'es':'en';
+let PLAT=null;
+const TOKEN=new URLSearchParams(location.search).get('t');
+function apply(){
+  document.querySelectorAll('[data-es]').forEach(el=>{el.innerHTML=el.dataset[LANG];});
+  $('lsw').textContent=LANG==='es'?'EN':'ES';
+  $('mail').placeholder=LANG==='es'?'tucorreo@ejemplo.com':'youremail@example.com';
+}
+window.swap=()=>{LANG=LANG==='es'?'en':'es';apply();};
+window.pick=p=>{PLAT=p;$('pIos').classList.toggle('on',p==='ios');$('pAnd').classList.toggle('on',p==='android');
+  $('helpIos').style.display=p==='ios'?'block':'none';$('helpAnd').style.display=p==='android'?'block':'none';};
+window.send=async()=>{
+  $('err').textContent='';
+  const m=$('mail').value.trim();
+  if(!PLAT){$('err').textContent=LANG==='es'?'Elige iPhone o Android.':'Choose iPhone or Android.';return;}
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(m)){$('err').textContent=LANG==='es'?'Ese correo no parece válido.':'That email doesn’t look valid.';return;}
+  $('go').disabled=true;
+  const{error}=await sb.rpc('pilot_confirm_store',{p_token:TOKEN,p_store_email:m,p_platform:PLAT});
+  $('go').disabled=false;
+  if(error){$('err').textContent=(LANG==='es'?'No se pudo guardar: ':'Could not save: ')+error.message;return;}
+  $('form').style.display='none';$('ok').style.display='block';
+  $('next').innerHTML=PLAT==='ios'
+    ?(LANG==='es'?'Te llegará la invitación de <b>TestFlight</b> a <b>'+m+'</b>. Mientras tanto: instala la app <b>TestFlight</b> del App Store — la invitación se abre con ella.':'Your <b>TestFlight</b> invite will arrive at <b>'+m+'</b>. Meanwhile: install the <b>TestFlight</b> app from the App Store — the invite opens with it.')
+    :(LANG==='es'?'Te llegará la invitación de <b>Google Play</b> a <b>'+m+'</b> con el enlace para instalar NutriSync.':'Your <b>Google Play</b> invite will arrive at <b>'+m+'</b> with the link to install NutriSync.');
+};
+(async()=>{
+  apply();
+  if(!TOKEN){$('err').textContent=LANG==='es'?'Enlace incompleto — usa el enlace personal de tu correo.':'Incomplete link — use the personal link from your email.';$('go').disabled=true;return;}
+  const{data,error}=await sb.rpc('pilot_confirm_info',{p_token:TOKEN});
+  if(error||!data||!data.ok){$('err').textContent=LANG==='es'?'Enlace no válido o caducado — responde al correo y te enviamos otro.':'Invalid or expired link — reply to our email and we’ll send a new one.';$('go').disabled=true;return;}
+  $('who').innerHTML=(LANG==='es'?'Invitación de ':'Invite for ')+'<span class="masked">'+data.masked+'</span>.';
+  if(data.platform)pick(data.platform);
+  if(data.store_email)$('mail').value=data.store_email;
+})();
+</script></body></html>
