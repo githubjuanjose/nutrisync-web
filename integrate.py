@@ -945,10 +945,9 @@ idxm = os.path.join(PUB, "index.html")
 if os.path.exists(idxm):
     hm = open(idxm, encoding="utf-8").read()
     _old = "enterApp: () => { window.location.href = 'app.html'; },"
-    _old2 = "enterApp: () => { var e = document.querySelector('input[type=email]'); if (e) { e.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(() => { try { e.focus(); } catch (_) {} }, 450); } },"
-    _new = "enterApp: () => { var e = document.querySelector('input[type=email], input[placeholder*=\"@\"]'); if (e) { e.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(() => { try { e.focus(); } catch (_) {} }, 450); } },"
-    if _old in hm or _old2 in hm:
-        hm = hm.replace(_old, _new).replace(_old2, _new)
+    _new = "enterApp: () => { var e = document.querySelector('input[type=email]'); if (e) { e.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(() => { try { e.focus(); } catch (_) {} }, 450); } },"
+    if _old in hm:
+        hm = hm.replace(_old, _new)
         open(idxm, "w", encoding="utf-8").write(hm)
         print("- mobile-first gate: marketing CTAs -> waitlist (web app behind the hub)")
 
@@ -1025,31 +1024,5 @@ if os.path.exists(mf):
             open(_mgh, "w", encoding="utf-8").write(
                 _mh.replace('<a class="htab" href="pilot.html"', _mht + '<a class="htab" href="pilot.html"', 1))
             print("- mfa htab added to hub nav")
-
-# ---------------------------------------------------------------------------
-# ns-footer-mailto: wire footer placeholders by template key (labels are i18n vars).
-fidx = os.path.join(PUB, "index.html")
-if os.path.exists(fidx):
-    fh = open(fidx, encoding="utf-8").read()
-    if 'mailto:contact@nutrisynccollective.com' not in fh:
-        import re as _re
-        for _k, _t in (("ftContact", "mailto:contact@nutrisynccollective.com"),
-                       ("ftCareers", "mailto:contact@nutrisynccollective.com?subject=Empleo%20NutriSync")):
-            fh = _re.sub(r'href=\"#\"([^>]*>\{\{ t\.' + _k + r' \}\})', 'href=\"' + _t + '\"\1', fh)
-        fh = fh.replace('href=\"#science\"', 'href=\"#platform\"')
-        open(fidx, "w", encoding="utf-8").write(fh)
-        print("- footer links wired (contact/careers mailto, science anchor)")
-
-# ---------------------------------------------------------------------------
-# ns-auth-redirects: signup emails always land on production (belt & braces
-# with the dashboard Site URL).
-ap = os.path.join(PUB, "app.html")
-if os.path.exists(ap):
-    ah = open(ap, encoding="utf-8").read()
-    _o = "this.sb.auth.signUp({ email: st.email.trim(), password: st.password, options: { data:"
-    _n = "this.sb.auth.signUp({ email: st.email.trim(), password: st.password, options: { emailRedirectTo: location.origin + '/app.html', data:"
-    if _o in ah and "emailRedirectTo: location.origin" not in ah:
-        open(ap, "w", encoding="utf-8").write(ah.replace(_o, _n))
-        print("- auth signup redirect wired to production")
 
 print("\nIntegration complete - review, then commit + push.")
