@@ -1,0 +1,18 @@
+<script id="ns-cta">(function(){
+var RX=/(abrir la app|abrir app|prueba nutrisync gratis|empieza gratis|open the app|try nutrisync|start free|app store|google play)/i;
+function target(){var ins=document.querySelectorAll('input');for(var i=0;i<ins.length;i++){var p=ins[i].placeholder||'';if(ins[i].type==='email'||p.indexOf('@')>=0)return ins[i];}return null;}
+function toast(){var t=document.getElementById('ns-cta-toast');if(!t){t=document.createElement('div');t.id='ns-cta-toast';t.style.cssText='position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#241D1A;color:#fff;font-family:Poppins,sans-serif;font-size:13.5px;padding:12px 18px;border-radius:999px;z-index:99999;box-shadow:0 14px 34px -12px rgba(0,0,0,.45);transition:opacity .3s;opacity:0;max-width:88vw;text-align:center';document.body.appendChild(t);}t.textContent='📱 Muy pronto en App Store y Google Play — déjanos tu email y te avisamos · Coming soon, leave your email';t.style.opacity='1';clearTimeout(t._h);t._h=setTimeout(function(){t.style.opacity='0';},3800);}
+document.addEventListener('click',function(ev){
+var n=ev.target;var hops=0;
+while(n&&n!==document&&hops++<6){
+  var tx=(n.textContent||'').trim();
+  if((n.tagName==='A'||n.tagName==='BUTTON'||n.getAttribute&&n.getAttribute('sc-camel-on-click'))&&tx.length<60&&RX.test(tx)){
+    ev.preventDefault();ev.stopPropagation();
+    var e=target();
+    if(e){e.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){try{e.focus();}catch(_){}},450);}
+    toast();return;
+  }
+  n=n.parentNode;
+}
+},true);
+})();</script>

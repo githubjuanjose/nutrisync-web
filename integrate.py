@@ -1036,18 +1036,6 @@ if os.path.exists(ap):
         open(ap, "w", encoding="utf-8").write(ah.replace(_o, _n))
         print("- auth signup redirect wired to production")
 
-# ---------------------------------------------------------------------------
-# ns-mobile-first (v3, snippet-based): every marketing CTA scrolls to the
-# waitlist email AND shows a coming-soon toast. Snippet file = no escapes.
-idxm = os.path.join(PUB, "index.html")
-if os.path.exists(idxm):
-    hm = open(idxm, encoding="utf-8").read()
-    snip = open(os.path.join(ASSETS, "enterapp.snippet"), encoding="utf-8").read().strip()
-    if "ns-cta-toast" not in hm:
-        hm2, k = __import__("re").subn(r"enterApp: \(\) => \{.*?\},", snip, hm, count=1, flags=__import__("re").S)
-        if k:
-            open(idxm, "w", encoding="utf-8").write(hm2)
-            print("- mobile-first v3: CTA scroll + coming-soon toast")
 
 # ---------------------------------------------------------------------------
 # ns-consent-wait: the consent banner waits until the SPA has painted.
@@ -1061,5 +1049,16 @@ if os.path.exists(cwp):
     if _co in ch:
         open(cwp, "w", encoding="utf-8").write(ch.replace(_co, _cn, 1))
         print("- consent banner now waits for first paint")
+
+# ---------------------------------------------------------------------------
+# ns-cta-script: standalone CTA interceptor (NEVER touches the engine payload).
+# Captures clicks on the app CTAs, scrolls to the waitlist email + shows toast.
+cix = os.path.join(PUB, "index.html")
+if os.path.exists(cix):
+    chh = open(cix, encoding="utf-8").read()
+    if 'id="ns-cta"' not in chh:
+        snip = open(os.path.join(ASSETS, "cta-script.html"), encoding="utf-8").read()
+        open(cix, "w", encoding="utf-8").write(chh.replace('</body>', snip + '</body>', 1))
+        print("- standalone CTA script injected")
 
 print("\nIntegration complete - review, then commit + push.")
