@@ -1,5 +1,12 @@
 # NutriSync — Release Notes / Change Log
 
+## 2026-08-02 — Web app metrics: native selects + metric/imperial toggle (v11.51 · DELTA 2)
+Onboarding body-metrics step, follow-up to v11.50. Valid-by-construction native `<select>` controls (iOS renders the system wheel; desktop a dropdown); `type="date"` kept for dates.
+- **Numeric inputs → native selects**: Height (90–230), Weight (30.0–250.0 by 0.5), Cycle length (15–90, keeps the 21–45 soft-band confirm), Period duration (1–14). The numeric value is saved (not the label); current values stay preselected when editing.
+- **Metric / Imperial toggle** next to the metrics — segmented “Metric (kg, cm) | Imperial (lb, ft+in)”. Defaults to metric unless `navigator.language` ends in `-US`; persisted in `localStorage` (`ns.units`). Imperial shows ft (3–7) + in (0–11) and lb (66–550) selects.
+- **Always stores metric** to Supabase (`height_cm`, `weight_kg`): `cm = round((ft*12+in)*2.54)`, `kg = round(lb/2.20462*10)/10`. Loading in imperial converts from the stored metric for display; imperial values are never stored. An off-grid kg arrived at via imperial (e.g. 65.8) is injected into the metric picker so it always displays; round-trips both directions verified (5′07″↔170 cm, 145 lb↔65.8 kg, 160 cm↔5′03″, 72.5 kg↔160 lb).
+- Strings `unitsMetric`/`unitsImperial` added to EN/ES; other 12 packs fall back to EN.
+
 ## 2026-08-02 — Web app forms & validation upgrade (r11a parity) (v11.50)
 Scope: onboarding forms only (settings has no body-metric fields). Applied at source in `NutriSync Web App.dc.html`; `publish/app.html` re-exported.
 - **Date of birth replaces free-text age**: native `<input type="date"` (min 1926-01-01, max = today−16y). Saves BOTH `date_of_birth` (ISO) and derived `age` to `users`.
