@@ -59,6 +59,11 @@ button.go:disabled{opacity:.5}
     <h1 data-es="¡Listo! Correo guardado" data-en="Done! Email saved">¡Listo! Correo guardado</h1>
     <div class="sub" id="next"></div>
   </div>
+  <div class="ok" id="bad">
+    <div class="big">🔗</div>
+    <h1 data-es="Este enlace no es válido" data-en="This link isn't valid">Este enlace no es válido</h1>
+    <div class="sub" data-es="Usa el enlace personal que te enviamos por correo o WhatsApp — cada invitación tiene el suyo. Si no lo encuentras, responde a nuestro mensaje o escríbenos a contact@nutrisynccollective.com y te lo reenviamos." data-en="Please use the personal link we sent you by email or WhatsApp — every invite has its own. Can't find it? Reply to our message or write to contact@nutrisynccollective.com and we'll resend it.">Usa el enlace personal que te enviamos por correo o WhatsApp — cada invitación tiene el suyo. Si no lo encuentras, responde a nuestro mensaje o escríbenos a contact@nutrisynccollective.com y te lo reenviamos.</div>
+  </div>
   <div class="foot" data-es="Solo usamos este correo para enviarte la invitación de la app. Datos protegidos — nutrisynccollective.com" data-en="We only use this email to send your app invite. Data protected — nutrisynccollective.com">Solo usamos este correo para enviarte la invitación de la app. Datos protegidos — nutrisynccollective.com</div>
 </div>
 <script type="module">
@@ -84,10 +89,16 @@ function done(mailShown,plat){
     ?(LANG==='es'?'Te llegará la invitación de <b>TestFlight</b> a <b>'+mailShown+'</b>. Mientras tanto: instala la app <b>TestFlight</b> del App Store — la invitación se abre con ella.':'Your <b>TestFlight</b> invite will arrive at <b>'+mailShown+'</b>. Meanwhile: install the <b>TestFlight</b> app from the App Store — the invite opens with it.')
     :(LANG==='es'?'Te llegará la invitación de <b>Google Play</b> a <b>'+mailShown+'</b> con el enlace para instalar NutriSync.':'Your <b>Google Play</b> invite will arrive at <b>'+mailShown+'</b> with the link to install NutriSync.');
 }
+const friendly=e=>{
+  const m=String(e?.message||'');
+  if(m.includes('invalid token'))return LANG==='es'?'Este enlace ya no es válido — usa el de tu correo.':'This link is no longer valid — use the one from your email.';
+  return (LANG==='es'?'No se pudo guardar: ':'Could not save: ')+m;
+};
+const showBad=()=>{$('form').style.display='none';$('bad').style.display='block';};
 window.confirmSame=async p=>{
   $('err').textContent='';
   const{error}=await sb.rpc('pilot_confirm_store',{p_token:TOKEN,p_store_email:null,p_platform:p});
-  if(error){$('err').textContent=(LANG==='es'?'No se pudo guardar: ':'Could not save: ')+error.message;return;}
+  if(error){$('err').textContent=friendly(error);return;}
   done(MASKED,p);
 };
 window.send=async()=>{
@@ -98,14 +109,14 @@ window.send=async()=>{
   $('go').disabled=true;
   const{error}=await sb.rpc('pilot_confirm_store',{p_token:TOKEN,p_store_email:m,p_platform:PLAT});
   $('go').disabled=false;
-  if(error){$('err').textContent=(LANG==='es'?'No se pudo guardar: ':'Could not save: ')+error.message;return;}
+  if(error){$('err').textContent=friendly(error);return;}
   done(m,PLAT);
 };
 (async()=>{
   apply();
-  if(!TOKEN){$('err').textContent=LANG==='es'?'Enlace incompleto — usa el enlace personal de tu correo.':'Incomplete link — use the personal link from your email.';return;}
+  if(!TOKEN){showBad();return;}
   const{data,error}=await sb.rpc('pilot_confirm_info',{p_token:TOKEN});
-  if(error||!data||!data.ok){$('err').textContent=LANG==='es'?'Enlace no válido o caducado — responde al correo y te enviamos otro.':'Invalid or expired link — reply to our email and we’ll send a new one.';return;}
+  if(error||!data||!data.ok){showBad();return;}
   MASKED=data.masked;apply();
   if(data.platform){pick(data.platform);}
   if(data.store_email){showAlt();$('mail').value=data.store_email;}
