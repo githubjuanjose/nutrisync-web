@@ -1,5 +1,15 @@
 # NutriSync — Release Notes / Change Log
 
+## 2026-08-02 — Web app forms & validation upgrade (r11a parity) (v11.50)
+Scope: onboarding forms only (settings has no body-metric fields). Applied at source in `NutriSync Web App.dc.html`; `publish/app.html` re-exported.
+- **Date of birth replaces free-text age**: native `<input type="date"` (min 1926-01-01, max = today−16y). Saves BOTH `date_of_birth` (ISO) and derived `age` to `users`.
+- **Typed numeric inputs** (no parseFloat on raw strings): Height `number` 90–230 step1 cm; Weight `number` 30–250 step0.1 kg; the “How long is your typical cycle?” step is now two numeric inputs — Cycle length 15–90 step1 + Period length 1–14 step1 (replaces the old range-choice; period length was previously hard-coded to 5). Cycle step type is forced in code by key, so it applies in all 14 languages regardless of pack.
+- **Validation on submit**: hard min/max → friendly inline error, blocks save. Cycle length soft band — values outside 21–45 (within 15–90) trigger a confirm (“…uncommon. Save anyway?”); a confirmed value is never auto-blocked.
+- **Date display**: `toLocaleDateString(navigator.language, {day:'numeric',month:'long',year:'numeric'})` echoes under DOB (with derived age) and last-period inputs — never raw YYYY-MM-DD.
+- **Save error handling**: users/cycles upsert rejection now shows “That value looks off — please check it” instead of the raw DB error.
+- **Keyboard flow**: Enter advances to the next field; Enter on the last field submits the step.
+- New strings (`dob`, `dobNote`, `cycleLenLabel`, `periodDurLabel`, `days`, `errDob16`, `errDobRange`, `errHeight`, `errWeight`, `errCycle`, `errPeriod`, `cycleSoftConfirm`, `saveValueErr`, `dobShown`, `lastPeriodShown`) added to built-in EN + ES; other 12 languages fall back to English until their packs add them. Out of scope: web metric/imperial toggle (web stays metric-only).
+
 ## 2026-07-25 — Baseline-ladder states on the prototype Progress screen (v11.49)
 Designed the real versions of the v0.14.1 "personal baseline" experience (PO doc 12 §21), in **both the phone-prototype and the wide-screen desktop-dashboard** Progress renderings so testers see it regardless of viewport and stop logging false mismatches. All EN/ES.
 - **Stat row — Energy Stability / Mood / PMS Symptoms**, three designed states via a ring motif (consistent with the CAS ring): *Building* (days 1–2) fills the ring n/7 in warm amber with the count in the centre and a "Building" caption — reads as a goal in progress, not missing data; *Provisional* (days 3–6) shows the real value in amber #E8930C with a dotted outer ring + a soft "PROVISIONAL" pill (real-but-low-confidence, non-alarming); *Solid* (day 7+) is the confident green percentage (matches r4e-f21, unchanged).

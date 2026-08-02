@@ -1,0 +1,26 @@
+<!-- ns-pilot-funnel --><div class="section" style="padding:26px 0 0;"><div style="max-width:1080px;margin:0 auto;padding:0 22px;"><h2 class="title" style="font-size:22px;margin:0 0 4px;">Funnel del piloto</h2><div style="color:var(--muted);font-size:13px;margin-bottom:14px;">apps propuestas &rarr; aprobadas &rarr; contactadas &rarr; correo de tienda &#10003; &rarr; invitadas &rarr; instaladas/dentro &rarr; activas 7d &middot; live (admin_pilot_funnel)</div><div id="pfWrap" style="display:flex;flex-direction:column;gap:12px;"><div style="color:var(--muted);font-size:13px;">Cargando&hellip;</div></div></div></div><script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+const sb=createClient(U,K);const box=document.getElementById('pfWrap');
+const esc=t=>String(t??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const STAGES=[['pipeline','Propuestas','#F4C9A8'],['approved','Aprobadas','#F3B98A'],['contacted','Contactadas','#F2A66C'],['confirmed','Correo ✓','#F0904C'],['invited','Invitadas','#EE7A33'],['joined','Dentro','#E8472A'],['active7','Activas 7d','#0F9B57']];
+function funnelRow(name,d){
+  const max=Math.max(1,d.pipeline??d.total??1);
+  const cells=STAGES.filter(([k])=>d[k]!=null).map(([k,lab,col])=>{
+    const v=d[k]??0,w=Math.max(6,Math.round(v/max*100));
+    return `<div style="flex:1;min-width:86px"><div style="font-size:10.5px;color:var(--muted);margin-bottom:3px">${lab}</div><div style="background:#F6EDE3;border-radius:8px;height:26px;position:relative;overflow:hidden"><div style="position:absolute;left:0;top:0;bottom:0;width:${w}%;background:${col};border-radius:8px"></div><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12.5px">${v}</div></div></div>`;
+  }).join('');
+  const extra=(d.ios!=null)?`<div style="font-size:11px;color:var(--muted);margin-top:5px">📱 iOS ${d.ios??0} · 🤖 Android ${d.android??0} · pendientes de instalar ${d.pending_install??0}</div>`:'';
+  return `<div style="background:#fff;border:1px solid #EFE3D7;border-radius:14px;padding:13px 15px"><div style="font-weight:800;margin-bottom:8px">${esc(name)}</div><div style="display:flex;gap:8px;flex-wrap:wrap">${cells}</div>${extra}</div>`;
+}
+(async()=>{
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){box.innerHTML='<div style="color:var(--muted);font-size:13px">Inicia sesi&oacute;n de admin arriba para ver el funnel.</div>';return;}
+  const{data,error}=await sb.rpc('admin_pilot_funnel');
+  if(error){box.innerHTML='<div style="color:var(--muted);font-size:13px">Sin acceso ('+esc(error.message)+') &mdash; &iquest;SQL pilot-v2 aplicado?</div>';return;}
+  const t=data.totals||{};
+  let html=funnelRow('TOTAL piloto',{pipeline:t.total,confirmed:t.confirmed,invited:t.invited,joined:t.joined,active7:t.active7});
+  html+=(data.by_cohort||[]).map(c=>funnelRow(c.cohort,c)).join('');
+  box.innerHTML=html||'<div style="color:var(--muted);font-size:13px">Sin cohortes a&uacute;n &mdash; se montan en Pilot.</div>';
+})();
+</script>

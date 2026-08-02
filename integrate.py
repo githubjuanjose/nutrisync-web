@@ -972,6 +972,26 @@ if os.path.exists(fbp):
         print("- feedback panel added to the admin console (admin_feedback RPC)")
 
 # ---------------------------------------------------------------------------
+# ns-pilot-funnel: pilot funnel card in the admin console (snippet file, r11).
+# Lesson v11.50: EVERYTHING ours must be a registered idempotent block — the
+# pack overwrote the console and this card only survived because we re-inject.
+pf = os.path.join(ASSETS, "pilot-funnel.html")
+cns = os.path.join(PUB, "hub", "admin-mis-console.html")
+if os.path.exists(pf) and os.path.exists(cns):
+    ch = open(cns, encoding="utf-8").read()
+    if "ns-pilot-funnel" not in ch and "<!-- ns-feedback-panel -->" in ch:
+        ch = ch.replace("<!-- ns-feedback-panel -->",
+                        open(pf, encoding="utf-8").read() + "<!-- ns-feedback-panel -->", 1)
+        open(cns, "w", encoding="utf-8").write(ch)
+        print("- pilot funnel card added to the admin console (admin_pilot_funnel RPC)")
+
+# ns-tester: public store-email capture page — ours, packs never carry it.
+ts = os.path.join(ASSETS, "tester.html")
+if os.path.exists(ts):
+    shutil.copy(ts, os.path.join(PUB, "tester.html"))
+    print("- tester capture page copied to publish/tester.html")
+
+# ---------------------------------------------------------------------------
 # ns-pilot: Pilot tool (cohorts + founder-validated invite batches + cohort
 # feedback). UI snippets are plain files — no escape sequences anywhere.
 pl = os.path.join(ASSETS, "pilot.html")
