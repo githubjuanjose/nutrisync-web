@@ -1365,3 +1365,51 @@ _hidx = os.path.join(ASSETS, "hub-index.html")
 if os.path.exists(_hidx):
     shutil.copy(_hidx, os.path.join(PUB, "hub", "index.html"))
     print("- hub/index.html (puerta /hub) creado → #/builders")
+
+# ---------------------------------------------------------------------------
+# ns-selfhost (po74, requisito jurídico): CERO CDNs de terceros en el sitio.
+# Copia fuentes variables (fontsource) y librerías UMD a /assets y reescribe
+# TODAS las páginas: Google Fonts → /assets/fonts/fonts.css · esm.sh →
+# window.supabase local · unpkg → react local. Corre el ÚLTIMO para barrer
+# también lo que otros pasos inyectan. Idempotente + refresh-on-change.
+_shd = os.path.join(ASSETS, "selfhost")
+if os.path.isdir(_shd):
+    _af = os.path.join(PUB, "assets", "fonts"); _av = os.path.join(PUB, "assets", "vendor")
+    os.makedirs(os.path.join(_af, "files"), exist_ok=True); os.makedirs(_av, exist_ok=True)
+    shutil.copy(os.path.join(_shd, "fonts", "fonts.css"), os.path.join(_af, "fonts.css"))
+    for _f in os.listdir(os.path.join(_shd, "fonts", "files")):
+        shutil.copy(os.path.join(_shd, "fonts", "files", _f), os.path.join(_af, "files", _f))
+    for _f in os.listdir(os.path.join(_shd, "vendor")):
+        shutil.copy(os.path.join(_shd, "vendor", _f), os.path.join(_av, _f))
+
+    _pages = (_glob.glob(os.path.join(PUB, "*.html"))
+              + _glob.glob(os.path.join(PUB, "hub", "*.html"))
+              + _glob.glob(os.path.join(PUB, "hub", "documentation", "*.html"))
+              + _glob.glob(os.path.join(PUB, "legal", "*.html")))
+    _nrw = 0
+    for _hp in _pages:
+        _s0 = open(_hp, encoding="utf-8", errors="ignore").read(); _s = _s0
+        # 1 · Google Fonts → hoja local (primera <link> se sustituye, resto fuera)
+        if "fonts.googleapis.com" in _s or "fonts.gstatic.com" in _s:
+            _links = re.findall(r'<link[^>]*fonts\.g(?:oogleapis|static)\.com[^>]*>', _s)
+            for _i, _lk in enumerate(_links):
+                _s = _s.replace(_lk, '<link rel="stylesheet" href="/assets/fonts/fonts.css">' if _i == 0 else "", 1)
+        # 2 · esm.sh supabase-js → UMD local + global
+        for _q in ("'", '"'):
+            _imp = f"import {{ createClient }} from {_q}https://esm.sh/@supabase/supabase-js@2{_q};"
+            if _imp in _s:
+                _s = _s.replace(_imp, "const { createClient } = window.supabase;")
+            # variante: import DINÁMICO dentro del payload del motor (app.html)
+            _dyn = f"await import({_q}https://esm.sh/@supabase/supabase-js@2{_q})"
+            if _dyn in _s:
+                _s = _s.replace(_dyn, "(window.supabase)")
+        if "esm.sh" not in _s and "window.supabase" in _s and "/assets/vendor/supabase.js" not in _s:
+            _tag = '<script src="/assets/vendor/supabase.js"></script>'
+            _s = _s.replace("</head>", _tag + "</head>", 1) if "</head>" in _s \
+                 else re.sub(r"(<script type=\"module\">)", _tag + r"\1", _s, count=1)
+        # 3 · unpkg react/react-dom → local
+        _s = _s.replace("https://unpkg.com/react@18.3.1/umd/react.production.min.js", "/assets/vendor/react.production.min.js")
+        _s = _s.replace("https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js", "/assets/vendor/react-dom.production.min.js")
+        if _s != _s0:
+            open(_hp, "w", encoding="utf-8").write(_s); _nrw += 1
+    print(f"- ns-selfhost: fuentes+librerias locales · {_nrw} paginas reescritas sin CDNs")

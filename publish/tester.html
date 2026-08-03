@@ -28,7 +28,7 @@ button.go:disabled{opacity:.5}
 .brand{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-weight:800;letter-spacing:2px;font-size:13px}
 .foot{margin-top:14px;font-size:11.5px;color:var(--muted);text-align:center;line-height:1.5}
 #alt{display:none}
-</style></head><body>
+</style><script src="/assets/vendor/supabase.js"></script></head><body>
 <div class="card">
   <div class="brand">🧡 NUTRISYNC <span class="langsw" onclick="swap()" id="lsw">EN</span></div>
   <div id="form">
@@ -67,7 +67,7 @@ button.go:disabled{opacity:.5}
   <div class="foot" data-es="Solo usamos este correo para enviarte la invitación de la app. Datos protegidos — nutrisynccollective.com" data-en="We only use this email to send your app invite. Data protected — nutrisynccollective.com">Solo usamos este correo para enviarte la invitación de la app. Datos protegidos — nutrisynccollective.com</div>
 </div>
 <script type="module">
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const { createClient } = window.supabase;
 const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
 const sb=createClient(U,K);const $=i=>document.getElementById(i);
 let LANG=(navigator.language||'en').toLowerCase().startsWith('es')?'es':'en';

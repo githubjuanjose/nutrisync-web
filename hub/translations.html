@@ -1,8 +1,8 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>NutriSync — Translations Review</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
+
 <style>
 :root{--coral:#E8472A;--coral-deep:#C73A20;--cream:#FBF4EE;--ink:#241D1A;--muted:#736862;--line:#EADED5;--good:#3DBE8B;}
 *{box-sizing:border-box;} body{font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:#fff;margin:0;}
@@ -25,7 +25,7 @@ textarea.ro{background:#faf6f2;color:var(--muted);}
 textarea.empty{border-color:#f0b3a6;background:#fef6f3;}
 textarea.same{border-color:#e6cf9a;background:#fdf7e9;}
 .hint{font-size:12px;color:var(--muted);background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;padding:10px 14px;margin:12px 0;}
-</style><script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head><body><!-- ns-hub-navbar -->
+</style><script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script><script src="/assets/vendor/supabase.js"></script></head><body><!-- ns-hub-navbar -->
 <div id="ns-hub-navbar">
 <style>
 #ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
@@ -242,7 +242,7 @@ boot();
   <div id="cntBody" style="max-height:560px;overflow:auto;background:#fff;border:1px solid #EFE3D7;border-radius:14px"></div>
 </div>
 <script type="module">
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const { createClient } = window.supabase;
 const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
 const sb=createClient(U,K);const $=i=>document.getElementById(i);
 const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));

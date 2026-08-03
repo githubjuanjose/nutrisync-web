@@ -10,7 +10,7 @@ input{font-family:inherit;font-size:14px;padding:10px 12px;border:1px solid #EFE
 .ok{color:#0F9B57;font-weight:700}.err{color:#D93030;font-size:13px}
 img.qr{width:190px;height:190px;display:block;margin:10px auto;border:1px solid #EFE3D7;border-radius:12px;padding:8px;background:#fff}
 code{background:#FBEDE6;color:#9a3a25;padding:2px 7px;border-radius:6px;font-size:.9em;word-break:break-all}
-</style></head><body><!-- ns-hub-navbar -->
+</style><script src="/assets/vendor/supabase.js"></script></head><body><!-- ns-hub-navbar -->
 <div id="ns-hub-navbar">
 <style>
 #ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
@@ -116,7 +116,7 @@ code{background:#FBEDE6;color:#9a3a25;padding:2px 7px;border-radius:6px;font-siz
 <p>Obligatorio para las 4 cuentas admin (decisión 2A). Se configura una vez con Google Authenticator, 1Password o similar; después, las herramientas del hub pedirán tu sesión reforzada.</p>
 <div class="c" id="box">Cargando…</div>
 <script type="module">
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const { createClient } = window.supabase;
 const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
 const sb=createClient(U,K);const box=document.getElementById('box');
 const esc=t=>String(t??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));

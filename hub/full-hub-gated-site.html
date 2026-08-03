@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>NutriSync — Hormonal care made easy</title>
 <meta name="description" content="Personalized nutrition aligned to your hormonal cycle. One platform: app, business case, and admin."/>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
 <style>
 :root{--coral:#E8472A;--coral-deep:#C73A20;--coral-soft:#F4876F;--peach:#F7B99E;--cream:#F5F2EB;--ink:#241D1A;--muted:#736862;--line:#EADFD5;--good:#3DBE8B;--dark:#1C1715;--maxw:1140px;--display:'Bricolage Grotesque','Inter',sans-serif;}
 h1,h2,h2.title,.hero h1,.askbig,.bignum,.kpi .val,.circle b,.stat-card b{font-family:var(--display);letter-spacing:-1px;}
@@ -226,7 +226,7 @@ footer{padding:48px 0 40px;color:var(--muted);font-size:14px;border-top:1px soli
   .waitlist{flex-direction:column;border-radius:18px;}.waitlist .btn{justify-content:center;}
 }
 </style>
-<script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head>
+<script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script><script src="/assets/vendor/supabase.js"></script></head>
 <body><!-- ns-hub-navbar -->
 <div id="ns-hub-navbar">
 <style>
@@ -992,7 +992,7 @@ render();
    sirve en admin-mis-console.html Y en el MIS del gated site de Builders
    (que seguía enseñando "Illustrative sample data"). Pre-lanzamiento:
    Premium/MRR/Churn muestran PLAN, jamás números de muestra. */
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const { createClient } = window.supabase;
 const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
 const sb=createClient(U,K);
 const PLAN={users_y1:755, revenue_y1:28068, conv:0.10};   // modelo Conservative (Business Tracker G3)

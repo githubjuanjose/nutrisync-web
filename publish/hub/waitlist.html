@@ -4,8 +4,8 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Waitlist — NutriSync Founders</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/fonts/fonts.css">
+
 <style>
 :root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--good:#2E9E6B;--emerald:#0FA968;}
 *{box-sizing:border-box;}
@@ -74,7 +74,7 @@ tbody tr:nth-child(even){background:var(--cream);}
 .undobar.on{display:flex;}
 .undobar button{background:none;border:none;color:#FFC7B3;font-weight:800;font-size:13.5px;cursor:pointer;font-family:inherit;text-decoration:underline;white-space:nowrap;}
 </style>
-<script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head>
+<script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script><script src="/assets/vendor/supabase.js"></script></head>
 <body><!-- ns-hub-navbar -->
 <div id="ns-hub-navbar">
 <style>
@@ -253,7 +253,7 @@ tbody tr:nth-child(even){background:var(--cream);}
 <div class="undobar" id="undoBar"><span id="undoMsg"></span><button id="undoBtn">Undo</button></div>
 
 <script type="module">
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const { createClient } = window.supabase;
 const U="https://nebkqncvapelrarruyqb.supabase.co", K="sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau";
 const sb = createClient(U, K);
 const $ = i => document.getElementById(i);
