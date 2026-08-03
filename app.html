@@ -46,17 +46,29 @@ function save(c){c.ts=new Date().toISOString();c.version=1;try{localStorage.setI
    su CSS (lo re-crea si falta), fija estilos inline criticos en el contenedor y
    reintenta una vez si el motor arranco el banner. */
 function ensureCss(){if(document.getElementById("ns-consent-css-live"))return;var src=document.getElementById("ns-consent-css");var st=document.createElement("style");st.id="ns-consent-css-live";st.textContent=src?src.textContent:"";(document.head||document.documentElement).appendChild(st);}
-function build(){if(have()){window.__nsConsent=have();return;}if(document.getElementById("ns-consent"))return;ensureCss();var d=document.createElement("div");d.id="ns-consent";
-d.style.cssText="position:fixed;left:16px;right:16px;bottom:16px;z-index:99998;background:#fff;border:1px solid #EADFD5;border-radius:16px;box-shadow:0 20px 50px -20px rgba(0,0,0,.35);padding:18px 20px;max-width:640px;margin:0 auto;font-family:'Inter',system-ui,sans-serif;color:#241D1A";
-d.innerHTML='<h4>Your privacy</h4><p>We use essential cookies to run NutriSync. Optional analytics &amp; personalization help us improve - they are <b>off by default</b>.</p>'
-+'<div class="opts" id="ns-opts"><div class="opt"><span>Essential<small>Required for the app to work</small></span><span>Always on</span></div>'
-+'<div class="opt"><span>Analytics<small>Anonymous usage to fix bugs</small></span><input type="checkbox" id="ns-an"></div>'
-+'<div class="opt"><span>Personalization<small>Tailors tips to your patterns</small></span><input type="checkbox" id="ns-pe"></div></div>'
-+'<div class="row"><button class="accept" id="ns-accept">Accept all</button><button class="reject" id="ns-reject">Reject non-essential</button><button class="prefs" id="ns-prefs">Preferences</button></div>';
+function build(){if(have()){window.__nsConsent=have();return;}if(document.getElementById("ns-consent"))return;ensureCss();
+/* po61: TODO inline (el motor no puede despeinarlo) + bilingue ES/EN + diseno NutriSync */
+var ES=(navigator.language||"en").toLowerCase().indexOf("es")===0;
+var T=ES?{t:"Tu privacidad",p:"Usamos cookies esenciales para que NutriSync funcione. Analitica y personalizacion son opcionales y estan <b>desactivadas por defecto</b>.",e:"Esenciales",ed:"Necesarias para que la app funcione",eon:"Siempre activas",a:"Analitica",ad:"Uso anonimo para corregir errores",pz:"Personalizacion",pd:"Adapta los consejos a tus patrones",ok:"Aceptar todo",no:"Solo esenciales",pf:"Preferencias",sv:"Guardar preferencias"}
+:{t:"Your privacy",p:"We use essential cookies to run NutriSync. Analytics &amp; personalization are optional and <b>off by default</b>.",e:"Essential",ed:"Required for the app to work",eon:"Always on",a:"Analytics",ad:"Anonymous usage to fix bugs",pz:"Personalization",pd:"Tailors tips to your patterns",ok:"Accept all",no:"Essentials only",pf:"Preferences",sv:"Save preferences"};
+var F="font-family:'Poppins','Inter',system-ui,sans-serif";
+var ROW="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 2px;border-top:1px solid #F3EBE2;font-size:13px";
+var d=document.createElement("div");d.id="ns-consent";
+d.style.cssText="position:fixed;left:16px;right:16px;bottom:18px;z-index:99998;background:#FFFDFA;border:1px solid #EFE3D7;border-radius:20px;box-shadow:0 24px 60px -18px rgba(35,31,32,.35);padding:20px 22px;max-width:560px;margin:0 auto;"+F+";color:#241D1A;line-height:1.5";
+d.innerHTML='<div style="display:flex;align-items:center;gap:9px;margin-bottom:6px"><span style="width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,#FF7600,#FD400C);display:inline-flex;align-items:center;justify-content:center;font-size:14px">🍪</span><b style="font-size:15px;font-weight:800">'+T.t+'</b></div>'
++'<p style="margin:0 0 14px;font-size:13px;color:#736862">'+T.p+'</p>'
++'<div id="ns-opts" style="display:none;margin:0 0 12px">'
++'<div style="'+ROW+'"><span><b style="font-weight:700">'+T.e+'</b><br><small style="color:#8A7F78">'+T.ed+'</small></span><span style="font-size:12px;font-weight:700;color:#0F9B57;white-space:nowrap">'+T.eon+'</span></div>'
++'<div style="'+ROW+'"><span><b style="font-weight:700">'+T.a+'</b><br><small style="color:#8A7F78">'+T.ad+'</small></span><input type="checkbox" id="ns-an" style="width:20px;height:20px;accent-color:#E8472A;cursor:pointer"></div>'
++'<div style="'+ROW+'"><span><b style="font-weight:700">'+T.pz+'</b><br><small style="color:#8A7F78">'+T.pd+'</small></span><input type="checkbox" id="ns-pe" style="width:20px;height:20px;accent-color:#E8472A;cursor:pointer"></div></div>'
++'<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">'
++'<button id="ns-accept" style="'+F+';border:none;border-radius:999px;padding:11px 20px;font-weight:700;font-size:13px;cursor:pointer;background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff">'+T.ok+'</button>'
++'<button id="ns-reject" style="'+F+';border:1px solid #EADFD5;border-radius:999px;padding:10px 18px;font-weight:700;font-size:13px;cursor:pointer;background:#F8F2EB;color:#241D1A">'+T.no+'</button>'
++'<button id="ns-prefs" style="'+F+';border:none;background:none;padding:10px 6px;font-weight:700;font-size:13px;cursor:pointer;color:#C73A20;text-decoration:underline">'+T.pf+'</button></div>';
 document.body.appendChild(d);
 document.getElementById("ns-accept").onclick=function(){save({essential:true,analytics:true,personalization:true});};
 document.getElementById("ns-reject").onclick=function(){save({essential:true,analytics:false,personalization:false});};
-document.getElementById("ns-prefs").onclick=function(){var o=document.getElementById("ns-opts");if(o.style.display==="block"){save({essential:true,analytics:document.getElementById("ns-an").checked,personalization:document.getElementById("ns-pe").checked});}else{o.style.display="block";this.textContent="Save preferences";}};}
+document.getElementById("ns-prefs").onclick=function(){var o=document.getElementById("ns-opts");if(o.style.display==="block"){save({essential:true,analytics:document.getElementById("ns-an").checked,personalization:document.getElementById("ns-pe").checked});}else{o.style.display="block";this.textContent=T.sv;}};}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",build);else build();
 setTimeout(function(){if(!have()&&!document.getElementById("ns-consent"))build();},1600);})();</script></head>
 <body>

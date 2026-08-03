@@ -279,6 +279,9 @@ footer{padding:48px 0 40px;color:var(--muted);font-size:14px;border-top:1px soli
 </div>
 <script>
 (function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
   var here=(location.pathname.split('/').pop()||'').toLowerCase();
   var dir=location.pathname.toLowerCase();
   document.querySelectorAll('#nsnb-tabs .nsnb-tab').forEach(function(a){
