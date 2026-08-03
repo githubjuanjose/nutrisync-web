@@ -62,6 +62,10 @@
   /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
      toda la navegación de la barra toma la ventana superior — adiós bucles */
   document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
   var here=(location.pathname.split('/').pop()||'').toLowerCase();
   var dir=location.pathname.toLowerCase();
   document.querySelectorAll('#nsnb-tabs .nsnb-tab').forEach(function(a){
