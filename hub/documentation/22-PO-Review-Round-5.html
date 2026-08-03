@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>PO Review — Round 5 (scoreboard) — NutriSync Docs</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.navbtns{display:flex;gap:16px;align-items:center;}
+.navbtns a:first-child{padding:5px 12px;border:1px solid var(--line);border-radius:20px;}
+.navbtns a:first-child:hover{border-color:var(--coral);background:var(--cream);}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+h4{font-size:16px;font-weight:800;margin:20px 0 6px;}
+p{margin:10px 0;}
+a{color:var(--coral-deep);}
+strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:'SF Mono',Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:14px 0;padding:12px 18px;background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;color:#5d524b;}
+blockquote p{margin:4px 0;}
+ul,ol{margin:10px 0;padding-left:24px;}
+li{margin:5px 0;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;}
+tbody tr:nth-child(even){background:var(--cream);}
+.pill{display:inline-block;background:#FDE6DD;color:var(--coral-deep);font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;}
+.card{display:block;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:10px 0;text-decoration:none;color:var(--ink);transition:.15s;}
+.card:hover{border-color:var(--coral);background:var(--cream);}
+.card .t{font-weight:800;font-size:16px;color:var(--coral-deep);}
+.card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
+.sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
+</style><script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>PO Review — Round 5 (received 23 Jul 2026)</h1>
+<p>25 items. <strong>16 are verbatim duplicates of Round 4</strong> (same text, same screenshots
+IMG_1625/1626/1571/1627/1628) — the testers reviewed a build older than v0.12.x.
+All of those were already shipped that same day; they need <strong>re-testing on the
+current version</strong> (mobile: force-close + reopen twice; PWA: reload). The 9 real
+items — including two spec CHANGES over what r4b delivered — shipped as
+<strong>v0.13.0-r5a</strong>.</p>
+<h2>Executed (9 real items → v0.13.0-r5a)</h2>
+<table>
+<thead>
+<tr>
+<th>Id</th>
+<th>What changed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>f1 + f22</strong></td>
+<td>Ring re-specced (supersedes R4 f4/f5/f6): the ring is the cycle progress again — day 1 ≈ empty, arc grows clockwise with the day badge riding the tip, <strong>fully closed at day ≥ cycle length and stays closed</strong> until a new period is logged (pairs with the r4a no-auto-restart engine). New bright palette along the arc: FF5338 → FF002A → FF002C → FF8372 → FE4E28 → FCAD5E.</td>
+</tr>
+<tr>
+<td><strong>f2</strong></td>
+<td>Waves replaced with the EXACT wireframe vectors (Ellipse 259–262.svg from the round-5 pack), own fills/opacities (FF4200·60%, FCAD5F, AE3146·50%, FF0731·50%), clipped to the ring.</td>
+</tr>
+<tr>
+<td><strong>f3</strong></td>
+<td>Log Symptoms header: ugly pencil → wireframe <strong>btn-notes pill</strong> (white pill, pencil glyph, "Notes").</td>
+</tr>
+<tr>
+<td><strong>f4</strong></td>
+<td>Bottom "Add notes" card removed from Log Symptoms — single entry point via the header Notes button (full-screen editor kept).</td>
+</tr>
+<tr>
+<td><strong>F24</strong></td>
+<td>Progress score component renamed <strong>Recovery → Movement</strong> (label + modal title).</td>
+</tr>
+<tr>
+<td><strong>F6</strong></td>
+<td>Hormone chart exact palette: Estrogen FF5343 (~90%), LH FF5343, FSH FF7926, Progesterone FFC049.</td>
+</tr>
+<tr>
+<td><strong>f18</strong></td>
+<td>Calendar cycle-day badges now use the per-phase RADIAL gradients: menstrual C9354E→FF7A59 · follicular 9BC19E→89AC8C · ovulatory FFAB40→E9870A · luteal AD70B1→E0749A.</td>
+</tr>
+<tr>
+<td><strong>F17</strong></td>
+<td>Year view mini-calendars go neutral too: cream <code>#FFFAF9</code> circles, dark numbers. <em>Cycle-day badges NOT added to year view: mini cells are 12px — an 8px badge with a 5px number is illegible. If founders want them, Design should spec a bigger year cell first.</em></td>
+</tr>
+<tr>
+<td><strong>f19</strong></td>
+<td>Weekly-streak missed-day marker is now the exact <code>Group 1171289068.svg</code> (blue radial Nutri face), embedded as vector.</td>
+</tr>
+<tr>
+<td><strong>059/f25 — ROOT CAUSE FIXED</strong></td>
+<td>The nav labels were <strong>baked into the icon PNG files</strong> ("Calendar", "Home"… painted inside the images) — that's why <code>tabBarShowLabel:false</code> (v0.10) never removed them. Icons re-cropped to caption-free glyphs (originals archived), rendered 34×34.</td>
+</tr>
+</tbody>
+</table>
+<h2>Duplicates of Round 4 — already live, re-test on v0.13.0</h2>
+<p>F23 (=R4-F1 goal bubbles — shipped v0.12.3, includes the Home NutriGoals sync via the
+nutrigoal-persist fix) · f5 (=F18) · F6-structure (=F19) · f7 (=f20) · f8 (=f21) ·
+f9/f12 (=f22/f25) · f10 (=f23) · f11 (=f24) · f13 (=f26, resolved KEEP) · f14 (=f27) ·
+f15 (=f28) · F16 (=F13) · F17-month (=F14) · f18-base (=f15) · f19-base (=f16) ·
+f20 (=f29) · f21 (=f30).</p>
+<h2>Note to founders</h2>
+<p>Round-5 also delivered the previously-missing IMG_15xx/16xx screenshots — archived in
+<code>feedback/round5-screens/</code>. Please run the next pass on <strong>v0.13.0</strong> (check Settings →
+App version, or force-close twice / reload the PWA) so we don't chase already-fixed items.</p></div></body></html>

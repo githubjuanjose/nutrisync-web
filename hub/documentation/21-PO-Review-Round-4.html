@@ -1,0 +1,139 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>PO Review — Round 4 (scoreboard) — NutriSync Docs</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.navbtns{display:flex;gap:16px;align-items:center;}
+.navbtns a:first-child{padding:5px 12px;border:1px solid var(--line);border-radius:20px;}
+.navbtns a:first-child:hover{border-color:var(--coral);background:var(--cream);}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+h4{font-size:16px;font-weight:800;margin:20px 0 6px;}
+p{margin:10px 0;}
+a{color:var(--coral-deep);}
+strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:'SF Mono',Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:14px 0;padding:12px 18px;background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;color:#5d524b;}
+blockquote p{margin:4px 0;}
+ul,ol{margin:10px 0;padding-left:24px;}
+li{margin:5px 0;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;}
+tbody tr:nth-child(even){background:var(--cream);}
+.pill{display:inline-block;background:#FDE6DD;color:var(--coral-deep);font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;}
+.card{display:block;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:10px 0;text-decoration:none;color:var(--ink);transition:.15s;}
+.card:hover{border-color:var(--coral);background:var(--cream);}
+.card .t{font-weight:800;font-size:16px;color:var(--coral-deep);}
+.card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
+.sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
+</style><script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>PO Review — Round 4 (founders' full-app pass, received 23 Jul 2026)</h1>
+<p>30 items (founder ids kept: F1–f31 + 059). Source: <code>feedback/4th round of Feedback.md</code>
++ <code>feedback/round4-screens/</code> (53 files: app screenshots + wireframe reference assets
+Frame/Group PNGs). Note: referenced IMG_15xx/16xx screenshots were not in the drop —
+text specs are detailed enough to execute; flagged to founders in case they want to
+re-share.</p>
+<h2>Scoreboard</h2>
+<table>
+<thead>
+<tr>
+<th>Batch</th>
+<th>Items</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>r4a · Logic bugs &amp; cycle engine</td>
+<td>F10, f31, 059(verify)</td>
+<td>✅ v0.12.1-r4a (23 Jul)</td>
+</tr>
+<tr>
+<td>r4b · Home parity</td>
+<td>f2, F3, f4, f5, f6, f7, f8, F9, F11, F12</td>
+<td>✅ v0.12.2-r4b (23 Jul)</td>
+</tr>
+<tr>
+<td>r4c · Onboarding + Calendar</td>
+<td>F1, F13, F14, f15</td>
+<td>✅ v0.12.3-r4c (23 Jul)</td>
+</tr>
+<tr>
+<td>r4d · NutriLog/Movement + Settings</td>
+<td>f16, f17, f29, f30</td>
+<td>✅ v0.12.4-r4d (23 Jul)</td>
+</tr>
+<tr>
+<td>r4e · Progress parity</td>
+<td>F18, F19, f20, f21, f22, f23, f24, f25, f27, f28, f26</td>
+<td>✅ v0.12.5-r4e (23 Jul) — <strong>30/30 closed</strong></td>
+</tr>
+</tbody>
+</table>
+<h2>Triage detail</h2>
+<h3>r4a — Logic first (bugs before paint)</h3>
+<ul>
+<li><strong>F10 (bug, major)</strong> Symptoms logged don't persist / aren't editable on re-entry.
+  Fix: save path + prefill today's log when reopening Log Symptoms, editable + re-save.</li>
+<li><strong>f31 (feature, major)</strong> "Log period" button on Log Symptoms → mini calendar →
+  selected date starts cycle day 1; <strong>no auto-restart past day 28</strong> — cycle waits for
+  manual input; actual lengths feed avg cycle length + algorithm. Touches cycle engine —
+  DB snapshot + careful tests.</li>
+<li><strong>059 (bug?, medium)</strong> Nav labels still visible — contradicts resolved 048. We shipped
+  <code>tabBarShowLabel:false</code> in v0.10; likely the testers' build/PWA cache predates it.
+  Action: verified — <code>tabBarShowLabel:false</code> is live in the shipped code since v0.10; the testers were on a stale build/PWA cache. Ask them to re-test on the current version (mobile: force-close + reopen twice; PWA: reload).</li>
+</ul>
+<h3>r4b — Home parity (wireframe refs: SVG pack + round4 assets)</h3>
+<ul>
+<li><strong>f2</strong> Screen background: linear FE5936→FFFFFF (stronger at top) on Home/Progress/
+  NutriLog/Movement/Log-symptoms. <strong>F3</strong> bigger in-circle text. <strong>f4</strong> ring gets an open
+  gap (progress arc, gap upper-left). <strong>f5</strong> gradient flow: darkest top-right → lighter
+  toward gap. <strong>f6</strong> day badge sits at gap start (left), over unfilled track. <strong>f7</strong>
+  layered waves (pink/orange/maroon depth) — revisit R3 wave colors. <strong>f8</strong> soft radial
+  glow behind ring. <strong>F9</strong> larger tab-bar icons. <strong>F11</strong> NutriGoal bubbles with exact
+  radial gradients (energy FF0086→FF5813; balance FF5509→FE7FD4; PMS FFA51E→FF820B→FD410C).
+  <strong>F12</strong> slide (drag) gesture on mood/energy, not just taps.</li>
+</ul>
+<h3>r4c — Onboarding + Calendar</h3>
+<ul>
+<li><strong>F1</strong> Nutri-goal step as big gradient bubbles with swipe-through selection (reuse
+  F11 gradients; keep canonical EN values → i18n untouched).</li>
+<li><strong>F13</strong> Calendar hero box: radial FF5509 100% → FF7000 23%. <strong>F14</strong> date circles
+  neutral FFFAF9 (not phase-coloured). <strong>f15</strong> NEW: mini circle at top-left of each date
+  showing cycle-day number in phase colour (menstrual: linear DE2A2A→CA4848→CE4A49→FF664F).</li>
+</ul>
+<h3>r4d — Logs + Settings</h3>
+<ul>
+<li><strong>f16</strong> Weekly-streak "off" nutri: use asset <code>Group 1171289069</code> (round4-screens).</li>
+<li><strong>f17</strong> NEW confirmation screen after saving meal/workout: "recorded" + buttons
+  Home / Log more.</li>
+<li><strong>f29</strong> Security screen: "SMS Verification" text bug, duplicated "Face ID", icon/text
+  alignment. <strong>f30</strong> Choose-your-Nutri: selection ring centred on avatar.</li>
+</ul>
+<h3>r4e — Progress parity</h3>
+<ul>
+<li><strong>F18</strong> 5 score circles tap → modal per component with the exact copy provided
+  (Phase Confidence/Biomarkers/Nutrition/Recovery/Logging: current/max, what it
+  measures, action to raise).</li>
+<li><strong>F19</strong> Hormone chart: 4 smooth gradient hills (Estrogen yellow, LH coral, FSH orange,
+  Progesterone mauve), gradient fade fills, legend ABOVE chart, current day highlighted.</li>
+<li><strong>f20</strong> stat numbers bold coral #E4572E · <strong>f21</strong> populated % in green · <strong>f22+f25</strong>
+  stability gauge: continuous red→orange→yellow arc, zone labels volatile/aligned/stable
+  around ring, no discrete legend dots, also in low-data state · <strong>f23</strong> score card:
+  separate white/cream card below FLAT solid coral header, coral arc + dark text, green
+  comparison text · <strong>f24</strong> thinner ring strokes + lighter labels · <strong>f27</strong> active tab =
+  bold coral text, no pill · <strong>f28</strong> flat solid header (no gradient).</li>
+<li><strong>f26 ✅ RESOLVED (Juanjo, 23 Jul): KEEP the "View History" button</strong> — Cycle History stays reachable; Design asked to add it to the wireframe (doc 12).</li>
+</ul>
+<h2>Execution policy</h2>
+<p>Same as Round 3: version per batch (v0.12.1-r4a → …), full zips auto-archived to
+<code>releases/</code>, DB snapshot before any engine change (f31), PWA rebuild after final batch,
+doc 08 changelog entry per batch.</p></div></body></html>

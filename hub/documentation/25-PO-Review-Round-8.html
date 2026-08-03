@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>PO Review — Round 8 (split scoreboard) — NutriSync Docs</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.navbtns{display:flex;gap:16px;align-items:center;}
+.navbtns a:first-child{padding:5px 12px;border:1px solid var(--line);border-radius:20px;}
+.navbtns a:first-child:hover{border-color:var(--coral);background:var(--cream);}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+h4{font-size:16px;font-weight:800;margin:20px 0 6px;}
+p{margin:10px 0;}
+a{color:var(--coral-deep);}
+strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:'SF Mono',Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:14px 0;padding:12px 18px;background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;color:#5d524b;}
+blockquote p{margin:4px 0;}
+ul,ol{margin:10px 0;padding-left:24px;}
+li{margin:5px 0;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;}
+tbody tr:nth-child(even){background:var(--cream);}
+.pill{display:inline-block;background:#FDE6DD;color:var(--coral-deep);font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;}
+.card{display:block;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:10px 0;text-decoration:none;color:var(--ink);transition:.15s;}
+.card:hover{border-color:var(--coral);background:var(--cream);}
+.card .t{font-weight:800;font-size:16px;color:var(--coral-deep);}
+.card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
+.sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
+</style><script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>PO Review — Round 8 (received 29 Jul 2026) — SPLIT</h1>
+<p>40 items. <strong>r8a (engine + quick fixes) shipped as v0.16.0-r8a</strong> (29 Jul).
+<strong>r8b part 1 shipped as v0.16.1</strong> (f40 Frames, f36 phase-aware tags, app-language dates + Home strings). <strong>Part 2 shipped as v0.17.0</strong>: catalog ×14 bundled (tc() + parenthetical fallback), Settings/Notifications/moods/meals/symptom sections through t(), f18 real device names. f23 pending device check by founders. Catálogo: primera pasada ×12 idiomas cargada (v0.17.1/po22) — pendiente revisión de revisoras en el hub. v0.17.2: fix raíz de renderizado PWA (Svg sin tamaño → 300×150), calendario en una pantalla, leyenda 1 fila, marketing mobile-first (web-app tras el hub). Round 8: <strong>all engineering items closed.</strong></p>
+<h2>r8a — shipped</h2>
+<p><strong>Cycle-edit correctness (f1, f24, f25, f28, f29, f30):</strong>
+- Editing the period start to an EARLIER date is now a <strong>correction</strong> — it updates
+  the current cycle row (previously it inserted a new row the server never picked,
+  so "nothing updated": root cause of f1/f28/f30).
+- Client and server now use the SAME current-cycle rule (latest start date).
+- Calendar maps every date to ITS cycle from the logged history; the future keeps
+  counting (31, 32… — no phantom "day 3" next cycle) and pre-history dates
+  back-project predicted cycles (f24/f25).
+- Cycle &amp; Health (Settings) now updates ONLY the latest cycle row — it used to
+  blanket-update ALL history rows (data-destroying bug found while fixing f29).
+- Home, NutriLog, Movement and Calendar all refetch the cycle on focus — a period
+  edit anywhere updates everywhere immediately (f1/f30).</p>
+<p><strong>Other fixes:</strong> f21 research opt-in from onboarding now persists and arrives ON in
+Data &amp; Privacy · f37 keyboard no longer covers the "Other" input (auto insets) ·
+f32 confirmation Nutri without the outer rings · f4 date in white · f6/f7 label fit
++ hello spacing · f2 nav icons slightly bigger (bar unchanged) · f38/f39 stability
+layout (state word below the ring, stats aligned).</p>
+<h2>r8b — next session (scheduled)</h2>
+<p>The i18n sweep (~20 items: f3, f5, f8–f20, f22, f26, f27, f31, f33–f35): bundle the
+per-language CATALOG (foods/movements/conditions/diets, already translated in the
+web packs ×14) into the mobile app, route every hardcoded string through t() with
+canonical-value mapping, and localise date/weekday formatting to the APP language.
+Plus f36 (phase-aware Most-Recommended logic), f40 (new Frame hormone SVGs, no
+weekday labels, monthly same size), f23 (hero re-check on device), f18-Settings
+(real device names / centred rows).</p></div></body></html>

@@ -1,0 +1,295 @@
+# NutriSync — Release Notes / Change Log
+
+## 2026-08-02 — Web app metrics: native selects + metric/imperial toggle (v11.51 · DELTA 2)
+Onboarding body-metrics step, follow-up to v11.50. Valid-by-construction native `<select>` controls (iOS renders the system wheel; desktop a dropdown); `type="date"` kept for dates.
+- **Numeric inputs → native selects**: Height (90–230), Weight (30.0–250.0 by 0.5), Cycle length (15–90, keeps the 21–45 soft-band confirm), Period duration (1–14). The numeric value is saved (not the label); current values stay preselected when editing.
+- **Metric / Imperial toggle** next to the metrics — segmented “Metric (kg, cm) | Imperial (lb, ft+in)”. Defaults to metric unless `navigator.language` ends in `-US`; persisted in `localStorage` (`ns.units`). Imperial shows ft (3–7) + in (0–11) and lb (66–550) selects.
+- **Always stores metric** to Supabase (`height_cm`, `weight_kg`): `cm = round((ft*12+in)*2.54)`, `kg = round(lb/2.20462*10)/10`. Loading in imperial converts from the stored metric for display; imperial values are never stored. An off-grid kg arrived at via imperial (e.g. 65.8) is injected into the metric picker so it always displays; round-trips both directions verified (5′07″↔170 cm, 145 lb↔65.8 kg, 160 cm↔5′03″, 72.5 kg↔160 lb).
+- Strings `unitsMetric`/`unitsImperial` added to EN/ES; other 12 packs fall back to EN.
+
+## 2026-08-02 — Web app forms & validation upgrade (r11a parity) (v11.50)
+Scope: onboarding forms only (settings has no body-metric fields). Applied at source in `NutriSync Web App.dc.html`; `publish/app.html` re-exported.
+- **Date of birth replaces free-text age**: native `<input type="date"` (min 1926-01-01, max = today−16y). Saves BOTH `date_of_birth` (ISO) and derived `age` to `users`.
+- **Typed numeric inputs** (no parseFloat on raw strings): Height `number` 90–230 step1 cm; Weight `number` 30–250 step0.1 kg; the “How long is your typical cycle?” step is now two numeric inputs — Cycle length 15–90 step1 + Period length 1–14 step1 (replaces the old range-choice; period length was previously hard-coded to 5). Cycle step type is forced in code by key, so it applies in all 14 languages regardless of pack.
+- **Validation on submit**: hard min/max → friendly inline error, blocks save. Cycle length soft band — values outside 21–45 (within 15–90) trigger a confirm (“…uncommon. Save anyway?”); a confirmed value is never auto-blocked.
+- **Date display**: `toLocaleDateString(navigator.language, {day:'numeric',month:'long',year:'numeric'})` echoes under DOB (with derived age) and last-period inputs — never raw YYYY-MM-DD.
+- **Save error handling**: users/cycles upsert rejection now shows “That value looks off — please check it” instead of the raw DB error.
+- **Keyboard flow**: Enter advances to the next field; Enter on the last field submits the step.
+- New strings (`dob`, `dobNote`, `cycleLenLabel`, `periodDurLabel`, `days`, `errDob16`, `errDobRange`, `errHeight`, `errWeight`, `errCycle`, `errPeriod`, `cycleSoftConfirm`, `saveValueErr`, `dobShown`, `lastPeriodShown`) added to built-in EN + ES; other 12 languages fall back to English until their packs add them. Out of scope: web metric/imperial toggle (web stays metric-only).
+
+## 2026-07-25 — Baseline-ladder states on the prototype Progress screen (v11.49)
+Designed the real versions of the v0.14.1 "personal baseline" experience (PO doc 12 §21), in **both the phone-prototype and the wide-screen desktop-dashboard** Progress renderings so testers see it regardless of viewport and stop logging false mismatches. All EN/ES.
+- **Stat row — Energy Stability / Mood / PMS Symptoms**, three designed states via a ring motif (consistent with the CAS ring): *Building* (days 1–2) fills the ring n/7 in warm amber with the count in the centre and a "Building" caption — reads as a goal in progress, not missing data; *Provisional* (days 3–6) shows the real value in amber #E8930C with a dotted outer ring + a soft "PROVISIONAL" pill (real-but-low-confidence, non-alarming); *Solid* (day 7+) is the confident green percentage (matches r4e-f21, unchanged).
+- **"Baseline set" celebration card** (fires at day 7): warm coral→amber gradient, Nutri featured in a white disc, ✨ headline and the "we measure your progress against you, not an average" line — the user's first win.
+- **CAS comparison line** under the score card: green ▲ / red #D93030 ▼ delta + muted label; wording switches "vs your first week" → "vs last cycle" after the first logged period; before day 7 it shows a 7-dot tracker + "Building your baseline · n/7 days".
+- **Demo aid**: a clearly-marked dashed "Preview · days logged" scrubber (1–7 + ✓) lets reviewers watch the ladder transition without creating an account, with a one-line state caption. Prototype-only chrome, not shipped UI. Present on both the phone and desktop Progress renderings.
+- Copy is provisional EN/ES (per brief); founders can adjust. Other 12 languages fall back to EN on the prototype demo screens as before.
+- Open item for Design: confirmed the Round-5 note — the hormone graph plots 3 curves (Estrogen/FSH/Progesterone), no LH curve, so no Estrogen-vs-LH colour clash in this asset (legend swatch swap already fixed in v11.47).
+
+## 2026-07-23 — Hormone-graph legend colour fix (v11.47)
+- **Legend swatches were swapped.** The hormone-rhythm card's three curves are correct (Estrogen #FF5343, FSH #FF7926, Progesterone #FFC049) but the legend chips under them had FSH and Progesterone's colours reversed — `label-fsh.svg` was painted #FFC049 and `label-progesteron.svg` #FF7926. Swapped both so every legend chip now matches its curve. (This graph plots three hormones only — Estrogen/FSH/Progesterone, per `pxHormonalSub`; LH appears in nutrition copy, not as a curve, so the #5 "Estrogen vs LH share a colour" concern doesn't arise in this asset — all three are already distinct and on-palette.)
+
+## 2026-07-23 — Prototype synced to shipped-app tokens (v11.46)
+Kills the false-mismatch diffs testers were seeing (Round 5 was 64% duplicates). The phone prototype (marketing → Builders → Prototypes) now matches the shipped app:
+- **Home ring** — now a cycle-progress arc using the 6-stop brand palette (FF5338 → FF002A → FF002C → FF8372 → FE4E28 → FCAD5E); the arc grows daily and closes at day ≥ cycle length, with the CAS badge riding the tip. Phase name/day sit on an inner phase disc (readable).
+- **Progress** — score card is now a **white card under a flat #E4572E header**; **"View History"** control added below the Current/7-day/Best block (founder decision f26; toggles a Weekly·Monthly·Yearly "unlocks in the full app" note); **"Movement"** replaces "Recovery" in the contributors list.
+- **Calendar** — neutral **#FFFAF9** date cells; cycle days are now **per-phase radial badges** (menstrual C9354E→FF7A59, follicular 9BC19E→89AC8C, ovulatory FFAB40→E9870A, luteal AD70B1→E0749A); predicted days dashed, today solid ink.
+- **Design decisions returned to the team** — #5 hormone legend: Estrogen keeps #FF5343, **LH shifts to #D93030** (the two must be distinguishable); #4 year-view: **tint-only, no numeric badge** at 12 px cells (numbers need a ≥22 px scrollable year cell); #3 waves: parametric composition spec supplied (clip to ring, 4 ellipses rx≈1.15R/ry≈0.28R, waterline at score%).
+- **Pending (asset edit):** hormone-graph SVG recolor to the confirmed palette (Estrogen #FF5343 / LH #D93030 / FSH #FF7926 / Progesterone #FFC049) — needs the graph re-exported.
+
+## 2026-07-18 — Footer QR even distribution + EN/ES disclaimer pack fix (v11.45)
+- **Footer top row evenly distributed**: the QR was shoved to the far edge by `margin-left:auto` on a growing columns block, leaving a large gap after LEGAL. Removed it and set the columns+QR container to `justify-content: space-between` (with a slightly wider inter-column gutter) so PRODUCT · COMPANY · LEGAL · QR now spread evenly across the full width, QR still flush-right over the wings.
+- **EN/ES disclaimer regression fixed**: v11.41 trimmed the disclaimer to “…Madrid.” in the built-in EN/ES and the 12 add-on packs, but missed `i18n/en.json` and `i18n/es.json`, which override the built-in at runtime — so EN/ES visitors still saw “Madrid, Singapore, Thessaloniki”. Both packs now read “Made with care in Madrid.” / “Hecho con cariño en Madrid.” (all 14 languages consistent).
+
+## 2026-07-18 — Footer: scan-to-open QR + tighter column grid (v11.44)
+- **QR added to footer top block**, right-aligned as a fourth element beside PRODUCT / COMPANY / LEGAL (top-aligned with the column headers): white rounded tile, 94px, on a soft shadow so it scans off a dark screen; caption **“Scan to open the app”** underneath (localized in all 14 languages). The tile encodes **https://nutrisynccollective.com/app.html** (custom domain) and is itself clickable → opens the app.
+- QR is a real raster asset (`assets/qr_app.png`), generated at build with a self-contained encoder (byte mode, version 3, ECC level M) — bundles cleanly into `index.html` and the standalone.
+- **Tighter footer grid**: column gutters roughly halved (top-row gap 48→30px, inter-column gap ~52/42→18/15px) so brand + PRODUCT/COMPANY/LEGAL read as one grid, with the QR pushed flush right.
+- Store buttons, socials and the STAY IN SYNC row are unchanged. (The integration layer’s temporary small QR next to the store buttons can now be dropped.)
+- New string `marketing.ftScan` added to EN/ES source + all 12 packs.
+
+## 2026-07-17 — PO Review Round 1: all 7 source-bundle requests (v11.43)
+- **7 · Marketing copy ×14**: diagnosis-delay stat card (`prYears` “~4 yrs”, `prC2t` “Later diagnoses than men”, `prC2b` full 4.5y/2.5y/5–6y sentence) + `casP` “improvement over time” clause — EN/ES fixed at source, native translations added to all 12 packs (fr/de/it/nl/el/ca/val/eu/gl/oc/zh/ja).
+- **8 · PMOS terminology ×14**: PCOS→PMOS displayed everywhere (stored data keys unchanged): web-app `condLabels` (EN via display-rename, ES + 12 packs localized dicts incl. Endometriosis/Thyroid/Anaemia/IBS), phone-prototype onboarding & Edit-Health chips, pack `catalog` entries.
+- **9 · W20 battery check-in**: “And your energy?” 1–5 buttons → interactive Figma battery (5 segments in a black shell + cap, coral fill, tap or press-drag; 64px targets); still writes `energy` 1–5.
+- **10 · W22 Progress card**: single ring → three circular stats — Current (coral) / Weekly avg (gold) / Best (green). Honest empty states: “—” rings until history exists (weekly needs ≥2 scores in 7 days); “First score on the board” placeholder retired. Demo: 82/78/88.
+- **11 · W23 hero phone mockup**: now a real Home wireframe — phase ring, phase dots, live CAS chip and per-phase Nutrition/Movement focus card — auto-cycling through all 4 phases every 2.8s (days 2/9/14/24, scores 64/71/86/78). Illustrative only, no live APIs.
+- **12 · Team photos**: founder cards re-pointed to local `assets/team/co{1,3,2}_sq.png` (Lucía on the correct square crop); no more stale UUID references.
+- **13 · Source fixes**: Edit Period opens with **no** pre-selected Flow/Mood (`epFlow`/`epMood` init null + reset on entry; save is null-safe) — and “Mark as done” writes **one** session row to `movement_checklist` instead of one per part.
+- New web-app strings (`prCurrent/prWeekly/prBest/battEmpty/battFull`) shipped in EN/ES + all 12 packs.
+
+## 2026-07-07 — Onboarding language selector + eu/oc native review (v11.42)
+- **Web app**: the onboarding wizard now carries the language selector (EN + OS-language pills + ⋯ popover, top-right) — previously reachable only from Welcome/Log-in/Settings; all 14 languages switchable mid-wizard.
+- **Basque (eu) native-review pass** (11 corrections): `Lutealea→Luteala` (wrong article stem, 4 spots), `Krucifera→Kruziferoa`, `Insomnioa→Loezina`, mood “Low” `Behean→Apal`, “Pretty unpredictable” `ezustekoa→aurreikusezina`, “consistency beats intensity” now takes the dative (`intentsitateari irabazten dio`), time/date phrasing (`6:40an sinkronizatuta`, `martxoaren 11a`), luteal insight re-phrased.
+- **Aranese (oc) native-review pass** (9 corrections): typo `penents→pendents`, `miegdia→miègdia`, `Destalh→Detalh`, dropped the non-Occitan personal “a” (`Coneish Nutri`), gender agreement `fruts arroges→arrois` (2×), `chía→chia`, `sincronizat as 6:40`, notes placeholder now “Bèra causa mès sus aué…”. Distinctive Aranese forms (junhsèga, hèr, hièstra, tath, piòc) verified correct.
+- Both packs’ `_note` now records the review; packs are runtime-fetched so no app rebuild was needed for them.
+
+## 2026-07-07 — Footer disclaimer: Madrid only (v11.41)
+- Disclaimer reverted to “… Made with care in Madrid.” in the built-in EN/ES **and all 12 language packs** (each in its own language; Greek article and Japanese phrasing hand-corrected after the automated trim).
+
+## 2026-07-07 — Mobile watermark QA + footer wings (v11.40)
+- **Mobile-width QA (390 px) of every watermark**: hero, Problem, Science, CAS card, Connected Health, Pricing and Team all read cleanly with text fully legible. One failure found and fixed — **Platform (“Everything in one place”)** had its wings at 38% section height, which on mobile's tall card stack landed far below the header; repositioned to the header's right edge (coral, 10%).
+- **Footer no longer watermark-free**: the old 4% flat logo is now the white wings mark at 8% — full brand coverage, every section + footer.
+
+## 2026-07-07 — Watermarks visible everywhere (v11.39)
+- **Fixed invisible watermarks**: the Problem, Everything-in-one-place (Platform) and Connected Health wings were painting behind the page background (stacking-context bug) — they now show as intended.
+- **New wings added**: Team (“Built by women, for women” — coral, right edge), the See-NutriSync-in-action section behind BOTH prototype tabs (coral left behind the mobile grid · ink right behind the web grid), and the opened phone-prototype backdrop (fixed ink mark, lower right of the desk).
+- Every section of the marketing page now carries a visible brand watermark, always behind content.
+
+## 2026-07-07 — Brand watermarks: stronger + every section (v11.38)
+- **Existing wings watermarks made more visible**: hero 8→12%, science band 5→9%, Health Flows gallery 5→9%, pricing 6→10%.
+- **New wings watermarks added** so every major section carries the brand: the Problem (ink, right), the CAS orange card (white, bottom-left), Platform (coral, left), and Connected Health (ink, bottom-right) — all masked/faded, never touching content. Team keeps its solid mark; the closing CTA keeps its animated wings.
+
+## 2026-07-07 — Onboarding radial sweep + Escape-to-close (v11.37)
+- **Onboarding wizard** (8-step questionnaire) and the **Connect-a-device** permission screen moved onto the radial-peach background — no screen in the prototype remains on the old linear gradient.
+- **Escape key closes the language popovers** on desktop, in both the marketing/prototype and the web app (complements click-outside-to-close).
+
+## 2026-07-07 — Popover polish + Meet-Nutri / All-set sweep (v11.36)
+- **Language popovers now close on any click/tap outside** (all five locations, web + prototype) and show **4 rows** before scrolling.
+- **Meet-Nutri and All-set screens** moved off the old linear gradient onto the radial-peach background — the whole pre-auth journey (Welcome → Log in → Create → Meet Nutri → All set) now shares one Figma-matched backdrop.
+
+## 2026-07-07 — Login/Create Figma sweep · named demo nav · scrollable language menu (v11.35)
+- **Phone Login & Create Account aligned with the Figma/Welcome vocabulary**: radial-peach background, Poppins-Medium titles (38 px), “Create / account” two-tone with **account in brand orange**, softer grey body copy.
+- **Demo-flow bar now shows screen names** (translated in all 14 languages — e.g. “Edit Period”, “已连接的应用”) instead of the n/18 counter.
+- **Language menu no longer floods the screen**: the ⋯ dropdown is now a compact popover showing ~5 languages with the rest scrollable — applied in all five selector locations (marketing nav, phone Welcome, web-app Welcome, Log-in/Sign-up, Settings), now listing full language names.
+- **i18n completeness**: `welTo`/`welP` welcome keys back-filled into all 12 add-on packs (derived from each pack's own marketing copy), so the web-app Welcome is translated everywhere — no more English fallback.
+
+## 2026-07-07 — Phone-prototype Welcome matched to Figma + language selector (v11.34)
+- **Selector repositioned (v11.34):** the language pills now sit in small type just below the welcome copy — they no longer overlap the status-bar antenna/battery icons.
+- **Welcome Page now mirrors the Figma design** (and the web app): centered layout on the soft radial-peach background, wings mark enlarged to 156 px, “Welcome to” in Poppins Medium black with **NutriSync in brand orange**, centered grey body copy, and centered pill buttons — orange-gradient Create account, solid-white Log in.
+- **Language selector added to the phone prototype**: same EN + OS-language pills + ▾ dropdown as the web app, top-right of the Welcome screen — all 14 languages, persisted across the prototype.
+- **For the mobile app build**: this Welcome spec (layout, sizes, colors) and the shared `i18n/*.json` packs apply 1:1 — the mobile team should mirror this screen and reuse the packs as-is.
+
+## 2026-07-07 — Welcome screen + full prototype flow navigation (v11.32)
+- **Phone prototype Welcome aligned with the web design**: “NutriSync” renders in brand orange in the title across all 14 languages, and the Create-account button is now translated (was hardcoded English).
+- **Web app now opens on a Welcome screen** matching the Figma design — black wings mark, black + orange title, orange Create-account / white Log-in pills, and the full language selector (pills + ▾) available before signing in.
+- **Demo flows navigate back & forth**: web #demo mode gets a floating bottom bar — Back to site · ‹ · n / 18 · › — and **swipe left/right** moves between screens; the phone prototype keeps its ‹ › arrows + ← Gallery and now also supports **swipe gestures**.
+
+## 2026-07-06 — Logo pass (v11.30): favicons + gallery & team brand marks
+- **Browser-tab identity:** favicon + apple-touch-icon (NutriSync wings) added to both the marketing site and the web app.
+- Faint ink wings watermark behind the **Health Flows** gallery header; small coral wings mark introducing the **Team** section.
+- Brand moments now: header logo · hero / science / pricing / gallery watermarks · team mark · animated CTA wings · footer logo · favicons.
+
+## 2026-07-06 — Brand watermarks across the marketing page (v11.29)
+- Faded NutriSync wings watermarks now appear in three places: the **hero** (coral, top-right, fading downward), the dark **science band** (white, right edge, fading left) and the **pricing section** (coral, bottom-left, fading upward) — subtle 5–8% opacity brand moments that complement the enlarged header logo and the animated wings in the closing CTA.
+
+## 2026-07-06 — Japanese (日本語) live · 14/14 languages complete · hero brand watermark
+- **Japanese shipped in one pack** — `i18n/ja.json` carries `app`, `marketing` and `catalog` sections. JA appears in both selectors; web app, marketing page and phone prototype fully translated.
+- **The language rollout is complete: all 14 supported languages live end-to-end** (EN, ES, FR, DE, IT, NL, EL, CA, EU, GL, VAL, OC, ZH, JA). Aranese & Basque: native-speaker review recommended before production. Investor & Builder rooms stay EN/ES by design.
+- **Brand presence:** large faded NutriSync wings watermark added behind the hero (top-right, fading out downward) — complements the enlarged header logo and the animated wings in the closing CTA.
+
+## 2026-07-06 — Chinese (中文) live end-to-end
+- **Simplified Chinese (continental) shipped in one pack** — `i18n/zh.json` carries `app`, `marketing` and `catalog` sections. ZH now appears in both selectors; web app, marketing page and phone prototype are fully translated.
+- Live end-to-end: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL, VAL, OC, ZH · remaining: JA (日本語).
+
+## 2026-07-06 — Aranese marketing site live
+- **The marketing page (and the phone prototype inside it) is now fully translated in Aranese** — `i18n/oc.json` carries the `marketing` (283 keys) and `catalog` (335 entries) sections. Aranese is complete end-to-end. **Native-speaker review strongly recommended before production.**
+- Marketing + web-app live: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL, VAL, OC · remaining: ZH (中文), JA (日本語).
+
+## 2026-07-06 — Valencian marketing packed · Aranese live in the web app
+- This pack (v11.25) is the first to ship the **Valencian marketing translation** (merged in the previous build) — Valencian is complete end-to-end.
+- **Aranese (Aranés, Occitan of Val d'Aran) app pack shipped** (`i18n/oc.json`) — OC now appears in the web-app selector; its marketing section follows next. **Native-speaker review strongly recommended before production.**
+- Web-app live: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL, VAL, OC · marketing live: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL, VAL · remaining: OC marketing, ZH, JA.
+
+## 2026-07-06 — Valencian marketing site live
+- **The marketing page (and the phone prototype inside it) is now fully translated in Valencian** — `i18n/val.json` carries the `marketing` (283 keys) and `catalog` (335 entries) sections. Valencian is now complete end-to-end.
+- Marketing + web-app live: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL, VAL · remaining: OC (Aranés), ZH, JA.
+
+## 2026-07-06 — Valencian live in the web app
+- **Valencian (Valencià, AVL forms) app pack shipped** (`i18n/val.json`) — VAL now appears in the web-app selector; its marketing section follows next.
+- Web-app live: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL, VAL · marketing live: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL.
+
+## 2026-07-06 — Galician marketing site live
+- **The marketing page (and the phone prototype inside it) is now fully translated in Galician** — `i18n/gl.json` carries the `marketing` (283 keys) and `catalog` (335 entries) sections. Galician is now complete end-to-end.
+- Marketing + web-app live: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL · next: VAL (Valencià), OC (Aranés), ZH, JA.
+
+## 2026-07-06 — Galician live in the web app
+- **Galician (Galego) app pack shipped** (`i18n/gl.json`) — GL now appears in the web-app selector; its marketing section follows next.
+- Web-app live: EN, ES, FR, DE, IT, NL, EL, CA, EU, GL · marketing live: EN, ES, FR, DE, IT, NL, EL, CA, EU.
+
+## 2026-07-06 — Basque marketing site live
+- **The marketing page (and the phone prototype inside it) is now fully translated in Basque** — `i18n/eu.json` carries the `marketing` (283 keys) and `catalog` (335 entries) sections. Basque is now complete end-to-end (native-speaker review recommended before production).
+- Marketing + web-app live: EN, ES, FR, DE, IT, NL, EL, CA, EU · next: GL (Galego), VAL (Valencià), OC (Aranés), ZH, JA.
+
+## 2026-07-06 — Basque live in the web app
+- **Basque (Euskara) app pack shipped** (`i18n/eu.json`) — EU now appears in the web-app selector; its marketing section follows next. Native-speaker review recommended before production.
+- Web-app live: EN, ES, FR, DE, IT, NL, EL, CA, EU · marketing live: EN, ES, FR, DE, IT, NL, EL, CA.
+
+## 2026-07-06 — Catalan marketing site live
+- **The marketing page (and the phone prototype inside it) is now fully translated in Catalan** — `i18n/ca.json` carries the `marketing` (283 keys) and `catalog` (335 entries) sections. Catalan is now complete end-to-end.
+- Marketing + web-app live: EN, ES, FR, DE, IT, NL, EL, CA · next: EU (Euskara), OC (Aranés), VAL (Valencià), GL (Galego), ZH, JA.
+
+## 2026-07-06 — Catalan live in the web app
+- **Catalan (Català) app pack shipped** (`i18n/ca.json`) — CA now appears in the web-app selector; its marketing section follows next.
+- Web-app live: EN, ES, FR, DE, IT, NL, EL, CA · marketing live: EN, ES, FR, DE, IT, NL, EL.
+
+## 2026-07-06 — Greek marketing site live
+- **The marketing page (and the phone prototype inside it) is now fully translated in Greek** — `i18n/el.json` carries the `marketing` (283 keys) and `catalog` (335 entries) sections. Data-only change; no rebuild.
+- Marketing live: EN, ES, FR, DE, IT, NL, EL · web-app live: EN, ES, FR, DE, IT, NL, EL — the seven core languages are now complete end-to-end. Next: CA, EU, OC, VAL, GL, ZH, JA packs (app + marketing).
+
+## 2026-07-06 — Dutch marketing site live
+- **The marketing page (and the phone prototype inside it) is now fully translated in Dutch** — `i18n/nl.json` carries the `marketing` (283 keys) and `catalog` (335 entries) sections. Data-only change; no rebuild.
+- Marketing live: EN, ES, FR, DE, IT, NL · web-app live: EN, ES, FR, DE, IT, NL, EL · next: EL marketing, then CA, EU, OC, VAL, GL, ZH, JA packs.
+
+## 2026-07-06 — Italian marketing site live
+- **The marketing page (and the phone prototype inside it) is now fully translated in Italian** — `i18n/it.json` carries the `marketing` (283 keys) and `catalog` (335 entries) sections. Data-only change; no rebuild.
+- Marketing live: EN, ES, FR, DE, IT · web-app live: EN, ES, FR, DE, IT, NL, EL · next: NL/EL marketing, then CA, EU, OC, VAL, GL, ZH, JA packs.
+
+## 2026-07-06 — German marketing site live
+- **The marketing page (and the phone prototype inside it) is now fully translated in German** — `i18n/de.json` carries the `marketing` (283 keys) and `catalog` (335 entries) sections, same contract as French. Data-only change; no rebuild.
+- Marketing live: EN, ES, FR, DE · web-app live: EN, ES, FR, DE, IT, NL, EL · next: IT/NL/EL marketing, then CA, EU, OC, VAL, GL, ZH, JA packs.
+
+## 2026-07-06 — French marketing site live
+- **The marketing page (and the phone prototype inside it) is now fully translated in French** — `i18n/fr.json` carries the `marketing` (283 keys) and `catalog` (335 entries) sections. Picking FR translates hero, sections, pricing, footer, gallery cards and prototype screens; Investor & Builder rooms stay EN/ES by design.
+- The last hardcoded ES/EN copy in the marketing engine (science section, Nutri intro, check-in gate, calendars, tip labels) now routes through the language packs — German, Italian, Dutch and Greek marketing sections can ship as data only.
+
+## 2026-07-06 — Marketing selector parity
+- Language pills and dropdown now show **ISO codes** (EN · ES · FR · DE · IT · NL · EL …) instead of full names, on both the marketing site and the web app.
+- The marketing page's language selector matches the web app: [EN] + [OS language / ES] pills and a ▾ dropdown listing every language the web app supports. Picking one applies it across site ↔ app (shared `ns_locale`).
+- Transitional: marketing-page copy falls back to English for languages whose marketing translation hasn't shipped yet — those sections are rolling out per language. Investor & Builder rooms remain English/Spanish by design.
+
+## 2026-07-06 — Selector: Español as standing second pill
+- When the device/OS language is English (or not yet supported), the second pill now defaults to **Español** instead of leaving a lone English pill with Spanish tucked in the dropdown. Two pills are always visible: [English] + [OS language, or Español].
+
+## 2026-07-06 — Languages: Dutch & Greek live · registry grows to 14
+- **Dutch (Nederlands) and Greek (Ελληνικά) are live in the web app** (`i18n/nl.json`, `i18n/el.json`).
+- **Chinese (中文, continental) and Japanese (日本語) added to the supported set** — 14 languages total; each appears in the selector once its pack ships.
+- Shipped: EN, ES, FR, DE, IT, NL, EL · pending: CA, EU, OC (Aranés), VAL, GL, ZH, JA — plus marketing-site sections per language (marketing page gates to EN/ES until then). Investor & Builder rooms stay EN/ES by design.
+
+## 2026-07-06 — Hotfix: marketing page load error · Italian live
+- **Fixed `index.html` failing to boot** ("Unexpected token ':'") — a malformed expression introduced with the 12-language registry in the marketing logic; both bundles now compile-checked before packaging.
+- **Italian (Italiano) is live in the web app** (`i18n/it.json`). Shipped: EN, ES, FR, DE, IT · pending: NL, EL, CA, EU, OC, VAL, GL.
+
+## 2026-07-06 — Languages: registry grows to 12 · German live
+- **Supported set is now 12 languages:** Aranés, Català, Deutsch, English, Español, Euskara, Français, Galego, Italiano, Nederlands, Valencià, Ελληνικά. Each appears in the selector automatically once its `i18n/<code>.json` pack ships.
+- **German (Deutsch) is live in the web app** — full professional du-form translation (`i18n/de.json`). Shipped packs so far: EN, ES (built-in), FR, DE. Pending: IT, NL, EL, CA, EU, OC, VAL, GL — plus the marketing-site sections per language.
+- Scope confirmed: language packs are shared across web and mobile apps and cover both prototypes; **Investor & Builder rooms stay English/Spanish only**.
+
+## 2026-07-06 — Languages: 7-language system + new selector
+- **Language selector (marketing nav, web-app login, Settings):** two pills always visible — **[English] + [OS language]** — with a **▾ dropdown** listing the remaining supported languages alphabetically (Deutsch, Español, Français, Italiano, Nederlands, Ελληνικά). Picking from the dropdown applies the language and takes the second pill's slot. Choice persists (`ns_locale`), shared web ↔ app; backend values stay canonical English.
+- **OS-language default:** first load with no saved choice follows the device language when supported.
+- **French (Français) is live in the web app** — full professional translation (`i18n/fr.json`), covering auth, onboarding, daily loop, phase content, wearables, privacy & security. German, Italian, Dutch and Greek packs — and the marketing-site translations — land next; each appears in the selector automatically once its pack ships.
+- i18n architecture: languages load as decoupled `i18n/<code>.json` packs (no rebuild needed); missing keys fall back to English.
+
+## 2026-07-06 — Navigation & polish (dev-brief fixes, at source)
+- **Web app · Back to site:** persistent controls — sidebar item (icon + label, collapses with the rail), a floating "← Back to site" pill fixed at the **bottom-right corner** of the auth/onboarding screens (also on mobile), and a Back-to-site row next to Log out in Settings. Replaces the stopgap floating button.
+- **Web app · bigger back controls:** all in-app back links (‹ Today, ‹ Settings, ‹ Connections) are now 44px-tall pills; onboarding back is 44px with a 24px chevron.
+- **Web onboarding:** Back on every step, new "Start over" (resets to step 1 and clears answers), and the browser Back button now steps the wizard back instead of leaving the flow.
+- **Hub deeper back paths:** room/tab changes push history — the browser Back button steps within the hub (tab → room → landing) instead of dropping straight to the landing.
+- **Bundler error overlay — root-caused, not just hidden:** the overlay only fires on a real resource miss. The one genuine miss (a Figma-typo'd mood icon, `mischevious` → `mischievous`) was fixed at source in a prior build; this build's audit confirms every dynamically-referenced asset (12 mood-face pairs, 4 phase dials, 3 Nutri bubbles, avatars, stars, check states) is declared in the bundle manifest, and both `index.html` and `app.html` load with zero console errors. The 6 "asset not found: {{ … }}" messages at export time are compile-time noise (template holes), not runtime failures. The `#__bundler_err { display:none }` rule is retained deliberately as a production safety net — a debug overlay should never reach end users even if an asset regresses — but nothing triggers it today.
+
+## 2026-07-06 — Hub room navigation
+- **Sticky room tabs:** Overview / Business case / MIS (Investors) and Overview / Documentation / Admin·MIS / Backlog (Builders) now live inside the sticky room header — always visible while scrolling any document; switching a tab returns you to the top.
+- **Room switcher in header:** Investors · Builders · ← Back to site — jump Investor↔Builder directly without returning to the landing page.
+- **Back control:** "← Overview" (and the active room pill) returns to that room's Overview; only "← Back to site" exits to the landing.
+- **Gate at entry only:** the 123456 access gate appears when entering the hub from the site; switching rooms or tabs inside never re-locks.
+
+## 2026-07-04 — Footer & branding
+- **Footer redesign (slimmer, 3 rows):**
+  - Row 1 — brand block (logo + paragraph + **Team Access**: Investors / Builders chips side by side) next to Product · Company · Legal columns.
+  - Row 2 — single "STAY IN SYNC" bar: newsletter email + orange button, **App Store / Google Play badges and Instagram · LinkedIn · TikTok all on one line**.
+  - Row 3 — one-line disclaimer.
+- **Logo prominence:** header logo enlarged to 50 px with a larger NUTRISYNC wordmark on the main page.
+
+---
+
+**Package date:** July 4, 2026 · **Contents:** `index.html` (marketing) + `app.html` (web application) + `i18n/` (language resources) + `hub/` (team documents) + `assets/`
+
+This package is self-contained and static — deploy by dragging the folder into Cloudflare Pages (see `README-PUBLISH.md`).
+
+---
+
+## 1 · Marketing site (`index.html`)
+The original NutriSync marketing site, preserved in full: hero with live phase preview, validation/traction band, The Problem, The Science (four phases), Cycle Alignment Score, platform value props, Connected Health, pricing (Free / Premium / Employers), team, waitlist and footer.
+- **Team access rooms** (footer): Investors / Builders rooms (access code `123456`) with the embedded hub documents (`hub/`).
+- **"Prototype" footer link** keeps the original phone prototype reachable.
+
+## 2 · Health Flows — two prototype views
+The "See NutriSync in action" section has a **Mobile app / Web app toggle**:
+- **Mobile app · prototype** — the original phone screen cards; each opens the interactive phone prototype in-page (full mobile journeys).
+- **Web app · prototype** — the same journeys as web cards; each opens the web application in **prototype mode** (`app.html#demo-<screen>`): full navigation on Olivia's demo data, **no account required**, marked with a "PROTOTYPE · DEMO DATA" badge. It never touches the backend.
+- **"Open the app"** buttons (nav, hero, pricing, closing CTA) lead to the **live** web application.
+
+## 3 · Responsive web application (`app.html`)
+A full customer web app translating the mobile journeys to web (sidebar-dashboard shell chosen from design options):
+- **Journeys:** sign-up → 8-step onboarding → all-set → daily mood/energy check-in → Home (phase hero + Cycle Alignment ring) → NutriLog → Movement → Progress → Calendar → Edit Period → Edit Health → Settings → Connected apps → Connect device → Data & Privacy → Sign-in & Security.
+- **Responsive tiers:** mobile (bottom tab bar) · tablet (icon rail) · desktop (full sidebar), fluid type/spacing throughout.
+- **Data modes:** first-run empty states after sign-up; populated demo persona in prototype mode.
+
+## 4 · Live backend (Supabase)
+Wired per the backend spec — same project the mobile apps use:
+- Real email/password **sign-up and login** (anon key baked in).
+- **Onboarding persists** to `users` + `cycles`; daily check-in, NutriLog checks, Movement sessions and Edit Period logs write through.
+- **Cycle math identical to mobile**; CAS engine computes and writes `daily_scores` (5 components).
+- Privacy controls: consent toggles, **JSON export**, **delete account & data**.
+- Signed-out deep links are guarded (live mode always lands on login); prototype mode is the explicit no-account path.
+
+## 5 · Wearables & connected health
+- **Connected apps** screen: 6 providers (Apple Health, Oura, Garmin, Fitbit, WHOOP, Google Fit) with connect/disconnect and **per-metric consent toggles** (sleep, HRV, resting HR, temperature, workouts, steps).
+- **Connect-device flow** with read-only permission priming.
+- **"From your devices"** card on Home (sleep / HRV / resting HR) driven by connections + consent.
+
+## 6 · Bilingual EN/ES (customer-facing)
+- **Professional Spanish** (tú-form, neutral es) across the web app, the marketing site and the phone prototype — every screen and journey.
+- **Language selector:** EN/ES pills in the marketing nav and on the web app login; **Language & region** card in web app Settings (region drives date formats: es-ES/MX/AR/CO/US, en-US/GB/CA/AU).
+- Choice persists (`localStorage.ns_locale`) and is **shared across marketing ↔ web app**.
+- **Backend stays canonical English**: everything stored in Supabase keeps the canonical values used by the mobile apps, so CAS and analytics are unaffected. Investor/hub materials remain English by design.
+
+## 7 · Decoupled language resources (`i18n/`)
+- `i18n/en.json` + `i18n/es.json` hold **every customer-facing string** in three sections: `app` (web application, incl. per-phase content + onboarding), `marketing` (site + phone prototype), `catalog` (English→Spanish lookups for list content).
+- Both surfaces **fetch these at page load and merge over built-ins** — copy can be edited on the server with **no rebuild**; missing keys fall back safely.
+- Contract, rules and how to add a language: `i18n/README-I18N.md` (in this pack).
+
+## 8 · Mobile-fit fixes (marketing landing)
+- Header now wraps on small screens; badge and secondary nav link hidden on phones; global horizontal-overflow guard — landing renders correctly on iPhone-class widths (~400 px) with no offset/overflow.
+
+## 9 · Visual/misc
+- NutriSync logos enlarged (2×) across surfaces.
+- Health Flows web cards, banner and tabs re-copied to make prototype vs live explicit (EN + ES).
+
+---
+
+### Known configuration notes
+- Email confirmation should be **off** in Supabase Auth for a smooth beta.
+- To restrict access, front the Cloudflare Pages site with **Zero Trust → Access** (email whitelist) — steps in `README-PUBLISH.md`.
+- Editing copy: change `i18n/*.json` values only; never change keys or canonical stored values.

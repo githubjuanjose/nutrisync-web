@@ -1029,14 +1029,25 @@ if os.path.exists(fbpage):
             open(cns, "w", encoding="utf-8").write(ch2)
             print("- legacy feedback panel stripped from the console (now its own tab)")
 
-# ns-kpi-live: honest KPI row in the admin console (actual vs plan vs forecast).
+# ns-kpi-live: honest KPI row (actual vs plan) — console AND the Builders
+# gated-site MIS (po56: same snippet, label-based selectors; refresh-on-change
+# so snippet updates propagate instead of being blocked by the old marker).
 kl = os.path.join(ASSETS, "kpi-live.html")
-if os.path.exists(kl) and os.path.exists(cns):
-    ch = open(cns, encoding="utf-8").read()
-    if "ns-kpi-live" not in ch:
-        ch = ch.replace("</body>", open(kl, encoding="utf-8").read() + "</body>", 1)
-        open(cns, "w", encoding="utf-8").write(ch)
-        print("- honest KPI row (actual vs plan) wired into the admin console")
+if os.path.exists(kl):
+    _snippet = open(kl, encoding="utf-8").read()
+    for _page in [cns, os.path.join(PUB, "hub", "full-hub-gated-site.html")]:
+        if not os.path.exists(_page):
+            continue
+        ch = open(_page, encoding="utf-8").read()
+        # strip any previous ns-kpi-live block (idempotent refresh)
+        ch2 = re.sub(r"<!-- ns-kpi-live -->.*?</script>", "", ch, flags=re.S)
+        if "</body>" in ch2:
+            ch2 = ch2.replace("</body>", _snippet + "</body>", 1)
+        else:
+            ch2 = ch2 + _snippet
+        if ch2 != ch:
+            open(_page, "w", encoding="utf-8").write(ch2)
+            print(f"- honest KPI row (actual vs plan) wired into {os.path.basename(_page)}")
 
 # ns-tester: public store-email capture page — ours, packs never carry it.
 ts = os.path.join(ASSETS, "tester.html")

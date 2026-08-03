@@ -1,0 +1,182 @@
+<!DOCTYPE html><html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finanzas — NutriSync Founders</title>
+<style>
+:root{--coral:#E8472A;--ink:#231F20;--muted:#8A7F78;--line:#EFE3D7;--bg:#FFFDF8;--good:#0F9B57;--bad:#C73A20;}
+*{box-sizing:border-box}body{margin:0;font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:var(--ink);}
+.wrap{max-width:1150px;margin:0 auto;padding:26px 20px 80px;}
+h1{font-size:24px;margin:0 0 2px}h2{font-size:17px;margin:26px 0 10px}
+.sub{color:var(--muted);font-size:13px;margin-bottom:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:10px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+button{font-family:inherit;font-weight:700;font-size:13px;border-radius:22px;padding:8px 16px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:none}
+button.mini{font-size:11px;padding:3px 9px;border-radius:9px}
+select,input{font-family:inherit;font-size:13px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#fff}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px}
+th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.kpis{display:flex;gap:10px;flex-wrap:wrap}
+.kpi{flex:1;min-width:150px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.kpi .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.kpi .v{font-size:20px;font-weight:800;margin-top:3px}
+.pos{color:var(--good)}.neg{color:var(--bad)}
+.pill{display:inline-block;border-radius:999px;padding:1px 8px;font-size:10px;font-weight:700;background:#F6EEE7;color:#8A7F78}
+.pill.auto{background:#E6F0FF;color:#1D4ED8}
+#gate{display:none;padding:60px 20px;text-align:center;color:var(--muted)}
+.hint{font-size:11.5px;color:var(--muted);margin-top:6px}
+.back{font-size:13px;color:var(--muted);text-decoration:none}
+</style></head><body>
+<div class="wrap" id="app" style="display:none">
+  <a class="back" href="full-hub-gated-site.html#/builders">‹ Back</a>
+  <h1>💶 Finanzas</h1>
+  <div class="sub">Libro diario de caja (debe/haber) mantenido por founders + asientos automáticos de altas/suscripciones · cierres con candado · P&amp;L. Moneda: EUR. Cuando exista la SL, el asesor hereda el export limpio.</div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <h2>1 · Nuevo asiento</h2>
+  <div class="card">
+    <div class="row">
+      <input type="date" id="nDate" style="width:150px">
+      <select id="nConcept"></select>
+      <input type="text" id="nDesc" placeholder="descripción…" style="flex:2;min-width:200px">
+    </div>
+    <div class="row" style="margin-top:10px">
+      <input type="text" id="nInv" placeholder="nº factura" style="width:130px">
+      <input type="text" id="nParty" placeholder="proveedor / cliente" style="width:200px">
+      <input type="number" id="nDebit" placeholder="DEBE € (gasto)" step="0.01" min="0" style="width:150px">
+      <input type="number" id="nCredit" placeholder="HABER € (ingreso)" step="0.01" min="0" style="width:160px">
+      <button class="pri" onclick="add()">Añadir →</button>
+    </div>
+    <div class="hint">Un asiento es gasto (DEBE) o ingreso (HABER), no ambos. "otros" existe para reclasificar después con calma.</div>
+  </div>
+
+  <h2>2 · Libro diario</h2>
+  <div class="card">
+    <div class="row">
+      <select id="fMonth"></select>
+      <select id="fConcept"><option value="">todas las partidas</option></select>
+      <button onclick="loadLedger()">Actualizar</button>
+      <button onclick="exportCsv()">⬇ CSV</button>
+      <span class="hint" id="lCount"></span>
+    </div>
+    <div style="max-height:420px;overflow:auto"><table id="ledger"><thead><tr>
+      <th>Fecha</th><th>Partida</th><th>Descripción</th><th>Factura</th><th>Prov/Cliente</th>
+      <th class="num">Debe</th><th class="num">Haber</th><th></th>
+    </tr></thead><tbody></tbody></table></div>
+  </div>
+
+  <h2>3 · Resumen diario (últimos 45 días)</h2>
+  <div class="card"><div style="max-height:260px;overflow:auto"><table id="daily"><thead><tr>
+    <th>Día</th><th class="num">Ingresos</th><th class="num">Gastos</th><th class="num">Neto</th><th class="num">Asientos</th>
+  </tr></thead><tbody></tbody></table></div></div>
+
+  <h2>4 · P&amp;L — cuenta de resultados</h2>
+  <div class="card">
+    <div class="row" style="justify-content:space-between">
+      <b>Por mes</b>
+      <span class="row"><input type="text" id="closePeriod" placeholder="YYYY-MM" style="width:110px">
+      <button onclick="closePeriod()">🔒 Cerrar período</button></span>
+    </div>
+    <table id="pl"><thead><tr><th>Mes</th><th class="num">Ingresos</th><th class="num">Gastos</th><th class="num">Resultado</th><th>Cierre</th></tr></thead><tbody></tbody></table>
+    <b style="display:block;margin-top:16px">Por partida (año en curso)</b>
+    <table id="byc"><thead><tr><th>Partida</th><th class="num">Haber</th><th class="num">Debe</th><th class="num">Neto</th><th class="num">Asientos</th></tr></thead><tbody></tbody></table>
+  </div>
+</div>
+<div id="gate">Inicia sesión de founder (Access + admin con MFA) y recarga.</div>
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+const sb=createClient(U,K);const $=i=>document.getElementById(i);
+const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const eur=n=>Number(n??0).toLocaleString('es-ES',{style:'currency',currency:'EUR'});
+const CONCEPTS={ingresos_suscripciones:'Ingresos · suscripciones',ingresos_otros:'Ingresos · otros',
+saas_infraestructura:'SaaS / infraestructura',tiendas_comisiones:'Comisiones tiendas',marketing:'Marketing',
+legal_asesoria:'Legal / asesoría',contabilidad_gestoria:'Contabilidad / gestoría',personal:'Personal',
+hardware_equipos:'Hardware / equipos',viajes_dietas:'Viajes / dietas',bancarios:'Bancarios',
+impuestos_tasas:'Impuestos / tasas',otros:'Otros (a reclasificar)'};
+let SUM=null,ROWS=[],CLOSES=[];
+
+function fillSelects(){
+  const opts=Object.entries(CONCEPTS).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+  $('nConcept').innerHTML=opts;
+  $('fConcept').innerHTML='<option value="">todas las partidas</option>'+opts;
+  const now=new Date(),ms=[];
+  for(let i=0;i<14;i++){const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    ms.push(d.toISOString().slice(0,7));}
+  $('fMonth').innerHTML=ms.map(m=>`<option>${m}</option>`).join('');
+  $('nDate').value=new Date().toISOString().slice(0,10);
+}
+async function loadSummary(){
+  const{data,error}=await sb.rpc('admin_finance_summary');
+  if(error){$('gate').style.display='block';$('gate').textContent='Sin acceso: '+esc(error.message)+' — ¿SQL finance aplicado y sesión MFA?';return false;}
+  SUM=data;CLOSES=data.closes||[];
+  const m=data.month||{},y=data.ytd||{};
+  const kpi=(l,v,cls)=>`<div class="kpi"><div class="l">${l}</div><div class="v ${cls||''}">${v}</div></div>`;
+  $('kpis').innerHTML=
+    kpi('Caja acumulada',eur(data.cash),data.cash>=0?'pos':'neg')+
+    kpi('Ingresos mes',eur(m.in))+kpi('Gastos mes',eur(m.out))+
+    kpi('Resultado mes',eur((m.in||0)-(m.out||0)),((m.in||0)-(m.out||0))>=0?'pos':'neg')+
+    kpi('Resultado YTD',eur((y.in||0)-(y.out||0)),((y.in||0)-(y.out||0))>=0?'pos':'neg');
+  $('daily').tBodies[0].innerHTML=(data.daily||[]).map(d=>{const net=(d.ingresos||0)-(d.gastos||0);
+    return `<tr><td>${esc(d.dia)}</td><td class="num">${eur(d.ingresos)}</td><td class="num">${eur(d.gastos)}</td><td class="num ${net>=0?'pos':'neg'}">${eur(net)}</td><td class="num">${d.asientos}</td></tr>`;}).join('')||'<tr><td colspan=5 class="hint">Sin movimientos aún.</td></tr>';
+  const closed=Object.fromEntries(CLOSES.map(c=>[c.period,c]));
+  $('pl').tBodies[0].innerHTML=(data.by_month||[]).map(r=>{const res=(r.ingresos||0)-(r.gastos||0);
+    return `<tr><td>${esc(r.mes)}</td><td class="num">${eur(r.ingresos)}</td><td class="num">${eur(r.gastos)}</td><td class="num ${res>=0?'pos':'neg'}">${eur(res)}</td><td>${closed[r.mes]?'🔒 '+esc((closed[r.mes].closed_at||'').slice(0,10)):'abierto'}</td></tr>`;}).join('')||'<tr><td colspan=5 class="hint">Sin datos.</td></tr>';
+  $('byc').tBodies[0].innerHTML=(data.by_concept||[]).map(r=>
+    `<tr><td>${esc(CONCEPTS[r.concept]||r.concept)}</td><td class="num">${eur(r.haber)}</td><td class="num">${eur(r.debe)}</td><td class="num ${r.neto>=0?'pos':'neg'}">${eur(r.neto)}</td><td class="num">${r.n}</td></tr>`).join('')||'<tr><td colspan=5 class="hint">Sin datos.</td></tr>';
+  return true;
+}
+window.loadLedger=async()=>{
+  const m=$('fMonth').value,from=m+'-01',to=new Date(+m.slice(0,4),+m.slice(5,7),0).toISOString().slice(0,10);
+  const{data,error}=await sb.rpc('admin_ledger_list',{p_from:from,p_to:to,p_concept:$('fConcept').value||null});
+  if(error)return alert(error.message);
+  ROWS=data||[];$('lCount').textContent=ROWS.length+' asientos';
+  const closed=CLOSES.some(c=>c.period===m||c.period===m.slice(0,4));
+  $('ledger').tBodies[0].innerHTML=ROWS.map(r=>
+    `<tr><td>${esc(r.entry_date)}</td><td>${esc(CONCEPTS[r.concept]||r.concept)}${r.source!=='manual'?' <span class="pill auto">auto</span>':''}</td>
+    <td>${esc(r.description)}</td><td>${esc(r.invoice_no||'')}</td><td>${esc(r.counterparty||'')}</td>
+    <td class="num">${r.debit>0?eur(r.debit):''}</td><td class="num">${r.credit>0?eur(r.credit):''}</td>
+    <td>${closed?'🔒':`<button class="mini" onclick="del(${r.id})">✕</button>`}</td></tr>`).join('')||'<tr><td colspan=8 class="hint">Sin asientos ese mes.</td></tr>';
+};
+window.add=async()=>{
+  const debit=parseFloat($('nDebit').value)||0,credit=parseFloat($('nCredit').value)||0;
+  if(!$('nDesc').value.trim())return alert('Pon una descripción.');
+  if((debit>0)===(credit>0))return alert('Un asiento es DEBE (gasto) o HABER (ingreso) — rellena solo uno.');
+  const{error}=await sb.rpc('admin_ledger_add',{p_date:$('nDate').value||null,p_concept:$('nConcept').value,
+    p_description:$('nDesc').value.trim(),p_invoice:$('nInv').value,p_counterparty:$('nParty').value,
+    p_debit:debit,p_credit:credit});
+  if(error)return alert(error.message);
+  $('nDesc').value='';$('nInv').value='';$('nParty').value='';$('nDebit').value='';$('nCredit').value='';
+  await loadSummary();await loadLedger();
+};
+window.del=async id=>{
+  if(!confirm('¿Eliminar el asiento '+id+'?'))return;
+  const{error}=await sb.rpc('admin_ledger_delete',{p_id:id});
+  if(error)return alert(error.message);
+  await loadSummary();await loadLedger();
+};
+window.closePeriod=async()=>{
+  const p=$('closePeriod').value.trim();
+  if(!/^\d{4}(-\d{2})?$/.test(p))return alert('Formato: YYYY-MM (mes) o YYYY (año).');
+  if(!confirm('Cerrar '+p+' — queda con candado (no se podrá editar). ¿Seguro?'))return;
+  const{data,error}=await sb.rpc('admin_finance_close',{p_period:p});
+  if(error)return alert(error.message);
+  alert('Cerrado '+p+' · resultado: '+eur(((data||{}).ingresos||0)-((data||{}).gastos||0)));
+  await loadSummary();await loadLedger();
+};
+window.exportCsv=()=>{
+  const head='fecha,partida,descripcion,factura,contraparte,debe,haber,origen';
+  const csv=[head,...ROWS.map(r=>[r.entry_date,r.concept,r.description,r.invoice_no||'',r.counterparty||'',r.debit,r.credit,r.source]
+    .map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(','))].join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download='nutrisync-libro-diario.csv';a.click();
+};
+(async()=>{
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){$('gate').style.display='block';return;}
+  fillSelects();
+  if(await loadSummary()){$('app').style.display='block';loadLedger();}
+})();
+</script></body></html>
