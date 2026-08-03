@@ -42,7 +42,13 @@ CONSENT = r'''<style id="ns-consent-css">
 <script id="ns-consent-js">(function(){var KEY="nutrisync.consent.v1";
 function have(){try{return JSON.parse(localStorage.getItem(KEY));}catch(e){return null;}}
 function save(c){c.ts=new Date().toISOString();c.version=1;try{localStorage.setItem(KEY,JSON.stringify(c));}catch(e){}window.__nsConsent=c;var b=document.getElementById("ns-consent");if(b)b.remove();}
-function build(){if(have()){window.__nsConsent=have();return;}var d=document.createElement("div");d.id="ns-consent";
+/* po60: el motor de Design reconstruye el DOM al arrancar y puede llevarse la
+   hoja del head -> el banner salia CRUDO arriba-izquierda. El JS ahora garantiza
+   su CSS (lo re-crea si falta), fija estilos inline criticos en el contenedor y
+   reintenta una vez si el motor arranco el banner. */
+function ensureCss(){if(document.getElementById("ns-consent-css-live"))return;var src=document.getElementById("ns-consent-css");var st=document.createElement("style");st.id="ns-consent-css-live";st.textContent=src?src.textContent:"";(document.head||document.documentElement).appendChild(st);}
+function build(){if(have()){window.__nsConsent=have();return;}if(document.getElementById("ns-consent"))return;ensureCss();var d=document.createElement("div");d.id="ns-consent";
+d.style.cssText="position:fixed;left:16px;right:16px;bottom:16px;z-index:99998;background:#fff;border:1px solid #EADFD5;border-radius:16px;box-shadow:0 20px 50px -20px rgba(0,0,0,.35);padding:18px 20px;max-width:640px;margin:0 auto;font-family:'Inter',system-ui,sans-serif;color:#241D1A";
 d.innerHTML='<h4>Your privacy</h4><p>We use essential cookies to run NutriSync. Optional analytics &amp; personalization help us improve - they are <b>off by default</b>.</p>'
 +'<div class="opts" id="ns-opts"><div class="opt"><span>Essential<small>Required for the app to work</small></span><span>Always on</span></div>'
 +'<div class="opt"><span>Analytics<small>Anonymous usage to fix bugs</small></span><input type="checkbox" id="ns-an"></div>'
@@ -52,16 +58,22 @@ document.body.appendChild(d);
 document.getElementById("ns-accept").onclick=function(){save({essential:true,analytics:true,personalization:true});};
 document.getElementById("ns-reject").onclick=function(){save({essential:true,analytics:false,personalization:false});};
 document.getElementById("ns-prefs").onclick=function(){var o=document.getElementById("ns-opts");if(o.style.display==="block"){save({essential:true,analytics:document.getElementById("ns-an").checked,personalization:document.getElementById("ns-pe").checked});}else{o.style.display="block";this.textContent="Save preferences";}};}
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",build);else build();})();</script>'''
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",build);else build();
+setTimeout(function(){if(!have()&&!document.getElementById("ns-consent"))build();},1600);})();</script>'''
 
 for f in ("index.html", "app.html"):
     p = os.path.join(PUB, f)
     if not os.path.exists(p): continue
-    s = open(p, encoding="utf-8", errors="ignore").read(); add = ""
-    if "ns-err-hide" not in s: add += ERRHIDE
-    if "ns-consent-css" not in s: add += CONSENT
-    if add:
-        open(p, "w", encoding="utf-8").write(s.replace("</head>", add + "</head>", 1)); print("- consent/error-hide:", f)
+    s = open(p, encoding="utf-8", errors="ignore").read()
+    # po60: refresh-on-change — quitar el bloque consent previo (css+js contiguos)
+    # y reinyectar la version actual, para que las mejoras lleguen a ficheros vivos
+    s2 = re.sub(r'<style id="ns-consent-css">.*?</script>', '', s, count=1, flags=re.S)
+    add = ""
+    if "ns-err-hide" not in s2: add += ERRHIDE
+    add += CONSENT
+    s2 = s2.replace("</head>", add + "</head>", 1)
+    if s2 != s:
+        open(p, "w", encoding="utf-8").write(s2); print("- consent/error-hide:", f)
 
 # admin live-KPI wiring
 app = open(os.path.join(PUB, "app.html"), encoding="utf-8").read()
