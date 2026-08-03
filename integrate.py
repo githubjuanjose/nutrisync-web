@@ -303,6 +303,10 @@ if os.path.exists(_gsite):
     _gs0 = open(_gsite, encoding="utf-8").read()
     _gs = re.sub(r'<script id="ns-default-route">.*?</script>', "", _gs0, flags=re.S)
     _snip = ('<script id="ns-default-route">(function(){'
+             # po65: la navbar es LA navegación — la fila interna de píldoras
+             # de Builders (bt1/bt2 + enlaces htab) se oculta; su panel por
+             # defecto (Admin & MIS) queda como contenido del Overview.
+             "document.addEventListener('DOMContentLoaded',function(){var b=document.getElementById('bt1');if(b&&b.parentElement)b.parentElement.style.display='none';});"
              "try{if(window.top!==window.self&&window.top.location.host===location.host){window.top.location=location.pathname+location.hash;return;}}catch(e){}"
              "var r=new URLSearchParams(location.search).get('r');"
              "if(r&&/^[a-z-]+$/.test(r)){location.replace(location.pathname+'#/'+r);return;}"

@@ -28,12 +28,14 @@ code{background:#FBEDE6;color:#9a3a25;padding:2px 7px;border-radius:6px;font-siz
 #ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
 /* fila 2 · tab strip estilo carpeta */
 #ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
-#ns-hub-navbar .nsnb-tabs{display:flex;align-items:flex-end;gap:3px;overflow-x:auto;scrollbar-width:none;max-width:1440px;margin:0 auto;padding:7px 14px 0}
-#ns-hub-navbar .nsnb-tabs::-webkit-scrollbar{display:none}
-#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:10px 17px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+#ns-hub-navbar .nsnb-tabs{max-width:1440px;margin:0 auto;padding:8px 14px 0}
+/* po65: dos escalones sin scroll — el 2º desplazado medio tab (efecto ladrillo) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:wrap}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
 #ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
 #ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
-#ns-hub-navbar .nsnb-gap{flex:0 0 auto;width:10px;border-bottom:none}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
 @media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
 </style>
 <div class="nsnb-app">
@@ -49,23 +51,24 @@ code{background:#FBEDE6;color:#9a3a25;padding:2px 7px;border-radius:6px;font-siz
 </div>
 <div class="nsnb-strip">
   <nav class="nsnb-tabs" id="nsnb-tabs">
-    <a class="nsnb-tab" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a>
-    <a class="nsnb-tab" href="/hub/admin-mis-console.html">📊 MIS</a>
-    <a class="nsnb-tab" href="/hub/finance.html">💶 Finanzas</a>
-    <span class="nsnb-gap"></span>
-    <a class="nsnb-tab" href="/hub/pilot.html">🧪 Piloto</a>
-    <a class="nsnb-tab" href="/hub/feedback.html">💬 Feedback</a>
-    <a class="nsnb-tab" href="/hub/waitlist.html">📬 Waitlist</a>
-    <span class="nsnb-gap"></span>
-    <a class="nsnb-tab" href="/hub/documentation/index.html">📚 Docs</a>
-    <a class="nsnb-tab" href="/hub/translations.html">🌍 Traducciones</a>
-    <a class="nsnb-tab" href="/hub/review.html">🔎 Review</a>
-    <a class="nsnb-tab" href="/hub/prototypes.html">🧩 Prototipos</a>
-    <a class="nsnb-tab" href="/hub/development-planning-backlog.html">🗂 Backlog</a>
-    <span class="nsnb-gap"></span>
-    <a class="nsnb-tab" href="/hub/investors-business-case.html">🎯 Pitch</a>
-    <a class="nsnb-tab" href="/hub/access.html">🔑 Access</a>
-    <a class="nsnb-tab" href="/hub/mfa.html">🔐 MFA</a>
+    <div class="nsnb-row">
+      <a class="nsnb-tab" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a>
+      <a class="nsnb-tab" href="/hub/admin-mis-console.html">📊 MIS</a>
+      <a class="nsnb-tab" href="/hub/finance.html">💶 Finanzas</a>
+      <a class="nsnb-tab" href="/hub/pilot.html">🧪 Piloto</a>
+      <a class="nsnb-tab" href="/hub/feedback.html">💬 Feedback</a>
+      <a class="nsnb-tab" href="/hub/waitlist.html">📬 Waitlist</a>
+      <a class="nsnb-tab" href="/hub/documentation/index.html">📚 Docs</a>
+    </div>
+    <div class="nsnb-row">
+      <a class="nsnb-tab" href="/hub/translations.html">🌍 Traducciones</a>
+      <a class="nsnb-tab" href="/hub/review.html">🔎 Review</a>
+      <a class="nsnb-tab" href="/hub/prototypes.html">🧩 Prototipos</a>
+      <a class="nsnb-tab" href="/hub/development-planning-backlog.html">🗂 Backlog</a>
+      <a class="nsnb-tab" href="/hub/investors-business-case.html">🎯 Pitch</a>
+      <a class="nsnb-tab" href="/hub/access.html">🔑 Access</a>
+      <a class="nsnb-tab" href="/hub/mfa.html">🔐 MFA</a>
+    </div>
   </nav>
 </div>
 <script>
@@ -79,7 +82,7 @@ code{background:#FBEDE6;color:#9a3a25;padding:2px 7px;border-radius:6px;font-siz
     var f=(a.getAttribute('href')||'').toLowerCase();
     var base=f.split('/').pop();
     var hit=(f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : base===here;
-    if(hit){a.classList.add('on');a.scrollIntoView({inline:'center',block:'nearest'});}
+    if(hit){a.classList.add('on');}
   });
   var d=new Date();
   var el=document.getElementById('nsnb-date');
