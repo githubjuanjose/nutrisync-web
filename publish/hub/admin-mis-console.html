@@ -351,4 +351,46 @@ function funnelRow(name,d){
   html+=(data.by_cohort||[]).map(c=>funnelRow(c.cohort,c)).join('');
   box.innerHTML=html||'<div style="color:var(--muted);font-size:13px">Sin cohortes a&uacute;n &mdash; se montan en Pilot.</div>';
 })();
-</script><!-- ns-feedback-panel --><div class="section" style="padding:26px 0 60px;"><div style="max-width:1080px;margin:0 auto;padding:0 22px;"><h2 class="title" style="font-size:22px;margin:0 0 4px;">App Feedback</h2><div style="color:var(--muted);font-size:13px;margin-bottom:14px;">Mensajes de Settings &rarr; Send Feedback (tabla feedback &middot; solo admins)</div><div id="fbList" style="display:flex;flex-direction:column;gap:10px;"><div style="color:var(--muted);font-size:13px;">Cargando&hellip;</div></div></div></div><script type="module">import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';const sb=createClient(U,K);const box=document.getElementById('fbList');const esc=t=>t.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));(async()=>{const{data:{session}}=await sb.auth.getSession();if(!session){box.innerHTML='<div style='color:var(--muted);font-size:13px;'>Inicia sesi&oacute;n de admin arriba para ver el feedback.</div>';return;}const{data,error}=await sb.rpc('admin_feedback',{limit_n:200});if(error){box.innerHTML='<div style='color:var(--muted);font-size:13px;'>Sin acceso ('+esc(error.message)+')</div>';return;}if(!data||!data.length){box.innerHTML='<div style='color:var(--muted);font-size:13px;'>Sin mensajes todav&iacute;a.</div>';return;}box.innerHTML=data.map(r=>'<div style='background:#fff;border:1px solid #EFE3D7;border-radius:14px;padding:14px 16px;'>'+'<div style='font-size:12px;color:var(--muted);margin-bottom:6px;'>'+new Date(r.created_at).toLocaleString()+' &middot; v'+esc(r.app_version||'?')+' &middot; '+esc(r.platform||'?')+'</div>'+'<div style='font-size:14px;line-height:1.5;white-space:pre-wrap;'>'+esc(r.message)+'</div></div>').join('');})();</script></body></html>
+</script><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-kpi-live --><script type="module">
+/* r11d · KPIs honestos: actual (live) vs plan (modelo conservador) vs forecast
+   (proyección de las assumptions ya existentes). Pre-lanzamiento: Premium/MRR/
+   Churn muestran PLAN, jamás números de muestra. */
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+const sb=createClient(U,K);
+const $=i=>document.getElementById(i);
+const PLAN={users_y1:755, revenue_y1:28068, conv:0.10, launch:'2026-10-08'};   // modelo Conservative (Business Tracker G3)
+const card=el=>el?el.closest('.kpi'):null;
+
+function setCard(el,val,sub,subColor){
+  if(!el)return; el.textContent=val;
+  const d=card(el)?.querySelector('.delta'); if(d){d.textContent=sub; d.style.color=subColor||'var(--muted)'; d.classList.remove('up');}
+}
+
+(async()=>{
+  const{data:{session}}=await sb.auth.getSession();
+  const head=document.querySelector('.admin .wrap div[style*="font-size:13px"]')||document.querySelector('#bld-admin [style*="Illustrative"]');
+  // cabecera + fecha SIEMPRE sinceras
+  document.querySelectorAll('*').forEach(n=>{
+    if(n.children.length===0&&/Illustrative sample data/.test(n.textContent))
+      n.textContent=session?'LIVE · actuals vs plan (Conservative Y1: 755 users · €28,068)':'MUESTRA — inicia sesión de admin para ver datos reales';
+    if(n.children.length===0&&/^As of /.test(n.textContent.trim()))
+      n.textContent='As of '+new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+  });
+  if(!session)return;
+  const[k,g]=await Promise.all([sb.rpc('admin_kpis'),sb.rpc('admin_growth')]);
+  if(k.error)return;
+  const kd=k.data, months=(g.data&&g.data.months)||[];
+  // ── Users: actual + MoM real + plan/forecast ──
+  const last=months.at?months.at(-1):months[months.length-1], prev=months[months.length-2];
+  const mom=(last&&prev&&prev.users)?Math.round(((last.users-prev.users)/prev.users)*100):null;
+  setCard($('kTotal'), Number(kd.total_users).toLocaleString('en-US'),
+    (mom!=null?`▲ ${mom}% MoM real · `:'')+`plan Y1 ${PLAN.users_y1}`, mom!=null&&mom>=0?'var(--good)':'var(--muted)');
+  // ── Premium / MRR / Churn: pre-lanzamiento → plan, no atrezzo ──
+  const kPrem=$('kTotal')?[...document.querySelectorAll('.kpi .val')].filter(e=>e!==$('kTotal')):[];
+  const [prem,mrr,churn]=kPrem;
+  setCard(prem,'—',`pre-lanzamiento · plan ${Math.round(PLAN.conv*100)}% conv (${PLAN.launch.slice(5,7)==='10'?'8 oct':PLAN.launch})`);
+  setCard(mrr,'€0',`pre-lanzamiento · plan Y1 €${PLAN.revenue_y1.toLocaleString('en-US')}`);
+  setCard(churn,'—','pre-lanzamiento · se mide desde el piloto F1');
+})();
+</script></body></html>

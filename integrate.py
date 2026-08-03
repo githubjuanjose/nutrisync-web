@@ -985,6 +985,38 @@ if os.path.exists(pf) and os.path.exists(cns):
         open(cns, "w", encoding="utf-8").write(ch)
         print("- pilot funnel card added to the admin console (admin_pilot_funnel RPC)")
 
+# ns-feedback-page: App Feedback as its OWN hub tab (r11d — moved out of the
+# console). Copies the page + adds the 💬 htab; also STRIPS the legacy embedded
+# panel from the console if a pack or old integrate left it there.
+fbpage = os.path.join(ASSETS, "feedback.html")
+if os.path.exists(fbpage):
+    shutil.copy(fbpage, os.path.join(PUB, "hub", "feedback.html"))
+    print("- feedback tool copied to hub/feedback.html")
+    _fgh = os.path.join(PUB, "hub", "full-hub-gated-site.html")
+    _fht = open(os.path.join(ASSETS, "feedback-htab.snippet"), encoding="utf-8").read()
+    if os.path.exists(_fgh):
+        _fh = open(_fgh, encoding="utf-8").read()
+        if 'feedback.html' not in _fh:
+            open(_fgh, "w", encoding="utf-8").write(
+                _fh.replace('<a class="htab" href="waitlist.html"', _fht + '<a class="htab" href="waitlist.html"', 1))
+            print("- feedback htab added to hub nav")
+    if os.path.exists(cns):
+        ch = open(cns, encoding="utf-8").read()
+        if 'ns-feedback-panel' in ch:
+            import re as _re2
+            ch2 = _re2.sub(r'<!-- ns-feedback-panel -->.*?</script>', '<!-- ns-feedback-moved: hub/feedback.html -->', ch, count=1, flags=_re2.S)
+            open(cns, "w", encoding="utf-8").write(ch2)
+            print("- legacy feedback panel stripped from the console (now its own tab)")
+
+# ns-kpi-live: honest KPI row in the admin console (actual vs plan vs forecast).
+kl = os.path.join(ASSETS, "kpi-live.html")
+if os.path.exists(kl) and os.path.exists(cns):
+    ch = open(cns, encoding="utf-8").read()
+    if "ns-kpi-live" not in ch:
+        ch = ch.replace("</body>", open(kl, encoding="utf-8").read() + "</body>", 1)
+        open(cns, "w", encoding="utf-8").write(ch)
+        print("- honest KPI row (actual vs plan) wired into the admin console")
+
 # ns-tester: public store-email capture page — ours, packs never carry it.
 ts = os.path.join(ASSETS, "tester.html")
 if os.path.exists(ts):

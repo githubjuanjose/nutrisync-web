@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feedback — NutriSync Founders</title>
+<style>
+:root{--coral:#E8472A;--ink:#231F20;--muted:#8A7F78;--line:#EFE3D7;--bg:#FFFDF8;}
+*{box-sizing:border-box}body{margin:0;font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:var(--ink);}
+.wrap{max-width:1000px;margin:0 auto;padding:26px 20px 80px;}
+h1{font-size:24px;margin:0 0 2px}
+.sub{color:var(--muted);font-size:13px;margin-bottom:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:10px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+button{font-family:inherit;font-weight:700;font-size:13px;border-radius:22px;padding:8px 16px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+select,input[type=text]{font-family:inherit;font-size:13px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.fb{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 15px;margin-top:10px}
+.fb .meta{font-size:11.5px;color:var(--muted);margin-bottom:6px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.fb .msg{font-size:14px;line-height:1.5;white-space:pre-wrap}
+.pill{display:inline-block;border-radius:999px;padding:1px 9px;font-size:10.5px;font-weight:700;background:#F6EEE7;color:#8A7F78}
+.pill.c{background:#FDEEE6;color:#C05621}
+#gate{display:none;padding:60px 20px;text-align:center;color:var(--muted)}
+.hint{font-size:11.5px;color:var(--muted);margin-top:6px}
+.back{font-size:13px;color:var(--muted);text-decoration:none}
+.count{font-size:12px;color:var(--muted)}
+</style></head><body>
+<div class="wrap" id="app" style="display:none">
+  <a class="back" href="full-hub-gated-site.html">‹ Back</a>
+  <h1>💬 App Feedback</h1>
+  <div class="sub">Mensajes de Settings → Send Feedback, etiquetados por cohorte del piloto. Copia de cada mensaje llega también a feedback@nutrisynccollective.com.</div>
+  <div class="card">
+    <div class="row">
+      <select id="fCohort"><option value="">todas las cohortes</option></select>
+      <select id="fPlat"><option value="">plataforma: todas</option><option>ios</option><option>android</option><option>web</option></select>
+      <input type="text" id="q" placeholder="buscar en los mensajes…" style="flex:1;min-width:180px">
+      <button onclick="load()">Actualizar</button>
+      <span class="count" id="count"></span>
+    </div>
+  </div>
+  <div id="list"><div class="hint">Cargando…</div></div>
+</div>
+<div id="gate">Inicia sesión de founder (Access + admin) y recarga — esta página es solo para admins.</div>
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+const sb=createClient(U,K);const $=i=>document.getElementById(i);
+const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let ALL=[];
+function render(){
+  const c=$('fCohort').value,p=$('fPlat').value,q=$('q').value.toLowerCase();
+  const rows=ALL.filter(r=>(!c||r.cohort===c)&&(!p||(r.platform||'').toLowerCase().startsWith(p))&&(!q||(r.message||'').toLowerCase().includes(q)||(r.email||'').toLowerCase().includes(q)));
+  $('count').textContent=rows.length+' de '+ALL.length;
+  $('list').innerHTML=rows.map(r=>`<div class="fb">
+    <div class="meta"><b>${esc(r.email)}</b><span class="pill c">${esc(r.cohort||'—')}</span>
+    <span>${esc((r.created_at||'').slice(0,16).replace('T',' '))}</span>
+    <span class="pill">v${esc(r.app_version||'?')} · ${esc(r.platform||'?')}</span></div>
+    <div class="msg">${esc(r.message)}</div></div>`).join('')||'<div class="hint">Sin mensajes con esos filtros.</div>';
+}
+window.load=async()=>{
+  const{data,error}=await sb.rpc('admin_pilot_feedback',{p_cohort:null});
+  if(error){$('list').innerHTML='<div class="hint">Sin acceso: '+esc(error.message)+' — ¿sesión admin con MFA?</div>';return;}
+  ALL=data||[];
+  const cs=[...new Set(ALL.map(r=>r.cohort).filter(x=>x&&x!=='—'))];
+  $('fCohort').innerHTML='<option value="">todas las cohortes</option>'+cs.map(c=>`<option>${esc(c)}</option>`).join('');
+  render();
+};
+['fCohort','fPlat'].forEach(i=>$(i).addEventListener('change',render));
+$('q').addEventListener('input',render);
+(async()=>{
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session){$('gate').style.display='block';return;}
+  $('app').style.display='block';load();
+})();
+</script></body></html>
