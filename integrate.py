@@ -1389,11 +1389,22 @@ if os.path.isdir(_shd):
     _nrw = 0
     for _hp in _pages:
         _s0 = open(_hp, encoding="utf-8", errors="ignore").read(); _s = _s0
-        # 1 · Google Fonts → hoja local (primera <link> se sustituye, resto fuera)
+        # 1 · Google Fonts → hoja local. LECCIÓN po74: el <link> puede vivir DENTRO
+        # del JSON del motor (comillas escapadas \") — el reemplazo debe respetar
+        # el contexto de escape o el payload deja de parsear ("Error unpacking").
         if "fonts.googleapis.com" in _s or "fonts.gstatic.com" in _s:
             _links = re.findall(r'<link[^>]*fonts\.g(?:oogleapis|static)\.com[^>]*>', _s)
-            for _i, _lk in enumerate(_links):
-                _s = _s.replace(_lk, '<link rel="stylesheet" href="/assets/fonts/fonts.css">' if _i == 0 else "", 1)
+            _first = True
+            for _lk in _links:
+                if _first:
+                    if '\\"' in _lk:   # contexto JSON-escapado
+                        _rep = '<link rel=\\"stylesheet\\" href=\\"/assets/fonts/fonts.css\\">'
+                    else:              # HTML crudo
+                        _rep = '<link rel="stylesheet" href="/assets/fonts/fonts.css">'
+                    _first = False
+                else:
+                    _rep = ""
+                _s = _s.replace(_lk, _rep, 1)
         # 2 · esm.sh supabase-js → UMD local + global
         for _q in ("'", '"'):
             _imp = f"import {{ createClient }} from {_q}https://esm.sh/@supabase/supabase-js@2{_q};"
