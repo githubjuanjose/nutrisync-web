@@ -809,7 +809,7 @@ function unlock(which){
   if(code===ok){AUTH[which]=true;applyAuth();}
   else document.getElementById(which+'-err').textContent='Incorrect code. Try again.';
 }
-// Investor space: two-factor (PIN/password → 2FA code)
+// Sala Pitch: two-factor (PIN/password → 2FA code)
 function invStep1(){
   const code=document.getElementById('inv-pw').value.trim().toLowerCase();
   if(code==='nutrisync2026'){

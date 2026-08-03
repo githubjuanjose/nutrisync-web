@@ -285,11 +285,11 @@ _ACCESS_HTML = ('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">'
   '.card b{display:block;margin-bottom:4px}'
   'a{color:#D8452F;font-weight:700}.top{font-size:13px}</style></head><body><div class="wrap">'
   '<p class="top"><a href="full-hub-gated-site.html">\u2039 Back to Builders</a></p>'
-  '<h1>Who can access Builders &amp; Investors</h1>'
+  '<h1>Who can access Builders &amp; Pitch</h1>'
   '<p>These addresses pass the Cloudflare Access gate (email + one-time PIN) on <code>/hub/*</code>. '
   'Sessions last 24h. This page is a snapshot \u2014 the live list is the Access policy.</p>'
   '<table><tr><th>Email</th><th>Who</th></tr>' + _rows + '</table>'
-  '<div class="card"><b>How login works</b>Open any Builders/Investors link \u2192 enter your email \u2192 '
+  '<div class="card"><b>How login works</b>Open any Builders/Pitch link \u2192 enter your email \u2192 '
   'a 6-digit code arrives by email \u2192 you are in for 24h. Only listed addresses receive codes.</div>'
   '<div class="card"><b>Add / remove someone</b>Cloudflare dashboard \u2192 Zero Trust \u2192 Access \u2192 '
   'Applications \u2192 <i>NutriSync Builders Hub</i> \u2192 policy <i>Founders</i> \u2192 Include \u2192 Emails. '
@@ -1137,3 +1137,87 @@ if os.path.exists(cwp):
             print("- consent wait-for-paint (v2)")
 
 print("\nIntegration complete - review, then commit + push.")
+
+# ns-hub-nav: deep-links correctos al hub (r11e). El router del gated-site usa
+# rutas "#/builders"; sin hash cae en un clon del marketing y desorienta.
+import glob as _glob
+_gi = os.path.join(PUB, "index.html")
+if os.path.exists(_gi):
+    _s = open(_gi, encoding="utf-8").read()
+    if 'full-hub-gated-site.html#/builders' not in _s:
+        _s = _s.replace('full-hub-gated-site.html', 'full-hub-gated-site.html#/builders')
+        open(_gi, "w", encoding="utf-8").write(_s)
+        print("- marketing Builders link deep-links to #/builders")
+for _hp in _glob.glob(os.path.join(PUB, "hub", "*.html")):
+    if _hp.endswith("full-hub-gated-site.html"): continue
+    _s = open(_hp, encoding="utf-8").read()
+    if 'full-hub-gated-site.html"' in _s and 'full-hub-gated-site.html#/builders' not in _s:
+        _s = _s.replace('full-hub-gated-site.html"', 'full-hub-gated-site.html#/builders"')
+        open(_hp, "w", encoding="utf-8").write(_s)
+        print(f"- back-link → #/builders en {os.path.basename(_hp)}")
+# mailtos huerfanos del marketing (build@/invest@ no existen en IONOS) -> contact@
+_gm = os.path.join(PUB, "index.html")
+if os.path.exists(_gm):
+    _s = open(_gm, encoding="utf-8").read(); _o = _s
+    _s = _s.replace('mailto:build@nutrisynccollective.com',
+                    'mailto:contact@nutrisynccollective.com?subject=Builders%20NutriSync')
+    _s = _s.replace('mailto:invest@nutrisynccollective.com',
+                    'mailto:contact@nutrisynccollective.com?subject=Pitch%20NutriSync')
+    # tambien el TEXTO visible del email (no solo el href)
+    _s = _s.replace('>build@nutrisynccollective.com<', '>contact@nutrisynccollective.com<')
+    _s = _s.replace('>invest@nutrisynccollective.com<', '>contact@nutrisynccollective.com<')
+    if _s != _o:
+        open(_gm, "w", encoding="utf-8").write(_s)
+        print("- mailtos build@/invest@ redirigidos a contact@ (href + texto visible)")
+
+# ns-pitch-rename: la zona "Investors" es la sala de materiales de PITCH de las
+# founders (decision 3-ago: solo los 4 gmails; se queda tras Access). Rename visible.
+for _pp, _reps in (
+    (os.path.join(PUB, "index.html"), (('>Investors<', '>Pitch<'),)),
+    (os.path.join(PUB, "hub", "full-hub-gated-site.html"),
+     (('>Investors<', '>Pitch<'), ('Investor Room', 'Pitch Room'), ('Investor space', 'Sala Pitch'))),
+    (os.path.join(PUB, "hub", "investors-business-case.html"),
+     (('Investor Room', 'Pitch Room'), ('Investors — ', 'Pitch — '), ('Investor Business Case', 'Pitch — Business Case'))),
+):
+    if os.path.exists(_pp):
+        _s = open(_pp, encoding="utf-8").read(); _o = _s
+        for _a, _b in _reps: _s = _s.replace(_a, _b)
+        if _s != _o:
+            open(_pp, "w", encoding="utf-8").write(_s)
+            print(f"- pitch rename en {os.path.basename(_pp)}")
+
+# anchors muertos del footer del payload (#team/#science sin sección) → #platform
+_gi2 = os.path.join(PUB, "index.html")
+if os.path.exists(_gi2):
+    _s = open(_gi2, encoding="utf-8").read()
+    _n = 0
+    for _bad in ('href=\\"#team\\"', 'href=\\"#science\\"', 'href="#team"', 'href="#science"'):
+        _fixed = _bad.replace('#team', '#platform').replace('#science', '#platform')
+        if _bad in _s:
+            _s = _s.replace(_bad, _fixed); _n += 1
+    if _n:
+        open(_gi2, "w", encoding="utf-8").write(_s)
+        print(f"- footer anchors muertos (#team/#science) -> #platform ({_n})")
+
+# pastilla flotante ‹ Hub en páginas sin vuelta (ns-hub-back, idempotente)
+_PILL = ('<a id="ns-hub-back" href="full-hub-gated-site.html#/builders" '
+         'style="position:fixed;top:14px;left:14px;z-index:9999;background:#fff;'
+         'border:1px solid #EADFD5;border-radius:999px;padding:6px 14px;'
+         'font:600 13px system-ui;color:#8A7F78;text-decoration:none;'
+         'box-shadow:0 2px 8px rgba(0,0,0,.08)">&#8249; Hub</a>')
+import re as _re3
+for _hp in _glob.glob(os.path.join(PUB, "hub", "*.html")):
+    _bn = os.path.basename(_hp)
+    if _bn in ("full-hub-gated-site.html", "index.html"): continue
+    _s = open(_hp, encoding="utf-8").read()
+    if 'full-hub-gated-site.html#/builders' in _s or 'ns-hub-back' in _s: continue
+    _m = _re3.search(r'<body[^>]*>', _s)
+    if _m:
+        _s = _s[:_m.end()] + _PILL + _s[_m.end():]
+        open(_hp, "w", encoding="utf-8").write(_s)
+        print(f"- pastilla \u2039 Hub en {_bn}")
+
+_hidx = os.path.join(ASSETS, "hub-index.html")
+if os.path.exists(_hidx):
+    shutil.copy(_hidx, os.path.join(PUB, "hub", "index.html"))
+    print("- hub/index.html (puerta /hub) creado → #/builders")
