@@ -1128,6 +1128,31 @@ if os.path.isdir(_lg):
             shutil.copy(os.path.join(_lg, _f), os.path.join(_lgd, _f)); _n += 1
     print(f"- ns-legal: {_n} documentos legales publicados en /legal/")
 
+# ns-legal-footer (po72): la columna LEGAL del footer de Design trae href="#"
+# (saltaba arriba). Se cablea por TEXTO tras el paint del motor — solo se tocan
+# anchors con href vacío/#, jamás los del payload que ya funcionan. Refresh.
+_LF = ('<script id="ns-legal-footer">(function(){'
+       "var MAP=[[/derechos de datos|data rights/i,'/legal/privacy.html'],"
+       "[/^privacidad|^privacy/i,'/legal/privacy.html'],"
+       "[/^t\\u00e9rminos|^terminos|^terms/i,'/legal/terms.html'],"
+       "[/^cookies$/i,'/legal/cookies.html'],"
+       "[/^aviso legal$|^legal notice$/i,'/legal/legal-notice.html']];"
+       "function wire(){var n=0;document.querySelectorAll('a').forEach(function(a){"
+       "var h=a.getAttribute('href');if(h&&h!=='#')return;"
+       "var t=(a.textContent||'').trim();if(!t)return;"
+       "for(var i=0;i<MAP.length;i++){if(MAP[i][0].test(t)){a.setAttribute('href',MAP[i][1]);n++;break;}}});return n;}"
+       "var tries=0,iv=setInterval(function(){if(wire()>0||tries++>60)clearInterval(iv);},250);"
+       "})();</script>")
+for _pg in ("index.html",):
+    _pp = os.path.join(PUB, _pg)
+    if os.path.exists(_pp):
+        _ps0 = open(_pp, encoding="utf-8").read()
+        _ps = re.sub(r'<script id="ns-legal-footer">.*?</script>', "", _ps0, flags=re.S)
+        _ps = _ps.replace("</body>", _LF + "</body>", 1)
+        if _ps != _ps0:
+            open(_pp, "w", encoding="utf-8").write(_ps)
+            print("- ns-legal-footer: columna LEGAL del footer cableada a /legal/")
+
 # ns-tester: public store-email capture page — ours, packs never carry it.
 ts = os.path.join(ASSETS, "tester.html")
 if os.path.exists(ts):
