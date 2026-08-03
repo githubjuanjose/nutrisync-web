@@ -102,7 +102,7 @@ tbody tr:nth-child(even){background:var(--cream);}
 @media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
 </style>
 <div class="nsnb-app">
-  <a class="nsnb-brand" href="full-hub-gated-site.html#/builders">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
     <div class="nsnb-logo">🧡</div>
     <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
   </a>
@@ -110,27 +110,27 @@ tbody tr:nth-child(even){background:var(--cream);}
   <span class="nsnb-date" id="nsnb-date"></span>
   <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
   <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
-  <a class="nsnb-btn" href="full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
 </div>
 <div class="nsnb-strip">
   <nav class="nsnb-tabs" id="nsnb-tabs">
-    <a class="nsnb-tab" href="full-hub-gated-site.html#/builders">⌂ Overview</a>
-    <a class="nsnb-tab" href="admin-mis-console.html">📊 MIS</a>
-    <a class="nsnb-tab" href="finance.html">💶 Finanzas</a>
+    <a class="nsnb-tab" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a>
+    <a class="nsnb-tab" href="/hub/admin-mis-console.html">📊 MIS</a>
+    <a class="nsnb-tab" href="/hub/finance.html">💶 Finanzas</a>
     <span class="nsnb-gap"></span>
-    <a class="nsnb-tab" href="pilot.html">🧪 Piloto</a>
-    <a class="nsnb-tab" href="feedback.html">💬 Feedback</a>
-    <a class="nsnb-tab" href="waitlist.html">📬 Waitlist</a>
+    <a class="nsnb-tab" href="/hub/pilot.html">🧪 Piloto</a>
+    <a class="nsnb-tab" href="/hub/feedback.html">💬 Feedback</a>
+    <a class="nsnb-tab" href="/hub/waitlist.html">📬 Waitlist</a>
     <span class="nsnb-gap"></span>
-    <a class="nsnb-tab" href="documentation/index.html">📚 Docs</a>
-    <a class="nsnb-tab" href="translations.html">🌍 Traducciones</a>
-    <a class="nsnb-tab" href="review.html">🔎 Review</a>
-    <a class="nsnb-tab" href="prototypes.html">🧩 Prototipos</a>
-    <a class="nsnb-tab" href="development-planning-backlog.html">🗂 Backlog</a>
+    <a class="nsnb-tab" href="/hub/documentation/index.html">📚 Docs</a>
+    <a class="nsnb-tab" href="/hub/translations.html">🌍 Traducciones</a>
+    <a class="nsnb-tab" href="/hub/review.html">🔎 Review</a>
+    <a class="nsnb-tab" href="/hub/prototypes.html">🧩 Prototipos</a>
+    <a class="nsnb-tab" href="/hub/development-planning-backlog.html">🗂 Backlog</a>
     <span class="nsnb-gap"></span>
-    <a class="nsnb-tab" href="investors-business-case.html">🎯 Pitch</a>
-    <a class="nsnb-tab" href="access.html">🔑 Access</a>
-    <a class="nsnb-tab" href="mfa.html">🔐 MFA</a>
+    <a class="nsnb-tab" href="/hub/investors-business-case.html">🎯 Pitch</a>
+    <a class="nsnb-tab" href="/hub/access.html">🔑 Access</a>
+    <a class="nsnb-tab" href="/hub/mfa.html">🔐 MFA</a>
   </nav>
 </div>
 <script>
@@ -143,7 +143,7 @@ tbody tr:nth-child(even){background:var(--cream);}
   document.querySelectorAll('#nsnb-tabs .nsnb-tab').forEach(function(a){
     var f=(a.getAttribute('href')||'').toLowerCase();
     var base=f.split('/').pop();
-    var hit=(f.indexOf('documentation/')===0) ? dir.indexOf('/documentation/')>-1 : base===here;
+    var hit=(f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : base===here;
     if(hit){a.classList.add('on');a.scrollIntoView({inline:'center',block:'nearest'});}
   });
   var d=new Date();

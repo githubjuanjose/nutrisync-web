@@ -1279,10 +1279,14 @@ if os.path.exists(_gi2):
 _nbf = os.path.join(ASSETS, "hub-navbar.html")
 if os.path.exists(_nbf):
     _nbs = open(_nbf, encoding="utf-8").read()
-    for _hp in _glob.glob(os.path.join(PUB, "hub", "*.html")):
+    # po64: shell en TODAS las páginas del hub — incluido el gated de Builders
+    # (petición Juanjo) y la documentación (hrefs ya absolutos /hub/...)
+    _pages = _glob.glob(os.path.join(PUB, "hub", "*.html")) + \
+             _glob.glob(os.path.join(PUB, "hub", "documentation", "*.html"))
+    for _hp in _pages:
         _bn = os.path.basename(_hp)
-        if _bn in ("full-hub-gated-site.html", "index.html"):
-            continue
+        if _bn == "index.html" and os.path.dirname(_hp).endswith("hub"):
+            continue   # la puerta /hub es un redirect puro, sin UI
         _s0 = open(_hp, encoding="utf-8").read()
         _s = re.sub(r"<!-- ns-hub-navbar -->.*?<!-- /ns-hub-navbar -->", "", _s0, flags=re.S)
         _s = re.sub(r'<a id="ns-hub-back".*?</a>', "", _s, flags=re.S)   # adiós pastilla

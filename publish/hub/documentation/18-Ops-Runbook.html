@@ -35,7 +35,86 @@ tbody tr:nth-child(even){background:var(--cream);}
 .card .t{font-weight:800;font-size:16px;color:var(--coral-deep);}
 .card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
 .sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
-</style><script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>Ops Runbook — deploys, versioning, rollback &amp; backups</h1>
+</style><script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head><body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px;max-width:1440px;margin:0 auto}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{display:flex;align-items:flex-end;gap:3px;overflow-x:auto;scrollbar-width:none;max-width:1440px;margin:0 auto;padding:7px 14px 0}
+#ns-hub-navbar .nsnb-tabs::-webkit-scrollbar{display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:10px 17px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+#ns-hub-navbar .nsnb-gap{flex:0 0 auto;width:10px;border-bottom:none}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <a class="nsnb-tab" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a>
+    <a class="nsnb-tab" href="/hub/admin-mis-console.html">📊 MIS</a>
+    <a class="nsnb-tab" href="/hub/finance.html">💶 Finanzas</a>
+    <span class="nsnb-gap"></span>
+    <a class="nsnb-tab" href="/hub/pilot.html">🧪 Piloto</a>
+    <a class="nsnb-tab" href="/hub/feedback.html">💬 Feedback</a>
+    <a class="nsnb-tab" href="/hub/waitlist.html">📬 Waitlist</a>
+    <span class="nsnb-gap"></span>
+    <a class="nsnb-tab" href="/hub/documentation/index.html">📚 Docs</a>
+    <a class="nsnb-tab" href="/hub/translations.html">🌍 Traducciones</a>
+    <a class="nsnb-tab" href="/hub/review.html">🔎 Review</a>
+    <a class="nsnb-tab" href="/hub/prototypes.html">🧩 Prototipos</a>
+    <a class="nsnb-tab" href="/hub/development-planning-backlog.html">🗂 Backlog</a>
+    <span class="nsnb-gap"></span>
+    <a class="nsnb-tab" href="/hub/investors-business-case.html">🎯 Pitch</a>
+    <a class="nsnb-tab" href="/hub/access.html">🔑 Access</a>
+    <a class="nsnb-tab" href="/hub/mfa.html">🔐 MFA</a>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  var here=(location.pathname.split('/').pop()||'').toLowerCase();
+  var dir=location.pathname.toLowerCase();
+  document.querySelectorAll('#nsnb-tabs .nsnb-tab').forEach(function(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    var base=f.split('/').pop();
+    var hit=(f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : base===here;
+    if(hit){a.classList.add('on');a.scrollIntoView({inline:'center',block:'nearest'});}
+  });
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  var h=document.getElementById('ns-hub-navbar').offsetHeight||96;
+  document.body.style.paddingTop=(h+6)+'px';
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar --><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>Ops Runbook — deploys, versioning, rollback &amp; backups</h1>
 <p>The operational bible as of 19 Jul 2026. One page to run the whole platform.</p>
 <h2>The four surfaces</h2>
 <table>
