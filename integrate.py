@@ -1126,17 +1126,30 @@ if os.path.isdir(_lg):
 # ns-legal-footer (po72): la columna LEGAL del footer de Design trae href="#"
 # (saltaba arriba). Se cablea por TEXTO tras el paint del motor — solo se tocan
 # anchors con href vacío/#, jamás los del payload que ya funcionan. Refresh.
+# po78 · LECCIÓN: el motor RE-RENDERIZA el footer (pisando el cableado) y su
+# router INTERCEPTA los clics de <a> (href correcto → igualmente "sube arriba").
+# Respuesta: (1) recableo continuo vía MutationObserver 30s, (2) listener de
+# clic en FASE CAPTURA con stopPropagation → navegación real pase lo que pase.
 _LF = ('<script id="ns-legal-footer">(function(){'
        "var MAP=[[/derechos de datos|data rights/i,'/legal/privacy.html'],"
        "[/^privacidad|^privacy/i,'/legal/privacy.html'],"
        "[/^t\\u00e9rminos|^terminos|^terms/i,'/legal/terms.html'],"
        "[/^cookies$/i,'/legal/cookies.html'],"
        "[/^aviso legal$|^legal notice$/i,'/legal/legal-notice.html']];"
+       "function dest(t){for(var i=0;i<MAP.length;i++){if(MAP[i][0].test(t))return MAP[i][1];}return null;}"
        "function wire(){var n=0;document.querySelectorAll('a').forEach(function(a){"
-       "var h=a.getAttribute('href');if(h&&h!=='#')return;"
-       "var t=(a.textContent||'').trim();if(!t)return;"
-       "for(var i=0;i<MAP.length;i++){if(MAP[i][0].test(t)){a.setAttribute('href',MAP[i][1]);n++;break;}}});return n;}"
-       "var tries=0,iv=setInterval(function(){if(wire()>0||tries++>60)clearInterval(iv);},250);"
+       "var t=(a.textContent||'').trim();if(!t)return;var d=dest(t);if(!d)return;"
+       "var h=a.getAttribute('href');"
+       "if(h&&h!=='#'&&!a.__nsL)return;"                      # enlace ajeno que ya funciona: ni tocarlo
+       "a.setAttribute('href',d);"
+       "if(!a.__nsL){a.__nsL=1;a.addEventListener('click',function(e){"
+       "e.preventDefault();e.stopPropagation();window.location.href=d;},true);}"
+       "n++;});return n;}"
+       "function boot(){wire();"
+       "var mT=null,mo=new MutationObserver(function(){clearTimeout(mT);mT=setTimeout(wire,200);});"
+       "mo.observe(document.documentElement,{childList:true,subtree:true});"
+       "setTimeout(function(){mo.disconnect();},30000);}"
+       "if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();"
        "})();</script>")
 for _pg in ("index.html",):
     _pp = os.path.join(PUB, _pg)
