@@ -985,6 +985,27 @@ if os.path.exists(pf) and os.path.exists(cns):
         open(cns, "w", encoding="utf-8").write(ch)
         print("- pilot funnel card added to the admin console (admin_pilot_funnel RPC)")
 
+# ns-finance: Finanzas — hub tab (libro diario + P&L + cierres) + MIS card.
+fin = os.path.join(ASSETS, "finance.html")
+if os.path.exists(fin):
+    shutil.copy(fin, os.path.join(PUB, "hub", "finance.html"))
+    print("- finance tool copied to hub/finance.html")
+    _figh = os.path.join(PUB, "hub", "full-hub-gated-site.html")
+    _fiht = open(os.path.join(ASSETS, "finance-htab.snippet"), encoding="utf-8").read()
+    if os.path.exists(_figh):
+        _fih = open(_figh, encoding="utf-8").read()
+        if 'finance.html' not in _fih:
+            open(_figh, "w", encoding="utf-8").write(
+                _fih.replace('<a class="htab" href="waitlist.html"', _fiht + '<a class="htab" href="waitlist.html"', 1))
+            print("- finance htab added to hub nav")
+fmis = os.path.join(ASSETS, "finance-mis.html")
+if os.path.exists(fmis) and os.path.exists(cns):
+    ch = open(cns, encoding="utf-8").read()
+    if "ns-finance-mis" not in ch:
+        ch = ch.replace("</body>", open(fmis, encoding="utf-8").read() + "</body>", 1)
+        open(cns, "w", encoding="utf-8").write(ch)
+        print("- finance summary card wired into the admin console")
+
 # ns-feedback-page: App Feedback as its OWN hub tab (r11d — moved out of the
 # console). Copies the page + adds the 💬 htab; also STRIPS the legacy embedded
 # panel from the console if a pack or old integrate left it there.
