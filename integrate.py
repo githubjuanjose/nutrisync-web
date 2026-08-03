@@ -57,7 +57,8 @@ var ROW="display:flex;align-items:center;justify-content:space-between;gap:14px;
 var d=document.createElement("div");d.id="ns-consent";
 d.style.cssText="position:fixed;left:16px;right:16px;bottom:18px;z-index:99998;background:#FFFDFA;border:1px solid #EFE3D7;border-radius:20px;box-shadow:0 24px 60px -18px rgba(35,31,32,.35);padding:20px 22px;max-width:560px;margin:0 auto;"+F+";color:#241D1A;line-height:1.5";
 d.innerHTML='<div style="display:flex;align-items:center;gap:9px;margin-bottom:6px"><span style="width:28px;height:28px;border-radius:9px;background:linear-gradient(135deg,#FF7600,#FD400C);display:inline-flex;align-items:center;justify-content:center;font-size:14px">🍪</span><b style="font-size:15px;font-weight:800">'+T.t+'</b></div>'
-+'<p style="margin:0 0 14px;font-size:13px;color:#736862">'+T.p+'</p>'
++'<p style="margin:0 0 10px;font-size:13px;color:#736862">'+T.p+'</p>'
++'<p style="margin:0 0 14px;font-size:12px"><a href="/legal/privacy.html" style="color:#C73A20">'+(ES?"Política de privacidad":"Privacy policy")+'</a> · <a href="/legal/cookies.html" style="color:#C73A20">Cookies</a></p>'
 +'<div id="ns-opts" style="display:none;margin:0 0 12px">'
 +'<div style="'+ROW+'"><span><b style="font-weight:700">'+T.e+'</b><br><small style="color:#8A7F78">'+T.ed+'</small></span><span style="font-size:12px;font-weight:700;color:#0F9B57;white-space:nowrap">'+T.eon+'</span></div>'
 +'<div style="'+ROW+'"><span><b style="font-weight:700">'+T.a+'</b><br><small style="color:#8A7F78">'+T.ad+'</small></span><input type="checkbox" id="ns-an" style="width:20px;height:20px;accent-color:#E8472A;cursor:pointer"></div>'
@@ -329,6 +330,7 @@ if os.path.exists(_gsite):
 # policy); protected by Access itself, so listing the emails here is safe.
 _ACCESS_EMAILS = [
     ("juanjose.cebrian@gmail.com", "Juanjo — Engineering"),
+    ("juanjosecebrian@icloud.com", "Juanjo — Apple ID (admin, 4-ago)"),
     ("lcebrian@nutrisynccollective.com", "Luc\u00eda — COO (domain)"),
     ("pgonzalez@nutrisynccollective.com", "Pilar — CEO (domain)"),
     ("mgarzon@nutrisynccollective.com", "Mar\u00eda Paula — CMO (domain)"),
@@ -1115,6 +1117,16 @@ if os.path.exists(kl):
         if ch2 != ch:
             open(_page, "w", encoding="utf-8").write(ch2)
             print(f"- honest KPI row (actual vs plan) wired into {os.path.basename(_page)}")
+
+# ns-legal (po71): los 5 documentos legales BILINGÜES (borrador pendiente de
+# validación) + índice → publish/legal/. Nuestros; los packs nunca los traen.
+_lg = os.path.join(ASSETS, "legal")
+if os.path.isdir(_lg):
+    _lgd = os.path.join(PUB, "legal"); os.makedirs(_lgd, exist_ok=True); _n = 0
+    for _f in os.listdir(_lg):
+        if _f.endswith(".html"):
+            shutil.copy(os.path.join(_lg, _f), os.path.join(_lgd, _f)); _n += 1
+    print(f"- ns-legal: {_n} documentos legales publicados en /legal/")
 
 # ns-tester: public store-email capture page — ours, packs never carry it.
 ts = os.path.join(ASSETS, "tester.html")
