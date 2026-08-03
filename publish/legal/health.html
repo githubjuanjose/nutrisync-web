@@ -3,43 +3,86 @@
 <style>
 :root{--coral:#E8472A;--ink:#231F20;--muted:#6E655D;--line:#EFE3D7;--bg:#FFFDF8}
 *{box-sizing:border-box}body{margin:0;font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
-.wrap{max-width:760px;margin:0 auto;padding:34px 22px 90px}
+.wrap{max-width:780px;margin:0 auto;padding:34px 22px 90px}
 .top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px}
 .brand{font-weight:800;letter-spacing:2px;font-size:13px;color:var(--ink);text-decoration:none}
 .lsw{font-size:12.5px;color:var(--muted);cursor:pointer;text-decoration:underline;background:none;border:none;font-family:inherit}
-.draft{background:#FFF8EF;border:1.5px dashed #E8B072;border-radius:14px;padding:12px 14px;font-size:13px;color:#7A5A33;margin:14px 0 22px;line-height:1.55}
-h1{font-size:26px;margin:10px 0 2px;line-height:1.25}
-.vers{font-size:12px;color:var(--muted);margin-bottom:18px}
-h2{font-size:16.5px;margin:26px 0 6px}
-p,li{font-size:14px;color:#4A433D}
-ul{padding-left:20px}
+.counsel{background:#EAF6EE;border:1.5px solid #BFE3CB;border-radius:14px;padding:12px 14px;font-size:13px;color:#2F6B44;margin:14px 0 22px;line-height:1.55}
+h1{font-size:25px;margin:10px 0 10px;line-height:1.25}
+h2{font-size:16.5px;margin:26px 0 6px}h3{font-size:14.5px;margin:18px 0 4px;color:#4A433D}
+p,li{font-size:14px;color:#4A433D}ul{padding-left:20px}
+.vers{font-size:12px;color:var(--muted);margin-bottom:14px}
 .foot{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
-.foot a{color:#C73A20;text-decoration:none}
-a{color:#C73A20}
-
-/* ns-legal-nav: paginación ‹ › entre documentos */
+.foot a,a{color:#C73A20}
 .ns-legal-nav{display:flex;justify-content:space-between;gap:10px;margin:30px 0 0}
 .lnav{display:inline-flex;align-items:center;gap:6px;padding:11px 18px;border:1px solid var(--line);border-radius:999px;background:#fff;font-weight:700;font-size:13.5px;text-decoration:none;color:#C73A20}
-.lnav:hover{background:#FFF1EC;border-color:#F3C8B8}
-.lnav.next{margin-left:auto}
+.lnav:hover{background:#FFF1EC;border-color:#F3C8B8}.lnav.next{margin-left:auto}
+.L.en{display:none}
 </style></head><body><div class="wrap">
 <div class="top"><a class="brand" href="/">🧡 NUTRISYNC</a><button class="lsw" onclick="nsSwap()" id="lsw">EN</button></div>
-<div class="draft" data-es="🚧 <b>BORRADOR — pendiente de validación legal.</b> Publicamos este documento con transparencia mientras nuestra asesoría jurídica completa su revisión (agosto 2026). Puede sufrir cambios; la fecha de versión manda." data-en="🚧 <b>DRAFT — pending legal review.</b> We publish this document transparently while our legal counsel completes its review (August 2026). It may change; the version date governs.">🚧 <b>BORRADOR — pendiente de validación legal.</b></div>
+<div class="counsel" data-es="✅ <b>Revisión legal final</b> (asesoría jurídica, 4 ago 2026). Pendiente únicamente de incorporar denominación social, NIF/CIF y domicilio del responsable tras la constitución de la sociedad — los campos aparecen <mark style='background:#FFF3C4;padding:0 4px;border-radius:4px'>marcados</mark>." data-en="✅ <b>Final legal review</b> (counsel, 4 Aug 2026). Only the controller’s legal name, tax ID and registered address remain to be inserted after incorporation — those fields are <mark style='background:#FFF3C4;padding:0 4px;border-radius:4px'>highlighted</mark>.">✅ <b>Revisión legal final</b></div>
 <h1 data-es="Aviso de salud" data-en="Health notice">Aviso de salud</h1>
-<div class="vers">v0.9 · 4 ago 2026 · NutriSync Collective</div>
-<h2 data-es="1. Qué es NutriSync (y qué no)" data-en="1. What NutriSync is (and is not)">1. Qué es NutriSync (y qué no)</h2><p data-es="NutriSync es una herramienta de bienestar que detecta patrones en los datos que registras. No es un producto sanitario, no emite diagnósticos ni tratamientos y su información no sustituye nunca el criterio de profesionales de la medicina." data-en="NutriSync is a wellbeing tool that finds patterns in the data you log. It is not a medical device, it issues no diagnoses or treatments, and its information never replaces the judgement of medical professionals.">NutriSync es una herramienta de bienestar que detecta patrones en los datos que registras. No es un producto sanitario, no emite diagnósticos ni tratamientos y su información no sustituye nunca el criterio de profesionales de la medicina.</p><h2 data-es="2. No es un método anticonceptivo" data-en="2. Not a contraceptive method">2. No es un método anticonceptivo</h2><p data-es="Las predicciones de ciclo y fase son estimaciones orientativas y no deben usarse para prevenir ni buscar un embarazo." data-en="Cycle and phase predictions are indicative estimates and must not be used to prevent or achieve pregnancy.">Las predicciones de ciclo y fase son estimaciones orientativas y no deben usarse para prevenir ni buscar un embarazo.</p><h2 data-es="3. Los ciclos varían" data-en="3. Cycles vary">3. Los ciclos varían</h2><p data-es="Ciclos largos, cortos o irregulares ocasionales son comunes (estrés, viajes, enfermedad, cambios de peso o medicación). La app te lo señalará con calma y ajustará tu media automáticamente cuando sea tu nuevo ritmo." data-en="Occasional long, short or irregular cycles are common (stress, travel, illness, weight or medication changes). The app will flag this calmly and adjust your average automatically when it becomes your new rhythm.">Ciclos largos, cortos o irregulares ocasionales son comunes (estrés, viajes, enfermedad, cambios de peso o medicación). La app te lo señalará con calma y ajustará tu media automáticamente cuando sea tu nuevo ritmo.</p><h2 data-es="4. Cuándo consultar" data-en="4. When to seek advice">4. Cuándo consultar</h2><p data-es="Consulta con profesionales sanitarios si los ciclos fuera de tu patrón se repiten, si hay dolor intenso, sangrado inusual, ausencia prolongada de período, sospecha de embarazo o cualquier síntoma que te preocupe. Tus datos registrados pueden ayudar en esa conversación." data-en="See a health professional if out-of-pattern cycles repeat, or in case of intense pain, unusual bleeding, prolonged absence of period, suspected pregnancy, or any symptom that worries you. Your logged data can help that conversation.">Consulta con profesionales sanitarios si los ciclos fuera de tu patrón se repiten, si hay dolor intenso, sangrado inusual, ausencia prolongada de período, sospecha de embarazo o cualquier síntoma que te preocupe. Tus datos registrados pueden ayudar en esa conversación.</p><h2 data-es="5. Emergencias" data-en="5. Emergencies">5. Emergencias</h2><p data-es="Ante una urgencia médica, contacta inmediatamente con los servicios de emergencia (112 en la UE). No uses la app para buscar ayuda urgente." data-en="In a medical emergency, contact emergency services immediately (112 in the EU). Do not use the app to seek urgent help.">Ante una urgencia médica, contacta inmediatamente con los servicios de emergencia (112 en la UE). No uses la app para buscar ayuda urgente.</p><div class="ns-legal-nav"><a class="lnav prev" href="cookies.html" data-es="‹ Cookies" data-en="‹ Cookies">‹ Cookies</a><a class="lnav next" href="legal-notice.html" data-es="Aviso legal ›" data-en="Legal notice ›">Aviso legal ›</a></div>
+<div class="L es">
+<div class="vers">Versión 1.0 · 4 de agosto de 2026 · Piloto privado · Borrador final para revisión jurídica</div>
+<h2>1. Información de Bienestar; No Es Consejo Médico</h2>
+<p>NutriSync ofrece información general de bienestar, nutrición y movimiento y personalización basada en los datos que registras y, si los conectas, en dispositivos o plataformas de salud. No ofrece un diagnóstico ni sustituye la evaluación, el consejo o el tratamiento de un profesional sanitario cualificado.</p>
+<p>Consulta a un profesional de medicina, ginecología, nutrición u otra especialidad adecuada si tienes dudas sobre una condición médica, síntomas, medicación o tratamiento, incluida la salud hormonal, fertilidad, embarazo, menopausia o terapia hormonal sustitutiva (TRH).</p>
+<h2>2. Situación Regulatoria</h2>
+<p>NutriSync se presenta actualmente como una aplicación de bienestar y no está destinada a diagnosticar, prevenir, controlar, predecir el pronóstico, tratar o aliviar una enfermedad. No debe utilizarse para tomar decisiones clínicas.</p>
+<h2>3. Estimaciones y Precisión</h2>
+<p>Las fases, puntuaciones y recomendaciones son estimaciones basadas en los datos que proporcionas y en patrones generales. Pueden ser incompletas, incorrectas o no reflejar tu situación individual. La precisión puede variar por datos ausentes, ciclos irregulares, condiciones de salud, medicación, embarazo, perimenopausia, dispositivos o errores técnicos.</p>
+<p>No utilices NutriSync como método anticonceptivo, para decidir relaciones sin protección, para confirmar embarazo, para planificar fertilidad ni para retrasar una consulta sanitaria.</p>
+<h2>4. Antes de Cambiar tu Dieta, Actividad o Suplementos</h2>
+<p>Consulta a un profesional sanitario antes de realizar cambios importantes, especialmente si estás embarazada, en lactancia, intentando concebir, tienes una condición crónica o antecedentes de trastorno de la conducta alimentaria, tomas medicación o tienes menos de 18 años. No cambies ni suspendas medicamentos por información de la app.</p>
+<h2>5. Emergencias y Síntomas Urgentes</h2>
+<p>NutriSync no supervisa emergencias ni envía alertas clínicas. Si crees que existe una emergencia médica, llama al 112 en la UE o al número local de emergencias, o acude a urgencias. No confíes en la app para valorar o gestionar síntomas urgentes.</p>
+<h2>6. Datos de Wearables y Terceros</h2>
+<p>Los datos de un dispositivo conectado pueden ser inexactos, incompletos o retrasarse. Su calidad depende del dispositivo, su colocación, configuración, software y fabricante. NutriSync no valida clínicamente cada lectura ni controla la disponibilidad de servicios de terceros.</p>
+<h2>7. Responsabilidad y Derechos Obligatorios</h2>
+<p>Utiliza la información con criterio y busca ayuda profesional cuando corresponda. Nada de este aviso excluye derechos irrenunciables de consumidores ni responsabilidad que legalmente no pueda limitarse, incluida la derivada de dolo, culpa grave, fraude o daños personales cuando la ley prohíba su exclusión.</p>
+<h2>8. Contacto</h2>
+<p>Para preguntas sobre este aviso: contact@nutrisynccollective.com. Este correo no es un servicio de emergencias ni una consulta médica.</p>
+</div>
+<div class="L en">
+<div class="vers">Version 1.0 · 4 August 2026 · Private pilot · Final legal-review draft</div>
+<h2>1. Wellbeing Information; Not Medical Advice</h2>
+<p>NutriSync provides general wellbeing, nutrition and movement information and personalisation based on data you log and, if connected, health devices or platforms. It does not provide a diagnosis or replace assessment, advice or treatment from a qualified healthcare professional.</p>
+<p>Consult an appropriately qualified doctor, gynaecology professional, dietitian or other clinician if you have questions about a condition, symptoms, medication or treatment, including hormonal health, fertility, pregnancy, menopause or hormone replacement therapy (HRT).</p>
+<h2>2. Regulatory Status</h2>
+<p>NutriSync is currently presented as a wellbeing app and is not intended to diagnose, prevent, monitor, predict the prognosis of, treat or alleviate disease. It must not be used to make clinical decisions.</p>
+<h2>3. Estimates and Accuracy</h2>
+<p>Phases, scores and recommendations are estimates based on your data and general patterns. They may be incomplete, wrong or not reflect your individual circumstances. Accuracy may vary because of missing data, irregular cycles, health conditions, medication, pregnancy, perimenopause, devices or technical errors.</p>
+<p>Do not use NutriSync as contraception, to decide whether to have unprotected sex, to confirm pregnancy, for fertility planning or to delay seeking healthcare.</p>
+<h2>4. Before Changing Diet, Activity or Supplements</h2>
+<p>Consult a healthcare professional before making major changes, especially if you are pregnant, breastfeeding, trying to conceive, have a chronic condition or history of an eating disorder, take medication or are under 18. Do not change or stop medication because of app information.</p>
+<h2>5. Emergencies and Urgent Symptoms</h2>
+<p>NutriSync does not monitor emergencies or send clinical alerts. If you believe there is a medical emergency, call 112 in the EU or your local emergency number, or attend an emergency department. Do not rely on the app to assess or manage urgent symptoms.</p>
+<h2>6. Wearable and Third-party Data</h2>
+<p>Data from a connected device may be inaccurate, incomplete or delayed. Its quality depends on the device, placement, configuration, software and manufacturer. NutriSync does not clinically validate each reading or control third-party service availability.</p>
+<h2>7. Liability and Mandatory Rights</h2>
+<p>Use the information with judgement and seek professional help where appropriate. Nothing in this notice excludes mandatory consumer rights or liability that cannot legally be limited, including liability for wilful misconduct, gross negligence, fraud or personal injury where exclusion is prohibited.</p>
+<h2>8. Contact</h2>
+<p>Questions about this notice: contact@nutrisynccollective.com. This address is not an emergency or medical consultation service.</p>
+</div>
+<div class="ns-legal-nav"><a class="lnav prev" href="cookies.html" data-es="‹ Cookies" data-en="‹ Cookies">‹ Cookies</a><a class="lnav next" href="beta-agreement.html" data-es="Acuerdo beta ›" data-en="Beta agreement ›">Acuerdo beta ›</a></div>
 <div class="foot">
 <span data-es="Documentos legales:" data-en="Legal documents:">Documentos legales:</span>
-<a href="legal-notice.html" data-es="Aviso legal" data-en="Legal notice">Aviso legal</a> ·
+<a href="index.html" data-es="Índice" data-en="Index">Índice</a> ·
 <a href="terms.html" data-es="Términos" data-en="Terms">Términos</a> ·
 <a href="privacy.html" data-es="Privacidad" data-en="Privacy">Privacidad</a> ·
+<a href="health-consent.html" data-es="Consentimiento salud" data-en="Health consent">Consentimiento salud</a> ·
 <a href="cookies.html">Cookies</a> ·
-<a href="health.html" data-es="Aviso de salud" data-en="Health notice">Aviso de salud</a>
+<a href="health.html" data-es="Aviso de salud" data-en="Health notice">Aviso de salud</a> ·
+<a href="beta-agreement.html" data-es="Acuerdo beta" data-en="Beta agreement">Acuerdo beta</a> ·
+<a href="legal-notice.html" data-es="Aviso legal" data-en="Legal notice">Aviso legal</a>
 <br><span data-es="Contacto:" data-en="Contact:">Contacto:</span> <a href="mailto:contact@nutrisynccollective.com">contact@nutrisynccollective.com</a>
-</div>
-<script>
+</div><script>
 var NSL=(navigator.language||'en').toLowerCase().indexOf('es')===0?'es':'en';
-function nsApply(){document.querySelectorAll('[data-es]').forEach(function(n){n.innerHTML=n.dataset[NSL];});document.getElementById('lsw').textContent=NSL==='es'?'EN':'ES';document.documentElement.lang=NSL;}
+function nsApply(){document.querySelectorAll('[data-es]').forEach(function(n){n.innerHTML=n.dataset[NSL];});
+document.querySelectorAll('.L').forEach(function(b){b.style.display=b.classList.contains(NSL)?'block':'none';});
+document.getElementById('lsw').textContent=NSL==='es'?'EN':'ES';document.documentElement.lang=NSL;}
 function nsSwap(){NSL=NSL==='es'?'en':'es';nsApply();}
 nsApply();
-</script></div><script id="ns-legal-kb">document.addEventListener('keydown',function(e){if(e.target&&/input|textarea/i.test(e.target.tagName||''))return;var p=document.querySelector('.lnav.prev'),n=document.querySelector('.lnav.next');if(e.key==='ArrowLeft'&&p)location.href=p.getAttribute('href');if(e.key==='ArrowRight'&&n)location.href=n.getAttribute('href');});</script></body></html>
+</script>
+<script id="ns-legal-kb">document.addEventListener('keydown',function(e){if(e.target&&/input|textarea/i.test(e.target.tagName||''))return;var p=document.querySelector('.lnav.prev'),n=document.querySelector('.lnav.next');if(e.key==='ArrowLeft'&&p)location.href=p.getAttribute('href');if(e.key==='ArrowRight'&&n)location.href=n.getAttribute('href');});</script>
+</div></body></html>
