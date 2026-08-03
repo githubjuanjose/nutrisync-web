@@ -835,7 +835,7 @@ function invTab(n){
 // Builders: 2FA gate + tabs (Admin/MIS · Documentation)
 function bldStep1(){const c=document.getElementById('bld-pw').value.trim().toLowerCase();if(c==='admin2026'){document.getElementById('bld-s1').style.display='none';document.getElementById('bld-s2').style.display='block';document.getElementById('bld-2fa').focus();}else document.getElementById('bld-err').textContent='Incorrect PIN. Try again.';}
 function bldStep2(){const c=document.getElementById('bld-2fa').value.trim();if(c==='123456'){AUTH.adm=true;applyAuth();}else document.getElementById('bld-err2').textContent='Invalid 2FA code. Try again.';}
-function bldTab(n){document.getElementById('bld-admin').style.display=n===1?'block':'none';document.getElementById('bld-docs').style.display=n===2?'block':'none';document.getElementById('bt1').classList.toggle('on',n===1);document.getElementById('bt2').classList.toggle('on',n===2);if(n===2){const f=document.getElementById('docsFrame');if(f.src==='about:blank')f.src='docs/index.html';}window.scrollTo(0,0);}
+function bldTab(n){document.getElementById('bld-admin').style.display=n===1?'block':'none';document.getElementById('bld-docs').style.display=n===2?'block':'none';document.getElementById('bt1').classList.toggle('on',n===1);document.getElementById('bt2').classList.toggle('on',n===2);if(n===2){const f=document.getElementById('docsFrame');if(f.src==='about:blank')f.src='documentation/index.html';}window.scrollTo(0,0);}
 function applyAuth(){
   document.getElementById('inv-gate').style.display=AUTH.inv?'none':'block';
   document.getElementById('inv-content').style.display=AUTH.inv?'block':'none';

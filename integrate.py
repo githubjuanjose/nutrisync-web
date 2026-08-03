@@ -257,6 +257,18 @@ if os.path.isdir(dd):
         if f.endswith(".html"): shutil.copy(os.path.join(dd, f), os.path.join(dst, f)); n += 1
     print("- overlaid %d hub documents" % n)
 
+# ns-docs-path (po58): el router del gated pedía docs/index.html (carpeta que un
+# pack borró y que nunca existió en publish) → 404 → Pages devolvía la portada
+# ("Project documentation lleva a la página principal"). Los docs viven en
+# hub/documentation/ — se reapunta el iframe ahí. Idempotente.
+_gsite = os.path.join(PUB, "hub", "full-hub-gated-site.html")
+if os.path.exists(_gsite):
+    _gs = open(_gsite, encoding="utf-8").read()
+    if "docs/index.html" in _gs:
+        _gs = _gs.replace("docs/index.html", "documentation/index.html")
+        open(_gsite, "w", encoding="utf-8").write(_gs)
+        print("- ns-docs-path: iframe de documentación → hub/documentation/index.html")
+
 # ── Builders "Access" page: who can enter the gated areas + how it works. ──
 # Informational SNAPSHOT (the live source of truth is the Cloudflare Access
 # policy); protected by Access itself, so listing the emails here is safe.
@@ -1209,6 +1221,27 @@ if os.path.exists(_gi2):
     if _n:
         open(_gi2, "w", encoding="utf-8").write(_s)
         print(f"- footer anchors muertos (#team/#science) -> #platform ({_n})")
+
+# ns-hub-navbar (po57): barra de navegación tipo TABS en TODAS las herramientas
+# del hub — atrás/adelante/inicio grandes + clasificador de secciones con la
+# pestaña activa marcada. Sustituye a la pastilla flotante (que era minúscula).
+# Refresh-on-change: se quita el bloque previo y se reinyecta la versión actual.
+_nbf = os.path.join(ASSETS, "hub-navbar.html")
+if os.path.exists(_nbf):
+    _nbs = open(_nbf, encoding="utf-8").read()
+    for _hp in _glob.glob(os.path.join(PUB, "hub", "*.html")):
+        _bn = os.path.basename(_hp)
+        if _bn in ("full-hub-gated-site.html", "index.html"):
+            continue
+        _s0 = open(_hp, encoding="utf-8").read()
+        _s = re.sub(r"<!-- ns-hub-navbar -->.*?<!-- /ns-hub-navbar -->", "", _s0, flags=re.S)
+        _s = re.sub(r'<a id="ns-hub-back".*?</a>', "", _s, flags=re.S)   # adiós pastilla
+        _mm = re.search(r"<body[^>]*>", _s)
+        if _mm:
+            _s = _s[:_mm.end()] + _nbs + _s[_mm.end():]
+        if _s != _s0:
+            open(_hp, "w", encoding="utf-8").write(_s)
+            print(f"- barra tabs de navegación hub en {_bn}")
 
 # pastilla flotante ‹ Hub en páginas sin vuelta (ns-hub-back, idempotente)
 _PILL = ('<a id="ns-hub-back" href="full-hub-gated-site.html#/builders" '
