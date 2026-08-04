@@ -1581,35 +1581,50 @@ if os.path.exists(_dg):
                         open(_dg, "w", encoding="utf-8").write(_s)
                         print("- ns-doors-grid: 3 puertas en rejilla 2×2 (la 3ª a doble ancho)")
 
-# ── ns-footer-cols ───────────────────────────────────────────────────────────
-# Las columnas del pie (Producto · Empresa · Legal · QR) van pegadas a la
-# izquierda con space-between: el QR queda descolgado a 115px de Legal mientras
-# el bloque de marca casi lo toca. Se empaquetan a la derecha con un hueco
-# generoso y uniforme, así el grupo se acerca al QR sin apelotonarse.
-# Medido en vivo a 1512px: Producto pasa de x=515 a x=669; hueco Legal↔QR 115→63.
-_fc = os.path.join(PUB, "index.html")
-if os.path.exists(_fc):
-    _s0 = open(_fc, encoding="utf-8").read()
-    _old = ("gap: clamp(14px,1.6vw,24px) clamp(28px,3vw,52px); flex-wrap: wrap; "
-            "flex: 1 1 540px; align-items: flex-start; justify-content: space-between;")
-    _new = ("gap: clamp(14px,1.6vw,24px) clamp(34px,4.2vw,76px); flex-wrap: wrap; "
-            "flex: 1 1 540px; align-items: flex-start; justify-content: flex-end;")
-    _n = _s0.count(_old)
-    if _new in _s0:
+# ── ns-footer-brand ──────────────────────────────────────────────────────────
+# El QR parecía descolgado de la columna Legal, pero la causa no era que las
+# columnas estuvieran demasiado a la izquierda: era que el bloque de marca es
+# demasiado estrecho (290px). Con space-between, el sobrante se reparte entre
+# las 4 columnas → huecos de 115px. Ensanchando la marca a 400px el sobrante
+# baja y el ritmo queda UNIFORME en 78px, QR incluido. Medido a 1200px.
+# Empaquetarlas a la derecha (flex-end) fue un error: cerraba el hueco del QR
+# pero abría un vacío de 223px en el centro del pie.
+_fb = os.path.join(PUB, "index.html")
+if os.path.exists(_fb):
+    _s0 = open(_fb, encoding="utf-8").read()
+    _reps = [
+        # columna de marca: 290 → 400 (el párrafo cabe en 2 líneas, no 3)
+        ('style=\\"flex: 0 1 290px; min-width: 240px;\\"',
+         'data-ns=\\"ns-footer-brand\\" style=\\"flex: 0 1 400px; min-width: 240px;\\"'),
+        ('color: #B8ADA4; max-width: 290px;', 'color: #B8ADA4; max-width: 380px;'),
+        # las fichas no crecen con la columna: se quedan en 340
+        ('grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; max-width: 340px;',
+         'grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; max-width: 340px;'),
+    ]
+    if "ns-footer-brand" in _s0:
         pass  # idempotente
-    elif _n != 1:
-        print("! ns-footer-cols: esperaba 1 contenedor de columnas, hay %d — SIN TOCAR" % _n)
     else:
-        _s = _s0.replace(_old, _new)
-        import json as _json4
-        _bad = False
-        for _m in re.finditer(r'<script type="application/json"[^>]*>(.*?)</script>', _s, re.S):
-            try:
-                _json4.loads(_m.group(1))
-            except Exception as _e:
-                _bad = True
-                print("! ns-footer-cols: rompería el payload (%s) — SIN TOCAR" % _e)
-                break
-        if not _bad:
-            open(_fc, "w", encoding="utf-8").write(_s)
-            print("- ns-footer-cols: columnas del pie a la derecha, junto al QR")
+        _s = _s0
+        _fallos = []
+        for _a, _b in _reps:
+            if _a == _b:
+                continue
+            if _s.count(_a) != 1:
+                _fallos.append((_a[:40], _s.count(_a)))
+            else:
+                _s = _s.replace(_a, _b)
+        if _fallos:
+            print("! ns-footer-brand: anclas no únicas %s — SIN TOCAR" % _fallos)
+        else:
+            import json as _json4
+            _bad = False
+            for _m in re.finditer(r'<script type="application/json"[^>]*>(.*?)</script>', _s, re.S):
+                try:
+                    _json4.loads(_m.group(1))
+                except Exception as _e:
+                    _bad = True
+                    print("! ns-footer-brand: rompería el payload (%s) — SIN TOCAR" % _e)
+                    break
+            if not _bad:
+                open(_fb, "w", encoding="utf-8").write(_s)
+                print("- ns-footer-brand: columna de marca a 400px (ritmo del pie uniforme)")
