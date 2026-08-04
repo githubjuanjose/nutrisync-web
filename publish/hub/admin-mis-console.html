@@ -490,7 +490,7 @@ function funnelRow(name,d){
   html+=(data.by_cohort||[]).map(c=>funnelRow(c.cohort,c)).join('');
   box.innerHTML=html||'<div style="color:var(--muted);font-size:13px">Sin cohortes a&uacute;n &mdash; se montan en Pilot.</div>';
 })();
-</script><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-finance-mis --><div class="section" style="padding:26px 0 0;"><div style="max-width:1080px;margin:0 auto;padding:0 22px;"><h2 class="title" style="font-size:22px;margin:0 0 4px;">Finanzas</h2><div style="color:var(--muted);font-size:13px;margin-bottom:14px;">Caja y resultado del libro diario (admin_finance_summary) &middot; detalle y asientos en <a href="finance.html" style="color:var(--coral-deep);font-weight:700">hub &rarr; 💶 Finanzas</a></div><div id="fmWrap" style="display:flex;gap:14px;flex-wrap:wrap;"><div style="color:var(--muted);font-size:13px;">Cargando&hellip;</div></div></div></div><script type="module">
+</script><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-finance-mis --><div class="section" style="padding:26px 0 0;"><div style="max-width:1080px;margin:0 auto;padding:0 22px;"><h2 class="title" style="font-size:22px;margin:0 0 4px;">Finanzas</h2><div style="color:var(--muted);font-size:13px;margin-bottom:14px;">Caja y resultado del libro diario (admin_finance_summary) &middot; detalle y asientos en <a href="finance.html" style="color:var(--coral-deep);font-weight:700">hub &rarr; 💶 Finanzas</a></div><div id="fmWrap" style="display:flex;gap:14px;flex-wrap:wrap;"><div style="color:var(--muted);font-size:13px;">Cargando&hellip;</div></div></div></div><script type="module">
 const { createClient } = window.supabase;
 const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
 const sb=createClient(U,K);const box=document.getElementById('fmWrap');
@@ -504,45 +504,7 @@ const card=(l,v,neg)=>`<div style="flex:1;min-width:170px;background:#fff;border
   const m=data.month||{},y=data.ytd||{};const rm=(m.in||0)-(m.out||0),ry=(y.in||0)-(y.out||0);
   box.innerHTML=card('Caja',eur(data.cash),data.cash<0)+card('Ingresos mes',eur(m.in),false)+card('Gastos mes',eur(m.out),false)+card('Resultado mes',eur(rm),rm<0)+card('Resultado YTD',eur(ry),ry<0);
 })();
-</script><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html --><!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html -->
-<!-- ns-feedback-moved: hub/feedback.html --><!-- ns-kpi-live --><script type="module">
+</script><!-- ns-kpi-live --><script type="module">
 /* r11d → po56 · KPIs honestos: actual (live) vs plan (modelo conservador).
    po56: selección por ETIQUETA (.lab) en vez de id kTotal — el mismo snippet
    sirve en admin-mis-console.html Y en el MIS del gated site de Builders
