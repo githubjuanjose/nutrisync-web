@@ -26,6 +26,7 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
 .msg{white-space:pre-wrap;line-height:1.45}
 #gate{display:none;padding:60px 20px;text-align:center;color:var(--muted)}
 .hint{font-size:11.5px;color:var(--muted);margin-top:6px}
+#inv th.sh{cursor:pointer;user-select:none}#inv th.sh:hover{color:#E8472A}
 </style></head><body>
 <div class="wrap" id="app" style="display:none">
   <a href="full-hub-gated-site.html" style="font-size:13px;color:#8A7F78;text-decoration:none">‹ Hub</a>
@@ -76,9 +77,19 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
       <button class="pri" onclick="exportTF()">⬇ CSV TestFlight</button>
       <button onclick="copyEmails()">📋 Copiar emails (Play/otros)</button>
       <button onclick="setStatus('invited')">🚀 Marcar como invitados</button>
+      <button onclick="remindStore()" title="A quien lleva 3+ dias sin darnos su correo de tienda">🔔 Recordatorio · correo de tienda</button>
+      <button onclick="remindInstall()" title="A quien tiene el build asignado y no ha instalado">🔔 Recordatorio · instalar</button>
+    </div>
+    <div class="hint" style="background:#FFF8EF;border:1px solid #F0DCC4;border-radius:10px;padding:10px 12px;margin:8px 0">
+      <b>Recordatorios — cómo se usan</b><br>
+      · <b>Nombre cercano</b>: escríbelo en su fila y sal del campo (se guarda solo, el borde se pone verde). Es como la llamamos en los correos; si lo dejas vacío usamos su nombre de la waitlist y, si tampoco hay, el saludo va sin nombre.<br>
+      · <b>🔔 Correo de tienda</b>: para quien lleva 3+ días sin darnos su Apple ID / cuenta de Google (aparecen como “enviado, sin respuesta”). Lleva su enlace personal.<br>
+      · <b>🔔 Instalar</b>: para quien ya tiene el build asignado y aún no ha creado cuenta. Lleva los pasos de TestFlight y de Google Play.<br>
+      · No hace falta seleccionar filas: cada botón calcula solo a quién le toca hoy y te dice cuántas son antes de enviar.<br>
+      · <b>Nunca se spamea</b>: máximo 2 recordatorios por persona, 5 días entre ellos, y dejan de enviarse en cuanto la tester avanza de estado. Además salen solos cada mañana a las 9:00, así que el botón es solo para adelantarlos.
     </div>
     <div class="hint">Flujo: proponer → founders aprueban → <b>email/WhatsApp de captura</b> (confirman su correo de TIENDA: Apple ID / cuenta Google) → cuando salga ✔ en “Correo tienda”, CSV a App Store Connect o copiar emails a Play (usan el correo de tienda automáticamente) → “Marcar como invitados”. “joined” y “activas” se detectan solos.</div>
-    <div style="max-height:300px;overflow:auto"><table id="inv"><thead><tr><th></th><th>Email</th><th>Cohorte</th><th>Estado</th><th>📱</th><th>Correo tienda</th><th>Cuenta</th><th>Acciones</th></tr></thead><tbody></tbody></table></div>
+    <div style="max-height:300px;overflow:auto"><table id="inv"><thead><tr><th></th><th class="sh" onclick="sortInv('email')">Email <span data-ar="email"></span></th><th class="sh" onclick="sortInv('nick')">Nombre cercano <span data-ar="nick"></span></th><th class="sh" onclick="sortInv('cohort')">Cohorte <span data-ar="cohort"></span></th><th class="sh" onclick="sortInv('st')">Estado <span data-ar="st"></span></th><th class="sh" onclick="sortInv('plat')">📱 <span data-ar="plat"></span></th><th class="sh" onclick="sortInv('store')">Correo tienda <span data-ar="store"></span></th><th class="sh" onclick="sortInv('acct')">Cuenta <span data-ar="acct"></span></th><th>Acciones</th></tr></thead><tbody></tbody></table></div>
   </div>
 
   <h2>3 · Feedback por cohorte</h2>
@@ -129,13 +140,31 @@ function renderWl(){
   $('wl').tBodies[0].innerHTML=rows.slice(0,400).map(r=>{const e=(r.email||'').toLowerCase(),pi=be[e];
     return `<tr><td><input type="checkbox" class="ck" data-e="${esc(e)}"></td><td>${esc(r.email)}</td><td>${esc(r.full_name||'')}</td><td>${esc(r.source||'')}</td><td>${esc((r.created_at||'').slice(0,10))}</td><td>${r.converted_at?'✅':'—'}</td><td>${pi?esc(pi.cohort):''}</td></tr>`;}).join('');
 }
+/* r12-b5: el orden natural de esta lista es el EMBUDO — de lo que falta por
+   hacer a lo que ya esta hecho. Cualquier cabecera es clicable para reordenar. */
+const ST_RANK={proposed:0,approved:1,contacted:2,invited:3,joined:4,declined:9};
+const stOf=i=>(i.converted&&i.status==='invited')?'joined':i.status;
+let SORT={k:'st',dir:1};
+const sortKey=(i,k)=>({
+  st:ST_RANK[stOf(i)]??8, email:(i.email||''), nick:((i.nickname||i.full_name||'').toLowerCase()),
+  cohort:(i.cohort||''), plat:(i.platform||'zz'),
+  store:(i.store_ok?0:(i.contacted_at?1:2)), acct:(i.converted?0:1),
+}[k]);
+window.sortInv=k=>{SORT=(SORT.k===k)?{k,dir:-SORT.dir}:{k,dir:1};renderInv();};
 function renderInv(){
   const c=$('rvCohort').value;
-  const rows=OV.invites.filter(i=>!c||i.cohort===c);
+  const rows=OV.invites.filter(i=>!c||i.cohort===c).slice().sort((a,b)=>{
+    const x=sortKey(a,SORT.k),y=sortKey(b,SORT.k);
+    if(x<y)return -SORT.dir; if(x>y)return SORT.dir;
+    return (a.email||'')<(b.email||'')?-1:1;                 // desempate estable
+  });
   $('inv').tBodies[0].innerHTML=rows.map(i=>{const st=i.converted&&i.status==='invited'?'joined':i.status;
     const plat=i.platform==='ios'?'📱':i.platform==='android'?'🤖':'—';
     const store=i.store_ok?`<b>${esc(i.store_email)}</b> ✔`:(i.contacted_at?'<span class="hint">enviado, sin respuesta</span>':'—');
-    return `<tr><td><input type="checkbox" class="ik" data-e="${esc(i.email)}"></td><td>${esc(i.email)}</td><td>${esc(i.cohort)}</td><td><span class="pill p-${st}">${st}</span></td><td>${plat}</td><td>${store}</td><td>${i.converted?'✅':'—'}</td><td><button class="mini" onclick="copyLink('${esc(i.confirm_token)}')" title="Copiar enlace personal">🔗</button> <button class="mini" onclick="copyWa('${esc(i.email)}','${esc(i.confirm_token)}')" title="Copiar mensaje WhatsApp">💬</button></td></tr>`;}).join('');
+    const nick=`<input class="nick" data-e="${esc(i.email)}" value="${esc(i.nickname||'')}" placeholder="${esc((i.full_name||'').trim().split(/\s+/)[0]||'sin nombre')}" title="Como la llamamos en los correos. Vacio = nombre de la waitlist." style="width:110px;font:inherit;font-size:12.5px;padding:3px 6px;border:1px solid #EFE3D7;border-radius:7px">`;
+    return `<tr><td><input type="checkbox" class="ik" data-e="${esc(i.email)}"></td><td>${esc(i.email)}</td><td>${nick}</td><td>${esc(i.cohort)}</td><td><span class="pill p-${st}">${st}</span></td><td>${plat}</td><td>${store}</td><td>${i.converted?'✅':'—'}</td><td><button class="mini" onclick="copyLink('${esc(i.confirm_token)}')" title="Copiar enlace personal">🔗</button> <button class="mini" onclick="copyWa('${esc(i.email)}','${esc(i.confirm_token)}')" title="Copiar mensaje WhatsApp">💬</button></td></tr>`;}).join('');
+  document.querySelectorAll('#inv th [data-ar]').forEach(el=>{
+    el.textContent=(el.dataset.ar===SORT.k)?(SORT.dir>0?'▲':'▼'):'';});
 }
 function fillCohSelects(){
   const cs=[...new Set(OV.invites.map(i=>i.cohort))];
@@ -183,6 +212,26 @@ window.copyWa=async(e,t)=>{
   const msg='¡Hola! 🧡 GRACIAS por apuntarte a la lista de espera y al piloto de NutriSync — ¡estás dentro! La invitación de la app se envía al correo con el que tu MÓVIL instala aplicaciones (tu Apple ID en iPhone o tu cuenta de Google en Android), que muchas veces no es el mismo con el que te registraste. Entra en tu enlace personal: si es el mismo, UN toque y listo; si es otro, lo escribes ahí (30 seg): https://nutrisynccollective.com/tester.html?t='+t+' — Si no lo tienes claro: iPhone → Ajustes → tu nombre arriba = tu Apple ID · Android → Play Store → tu foto arriba a la derecha = tu cuenta Google. ¡Gracias! — El equipo NutriSync';
   await navigator.clipboard.writeText(msg);alert('Mensaje WhatsApp copiado para '+e);
 };
+document.addEventListener('change',async e=>{
+  const el=e.target;if(!el.classList||!el.classList.contains('nick'))return;
+  el.disabled=true;
+  const{error}=await sb.rpc('admin_pilot_set_nickname',{p_email:el.dataset.e,p_nickname:el.value});
+  el.disabled=false;el.style.borderColor=error?'#C73A20':'#0F9B57';
+  if(error)alert('No se pudo guardar: '+error.message);else setTimeout(()=>{el.style.borderColor='#EFE3D7';},900);
+});
+async function remind(kind,label){
+  const{data}=await sb.rpc('admin_pilot_reminders_due');
+  const n=(data||{})[kind]||0;
+  if(!n)return alert('Ahora mismo no le toca a nadie ('+label+').');
+  if(!confirm('Enviar el recordatorio "'+label+'" a '+n+' persona(s)?\n\nMaximo 2 por persona y 5 dias entre ellos; deja de enviarse en cuanto avanzan de estado.'))return;
+  const{data:{session}}=await sb.auth.getSession();if(!session)return alert('Sin sesion.');
+  const r=await fetch(U+'/functions/v1/pilot-outreach',{method:'POST',headers:{'content-type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':K},body:JSON.stringify({kind})});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok)return alert('Error: '+(j.error||r.status));
+  await refreshOv();alert('Enviados: '+(j.sent||[]).length);
+}
+window.remindStore=()=>remind('store','falta correo de tienda');
+window.remindInstall=()=>remind('install','invitada, sin instalar');
 window.sendOutreach=async()=>{
   const emails=invSel();if(!emails.length)return alert('Nada seleccionado.');
   if(!confirm('Enviar el email de captura (gracias + Apple ID/Google + enlace personal) a '+emails.length+' persona(s)?'))return;
