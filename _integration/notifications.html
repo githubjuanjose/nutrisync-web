@@ -39,10 +39,34 @@ input,textarea{font-family:inherit;font-size:13.5px;width:100%;box-sizing:border
 .filtros{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0}
 .err{background:#FFF1EC;border:2px solid #E8472A;border-radius:12px;padding:13px 15px;font-size:13px;color:#8A2A18;margin:14px 0}
 .aviso{background:#E9F7EE;border:1.5px solid #BFE5CC;border-radius:12px;padding:11px 15px;font-size:13px;margin:12px 0}
+.sev{font-size:10px;font-weight:800;border-radius:999px;padding:2px 8px}
+.sev.critica{background:#FFE4E0;color:#A32D2D}
+.sev.alta{background:#FFF3E0;color:#B4700F}
+.sev.media{background:#F1F5F9;color:#475569}
+.sev.baja{background:#E8F5EE;color:#0F6E56}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+@media(max-width:660px){.vs{grid-template-columns:1fr}}
+.col{border:1px solid #EFE3D7;border-radius:10px;padding:10px 12px;background:#FFFDFB}
+.col.prop{border-color:#BFE5CC;background:#F7FCF9}
+.col h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#8A7F78}
+.col.prop h4{color:#0F6E56}
+.lock{font-size:11.5px;color:#5F564F;background:#F4F0EA;border-radius:7px;padding:5px 9px;margin-bottom:6px}
+.lock:before{content:'🔒 pantalla bloqueada · ';color:#8A7F78}
+.tt{font-size:13.5px;font-weight:700}
+.cta{display:inline-block;font-size:11px;font-weight:800;background:#241D1A;color:#fff;border-radius:14px;padding:3px 10px;margin-top:6px}
+.hall{background:#FFF8EF;border-left:3px solid #E8B072;padding:7px 11px;border-radius:0 8px 8px 0;margin-top:9px;font-size:12.5px;color:#7A5A33}
+.hall b{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#B4700F}
+.elegido{font-size:11px;font-weight:800;border-radius:999px;padding:2px 9px;background:#E8F5EE;color:#0F6E56}
 </style></head><body><div class="w">
 
 <h1>🔔 Notificaciones</h1>
 <p class="lead">El catálogo de mensajes de la app. Cada uno tiene su clave; la app los pide por clave en tiempo de ejecución.</p>
+<div class="aviso" style="background:#FFF4F1;border-color:#F0A99C;color:#8A2A18">
+<b>Revisión inclusiva recibida.</b> De los 80 mensajes: <b>11 críticos</b>, 34 de riesgo alto y <b>12 duplicados</b>.
+Quedan 68 únicos. Cada uno lleva ahora su <b>propuesta revisada</b> al lado — un clic para quedaros con la
+original o adoptar la nueva. Varias marcadas como «Accepted» siguen necesitando cambios.
+<br><br><b>El cambio de fondo:</b> la pantalla bloqueada no muestra datos de salud. Ahí va un aviso genérico
+y el detalle solo aparece tras desbloquear el teléfono.</div>
 <div class="aviso"><b>Editar aquí se ve en el siguiente aviso.</b> No hace falta desplegar la app, ni siquiera una actualización OTA — el texto vive en la base de datos. Solo la lógica de <i>cuándo</i> se envía está en el código.</div>
 
 <div class="kpis" id="kpis"></div>
@@ -83,20 +107,45 @@ var CUANDO={
 };
 
 function tarjeta(t){
+  var sinElegir = !t.eleccion && t.estado!=='descartada';
   var h='<div class="n '+esc(t.estado)+'" data-code="'+esc(t.code)+'">'
     + '<div class="nh"><span class="code">'+esc(t.code)+'</span>'
+    + (t.severidad ? '<span class="sev '+esc(t.severidad)+'">'+esc(t.severidad)+'</span>' : '')
     + '<span class="pill '+esc(t.estado)+'">'+esc(t.estado)+'</span>'
+    + (t.eleccion ? '<span class="elegido">'+(t.eleccion==='propuesta'?'✓ propuesta adoptada':'✓ se mantiene la original')+'</span>' : '')
+    + (t.duplicada_de ? '<span class="pill descartada">'+esc(t.duplicada_de)+'</span>' : '')
     + (t.veces_enviada ? '<span class="meta">enviada '+t.veces_enviada+'×</span>' : '')
-    + '</div>'
-    + '<div class="txt">'+esc(t.texto)+'</div>'
-    + (t.texto_es ? '<div class="es">'+esc(t.texto_es)+'</div>' : '');
+    + '</div>';
+
+  if (t.duplicada_de) {
+    h += '<div class="txt" style="opacity:.6">'+esc(t.texto)+'</div>'
+      +  '<div class="meta">Duplicado: no hace falta decidir nada.</div>';
+    return h+'</div>';
+  }
+
+  // original a la izquierda, propuesta a la derecha
+  h += '<div class="vs">'
+    +  '<div class="col"><h4>Original</h4><div class="txt">'+esc(t.texto)+'</div>'
+    +  (t.texto_es ? '<div class="es">'+esc(t.texto_es)+'</div>' : '')+'</div>';
+  if (t.prop_cuerpo_en) {
+    h += '<div class="col prop"><h4>Propuesta revisada</h4>'
+      +  (t.prop_preview_en ? '<div class="lock">'+esc(t.prop_preview_en)+'</div>' : '')
+      +  '<div class="tt">'+esc(t.prop_titulo_en||'')+'</div>'
+      +  '<div class="txt">'+esc(t.prop_cuerpo_en)+'</div>'
+      +  (t.prop_cta_en ? '<span class="cta">'+esc(t.prop_cta_en)+'</span>' : '')
+      +  (t.prop_cuerpo_es ? '<div class="es" style="margin-top:8px">'+esc(t.prop_titulo_es||'')+' — '+esc(t.prop_cuerpo_es)+'</div>' : '')
+      +  '</div>';
+  }
+  h += '</div>';
+
+  if (t.hallazgo) h += '<div class="hall"><b>Hallazgo de la revisión'+(t.categorias?' · '+esc(t.categorias):'')+'</b>'+esc(t.hallazgo)+'</div>';
   if (t.observacion) h += '<div class="obs"><b>Observación de ingeniería</b>'+esc(t.observacion)+'</div>';
   if (t.nota) h += '<div class="meta">Anotasteis: «'+esc(t.nota)+'»</div>';
-  if (t.editado_el) h += '<div class="meta">Editada el '+esc(String(t.editado_el).slice(0,10))+'</div>';
-  h += '<div class="acts">'
-    +  '<button data-edit="'+esc(t.code)+'">Editar</button>'
-    +  (t.estado!=='activa' ? '<button data-est="'+esc(t.code)+'|activa">Activar</button>' : '')
-    +  (t.estado!=='borrador' ? '<button data-est="'+esc(t.code)+'|borrador">A borrador</button>' : '')
+
+  h += '<div class="acts">';
+  if (t.prop_cuerpo_en) h += '<button class="'+(sinElegir?'on':'')+'" data-elige="'+esc(t.code)+'|propuesta">Adoptar la propuesta</button>';
+  h += '<button data-elige="'+esc(t.code)+'|original">Mantener la original</button>'
+    +  '<button data-edit="'+esc(t.code)+'">Editar a mano</button>'
     +  (t.estado!=='descartada' ? '<button data-est="'+esc(t.code)+'|descartada">Descartar</button>' : '')
     +  '</div><div data-form="'+esc(t.code)+'"></div>';
   return h+'</div>';
@@ -105,13 +154,14 @@ function tarjeta(t){
 function pinta(){
   var d=D, r=d.resumen||{}, items=d.items||[];
   $('kpis').innerHTML =
-    kpi('Activas', r.activas||0) + kpi('Sin cerrar', r.borrador||0) +
-    kpi('Descartadas', r.descartadas||0) + kpi('En español', r.con_es||0) +
-    kpi('Grupos', r.grupos||0);
+    kpi('Sin decidir', r.sin_elegir||0) + kpi('Críticas', r.criticas||0) +
+    kpi('Riesgo alto', r.altas||0) + kpi('Activas', r.activas||0) +
+    kpi('Descartadas', r.descartadas||0);
 
-  $('filtros').innerHTML = ['todas','activa','borrador','descartada'].map(function(f){
-    return '<button class="'+(filtro===f?'on':'')+'" data-f="'+f+'">'+
-      (f==='todas'?'Todas':f.charAt(0).toUpperCase()+f.slice(1)+'s')+'</button>';}).join('');
+  var FL=[['todas','Todas'],['sin_elegir','Sin decidir'],['critica','Críticas'],
+          ['alta','Riesgo alto'],['activa','Activas'],['descartada','Descartadas']];
+  $('filtros').innerHTML = FL.map(function(f){
+    return '<button class="'+(filtro===f[0]?'on':'')+'" data-f="'+f[0]+'">'+f[1]+'</button>';}).join('');
   [].forEach.call($('filtros').querySelectorAll('button'),function(b){
     b.onclick=function(){filtro=b.getAttribute('data-f');pinta();};});
 
@@ -119,7 +169,11 @@ function pinta(){
   items.forEach(function(t){ (porGrupo[t.grupo]=porGrupo[t.grupo]||[]).push(t); });
   var html='';
   Object.keys(porGrupo).forEach(function(g){
-    var suyos=porGrupo[g].filter(function(t){return filtro==='todas'||t.estado===filtro;});
+    var suyos=porGrupo[g].filter(function(t){
+      if(filtro==='todas') return true;
+      if(filtro==='sin_elegir') return !t.eleccion && t.estado!=='descartada';
+      if(filtro==='critica'||filtro==='alta') return t.severidad===filtro;
+      return t.estado===filtro;});
     if(!suyos.length) return;
     var act=porGrupo[g].filter(function(t){return t.estado==='activa';}).length;
     html += '<div class="gh"><b>'+esc(NOMBRES[g]||g)+'</b> '
@@ -153,6 +207,17 @@ function enlaza(){
         guarda('admin_notification_set',{p_code:c,p_texto:en,p_texto_es:es||null});
       };
       box.querySelector('[data-cancel]').onclick=function(){box.innerHTML='';};
+    };
+  });
+
+  $('lista').querySelectorAll('button[data-elige]').forEach(function(b){
+    b.onclick=function(){
+      var v=b.getAttribute('data-elige').split('|');
+      var t=byCode[v[0]];
+      // quedarse con una crítica no se hace por descuido: se avisa
+      if (v[1]==='original' && t && t.severidad==='critica' &&
+          !confirm('Esta está marcada como CRÍTICA por la revisión.\n\n«'+t.hallazgo+'»\n\nSi la mantienes, se queda en borrador y no se enviará hasta que alguien la reescriba. ¿Seguro?')) return;
+      guarda('admin_notification_choose',{p_code:v[0],p_eleccion:v[1]});
     };
   });
 
