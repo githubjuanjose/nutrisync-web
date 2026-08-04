@@ -1149,7 +1149,7 @@ if os.path.exists(ts):
 # r12-b6: el piloto se parte en tres superficies — operación (pilot.html),
 # PLAN semanal (pilot-planning.html) y OBSERVABILIDAD (pilot-observability.html).
 # Las gráficas salen del panel Business case del MIS y viven en su pestaña.
-for _f in ("pilot-charts.js", "pilot-planning.html", "pilot-observability.html"):
+for _f in ("pilot-charts.js", "pilot-planning.html", "pilot-observability.html", "daily-ops.html"):
     _src = os.path.join(ASSETS, _f)
     if os.path.exists(_src):
         shutil.copy(_src, os.path.join(PUB, "hub", _f))

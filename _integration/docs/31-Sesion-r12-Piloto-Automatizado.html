@@ -1,0 +1,112 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Sesión r12 — Piloto automatizado y observable — NutriSync Docs</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.navbtns{display:flex;gap:16px;align-items:center;}
+.navbtns a:first-child{padding:5px 12px;border:1px solid var(--line);border-radius:20px;}
+.navbtns a:first-child:hover{border-color:var(--coral);background:var(--cream);}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+h4{font-size:16px;font-weight:800;margin:20px 0 6px;}
+p{margin:10px 0;}
+a{color:var(--coral-deep);}
+strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:'SF Mono',Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:14px 0;padding:12px 18px;background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;color:#5d524b;}
+blockquote p{margin:4px 0;}
+ul,ol{margin:10px 0;padding-left:24px;}
+li{margin:5px 0;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;}
+tbody tr:nth-child(even){background:var(--cream);}
+.pill{display:inline-block;background:#FDE6DD;color:var(--coral-deep);font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;}
+.card{display:block;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:10px 0;text-decoration:none;color:var(--ink);transition:.15s;}
+.card:hover{border-color:var(--coral);background:var(--cream);}
+.card .t{font-weight:800;font-size:16px;color:var(--coral-deep);}
+.card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
+.sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
+</style></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap">
+<h1>Sesión r12 — El piloto pasa a medirse solo</h1>
+<p style="font-size:17px;color:var(--muted)">4 de agosto de 2026 · de <code>po81</code> a <code>po89</code> · 9 despliegues web, 1 doble OTA, 7 ficheros SQL, 2 Edge Functions y 2 automatismos nuevos.</p>
+
+<blockquote><p>El hilo conductor del día: <strong>dejar de mirar números ilustrativos y empezar a medir el piloto de verdad</strong>. Al final de la jornada sabemos que 8 de 35 testers de iOS tienen la app instalada — un dato que esta mañana no existía en ninguna parte.</p></blockquote>
+
+<h2>1 · Los dos bugs de Pilar</h2>
+<h3>El anillo de movimiento que no cerraba</h3>
+<p>Reportado como "con strength training no me cierra el anillo cuando es el most recommended". Tuvo <strong>dos causas encadenadas</strong>, y la segunda solo apareció tras arreglar la primera:</p>
+<ol>
+<li><strong>Intensidades compuestas</strong>: el catálogo trae valores como <code>Moderate-High</code>, <code>Low-Mid</code> o <code>Restorative Yoga</code> que no casaban con el mapa de cinco valores limpios. Se sustituyó por clasificación <em>por contenido</em>, tomando siempre el nivel más alto presente.</li>
+<li><strong>El ítem sin intensidad</strong>: varias fichas de fuerza no declaran intensidad porque la tarjeta muestra "Most Recommended" en su lugar. Se guardaba <code>null</code> y el componente de movimiento quedaba a cero <em>justo en el caso por defecto</em>. Ahora, si el ítem no lo declara, <strong>manda su categoría</strong> (strength → moderate, HIIT → high, yoga → low). Arregla también lo ya registrado, sin migración.</li>
+</ol>
+
+<h3>El CSS que nunca aparecía</h3>
+<p>La tarjeta pedía un ciclo cerrado como referencia, así que con un solo ciclo en curso quedaba bloqueada ~2 meses y mostraba "11/7 días", que no significa nada. Se añadió una <strong>escalera de baseline</strong>: sin ciclo cerrado, la referencia son los 7 primeros días registrados y la ventana actual son los posteriores. Se desbloquea a los 12 días y mientras tanto dice exactamente cuántos faltan.</p>
+
+<h3>La regla que salió de aquí</h3>
+<blockquote><p><strong>El valor por defecto es una elección.</strong> Dos bugs de la misma familia en dos semanas (la rueda de métricas que no confirmaba el valor visible, y el checklist que guardaba null). Todo selector entrega valor aunque no se toque; si el dato no viene, manda el respaldo declarado, nunca un null silencioso. La lógica de selección vive en <code>lib/pickers.ts</code>, pura y con unitarios propios.</p></blockquote>
+
+<h2>2 · El piloto, en tres superficies</h2>
+<p>Las gráficas del piloto vivían dentro del panel Business case del MIS, mezcladas con una escala mensual que llega a 2027 — el piloto quedaba aplastado hasta ser invisible. Se separó en tres pestañas con responsabilidades distintas:</p>
+<table><thead><tr><th>Pestaña</th><th>Para qué</th></tr></thead><tbody>
+<tr><td><strong>🧪 Piloto</strong></td><td>Operar: cohortes, invitaciones, recordatorios, nombres cercanos, CRUD.</td></tr>
+<tr><td><strong>🗓 Plan piloto</strong></td><td>Decidir: objetivo semanal editable, hitos que no se mueven, objetivo vs real.</td></tr>
+<tr><td><strong>📡 Obs. piloto</strong></td><td>Observar: distribución del build, uso real, embudo por cohorte y feedback.</td></tr>
+</tbody></table>
+<p>Las gráficas son <strong>una sola fuente</strong> (<code>hub/pilot-charts.js</code>, funciones puras con unitarios) para que las dos pestañas no se separen con el tiempo. El MIS enlaza, no duplica.</p>
+
+<h3>Decisiones de diseño que costaron una iteración</h3>
+<ul>
+<li><strong>La línea real corta en el presente.</strong> El burn-up prolongaba el "actual" plano hasta 2027, que se leía como una promesa de crecimiento cero.</li>
+<li><strong>La escala la fija la población de testers (58), no el máximo del dato.</strong> Con auto-escala, 2 usuarias sobre 58 se dibujaban como si fueran el 100%.</li>
+<li><strong>Cada serie termina en su cifra.</strong> Una línea no dice cuántos: ahora se lee "objetivo 58 · iOS 3 · Android 1" sin contar píxeles.</li>
+<li><strong>Filtro por grupo de test</strong> (founders / advisory / wave-1) en las dos pestañas, más tarjetas por grupo.</li>
+</ul>
+
+<h2>3 · Comunicación con las testers, automatizada</h2>
+<p>Tres plantillas por audiencia, cada una con su botón, todas en la Edge Function (una sola fuente, nada de copiar y pegar):</p>
+<ul>
+<li><strong>Captura</strong> — quien acaba de entrar en el piloto.</li>
+<li><strong>Correo de tienda</strong> — lleva 3+ días sin darnos su Apple ID o cuenta de Google.</li>
+<li><strong>Instalar</strong> — tiene el build asignado y no ha entrado.</li>
+</ul>
+<p>La audiencia la calcula el backend, así que nadie selecciona filas. <strong>Salen solos cada mañana a las 9:00</strong> vía pg_cron; el botón es solo para adelantarlos. Anti-spam por construcción: máximo 2 por persona, 5 días entre ellos, y paran en cuanto la tester avanza de estado.</p>
+<p>Se añadió el <strong>nombre cercano</strong>: las founders escriben cómo llaman a cada tester y el saludo se resuelve en una única función SQL — apodo → nombre de la waitlist → sin nombre.</p>
+
+<h2>4 · El dato que faltaba: quién ha instalado de verdad</h2>
+<p>Hasta hoy solo sabíamos quién creaba cuenta en la app. Ahora la Edge Function <code>store-stats</code> pregunta a App Store Connect cada mañana y guarda una instantánea.</p>
+<p><strong>Primera lectura: 35 testers en TestFlight, 8 instaladas, 27 solo invitadas.</strong> El cuello de botella del piloto no es conseguir testers, es que crucen la puerta.</p>
+<p>Para Google Play se decidió <em>no</em> montar el equivalente: su API no expone el estado de instalación del track interno y las métricas viven en informes con export a Cloud Storage. Para 12 testers, matar moscas a cañonazos. La señal de Android es la nuestra — cuenta creada + log de accesos — que además mide uso, no descarga.</p>
+
+<h2>5 · Guardarraíles: cinco packs y dos lecciones nuevas</h2>
+<p>El pack de regresión creció de 10 a <strong>29 unitarios web</strong> y de 96 a <strong>129 jest</strong>. Todos corren automáticos en el Deploy y abortan el push en rojo.</p>
+<h3>Lo que se aprendió por las malas</h3>
+<blockquote><p><strong>El gateway de Supabase exige <code>Authorization</code> antes de invocar la Edge Function.</strong> Sin él responde <code>UNAUTHORIZED_NO_AUTH_HEADER</code> y nuestro control ni se evalúa. El cron de recordatorios lo tenía mal: habría fallado a la mañana siguiente <em>en silencio</em>. Toda llamada desde pg_net lleva ahora Authorization + apikey + el secreto propio.</p></blockquote>
+<blockquote><p><strong>En App Store Connect, <code>/v1/apps/{id}/betaTesters</code> da 403 con clave de equipo.</strong> Lo que funciona es el recurso de primer nivel <code>/v1/betaTesters?filter[apps]={id}</code>. Y el <code>detail</code> del error de Apple es lo único que explica un 403: truncarlo a 200 caracteres nos costó una iteración.</p></blockquote>
+<p>También se corrigieron dos <strong>falsos positivos propios</strong>: el smoke trataba como fallo el 308 de Cloudflare Pages hacia las URLs limpias (<code>/legal/terms.html</code> → <code>/legal/terms</code>), y el linkcheck marcaba <code>?r=builders</code> como roto. Un guardarraíl que grita sin motivo se acaba ignorando.</p>
+<p>Y un fallo silencioso menos: si falta el SQL del piloto, la tarjeta del MIS <strong>lo dice</strong> con el nombre del fichero, en vez de quedarse en blanco.</p>
+
+<h2>6 · Operación diaria</h2>
+<p>Cierra el círculo la pestaña <strong>📋 Operación</strong>: salud de los automatismos (verde discreto, rojo grande), qué toca hoy con números y enlace directo, los días que quedan para el 17-ago y el 8-oct, y los procedimientos escritos — desplegar, publicar OTA, qué hacer si un cron falla, dar de alta testers, volver atrás un deploy.</p>
+<p>Se comprueba solo al abrir la página. No hay nada que ejecutar a mano.</p>
+
+<h2>7 · Lo que queda en manos de otros</h2>
+<ul>
+<li><strong>27 testers de iOS</strong> con el build asignado que no han instalado — el recordatorio ya sale solo.</li>
+<li><strong>11 testers Android</strong> antes del <strong>17-ago</strong>: Google Play exige 12 activas 14 días seguidos para promocionar a producción.</li>
+<li>Founders: decisiones D5-D8 (pagos), D12 (proveedor de IA), y los datos del responsable para cerrar los documentos legales.</li>
+<li>Los tres enlaces de Figma que faltan en Prototipos.</li>
+</ul>
+
+<hr>
+<p style="color:var(--muted);font-size:13.5px">Registro de sesión · generado el 4-ago-2026. El detalle técnico vive en <code>CLAUDE.md</code> (memoria operativa), los ficheros SQL en <code>backend-sql/</code> y los zips de cada despliegue en <code>releases/</code>, inmutables.</p>
+</div></body></html>

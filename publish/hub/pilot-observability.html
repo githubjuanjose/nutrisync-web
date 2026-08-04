@@ -70,6 +70,7 @@ td.msg{max-width:520px;white-space:pre-wrap}
 <div class="nsnb-strip">
   <nav class="nsnb-tabs" id="nsnb-tabs">
     <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a>
+      <a class="nsnb-tab" href="/hub/daily-ops.html">📋 Operación</a>
       <a class="nsnb-tab" href="/hub/admin-mis-console.html">📊 MIS</a>
       <a class="nsnb-tab" href="/hub/finance.html">💶 Finanzas</a>
       <a class="nsnb-tab" href="/hub/pilot.html">🧪 Piloto</a>
@@ -164,6 +165,8 @@ td.msg{max-width:520px;white-space:pre-wrap}
   <h1>📡 <span data-t="title"></span></h1>
   <div class="sub" data-t="sub"></div>
 
+  <div id="health"></div>
+
   <div class="kpis" id="kpis"></div>
   <div class="card" style="margin-top:12px"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><b style="font-size:12.5px" data-t="cohLbl"></b><select id="coh" style="font-family:inherit;font-size:13px;padding:6px 10px;border:1px solid var(--line);border-radius:10px"></select></div><div id="cohCards" style="margin-top:10px"></div></div>
 
@@ -204,6 +207,10 @@ const T=ES?{
   title:'Pilot Observability', gate:'Inicia sesión de founder (Access + admin con MFA) y recarga.',
   sub:'Cómo va el piloto de verdad: distribución del build, uso diario y lo que nos cuentan. El objetivo se fija en Pilot Planning; aquí solo se observa.',
   cohAll:'Todos los grupos', cohLbl:'Grupo de test', byCoh:'Por grupo de test',
+  autoOk:'Automatismos al día', autoBad:'⚠️ Un automatismo ha fallado',
+  autoSub:'Se comprueba solo cada vez que abres esta página · nada que ejecutar a mano',
+  jNever:'sin ejecutar todavía', jStale:'sin correr en más de 26 h', jFail:'último intento fallido',
+  snapLbl:'Última foto de TestFlight',
   h1:'Estado de distribución del build', h2:'Uso real', h3:'Embudo por cohorte', h4:'Feedback reciente',
   statesHint:'Invitada (le mandamos el correo) → build asignado (está en TestFlight o en el track interno de Play) → instalada (ya tiene cuenta). "Sin responder" son las invitadas que aún no nos han dado su correo de tienda.',
   activeHint:'Activas por semana frente al objetivo. Una tester que instala y no vuelve no cuenta como piloto.',
@@ -222,6 +229,10 @@ const T=ES?{
   title:'Pilot Observability', gate:'Sign in as a founder (Access + admin with MFA) and reload.',
   sub:'How the pilot is actually going: build distribution, real usage and what testers tell us. Targets are set in Pilot Planning; this page only observes.',
   cohAll:'All test groups', cohLbl:'Test group', byCoh:'By test group',
+  autoOk:'Automations healthy', autoBad:'⚠️ An automation failed',
+  autoSub:'Checked automatically every time you open this page · nothing to run by hand',
+  jNever:'never run yet', jStale:'no run in over 26 h', jFail:'last attempt failed',
+  snapLbl:'Latest TestFlight snapshot',
   h1:'Build distribution status', h2:'Real usage', h3:'Funnel by cohort', h4:'Recent feedback',
   statesHint:'Invited (we emailed her) → build assigned (she is in TestFlight or the Play internal track) → installed (account created). "Not assigned" are invited testers who have not given us their store email yet.',
   activeHint:'Weekly actives against target. A tester who installs and never returns is not a pilot.',
@@ -241,6 +252,28 @@ document.querySelectorAll('[data-t]').forEach(el=>{el.innerHTML=T[el.dataset.t]|
 document.title=T.title+' — NutriSync Founders';
 
 const P=window.NSPilot;
+
+/* r12-b8: la salud de los crons se mira SOLA al abrir la pagina. Verde y
+   discreta cuando todo va; roja y grande cuando algo falla — que es cuando
+   hay que enterarse. */
+async function loadHealth(){
+  const{data,error}=await sb.rpc('admin_automation_health');
+  if(error||!data)return;
+  const jobs=data.jobs||[],snap=data.snapshot;
+  const bad=jobs.filter(j=>!j.active||!j.ok||!j.fresh);
+  const why=j=>!j.start_time?T.jNever:(!j.ok?T.jFail:(!j.fresh?T.jStale:''));
+  const when=t=>t?new Date(t).toLocaleString(ES?'es-ES':'en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'—';
+  const rows=jobs.map(j=>'<div style="display:flex;gap:8px;align-items:baseline;font-size:12.5px;margin-top:3px">'+
+    '<span>'+((j.active&&j.ok&&j.fresh)?'🟢':'🔴')+'</span><b>'+esc(j.jobname)+'</b>'+
+    '<span class="hint">'+esc(j.schedule)+' · '+when(j.start_time)+(why(j)?' · '+why(j):'')+'</span></div>').join('');
+  const snapTxt=snap?('<div class="hint" style="margin-top:8px">'+T.snapLbl+': '+when(snap.taken_at)+' · '+
+    (snap.total||0)+' testers · '+esc(JSON.stringify(snap.tally||{}))+'</div>'):'';
+  $('health').innerHTML='<div class="card" style="margin-top:0;border-color:'+(bad.length?'#E8B072':'var(--line)')+
+    ';background:'+(bad.length?'#FFF8EF':'#fff')+'">'+
+    '<b style="font-size:13px;color:'+(bad.length?'#C73A20':'var(--good)')+'">'+(bad.length?T.autoBad:'🟢 '+T.autoOk)+'</b>'+
+    '<div class="hint">'+T.autoSub+'</div>'+rows+snapTxt+'</div>';
+}
+
 (async()=>{
   const{data:{session}}=await sb.auth.getSession();
   if(!session){$('gate').style.display='block';return;}
@@ -270,6 +303,7 @@ const P=window.NSPilot;
   }
   $('coh').innerHTML='<option value="">'+T.cohAll+'</option>';
   await loadWeekly();
+  await loadHealth();
 
   const [fn,kp]=await Promise.all([sb.rpc('admin_pilot_funnel'),sb.rpc('admin_kpis')]);
   const daily=((kp.data||{}).daily_active)||[];
