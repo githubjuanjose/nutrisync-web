@@ -173,6 +173,17 @@ tbody tr:nth-child(even){background:var(--cream);}
 <p>APPFEEDBACK (F1–F49 + Movement/NutriLog rebuilds) = <strong>Round 2, parked per Lucía</strong>; assets + Excel DBs received and inventoried.</p>
 <hr />
 <h2>Log (newest first)</h2>
+<h3>2026-08-05 · r13 — StartUp Admin (quinta superficie) · <code>po93</code>→<code>po98</code></h3>
+<ul>
+<li><b>Nuevo módulo independiente</b> <code>repos/adminsite</code> → Pages <code>nutrisync-admin</code> → <code>admin.nutrisynccollective.com</code>. Contabilidad de partida doble del build: coste por proyecto y feature, presupuestos, libro diario, P&amp;L, balance, ingresos diferidos (IFRS 15) y cierre con candado. Cero dependencias con <code>webdeploy</code>; lo único compartido es el acceso.</li>
+<li><b>Backend:</b> 8 tablas <code>sa_*</code> + 7 funciones, todas con <code>is_sa_admin()</code> — MFA <b>sin</b> cláusula de gracia, a diferencia del resto del hub. Ficheros <code>2026-08-05-startup-admin.sql</code> y <code>-v2.sql</code>.</li>
+<li><b>IAS 38:</b> investigación → gasto; desarrollo → <code>capitalization_review</code>. Nada capitaliza automáticamente.</li>
+<li><b>Web:</b> tercera puerta en el pie del marketing (<code>ns-admin-door</code>), rejilla 2×2 con la ficha grande a doble ancho (<code>ns-doors-grid</code>) y columna de marca a 400px para que el ritmo del pie sea uniforme (<code>ns-footer-brand</code>).</li>
+<li><b>Hub:</b> la página de MFA muestra ahora quién puede entrar en la contabilidad (<code>admin_mfa_readiness()</code>) — antes nadie lo sabía: la RLS de <code>admins</code> es «lee tu propia fila».</li>
+<li><b>Calidad:</b> pack nuevo <code>admin-tests.mjs</code> (49) con gate de sintaxis del HTML servido, contrato RPC↔SQL, gating admin, sello de asset y comprobación de <code>ORDER BY</code>. <code>web-tests.mjs</code> pasa de 34 a 45.</li>
+<li><b>Mobile:</b> sin cambios — esta iteración no cruza a la app.</li>
+</ul>
+
 <h3>1 Ago 2026 — Sprint 11 · Epic K construido: identidad completa · app v0.18.0 + web po37</h3>
 <p><em>(A partir de aquí, las iteraciones pasan a llamarse </em><em>sprints</em><em>.)</em></p>
 <ul>

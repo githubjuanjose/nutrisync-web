@@ -146,6 +146,12 @@ code{background:#FBEDE6;color:#9a3a25;padding:2px 7px;border-radius:6px;font-siz
 <h1>🔐 Doble factor (MFA) de administradora</h1>
 <p>Obligatorio para las 4 cuentas admin (decisión 2A). Se configura una vez con Google Authenticator, 1Password o similar; después, las herramientas del hub pedirán tu sesión reforzada.</p>
 <div class="c" id="box">Cargando…</div>
+
+<h2 style="font-size:16px;margin:26px 0 2px">Quién puede entrar en StartUp Admin</h2>
+<p style="margin-top:0">La contabilidad del build (<a href="https://admin.nutrisynccollective.com" style="color:#C73A20;font-weight:600">admin.nutrisynccollective.com</a>)
+exige sesión reforzada <b>sin excepciones</b>: a diferencia del resto del hub, no basta con ser admin.
+Si tu fila sale en rojo, actívalo arriba y listo.</p>
+<div class="c" id="ready">Cargando…</div>
 <script type="module">
 const { createClient } = window.supabase;
 const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
@@ -195,7 +201,40 @@ async function boot(){
     const v=await sb.auth.mfa.verify({factorId,challengeId:ch.data.id,code:document.getElementById('code').value.trim()});
     if(v.error){document.getElementById('e').textContent=v.error.message;return;}
     box.innerHTML='<p class="ok">✅ MFA activado y sesión reforzada. Ya puedes usar todas las herramientas.</p>';
+    readiness();
   };
 }
-boot();
+
+/* ── quién está lista para la contabilidad (r13) ────────────────────────────
+   La RLS de `admins` es "lee tu propia fila", así que sin esta RPC nadie —
+   yo incluido — sabe quién tiene segundo factor. Nunca en blanco: si la
+   consulta no existe todavía, se dice qué fichero hay que ejecutar. */
+async function readiness(){
+  const el=document.getElementById('ready');
+  const {data,error}=await sb.rpc('admin_mfa_readiness');
+  if(error){
+    el.innerHTML='<p class="err"><b>⚠️ Falta aplicar SQL en Supabase.</b><br>'+
+      'La consulta <code>admin_mfa_readiness</code> no responde: '+esc(error.message)+'<br>'+
+      'Ejecuta <b>backend-sql/2026-08-05-mfa-readiness.sql</b> entero y recarga.</p>';
+    return;
+  }
+  const filas=(data||[]).map(r=>
+    '<tr><td style="padding:7px 6px;border-bottom:1px solid #F2E8DE">'+esc(r.email)+'</td>'+
+    '<td style="padding:7px 6px;border-bottom:1px solid #F2E8DE">'+
+      (r.tiene_mfa?'<span class="ok">✅ lista</span>'
+                  :'<span class="err">⛔ le falta activar MFA</span>')+'</td>'+
+    '<td style="padding:7px 6px;border-bottom:1px solid #F2E8DE;color:#8A7F78;font-size:12px">'+
+      (r.ultimo_acceso?esc(String(r.ultimo_acceso).slice(0,10)):'nunca ha entrado')+'</td></tr>').join('');
+  const {data:pend}=await sb.rpc('admin_pending_founders');
+  const aviso=(pend&&pend.length)
+    ? '<p style="font-size:12.5px;color:#B4700F;margin:10px 0 0">Sin cuenta creada todavía: '+
+      pend.map(p=>esc(p.email)).join(', ')+'. Hasta que no entren una primera vez no son admin.</p>' : '';
+  el.innerHTML='<table style="width:100%;border-collapse:collapse;font-size:13px">'+
+    '<tr><th style="text-align:left;padding:6px;font-size:11px;color:#8A7F78;text-transform:uppercase">Cuenta</th>'+
+    '<th style="text-align:left;padding:6px;font-size:11px;color:#8A7F78;text-transform:uppercase">StartUp Admin</th>'+
+    '<th style="text-align:left;padding:6px;font-size:11px;color:#8A7F78;text-transform:uppercase">Último acceso</th></tr>'+
+    filas+'</table>'+aviso;
+}
+
+boot().then(readiness);
 </script></div></body></html>

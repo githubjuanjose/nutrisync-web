@@ -148,9 +148,22 @@ ul,ol{margin:10px 0;padding-left:24px}li{margin:5px 0}strong{font-weight:700}
 <h2>How work flows</h2>
 <p>Founder feedback (now in-app via Send Feedback → <code>feedback</code> table) → triaged into R-numbered batches → built → OTA to all 4 surfaces within hours. Design ships web packs; <code>integrate.py</code> re-applies our layer; doc 12 carries open Design requests.</p>
 <h2>Status</h2>
+<p style="font-size:13px;color:var(--muted)">Actualizado 5-ago-2026 (r13). Este documento venía arrastrando el estado de julio; queda al día aquí.</p>
 <ul>
-<li>App <strong>v0.11.0</strong> · Web <strong>v11.45-po6</strong> · PWA at app parity · Rounds 1–3 of founder feedback: <strong>closed</strong> (24/24 web · 56/56 app).</li>
+<li>App <strong>v0.19.0</strong> · Web <strong>v11.51-po98</strong> · PWA a la par · <strong>5 superficies</strong> (marketing+web-app · PWA · app nativa · hub · StartUp Admin).</li>
+<li>Rondas 1–10 de feedback de founders: <strong>cerradas</strong>. Piloto en marcha: 35 testers en TestFlight, 10 con la app instalada.</li>
+<li>Calidad: 6 packs automáticos — semáforo + <code>web-tests</code> (45) + <code>web-linkcheck</code> (1566 enlaces) + <code>admin-tests</code> (49) + jest app (129) + <code>smoke-prod</code>.</li>
 </ul>
+
+<h2>Entregado en r13 (5-ago)</h2>
+<table>
+<thead><tr><th>Qué</th><th>Dónde</th></tr></thead>
+<tbody>
+<tr><td><strong>StartUp Admin</strong> — contabilidad de partida doble del build: coste por proyecto y feature, presupuestos, libro diario, P&amp;L, balance, ingresos diferidos y cierre con candado</td><td><code>repos/adminsite</code> → <code>admin.nutrisynccollective.com</code></td></tr>
+<tr><td>MFA estricto para la contabilidad (<code>is_sa_admin</code>, sin cláusula de gracia) y tabla de quién está listo</td><td><code>backend-sql/2026-08-05-*.sql</code> · <code>hub/mfa.html</code></td></tr>
+<tr><td>Tercera puerta en el pie del marketing + rejilla y ritmo del pie</td><td><code>ns-admin-door</code> · <code>ns-doors-grid</code> · <code>ns-footer-brand</code></td></tr>
+</tbody>
+</table>
 <h2>Open build backlog (priority order)</h2>
 <table>
 <thead>
@@ -216,4 +229,12 @@ ul,ol{margin:10px 0;padding-left:24px}li{margin:5px 0}strong{font-weight:700}
 <h2>Open Design requests (doc 12)</h2>
 <p>§14 web-app Nutri avatars · §16 <code>contact@</code> at source · §17 footer anchors + dead links · es.json condLabels fix · translations for new screen labels.</p>
 <h2>Awaiting founders</h2>
-<p>Round-4 feedback (via the app!) · EN copy sign-off (unlocks translations) · marketing video · lawyer texts.</p></div></body></html>
+<ul>
+<li><strong>MFA</strong> — las 4 cuentas admin necesitan segundo factor para entrar en StartUp Admin. Estado en <a href="../mfa.html">hub/mfa.html</a>.</li>
+<li><strong>Pagos (D5–D8)</strong> — decisiones de Epic L, doc 29.</li>
+<li><strong>Ciclo (D9–D11)</strong> — Propuesta 31.</li>
+<li><strong>IA (D12–D14)</strong> — Propuesta 32, incluye elección de proveedor.</li>
+<li><strong>Android</strong> — 12+ testers antes del 17-ago.</li>
+<li><strong>Lucía</strong> — plantilla de fichas de tienda (≤5-sep).</li>
+<li><strong>Asesor contable</strong> — validar plan de cuentas y criterio IAS 38 / IFRS 15 antes de cualquier uso estatutario.</li>
+</ul></div></body></html>

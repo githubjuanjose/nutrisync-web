@@ -1,0 +1,272 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Sesión r13 — StartUp Admin: la contabilidad del build — NutriSync Docs</title><link rel="stylesheet" href="/assets/fonts/fonts.css"><style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.navbtns{display:flex;gap:16px;align-items:center;}
+.navbtns a:first-child{padding:5px 12px;border:1px solid var(--line);border-radius:20px;}
+.navbtns a:first-child:hover{border-color:var(--coral);background:var(--cream);}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+h4{font-size:16px;font-weight:800;margin:20px 0 6px;}
+p{margin:10px 0;}
+a{color:var(--coral-deep);}
+strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:'SF Mono',Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:14px 0;padding:12px 18px;background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;color:#5d524b;}
+blockquote p{margin:4px 0;}
+ul,ol{margin:10px 0;padding-left:24px;}
+li{margin:5px 0;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;}
+tbody tr:nth-child(even){background:var(--cream);}
+.pill{display:inline-block;background:#FDE6DD;color:var(--coral-deep);font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;}
+.card{display:block;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:10px 0;text-decoration:none;color:var(--ink);transition:.15s;}
+.card:hover{border-color:var(--coral);background:var(--cream);}
+.card .t{font-weight:800;font-size:16px;color:var(--coral-deep);}
+.card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
+.sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
+</style><script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head><body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a>
+      <a class="nsnb-tab" href="/hub/daily-ops.html">📋 Operación</a>
+      <a class="nsnb-tab" href="/hub/admin-mis-console.html">📊 MIS</a>
+      <a class="nsnb-tab" href="/hub/finance.html">💶 Finanzas</a>
+      <a class="nsnb-tab" href="/hub/pilot.html">🧪 Piloto</a>
+      <a class="nsnb-tab" href="/hub/pilot-planning.html">🗓 Plan piloto</a>
+      <a class="nsnb-tab" href="/hub/pilot-observability.html">📡 Obs. piloto</a>
+      <a class="nsnb-tab" href="/hub/feedback.html">💬 Feedback</a>
+      <a class="nsnb-tab" href="/hub/waitlist.html">📬 Waitlist</a>
+      <a class="nsnb-tab" href="/hub/documentation/index.html">📚 Docs</a>
+    <a class="nsnb-tab" href="/hub/translations.html">🌍 Traducciones</a>
+      <a class="nsnb-tab" href="/hub/review.html">🔎 Review</a>
+      <a class="nsnb-tab" href="/hub/prototypes.html">🧩 Prototipos</a>
+      <a class="nsnb-tab" href="/hub/development-planning-backlog.html">🗂 Backlog</a>
+      <a class="nsnb-tab" href="/hub/investors-business-case.html">🎯 Pitch</a>
+      <a class="nsnb-tab" href="/hub/access.html">🔑 Access</a>
+      <a class="nsnb-tab" href="/hub/mfa.html">🔐 MFA</a>
+    </div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  var here=(location.pathname.split('/').pop()||'').toLowerCase();
+  var dir=location.pathname.toLowerCase();
+  var ON='background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : f.split('/').pop()===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar --><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap">
+<h1>Sesión r13 — StartUp Admin: la contabilidad del build</h1>
+<p style="font-size:17px;color:var(--muted)">5 de agosto de 2026 · de <code>po93</code> a <code>po98</code> · una quinta superficie nueva, 3 ficheros SQL, 49 unitarios nuevos y cuatro errores míos que dejaron guardarraíl.</p>
+
+<blockquote><p><b>En una frase:</b> NutriSync tiene ya un sitio propio donde se registra lo que cuesta construirla — con partida doble de verdad, IAS 38 sin atajos y una puerta que no perdona a quien no tiene segundo factor.</p></blockquote>
+
+<h2>1 · Por qué un módulo aparte</h2>
+<p>La petición original era «revisar y rehacer la página de finanzas». La página <code>hub/finance.html</code> es un libro simple de caja: sirve para el día a día y funciona. Lo que faltaba era otra cosa — <b>contabilidad analítica del build</b>: en qué proyecto y en qué funcionalidad se va el dinero, con asientos equilibrados, presupuestos y cierres.</p>
+<p>Mezclarlas habría estropeado las dos. Así que StartUp Admin nace como <b>quinta superficie independiente</b>:</p>
+<table>
+<tr><th>Pieza</th><th>Dónde vive</th></tr>
+<tr><td>Sitio</td><td><code>repos/adminsite</code> → Pages <code>nutrisync-admin</code> → <code>admin.nutrisynccollective.com</code></td></tr>
+<tr><td>Datos</td><td>Tablas <code>sa_*</code> en el mismo Supabase</td></tr>
+<tr><td>Despliegue</td><td><code>tools/Deploy StartUp Admin.command</code> (tests → sellado → wrangler)</td></tr>
+<tr><td>Tests</td><td><code>node tools/admin-tests.mjs</code> — 49</td></tr>
+</table>
+<p>Cero dependencias con <code>webdeploy</code>, con los packs de Design o con <code>integrate.py</code>. Un pack de Design no puede pisarlo y su despliegue no puede tumbar la web. <b>Lo único compartido es la puerta.</b></p>
+
+<h2>2 · Las dos puertas (y por qué son dos)</h2>
+<p>Al vivir en otro dominio, la sesión del hub no viaja hasta aquí: <code>localStorage</code> es por origen. Así que StartUp Admin tiene entrada propia, con el mismo Supabase y las mismas founders:</p>
+<ol>
+<li><b>Cloudflare Access</b> — PIN al correo de founder. Dice quién llega a la puerta.</li>
+<li><b>Sesión admin con MFA</b> — correo → código por email → código de la app de autenticación. Dice quién entra.</li>
+</ol>
+<p>Y una diferencia deliberada con el resto del hub. <code>is_admin_mfa()</code> tiene una cláusula de gracia: si una cuenta admin nunca activó MFA, entra igual con <code>aal1</code>. Es una rampa de adopción razonable para las herramientas del hub — pero para la contabilidad significaría que el segundo factor es obligatorio solo para quien ya lo puso. Decisión de Juanjo: cerrarlo <b>aquí y solo aquí</b>.</p>
+<pre><code>create or replace function public.is_sa_admin()
+returns boolean language sql stable security definer as $$
+  select exists (select 1 from admins a where a.user_id = auth.uid())
+     and coalesce(auth.jwt()->>'aal','aal1') = 'aal2'
+$$;</code></pre>
+<p>El hub no se toca, así que ninguna founder pierde acceso a sus herramientas. Para ver quién está lista, la página de MFA del hub tiene ahora una tabla (<code>admin_mfa_readiness()</code>): sin ella nadie lo sabía, porque la RLS de <code>admins</code> es «lee tu propia fila».</p>
+
+<h2>3 · Qué hace, pestaña a pestaña</h2>
+<table>
+<tr><th>Pestaña</th><th>Para qué</th></tr>
+<tr><td>📌 Hoy</td><td>Registrar un coste (proyecto · feature · fase · origen · importe). El asiento equilibrado se genera solo. Cuatro cifras arriba y el coste diario en barras.</td></tr>
+<tr><td>🏗 Coste</td><td>La vista que responde a «¿en qué se nos ha ido el dinero?»: ranking por feature con su peso, y desglose por origen (tokens de IA, nube, SaaS, colaboradores, comisiones).</td></tr>
+<tr><td>🎯 Proyectos</td><td>Presupuesto editable y consumo real. Ámbar al 80%, rojo al pasarse con el exceso en euros.</td></tr>
+<tr><td>📒 Diario</td><td>Asientos del periodo y formulario manual que no deja guardar si no cuadra — y el servidor lo vuelve a rechazar si se intenta por otra vía.</td></tr>
+<tr><td>📊 Informes</td><td>P&amp;L por grupo, balance con comprobación de cuadre e ingresos diferidos por días de servicio prestados (IFRS 15).</td></tr>
+<tr><td>🔒 Cierre</td><td>Checklist de tres semáforos y candado por día/mes/trimestre/año. Un periodo cerrado rechaza cualquier asiento con esa fecha.</td></tr>
+</table>
+
+<h2>4 · Las tres reglas que no se negocian</h2>
+<h3>El dinero en enteros</h3>
+<p>Céntimos (<code>*_minor</code>) en la base de datos, en la librería y en la interfaz. Cero coma flotante en importes. <code>SA.toMinor</code> acepta coma decimal española y redondea al céntimo, no trunca.</p>
+<h3>Un asiento cuadra o no existe</h3>
+<p>Validación espejo en tres capas: <code>SA.entryBalance</code> en el navegador, <code>sa_entry_add</code> en el servidor, y un CHECK en la tabla que impide que una línea tenga cargo y abono a la vez.</p>
+<pre><code>constraint sa_line_one_side check ((debit_minor &gt; 0) &lt;&gt; (credit_minor &gt; 0))</code></pre>
+<h3>Nada capitaliza solo</h3>
+<p>IAS 38: investigación → gasto; desarrollo → <code>capitalization_review</code>. La norma permite capitalizar desarrollo bajo condiciones, pero esa decisión tiene consecuencias fiscales: <b>la firma una persona, no un script</b>. Regla única en <code>SA.treatmentFor</code> y en <code>sa_build_cost_add</code>.</p>
+<blockquote><p>El plan de cuentas, el tratamiento de cada partida y la forma de los informes están construidos con criterio razonable pero <b>no auditado</b>. Antes de usar esto para nada estatutario, que lo revise el asesor.</p></blockquote>
+
+<h2>5 · La tercera puerta en el pie</h2>
+<p>Un sitio al que nadie sabe llegar no existe. La entrada va donde ya está el resto: pie del marketing, junto a Pitch y Builders, con el mismo sello «2FA SECURED».</p>
+<p>El ancla se <b>clona</b> de la de Builders en tiempo de integración en lugar de escribirse a mano — el pie vive dentro del payload JSON del motor y reutilizar la cadena real hereda su escapado exacto. Después, rejilla 2×2 con la tercera ficha ocupando las dos columnas: así mide exactamente lo que las dos de arriba sea cual sea la longitud de la etiqueta, también al traducir.</p>
+
+<h2>6 · Cuatro errores, cuatro guardarraíles</h2>
+
+<h3>6.1 · El href con prefijo pegado</h3>
+<p>Asumí que las barras del atributo <code>href</code> iban escapadas como <code>\u002F</code> — lo están en las etiquetas de cierre <code>&lt;\u002Fa&gt;</code>, pero dentro del valor de un atributo son barras normales. Mi primer reemplazo no encajó, encajó el segundo, y quedó <code>href="hub/https://admin..."</code>.</p>
+<p>Lo grave es cómo se manifestó: Cloudflare Pages devuelve <b>200 con la home</b> para cualquier ruta desconocida. El enlace roto no daba 404 — te dejaba en la portada. Síntoma indistinguible de «los tres enlaces están rotos».</p>
+<p><b>Y mi test daba verde sobre el bug</b>, porque lo escribí buscando el escapado que yo había supuesto. Ahora comprueba el <i>valor</i> del href y que ninguno lleve un esquema anidado.</p>
+
+<h3>6.2 · El ORDER BY fantasma</h3>
+<p><code>sa_dashboard</code> ordenaba el plan contable por <code>sort_order</code> sin incluirlo en el subselect. Postgres acepta eso al <b>crear</b> la función y solo revienta al <b>ejecutarla</b>: por eso pasó los tres semáforos, que no ejecutan SQL. El banner <code>nsFail</code> hizo su trabajo y nombró la consulta y el fichero.</p>
+<p>Guardarraíl nuevo: un test lee el SQL y comprueba que cada <code>ORDER BY</code> apunte a una columna que su subselect proyecta.</p>
+
+<h3>6.3 · El build que se creía roto</h3>
+<p><code>build-adminsite.mjs</code> comprobaba si el texto <i>cambiaba</i> en vez de si la etiqueta <i>existía</i>. Cuando el sello ya era correcto, la sustitución era un no-op legítimo y el script lo reportaba como «no lo encontré». El caso normal —reconstruir sin tocar nada— fallaba.</p>
+
+<h3>6.4 · La palanca equivocada</h3>
+<p>El QR parecía descolgado de la columna Legal, así que empaqueté las columnas a la derecha. Cerró ese hueco y abrió <b>223px de vacío</b> en el centro del pie. La causa real era otra: la columna de marca medía 290px, y con <code>space-between</code> cuanto menos ocupa la marca más sobrante hay que repartir. Ensanchada a 400px, el ritmo queda uniforme en 78px — QR incluido — sin agujeros.</p>
+<table>
+<tr><th></th><th>Antes</th><th>Empaquetando a la derecha</th><th>Ensanchando la marca</th></tr>
+<tr><td>Vacío central</td><td>30</td><td><b>223</b></td><td>29</td></tr>
+<tr><td>Ritmo entre columnas</td><td>115</td><td>51</td><td><b>78</b></td></tr>
+<tr><td>Hueco Legal → QR</td><td>115</td><td>45</td><td><b>78</b></td></tr>
+</table>
+<p>Lección de método: cuando el síntoma es visual, medir la geometría en el navegador antes de escribir CSS. Las tres opciones se probaron en vivo y se eligió con números, no con intuición.</p>
+
+<h2>7 · Los packs de calidad, ahora nueve</h2>
+<table>
+<tr><th>Pack</th><th>Qué mira</th></tr>
+<tr><td><code>verify-web-pack.py</code></td><td>Bloques nuestros, centinelas de Design, gate de render C2</td></tr>
+<tr><td><code>web-tests.mjs</code> (45)</td><td>Snippets reales de <code>publish/</code>, contrato RPC↔SQL, hrefs del pie, geometría declarada</td></tr>
+<tr><td><code>web-linkcheck.mjs</code></td><td>1566 enlaces del árbol servido</td></tr>
+<tr><td><code>admin-tests.mjs</code> (49)</td><td><b>Nuevo:</b> lógica contable, gate de sintaxis del HTML servido, gating admin, sello de asset, ORDER BY</td></tr>
+<tr><td>jest en <code>appdev</code> (129)</td><td>Lógica pura de la app</td></tr>
+<tr><td><code>smoke-prod.mjs</code></td><td>Las 4 superficies vivas + RPCs públicas</td></tr>
+</table>
+<p>Los de StartUp Admin ejercitan el fichero <b>real</b> que se sirve (<code>assets/sa-lib.js</code>), no una copia: una sola fuente para la página y para los tests.</p>
+
+<h2>8 · Qué queda</h2>
+<ul>
+<li><b>Founders:</b> las cuatro necesitan MFA activado para entrar en la contabilidad. La tabla de la página de MFA dice quién está lista.</li>
+<li><b>Access:</b> quitar <code>juanjosecebrian@icloud.com</code> de la política — pasa la primera puerta y muere en la segunda.</li>
+<li><b>Asesor:</b> validar plan de cuentas y criterio contable antes de cualquier uso estatutario.</li>
+<li><b>Datos:</b> el libro está vacío. El primer coste registrado define el arranque del histórico.</li>
+</ul>
+
+<hr>
+<p style="font-size:13px;color:var(--muted)">Ficheros de esta sesión: <code>repos/adminsite/</code> · <code>backend-sql/2026-08-05-startup-admin.sql</code> · <code>-v2.sql</code> · <code>2026-08-05-mfa-readiness.sql</code> · <code>tools/admin-tests.mjs</code> · <code>tools/build-adminsite.mjs</code> · <code>tools/Deploy StartUp Admin.command</code> · <code>PUESTA-EN-MARCHA-StartUp-Admin.md</code> · <code>MENSAJE-Founders-StartUp-Admin.md</code></p>
+</div></body></html>
