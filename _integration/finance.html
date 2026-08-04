@@ -91,6 +91,17 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
     </p>
     <table id="bc"><thead><tr><th>Mes</th><th class="num">Usuarias (acum.)</th><th class="num">Suscripciones</th>
       <th class="num">Ingresos €</th><th class="num">Costes €</th><th class="num">Beneficio €</th><th></th></tr></thead><tbody></tbody></table>
+
+    <!-- r12-b3: objetivo SEMANAL del piloto (13 semanas). El business case es mensual
+         y llega a 2027; el piloto vive en semanas, así que tiene su propia tabla y su
+         propia gráfica en el MIS. -->
+    <b style="display:block;margin-top:22px">🧪 Piloto · objetivo semanal (13 semanas)</b>
+    <p style="font-size:12.5px;color:#6E655D;margin:4px 0 10px">
+      Testers <b>dentro</b> (acumulado) y <b>activas</b> de cada semana. Hitos: 17-ago = 12 testers Android
+      (requisito de Google Play) · 8-oct = lanzamiento. El MIS compara esta línea con las testers reales.
+    </p>
+    <table id="pp"><thead><tr><th>Semana (lunes)</th><th class="num">Testers dentro</th>
+      <th class="num">Activas</th><th class="num">Real dentro</th><th class="num">Real activas</th><th></th></tr></thead><tbody></tbody></table>
   </div>
 </div>
 <div id="gate">Inicia sesión de founder (Access + admin con MFA) y recarga.</div>
@@ -207,6 +218,32 @@ async function loadBC(){
         p_subs:g('subs'),p_revenue:g('revenue'),p_costs:g('costs'),p_note:null});
       b.disabled=false;b.textContent=error?'Error':'✓';
       if(!error)setTimeout(loadBC,600);
+    };
+  });
+}
+/* ── r12-b3 · objetivo SEMANAL del piloto (13 semanas) ───────────────────── */
+async function loadPP(){
+  const{data,error}=await sb.rpc('admin_pilot_weekly');
+  const tb=document.querySelector('#pp tbody'); if(!tb)return;
+  if(error||!data){tb.innerHTML='<tr><td colspan="6">No disponible: '+esc(error?.message||'')+'</td></tr>';return;}
+  tb.innerHTML=(data.weeks||[]).map(w=>{
+    const inp=(k,v)=>'<input data-w="'+w.week+'" data-k="'+k+'" value="'+v+'" '+
+      'style="width:84px;text-align:right;font-family:inherit;font-size:13px;padding:5px 7px;border:1px solid #EFE3D7;border-radius:8px">';
+    return '<tr><td><b>'+w.label+'</b> <span style="color:#8A7F78;font-size:11.5px">'+w.week+'</span></td>'+
+      '<td class="num">'+inp('testers',w.testers_plan)+'</td>'+
+      '<td class="num">'+inp('active',w.active_plan)+'</td>'+
+      '<td class="num">'+(w.is_past?w.joined:'—')+'</td>'+
+      '<td class="num">'+(w.is_past?w.active:'—')+'</td>'+
+      '<td><button data-savew="'+w.week+'" style="font-size:12px;padding:6px 12px">Guardar</button></td></tr>';
+  }).join('')||'<tr><td colspan="6">Sin semanas de piloto.</td></tr>';
+  tb.querySelectorAll('button[data-savew]').forEach(b=>{
+    b.onclick=async()=>{
+      const w=b.getAttribute('data-savew');
+      const g=k=>Number(tb.querySelector('input[data-w="'+w+'"][data-k="'+k+'"]').value||0);
+      b.disabled=true;b.textContent='…';
+      const{error}=await sb.rpc('admin_pilot_plan_set',{p_week:w,p_testers:g('testers'),p_active:g('active'),p_note:null});
+      b.disabled=false;b.textContent=error?'Error':'✓';
+      if(!error)setTimeout(loadPP,600);
     };
   });
 }
