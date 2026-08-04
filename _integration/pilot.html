@@ -77,6 +77,8 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
       <button class="pri" onclick="exportTF()">⬇ CSV TestFlight</button>
       <button onclick="copyEmails()">📋 Copiar emails (Play/otros)</button>
       <button onclick="setStatus('invited')">🚀 Marcar como invitados</button>
+      <button onclick="moveCohort()" title="Mover las seleccionadas a otra cohorte">↔ Cambiar de cohorte</button>
+      <button onclick="removeFromPilot()" title="Quitar del piloto (solo si aun no se les ha escrito)">🗑 Quitar del piloto</button>
       <button onclick="remindStore()" title="A quien lleva 3+ dias sin darnos su correo de tienda">🔔 Recordatorio · correo de tienda</button>
       <button onclick="remindInstall()" title="A quien tiene el build asignado y no ha instalado">🔔 Recordatorio · instalar</button>
     </div>
@@ -234,6 +236,27 @@ document.addEventListener('change',async e=>{
   el.disabled=false;el.style.borderColor=error?'#C73A20':'#0F9B57';
   if(error)alert('No se pudo guardar: '+error.message);else setTimeout(()=>{el.style.borderColor='#EFE3D7';},900);
 });
+/* r12-b7 (Pilar): meter a alguien en la cohorte equivocada tenia que poder
+   deshacerse desde aqui. Quitar solo borra a quien AUN no sabe que existe el
+   piloto; a las ya contactadas se las descarta, que deja rastro. */
+window.moveCohort=async()=>{
+  const emails=invSel();if(!emails.length)return alert('Nada seleccionado.');
+  const cur=[...new Set(OV.invites.map(i=>i.cohort))].join(', ');
+  const c=prompt('Mover '+emails.length+' persona(s) a que cohorte?\n\nExistentes: '+cur,'wave-1');
+  if(!c)return;
+  const{data,error}=await sb.rpc('admin_pilot_move_cohort',{p_emails:emails,p_cohort:c});
+  if(error)return alert('Error: '+error.message);
+  await refreshOv();alert('Movidas '+((data||{}).moved||0)+' a "'+((data||{}).cohort||c)+'".');
+};
+window.removeFromPilot=async()=>{
+  const emails=invSel();if(!emails.length)return alert('Nada seleccionado.');
+  if(!confirm('Quitar del piloto a '+emails.length+' persona(s)?\n\nSolo se borran las que aun no han recibido ningun correo ni tienen cuenta. Las demas hay que descartarlas ("Descartar"), asi queda rastro.'))return;
+  const{data,error}=await sb.rpc('admin_pilot_remove',{p_emails:emails});
+  if(error)return alert('Error: '+error.message);
+  const r=(data||{}).removed||[],k=(data||{}).kept||[];
+  await refreshOv();
+  alert('Quitadas: '+r.length+(k.length?'\n\nNo se pueden borrar (ya contactadas o con cuenta):\n'+k.join('\n')+'\n\nUsa "Descartar" con esas.':''));
+};
 async function remind(kind,label){
   const{data}=await sb.rpc('admin_pilot_reminders_due');
   const n=(data||{})[kind]||0;
