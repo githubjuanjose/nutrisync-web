@@ -1113,6 +1113,25 @@ if os.path.exists(kl):
             open(_page, "w", encoding="utf-8").write(ch2)
             print(f"- honest KPI row (actual vs plan) wired into {os.path.basename(_page)}")
 
+# ns-mis (r12): tarjetas Access / Subscriptions / Business case con datos REALES,
+# el MISMO snippet en la consola y en el Overview del gated → valores idénticos
+# (petición Juanjo: "Overview and MIS values should match"). Refresh-on-change.
+_misf = os.path.join(ASSETS, "mis-cards.html")
+if os.path.exists(_misf):
+    _mis = open(_misf, encoding="utf-8").read()
+    for _page in [cns, os.path.join(PUB, "hub", "full-hub-gated-site.html")]:
+        if not os.path.exists(_page):
+            continue
+        _s0 = open(_page, encoding="utf-8").read()
+        _s = re.sub(r"<!-- ns-mis -->.*?</script>", "", _s0, flags=re.S)
+        if "</body>" in _s:
+            _s = _s.replace("</body>", _mis + "</body>", 1)
+        else:
+            _s = _s + _mis
+        if _s != _s0:
+            open(_page, "w", encoding="utf-8").write(_s)
+            print(f"- ns-mis: tarjetas reales (access/subs/business case) en {os.path.basename(_page)}")
+
 # ns-legal (po71): los 5 documentos legales BILINGÜES (borrador pendiente de
 # validación) + índice → publish/legal/. Nuestros; los packs nunca los traen.
 _lg = os.path.join(ASSETS, "legal")

@@ -1,0 +1,187 @@
+<!-- ns-mis --><script id="ns-mis">
+/* r12 (feedback Juanjo 4-ago): las tarjetas Access / Subscriptions / Business
+   case seguían con datos ILUSTRATIVOS y con etiquetas EN/ES mezcladas. Este
+   snippet las reconstruye con datos REALES y se inyecta EN LAS DOS superficies
+   (consola MIS y Overview del gated) — misma fuente, mismos números.
+   Sin CDNs: usa window.supabase (auto-alojado) y SVG inline. */
+(function () {
+  var ES = (navigator.language || 'en').toLowerCase().indexOf('es') === 0;
+  var T = ES ? {
+    access: 'Actividad (últimos 7 días)', dau: 'DAU', wau: 'WAU', mau: 'MAU',
+    dauL: 'activas hoy', wauL: 'activas 7 días', mauL: 'activas 30 días',
+    noAct: 'Sin actividad registrada todavía — las barras aparecen cuando las testers empiecen a registrar.',
+    subs: 'Suscripciones', subsPend: 'Pendiente de Epic L (pagos)',
+    subsBody: 'Todavía no hay suscripciones: el cobro se activa con Epic L (RevenueCat + tiendas), previsto antes del lanzamiento del 8-oct.',
+    planLbl: 'Plan Y1 conservador', users: 'usuarias', conv: 'conversión prevista',
+    bc: 'Business case · plan vs real', bcSub: 'Escenario conservador · Y1 755 usuarias · 28.068 €',
+    revenue: 'Ingresos', costs: 'Costes', profit: 'Beneficio', plan: 'plan', real: 'real',
+    burnup: 'Usuarias acumuladas · plan vs real', month: 'mes',
+    noBC: 'Falta cargar el baseline del business case (hub → Finanzas).',
+    admin: 'Requiere sesión de administradora', asOf: 'a día de hoy'
+  } : {
+    access: 'Activity (last 7 days)', dau: 'DAU', wau: 'WAU', mau: 'MAU',
+    dauL: 'active today', wauL: 'active in 7 days', mauL: 'active in 30 days',
+    noAct: 'No activity logged yet — bars appear once testers start logging.',
+    subs: 'Subscriptions', subsPend: 'Pending Epic L (payments)',
+    subsBody: 'No subscriptions yet: billing goes live with Epic L (RevenueCat + stores), planned before the 8 Oct launch.',
+    planLbl: 'Conservative Y1 plan', users: 'users', conv: 'planned conversion',
+    bc: 'Business case · plan vs actual', bcSub: 'Conservative scenario · Y1 755 users · €28,068',
+    revenue: 'Revenue', costs: 'Costs', profit: 'Profit', plan: 'plan', real: 'actual',
+    burnup: 'Cumulative users · plan vs actual', month: 'month',
+    noBC: 'Business case baseline not loaded yet (hub → Finance).',
+    admin: 'Admin session required', asOf: 'as of today'
+  };
+
+  var C = { ink: '#231F20', muted: '#8A7F78', line: '#EFE3D7', coral: '#E8472A',
+            coral2: '#FF7600', plan: '#B9AFA6', good: '#0F9B57', bad: '#C73A20' };
+  var eur = function (n) { return (ES ? '' : '€') + Math.round(n).toLocaleString(ES ? 'es-ES' : 'en-GB') + (ES ? ' €' : ''); };
+  var num = function (n) { return Number(n || 0).toLocaleString(ES ? 'es-ES' : 'en-GB'); };
+
+  /* panel por título del h3 (funciona en consola y en el gated) */
+  function panelBy(re) {
+    var hs = document.querySelectorAll('.panel h3, .panel h2');
+    for (var i = 0; i < hs.length; i++) if (re.test(hs[i].textContent || '')) return hs[i].closest('.panel');
+    return null;
+  }
+  function fill(panel, title, html) {
+    if (!panel) return;
+    panel.innerHTML = '<h3 style="margin:0 0 10px">' + title + '</h3>' + html;
+  }
+
+  /* ── barras agrupadas plan vs real (SVG puro, sin librerías) ─────────────── */
+  function barChart(rows, key, keyPlan, color) {
+    var W = 560, H = 150, pad = 26, n = rows.length || 1;
+    var max = 1;
+    rows.forEach(function (r) { max = Math.max(max, +r[key] || 0, +r[keyPlan] || 0); });
+    var bw = (W - pad * 2) / n, gap = Math.min(6, bw * 0.18), half = (bw - gap * 2) / 2;
+    var s = '<svg viewBox="0 0 ' + W + ' ' + (H + 26) + '" style="width:100%;height:auto">';
+    [0.25, 0.5, 0.75, 1].forEach(function (f) {
+      var y = H - f * (H - 12);
+      s += '<line x1="' + pad + '" y1="' + y + '" x2="' + (W - pad) + '" y2="' + y + '" stroke="' + C.line + '" stroke-width="1"/>';
+    });
+    rows.forEach(function (r, i) {
+      var x = pad + i * bw + gap / 2;
+      var hp = ((+r[keyPlan] || 0) / max) * (H - 12), ha = ((+r[key] || 0) / max) * (H - 12);
+      s += '<rect x="' + x + '" y="' + (H - hp) + '" width="' + half + '" height="' + hp + '" fill="' + C.plan + '" opacity="0.55" rx="3"/>';
+      s += '<rect x="' + (x + half + gap) + '" y="' + (H - ha) + '" width="' + half + '" height="' + ha + '" fill="' + color + '" rx="3"/>';
+      s += '<text x="' + (x + half) + '" y="' + (H + 16) + '" font-size="9" fill="' + C.muted + '" text-anchor="middle">' + r.month.slice(5) + '</text>';
+    });
+    return s + '</svg>';
+  }
+
+  /* ── burn-up acumulado: plan (discontinuo) vs real (sólido) ──────────────── */
+  function burnUp(rows) {
+    var W = 560, H = 160, pad = 26;
+    var max = 1, i;
+    rows.forEach(function (r) { max = Math.max(max, +r.users_plan || 0, +r.users_actual || 0); });
+    var X = function (i) { return pad + (i / Math.max(1, rows.length - 1)) * (W - pad * 2); };
+    var Y = function (v) { return H - ((+v || 0) / max) * (H - 16); };
+    var pPlan = '', pReal = '';
+    for (i = 0; i < rows.length; i++) {
+      pPlan += (i ? ' L ' : 'M ') + X(i) + ' ' + Y(rows[i].users_plan);
+      pReal += (i ? ' L ' : 'M ') + X(i) + ' ' + Y(rows[i].users_actual);
+    }
+    var s = '<svg viewBox="0 0 ' + W + ' ' + (H + 26) + '" style="width:100%;height:auto">';
+    [0.25, 0.5, 0.75, 1].forEach(function (f) {
+      var y = H - f * (H - 16);
+      s += '<line x1="' + pad + '" y1="' + y + '" x2="' + (W - pad) + '" y2="' + y + '" stroke="' + C.line + '" stroke-width="1"/>';
+    });
+    s += '<path d="' + pPlan + '" fill="none" stroke="' + C.plan + '" stroke-width="2" stroke-dasharray="5 4"/>';
+    s += '<path d="' + pReal + '" fill="none" stroke="' + C.coral + '" stroke-width="2.5"/>';
+    for (i = 0; i < rows.length; i += Math.ceil(rows.length / 6)) {
+      s += '<text x="' + X(i) + '" y="' + (H + 16) + '" font-size="9" fill="' + C.muted + '" text-anchor="middle">' + rows[i].month + '</text>';
+    }
+    return s + '</svg>';
+  }
+
+  function legend(items) {
+    return '<div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-size:11.5px;color:' + C.muted + '">' +
+      items.map(function (it) {
+        return '<span style="display:inline-flex;align-items:center;gap:6px">' +
+          '<span style="width:12px;height:10px;border-radius:3px;background:' + it[1] + ';' + (it[2] ? 'opacity:.55;' : '') + '"></span>' + it[0] + '</span>';
+      }).join('') + '</div>';
+  }
+
+  function stat(v, big, sub) {
+    return '<div style="flex:1;min-width:88px"><div style="font-size:11px;letter-spacing:.6px;color:' + C.muted + '">' + v + '</div>' +
+      '<div style="font-size:26px;font-weight:800;color:' + C.ink + ';line-height:1.2">' + big + '</div>' +
+      '<div style="font-size:11px;color:' + C.muted + '">' + sub + '</div></div>';
+  }
+
+  (function boot() {
+    var pAccess = panelBy(/access|actividad/i);
+    var pSubs = panelBy(/subscription|suscripci/i);
+    var pBC = panelBy(/business case/i);
+    if (!pAccess && !pSubs && !pBC) return;                    // página sin MIS
+
+    var sb = window.supabase && window.supabase.createClient(
+      'https://nebkqncvapelrarruyqb.supabase.co', 'sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau');
+    if (!sb) return;
+
+    // Suscripciones: honesto desde el primer render (no depende de datos)
+    fill(pSubs, T.subs,
+      '<div style="background:#FFF8EF;border:1.5px dashed #E8B072;border-radius:12px;padding:12px 14px">' +
+      '<div style="font-weight:800;color:#7A5A33;font-size:13px;margin-bottom:4px">⏳ ' + T.subsPend + '</div>' +
+      '<div style="font-size:12.5px;color:#7A5A33;line-height:1.5">' + T.subsBody + '</div></div>' +
+      '<div style="display:flex;gap:18px;margin-top:12px">' +
+      stat(T.planLbl, '755', T.users) + stat('ARPU', '8 €', 'LTV 24,03 € · CAC 15 €') +
+      stat(T.conv, '10%', 'Y1 28.068 €') + '</div>');
+
+    sb.auth.getSession().then(function (r) {
+      var session = r && r.data && r.data.session;
+      if (!session) {
+        [[pAccess, T.access], [pBC, T.bc]].forEach(function (p) {
+          fill(p[0], p[1], '<div style="color:' + C.muted + ';font-size:13px;padding:8px 0">🔒 ' + T.admin + '</div>');
+        });
+        return;
+      }
+      Promise.all([sb.rpc('admin_kpis'), sb.rpc('admin_business_case')]).then(function (res) {
+        var k = res[0].data || {}, bc = res[1].data || {};
+
+        /* 1 · Actividad con leyenda + barras reales */
+        var daily = k.daily_active || [];
+        var maxD = Math.max.apply(null, daily.concat([1]));
+        var bars = daily.length
+          ? '<div style="display:flex;align-items:flex-end;gap:8px;height:120px;margin-top:14px">' +
+            daily.map(function (v) {
+              return '<div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%">' +
+                '<div style="font-size:10px;color:' + C.muted + ';margin-bottom:3px">' + v + '</div>' +
+                '<div style="width:100%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,' + C.coral2 + ',' + C.coral + ');height:' +
+                Math.max(2, (v / maxD) * 96) + 'px"></div></div>';
+            }).join('') + '</div>'
+          : '<div style="color:' + C.muted + ';font-size:12.5px;padding:14px 0">' + T.noAct + '</div>';
+        fill(pAccess, T.access,
+          '<div style="display:flex;gap:18px">' +
+          stat(T.dau, num(k.dau), T.dauL) + stat(T.wau, num(k.wau), T.wauL) + stat(T.mau, num(k.mau), T.mauL) +
+          '</div>' + bars);
+
+        /* 2 · Business case: barras (ingresos/costes) + burn-up de usuarias */
+        var rows = (bc.rows || []).filter(function (r) { return r.is_past || r.month >= new Date().toISOString().slice(0, 7); });
+        if (!rows.length) { fill(pBC, T.bc, '<div style="color:' + C.muted + ';font-size:13px">' + T.noBC + '</div>'); return; }
+        var past = rows.filter(function (r) { return r.is_past; });
+        var accRev = 0, accCost = 0, accRevP = 0, accCostP = 0;
+        past.forEach(function (r) { accRev += +r.revenue_actual; accCost += +r.costs_actual; accRevP += +r.revenue_plan; accCostP += +r.costs_plan; });
+        var last = past.length ? past[past.length - 1] : rows[0];
+        var deltaU = (+last.users_actual) - (+last.users_plan);
+
+        fill(pBC, T.bc,
+          '<div style="font-size:12px;color:' + C.muted + ';margin:-6px 0 12px">' + T.bcSub + '</div>' +
+          '<div style="display:flex;gap:18px;flex-wrap:wrap;margin-bottom:6px">' +
+          stat(T.users + ' · ' + T.asOf, num(last.users_actual),
+               T.plan + ' ' + num(last.users_plan) + ' · <span style="color:' + (deltaU >= 0 ? C.good : C.bad) + '">' + (deltaU >= 0 ? '+' : '') + num(deltaU) + '</span>') +
+          stat(T.revenue, eur(accRev), T.plan + ' ' + eur(accRevP)) +
+          stat(T.costs, eur(accCost), T.plan + ' ' + eur(accCostP)) +
+          stat(T.profit, eur(accRev - accCost), T.plan + ' ' + eur(accRevP - accCostP)) +
+          '</div>' +
+          '<div style="font-size:11.5px;font-weight:700;color:' + C.ink + ';margin-top:10px">' + T.revenue + ' · ' + T.plan + ' vs ' + T.real + '</div>' +
+          barChart(rows, 'revenue_actual', 'revenue_plan', C.coral) +
+          legend([[T.plan, C.plan, 1], [T.real, C.coral]]) +
+          '<div style="font-size:11.5px;font-weight:700;color:' + C.ink + ';margin-top:16px">' + T.costs + ' · ' + T.plan + ' vs ' + T.real + '</div>' +
+          barChart(rows, 'costs_actual', 'costs_plan', '#8A7F78') +
+          '<div style="font-size:11.5px;font-weight:700;color:' + C.ink + ';margin-top:16px">' + T.burnup + '</div>' +
+          burnUp(rows) + legend([[T.plan, C.plan, 1], [T.real, C.coral]]));
+      });
+    });
+  })();
+})();
+</script>

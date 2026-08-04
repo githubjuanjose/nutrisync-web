@@ -182,6 +182,15 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
     <table id="pl"><thead><tr><th>Mes</th><th class="num">Ingresos</th><th class="num">Gastos</th><th class="num">Resultado</th><th>Cierre</th></tr></thead><tbody></tbody></table>
     <b style="display:block;margin-top:16px">Por partida (año en curso)</b>
     <table id="byc"><thead><tr><th>Partida</th><th class="num">Haber</th><th class="num">Debe</th><th class="num">Neto</th><th class="num">Asientos</th></tr></thead><tbody></tbody></table>
+
+    <!-- r12: baseline del BUSINESS CASE, editable aquí; el MIS lo compara con los actuals -->
+    <b style="display:block;margin-top:22px">📈 Business case · baseline mensual</b>
+    <p style="font-size:12.5px;color:#6E655D;margin:4px 0 10px">
+      Plan del caso de negocio (escenario conservador Y1: 755 usuarias · 28.068 €). Edita cualquier celda y
+      guarda: el MIS y el Overview compararán estos números con los ingresos y costes reales del libro diario.
+    </p>
+    <table id="bc"><thead><tr><th>Mes</th><th class="num">Usuarias (acum.)</th><th class="num">Suscripciones</th>
+      <th class="num">Ingresos €</th><th class="num">Costes €</th><th class="num">Beneficio €</th><th></th></tr></thead><tbody></tbody></table>
   </div>
 </div>
 <div id="gate">Inicia sesión de founder (Access + admin con MFA) y recarga.</div>
@@ -273,10 +282,39 @@ window.exportCsv=()=>{
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
   a.download='nutrisync-libro-diario.csv';a.click();
 };
+/* ── r12 · baseline del business case (editable) ─────────────────────────── */
+async function loadBC(){
+  const{data,error}=await sb.rpc('admin_business_case');
+  const tb=document.querySelector('#bc tbody'); if(!tb)return;
+  if(error||!data){tb.innerHTML='<tr><td colspan="7">No disponible: '+esc(error?.message||'')+'</td></tr>';return;}
+  tb.innerHTML=(data.rows||[]).map(r=>{
+    const inp=(k,v)=>'<input data-m="'+r.month+'" data-k="'+k+'" value="'+v+'" '+
+      'style="width:92px;text-align:right;font-family:inherit;font-size:13px;padding:5px 7px;border:1px solid #EFE3D7;border-radius:8px">';
+    return '<tr><td><b>'+r.month+'</b></td>'+
+      '<td class="num">'+inp('users',r.users_plan)+'</td>'+
+      '<td class="num">'+inp('subs',r.subs_plan)+'</td>'+
+      '<td class="num">'+inp('revenue',r.revenue_plan)+'</td>'+
+      '<td class="num">'+inp('costs',r.costs_plan)+'</td>'+
+      '<td class="num" style="color:'+((r.profit_plan>=0)?'#0F9B57':'#C73A20')+'">'+eur(r.profit_plan)+'</td>'+
+      '<td><button data-save="'+r.month+'" style="font-size:12px;padding:6px 12px">Guardar</button></td></tr>';
+  }).join('')||'<tr><td colspan="7">Sin baseline cargado.</td></tr>';
+  tb.querySelectorAll('button[data-save]').forEach(b=>{
+    b.onclick=async()=>{
+      const m=b.getAttribute('data-save');
+      const g=k=>Number(tb.querySelector('input[data-m="'+m+'"][data-k="'+k+'"]').value||0);
+      b.disabled=true;b.textContent='…';
+      const{error}=await sb.rpc('admin_business_case_set',{p_month:m+'-01',p_users:g('users'),
+        p_subs:g('subs'),p_revenue:g('revenue'),p_costs:g('costs'),p_note:null});
+      b.disabled=false;b.textContent=error?'Error':'✓';
+      if(!error)setTimeout(loadBC,600);
+    };
+  });
+}
+
 (async()=>{
   const{data:{session}}=await sb.auth.getSession();
   if(!session){$('gate').style.display='block';return;}
   fillSelects();
-  if(await loadSummary()){$('app').style.display='block';loadLedger();}
+  if(await loadSummary()){$('app').style.display='block';loadLedger();loadBC();}
 })();
 </script></body></html>
