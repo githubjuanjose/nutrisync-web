@@ -380,56 +380,13 @@ if os.path.exists(_hub):
 # prototype material, so we (1) strip that section and its "#screens" links from the
 # PUBLIC site at runtime, and (2) publish a gated hub/prototypes.html that deep-links
 # every screen of the working prototype (app.html#demo-<route>).
-PROTO_GROUPS = [
-    ("Onboarding & sign-up", [("login", "Log in"), ("signup", "Create account"), ("onboarding", "Onboarding wizard"), ("allset", "All set")]),
-    ("Daily experience", [("gate", "Daily check-in gate"), ("home", "Home · Cycle Alignment Score"), ("nutrilog", "NutriLog"), ("movement", "Movement")]),
-    ("Tracking", [("editperiod", "Edit period"), ("edithealth", "Edit health"), ("progress", "Progress"), ("calendar", "Calendar")]),
-    ("Account & privacy", [("settings", "Settings"), ("connections", "Connections"), ("privacy", "Privacy"), ("security", "Security")]),
-]
-_pg = ""
-for _title, _items in PROTO_GROUPS:
-    _cards = "".join(
-        '<a class="pcard" href="../app.html#demo-%s"><span class="pdot"></span>'
-        '<span class="plabel">%s</span><span class="parrow">→</span></a>' % (r, lbl)
-        for r, lbl in _items)
-    _pg += '<div class="pgroup"><div class="pgtitle">%s</div><div class="pgrid">%s</div></div>' % (_title, _cards)
-PROTO_HTML = (
-    '<!doctype html><html lang="en"><head><meta charset="utf-8">'
-    '<meta name="viewport" content="width=device-width, initial-scale=1">'
-    '<title>Prototypes · NutriSync</title><style>'
-    ':root{--coral:#E8472A;--ink:#231F20;--muted:#6B615C;}'
-    '*{box-sizing:border-box}body{margin:0;font-family:Poppins,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;'
-    'color:var(--ink);background:radial-gradient(circle at 28% 16%,#FDE2D6 0%,#FBEFE6 36%,#FFF8F1 62%,#F9D7BD 100%);min-height:100vh}'
-    '.wrap{max-width:860px;margin:0 auto;padding:28px 22px 60px}'
-    '.back{display:inline-block;color:var(--muted);text-decoration:none;font-size:14px;font-weight:600;margin-bottom:18px}'
-    '.back:hover{color:var(--ink)}'
-    '.label{font-size:12px;letter-spacing:.16em;font-weight:700;color:var(--coral)}'
-    'h1{font-size:clamp(26px,4vw,38px);margin:8px 0 8px;line-height:1.05}'
-    '.lead{color:var(--muted);font-size:15px;line-height:1.55;max-width:560px;margin:0 0 18px}'
-    '.enter{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#EA5740,#F4876F);color:#fff;'
-    'text-decoration:none;font-weight:700;font-size:15px;padding:13px 22px;border-radius:100px;box-shadow:0 12px 26px -14px rgba(234,87,64,.7)}'
-    '.pgroup{margin-top:26px}.pgtitle{font-size:12px;letter-spacing:.12em;font-weight:700;color:var(--muted);margin:0 0 10px}'
-    '.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}'
-    '.pcard{display:flex;align-items:center;gap:11px;background:#fff;border:1px solid #EFE3D7;border-radius:13px;'
-    'padding:14px 15px;text-decoration:none;color:var(--ink);box-shadow:0 8px 20px -16px rgba(0,0,0,.4);transition:transform .12s,box-shadow .12s}'
-    '.pcard:hover{transform:translateY(-2px);box-shadow:0 14px 28px -14px rgba(0,0,0,.35)}'
-    '.pdot{width:9px;height:9px;border-radius:50%;background:var(--coral);flex:none}'
-    '.plabel{font-weight:600;font-size:14px;flex:1}.parrow{color:var(--muted);font-weight:700}'
-    '.note{margin-top:30px;color:var(--muted);font-size:12.5px;line-height:1.5}'
-    '</style></head><body><div class="wrap">'
-    '<a class="back" href="full-hub-gated-site.html" onclick="if(history.length>1){history.back();return false;}return true;">‹ Back</a>'
-    '<div class="label">PROTOTYPES</div>'
-    '<h1>See NutriSync in action.</h1>'
-    '<p class="lead">From the first hello to the daily Cycle Alignment Score, step through how NutriSync guides '
-    'nutrition, movement and mood across every phase. Each card opens the working prototype on demo data — '
-    'full navigation, no account needed.</p>'
-    '<a class="enter" href="../app.html">Open the web app prototype →</a>'
-    + _pg +
-    '<p class="note">Prototype runs on demo data in your browser — nothing here writes to a real account. '
-    'This showcase is Builders-only; it is no longer shown on the public marketing site.</p>'
-    '</div></body></html>')
-open(os.path.join(PUB, "hub", "prototypes.html"), "w", encoding="utf-8").write(PROTO_HTML)
-print("- Prototypes hub page (hub/prototypes.html)")
+# ns-prototypes (r12): la página se genera con _integration/gen_prototypes.py
+# (storytelling + Figma + recursos + 4 superficies con journey y pantallas) y
+# aquí SOLO se copia — regla CLAUDE.md: snippet-files, nunca strings con escapes.
+_proto = os.path.join(ASSETS, "prototypes.html")
+if os.path.exists(_proto):
+    shutil.copy(_proto, os.path.join(PUB, "hub", "prototypes.html"))
+    print("- Prototypes hub page (hub/prototypes.html) desde _integration")
 
 # Strip the HEALTH FLOWS showcase (<section id="screens">) + its #screens links from
 # the PUBLIC marketing site, kept in place across re-renders with a MutationObserver.
@@ -1451,3 +1408,34 @@ if os.path.isdir(_shd):
         if _s != _s0:
             open(_hp, "w", encoding="utf-8").write(_s); _nrw += 1
     print(f"- ns-selfhost: fuentes+librerias locales · {_nrw} paginas reescritas sin CDNs")
+
+# ns-assets-index (r12): galería navegable de los recursos gráficos —
+# /assets/figma/ no tenía índice y el linkcheck lo cazó como enlace roto.
+_afig = os.path.join(PUB, "assets", "figma")
+if os.path.isdir(_afig):
+    _files = sorted(f for f in os.listdir(_afig) if f.lower().endswith((".svg", ".png", ".jpg")) )
+    _cards = "".join(
+        '<a class="a" href="%s" target="_blank" rel="noopener"><span class="t">'
+        '<img src="%s" alt="" loading="lazy"></span><span class="n">%s</span></a>' % (f, f, f)
+        for f in _files)
+    _idx = (
+        '<!doctype html><html lang="es"><head><meta charset="utf-8">'
+        '<meta name="viewport" content="width=device-width, initial-scale=1">'
+        '<title>Recursos gráficos · NutriSync</title><style>'
+        "body{margin:0;font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#231F20;line-height:1.6}"
+        ".w{max-width:1100px;margin:0 auto;padding:28px 22px 70px}"
+        "h1{font-size:24px;margin:6px 0 4px}p{color:#6E655D;font-size:13.5px;margin:0 0 18px}"
+        "a.back{color:#C73A20;font-size:13px;text-decoration:none;font-weight:700}"
+        ".g{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:12px}"
+        ".a{display:block;background:#fff;border:1px solid #EFE3D7;border-radius:14px;padding:12px;"
+        "text-decoration:none;color:#231F20}.a:hover{border-color:#F3C8B8}"
+        ".t{display:flex;align-items:center;justify-content:center;height:78px;margin-bottom:8px}"
+        ".t img{max-width:100%%;max-height:100%%}"
+        ".n{font-size:11px;color:#6E655D;word-break:break-all;display:block;text-align:center}"
+        "</style></head><body><div class=\"w\">"
+        '<a class="back" href="/hub/prototypes.html">&#8249; Prototipos</a>'
+        "<h1>Recursos gráficos</h1>"
+        "<p>%d piezas exportadas de Figma (iconos, avatares, ilustraciones). Clic para abrir el fichero original.</p>"
+        '<div class="g">%s</div></div></body></html>' % (len(_files), _cards))
+    open(os.path.join(_afig, "index.html"), "w", encoding="utf-8").write(_idx)
+    print(f"- ns-assets-index: galería de {len(_files)} recursos en /assets/figma/")
