@@ -272,6 +272,8 @@ footer{padding:48px 0 40px;color:var(--muted);font-size:14px;border-top:1px soli
       <a class="nsnb-tab" href="/hub/admin-mis-console.html">📊 MIS</a>
       <a class="nsnb-tab" href="/hub/finance.html">💶 Finanzas</a>
       <a class="nsnb-tab" href="/hub/pilot.html">🧪 Piloto</a>
+      <a class="nsnb-tab" href="/hub/pilot-planning.html">🗓 Plan piloto</a>
+      <a class="nsnb-tab" href="/hub/pilot-observability.html">📡 Obs. piloto</a>
       <a class="nsnb-tab" href="/hub/feedback.html">💬 Feedback</a>
       <a class="nsnb-tab" href="/hub/waitlist.html">📬 Waitlist</a>
       <a class="nsnb-tab" href="/hub/documentation/index.html">📚 Docs</a>
@@ -1026,6 +1028,8 @@ render();
 
 
 
+
+
 <!-- ns-kpi-live --><script type="module">
 /* r11d → po56 · KPIs honestos: actual (live) vs plan (modelo conservador).
    po56: selección por ETIQUETA (.lab) en vez de id kTotal — el mismo snippet
@@ -1093,14 +1097,9 @@ function setCard(k,val,sub,subColor){
     burnup: 'Usuarias acumuladas · plan vs real', month: 'mes',
     noBC: 'Falta cargar el baseline del business case (hub → Finanzas).',
     admin: 'Requiere sesión de administradora', asOf: 'a día de hoy',
-    pilot: 'Piloto · testers semana a semana (13 semanas)',
-    pilotSub: 'Escala a la población de testers ({n}) · editable en hub → Finanzas',
-    pByPlat: 'Instaladas por plataforma', pByState: 'Estado de distribución del build',
-    pPlan: 'objetivo', pTest: 'testers dentro', pAct: 'activas esa semana',
-    pInv: 'Invitadas', pInvL: 'correo del piloto enviado',
-    pAsg: 'Build asignado', pAsgL: 'en TestFlight / Play',
-    pIns: 'Instaladas', pPend: 'Sin responder', pPendL: 'invitada, aún sin correo de tienda',
-    noPilot: 'Sin semanas de piloto todavía.'
+    pilot: 'Piloto',
+    pilotMoved: 'El seguimiento semanal del piloto vive en sus propias pestañas:',
+    pilotPlan: '🗓 Plan piloto', pilotObs: '📡 Obs. piloto'
   } : {
     access: 'Activity (last 7 days)', dau: 'DAU', wau: 'WAU', mau: 'MAU',
     dauL: 'active today', wauL: 'active in 7 days', mauL: 'active in 30 days',
@@ -1113,14 +1112,9 @@ function setCard(k,val,sub,subColor){
     burnup: 'Cumulative users · plan vs actual', month: 'month',
     noBC: 'Business case baseline not loaded yet (hub → Finance).',
     admin: 'Admin session required', asOf: 'as of today',
-    pilot: 'Pilot · testers week by week (13 weeks)',
-    pilotSub: 'Scaled to the tester population ({n}) · editable in hub → Finance',
-    pByPlat: 'Installs by platform', pByState: 'Build distribution status',
-    pPlan: 'target', pTest: 'testers in', pAct: 'active that week',
-    pInv: 'Invited', pInvL: 'pilot email sent',
-    pAsg: 'Build assigned', pAsgL: 'in TestFlight / Play',
-    pIns: 'Installed', pPend: 'Not assigned', pPendL: 'invited, no store email yet',
-    noPilot: 'No pilot weeks yet.'
+    pilot: 'Pilot',
+    pilotMoved: 'Weekly pilot tracking lives in its own tabs:',
+    pilotPlan: '🗓 Pilot Planning', pilotObs: '📡 Pilot Observability'
   };
 
   var C = { ink: '#231F20', muted: '#8A7F78', line: '#EFE3D7', coral: '#E8472A',
@@ -1206,18 +1200,6 @@ function setCard(k,val,sub,subColor){
   function burnUp(rows) {
     return lineChart(rows, [['users_plan', C.plan, 1, 0], ['users_actual', C.coral, 0, 1]], 'month');
   }
-  /* piloto · POR PLATAFORMA: objetivo + instaladas iOS + instaladas Android */
-  function pilotPlatform(weeks, scale) {
-    return lineChart(weeks, [['testers_plan', C.plan, 1, 0], ['ios', C.coral, 0, 1], ['android', C.good, 0, 1]],
-                     'label', 2, scale);
-  }
-  /* piloto · POR ESTADO de distribución del build (TestFlight / Play):
-     invitada → build asignado → instalada · y "sin responder" (not assigned) */
-  function pilotStates(weeks, scale) {
-    return lineChart(weeks, [['invited', C.muted, 0, 1], ['assigned', C.coral2, 0, 1],
-                             ['installed', C.coral, 0, 1], ['pending', C.plan, 1, 1]],
-                     'label', 2, scale);
-  }
 
   function legend(items) {
     return '<div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-size:11.5px;color:' + C.muted + '">' +
@@ -1236,7 +1218,7 @@ function setCard(k,val,sub,subColor){
   /* r11c-2 · superficie PURA para los unitarios (tools/web-tests.mjs) */
   if (typeof window !== 'undefined') {
     window.__nsMis = { lastPast: lastPast, linePath: linePath, lineChart: lineChart,
-                       burnUp: burnUp, pilotPlatform: pilotPlatform, pilotStates: pilotStates };
+                       burnUp: burnUp };
   }
 
   (function boot() {
@@ -1266,8 +1248,8 @@ function setCard(k,val,sub,subColor){
         });
         return;
       }
-      Promise.all([sb.rpc('admin_kpis'), sb.rpc('admin_business_case'), sb.rpc('admin_pilot_weekly')]).then(function (res) {
-        var k = res[0].data || {}, bc = res[1].data || {}, pw = (res[2] && res[2].data) || {};
+      Promise.all([sb.rpc('admin_kpis'), sb.rpc('admin_business_case')]).then(function (res) {
+        var k = res[0].data || {}, bc = res[1].data || {};
 
         /* 1 · Actividad con leyenda + barras reales */
         var daily = k.daily_active || [];
@@ -1286,26 +1268,14 @@ function setCard(k,val,sub,subColor){
           stat(T.dau, num(k.dau), T.dauL) + stat(T.wau, num(k.wau), T.wauL) + stat(T.mau, num(k.mau), T.mauL) +
           '</div>' + bars);
 
-        /* 3 · Piloto: su propia gráfica, escala SEMANAL y 3 meses (el burn-up
-              del business case es mensual y llega a 2027: mezclarlos aplana
-              el piloto hasta hacerlo invisible). */
-        var weeks = pw.weeks || [], scale = +pw.scale || 58;
-        var lastW = weeks.filter(function (w) { return w.is_past; }).pop() || {};
-        var pilotBlock = weeks.length
-          ? '<div style="font-size:11.5px;font-weight:700;color:' + C.ink + ';margin-top:22px;padding-top:16px;border-top:1px solid ' + C.line + '">' + T.pilot + '</div>' +
-            '<div style="font-size:12px;color:' + C.muted + ';margin:2px 0 10px">' + T.pilotSub.replace('{n}', scale) + '</div>' +
-            '<div style="display:flex;gap:18px;flex-wrap:wrap;margin-bottom:8px">' +
-            stat(T.pInv, num(lastW.invited), T.pInvL) +
-            stat(T.pAsg, num(lastW.assigned), T.pAsgL) +
-            stat(T.pIns, num(lastW.installed), 'iOS ' + num(lastW.ios) + ' · Android ' + num(lastW.android)) +
-            stat(T.pPend, num(lastW.pending), T.pPendL) + '</div>' +
-            '<div style="font-size:11.5px;font-weight:700;color:' + C.ink + ';margin-top:8px">' + T.pByPlat + '</div>' +
-            pilotPlatform(weeks, scale) +
-            legend([[T.pPlan, C.plan, 1], ['iOS', C.coral], ['Android', C.good]]) +
-            '<div style="font-size:11.5px;font-weight:700;color:' + C.ink + ';margin-top:16px">' + T.pByState + '</div>' +
-            pilotStates(weeks, scale) +
-            legend([[T.pInv, C.muted], [T.pAsg, C.coral2], [T.pIns, C.coral], [T.pPend, C.plan, 1]])
-          : '';
+        /* 3 · Piloto: se mudó a sus propias pestañas (hub → Plan piloto /
+              Obs. piloto). El MIS enlaza, no duplica. */
+        var pilotBlock =
+          '<div style="margin-top:22px;padding-top:14px;border-top:1px solid ' + C.line + '">' +
+          '<div style="font-size:11.5px;font-weight:700;color:' + C.ink + '">' + T.pilot + '</div>' +
+          '<div style="font-size:12.5px;color:' + C.muted + ';margin-top:4px">' + T.pilotMoved +
+          ' <a href="/hub/pilot-planning.html" target="_top" style="color:' + C.coral + ';font-weight:700">' + T.pilotPlan + '</a>' +
+          ' · <a href="/hub/pilot-observability.html" target="_top" style="color:' + C.coral + ';font-weight:700">' + T.pilotObs + '</a></div></div>';
 
         /* 2 · Business case: barras (ingresos/costes) + burn-up de usuarias */
         var rows = (bc.rows || []).filter(function (r) { return r.is_past || r.month >= new Date().toISOString().slice(0, 7); });

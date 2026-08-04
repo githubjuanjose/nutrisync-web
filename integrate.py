@@ -1146,6 +1146,15 @@ if os.path.exists(ts):
 # ---------------------------------------------------------------------------
 # ns-pilot: Pilot tool (cohorts + founder-validated invite batches + cohort
 # feedback). UI snippets are plain files — no escape sequences anywhere.
+# r12-b6: el piloto se parte en tres superficies — operación (pilot.html),
+# PLAN semanal (pilot-planning.html) y OBSERVABILIDAD (pilot-observability.html).
+# Las gráficas salen del panel Business case del MIS y viven en su pestaña.
+for _f in ("pilot-charts.js", "pilot-planning.html", "pilot-observability.html"):
+    _src = os.path.join(ASSETS, _f)
+    if os.path.exists(_src):
+        shutil.copy(_src, os.path.join(PUB, "hub", _f))
+        print(f"- piloto: hub/{_f}")
+
 pl = os.path.join(ASSETS, "pilot.html")
 if os.path.exists(pl):
     shutil.copy(pl, os.path.join(PUB, "hub", "pilot.html"))

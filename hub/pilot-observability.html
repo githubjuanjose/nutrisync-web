@@ -1,25 +1,33 @@
 <!DOCTYPE html><html lang="es"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Feedback — NutriSync Founders</title>
+<title>Pilot Observability — NutriSync Founders</title>
 <style>
-:root{--coral:#E8472A;--ink:#231F20;--muted:#8A7F78;--line:#EFE3D7;--bg:#FFFDF8;}
+:root{--coral:#E8472A;--ink:#231F20;--muted:#8A7F78;--line:#EFE3D7;--bg:#FFFDF8;--good:#0F9B57;--bad:#C73A20;}
 *{box-sizing:border-box}body{margin:0;font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:var(--ink);}
-.wrap{max-width:1000px;margin:0 auto;padding:26px 20px 80px;}
-h1{font-size:24px;margin:0 0 2px}
+.wrap{max-width:1150px;margin:0 auto;padding:26px 20px 80px;}
+h1{font-size:24px;margin:0 0 2px}h2{font-size:17px;margin:26px 0 10px}
 .sub{color:var(--muted);font-size:13px;margin-bottom:18px}
 .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:10px}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-button{font-family:inherit;font-weight:700;font-size:13px;border-radius:22px;padding:8px 16px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
-select,input[type=text]{font-family:inherit;font-size:13px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#fff}
-.fb{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 15px;margin-top:10px}
-.fb .meta{font-size:11.5px;color:var(--muted);margin-bottom:6px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.fb .msg{font-size:14px;line-height:1.5;white-space:pre-wrap}
-.pill{display:inline-block;border-radius:999px;padding:1px 9px;font-size:10.5px;font-weight:700;background:#F6EEE7;color:#8A7F78}
-.pill.c{background:#FDEEE6;color:#C05621}
+.kpis{display:flex;gap:10px;flex-wrap:wrap}
+.kpi{flex:1;min-width:140px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.kpi .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.kpi .v{font-size:22px;font-weight:800;margin-top:3px}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px}
+th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+td.msg{max-width:520px;white-space:pre-wrap}
+.bars{display:flex;align-items:flex-end;gap:8px;height:110px;margin-top:12px}
+.bar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+.bar i{width:100%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#FF7600,#E8472A);display:block}
+.fn{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.fn div{flex:1;min-width:92px;background:#F8F3EC;border-radius:10px;padding:8px 10px}
+.fn b{display:block;font-size:18px}
+.fn span{font-size:10.5px;color:var(--muted)}
 #gate{display:none;padding:60px 20px;text-align:center;color:var(--muted)}
 .hint{font-size:11.5px;color:var(--muted);margin-top:6px}
 .back{font-size:13px;color:var(--muted);text-decoration:none}
-.count{font-size:12px;color:var(--muted)}
+.warn{background:#FFF8EF;border:1.5px dashed #E8B072;border-radius:10px;padding:10px 12px;font-size:12.5px;color:#7A5A33}
 </style><script src="/assets/vendor/supabase.js"></script></head><body><!-- ns-hub-navbar -->
 <div id="ns-hub-navbar">
 <style>
@@ -152,50 +160,125 @@ select,input[type=text]{font-family:inherit;font-size:13px;padding:8px 10px;bord
 </div>
 <!-- /ns-hub-navbar -->
 <div class="wrap" id="app" style="display:none">
-  <a class="back" href="full-hub-gated-site.html#/builders">‹ Back</a>
-  <h1>💬 App Feedback</h1>
-  <div class="sub">Mensajes de Settings → Send Feedback, etiquetados por cohorte del piloto. Copia de cada mensaje llega también a feedback@nutrisynccollective.com.</div>
+  <a class="back" href="full-hub-gated-site.html#/builders">‹ Hub</a>
+  <h1>📡 <span data-t="title"></span></h1>
+  <div class="sub" data-t="sub"></div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <h2>1 · <span data-t="h1"></span></h2>
   <div class="card">
-    <div class="row">
-      <select id="fCohort"><option value="">todas las cohortes</option></select>
-      <select id="fPlat"><option value="">plataforma: todas</option><option>ios</option><option>android</option><option>web</option></select>
-      <input type="text" id="q" placeholder="buscar en los mensajes…" style="flex:1;min-width:180px">
-      <button onclick="load()">Actualizar</button>
-      <span class="count" id="count"></span>
-    </div>
+    <div class="hint" data-t="statesHint"></div>
+    <div id="states"></div><div id="statesLegend"></div>
   </div>
-  <div id="list"><div class="hint">Cargando…</div></div>
+
+  <h2>2 · <span data-t="h2"></span></h2>
+  <div class="card">
+    <div class="hint" data-t="activeHint"></div>
+    <div id="active"></div><div id="activeLegend"></div>
+    <div class="bars" id="daily"></div>
+    <div class="hint" data-t="dailyHint"></div>
+  </div>
+
+  <h2>3 · <span data-t="h3"></span></h2>
+  <div class="card" id="funnel"></div>
+
+  <h2>4 · <span data-t="h4"></span></h2>
+  <div class="card">
+    <div class="hint" data-t="fbHint"></div>
+    <table id="fb"><thead><tr>
+      <th data-t="cWhen"></th><th data-t="cCohort"></th><th data-t="cWho"></th><th data-t="cMsg"></th><th data-t="cVer"></th>
+    </tr></thead><tbody></tbody></table>
+  </div>
 </div>
-<div id="gate">Inicia sesión de founder (Access + admin) y recarga — esta página es solo para admins.</div>
+<div id="gate" data-t="gate"></div>
+<script src="/hub/pilot-charts.js"></script>
 <script type="module">
 const { createClient } = window.supabase;
 const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
 const sb=createClient(U,K);const $=i=>document.getElementById(i);
 const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-let ALL=[];
-function render(){
-  const c=$('fCohort').value,p=$('fPlat').value,q=$('q').value.toLowerCase();
-  const rows=ALL.filter(r=>(!c||r.cohort===c)&&(!p||(r.platform||'').toLowerCase().startsWith(p))&&(!q||(r.message||'').toLowerCase().includes(q)||(r.email||'').toLowerCase().includes(q)));
-  $('count').textContent=rows.length+' de '+ALL.length;
-  $('list').innerHTML=rows.map(r=>`<div class="fb">
-    <div class="meta"><b>${esc(r.email)}</b><span class="pill c">${esc(r.cohort||'—')}</span>
-    <span>${esc((r.created_at||'').slice(0,16).replace('T',' '))}</span>
-    <span class="pill">v${esc(r.app_version||'?')} · ${esc(r.platform||'?')}</span></div>
-    <div class="msg">${esc(r.message)}</div></div>`).join('')||'<div class="hint">Sin mensajes con esos filtros.</div>';
-}
-window.load=async()=>{
-  const{data,error}=await sb.rpc('admin_pilot_feedback',{p_cohort:null});
-  if(error){$('list').innerHTML='<div class="hint">Sin acceso: '+esc(error.message)+' — ¿sesión admin con MFA?</div>';return;}
-  ALL=data||[];
-  const cs=[...new Set(ALL.map(r=>r.cohort).filter(x=>x&&x!=='—'))];
-  $('fCohort').innerHTML='<option value="">todas las cohortes</option>'+cs.map(c=>`<option>${esc(c)}</option>`).join('');
-  render();
+const ES=(navigator.language||'en').toLowerCase().indexOf('es')===0;
+const T=ES?{
+  title:'Pilot Observability', gate:'Inicia sesión de founder (Access + admin con MFA) y recarga.',
+  sub:'Cómo va el piloto de verdad: distribución del build, uso diario y lo que nos cuentan. El objetivo se fija en Pilot Planning; aquí solo se observa.',
+  h1:'Estado de distribución del build', h2:'Uso real', h3:'Embudo por cohorte', h4:'Feedback reciente',
+  statesHint:'Invitada (le mandamos el correo) → build asignado (está en TestFlight o en el track interno de Play) → instalada (ya tiene cuenta). "Sin responder" son las invitadas que aún no nos han dado su correo de tienda.',
+  activeHint:'Activas por semana frente al objetivo. Una tester que instala y no vuelve no cuenta como piloto.',
+  dailyHint:'Últimos 7 días de actividad (todas las usuarias, no solo el piloto).',
+  fbHint:'Lo que escriben desde la app. Es la señal más valiosa que tenemos antes del 8-oct.',
+  kInv:'Invitadas', kInvS:'correo del piloto enviado',
+  kAsg:'Build asignado', kAsgS:'en TestFlight / Play',
+  kIns:'Instaladas', kPend:'Sin responder', kPendS:'invitada, sin correo de tienda',
+  kAct:'Activas 7 días', kActS:'del total instalado',
+  lInv:'invitadas', lAsg:'build asignado', lIns:'instaladas', lPend:'sin responder',
+  lPlan:'objetivo', lAct:'activas',
+  cWhen:'Cuándo', cCohort:'Cohorte', cWho:'Quién', cMsg:'Mensaje', cVer:'Versión',
+  noSql:'⚠️ Falta aplicar backend-sql/2026-08-04-pilot-weekly.sql en Supabase (RPC admin_pilot_weekly).',
+  noRows:'Sin datos todavía.', noFb:'Sin mensajes aún — cuando una tester escriba desde la app aparecerá aquí.'
+}:{
+  title:'Pilot Observability', gate:'Sign in as a founder (Access + admin with MFA) and reload.',
+  sub:'How the pilot is actually going: build distribution, real usage and what testers tell us. Targets are set in Pilot Planning; this page only observes.',
+  h1:'Build distribution status', h2:'Real usage', h3:'Funnel by cohort', h4:'Recent feedback',
+  statesHint:'Invited (we emailed her) → build assigned (she is in TestFlight or the Play internal track) → installed (account created). "Not assigned" are invited testers who have not given us their store email yet.',
+  activeHint:'Weekly actives against target. A tester who installs and never returns is not a pilot.',
+  dailyHint:'Last 7 days of activity (all users, not just the pilot).',
+  fbHint:'What they write from inside the app. It is the most valuable signal we have before 8 Oct.',
+  kInv:'Invited', kInvS:'pilot email sent',
+  kAsg:'Build assigned', kAsgS:'in TestFlight / Play',
+  kIns:'Installed', kPend:'Not assigned', kPendS:'invited, no store email',
+  kAct:'Active in 7 days', kActS:'of everyone installed',
+  lInv:'invited', lAsg:'build assigned', lIns:'installed', lPend:'not assigned',
+  lPlan:'target', lAct:'active',
+  cWhen:'When', cCohort:'Cohort', cWho:'Who', cMsg:'Message', cVer:'Version',
+  noSql:'⚠️ backend-sql/2026-08-04-pilot-weekly.sql not applied yet in Supabase (RPC admin_pilot_weekly).',
+  noRows:'No data yet.', noFb:'No messages yet — once a tester writes from the app it shows up here.'
 };
-['fCohort','fPlat'].forEach(i=>$(i).addEventListener('change',render));
-$('q').addEventListener('input',render);
+document.querySelectorAll('[data-t]').forEach(el=>{el.innerHTML=T[el.dataset.t]||'';});
+document.title=T.title+' — NutriSync Founders';
+
+const P=window.NSPilot;
 (async()=>{
   const{data:{session}}=await sb.auth.getSession();
   if(!session){$('gate').style.display='block';return;}
-  $('app').style.display='block';load();
+  $('app').style.display='block';
+
+  const [pw,fn,kp]=await Promise.all([sb.rpc('admin_pilot_weekly'),sb.rpc('admin_pilot_funnel'),sb.rpc('admin_kpis')]);
+
+  if(pw.error){$('states').innerHTML='<div class="warn">'+T.noSql+'</div>';}
+  else{
+    const W=(pw.data||{}).weeks||[],S=+(pw.data||{}).scale||58;
+    const cur=W.filter(w=>w.is_past).pop()||{};
+    $('kpis').innerHTML=
+      P.kpi(T.kInv,(+cur.invited||0),T.kInvS)+
+      P.kpi(T.kAsg,(+cur.assigned||0),T.kAsgS)+
+      P.kpi(T.kIns,(+cur.installed||0),'iOS '+(+cur.ios||0)+' · Android '+(+cur.android||0))+
+      P.kpi(T.kPend,(+cur.pending||0),T.kPendS)+
+      P.kpi(T.kAct,(+cur.active||0),(+cur.installed?Math.round((+cur.active||0)/(+cur.installed)*100)+'% ':'')+T.kActS);
+    $('states').innerHTML=W.length?P.statesChart(W,S):'<div class="warn">'+T.noRows+'</div>';
+    $('statesLegend').innerHTML=W.length?P.legend([[T.lInv,P.C.muted],[T.lAsg,P.C.coral2],[T.lIns,P.C.coral],[T.lPend,P.C.plan,1]]):'';
+    $('active').innerHTML=W.length?P.activeChart(W,S):'';
+    $('activeLegend').innerHTML=W.length?P.legend([[T.lPlan,P.C.plan,1],[T.lAct,P.C.coral]]):'';
+  }
+
+  const daily=((kp.data||{}).daily_active)||[];
+  const maxD=Math.max.apply(null,daily.concat([1]));
+  $('daily').innerHTML=daily.length?daily.map(v=>
+    '<div class="bar"><span class="hint">'+v+'</span><i style="height:'+Math.max(2,(v/maxD)*88)+'px"></i></div>').join(''):
+    '<div class="hint">'+T.noRows+'</div>';
+
+  const by=((fn.data||{}).by_cohort)||[];
+  $('funnel').innerHTML=by.length?by.map(c=>
+    '<div style="margin-bottom:12px"><b>'+esc(c.cohort)+'</b><div class="fn">'+
+    [[c.total,T.lInv],[c.confirmed,T.lAsg],[c.joined,T.lIns],[c.active7,T.lAct],[c.pending_install,T.kPend]]
+      .map(x=>'<div><b>'+(x[0]??0)+'</b><span>'+x[1]+'</span></div>').join('')+
+    '</div></div>').join(''):'<div class="hint">'+T.noRows+'</div>';
+
+  const fb=await sb.rpc('admin_pilot_feedback',{p_cohort:null});
+  $('fb').tBodies[0].innerHTML=((fb.data||[]).map(r=>
+    '<tr><td>'+esc((r.created_at||'').slice(0,16).replace('T',' '))+'</td><td>'+esc(r.cohort||'')+'</td><td>'+esc(r.email||'')+'</td>'+
+    '<td class="msg">'+esc(r.message||'')+'</td><td>'+esc(r.app_version||'?')+' · '+esc(r.platform||'?')+'</td></tr>').join(''))
+    ||'<tr><td colspan="5" class="hint">'+T.noFb+'</td></tr>';
 })();
-</script></body></html>
+</script>
+</body></html>
