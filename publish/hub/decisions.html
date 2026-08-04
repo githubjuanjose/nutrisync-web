@@ -48,6 +48,14 @@ a{color:#C73A20}
 .tl div.on{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800}
 .tl div.hito{background:#241D1A;color:#fff;font-weight:800}
 .tl div.gate{background:#FDF0E7;color:#B4700F;font-weight:700;border:1px solid #F0C9B2}
+.sem{display:inline-block;font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px}
+.sem.rojo{background:#FFE4E0;color:#A32D2D}
+.sem.ambar{background:#FFF3E0;color:#B4700F}
+.sem.verde{background:#E8F5EE;color:#0F6E56}
+.dict{background:#FFF4F1;border-left:3px solid #E8472A;padding:8px 12px;border-radius:0 8px 8px 0;
+      margin:9px 0;font-size:13px;color:#8A2A18}
+.dict b{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#C73A20;margin-bottom:2px}
+.d.rojo{border-color:#F0A99C;background:#FFFCFB}
 </style></head><body><!-- ns-hub-navbar -->
 <div id="ns-hub-navbar">
 <style>
@@ -98,6 +106,7 @@ a{color:#C73A20}
     <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a>
       <a class="nsnb-tab" href="/hub/daily-ops.html">📋 Operación</a>
       <a class="nsnb-tab" href="/hub/decisions.html">🗳 Decisiones</a>
+      <a class="nsnb-tab" href="/hub/notifications.html">🔔 Notificaciones</a>
       <a class="nsnb-tab" href="/hub/admin-mis-console.html">📊 MIS</a>
       <a class="nsnb-tab" href="/hub/finance.html">💶 Finanzas</a>
       <a class="nsnb-tab" href="/hub/pilot.html">🧪 Piloto</a>
@@ -203,6 +212,10 @@ a{color:#C73A20}
   <div class="gate">🚩 25 sep · Go/No-Go + envío a stores</div>
   <div class="hito">🎯 8 oct · producción</div>
 </div>
+<div class="dict" style="margin-top:14px"><b>Revisión legal recibida · agosto 2026</b>
+Adelante condicionado. Las decisiones marcadas <b>en rojo</b> no se pueden construir como estaban planteadas —
+el dictamen de cada una está en su tarjeta. Tres de ellas bloquean el piloto ampliado del 8 de septiembre,
+no el lanzamiento de octubre.</div>
 <div class="kpis" id="kpis"></div>
 <div id="err"></div>
 <div id="lista">Cargando…</div>
@@ -243,15 +256,18 @@ var GRUPOS=[
 
 function tarjeta(d, conSprint){
   var cerrada = d.estado !== 'abierta';
-  var h = '<div class="d'+(cerrada?' cerrada':'')+'" data-code="'+esc(d.code)+'">'
+  var h = '<div class="d'+(cerrada?' cerrada':'')+(d.semaforo==='rojo'?' rojo':'')+'" data-code="'+esc(d.code)+'">'
     + '<div class="dh"><span class="code">'+esc(d.code)+'</span>'
     + '<span class="tit">'+esc(d.titulo)+'</span>'
+    + (d.semaforo ? '<span class="sem '+esc(d.semaforo)+'">'+
+        (d.semaforo==='rojo'?'no construir así':d.semaforo==='ambar'?'con condiciones':'vía libre')+'</span>' : '')
     + (cerrada ? '<span class="done '+esc(d.estado)+'">'+esc(d.estado)+'</span>' : '')
     + (conSprint && d.sprint ? '<span class="done aplazada">'+esc(d.sprint)+
         (d.sprint_fechas?' · '+esc(d.sprint_fechas):'')+'</span>' : '')
     + '</div>';
   if (d.proposito) h += '<div class="prop"><b>Para qué le sirve a ella</b>'+esc(d.proposito)+'</div>';
   h += '<div class="reco"><b>Recomendación:</b> '+esc(d.recomendacion)+'</div>';
+  if (d.dictamen) h += '<div class="dict"><b>Revisión legal · agosto 2026</b>'+esc(d.dictamen)+'</div>';
   if (d.bloquea) h += '<div class="meta">Bloquea: '+esc(d.bloquea)+
       (d.doc_url ? ' · <a href="/'+esc(d.doc_url)+'">ver el razonamiento</a>' : '')+'</div>';
 
@@ -274,6 +290,7 @@ function tarjeta(d, conSprint){
 function pinta(d){
   var items=d.items||[], r=d.resumen||{};
   $('kpis').innerHTML =
+    kpi('En rojo', r.rojos||0, 'no construir así') +
     kpi('Este sprint', r.este_sprint||0, 'lo que bloquea ahora') +
     kpi('Siguiente', r.siguiente||0, 'Sprint 12') +
     kpi('Roadmap', r.roadmap||0, 'sprints posteriores') +
