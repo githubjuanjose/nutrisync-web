@@ -37,12 +37,34 @@ textarea{font-family:inherit;font-size:13px;width:100%;box-sizing:border-box;pad
   border:1px solid #EFE3D7;border-radius:10px;margin-top:8px}
 .err{background:#FFF1EC;border:2px solid #E8472A;border-radius:12px;padding:13px 15px;font-size:13px;color:#8A2A18;margin:14px 0}
 a{color:#C73A20}
-.sec{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#8A7F78;margin:28px 0 2px}
+.sec{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#8A7F78;margin:20px 0 2px}
+.hz{margin:30px 0 4px;padding:12px 15px;border-radius:14px;border:1px solid #EFE3D7;background:#fff}
+.hz.ahora{border:2px solid #FD400C;background:#FFF8F4}
+.hz h2{margin:0;font-size:17px}
+.hz .cuando{font-size:12px;color:#8A7F78;margin-top:2px}
+.hz .cuantas{float:right;font-size:12.5px;font-weight:800;color:#C73A20}
+.tl{display:flex;gap:4px;overflow-x:auto;margin:14px 0 6px;padding-bottom:4px}
+.tl div{flex:0 0 auto;font-size:11px;padding:6px 10px;border-radius:8px;background:#F4F0EA;color:#6E655D;white-space:nowrap}
+.tl div.on{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800}
+.tl div.hito{background:#241D1A;color:#fff;font-weight:800}
+.tl div.gate{background:#FDF0E7;color:#B4700F;font-weight:700;border:1px solid #F0C9B2}
 </style></head><body><div class="w">
 
 <h1>🗳 Decisiones</h1>
-<p class="lead">Lo que está esperando a las founders, con su recomendación y sus opciones. Al elegir queda registrado quién y cuándo — la conversación puede pasar donde sea, la decisión vive aquí.</p>
+<p class="lead">Ordenado por cuándo hay que decidirlo, según el plan de lanzamiento del 8 de octubre. Lo que está esperando a las founders, con su recomendación y sus opciones. Al elegir queda registrado quién y cuándo — la conversación puede pasar donde sea, la decisión vive aquí.</p>
 
+<div class="tl">
+  <div class="on">Sprint 11 · 3–7 ago</div>
+  <div class="gate">🚩 8 ago · TestFlight iOS</div>
+  <div>Sprint 12 · 10–14 ago</div>
+  <div class="gate">🚩 18 ago · Android closed testing</div>
+  <div>Sprints 14–15 · 24 ago–4 sep</div>
+  <div class="gate">🚩 8 sep · Piloto fase 1</div>
+  <div>Sprint 17 · 14–18 sep</div>
+  <div class="gate">🚩 18 sep · Piloto fase 2</div>
+  <div class="gate">🚩 25 sep · Go/No-Go + envío a stores</div>
+  <div class="hito">🎯 8 oct · producción</div>
+</div>
 <div class="kpis" id="kpis"></div>
 <div id="err"></div>
 <div id="lista">Cargando…</div>
@@ -66,6 +88,13 @@ function fail(e,fn){
     '<div style="margin-top:5px">Ejecuta <b>backend-sql/2026-08-05-founder-decisions.sql</b> entero y recarga.</div></div>';
 }
 
+var HORIZONTES=[
+  ['en_curso',        'Ya en marcha',      'No hay que decidir nada — solo seguirlo.'],
+  ['este_sprint',     'Decidir este sprint','Todo esto bloquea la integración con Apple Health. Sin ello, O1 no arranca.'],
+  ['siguiente_sprint','Decidir el siguiente','Puede esperar una semana sin coste.'],
+  ['roadmap',         'Roadmap · sprints posteriores','No son para ahora. Están aquí para que no se pierdan, no para decidirlas hoy.']
+];
+
 var GRUPOS=[
   ['senal',   'Qué queremos leer de Apple Health y Health Connect',
               'Una decisión por señal. El texto ámbar es literalmente lo que verá la usuaria cuando le pidamos el permiso: si no sabemos escribirlo, no la pedimos.'],
@@ -74,12 +103,14 @@ var GRUPOS=[
   ['diseno',  'Diseño', 'Lo que necesitamos de la línea de Design.']
 ];
 
-function tarjeta(d){
+function tarjeta(d, conSprint){
   var cerrada = d.estado !== 'abierta';
   var h = '<div class="d'+(cerrada?' cerrada':'')+'" data-code="'+esc(d.code)+'">'
     + '<div class="dh"><span class="code">'+esc(d.code)+'</span>'
     + '<span class="tit">'+esc(d.titulo)+'</span>'
     + (cerrada ? '<span class="done '+esc(d.estado)+'">'+esc(d.estado)+'</span>' : '')
+    + (conSprint && d.sprint ? '<span class="done aplazada">'+esc(d.sprint)+
+        (d.sprint_fechas?' · '+esc(d.sprint_fechas):'')+'</span>' : '')
     + '</div>';
   if (d.proposito) h += '<div class="prop"><b>Para qué le sirve a ella</b>'+esc(d.proposito)+'</div>';
   h += '<div class="reco"><b>Recomendación:</b> '+esc(d.recomendacion)+'</div>';
@@ -105,16 +136,31 @@ function tarjeta(d){
 function pinta(d){
   var items=d.items||[], r=d.resumen||{};
   $('kpis').innerHTML =
-    kpi('Abiertas', r.abiertas||0, 'esperando decisión') +
-    kpi('Cerradas', r.cerradas||0, 'con firma y fecha') +
-    kpi('Total', r.total||0, 'en el registro');
+    kpi('Este sprint', r.este_sprint||0, 'lo que bloquea ahora') +
+    kpi('Siguiente', r.siguiente||0, 'Sprint 12') +
+    kpi('Roadmap', r.roadmap||0, 'sprints posteriores') +
+    kpi('Cerradas', r.cerradas||0, 'con firma y fecha');
 
   var html='';
-  GRUPOS.forEach(function(g){
-    var del = items.filter(function(x){return x.tipo===g[0];});
-    if (!del.length) return;
-    html += '<div class="sec">'+esc(g[1])+'</div><p class="lead">'+esc(g[2])+'</p>';
-    del.forEach(function(x){ html += tarjeta(x); });
+  HORIZONTES.forEach(function(h){
+    var suyas = items.filter(function(x){return (x.horizonte||'roadmap')===h[0];});
+    if(!suyas.length) return;
+    var abiertas = suyas.filter(function(x){return x.estado==='abierta';}).length;
+    // el sprint lo dice cada fila; si el grupo es homogéneo se enseña arriba
+    var sp = suyas[0].sprint ? suyas[0].sprint+(suyas[0].sprint_fechas?' · '+suyas[0].sprint_fechas:'') : '';
+    var todosIgual = suyas.every(function(x){return x.sprint===suyas[0].sprint;});
+    html += '<div class="hz'+(h[0]==='este_sprint'?' ahora':'')+'">'
+         +  (abiertas? '<span class="cuantas">'+abiertas+' por decidir</span>':'')
+         +  '<h2>'+esc(h[1])+'</h2>'
+         +  '<div class="cuando">'+esc(h[2])+(todosIgual&&sp?' · '+esc(sp):'')+'</div></div>';
+    // dentro del horizonte, por categoría
+    GRUPOS.forEach(function(g){
+      var del = suyas.filter(function(x){return x.tipo===g[0];});
+      if(!del.length) return;
+      html += '<div class="sec">'+esc(g[1])+'</div>';
+      if(h[0]==='este_sprint') html += '<p class="lead">'+esc(g[2])+'</p>';
+      del.forEach(function(x){ html += tarjeta(x, !todosIgual); });
+    });
   });
   $('lista').innerHTML = html || '<p class="lead">No hay decisiones registradas.</p>';
   enlaza(items);
