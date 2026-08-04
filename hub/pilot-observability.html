@@ -165,6 +165,7 @@ td.msg{max-width:520px;white-space:pre-wrap}
   <div class="sub" data-t="sub"></div>
 
   <div class="kpis" id="kpis"></div>
+  <div class="card" style="margin-top:12px"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><b style="font-size:12.5px" data-t="cohLbl"></b><select id="coh" style="font-family:inherit;font-size:13px;padding:6px 10px;border:1px solid var(--line);border-radius:10px"></select></div><div id="cohCards" style="margin-top:10px"></div></div>
 
   <h2>1 · <span data-t="h1"></span></h2>
   <div class="card">
@@ -202,6 +203,7 @@ const ES=(navigator.language||'en').toLowerCase().indexOf('es')===0;
 const T=ES?{
   title:'Pilot Observability', gate:'Inicia sesión de founder (Access + admin con MFA) y recarga.',
   sub:'Cómo va el piloto de verdad: distribución del build, uso diario y lo que nos cuentan. El objetivo se fija en Pilot Planning; aquí solo se observa.',
+  cohAll:'Todos los grupos', cohLbl:'Grupo de test', byCoh:'Por grupo de test',
   h1:'Estado de distribución del build', h2:'Uso real', h3:'Embudo por cohorte', h4:'Feedback reciente',
   statesHint:'Invitada (le mandamos el correo) → build asignado (está en TestFlight o en el track interno de Play) → instalada (ya tiene cuenta). "Sin responder" son las invitadas que aún no nos han dado su correo de tienda.',
   activeHint:'Activas por semana frente al objetivo. Una tester que instala y no vuelve no cuenta como piloto.',
@@ -219,6 +221,7 @@ const T=ES?{
 }:{
   title:'Pilot Observability', gate:'Sign in as a founder (Access + admin with MFA) and reload.',
   sub:'How the pilot is actually going: build distribution, real usage and what testers tell us. Targets are set in Pilot Planning; this page only observes.',
+  cohAll:'All test groups', cohLbl:'Test group', byCoh:'By test group',
   h1:'Build distribution status', h2:'Real usage', h3:'Funnel by cohort', h4:'Recent feedback',
   statesHint:'Invited (we emailed her) → build assigned (she is in TestFlight or the Play internal track) → installed (account created). "Not assigned" are invited testers who have not given us their store email yet.',
   activeHint:'Weekly actives against target. A tester who installs and never returns is not a pilot.',
@@ -243,11 +246,16 @@ const P=window.NSPilot;
   if(!session){$('gate').style.display='block';return;}
   $('app').style.display='block';
 
-  const [pw,fn,kp]=await Promise.all([sb.rpc('admin_pilot_weekly'),sb.rpc('admin_pilot_funnel'),sb.rpc('admin_kpis')]);
-
-  if(pw.error){$('states').innerHTML='<div class="warn">'+T.noSql+'</div>';}
-  else{
-    const W=(pw.data||{}).weeks||[],S=+(pw.data||{}).scale||58;
+  async function loadWeekly(){
+    const c=$('coh').value||null;
+    const pw=await sb.rpc('admin_pilot_weekly',{p_cohort:c});
+    if(pw.error){$('states').innerHTML='<div class="warn">'+T.noSql+'</div>';return;}
+    const W=(pw.data||{}).weeks||[],S=+(pw.data||{}).scale||58,COH=(pw.data||{}).cohorts||[];
+    if($('coh').options.length<=1){
+      $('coh').innerHTML='<option value="">'+T.cohAll+'</option>'+COH.map(x=>'<option value="'+esc(x.cohort)+'">'+esc(x.cohort)+' ('+x.total+')</option>').join('');
+      $('coh').onchange=loadWeekly;
+    }
+    $('cohCards').innerHTML=P.cohortCards(COH,{lInv:T.lInv,lAsg:T.lAsg,lIns:T.lIns,lAct:T.lAct});
     const cur=W.filter(w=>w.is_past).pop()||{};
     $('kpis').innerHTML=
       P.kpi(T.kInv,(+cur.invited||0),T.kInvS)+
@@ -260,7 +268,10 @@ const P=window.NSPilot;
     $('active').innerHTML=W.length?P.activeChart(W,S):'';
     $('activeLegend').innerHTML=W.length?P.legend([[T.lPlan,P.C.plan,1],[T.lAct,P.C.coral]]):'';
   }
+  $('coh').innerHTML='<option value="">'+T.cohAll+'</option>';
+  await loadWeekly();
 
+  const [fn,kp]=await Promise.all([sb.rpc('admin_pilot_funnel'),sb.rpc('admin_kpis')]);
   const daily=((kp.data||{}).daily_active)||[];
   const maxD=Math.max.apply(null,daily.concat([1]));
   $('daily').innerHTML=daily.length?daily.map(v=>

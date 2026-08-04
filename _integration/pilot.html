@@ -205,9 +205,13 @@ window.propose=async()=>{
   await refreshOv();alert(emails.length+' propuestas → '+cohort+'. Ahora valida el lote en la sección 2.');
 };
 async function refreshOv(){const ov=await sb.rpc('admin_pilot_overview');if(!ov.error){OV=ov.data;renderAll();}}
-function invSel(){const s=[...document.querySelectorAll('#inv .ik:checked')].map(c=>c.dataset.e);
+function invSel(){const s=invChecked();
   if(s.length)return s;const c=$('rvCohort').value;
   return OV.invites.filter(i=>(!c||i.cohort===c)).map(i=>i.email);}
+/* r12-b7: para lo que NO tiene vuelta atras (quitar, mover de cohorte) exigimos
+   marcar filas. invSel() cae a "todas las de la cohorte" y eso, en un borrado,
+   es una escopeta. */
+function invChecked(){return [...document.querySelectorAll('#inv .ik:checked')].map(c=>c.dataset.e);}
 window.setStatus=async st=>{
   const emails=invSel();if(!emails.length)return alert('Nada seleccionado.');
   if(!confirm(st+' → '+emails.length+' emails, ¿seguro?'))return;
@@ -240,7 +244,8 @@ document.addEventListener('change',async e=>{
    deshacerse desde aqui. Quitar solo borra a quien AUN no sabe que existe el
    piloto; a las ya contactadas se las descarta, que deja rastro. */
 window.moveCohort=async()=>{
-  const emails=invSel();if(!emails.length)return alert('Nada seleccionado.');
+  const emails=invChecked();
+  if(!emails.length)return alert('Marca primero las filas que quieres mover (casilla de la izquierda).');
   const cur=[...new Set(OV.invites.map(i=>i.cohort))].join(', ');
   const c=prompt('Mover '+emails.length+' persona(s) a que cohorte?\n\nExistentes: '+cur,'wave-1');
   if(!c)return;
@@ -249,8 +254,9 @@ window.moveCohort=async()=>{
   await refreshOv();alert('Movidas '+((data||{}).moved||0)+' a "'+((data||{}).cohort||c)+'".');
 };
 window.removeFromPilot=async()=>{
-  const emails=invSel();if(!emails.length)return alert('Nada seleccionado.');
-  if(!confirm('Quitar del piloto a '+emails.length+' persona(s)?\n\nSolo se borran las que aun no han recibido ningun correo ni tienen cuenta. Las demas hay que descartarlas ("Descartar"), asi queda rastro.'))return;
+  const emails=invChecked();
+  if(!emails.length)return alert('Marca primero las filas que quieres quitar (casilla de la izquierda).');
+  if(!confirm('Quitar del piloto a estas '+emails.length+':\n\n'+emails.join('\n')+'\n\n\nSolo se borran las que aun no han recibido ningun correo ni tienen cuenta. Las demas hay que descartarlas ("Descartar"), asi queda rastro.'))return;
   const{data,error}=await sb.rpc('admin_pilot_remove',{p_emails:emails});
   if(error)return alert('Error: '+error.message);
   const r=(data||{}).removed||[],k=(data||{}).kept||[];

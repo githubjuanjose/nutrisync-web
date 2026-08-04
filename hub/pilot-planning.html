@@ -163,6 +163,7 @@ tr.now td{background:#FFF6EF}
   <div class="sub" data-t="sub"></div>
 
   <div class="kpis" id="kpis"></div>
+  <div class="card" style="margin-top:12px"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><b style="font-size:12.5px" data-t="cohLbl"></b><select id="coh" style="font-family:inherit;font-size:13px;padding:6px 10px;border:1px solid var(--line);border-radius:10px"></select></div><div id="cohCards" style="margin-top:10px"></div></div>
   <div class="ms" id="milestones"></div>
 
   <h2>1 · <span data-t="h1"></span></h2>
@@ -193,6 +194,7 @@ const ES=(navigator.language||'en').toLowerCase().indexOf('es')===0;
 const T=ES?{
   title:'Pilot Planning', gate:'Inicia sesión de founder (Access + admin con MFA) y recarga.',
   sub:'El plan del piloto semana a semana: cuántas testers queremos dentro y cuántas activas, con los hitos que no se pueden mover. Aquí se edita el objetivo; en Pilot Observability se mira el resultado.',
+  cohAll:'Todos los grupos', cohLbl:'Grupo de test', byCoh:'Por grupo de test',
   h1:'Objetivo vs real · 13 semanas', h2:'Plan semanal (editable)',
   chartHint:'Línea discontinua = objetivo de testers dentro. Sólidas = instaladas reales por plataforma, solo hasta la semana en curso.',
   tableHint:'Edita cualquier celda y pulsa Guardar. La escala de las gráficas la marca el objetivo más alto de la tabla.',
@@ -209,6 +211,7 @@ const T=ES?{
 }:{
   title:'Pilot Planning', gate:'Sign in as a founder (Access + admin with MFA) and reload.',
   sub:'The pilot plan week by week: how many testers we want in and how many active, with the milestones that cannot move. Targets are edited here; results live in Pilot Observability.',
+  cohAll:'All test groups', cohLbl:'Test group', byCoh:'By test group',
   h1:'Target vs actual · 13 weeks', h2:'Weekly plan (editable)',
   chartHint:'Dashed line = target testers in. Solid = real installs by platform, only up to the current week.',
   tableHint:'Edit any cell and hit Save. The highest target in this table sets the charts’ scale.',
@@ -227,7 +230,7 @@ document.querySelectorAll('[data-t]').forEach(el=>{el.innerHTML=T[el.dataset.t]|
 document.title=T.title+' — NutriSync Founders';
 
 const P=window.NSPilot;
-let WEEKS=[],SCALE=58;
+let WEEKS=[],SCALE=58,COH=[];
 
 function render(){
   const cur=WEEKS.filter(w=>w.is_past).pop()||{};
@@ -240,6 +243,7 @@ function render(){
     P.kpi(T.kGap,(gap>=0?'+':'')+gap,T.kGapS)+
     P.kpi(T.kWeeks,(launch>=0?Math.max(0,launch-now):'—'),T.kWeeksS);
   $('milestones').innerHTML=T.ms;
+  $('cohCards').innerHTML=P.cohortCards(COH,{lInv:'invitadas',lAsg:'asignadas',lIns:'instaladas',lAct:'activas 7d'});
   $('chart').innerHTML=WEEKS.length?P.platformChart(WEEKS,SCALE):'<div class="warn">'+T.noRows+'</div>';
   $('chartLegend').innerHTML=WEEKS.length?P.legend([[T.plan,P.C.plan,1],['iOS',P.C.coral],['Android',P.C.good]]):'';
   const tb=document.querySelector('#pp tbody');
@@ -264,15 +268,21 @@ function render(){
   });
 }
 async function load(){
-  const{data,error}=await sb.rpc('admin_pilot_weekly');
+  const c=$('coh').value||null;
+  const{data,error}=await sb.rpc('admin_pilot_weekly',{p_cohort:c});
   if(error){$('chart').innerHTML='<div class="warn">'+T.noSql+'<br>'+esc(error.message)+'</div>';return;}
-  WEEKS=(data||{}).weeks||[];SCALE=+(data||{}).scale||58;
+  WEEKS=(data||{}).weeks||[];SCALE=+(data||{}).scale||58;COH=(data||{}).cohorts||[];
+  if($('coh').options.length<=1){
+    $('coh').innerHTML='<option value="">'+T.cohAll+'</option>'+COH.map(x=>'<option value="'+esc(x.cohort)+'">'+esc(x.cohort)+' ('+x.total+')</option>').join('');
+    $('coh').onchange=load;
+  }
   render();
 }
 (async()=>{
   const{data:{session}}=await sb.auth.getSession();
   if(!session){$('gate').style.display='block';return;}
   $('app').style.display='block';
+  $('coh').innerHTML='<option value="">'+T.cohAll+'</option>';
   await load();
 })();
 </script>
