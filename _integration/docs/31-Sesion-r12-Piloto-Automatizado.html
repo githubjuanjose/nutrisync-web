@@ -107,6 +107,21 @@ tbody tr:nth-child(even){background:var(--cream);}
 <li>Los tres enlaces de Figma que faltan en Prototipos.</li>
 </ul>
 
+
+<h2>8 · El día después: dos horas persiguiendo una página en blanco</h2>
+<p>Con todo desplegado, las tres pestañas del piloto salían <strong>vacías</strong>. La caza del fallo dejó tres lecciones que valen más que la funcionalidad que arreglaron.</p>
+
+<h3>Causa 1 · SQL entregado a trozos</h3>
+<p>La web llamaba a <code>admin_pilot_weekly(p_cohort)</code> y en la base solo existía la versión sin argumentos: fui dando los ficheros SQL sueltos entre otras conversaciones y dos nunca se ejecutaron. Ahora los guardarraíles lo impiden por dos vías: un <strong>test de contrato</strong> que compara cada <code>rpc()</code> de las páginas del hub con las funciones definidas en <code>backend-sql/</code> y aborta el deploy si falta alguna; y <code>nsFail()</code> en las páginas, que ante un error de consulta pinta un banner rojo con el nombre del fichero a ejecutar en vez de dejar la pantalla en blanco.</p>
+
+<h3>Causa 2 · Un JavaScript cacheado</h3>
+<p>El síntoma más engañoso del día: las cifras de cabecera salían bien y la gráfica y la tabla no. El navegador servía la versión anterior de <code>pilot-charts.js</code>, sin la función que se había añadido esa mañana, y el renderizado moría exactamente ahí — <em>sin un solo error visible en la página</em>. Regla nueva: <strong>todo asset propio va versionado por contenido</strong> (<code>?v=&lt;sha8&gt;</code>), y lo calcula <code>integrate.py</code> en cada integración para que nadie tenga que acordarse.</p>
+
+<h3>Causa 3 · La cohorte inventada</h3>
+<p>Las 26 testers de TestFlight entraron todas como <code>wave-1</code> porque el CSV se llamaba así. En App Store Connect había tres grupos. <strong>Copiar a mano un dato que ya vive en un sistema externo crea una segunda verdad que nace desincronizada.</strong> Ahora <code>store-stats</code> trae el grupo de cada tester y <code>pilot_sync_testflight</code> mantiene founders / advisory / wave-1 solas cada mañana: si mueves a alguien de grupo en Apple, al día siguiente está movida aquí.</p>
+
+<blockquote><p><strong>Y una lección de método, la que más costó:</strong> medir antes de hipotetizar. La primera captura ya acotaba el fallo a un punto exacto — lo que se pinta ANTES funcionaba y lo de DESPUÉS no —, y aun así probé tres teorías distintas antes de mirar ahí. Cuando algo "no se ve", la pregunta no es <em>qué puede estar roto</em> sino <em>hasta dónde llegó a funcionar</em>.</p></blockquote>
+
 <hr>
-<p style="color:var(--muted);font-size:13.5px">Registro de sesión · generado el 4-ago-2026. El detalle técnico vive en <code>CLAUDE.md</code> (memoria operativa), los ficheros SQL en <code>backend-sql/</code> y los zips de cada despliegue en <code>releases/</code>, inmutables.</p>
+<p style="color:var(--muted);font-size:13.5px">Registro de sesión · generado el 4-ago-2026, ampliado el 5-ago con la sesión de depuración. El detalle técnico vive en <code>CLAUDE.md</code> (memoria operativa), los ficheros SQL en <code>backend-sql/</code> y los zips de cada despliegue en <code>releases/</code>, inmutables.</p>
 </div></body></html>

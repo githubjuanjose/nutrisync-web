@@ -1155,6 +1155,23 @@ for _f in ("pilot-charts.js", "pilot-planning.html", "pilot-observability.html",
         shutil.copy(_src, os.path.join(PUB, "hub", _f))
         print(f"- piloto: hub/{_f}")
 
+# r12-b11: los assets NUESTROS van versionados por contenido. Un HTML nuevo con
+# un .js viejo en cache mata la pagina a mitad sin dar un solo error visible.
+_charts = os.path.join(PUB, "hub", "pilot-charts.js")
+if os.path.exists(_charts):
+    import hashlib as _h, re as _re
+    _v = _h.sha1(open(_charts, "rb").read()).hexdigest()[:8]
+    for _page in ("pilot-planning.html", "pilot-observability.html"):
+        _pp = os.path.join(PUB, "hub", _page)
+        if not os.path.exists(_pp):
+            continue
+        _s0 = open(_pp, encoding="utf-8").read()
+        _s1 = _re.sub(r'(<script src="/hub/pilot-charts\.js)(\?v=[a-f0-9]+)?(">)',
+                      r'\1?v=' + _v + r'\3', _s0)
+        if _s1 != _s0:
+            open(_pp, "w", encoding="utf-8").write(_s1)
+    print(f"- piloto: pilot-charts.js versionado ?v={_v}")
+
 pl = os.path.join(ASSETS, "pilot.html")
 if os.path.exists(pl):
     shutil.copy(pl, os.path.join(PUB, "hub", "pilot.html"))
@@ -1448,3 +1465,69 @@ if os.path.isdir(_afig):
         '<div class="g">%s</div></div></body></html>' % (len(_files), _cards))
     open(os.path.join(_afig, "index.html"), "w", encoding="utf-8").write(_idx)
     print(f"- ns-assets-index: galería de {len(_files)} recursos en /assets/figma/")
+
+# ── ns-admin-door ────────────────────────────────────────────────────────────
+# Tercera puerta en el pie del marketing, junto a Pitch y Builders: StartUp
+# Admin (r13). Vive en OTRO dominio (admin.nutrisynccollective.com), pero la
+# entrada tiene que estar donde ya está el resto: si no, nadie la encuentra.
+#
+# El ancla se CLONA de la de Builders en lugar de escribirse a mano. El pie vive
+# dentro del payload JSON del motor, donde las comillas van como \" y las barras
+# como /; reutilizar la cadena real hereda ese escapado exacto y no puede
+# romper el render (lección po74: un replace con comillas sin escapar tumbó
+# producción 15 minutos).
+_ad = os.path.join(PUB, "index.html")
+if os.path.exists(_ad):
+    _s0 = open(_ad, encoding="utf-8").read()
+    if "ns-admin-door" in _s0:
+        pass  # ya integrado — el bloque es idempotente
+    else:
+        _key = "?r=builders"
+        _k = _s0.find(_key)
+        if _k < 0:
+            print("! ns-admin-door: no encontré la puerta de Builders — SIN TOCAR")
+        else:
+            _open = _s0.rfind("<a href=", 0, _k)
+            _close = _s0.find("<\\u002Fa>", _k)
+            if _open < 0 or _close < 0:
+                print("! ns-admin-door: no acoté el ancla de Builders — SIN TOCAR")
+            else:
+                _close += len("<\\u002Fa>")
+                _anchor = _s0[_open:_close]
+                # icono propio: libro mayor con una línea de importe
+                _icon_old = ('<path d=\\"M8.5 8L4.5 12l4 4M15.5 8l4 4-4 4\\">'
+                             '<\\u002Fpath>')
+                _icon_new = ('<path d=\\"M5 4.5h11.5a2 2 0 012 2v13H7a2 2 0 01-2-2z\\">'
+                             '<\\u002Fpath><path d=\\"M8.5 9h7M8.5 12.5h7M8.5 16h4\\">'
+                             '<\\u002Fpath>')
+                _new = _anchor
+                _n_icon = _new.count(_icon_old)
+                _new = _new.replace(_icon_old, _icon_new)
+                _new = _new.replace("hub\\u002Ffull-hub-gated-site.html?r=builders",
+                                    "https:\\u002F\\u002Fadmin.nutrisynccollective.com")
+                _new = _new.replace("full-hub-gated-site.html?r=builders",
+                                    "https:\\u002F\\u002Fadmin.nutrisynccollective.com")
+                _new = _new.replace(">Builders<", ">StartUp Admin<")
+                _new = _new.replace("<a href=", "<a data-ns=\\\"ns-admin-door\\\" href=", 1)
+                _ok = ("admin.nutrisynccollective.com" in _new
+                       and ">StartUp Admin<" in _new
+                       and "?r=builders" not in _new
+                       and _n_icon == 1)
+                if not _ok:
+                    print("! ns-admin-door: el clon no quedó limpio — SIN TOCAR")
+                else:
+                    _s = _s0[:_close] + "\\n          " + _new + _s0[_close:]
+                    # C2: el payload tiene que seguir siendo JSON válido
+                    import json as _json2, re as _re2
+                    _bad = False
+                    for _m in _re2.finditer(r'<script type="application/json"[^>]*>(.*?)</script>',
+                                            _s, _re2.S):
+                        try:
+                            _json2.loads(_m.group(1))
+                        except Exception as _e:
+                            _bad = True
+                            print("! ns-admin-door: rompería el payload (%s) — SIN TOCAR" % _e)
+                            break
+                    if not _bad:
+                        open(_ad, "w", encoding="utf-8").write(_s)
+                        print("- ns-admin-door: 3ª puerta en el pie → admin.nutrisynccollective.com")
