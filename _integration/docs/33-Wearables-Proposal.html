@@ -1,0 +1,337 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Proposal 33 · Wearables — NutriSync Docs</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.navbtns{display:flex;gap:16px;align-items:center;}
+.navbtns a:first-child{padding:5px 12px;border:1px solid var(--line);border-radius:20px;}
+.navbtns a:first-child:hover{border-color:var(--coral);background:var(--cream);}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+h4{font-size:16px;font-weight:800;margin:20px 0 6px;}
+p{margin:10px 0;}
+a{color:var(--coral-deep);}
+strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:'SF Mono',Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:14px 0;padding:12px 18px;background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;color:#5d524b;}
+blockquote p{margin:4px 0;}
+ul,ol{margin:10px 0;padding-left:24px;}
+li{margin:5px 0;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;}
+tbody tr:nth-child(even){background:var(--cream);}
+.pill{display:inline-block;background:#FDE6DD;color:var(--coral-deep);font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;}
+.card{display:block;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:10px 0;text-decoration:none;color:var(--ink);transition:.15s;}
+.card:hover{border-color:var(--coral);background:var(--cream);}
+.card .t{font-weight:800;font-size:16px;color:var(--coral-deep);}
+.card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
+.sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
+</style></head><body><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><style>
+.lsw{position:fixed;top:64px;right:22px;z-index:50;background:var(--coral);color:#fff;border:none;
+     border-radius:20px;padding:7px 15px;font-weight:800;font-size:12.5px;cursor:pointer;font-family:inherit;
+     box-shadow:0 6px 18px -8px rgba(0,0,0,.4)}
+.lsw:hover{background:var(--coral-deep)}
+.reco{background:#e9f7ee;border:2px solid #bfe5cc;border-radius:12px;padding:12px 16px;margin:12px 0}
+.risk{background:#fee2e2;border:1.5px solid #f5b5b5;border-radius:10px;padding:10px 14px;font-size:13.5px;margin:8px 0}
+.ojo{background:#fdf0e7;border:2px solid #f0c9b2;border-radius:12px;padding:12px 16px;margin:12px 0}
+.fase{background:#fff;border:2px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0}
+.kpi{display:inline-block;background:#fdf7f1;border-radius:10px;padding:5px 11px;margin:4px 4px 0 0;font-size:12px}
+.card{border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin:12px 0;background:#fff}
+.sub{font-size:16px;color:var(--muted);margin:0 0 6px}
+.pie{color:var(--muted);font-size:12.5px;margin-top:30px;text-align:center}
+[data-ns-lang]{display:none}
+[data-ns-lang].on{display:block}
+</style>
+<button class="lsw" id="lsw" onclick="nsSwap()">EN</button>
+<div data-ns-lang="es"><h1>⌚ Propuesta 33 · Wearables</h1>
+<div class="sub">Epic O — conectar NutriSync con las plataformas de salud del teléfono: qué leemos, qué alimenta, qué NO debemos hacer y en qué orden · para decisión de founders · 5-ago-2026</div>
+
+<h2>1 · Resumen ejecutivo</h2>
+<div class="card">
+<p>NutriSync le pide hoy a la usuaria que teclee cada día lo que su teléfono ya sabe: si durmió, si se movió, si tuvo el periodo. Conectar con <b>Apple Health</b> y <b>Health Connect</b> elimina ese trabajo y, sobre todo, mejora lo que de verdad importa: <b>saber en qué fase del ciclo está</b>. La temperatura de muñeca que mide un reloj de noche confirma la ovulación mejor que cualquier calendario.</p>
+<div class="reco"><b>Recomendación:</b> hacer <b>solo las dos plataformas de teléfono antes del 8-oct</b> — Apple Health primero, Health Connect después. <b>Descartar Fitbit y Strava</b> por ahora (razones en §3). Las apps de reloj, <b>después del lanzamiento</b> y solo si el piloto muestra demanda.</div>
+</div>
+
+<h2>2 · Lo que ya está construido</h2>
+<div class="card">
+<p>Esto no se empieza de cero. De una sesión anterior (Epic E) ya existe:</p>
+<ul>
+<li><b>Tabla <code>health_signal</code></b> con clave única por (usuaria, proveedor, tipo, instante): la misma muestra no puede entrar dos veces aunque se sincronice cien veces.</li>
+<li><b>Tabla <code>connected_providers</code></b> con registro del consentimiento y de su retirada, con fecha. Auditable.</li>
+<li><b>Pantalla «Dispositivos conectados»</b> en Ajustes, con consentimiento explícito.</li>
+<li><b>Registro de 9 proveedores</b> con sus permisos declarados.</li>
+</ul>
+<p>Y de esta sesión, el <b>contrato de datos</b>: la traducción de lo que dan las plataformas a nuestro modelo, en funciones puras con 21 casos de prueba. Falta el conector nativo, no el andamiaje.</p>
+</div>
+
+<h2>3 · Dos hallazgos que cambian el plan</h2>
+
+<h3>3.1 · Fitbit se apaga en septiembre</h3>
+<div class="risk"><b>Google cierra la Web API de Fitbit en septiembre de 2026</b> — semanas antes de nuestro lanzamiento. La sustituta es la Google Health API, cuyos permisos son todos <i>Restricted</i>: exigen una revisión de privacidad y seguridad de Google, con entidad legal y política de privacidad detrás. Sin la SL constituida no se pasa esa revisión.</div>
+<p><b>Consecuencia:</b> integrar Fitbit hoy sería construir algo que muere solo. Y hay una razón mejor para no hacerlo: <b>quien tiene un Fitbit puede volcar sus datos en Health Connect</b>, así que la integración con Android ya lo cubre indirectamente.</p>
+
+<h3>3.2 · El contrato de Strava pelea contra el producto</h3>
+<div class="risk">El acuerdo de API de Strava de 2026 <b>prohíbe usar sus datos para entrenar modelos de IA o aprendizaje automático</b> — que es exactamente la Propuesta 32 — y <b>prohíbe mostrar los datos de Strava de una usuaria a nadie que no sea ella misma</b>, lo que impide cualquier función de comunidad, coach o comparación. Además exige suscripción de pago para el tier estándar.</div>
+<p><b>Consecuencia:</b> para una app cuyo valor está en inferir sobre los datos, ese contrato es un muro. Strava es una red social de deporte; nosotros no lo somos. Además, quien registra en Strava suele volcar también en Apple Health o Health Connect: la vía indirecta funciona sin firmar nada.</p>
+
+<h3>3.3 · Y una distinción que conviene hacer explícita</h3>
+<div class="card">
+<p>«App de Apple Watch» y «Apple Health» suenan a lo mismo y son dos proyectos distintos:</p>
+<table>
+<tr><th></th><th>Apple Health (HealthKit)</th><th>App de Apple Watch</th></tr>
+<tr><td><b>Qué es</b></td><td>Dependencia nativa en la app iOS que ya tenemos</td><td>Aplicación aparte, con su propia interfaz</td></tr>
+<tr><td><b>Stack</b></td><td>El mismo: Expo + EAS build</td><td><b>Swift + SwiftUI</b>, código nuevo que no comparte nada</td></tr>
+<tr><td><b>Su equivalente Android</b></td><td>Health Connect, también nativo</td><td><b>Kotlin + Compose</b> para Wear OS: un tercer código</td></tr>
+<tr><td><b>Qué aporta</b></td><td>Los datos, sin que nadie los teclee</td><td>Comodidad de registrar desde la muñeca</td></tr>
+</table>
+<p>Los datos vienen de la plataforma de salud del teléfono, <b>no de la app del reloj</b>. Un reloj Apple ya escribe en Apple Health sin que nosotros hagamos nada. Por eso las apps de reloj son un proyecto de comodidad, no de datos — y llegan después.</p>
+</div>
+
+<h2>4 · Qué leemos y para qué</h2>
+<div class="card">
+<p>Regla: <b>cada señal que pedimos tiene que tener un uso concreto en la app</b>. El texto de la derecha es literalmente lo que verá la usuaria en el diálogo de permisos. Si no sabemos escribirlo, no lo pedimos: pedir «por si acaso» es lo que hace que la gente diga que no a todo.</p>
+<table>
+<tr><th>Señal</th><th>Para qué le sirve a ella</th><th></th></tr>
+<tr><td><b>Sueño</b></td><td>Rellena tu descanso del día sin que lo teclees</td><td>esencial</td></tr>
+<tr><td><b>Entrenamientos</b></td><td>Marca el movimiento que ya has hecho en tu anillo del día</td><td>esencial</td></tr>
+<tr><td><b>Flujo menstrual</b></td><td>Si ya registras tu periodo en Salud, no lo repites aquí</td><td>esencial</td></tr>
+<tr><td><b>Temperatura de muñeca</b></td><td>La subida tras la ovulación confirma en qué fase estás</td><td>opcional</td></tr>
+<tr><td><b>Energía activa</b></td><td>Ajusta las recomendaciones de nutrición a lo que gastas de verdad</td><td>opcional</td></tr>
+<tr><td><b>Pasos</b></td><td>Distingue un día activo de uno sedentario</td><td>opcional</td></tr>
+<tr><td><b>Frecuencia en reposo</b></td><td>Señal de recuperación: sube cuando el cuerpo pide descanso</td><td>opcional</td></tr>
+<tr><td><b>Variabilidad cardiaca</b></td><td>Acompaña a la fase del ciclo y ayuda a decidir intensidad</td><td>opcional</td></tr>
+</table>
+<p>Solo tres son esenciales. Con esas tres la integración ya aporta; el resto se puede denegar sin romper nada.</p>
+</div>
+
+<h2>5 · La regla que gobierna todo: lo objetivo se rellena, lo subjetivo se correlaciona</h2>
+<div class="ojo">
+<p><b>El reloj mide hechos, no sentimientos.</b> Puede saber cuántos minutos dormiste; no puede saber si descansaste. Puede medir tu variabilidad cardiaca; no puede saber cómo estás.</p>
+<p>Técnicamente <i>podríamos</i> rellenar el ánimo a partir de la frecuencia en reposo y la HRV. <b>No debemos.</b> El día que una mujer se sienta perfectamente y la app le diga que está de mal humor, hemos perdido su confianza para siempre. Y el riesgo de fondo es peor: <b>ánimo + ciclo</b> es exactamente el terreno donde un producto como el nuestro puede acabar reforzando el estereotipo de «estás así porque te va a venir la regla». Con un número detrás, suena a ciencia. No lo es.</p>
+</div>
+<table>
+<tr><th>Señal medida</th><th>Alimenta</th><th>Cómo</th></tr>
+<tr><td>Sueño</td><td><code>sleep_quality</code></td><td>Sugerencia que ella puede cambiar</td></tr>
+<tr><td>Entrenamiento</td><td>Anillo de movimiento</td><td>Directo</td></tr>
+<tr><td>Flujo</td><td><code>flow_level</code></td><td>Directo</td></tr>
+<tr><td>Energía activa, pasos</td><td>Recomendación de nutrición</td><td>Calibra la ración a lo que gasta</td></tr>
+<tr><td>Temperatura</td><td>Confirmación de fase (Epic M)</td><td>La señal de más valor</td></tr>
+<tr><td>HRV, frecuencia en reposo</td><td>Intensidad recomendada</td><td>«Hoy tu cuerpo pide menos», nunca «estás triste»</td></tr>
+<tr><td><b>Ánimo, energía percibida</b></td><td><b>Nada. Los escribe ella</b></td><td>Se usan como eje para explicar patrones</td></tr>
+</table>
+<div class="reco"><b>Dónde está el valor real:</b> el ánimo que ella registra, cruzado con los datos del reloj, permite decirle algo que no puede ver sola — <i>«en tus últimos tres ciclos, los días que dormiste menos de seis horas registraste menos energía»</i>. Eso es un patrón de sus propios datos, no una máquina diciéndole cómo se siente. Es la diferencia entre un espejo y un juez.</div>
+
+<h2>6 · La señal que más mueve la aguja: temperatura y fase</h2>
+<div class="card">
+<p>El núcleo de NutriSync es sincronizar nutrición y movimiento con la fase del ciclo. Hoy la fase se estima por calendario, con la incertidumbre que eso arrastra en ciclos irregulares. Los relojes con sensor de temperatura (Apple Watch Series 8 y posteriores, y varios Wear OS) miden la temperatura de muñeca durante el sueño; la <b>subida sostenida tras la ovulación</b> es una señal fisiológica real.</p>
+<div class="risk"><b>Aviso que hay que grabar antes de construirlo:</b> la temperatura <b>confirma</b> que hubo ovulación — <b>no la predice</b>. Es retrospectiva. Cualquier redacción que insinúe que sirve para evitar un embarazo es un problema legal y humano. Nuestros documentos legales ya tocan este punto y hay que mantener la coherencia.</div>
+<p>Bien usada, mejora la precisión de la fase sin prometer nada que no podamos cumplir: «tu ciclo se comportó como esperábamos» o «esta vez ovulaste más tarde de lo previsto, ajustamos».</p>
+</div>
+
+<h2>7 · Lo que la ley y las tiendas exigen</h2>
+<div class="card">
+<ul>
+<li><b>RGPD artículo 9.</b> Datos de salud = categoría especial. Requieren consentimiento explícito, separado y revocable. Ya está resuelto en el modelo: <code>connected_providers</code> guarda cuándo se dio y cuándo se retiró.</li>
+<li><b>Regla de Apple (App Store 5.1.3).</b> Los datos de HealthKit <b>no pueden usarse para publicidad, marketing ni minería de datos</b>, ni compartirse con terceros con ese fin. Solo para mejorar la gestión de salud de la usuaria o investigación con permiso. Esto <b>afecta al modelo de negocio</b>: cierra la puerta a monetizar datos de salud, hoy y siempre.</li>
+<li><b>Consecuencia para la IA (Propuesta 32).</b> Si en algún momento se envía contexto a un modelo, no puede ir con datos identificables. Ya está declarado en la Propuesta 32 §2 y sigue valiendo.</li>
+<li><b>Minimización.</b> Leemos ventanas cortas y agregados, no el historial completo de su vida. Menos datos = menos riesgo y menos que explicar.</li>
+</ul>
+</div>
+
+<h2>8 · Fases y esfuerzo</h2>
+<div class="fase"><b>O1 · Apple Health, lectura</b> — permisos, primera sincronización, sugerencias en el registro diario y el anillo. <span class="kpi">≈1 sprint</span> <span class="kpi">exige build nativo</span> <span class="kpi">EN CURSO</span></div>
+<div class="fase"><b>O2 · Apple Health, escritura</b> — devolver a Salud el periodo que ella registra aquí. Reciprocidad: la app no solo toma. <span class="kpi">≈2 días</span></div>
+<div class="fase"><b>O3 · Health Connect (Android)</b> — misma lógica, otro conector. Cubre Samsung Health, y de rebote Fitbit y Garmin, porque vuelcan ahí. <span class="kpi">≈1 sprint</span></div>
+<div class="fase"><b>O4 · Temperatura → fase</b> — confirmación de ovulación dentro de Epic M. <span class="kpi">≈1 sprint</span> <span class="kpi">depende de O1</span></div>
+<div class="fase"><b>O5 · Patrones personales</b> — correlaciones entre lo que ella registra y lo que mide el reloj. Encaja con Epic N. <span class="kpi">después del lanzamiento</span></div>
+<div class="fase" style="opacity:.75"><b>O6 · Apps de reloj (watchOS y Wear OS)</b> — dos bases de código nativas nuevas, dos revisiones de tienda, dos ciclos de release. <span class="kpi">después del lanzamiento</span> <span class="kpi">solo si el piloto lo pide</span></div>
+
+<h2>9 · Riesgos</h2>
+<table>
+<tr><th>Riesgo</th><th>Mitigación</th></tr>
+<tr><td>La usuaria deniega los permisos y la app parece rota</td><td>Las tres señales esenciales se piden con su porqué; todo lo demás es opcional y la app funciona igual sin nada</td></tr>
+<tr><td>Datos contradictorios (ella dice una cosa, el reloj otra)</td><td>Gana ella, siempre. El reloj rellena huecos, no corrige</td></tr>
+<tr><td>Los relojes baratos dan datos malos</td><td>Guardamos el proveedor de cada muestra: si una fuente es ruidosa, se puede desactivar sin tocar el resto</td></tr>
+<tr><td>Sincronizar consume batería</td><td>Sin lectura en segundo plano en la fase 1: se sincroniza al abrir la app</td></tr>
+<tr><td>Apple rechaza la app por los textos de permiso</td><td>Escritos explicando para qué, no qué. Se revisan antes de enviar</td></tr>
+</table>
+
+<h2>10 · Decisiones que necesitamos de las founders</h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>Decisión</th><th>Recomendación</th></tr>
+<tr><td><b>D15</b></td><td>¿Wearables antes o después del 8-oct?</td><td><b>Antes solo O1–O3</b> (las dos plataformas de teléfono). Aprovecha el piloto, que ya tiene iPhone en la mano</td></tr>
+<tr><td><b>D16</b></td><td>¿Se rellena el ánimo con datos del reloj?</td><td><b>No.</b> Lo objetivo se rellena, lo subjetivo se correlaciona (§5)</td></tr>
+<tr><td><b>D17</b></td><td>¿Fitbit y Strava?</td><td><b>No por ahora.</b> Fitbit muere en septiembre; Strava prohíbe lo que hacemos. Ambos llegan de rebote vía Health Connect</td></tr>
+<tr><td><b>D18</b></td><td>¿Temperatura para confirmar fase?</td><td><b>Sí</b>, con la redacción de §6: confirma, no predice, y jamás como anticonceptivo</td></tr>
+<tr><td><b>D19</b></td><td>¿Apps de reloj?</td><td><b>Después del lanzamiento</b>, y solo si el piloto lo pide. Son dos códigos nativos nuevos</td></tr>
+</table>
+</div>
+
+<div class="pie">NutriSync Collective · Propuesta 33 · Epic O — Wearables · 5 de agosto de 2026<br>
+Las cifras de esfuerzo son estimaciones de sprint, no compromisos. Las citas de las reglas de Apple, Google y Strava se comprobaron en sus fuentes el 5-ago-2026 y conviene revalidarlas antes de construir.</div>
+</div>
+<div data-ns-lang="en"><h1>⌚ Proposal 33 · Wearables</h1>
+<div class="sub">Epic O — connecting NutriSync to the phone's health platforms: what we read, what it feeds, what we must NOT do, and in what order · for founder decision · 5 Aug 2026</div>
+
+<h2>1 · Executive summary</h2>
+<div class="card">
+<p>Today NutriSync asks each woman to type in what her phone already knows: whether she slept, whether she moved, whether her period started. Connecting to <b>Apple Health</b> and <b>Health Connect</b> removes that chore and, more importantly, improves the thing that matters most: <b>knowing which phase of her cycle she's in</b>. The wrist temperature a watch measures overnight confirms ovulation better than any calendar can.</p>
+<div class="reco"><b>Recommendation:</b> ship <b>only the two phone platforms before 8 Oct</b> — Apple Health first, Health Connect next. <b>Drop Fitbit and Strava</b> for now (reasons in §3). Watch apps come <b>after launch</b>, and only if the pilot asks for them.</div>
+</div>
+
+<h2>2 · What already exists</h2>
+<div class="card">
+<p>This doesn't start from zero. From an earlier session (Epic E) we already have:</p>
+<ul>
+<li><b><code>health_signal</code> table</b> with a unique key on (user, provider, type, timestamp): the same sample cannot land twice, however many times we sync.</li>
+<li><b><code>connected_providers</code> table</b> recording consent and its withdrawal, with timestamps. Auditable.</li>
+<li><b>"Connected devices" screen</b> in Settings, behind explicit consent.</li>
+<li><b>A registry of 9 providers</b> with their declared scopes.</li>
+</ul>
+<p>And from this session, the <b>data contract</b>: the translation from what the platforms hand us into our model, written as pure functions with 21 unit tests. What's missing is the native connector, not the scaffolding.</p>
+</div>
+
+<h2>3 · Two findings that change the plan</h2>
+
+<h3>3.1 · Fitbit shuts down in September</h3>
+<div class="risk"><b>Google is closing the Fitbit Web API in September 2026</b> — weeks before our launch. Its replacement, the Google Health API, classifies every scope as <i>Restricted</i>: they require a Google privacy and security review, which in turn requires a legal entity and a published privacy policy. Without the company incorporated, that review can't be passed.</div>
+<p><b>Consequence:</b> building Fitbit today means building something that dies on its own. And there's a better reason not to: <b>anyone with a Fitbit can push their data into Health Connect</b>, so the Android integration already covers it indirectly.</p>
+
+<h3>3.2 · Strava's contract fights our product</h3>
+<div class="risk">Strava's 2026 API agreement <b>forbids using their data to train AI or machine-learning models</b> — which is precisely Proposal 32 — and <b>forbids showing a user's Strava data to anyone but herself</b>, which rules out any community, coaching or comparison feature. It also now requires a paid subscription for the standard developer tier.</div>
+<p><b>Consequence:</b> for an app whose value lies in reasoning over data, that contract is a wall. Strava is a social network for sport; we are not. And people who log in Strava usually also push to Apple Health or Health Connect: the indirect route works without signing anything.</p>
+
+<h3>3.3 · A distinction worth making explicit</h3>
+<div class="card">
+<p>"Apple Watch app" and "Apple Health" sound like the same thing. They are two different projects:</p>
+<table>
+<tr><th></th><th>Apple Health (HealthKit)</th><th>Apple Watch app</th></tr>
+<tr><td><b>What it is</b></td><td>A native dependency in the iOS app we already have</td><td>A separate application with its own interface</td></tr>
+<tr><td><b>Stack</b></td><td>The same one: Expo + EAS build</td><td><b>Swift + SwiftUI</b>, new code sharing nothing</td></tr>
+<tr><td><b>Android equivalent</b></td><td>Health Connect, also native</td><td><b>Kotlin + Compose</b> for Wear OS: a third codebase</td></tr>
+<tr><td><b>What it buys</b></td><td>The data, without anyone typing it</td><td>The convenience of logging from the wrist</td></tr>
+</table>
+<p>The data comes from the phone's health platform, <b>not from the watch app</b>. An Apple Watch already writes into Apple Health without us doing anything. That's why watch apps are a convenience project, not a data project — and why they come later.</p>
+</div>
+
+<h2>4 · What we read, and why</h2>
+<div class="card">
+<p>The rule: <b>every signal we request must have a concrete use in the app</b>. The text on the right is literally what she will read in the permission dialog. If we can't write it, we don't ask for it — asking "just in case" is what makes people decline everything.</p>
+<table>
+<tr><th>Signal</th><th>What it does for her</th><th></th></tr>
+<tr><td><b>Sleep</b></td><td>Fills in your rest for the day without you typing it</td><td>essential</td></tr>
+<tr><td><b>Workouts</b></td><td>Marks the movement you've already done on your daily ring</td><td>essential</td></tr>
+<tr><td><b>Menstrual flow</b></td><td>If you already log your period in Health, you don't repeat it here</td><td>essential</td></tr>
+<tr><td><b>Wrist temperature</b></td><td>The post-ovulation rise confirms which phase you're in</td><td>optional</td></tr>
+<tr><td><b>Active energy</b></td><td>Tunes nutrition guidance to what you actually burn</td><td>optional</td></tr>
+<tr><td><b>Steps</b></td><td>Tells an active day from a sedentary one</td><td>optional</td></tr>
+<tr><td><b>Resting heart rate</b></td><td>A recovery signal: it rises when the body is asking for rest</td><td>optional</td></tr>
+<tr><td><b>Heart rate variability</b></td><td>Tracks with cycle phase and helps decide intensity</td><td>optional</td></tr>
+</table>
+<p>Only three are essential. With those three the integration already earns its place; everything else can be declined without breaking anything.</p>
+</div>
+
+<h2>5 · The rule that governs everything: objective fills, subjective correlates</h2>
+<div class="ojo">
+<p><b>A watch measures facts, not feelings.</b> It can know how many minutes you slept; it cannot know whether you rested. It can measure your heart rate variability; it cannot know how you are.</p>
+<p>We <i>could</i> technically fill in mood from resting heart rate and HRV. <b>We must not.</b> The day a woman feels perfectly fine and the app tells her she's in a bad mood, we have lost her trust for good. And the deeper risk is worse: <b>mood plus cycle</b> is exactly the terrain where a product like ours can end up reinforcing the stereotype that "you're like this because your period is coming". With a number behind it, that sounds like science. It isn't.</p>
+</div>
+<table>
+<tr><th>Measured signal</th><th>Feeds</th><th>How</th></tr>
+<tr><td>Sleep</td><td><code>sleep_quality</code></td><td>A suggestion she can change</td></tr>
+<tr><td>Workout</td><td>Movement ring</td><td>Direct</td></tr>
+<tr><td>Flow</td><td><code>flow_level</code></td><td>Direct</td></tr>
+<tr><td>Active energy, steps</td><td>Nutrition guidance</td><td>Calibrates portions to what she burns</td></tr>
+<tr><td>Temperature</td><td>Phase confirmation (Epic M)</td><td>The highest-value signal</td></tr>
+<tr><td>HRV, resting heart rate</td><td>Recommended intensity</td><td>"Your body is asking for less today", never "you're sad"</td></tr>
+<tr><td><b>Mood, perceived energy</b></td><td><b>Nothing. She writes them</b></td><td>Used as the axis that explains patterns</td></tr>
+</table>
+<div class="reco"><b>Where the real value sits:</b> the mood she logs, crossed with what the watch measures, lets us tell her something she can't see on her own — <i>"across your last three cycles, on the days you slept under six hours you logged lower energy"</i>. That's a pattern from her own data, not a machine telling her how she feels. It's the difference between a mirror and a judge.</div>
+
+<h2>6 · The signal that moves the needle: temperature and phase</h2>
+<div class="card">
+<p>The core of NutriSync is syncing nutrition and movement to cycle phase. Today phase is estimated from the calendar, with all the uncertainty that carries in irregular cycles. Watches with a temperature sensor (Apple Watch Series 8 and later, and several Wear OS models) measure wrist temperature during sleep; the <b>sustained rise after ovulation</b> is a real physiological signal.</p>
+<div class="risk"><b>A warning to lock in before building it:</b> temperature <b>confirms</b> that ovulation happened — it <b>does not predict</b> it. It is retrospective. Any wording that hints it can be used to avoid pregnancy is both a legal and a human problem. Our legal documents already address this and the wording must stay consistent.</div>
+<p>Used well, it improves phase accuracy without promising anything we can't deliver: "your cycle behaved as expected", or "you ovulated later than predicted this time, so we've adjusted".</p>
+</div>
+
+<h2>7 · What the law and the stores require</h2>
+<div class="card">
+<ul>
+<li><b>GDPR Article 9.</b> Health data is a special category. It requires explicit, separate, revocable consent. Already solved in the model: <code>connected_providers</code> records when consent was given and when it was withdrawn.</li>
+<li><b>Apple's rule (App Store 5.1.3).</b> HealthKit data <b>may not be used for advertising, marketing or data mining</b>, nor shared with third parties for those purposes. Only to improve the user's health management, or for health research with permission. This <b>constrains the business model</b>: it closes the door on monetising health data, now and permanently.</li>
+<li><b>Consequence for AI (Proposal 32).</b> If context is ever sent to a model, it cannot carry identifiable data. Already declared in Proposal 32 §2 and it still holds.</li>
+<li><b>Minimisation.</b> We read short windows and aggregates, not her entire life history. Less data means less risk and less to explain.</li>
+</ul>
+</div>
+
+<h2>8 · Phases and effort</h2>
+<div class="fase"><b>O1 · Apple Health, read</b> — permissions, first sync, suggestions in the daily log and the ring. <span class="kpi">≈1 sprint</span> <span class="kpi">requires a native build</span> <span class="kpi">IN PROGRESS</span></div>
+<div class="fase"><b>O2 · Apple Health, write</b> — push the period she logs here back into Health. Reciprocity: the app doesn't only take. <span class="kpi">≈2 days</span></div>
+<div class="fase"><b>O3 · Health Connect (Android)</b> — same logic, different connector. Covers Samsung Health, and indirectly Fitbit and Garmin, because they write there. <span class="kpi">≈1 sprint</span></div>
+<div class="fase"><b>O4 · Temperature → phase</b> — ovulation confirmation inside Epic M. <span class="kpi">≈1 sprint</span> <span class="kpi">depends on O1</span></div>
+<div class="fase"><b>O5 · Personal patterns</b> — correlations between what she logs and what the watch measures. Fits with Epic N. <span class="kpi">after launch</span></div>
+<div class="fase" style="opacity:.75"><b>O6 · Watch apps (watchOS and Wear OS)</b> — two new native codebases, two store reviews, two release cycles. <span class="kpi">after launch</span> <span class="kpi">only if the pilot asks</span></div>
+
+<h2>9 · Risks</h2>
+<table>
+<tr><th>Risk</th><th>Mitigation</th></tr>
+<tr><td>She declines permissions and the app looks broken</td><td>The three essential signals are asked for with their reason; everything else is optional and the app works without any of it</td></tr>
+<tr><td>Contradictory data (she says one thing, the watch another)</td><td>She wins, always. The watch fills gaps, it doesn't correct anyone</td></tr>
+<tr><td>Cheap watches produce poor data</td><td>We store the provider of every sample: a noisy source can be switched off without touching the rest</td></tr>
+<tr><td>Syncing drains battery</td><td>No background reads in phase 1: we sync when the app opens</td></tr>
+<tr><td>Apple rejects the app over permission wording</td><td>Written to explain <i>what for</i>, not <i>what</i>. Reviewed before submission</td></tr>
+</table>
+
+<h2>10 · Decisions we need from the founders</h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>Decision</th><th>Recommendation</th></tr>
+<tr><td><b>D15</b></td><td>Wearables before or after 8 Oct?</td><td><b>Only O1–O3 before</b> (the two phone platforms). It capitalises on the pilot, which already has iPhones in hand</td></tr>
+<tr><td><b>D16</b></td><td>Should mood be filled from watch data?</td><td><b>No.</b> Objective fills, subjective correlates (§5)</td></tr>
+<tr><td><b>D17</b></td><td>Fitbit and Strava?</td><td><b>Not for now.</b> Fitbit dies in September; Strava forbids what we do. Both arrive indirectly via Health Connect</td></tr>
+<tr><td><b>D18</b></td><td>Temperature for phase confirmation?</td><td><b>Yes</b>, with the wording in §6: it confirms, it doesn't predict, and never as contraception</td></tr>
+<tr><td><b>D19</b></td><td>Watch apps?</td><td><b>After launch</b>, and only if the pilot asks. They are two new native codebases</td></tr>
+</table>
+</div>
+
+<div class="pie">NutriSync Collective · Proposal 33 · Epic O — Wearables · 5 August 2026<br>
+Effort figures are sprint estimates, not commitments. The Apple, Google and Strava rules cited here were checked against their sources on 5 Aug 2026 and should be re-validated before building.</div>
+</div>
+</div>
+<script>
+/* ns-lang-switch · un solo documento, dos idiomas.
+   Bloques completos en vez de atributos por frase: el texto lleva tablas y
+   etiquetas dentro, y meterlas escapadas en un data-* es una fuente de errores
+   silenciosos. El idioma elegido se recuerda. */
+(function(){
+  var guardado = null;
+  try { guardado = localStorage.getItem('ns.doc.lang'); } catch(e) {}
+  var NSL = guardado || ((navigator.language||'en').toLowerCase().indexOf('es')===0 ? 'es' : 'en');
+  window.nsApply = function(){
+    document.querySelectorAll('[data-ns-lang]').forEach(function(n){
+      n.classList.toggle('on', n.getAttribute('data-ns-lang') === NSL);
+    });
+    var b = document.getElementById('lsw');
+    if (b) b.textContent = (NSL === 'es' ? 'EN' : 'ES');
+    document.documentElement.lang = NSL;
+  };
+  window.nsSwap = function(){
+    NSL = (NSL === 'es' ? 'en' : 'es');
+    try { localStorage.setItem('ns.doc.lang', NSL); } catch(e) {}
+    window.nsApply();
+  };
+  window.nsApply();
+})();
+</script>
+</body></html>
