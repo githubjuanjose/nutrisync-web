@@ -54,7 +54,7 @@ tr.now td{background:#FFF6EF}
   </div>
 </div>
 <div id="gate" data-t="gate"></div>
-<script src="/hub/pilot-charts.js"></script>
+<script src="/hub/pilot-charts.js?v=04d52021"></script>
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
@@ -112,7 +112,18 @@ function nsFail(err,fn){
     '<div style="margin-top:6px">Ejecuta <b>backend-sql/2026-08-04-EJECUTAR-TODO-PENDIENTE.sql</b> entero y recarga.</div>';
 }
 
-const P=window.NSPilot;
+/* r12-b11: si pilot-charts.js no llegó a cargar, TODO lo que viene despues
+   moria en silencio (incluido el embudo). Ahora se dice y se sigue. */
+if(!window.NSPilot){
+  nsFail(new Error('pilot-charts.js no se ha cargado en el navegador'),'hub/pilot-charts.js');
+}
+const NOOP={kpi:function(){return'';},legend:function(){return'';},cohortCards:function(){return'';},
+  platformChart:function(){return'';},statesChart:function(){return'';},activeChart:function(){return'';},
+  lineChart:function(){return'';},lastPast:function(){return -1;},linePath:function(){return'';},C:{}};
+const P=Object.assign({},NOOP,window.NSPilot||{});
+if(window.NSPilot&&typeof window.NSPilot.cohortCards!=='function'){
+  nsFail(new Error('pilot-charts.js cacheado y desactualizado — recarga forzada'),'hub/pilot-charts.js');
+}
 let WEEKS=[],SCALE=58,COH=[];
 
 function render(){
