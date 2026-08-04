@@ -1471,63 +1471,62 @@ if os.path.isdir(_afig):
 # Admin (r13). Vive en OTRO dominio (admin.nutrisynccollective.com), pero la
 # entrada tiene que estar donde ya está el resto: si no, nadie la encuentra.
 #
-# El ancla se CLONA de la de Builders en lugar de escribirse a mano. El pie vive
-# dentro del payload JSON del motor, donde las comillas van como \" y las barras
-# como /; reutilizar la cadena real hereda ese escapado exacto y no puede
-# romper el render (lección po74: un replace con comillas sin escapar tumbó
-# producción 15 minutos).
+# El ancla se CLONA de la de Builders en lugar de escribirse a mano: el pie vive
+# dentro del payload JSON del motor y reutilizar la cadena real hereda su
+# escapado exacto (lección po74).
+#
+# OJO con las barras: dentro de un valor de atributo van LITERALES (hub/x.html);
+# solo las etiquetas de cierre llevan <\u002F. Confundirlas dejó una vez el href
+# como "hub/https://..." — enlace roto. Por eso ahora se sustituye el href
+# ENTERO (comilla a comilla) y se verifica el resultado antes de escribir.
 _ad = os.path.join(PUB, "index.html")
 if os.path.exists(_ad):
     _s0 = open(_ad, encoding="utf-8").read()
     if "ns-admin-door" in _s0:
         pass  # ya integrado — el bloque es idempotente
     else:
-        _key = "?r=builders"
-        _k = _s0.find(_key)
-        if _k < 0:
-            print("! ns-admin-door: no encontré la puerta de Builders — SIN TOCAR")
+        _k = _s0.find("?r=builders")
+        _open = _s0.rfind("<a href=", 0, _k) if _k > 0 else -1
+        _close = _s0.find("<\\u002Fa>", _k) if _k > 0 else -1
+        if _open < 0 or _close < 0:
+            print("! ns-admin-door: no acoté el ancla de Builders — SIN TOCAR")
         else:
-            _open = _s0.rfind("<a href=", 0, _k)
-            _close = _s0.find("<\\u002Fa>", _k)
-            if _open < 0 or _close < 0:
-                print("! ns-admin-door: no acoté el ancla de Builders — SIN TOCAR")
+            _close += len("<\\u002Fa>")
+            _anchor = _s0[_open:_close]
+            _URL = "https://admin.nutrisynccollective.com"
+            # 1) href entero, de comilla a comilla (sea cual sea el prefijo)
+            _href_re = re.compile(r'href=\\"[^"\\]*full-hub-gated-site\.html\?r=builders\\"')
+            _n_href = len(_href_re.findall(_anchor))
+            _new = _href_re.sub('href=\\\\"%s\\\\" target=\\\\"_blank\\\\" rel=\\\\"noopener\\\\"' % _URL,
+                                _anchor)
+            # 2) icono propio: libro mayor
+            _icon_old = '<path d=\\"M8.5 8L4.5 12l4 4M15.5 8l4 4-4 4\\"><\\u002Fpath>'
+            _icon_new = ('<path d=\\"M5 4.5h11.5a2 2 0 012 2v13H7a2 2 0 01-2-2z\\"><\\u002Fpath>'
+                         '<path d=\\"M8.5 9h7M8.5 12.5h7M8.5 16h4\\"><\\u002Fpath>')
+            _n_icon = _new.count(_icon_old)
+            _new = _new.replace(_icon_old, _icon_new)
+            # 3) etiqueta visible + marca del bloque
+            _n_lbl = _new.count(">Builders<")
+            _new = _new.replace(">Builders<", ">StartUp Admin<")
+            _new = _new.replace("<a href=", "<a data-ns=\\\"ns-admin-door\\\" href=", 1)
+            # 4) el href final tiene que ser EXACTAMENTE la url absoluta
+            _hrefs = re.findall(r'href=\\"([^"\\]*)\\"', _new)
+            _ok = (_n_href == 1 and _n_icon == 1 and _n_lbl == 1
+                   and _hrefs == [_URL] and ">StartUp Admin<" in _new)
+            if not _ok:
+                print("! ns-admin-door: el clon no quedó limpio (href=%r) — SIN TOCAR" % (_hrefs,))
             else:
-                _close += len("<\\u002Fa>")
-                _anchor = _s0[_open:_close]
-                # icono propio: libro mayor con una línea de importe
-                _icon_old = ('<path d=\\"M8.5 8L4.5 12l4 4M15.5 8l4 4-4 4\\">'
-                             '<\\u002Fpath>')
-                _icon_new = ('<path d=\\"M5 4.5h11.5a2 2 0 012 2v13H7a2 2 0 01-2-2z\\">'
-                             '<\\u002Fpath><path d=\\"M8.5 9h7M8.5 12.5h7M8.5 16h4\\">'
-                             '<\\u002Fpath>')
-                _new = _anchor
-                _n_icon = _new.count(_icon_old)
-                _new = _new.replace(_icon_old, _icon_new)
-                _new = _new.replace("hub\\u002Ffull-hub-gated-site.html?r=builders",
-                                    "https:\\u002F\\u002Fadmin.nutrisynccollective.com")
-                _new = _new.replace("full-hub-gated-site.html?r=builders",
-                                    "https:\\u002F\\u002Fadmin.nutrisynccollective.com")
-                _new = _new.replace(">Builders<", ">StartUp Admin<")
-                _new = _new.replace("<a href=", "<a data-ns=\\\"ns-admin-door\\\" href=", 1)
-                _ok = ("admin.nutrisynccollective.com" in _new
-                       and ">StartUp Admin<" in _new
-                       and "?r=builders" not in _new
-                       and _n_icon == 1)
-                if not _ok:
-                    print("! ns-admin-door: el clon no quedó limpio — SIN TOCAR")
-                else:
-                    _s = _s0[:_close] + "\\n          " + _new + _s0[_close:]
-                    # C2: el payload tiene que seguir siendo JSON válido
-                    import json as _json2, re as _re2
-                    _bad = False
-                    for _m in _re2.finditer(r'<script type="application/json"[^>]*>(.*?)</script>',
-                                            _s, _re2.S):
-                        try:
-                            _json2.loads(_m.group(1))
-                        except Exception as _e:
-                            _bad = True
-                            print("! ns-admin-door: rompería el payload (%s) — SIN TOCAR" % _e)
-                            break
-                    if not _bad:
-                        open(_ad, "w", encoding="utf-8").write(_s)
-                        print("- ns-admin-door: 3ª puerta en el pie → admin.nutrisynccollective.com")
+                _s = _s0[:_close] + "\\n          " + _new + _s0[_close:]
+                # C2: el payload tiene que seguir siendo JSON válido
+                import json as _json2
+                _bad = False
+                for _m in re.finditer(r'<script type="application/json"[^>]*>(.*?)</script>', _s, re.S):
+                    try:
+                        _json2.loads(_m.group(1))
+                    except Exception as _e:
+                        _bad = True
+                        print("! ns-admin-door: rompería el payload (%s) — SIN TOCAR" % _e)
+                        break
+                if not _bad:
+                    open(_ad, "w", encoding="utf-8").write(_s)
+                    print("- ns-admin-door: 3ª puerta → %s" % _URL)
