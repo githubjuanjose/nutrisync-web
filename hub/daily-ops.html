@@ -226,12 +226,26 @@ const T=ES?{
 document.querySelectorAll('[data-t]').forEach(el=>{el.innerHTML=T[el.dataset.t]||'';});
 document.title=T.title+' — NutriSync Founders';
 
+
+/* r12-b9 (fallo de hoy): si una RPC no existe, la pagina se quedaba en blanco y
+   parecia que "no hay datos". Ahora GRITA, y dice el fichero que falta correr. */
+function nsFail(err,fn){
+  var d=document.getElementById('nsfail');
+  if(!d){d=document.createElement('div');d.id='nsfail';
+    d.style.cssText='background:#FFF1EC;border:2px solid #E8472A;border-radius:12px;padding:14px 16px;margin:0 0 14px;font-size:13px;color:#8A2A18';
+    var w=document.querySelector('.wrap');w.insertBefore(d,w.children[2]||null);}
+  d.innerHTML='<b>⚠️ Falta aplicar SQL en Supabase</b><div style="margin-top:6px">La consulta <code>'+fn+
+    '</code> no responde: <i>'+String((err&&err.message)||err).slice(0,160)+'</i></div>'+
+    '<div style="margin-top:6px">Ejecuta <b>backend-sql/2026-08-04-EJECUTAR-TODO-PENDIENTE.sql</b> entero y recarga.</div>';
+}
+
 const when=t=>t?new Date(t).toLocaleString(ES?'es-ES':'en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'—';
 const days=iso=>Math.ceil((new Date(iso)-new Date())/86400000);
 
 async function loadHealth(){
   const{data,error}=await sb.rpc('admin_automation_health');
-  if(error||!data)return;
+  if(error){nsFail(error,'admin_automation_health');return;}
+  if(!data)return;
   const jobs=data.jobs||[],snap=data.snapshot;
   const bad=jobs.filter(j=>!j.active||!j.ok||!j.fresh);
   const why=j=>!j.start_time?T.jNever:(!j.ok?T.jFail:(!j.fresh?T.jStale:''));
@@ -252,6 +266,8 @@ async function loadTodos(){
     sb.rpc('admin_pilot_weekly',{p_cohort:null}),
     sb.rpc('admin_pilot_feedback',{p_cohort:null}),
   ]);
+  if(due.error)nsFail(due.error,'admin_pilot_reminders_due');
+  if(pw.error)nsFail(pw.error,'admin_pilot_weekly');
   const d=due.data||{}, weeks=((pw.data||{}).weeks)||[];
   const cur=weeks.filter(w=>w.is_past).pop()||{};
   const since=Date.now()-7*86400000;
