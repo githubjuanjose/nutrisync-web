@@ -1530,3 +1530,86 @@ if os.path.exists(_ad):
                 if not _bad:
                     open(_ad, "w", encoding="utf-8").write(_s)
                     print("- ns-admin-door: 3ª puerta → %s" % _URL)
+
+# ── ns-doors-grid ────────────────────────────────────────────────────────────
+# Las 3 puertas del pie en rejilla 2×2 con la tercera ocupando las dos columnas.
+# Con flex-wrap cada ficha medía lo que su texto ("StartUp Admin" es más ancho
+# que "Pitch") y la segunda fila quedaba descolgada. Con grid, las dos de arriba
+# comparten ancho y la de abajo mide exactamente su suma — alineación garantizada
+# sin depender de la longitud de las etiquetas ni del idioma.
+# En una sola fila no caben: la columna de marca son 290px y tres fichas piden 400+.
+_dg = os.path.join(PUB, "index.html")
+if os.path.exists(_dg):
+    _s0 = open(_dg, encoding="utf-8").read()
+    if "ns-doors-grid" in _s0:
+        pass  # idempotente
+    else:
+        _i = _s0.find("2FA SECURED")
+        _j = _s0.rfind("<div style=", 0, _i) if _i > 0 else -1
+        _end = _s0.find("\\\">", _j) + 3 if _j > 0 else -1
+        if _j < 0 or _end < 3:
+            print("! ns-doors-grid: no acoté el contenedor de las puertas — SIN TOCAR")
+        else:
+            _cont_old = _s0[_j:_end]
+            if "display: flex" not in _cont_old:
+                print("! ns-doors-grid: el contenedor no es el esperado — SIN TOCAR")
+            else:
+                _cont_new = ('<div data-ns=\\"ns-doors-grid\\" style=\\"display: grid; '
+                             'grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; '
+                             'max-width: 340px;\\">')
+                _s = _s0[:_j] + _cont_new + _s0[_end:]
+                # la 3ª puerta ocupa las dos columnas
+                _k = _s.find("ns-admin-door")
+                _a = _s.rfind("<a ", 0, _k) if _k > 0 else -1
+                _st = _s.find("style=\\\"", _a) if _a > 0 else -1
+                if _st < 0:
+                    print("! ns-doors-grid: no encontré el style de la 3ª puerta — SIN TOCAR")
+                else:
+                    _st += len("style=\\\"")
+                    _s = _s[:_st] + "grid-column: 1 \\u002F -1; justify-content: center; " + _s[_st:]
+                    import json as _json3
+                    _bad = False
+                    for _m in re.finditer(r'<script type="application/json"[^>]*>(.*?)</script>',
+                                          _s, re.S):
+                        try:
+                            _json3.loads(_m.group(1))
+                        except Exception as _e:
+                            _bad = True
+                            print("! ns-doors-grid: rompería el payload (%s) — SIN TOCAR" % _e)
+                            break
+                    if not _bad:
+                        open(_dg, "w", encoding="utf-8").write(_s)
+                        print("- ns-doors-grid: 3 puertas en rejilla 2×2 (la 3ª a doble ancho)")
+
+# ── ns-footer-cols ───────────────────────────────────────────────────────────
+# Las columnas del pie (Producto · Empresa · Legal · QR) van pegadas a la
+# izquierda con space-between: el QR queda descolgado a 115px de Legal mientras
+# el bloque de marca casi lo toca. Se empaquetan a la derecha con un hueco
+# generoso y uniforme, así el grupo se acerca al QR sin apelotonarse.
+# Medido en vivo a 1512px: Producto pasa de x=515 a x=669; hueco Legal↔QR 115→63.
+_fc = os.path.join(PUB, "index.html")
+if os.path.exists(_fc):
+    _s0 = open(_fc, encoding="utf-8").read()
+    _old = ("gap: clamp(14px,1.6vw,24px) clamp(28px,3vw,52px); flex-wrap: wrap; "
+            "flex: 1 1 540px; align-items: flex-start; justify-content: space-between;")
+    _new = ("gap: clamp(14px,1.6vw,24px) clamp(34px,4.2vw,76px); flex-wrap: wrap; "
+            "flex: 1 1 540px; align-items: flex-start; justify-content: flex-end;")
+    _n = _s0.count(_old)
+    if _new in _s0:
+        pass  # idempotente
+    elif _n != 1:
+        print("! ns-footer-cols: esperaba 1 contenedor de columnas, hay %d — SIN TOCAR" % _n)
+    else:
+        _s = _s0.replace(_old, _new)
+        import json as _json4
+        _bad = False
+        for _m in re.finditer(r'<script type="application/json"[^>]*>(.*?)</script>', _s, re.S):
+            try:
+                _json4.loads(_m.group(1))
+            except Exception as _e:
+                _bad = True
+                print("! ns-footer-cols: rompería el payload (%s) — SIN TOCAR" % _e)
+                break
+        if not _bad:
+            open(_fc, "w", encoding="utf-8").write(_s)
+            print("- ns-footer-cols: columnas del pie a la derecha, junto al QR")
