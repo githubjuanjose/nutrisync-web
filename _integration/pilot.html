@@ -26,7 +26,7 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
 .msg{white-space:pre-wrap;line-height:1.45}
 #gate{display:none;padding:60px 20px;text-align:center;color:var(--muted)}
 .hint{font-size:11.5px;color:var(--muted);margin-top:6px}
-#inv th.sh{cursor:pointer;user-select:none}#inv th.sh:hover{color:#E8472A}
+#inv th.sh,#wl th.sh{cursor:pointer;user-select:none}#inv th.sh:hover,#wl th.sh:hover{color:#E8472A}
 </style></head><body>
 <div class="wrap" id="app" style="display:none">
   <a href="full-hub-gated-site.html" style="font-size:13px;color:#8A7F78;text-decoration:none">‹ Hub</a>
@@ -54,7 +54,7 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
       <input type="text" id="cohortNew" placeholder="…o nueva cohorte" style="width:140px">
       <button class="pri" onclick="propose()">Proponer seleccionados →</button>
     </div>
-    <div style="max-height:340px;overflow:auto"><table id="wl"><thead><tr><th></th><th>Email</th><th>Nombre</th><th>Origen</th><th>Apuntada</th><th>Cuenta</th><th>Cohorte</th></tr></thead><tbody></tbody></table></div>
+    <div style="max-height:340px;overflow:auto"><table id="wl"><thead><tr><th></th><th class="sh" onclick="sortWl('email')">Email <span data-aw="email"></span></th><th class="sh" onclick="sortWl('name')">Nombre <span data-aw="name"></span></th><th class="sh" onclick="sortWl('src')">Origen <span data-aw="src"></span></th><th class="sh" onclick="sortWl('at')">Apuntada <span data-aw="at"></span></th><th class="sh" onclick="sortWl('acct')">Cuenta <span data-aw="acct"></span></th><th class="sh" onclick="sortWl('coh')">Cohorte <span data-aw="coh"></span></th></tr></thead><tbody></tbody></table></div>
   </div>
 
   <h2>1b · Añadir emails a mano (advisory y externas a la waitlist)</h2>
@@ -134,11 +134,26 @@ function wlFiltered(){
     if(asg==='no'&&be[e])return false;
     return true;});
 }
+/* r12-b5: misma mecanica de orden que la lista 2. Por defecto, las ultimas en
+   apuntarse arriba (es lo que se mira para proponer el siguiente lote). */
+let SORTW={k:'at',dir:-1};
+const wlKey=(r,be,k)=>({
+  email:(r.email||'').toLowerCase(), name:(r.full_name||'').toLowerCase(),
+  src:(r.source||'zz'), at:(r.created_at||''),
+  acct:(r.converted_at?0:1), coh:((be[(r.email||'').toLowerCase()]||{}).cohort||'zzz'),
+}[k]);
+window.sortWl=k=>{SORTW=(SORTW.k===k)?{k,dir:-SORTW.dir}:{k,dir:(k==='at'?-1:1)};renderWl();};
 function renderWl(){
-  const be=byEmail(),rows=wlFiltered();
+  const be=byEmail(),rows=wlFiltered().slice().sort((a,b)=>{
+    const x=wlKey(a,be,SORTW.k),y=wlKey(b,be,SORTW.k);
+    if(x<y)return -SORTW.dir; if(x>y)return SORTW.dir;
+    return (a.email||'')<(b.email||'')?-1:1;
+  });
   $('wlCount').textContent=rows.length+' de '+WL.length;
   $('wl').tBodies[0].innerHTML=rows.slice(0,400).map(r=>{const e=(r.email||'').toLowerCase(),pi=be[e];
     return `<tr><td><input type="checkbox" class="ck" data-e="${esc(e)}"></td><td>${esc(r.email)}</td><td>${esc(r.full_name||'')}</td><td>${esc(r.source||'')}</td><td>${esc((r.created_at||'').slice(0,10))}</td><td>${r.converted_at?'✅':'—'}</td><td>${pi?esc(pi.cohort):''}</td></tr>`;}).join('');
+  document.querySelectorAll('#wl th [data-aw]').forEach(el=>{
+    el.textContent=(el.dataset.aw===SORTW.k)?(SORTW.dir>0?'▲':'▼'):'';});
 }
 /* r12-b5: el orden natural de esta lista es el EMBUDO — de lo que falta por
    hacer a lo que ya esta hecho. Cualquier cabecera es clicable para reordenar. */
