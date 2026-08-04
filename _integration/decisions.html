@@ -1,0 +1,181 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decisiones — NutriSync Founders</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.6}
+.w{max-width:900px;margin:0 auto;padding:26px 20px 90px}
+h1{font-size:23px;margin:0 0 4px}
+h2{font-size:16px;margin:30px 0 4px}
+p.lead{color:#6E655D;font-size:13.5px;margin:0 0 6px}
+.kpis{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 4px}
+.kpi{flex:1;min-width:130px;background:#fff;border:1px solid #EFE3D7;border-radius:12px;padding:10px 13px}
+.kpi .l{font-size:10.5px;color:#8A7F78;text-transform:uppercase;letter-spacing:.5px}
+.kpi .v{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
+.d{background:#fff;border:1px solid #EFE3D7;border-radius:14px;padding:14px 16px;margin:10px 0}
+.d.cerrada{background:#FBFAF7;border-color:#E7EFE9}
+.dh{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.code{font-size:11px;font-weight:800;color:#C73A20;background:#FFF1EC;border-radius:6px;padding:2px 7px}
+.tit{font-size:15px;font-weight:700}
+.prop{background:#FFF8EF;border-left:3px solid #E8B072;padding:8px 12px;border-radius:0 8px 8px 0;margin:9px 0;font-size:13.5px}
+.prop b{display:block;font-size:10.5px;color:#B4700F;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.reco{font-size:13.5px;color:#3F3A35;margin:8px 0}
+.reco b{color:#0F6E56}
+.meta{font-size:11.5px;color:#8A7F78;margin-top:4px}
+.opts{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+button{font-family:inherit;font-weight:700;font-size:12.5px;border-radius:20px;padding:7px 14px;
+  border:1px solid #EFE3D7;background:#fff;color:#241D1A;cursor:pointer}
+button:hover{border-color:#F3C8B8;background:#FFF6F2}
+button.on{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:none}
+button.link{border:none;background:none;color:#C73A20;padding:4px 0;font-size:12px;text-decoration:underline}
+button:disabled{opacity:.55;cursor:default}
+.done{display:inline-block;font-size:11px;font-weight:800;border-radius:999px;padding:2px 9px}
+.done.aceptada{background:#E8F5EE;color:#0F6E56}
+.done.modificada{background:#FFF3E0;color:#B4700F}
+.done.rechazada{background:#FFF1EC;color:#C73A20}
+.done.aplazada{background:#F1F5F9;color:#475569}
+textarea{font-family:inherit;font-size:13px;width:100%;box-sizing:border-box;padding:8px 10px;
+  border:1px solid #EFE3D7;border-radius:10px;margin-top:8px}
+.err{background:#FFF1EC;border:2px solid #E8472A;border-radius:12px;padding:13px 15px;font-size:13px;color:#8A2A18;margin:14px 0}
+a{color:#C73A20}
+.sec{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#8A7F78;margin:28px 0 2px}
+</style></head><body><div class="w">
+
+<h1>🗳 Decisiones</h1>
+<p class="lead">Lo que está esperando a las founders, con su recomendación y sus opciones. Al elegir queda registrado quién y cuándo — la conversación puede pasar donde sea, la decisión vive aquí.</p>
+
+<div class="kpis" id="kpis"></div>
+<div id="err"></div>
+<div id="lista">Cargando…</div>
+
+</div>
+<script src="/assets/vendor/supabase.js"></script>
+<script>
+(function(){
+'use strict';
+var sb=window.supabase.createClient('https://nebkqncvapelrarruyqb.supabase.co',
+  'sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau');
+var $=function(i){return document.getElementById(i);};
+var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+
+/* Nunca en blanco (regla r12-b9): si falta el SQL, se dice cuál. */
+function fail(e,fn){
+  $('lista').innerHTML='';
+  $('err').innerHTML='<div class="err"><b>⚠️ Falta aplicar SQL en Supabase</b><div style="margin-top:5px">'+
+    'La consulta <code>'+esc(fn)+'</code> no responde: <i>'+esc(String(e&&e.message||e)).slice(0,160)+'</i></div>'+
+    '<div style="margin-top:5px">Ejecuta <b>backend-sql/2026-08-05-founder-decisions.sql</b> entero y recarga.</div></div>';
+}
+
+var GRUPOS=[
+  ['senal',   'Qué queremos leer de Apple Health y Health Connect',
+              'Una decisión por señal. El texto ámbar es literalmente lo que verá la usuaria cuando le pidamos el permiso: si no sabemos escribirlo, no la pedimos.'],
+  ['decision','Dirección', 'Las decisiones de alcance y calendario.'],
+  ['logica',  'Reglas de comportamiento', 'Decisiones de producto disfrazadas de detalle técnico. Si no se fijan, las fija el código por accidente.'],
+  ['diseno',  'Diseño', 'Lo que necesitamos de la línea de Design.']
+];
+
+function tarjeta(d){
+  var cerrada = d.estado !== 'abierta';
+  var h = '<div class="d'+(cerrada?' cerrada':'')+'" data-code="'+esc(d.code)+'">'
+    + '<div class="dh"><span class="code">'+esc(d.code)+'</span>'
+    + '<span class="tit">'+esc(d.titulo)+'</span>'
+    + (cerrada ? '<span class="done '+esc(d.estado)+'">'+esc(d.estado)+'</span>' : '')
+    + '</div>';
+  if (d.proposito) h += '<div class="prop"><b>Para qué le sirve a ella</b>'+esc(d.proposito)+'</div>';
+  h += '<div class="reco"><b>Recomendación:</b> '+esc(d.recomendacion)+'</div>';
+  if (d.bloquea) h += '<div class="meta">Bloquea: '+esc(d.bloquea)+
+      (d.doc_url ? ' · <a href="/'+esc(d.doc_url)+'">ver el razonamiento</a>' : '')+'</div>';
+
+  if (cerrada) {
+    h += '<div class="meta">Decidido por '+esc(d.decidido_por_email||'—')+
+         ' el '+esc(String(d.decidido_el||'').slice(0,10))+
+         (d.resolucion ? ' — «'+esc(d.resolucion)+'»' : '')+'</div>'
+      +  '<button class="link" data-reopen="'+esc(d.code)+'">Reabrir</button>';
+  } else {
+    h += '<div class="opts">';
+    (d.opciones||[]).forEach(function(op,i){
+      // la primera opción es siempre la recomendada: se acepta tal cual
+      h += '<button data-code="'+esc(d.code)+'" data-i="'+i+'" data-op="'+esc(op)+'">'+esc(op)+'</button>';
+    });
+    h += '</div><div data-nota="'+esc(d.code)+'"></div>';
+  }
+  return h + '</div>';
+}
+
+function pinta(d){
+  var items=d.items||[], r=d.resumen||{};
+  $('kpis').innerHTML =
+    kpi('Abiertas', r.abiertas||0, 'esperando decisión') +
+    kpi('Cerradas', r.cerradas||0, 'con firma y fecha') +
+    kpi('Total', r.total||0, 'en el registro');
+
+  var html='';
+  GRUPOS.forEach(function(g){
+    var del = items.filter(function(x){return x.tipo===g[0];});
+    if (!del.length) return;
+    html += '<div class="sec">'+esc(g[1])+'</div><p class="lead">'+esc(g[2])+'</p>';
+    del.forEach(function(x){ html += tarjeta(x); });
+  });
+  $('lista').innerHTML = html || '<p class="lead">No hay decisiones registradas.</p>';
+  enlaza(items);
+}
+function kpi(l,v,s){return '<div class="kpi"><div class="l">'+l+'</div><div class="v">'+v+
+  '</div><div class="l" style="text-transform:none;letter-spacing:0">'+s+'</div></div>';}
+
+function enlaza(items){
+  var porCode={}; items.forEach(function(x){porCode[x.code]=x;});
+
+  $('lista').querySelectorAll('button[data-code]').forEach(function(b){
+    b.onclick=function(){
+      var code=b.getAttribute('data-code'), i=+b.getAttribute('data-i'), op=b.getAttribute('data-op');
+      // La primera opción es la recomendada → se acepta directa.
+      // Cualquier otra exige explicar qué se decidió: una decisión sin motivo
+      // no sirve de nada dentro de tres meses.
+      if (i === 0) return guarda(code, 'aceptada', op);
+      var cont=$('lista').querySelector('[data-nota="'+code+'"]');
+      cont.innerHTML='<textarea rows="2" placeholder="¿Qué habéis decidido, y por qué?"></textarea>'
+        +'<div class="opts"><button class="on" data-guarda="'+esc(code)+'">Registrar</button>'
+        +'<button data-cancel="'+esc(code)+'">Cancelar</button></div>';
+      var ta=cont.querySelector('textarea'); ta.focus();
+      cont.querySelector('[data-guarda]').onclick=function(){
+        var txt=ta.value.trim();
+        if(!txt){ta.style.borderColor='#E8472A';ta.placeholder='Sin esto la decisión no se entiende luego';return;}
+        var estado = /aplaz/i.test(op) ? 'aplazada' : (/^no /i.test(op) ? 'rechazada' : 'modificada');
+        guarda(code, estado, op+' — '+txt);
+      };
+      cont.querySelector('[data-cancel]').onclick=function(){cont.innerHTML='';};
+    };
+  });
+
+  $('lista').querySelectorAll('button[data-reopen]').forEach(function(b){
+    b.onclick=function(){
+      if(!confirm('¿Reabrir '+b.getAttribute('data-reopen')+'? Se borra quién y cuándo la decidió.'))return;
+      guarda(b.getAttribute('data-reopen'), 'abierta', null);
+    };
+  });
+}
+
+function guarda(code, estado, resolucion){
+  sb.rpc('admin_decision_set',{p_code:code,p_estado:estado,p_resolucion:resolucion})
+    .then(function(r){
+      if(r.error){ alert('No se pudo guardar: '+r.error.message); return; }
+      carga();
+    });
+}
+
+function carga(){
+  return sb.rpc('admin_decisions').then(function(r){
+    if(r.error){ fail(r.error,'admin_decisions'); return; }
+    $('err').innerHTML=''; pinta(r.data);
+  });
+}
+
+sb.auth.getSession().then(function(r){
+  if(!r.data.session){
+    $('lista').innerHTML='<p class="lead">Inicia sesión en cualquier herramienta del hub y vuelve.</p>';
+    return;
+  }
+  carga();
+});
+})();
+</script></body></html>

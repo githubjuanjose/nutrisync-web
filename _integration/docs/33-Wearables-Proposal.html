@@ -165,16 +165,47 @@ tbody tr:nth-child(even){background:var(--cream);}
 <tr><td>Apple rechaza la app por los textos de permiso</td><td>Escritos explicando para qué, no qué. Se revisan antes de enviar</td></tr>
 </table>
 
-<h2>10 · Decisiones que necesitamos de las founders</h2>
+<h2>10 · Qué esperamos de vosotras</h2>
+<p>Tres cosas distintas, y conviene no mezclarlas: <b>decisiones</b> (dirección), <b>diseño</b> (cómo se ve y se siente) y <b>lógica</b> (qué hace el sistema cuando nadie mira). Sin las tres, O1 se queda a medias.</p>
+
+<h3>10.1 · Decisiones — founders</h3>
 <div class="card">
 <table>
-<tr><th>#</th><th>Decisión</th><th>Recomendación</th></tr>
-<tr><td><b>D15</b></td><td>¿Wearables antes o después del 8-oct?</td><td><b>Antes solo O1–O3</b> (las dos plataformas de teléfono). Aprovecha el piloto, que ya tiene iPhone en la mano</td></tr>
-<tr><td><b>D16</b></td><td>¿Se rellena el ánimo con datos del reloj?</td><td><b>No.</b> Lo objetivo se rellena, lo subjetivo se correlaciona (§5)</td></tr>
-<tr><td><b>D17</b></td><td>¿Fitbit y Strava?</td><td><b>No por ahora.</b> Fitbit muere en septiembre; Strava prohíbe lo que hacemos. Ambos llegan de rebote vía Health Connect</td></tr>
-<tr><td><b>D18</b></td><td>¿Temperatura para confirmar fase?</td><td><b>Sí</b>, con la redacción de §6: confirma, no predice, y jamás como anticonceptivo</td></tr>
-<tr><td><b>D19</b></td><td>¿Apps de reloj?</td><td><b>Después del lanzamiento</b>, y solo si el piloto lo pide. Son dos códigos nativos nuevos</td></tr>
+<tr><th>#</th><th>Decisión</th><th>Recomendación</th><th>Bloquea</th></tr>
+<tr><td><b>D15</b></td><td>¿Wearables antes o después del 8-oct?</td><td><b>Antes solo O1–O3</b> (las dos plataformas de teléfono). Aprovecha el piloto, que ya tiene iPhone en la mano</td><td>Todo Epic O</td></tr>
+<tr><td><b>D16</b></td><td>¿Se rellena el ánimo con datos del reloj?</td><td><b>No.</b> Lo objetivo se rellena, lo subjetivo se correlaciona (§5)</td><td>O1 y O5</td></tr>
+<tr><td><b>D17</b></td><td>¿Fitbit y Strava?</td><td><b>No por ahora.</b> Fitbit muere en septiembre; Strava prohíbe lo que hacemos. Ambos llegan de rebote vía Health Connect</td><td>Alcance de O3</td></tr>
+<tr><td><b>D18</b></td><td>¿Temperatura para confirmar fase?</td><td><b>Sí</b>, con la redacción de §6: confirma, no predice, y jamás como anticonceptivo</td><td>O4</td></tr>
+<tr><td><b>D19</b></td><td>¿Apps de reloj?</td><td><b>Después del lanzamiento</b>, y solo si el piloto lo pide. Son dos códigos nativos nuevos</td><td>O6</td></tr>
 </table>
+</div>
+
+<h3>10.2 · Diseño — cuatro pantallas nuevas</h3>
+<div class="card">
+<p>Cuatro piezas visuales, en orden de necesidad. Las tres primeras bloquean O1.</p>
+<table>
+<tr><th>Pieza</th><th>Qué tiene que resolver</th><th>Cuidado con</th></tr>
+<tr><td><b>Antesala del permiso</b></td><td>Explicar POR QUÉ pedimos cada cosa <i>antes</i> de que salte el diálogo de iOS. Una sola oportunidad: si dice que no, iOS no vuelve a preguntar</td><td>Que no parezca un trámite. Es el momento en que se gana o se pierde la confianza</td></tr>
+<tr><td><b>Estado de conexión</b></td><td>En «Dispositivos conectados»: conectado / sin permiso / no disponible en este teléfono, y la última sincronización</td><td>«No disponible» no es un error — un iPhone sin reloj sigue dando sueño y pasos</td></tr>
+<tr><td><b>Tarjeta de sugerencia</b></td><td>«Tu reloj dice que dormiste 7 h 20. ¿Lo anotamos?» con aceptar o descartar</td><td>Tiene que verse claramente como una <b>propuesta</b>, no como un dato ya guardado</td></tr>
+<tr><td><b>Tarjeta de patrón</b> (O5)</td><td>Contar una correlación de sus propios datos en una frase</td><td>Nunca en tono de diagnóstico ni de juicio. Un espejo, no un juez</td></tr>
+</table>
+<p style="font-size:13.5px">Formato: como siempre, pack del builder. Todo lo nuestro se inyecta después como bloque registrado.</p>
+</div>
+
+<h3>10.3 · Lógica — seis reglas que hay que fijar</h3>
+<div class="card">
+<p>Son decisiones de producto disfrazadas de detalles técnicos. Si no las fijamos nosotras, las fija el código por accidente.</p>
+<table>
+<tr><th>#</th><th>Regla</th><th>Propuesta</th></tr>
+<tr><td><b>L1</b></td><td>¿La sugerencia se aplica sola o requiere un toque?</td><td><b>Un toque.</b> Que aparezca algo en su diario sin que ella lo apruebe rompe la regla de §5</td></tr>
+<tr><td><b>L2</b></td><td>Umbrales de sueño → etiqueta</td><td>&lt;4 h muy pobre · 4–5,5 inquieto · 5,5–7 normal · 7–8,5 reparador · &gt;8,5 profundo. <b>Revisar con criterio nutricional</b></td></tr>
+<tr><td><b>L3</b></td><td>Si dos fuentes dan el mismo dato distinto</td><td>Gana la plataforma del teléfono; guardamos ambas con su origen</td></tr>
+<tr><td><b>L4</b></td><td>Cuánto histórico leemos la primera vez</td><td><b>30 días.</b> Suficiente para ver un ciclo completo, poco para ser invasivo</td></tr>
+<tr><td><b>L5</b></td><td>Qué pasa si retira el permiso</td><td>Se deja de leer y se marca la fecha. <b>¿Se borra lo ya leído?</b> — decisión vuestra, tiene coste y tiene lectura legal</td></tr>
+<tr><td><b>L6</b></td><td>¿Contamos su actividad real en la racha?</td><td><b>Sí</b>, si aceptó la sugerencia. Una racha que ignora lo que hizo de verdad desmotiva</td></tr>
+</table>
+<div class="risk"><b>L5 es la que más pesa.</b> Borrar lo ya leído al revocar es lo más respetuoso y lo que menos explicaciones exige ante el RGPD; conservarlo mantiene sus gráficas históricas intactas. No hay respuesta obvia y no debería decidirla yo.</div>
 </div>
 
 <div class="pie">NutriSync Collective · Propuesta 33 · Epic O — Wearables · 5 de agosto de 2026<br>
@@ -293,16 +324,47 @@ Las cifras de esfuerzo son estimaciones de sprint, no compromisos. Las citas de 
 <tr><td>Apple rejects the app over permission wording</td><td>Written to explain <i>what for</i>, not <i>what</i>. Reviewed before submission</td></tr>
 </table>
 
-<h2>10 · Decisions we need from the founders</h2>
+<h2>10 · What we need from you</h2>
+<p>Three different things, and they shouldn't be blurred: <b>decisions</b> (direction), <b>design</b> (how it looks and feels) and <b>logic</b> (what the system does when nobody is watching). Without all three, O1 ships half-built.</p>
+
+<h3>10.1 · Decisions — founders</h3>
 <div class="card">
 <table>
-<tr><th>#</th><th>Decision</th><th>Recommendation</th></tr>
-<tr><td><b>D15</b></td><td>Wearables before or after 8 Oct?</td><td><b>Only O1–O3 before</b> (the two phone platforms). It capitalises on the pilot, which already has iPhones in hand</td></tr>
-<tr><td><b>D16</b></td><td>Should mood be filled from watch data?</td><td><b>No.</b> Objective fills, subjective correlates (§5)</td></tr>
-<tr><td><b>D17</b></td><td>Fitbit and Strava?</td><td><b>Not for now.</b> Fitbit dies in September; Strava forbids what we do. Both arrive indirectly via Health Connect</td></tr>
-<tr><td><b>D18</b></td><td>Temperature for phase confirmation?</td><td><b>Yes</b>, with the wording in §6: it confirms, it doesn't predict, and never as contraception</td></tr>
-<tr><td><b>D19</b></td><td>Watch apps?</td><td><b>After launch</b>, and only if the pilot asks. They are two new native codebases</td></tr>
+<tr><th>#</th><th>Decision</th><th>Recommendation</th><th>Blocks</th></tr>
+<tr><td><b>D15</b></td><td>Wearables before or after 8 Oct?</td><td><b>Only O1–O3 before</b> (the two phone platforms). It capitalises on the pilot, which already has iPhones in hand</td><td>All of Epic O</td></tr>
+<tr><td><b>D16</b></td><td>Should mood be filled from watch data?</td><td><b>No.</b> Objective fills, subjective correlates (§5)</td><td>O1 and O5</td></tr>
+<tr><td><b>D17</b></td><td>Fitbit and Strava?</td><td><b>Not for now.</b> Fitbit dies in September; Strava forbids what we do. Both arrive indirectly via Health Connect</td><td>Scope of O3</td></tr>
+<tr><td><b>D18</b></td><td>Temperature for phase confirmation?</td><td><b>Yes</b>, with the wording in §6: it confirms, it doesn't predict, and never as contraception</td><td>O4</td></tr>
+<tr><td><b>D19</b></td><td>Watch apps?</td><td><b>After launch</b>, and only if the pilot asks. They are two new native codebases</td><td>O6</td></tr>
 </table>
+</div>
+
+<h3>10.2 · Design — four new screens</h3>
+<div class="card">
+<p>Four visual pieces, in order of need. The first three block O1.</p>
+<table>
+<tr><th>Piece</th><th>What it must solve</th><th>Watch out for</th></tr>
+<tr><td><b>Permission pre-screen</b></td><td>Explain WHY we ask for each thing <i>before</i> the iOS dialog appears. One shot only: if she declines, iOS never asks again</td><td>It must not feel like paperwork. This is the moment trust is won or lost</td></tr>
+<tr><td><b>Connection state</b></td><td>In "Connected devices": connected / permission denied / not available on this phone, plus last sync</td><td>"Not available" is not an error — an iPhone without a watch still gives sleep and steps</td></tr>
+<tr><td><b>Suggestion card</b></td><td>"Your watch says you slept 7h20. Shall we log it?" with accept or dismiss</td><td>It must read clearly as a <b>proposal</b>, not as something already saved</td></tr>
+<tr><td><b>Pattern card</b> (O5)</td><td>Tell one correlation from her own data in a single sentence</td><td>Never in a diagnostic or judgemental tone. A mirror, not a judge</td></tr>
+</table>
+<p style="font-size:13.5px">Format: builder pack as always. Everything of ours is injected afterwards as a registered block.</p>
+</div>
+
+<h3>10.3 · Logic — six rules to lock down</h3>
+<div class="card">
+<p>These are product decisions dressed as technical details. If we don't settle them, the code settles them by accident.</p>
+<table>
+<tr><th>#</th><th>Rule</th><th>Proposal</th></tr>
+<tr><td><b>L1</b></td><td>Does a suggestion apply itself or need a tap?</td><td><b>A tap.</b> Anything appearing in her diary without her approval breaks the rule in §5</td></tr>
+<tr><td><b>L2</b></td><td>Sleep thresholds → label</td><td>&lt;4h very poor · 4–5.5 restless · 5.5–7 okay · 7–8.5 restful · &gt;8.5 deep. <b>To be reviewed against nutrition criteria</b></td></tr>
+<tr><td><b>L3</b></td><td>When two sources disagree on the same figure</td><td>The phone platform wins; we keep both with their origin</td></tr>
+<tr><td><b>L4</b></td><td>How much history do we read on first connect?</td><td><b>30 days.</b> Enough to see a full cycle, little enough not to feel invasive</td></tr>
+<tr><td><b>L5</b></td><td>What happens when she revokes permission</td><td>We stop reading and record the date. <b>Do we delete what was already read?</b> — your call; it has a cost and a legal reading</td></tr>
+<tr><td><b>L6</b></td><td>Does real activity count towards her streak?</td><td><b>Yes</b>, if she accepted the suggestion. A streak that ignores what she actually did is demotivating</td></tr>
+</table>
+<div class="risk"><b>L5 carries the most weight.</b> Deleting what was already read on revocation is the most respectful option and the easiest to defend under GDPR; keeping it preserves her historical charts intact. There is no obvious answer and it shouldn't be mine to make.</div>
 </div>
 
 <div class="pie">NutriSync Collective · Proposal 33 · Epic O — Wearables · 5 August 2026<br>
