@@ -110,7 +110,9 @@ function ticket(t){
     +'<div class="fld"><label>Acción interna (qué vamos a hacer — no lo ve la usuaria)</label>'
     +'<textarea class="edAc" placeholder="p. ej.: reproducir en 0.19, corregido en 0.21.0, pedir más datos…">'+esc(t.accion||'')+'</textarea></div>'
     +'<div class="fld"><label>Comentario al rastro (opcional)</label><input type="text" class="edCm" placeholder="nota corta para el seguimiento"></div>'
-    +'<div class="acts"><button class="pri" onclick="window.nsGuardar(\''+esc(t.id)+'\')">Guardar seguimiento</button><span class="ok-chip edOk1"></span></div>'
+    +'<div class="acts"><button class="pri" onclick="window.nsGuardar(\''+esc(t.id)+'\')">Guardar seguimiento</button>'
+    +(t.status!=='cerrado'?'<button onclick="window.nsCerrar(\''+esc(t.id)+'\',\''+esc(t.ticket_no)+'\')">✔ Cerrar incidencia</button>':'')
+    +'<span class="ok-chip edOk1"></span></div>'
     +'</div><div>'
     +'<div class="fld"><label>Respuesta a la usuaria (la verá en su app, con su ticket '+esc(t.ticket_no)+')</label>'
     +'<textarea class="edRe" style="min-height:118px" placeholder="Escríbele como le hablarías por WhatsApp: qué pasó, qué hemos hecho, qué puede esperar.">'+esc(t.respuesta||'')+'</textarea></div>'
@@ -158,6 +160,16 @@ window.nsGuardar=function(id){
     chip.textContent='✓ guardado';chip.style.color='#0F9B57';cargar(false);});
 };
 
+window.nsCerrar=function(id,no){
+  if(!confirm('Cerrar '+no+': se da por terminada. Si la acción interna está vacía, mejor rellénala antes — el porqué del cierre queda en el rastro. ¿Cerrar?'))return;
+  var chip=tEl(id,'edOk1');chip.textContent='cerrando…';chip.style.color='#8A7F78';
+  var cm=tEl(id,'edCm').value||'incidencia cerrada';
+  sb.rpc('admin_ticket_update',{p_id:id,p_status:'cerrado',p_assigned:null,
+    p_accion:tEl(id,'edAc').value||null,p_comentario:cm
+  }).then(function(r){
+    if(r.error||!(r.data&&r.data.ok)){chip.textContent='⚠ no cerrada: '+((r.error&&r.error.message)||(r.data&&r.data.error)||'');chip.style.color='#C73A20';return;}
+    chip.textContent='✔ cerrada';chip.style.color='#475569';cargar(false);});
+};
 window.nsResponder=function(id,enviar){
   var chip=tEl(id,'edOk2'), txt=tEl(id,'edRe').value.trim();
   if(!txt){chip.textContent='⚠ la respuesta está vacía';chip.style.color='#C73A20';return;}
