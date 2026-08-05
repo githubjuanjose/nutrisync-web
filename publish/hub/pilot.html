@@ -223,7 +223,7 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
     </div>
     <div class="hint" style="background:#FFF8EF;border:1px solid #F0DCC4;border-radius:10px;padding:10px 12px;margin:8px 0">
       <b>Recordatorios — cómo se usan</b><br>
-      · <b>Nombre cercano</b>: escríbelo en su fila y sal del campo (se guarda solo, el borde se pone verde). Es como la llamamos en los correos; si lo dejas vacío usamos su nombre de la waitlist y, si tampoco hay, el saludo va sin nombre.<br>
+      · <b>Nombre cercano</b>: escríbelo en su fila y pulsa Enter o sal del campo — verás <b>✓ guardado</b> al lado. Es como la llamamos en los correos; si lo dejas vacío usamos su nombre de la waitlist y, si tampoco hay, el saludo va sin nombre.<br>
       · <b>🔔 Correo de tienda</b>: para quien lleva 3+ días sin darnos su Apple ID / cuenta de Google (aparecen como “enviado, sin respuesta”). Lleva su enlace personal.<br>
       · <b>🔔 Instalar</b>: para quien ya tiene el build asignado y aún no ha creado cuenta. Lleva los pasos de TestFlight y de Google Play.<br>
       · No hace falta seleccionar filas: cada botón calcula solo a quién le toca hoy y te dice cuántas son antes de enviar.<br>
@@ -372,12 +372,29 @@ window.copyWa=async(e,t)=>{
   const msg='¡Hola! 🧡 GRACIAS por apuntarte a la lista de espera y al piloto de NutriSync — ¡estás dentro! La invitación de la app se envía al correo con el que tu MÓVIL instala aplicaciones (tu Apple ID en iPhone o tu cuenta de Google en Android), que muchas veces no es el mismo con el que te registraste. Entra en tu enlace personal: si es el mismo, UN toque y listo; si es otro, lo escribes ahí (30 seg): https://nutrisynccollective.com/tester.html?t='+t+' — Si no lo tienes claro: iPhone → Ajustes → tu nombre arriba = tu Apple ID · Android → Play Store → tu foto arriba a la derecha = tu cuenta Google. ¡Gracias! — El equipo NutriSync';
   await navigator.clipboard.writeText(msg);alert('Mensaje WhatsApp copiado para '+e);
 };
+/* Confirmación de guardado (Juanjo, 5-ago): el borde verde solo no se lee como
+   «guardado» — falta la palabra. Un chip al lado del campo dice guardando… →
+   ✓ guardado, y Enter también confirma (no solo salir del campo). */
+function nickChip(el,txt,color){
+  let c=el.nextElementSibling;
+  if(!c||!c.classList.contains('nick-st')){
+    c=document.createElement('span');c.className='nick-st';
+    c.style.cssText='font-size:10.5px;font-weight:800;margin-left:6px;white-space:nowrap;transition:opacity .3s';
+    el.after(c);
+  }
+  c.textContent=txt;c.style.color=color;c.style.opacity='1';return c;
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.target.classList&&e.target.classList.contains('nick'))e.target.blur();
+});
 document.addEventListener('change',async e=>{
   const el=e.target;if(!el.classList||!el.classList.contains('nick'))return;
-  el.disabled=true;
+  el.disabled=true;const chip=nickChip(el,'guardando…','#8A7F78');
   const{error}=await sb.rpc('admin_pilot_set_nickname',{p_email:el.dataset.e,p_nickname:el.value});
   el.disabled=false;el.style.borderColor=error?'#C73A20':'#0F9B57';
-  if(error)alert('No se pudo guardar: '+error.message);else setTimeout(()=>{el.style.borderColor='#EFE3D7';},900);
+  if(error){nickChip(el,'⚠ no guardado','#C73A20');alert('No se pudo guardar: '+error.message);}
+  else{nickChip(el,'✓ guardado','#0F9B57');
+       setTimeout(()=>{el.style.borderColor='#EFE3D7';chip.style.opacity='0';},2200);}
 });
 /* r12-b7 (Pilar): meter a alguien en la cohorte equivocada tenia que poder
    deshacerse desde aqui. Quitar solo borra a quien AUN no sabe que existe el

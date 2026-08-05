@@ -504,7 +504,8 @@ const card=(l,v,neg)=>`<div style="flex:1;min-width:170px;background:#fff;border
   const m=data.month||{},y=data.ytd||{};const rm=(m.in||0)-(m.out||0),ry=(y.in||0)-(y.out||0);
   box.innerHTML=card('Caja',eur(data.cash),data.cash<0)+card('Ingresos mes',eur(m.in),false)+card('Gastos mes',eur(m.out),false)+card('Resultado mes',eur(rm),rm<0)+card('Resultado YTD',eur(ry),ry<0);
 })();
-</script><!-- ns-kpi-live --><script type="module">
+</script>
+<!-- ns-feedback-moved: hub/feedback.html --><!-- ns-kpi-live --><script type="module">
 /* r11d → po56 · KPIs honestos: actual (live) vs plan (modelo conservador).
    po56: selección por ETIQUETA (.lab) en vez de id kTotal — el mismo snippet
    sirve en admin-mis-console.html Y en el MIS del gated site de Builders
