@@ -177,7 +177,7 @@ function renderInv(){
     return (a.email||'')<(b.email||'')?-1:1;                 // desempate estable
   });
   $('inv').tBodies[0].innerHTML=rows.map(i=>{const st=i.converted&&i.status==='invited'?'joined':i.status;
-    const plat=i.platform==='ios'?'📱':i.platform==='android'?'🤖':'—';
+    const plat=i.platform==='both'?'📱🤖':i.platform==='ios'?'📱':i.platform==='android'?'🤖':'—';
     const store=i.store_ok?`<b>${esc(i.store_email)}</b> ✔`:(i.contacted_at?'<span class="hint">enviado, sin respuesta</span>':'—');
     const nick=`<input class="nick" data-e="${esc(i.email)}" value="${esc(i.nickname||'')}" placeholder="${esc((i.full_name||'').trim().split(/\s+/)[0]||'sin nombre')}" title="Como la llamamos en los correos. Vacio = nombre de la waitlist." style="width:110px;font:inherit;font-size:12.5px;padding:3px 6px;border:1px solid #EFE3D7;border-radius:7px">`;
     return `<tr><td><input type="checkbox" class="ik" data-e="${esc(i.email)}"></td><td>${esc(i.email)}</td><td>${nick}</td><td>${esc(i.cohort)}</td><td><span class="pill p-${st}">${st}</span></td><td>${plat}</td><td>${store}</td><td>${i.converted?'✅':'—'}</td><td><button class="mini" onclick="editRow('${esc(i.email)}')" title="Editar el registro completo (guardar/cancelar)">✏️</button> <button class="mini" onclick="copyLink('${esc(i.confirm_token)}')" title="Copiar enlace personal">🔗</button> <button class="mini" onclick="copyWa('${esc(i.email)}','${esc(i.confirm_token)}')" title="Copiar mensaje WhatsApp">💬</button></td></tr>`;}).join('');
@@ -233,7 +233,7 @@ window.editRow=email=>{
     <input id="edStore" style="${F}" value="${esc(i.store_email||'')}" placeholder="vacío = sin confirmar">
     <div class="hint" style="margin:-6px 0 10px">Si lo escribes tú, queda confirmado ✔ — eres la autoridad. El enlace personal sigue siendo el camino normal.</div>
     <label style="${L}">Plataforma</label>
-    <select id="edPlat" style="${F}"><option value="">—</option><option value="ios"${i.platform==='ios'?' selected':''}>iOS</option><option value="android"${i.platform==='android'?' selected':''}>Android</option></select>
+    <select id="edPlat" style="${F}"><option value="">—</option><option value="ios"${i.platform==='ios'?' selected':''}>iOS</option><option value="android"${i.platform==='android'?' selected':''}>Android</option><option value="both"${i.platform==='both'?' selected':''}>Ambos</option></select>
     <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:6px">
       <button onclick="document.getElementById('rowEd').remove()">Cancelar</button>
       <button class="pri" id="edSave">Guardar</button>

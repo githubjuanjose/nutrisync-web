@@ -69,6 +69,7 @@ button.go:disabled{opacity:.5}
       <div class="plats">
         <div class="plat" id="pIos" onclick="pick('ios')">📱 iPhone</div>
         <div class="plat" id="pAnd" onclick="pick('android')">🤖 Android</div>
+        <div class="plat" id="pBoth" onclick="pick('both')" data-es="📱🤖 Los dos" data-en="📱🤖 Both">📱🤖 Los dos</div>
       </div>
       <div class="help" id="helpIos" style="display:none" data-es="<b>Dónde encontrarlo:</b> Ajustes → toca tu nombre (arriba del todo) → el correo bajo tu nombre es tu Apple ID." data-en="<b>Where to find it:</b> Settings → tap your name (at the very top) → the email under your name is your Apple ID."><b>Dónde encontrarlo:</b> Ajustes → toca tu nombre (arriba del todo) → el correo bajo tu nombre es tu Apple ID.</div>
       <div class="help" id="helpAnd" style="display:none" data-es="<b>Dónde encontrarlo:</b> abre Play Store → toca tu foto (arriba a la derecha) → el correo que aparece es tu cuenta de Google." data-en="<b>Where to find it:</b> open Play Store → tap your photo (top right) → the email shown is your Google account."><b>Dónde encontrarlo:</b> abre Play Store → toca tu foto (arriba a la derecha) → el correo que aparece es tu cuenta de Google.</div>
@@ -105,10 +106,13 @@ function apply(){
 window.swap=()=>{LANG=LANG==='es'?'en':'es';apply();};
 window.showAlt=()=>{$('alt').style.display='block';};
 window.pick=p=>{PLAT=p;$('pIos').classList.toggle('on',p==='ios');$('pAnd').classList.toggle('on',p==='android');
-  $('helpIos').style.display=p==='ios'?'block':'none';$('helpAnd').style.display=p==='android'?'block':'none';};
+  $('pBoth').classList.toggle('on',p==='both');
+  $('helpIos').style.display=(p==='ios'||p==='both')?'block':'none';$('helpAnd').style.display=(p==='android'||p==='both')?'block':'none';};
 function done(mailShown,plat){
   $('form').style.display='none';$('ok').style.display='block';
-  $('next').innerHTML=plat==='ios'
+  $('next').innerHTML=plat==='both'
+    ?(LANG==='es'?'Te llegarán <b>las dos invitaciones</b> a <b>'+mailShown+'</b>: la de <b>TestFlight</b> (instala antes la app TestFlight del App Store) y la de <b>Google Play</b> con su enlace.':'You will get <b>both invites</b> at <b>'+mailShown+'</b>: <b>TestFlight</b> (install the TestFlight app first) and <b>Google Play</b> with its link.')
+    :plat==='ios'
     ?(LANG==='es'?'Te llegará la invitación de <b>TestFlight</b> a <b>'+mailShown+'</b>. Mientras tanto: instala la app <b>TestFlight</b> del App Store — la invitación se abre con ella.':'Your <b>TestFlight</b> invite will arrive at <b>'+mailShown+'</b>. Meanwhile: install the <b>TestFlight</b> app from the App Store — the invite opens with it.')
     :(LANG==='es'?'Te llegará la invitación de <b>Google Play</b> a <b>'+mailShown+'</b> con el enlace para instalar NutriSync.':'Your <b>Google Play</b> invite will arrive at <b>'+mailShown+'</b> with the link to install NutriSync.');
 }

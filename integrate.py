@@ -1635,6 +1635,13 @@ if os.path.exists(_fb):
 # este bloque la re-decora en cada integración). El PDF pesa 28 MB — por
 # encima del límite de 25 MiB de Pages — así que el enlace canónico es Canva
 # y el fichero queda en inputs/ (no se sirve).
+_idocs_src = os.path.join(ASSETS, "investor-docs")
+_idocs_dst = os.path.join(PUB, "hub", "docs")
+if os.path.isdir(_idocs_src):
+    os.makedirs(_idocs_dst, exist_ok=True)
+    for _f in os.listdir(_idocs_src):
+        shutil.copy(os.path.join(_idocs_src, _f), os.path.join(_idocs_dst, _f))
+    print(f"- investor-docs: {len(os.listdir(_idocs_src))} fichero(s) en /hub/docs/")
 _ibc = os.path.join(PUB, "hub", "investors-business-case.html")
 if os.path.exists(_ibc):
     _bh = open(_ibc, encoding="utf-8").read()
@@ -1656,7 +1663,10 @@ if os.path.exists(_ibc):
       '<a href="https://canva.link/0e050fpa0ewj4e4" target="_blank" rel="noopener" '
       'style="display:inline-block;background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;'
       'font-size:13px;border-radius:22px;padding:10px 20px;text-decoration:none">▶ View the deck on Canva</a>'
-      '<span style="font-size:11px;color:#B8AAA0">PDF & PPTX archived internally (28 MB) · ask contact@nutrisynccollective.com</span>'
+      '<a href="/hub/docs/NutriSync-Financial-Model-2026-08.xlsx" '
+      'style="display:inline-block;background:#fff;color:#241D1A;font-weight:800;font-size:13px;'
+      'border-radius:22px;padding:10px 20px;text-decoration:none">📊 Financial model (Excel · Aug 2026)</a>'
+      '<span style="font-size:11px;color:#B8AAA0">Deck PDF/PPTX archived internally (28 MB) · ask contact@nutrisynccollective.com</span>'
       '</div></div></div><!-- /ns-pitch-deck -->')
     if _ANCLA_DOCS in _bh:
         _bh = _bh.replace(_ANCLA_DOCS, _ANCLA_DOCS + _CARD, 1)
