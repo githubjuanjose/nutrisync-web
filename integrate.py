@@ -1630,6 +1630,41 @@ if os.path.exists(_fb):
                 open(_fb, "w", encoding="utf-8").write(_s)
                 print("- ns-footer-brand: columna de marca a 400px (ritmo del pie uniforme)")
 
+# ns-pitch-deck (r13c): el deck de agosto 2026 con su historia y el enlace de
+# Canva, dentro de la página del Pitch (que es de Design: el pack la trae y
+# este bloque la re-decora en cada integración). El PDF pesa 28 MB — por
+# encima del límite de 25 MiB de Pages — así que el enlace canónico es Canva
+# y el fichero queda en inputs/ (no se sirve).
+_ibc = os.path.join(PUB, "hub", "investors-business-case.html")
+if os.path.exists(_ibc):
+    _bh = open(_ibc, encoding="utf-8").read()
+    _bh = re.sub(r'<div id="ns-pitch-deck">[\s\S]*?</div><!-- /ns-pitch-deck -->', '', _bh)
+    _ANCLA_DOCS = '<h2 class="title" style="margin-top:14px;">Documents</h2>'
+    _CARD = ('<div id="ns-pitch-deck">'
+      '<div style="background:linear-gradient(135deg,#241D1A,#3A2F2A);border-radius:18px;padding:22px 24px;margin:14px 0;color:#F5EFE7">'
+      '<div style="font-size:10.5px;font-weight:800;letter-spacing:.14em;color:#FFB48A;text-transform:uppercase">Pitch deck · August 2026 · updated</div>'
+      '<div style="font-size:19px;font-weight:800;margin:6px 0 2px">NutriSync — Hormonal care made easy</div>'
+      '<div style="font-size:12.5px;color:#D8CCC2;line-height:1.65;margin:8px 0 4px">The storyline: '
+      'most nutrition was built for men — women\'s 28-day cycles were left out ("Different biology. Same nutrition?"). '
+      'NutriSync turns cycle data into <b>adaptive, science-backed guidance</b> (Cycle Alignment + Cycle Stability scores) '
+      'measured against each woman\'s own baseline, with privacy by design. '
+      'A $5.07Bn menstrual-health market by 2030 (20.2% CAGR); Spanish beachhead €1.4Bn TAM / €168M SAM. '
+      'Traction: 160 interviews (96% report cycle impacts performance), 150-women waitlist, 30k organic views, '
+      'early paid events revenue, and podium finishes at IE Venture Lab, IE Entrepreneurship Summit and ESADE Shark Tank. '
+      'On track to launch to 200 beta users in Q3 2026.</div>'
+      '<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;align-items:center">'
+      '<a href="https://canva.link/0e050fpa0ewj4e4" target="_blank" rel="noopener" '
+      'style="display:inline-block;background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;'
+      'font-size:13px;border-radius:22px;padding:10px 20px;text-decoration:none">▶ View the deck on Canva</a>'
+      '<span style="font-size:11px;color:#B8AAA0">PDF & PPTX archived internally (28 MB) · ask contact@nutrisynccollective.com</span>'
+      '</div></div></div><!-- /ns-pitch-deck -->')
+    if _ANCLA_DOCS in _bh:
+        _bh = _bh.replace(_ANCLA_DOCS, _ANCLA_DOCS + _CARD, 1)
+        open(_ibc, "w", encoding="utf-8").write(_bh)
+        print("- ns-pitch-deck: deck agosto 2026 + Canva en la pagina del Pitch")
+    else:
+        print("- AVISO ns-pitch-deck: el ancla Documents no esta — Design la movio, revisar")
+
 # ÚLTIMO PASO (r13c): el banner va al final — cualquier paso anterior que
 # reescriba index.html desde una copia vieja lo perdería (medido, no teoría).
 # ns-pilot-banner (r13c, requisito legal): franja fija al pie de la web de

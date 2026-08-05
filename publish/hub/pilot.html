@@ -221,6 +221,7 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
       <button onclick="removeFromPilot()" title="Quitar del piloto (solo si aun no se les ha escrito)">🗑 Quitar del piloto</button>
       <button onclick="remindStore()" title="A quien lleva 3+ dias sin darnos su correo de tienda">🔔 Recordatorio · correo de tienda</button>
       <button onclick="remindInstall()" title="A quien tiene el build asignado y no ha instalado">🔔 Recordatorio · instalar</button>
+      <button onclick="remindTerms()" title="A quien aun no ha aceptado las condiciones del piloto (enlace personal)">📜 Recordatorio · aceptar condiciones</button>
     </div>
     <div class="hint" style="background:#FFF8EF;border:1px solid #F0DCC4;border-radius:10px;padding:10px 12px;margin:8px 0">
       <b>Recordatorios — cómo se usan</b><br>
@@ -484,6 +485,14 @@ async function remind(kind,label){
 }
 window.remindStore=()=>remind('store','falta correo de tienda');
 window.remindInstall=()=>remind('install','invitada, sin instalar');
+window.remindTerms=async()=>{
+  if(!confirm('Enviar el aviso de ACEPTAR CONDICIONES a todas las pendientes (contactadas que aun no han aceptado)?\n\nEl cron de las 9:00 ya lo manda solo UNA vez por persona; este boton reenvia a todas las que sigan pendientes.'))return;
+  const{data:{session}}=await sb.auth.getSession();if(!session)return alert('Sin sesion.');
+  const r=await fetch(U+'/functions/v1/pilot-outreach',{method:'POST',headers:{'content-type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':K},body:JSON.stringify({kind:'terms'})});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok)return alert('Error: '+(j.error||r.status));
+  alert('Enviados: '+(j.sent||[]).length+((j.failed||[]).length?'\nFallidos: '+j.failed.join(', '):''));
+};
 window.sendOutreach=async()=>{
   const emails=invSel();if(!emails.length)return alert('Nada seleccionado.');
   if(!confirm('Enviar el email de captura (gracias + Apple ID/Google + enlace personal) a '+emails.length+' persona(s)?'))return;
