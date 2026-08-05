@@ -1,0 +1,327 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incidencias — NutriSync Founders</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.55}
+.w{max-width:1050px;margin:0 auto;padding:26px 20px 90px}
+h1{font-size:23px;margin:0 0 4px}
+p.lead{color:#6E655D;font-size:13.5px;margin:0 0 14px}
+.kpis{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+.kpi{flex:1;min-width:110px;background:#fff;border:1px solid #EFE3D7;border-radius:12px;padding:10px 13px}
+.kpi .l{font-size:10.5px;color:#8A7F78;text-transform:uppercase;letter-spacing:.5px}
+.kpi .v{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
+.filtros{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px;align-items:center}
+select,input[type=text],textarea{font-family:inherit;font-size:13px;padding:8px 10px;border:1px solid #EFE3D7;border-radius:10px;background:#fff}
+textarea{width:100%;box-sizing:border-box;min-height:64px;resize:vertical}
+button{font-family:inherit;font-weight:700;font-size:12.5px;border-radius:18px;padding:7px 14px;border:1px solid #EFE3D7;background:#fff;color:#241D1A;cursor:pointer}
+button:hover{border-color:#F3C8B8;background:#FFF6F2}
+button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:none}
+.t{background:#fff;border:1px solid #EFE3D7;border-radius:14px;margin:10px 0;overflow:hidden}
+.th{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:12px 15px;cursor:pointer}
+.th:hover{background:#FFFBF5}
+.no{font-weight:800;font-size:13px;color:#C73A20;background:#FFF1EC;border-radius:7px;padding:2px 9px}
+.pill{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 10px}
+.s-nuevo{background:#FFE4E0;color:#A32D2D}.s-en_curso{background:#FFF3E0;color:#B4700F}
+.s-esperando_usuaria{background:#E6F0FF;color:#1D4ED8}.s-resuelto{background:#E8F5EE;color:#0F6E56}
+.s-cerrado{background:#F1F5F9;color:#475569}
+.msg{font-size:13.5px;flex:1;min-width:200px}
+.meta{font-size:11px;color:#8A7F78}
+.body{display:none;border-top:1px solid #F4EADF;padding:14px 15px;background:#FFFEFB}
+.t.open .body{display:block}
+.orig{background:#F8F4EE;border-left:3px solid #D9C8B4;border-radius:0 8px 8px 0;padding:9px 12px;font-size:13px;margin-bottom:12px}
+.orig b{font-size:10.5px;color:#8A7F78;text-transform:uppercase;letter-spacing:.5px;display:block}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+.fld{margin-bottom:10px}
+.fld label{font-size:10.5px;font-weight:800;color:#8A7F78;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:3px}
+.trail{font-size:11.5px;color:#5F564F;border-top:1px dashed #EADFD0;margin-top:12px;padding-top:8px}
+.trail div{margin:2px 0}
+.trail .k{font-weight:800;color:#8A7F78}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;align-items:center}
+.ok-chip{font-size:11px;font-weight:800;color:#0F9B57}
+.err{background:#FFF1EC;border:2px solid #E8472A;border-radius:12px;padding:13px 15px;font-size:13px;color:#8A2A18;margin:14px 0}
+.enviada{font-size:11px;font-weight:800;color:#1D4ED8;background:#E6F0FF;border-radius:999px;padding:2px 10px}
+</style></head><body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Salir a la web pública"
+     aria-label="Salir a la web pública" style="text-decoration:none">↗</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a>
+      <a class="nsnb-tab" href="/hub/daily-ops.html">📋 Operación</a>
+      <a class="nsnb-tab" href="/hub/decisions.html">🗳 Decisiones</a>
+      <a class="nsnb-tab" href="/hub/notifications.html">🔔 Notificaciones</a>
+      <a class="nsnb-tab" href="/hub/incidents.html">🎫 Incidencias</a>
+      <a class="nsnb-tab" href="/hub/admin-mis-console.html">📊 MIS</a>
+      <a class="nsnb-tab" href="/hub/finance.html">💶 Finanzas</a>
+      <a class="nsnb-tab" href="/hub/pilot.html">🧪 Piloto</a>
+      <a class="nsnb-tab" href="/hub/pilot-planning.html">🗓 Plan piloto</a>
+      <a class="nsnb-tab" href="/hub/pilot-observability.html">📡 Obs. piloto</a>
+      <a class="nsnb-tab" href="/hub/feedback.html">💬 Feedback</a>
+      <a class="nsnb-tab" href="/hub/waitlist.html">📬 Waitlist</a>
+      <a class="nsnb-tab" href="/hub/documentation/index.html">📚 Docs</a>
+    <a class="nsnb-tab" href="/hub/translations.html">🌍 Traducciones</a>
+      <a class="nsnb-tab" href="/hub/review.html">🔎 Review</a>
+      <a class="nsnb-tab" href="/hub/prototypes.html">🧩 Prototipos</a>
+      <a class="nsnb-tab" href="/hub/development-planning-backlog.html">🗂 Backlog</a>
+      <a class="nsnb-tab" href="/hub/investors-business-case.html">🎯 Pitch</a>
+      <a class="nsnb-tab" href="/hub/access.html">🔑 Access</a>
+      <a class="nsnb-tab" href="/hub/mfa.html">🔐 MFA</a>
+    </div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  var here=(location.pathname.split('/').pop()||'').toLowerCase();
+  var dir=location.pathname.toLowerCase();
+  var ON='background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : f.split('/').pop()===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar --><div class="w">
+
+<h1>🎫 Incidencias y resolución de problemas</h1>
+<p class="lead">Cada feedback de la app genera un ticket con número. Aquí se decide qué hacemos,
+quién lo lleva, y se responde a la usuaria — <b>la respuesta le llega dentro de su app</b>.
+Nada se guarda hasta que pulsas un botón de guardar.</p>
+
+<div class="kpis" id="kpis"></div>
+<div class="filtros">
+  <select id="fSt"><option value="">estado: todos</option>
+    <option value="nuevo">nuevo</option><option value="en_curso">en curso</option>
+    <option value="esperando_usuaria">esperando a la usuaria</option>
+    <option value="resuelto">resuelto</option><option value="cerrado">cerrado</option></select>
+  <select id="fAs"><option value="">asignado a: todas</option></select>
+  <span class="meta" id="count"></span>
+</div>
+<div id="err"></div>
+<div id="lista">Cargando…</div>
+
+</div>
+<script src="/assets/vendor/supabase.js"></script>
+<script>
+(function(){
+'use strict';
+var sb=window.supabase.createClient('https://nebkqncvapelrarruyqb.supabase.co',
+  'sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau');
+var $=function(i){return document.getElementById(i);};
+var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+var D=null, ABIERTOS={};
+
+/* Nunca en blanco (regla r12-b9) */
+function fail(e,fn){
+  $('lista').innerHTML='';
+  $('err').innerHTML='<div class="err"><b>⚠️ Falta aplicar SQL en Supabase</b><div style="margin-top:5px">'+
+    'La consulta <code>'+esc(fn)+'</code> no responde: <i>'+esc(String(e&&e.message||e)).slice(0,160)+'</i></div>'+
+    '<div style="margin-top:5px">Ejecuta <b>backend-sql/2026-08-05-feedback-tickets.sql</b> entero y recarga.</div></div>';
+}
+
+var ASIGNABLES=['juanjose.cebrian@gmail.com','pilargonz05@gmail.com','lucia@nutrisynccollective.com',
+  'mariapaula@nutrisynccollective.com','build@nutrisynccollective.com','hello@nutrisynccollective.com'];
+var KINDS={creado:'🎫',comentario:'💬',estado:'🔁',asignacion:'👤',respuesta:'✍️',respuesta_enviada:'📨'};
+
+function fecha(s){if(!s)return '—';var d=new Date(s);
+  return d.toLocaleDateString('es-ES',{day:'2-digit',month:'short'})+' '+
+         d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});}
+
+function ticket(t){
+  var abierto=ABIERTOS[t.id]?' open':'';
+  var h='<div class="t'+abierto+'" data-id="'+esc(t.id)+'">'
+    +'<div class="th" onclick="window.nsToggle(\''+esc(t.id)+'\')">'
+    +'<span class="no">'+esc(t.ticket_no)+'</span>'
+    +'<span class="pill s-'+esc(t.status)+'">'+esc(t.status.replace(/_/g,' '))+'</span>'
+    +(t.respuesta_enviada_at?'<span class="enviada">📨 respondida en la app</span>':'')
+    +'<span class="msg">'+esc(t.message).slice(0,110)+(t.message.length>110?'…':'')+'</span>'
+    +'<span class="meta">'+esc(t.cohort)+' · '+esc(t.app_version||'?')+' · '+esc(t.platform||'?')
+    +' · '+fecha(t.feedback_at)+(t.assigned_to?' · 👤 '+esc(t.assigned_to.split('@')[0]):'')+'</span></div>';
+
+  h+='<div class="body">'
+    +'<div class="orig"><b>Feedback original · '+esc(t.user_email)+'</b>'+esc(t.message)+'</div>'
+    +'<div class="grid"><div>'
+    +'<div class="fld"><label>Estado</label><select class="edSt">'
+    +['nuevo','en_curso','esperando_usuaria','resuelto','cerrado'].map(function(s){
+       return '<option value="'+s+'"'+(s===t.status?' selected':'')+'>'+s.replace(/_/g,' ')+'</option>';}).join('')
+    +'</select></div>'
+    +'<div class="fld"><label>Asignado a</label><input type="text" class="edAs" list="nsAsig" value="'+esc(t.assigned_to||'')+'" placeholder="founder o dirección nutrisync"></div>'
+    +'<div class="fld"><label>Acción interna (qué vamos a hacer — no lo ve la usuaria)</label>'
+    +'<textarea class="edAc" placeholder="p. ej.: reproducir en 0.19, corregido en 0.21.0, pedir más datos…">'+esc(t.accion||'')+'</textarea></div>'
+    +'<div class="fld"><label>Comentario al rastro (opcional)</label><input type="text" class="edCm" placeholder="nota corta para el seguimiento"></div>'
+    +'<div class="acts"><button class="pri" onclick="window.nsGuardar(\''+esc(t.id)+'\')">Guardar seguimiento</button><span class="ok-chip edOk1"></span></div>'
+    +'</div><div>'
+    +'<div class="fld"><label>Respuesta a la usuaria (la verá en su app, con su ticket '+esc(t.ticket_no)+')</label>'
+    +'<textarea class="edRe" style="min-height:118px" placeholder="Escríbele como le hablarías por WhatsApp: qué pasó, qué hemos hecho, qué puede esperar.">'+esc(t.respuesta||'')+'</textarea></div>'
+    +'<div class="acts">'
+    +'<button onclick="window.nsResponder(\''+esc(t.id)+'\',false)">Guardar respuesta</button>'
+    +'<button class="pri" onclick="window.nsResponder(\''+esc(t.id)+'\',true)">Guardar y enviar a la usuaria</button>'
+    +'<span class="ok-chip edOk2"></span></div>'
+    +(t.respuesta_enviada_at?'<div class="meta" style="margin-top:6px">Última enviada: '+fecha(t.respuesta_enviada_at)+'</div>':'')
+    +'</div></div>';
+
+  h+='<div class="trail">'+(t.events||[]).map(function(e){
+    return '<div>'+(KINDS[e.kind]||'·')+' <span class="k">'+fecha(e.at)+' · '+esc(e.author.split('@')[0])+'</span> '
+      +esc(e.kind.replace(/_/g,' '))+(e.detail?' — '+esc(e.detail):'')+'</div>';}).join('')+'</div>';
+
+  return h+'</div></div>';
+}
+
+function render(){
+  var st=$('fSt').value, as=$('fAs').value;
+  var rows=(D.tickets||[]).filter(function(t){
+    return (!st||t.status===st)&&(!as||t.assigned_to===as);});
+  $('lista').innerHTML=rows.length?rows.map(ticket).join(''):'<p class="meta">Nada con esos filtros.</p>';
+  $('count').textContent=rows.length+' de '+(D.tickets||[]).length;
+  var r=D.resumen||{};
+  $('kpis').innerHTML=[['Tickets',r.total],['Nuevos',r.nuevos],['En curso',r.en_curso],
+    ['Esperando usuaria',r.esperando],['Resueltos',r.resueltos]].map(function(x){
+    return '<div class="kpi"><div class="l">'+x[0]+'</div><div class="v">'+(x[1]==null?'—':x[1])+'</div></div>';}).join('');
+  var asigs=[];(D.tickets||[]).forEach(function(t){if(t.assigned_to&&asigs.indexOf(t.assigned_to)<0)asigs.push(t.assigned_to);});
+  $('fAs').innerHTML='<option value="">asignado a: todas</option>'+asigs.map(function(a){
+    return '<option value="'+esc(a)+'"'+(a===as?' selected':'')+'>'+esc(a.split('@')[0])+'</option>';}).join('');
+}
+
+window.nsToggle=function(id){ABIERTOS[id]=!ABIERTOS[id];
+  var el=document.querySelector('.t[data-id="'+id+'"]');if(el)el.classList.toggle('open');};
+
+function tEl(id,cls){return document.querySelector('.t[data-id="'+id+'"] .'+cls);}
+
+window.nsGuardar=function(id){
+  var chip=tEl(id,'edOk1');chip.textContent='guardando…';chip.style.color='#8A7F78';
+  sb.rpc('admin_ticket_update',{p_id:id,
+    p_status:tEl(id,'edSt').value, p_assigned:tEl(id,'edAs').value||null,
+    p_accion:tEl(id,'edAc').value, p_comentario:tEl(id,'edCm').value||null
+  }).then(function(r){
+    if(r.error||!(r.data&&r.data.ok)){chip.textContent='⚠ no guardado: '+((r.error&&r.error.message)||(r.data&&r.data.error)||'');chip.style.color='#C73A20';return;}
+    chip.textContent='✓ guardado';chip.style.color='#0F9B57';cargar(false);});
+};
+
+window.nsResponder=function(id,enviar){
+  var chip=tEl(id,'edOk2'), txt=tEl(id,'edRe').value.trim();
+  if(!txt){chip.textContent='⚠ la respuesta está vacía';chip.style.color='#C73A20';return;}
+  if(enviar&&!confirm('La usuaria verá esta respuesta en su app, con el número de ticket. ¿Enviar?'))return;
+  chip.textContent=enviar?'enviando…':'guardando…';chip.style.color='#8A7F78';
+  sb.rpc('admin_ticket_respond',{p_id:id,p_respuesta:txt,p_enviar:enviar}).then(function(r){
+    if(r.error||!(r.data&&r.data.ok)){chip.textContent='⚠ no guardado: '+((r.error&&r.error.message)||(r.data&&r.data.error)||'');chip.style.color='#C73A20';return;}
+    chip.textContent=enviar?'📨 enviada a su app':'✓ respuesta guardada (sin enviar)';chip.style.color=enviar?'#1D4ED8':'#0F9B57';
+    cargar(false);});
+};
+
+function cargar(primera){
+  sb.auth.getSession().then(function(s){
+    if(!s.data.session){$('lista').innerHTML='<p class="meta">Inicia sesión admin desde el hub y recarga.</p>';return;}
+    sb.rpc('admin_tickets').then(function(r){
+      if(r.error)return fail(r.error,'admin_tickets');
+      D=r.data;render();});
+  });
+}
+var dl=document.createElement('datalist');dl.id='nsAsig';
+dl.innerHTML=ASIGNABLES.map(function(a){return '<option value="'+a+'">';}).join('');
+document.body.appendChild(dl);
+$('fSt').addEventListener('change',render);
+$('fAs').addEventListener('change',render);
+cargar(true);
+})();
+</script></body></html>
