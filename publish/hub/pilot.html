@@ -318,7 +318,7 @@ function renderInv(){
     const plat=i.platform==='ios'?'📱':i.platform==='android'?'🤖':'—';
     const store=i.store_ok?`<b>${esc(i.store_email)}</b> ✔`:(i.contacted_at?'<span class="hint">enviado, sin respuesta</span>':'—');
     const nick=`<input class="nick" data-e="${esc(i.email)}" value="${esc(i.nickname||'')}" placeholder="${esc((i.full_name||'').trim().split(/\s+/)[0]||'sin nombre')}" title="Como la llamamos en los correos. Vacio = nombre de la waitlist." style="width:110px;font:inherit;font-size:12.5px;padding:3px 6px;border:1px solid #EFE3D7;border-radius:7px">`;
-    return `<tr><td><input type="checkbox" class="ik" data-e="${esc(i.email)}"></td><td>${esc(i.email)}</td><td>${nick}</td><td>${esc(i.cohort)}</td><td><span class="pill p-${st}">${st}</span></td><td>${plat}</td><td>${store}</td><td>${i.converted?'✅':'—'}</td><td><button class="mini" onclick="copyLink('${esc(i.confirm_token)}')" title="Copiar enlace personal">🔗</button> <button class="mini" onclick="copyWa('${esc(i.email)}','${esc(i.confirm_token)}')" title="Copiar mensaje WhatsApp">💬</button></td></tr>`;}).join('');
+    return `<tr><td><input type="checkbox" class="ik" data-e="${esc(i.email)}"></td><td>${esc(i.email)}</td><td>${nick}</td><td>${esc(i.cohort)}</td><td><span class="pill p-${st}">${st}</span></td><td>${plat}</td><td>${store}</td><td>${i.converted?'✅':'—'}</td><td><button class="mini" onclick="editRow('${esc(i.email)}')" title="Editar el registro completo (guardar/cancelar)">✏️</button> <button class="mini" onclick="copyLink('${esc(i.confirm_token)}')" title="Copiar enlace personal">🔗</button> <button class="mini" onclick="copyWa('${esc(i.email)}','${esc(i.confirm_token)}')" title="Copiar mensaje WhatsApp">💬</button></td></tr>`;}).join('');
   document.querySelectorAll('#inv th [data-ar]').forEach(el=>{
     el.textContent=(el.dataset.ar===SORT.k)?(SORT.dir>0?'▲':'▼'):'';});
 }
@@ -344,6 +344,57 @@ window.propose=async()=>{
   await refreshOv();alert(emails.length+' propuestas → '+cohort+'. Ahora valida el lote en la sección 2.');
 };
 async function refreshOv(){const ov=await sb.rpc('admin_pilot_overview');if(!ov.error){OV=ov.data;renderAll();}}
+
+/* ── Editor CRUD por registro (regla Juanjo, 5-ago) ─────────────────────────
+   Un ✏️ por fila abre el registro entero con Guardar/Cancelar explícitos.
+   Es además la ÚNICA forma de corregir el correo de tienda desde el hub
+   (antes solo podía la tester por su enlace) — el caso de Pilar. */
+window.editRow=email=>{
+  const i=OV.invites.find(x=>x.email===email);
+  if(!i)return alert('No encuentro ese registro');
+  const cohorts=[...new Set(OV.invites.map(x=>x.cohort))];
+  const old=document.getElementById('rowEd');if(old)old.remove();
+  const d=document.createElement('div');d.id='rowEd';
+  d.style.cssText='position:fixed;inset:0;z-index:400;background:rgba(35,31,32,.45);display:flex;align-items:center;justify-content:center;padding:16px';
+  const F='font:inherit;font-size:13px;width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid #EFE3D7;border-radius:10px;margin:4px 0 10px';
+  const L='font-size:11px;font-weight:700;color:#8A7F78;text-transform:uppercase;letter-spacing:.4px';
+  d.innerHTML=`<div style="background:#fff;border-radius:16px;padding:20px 22px;max-width:420px;width:100%;box-shadow:0 18px 50px rgba(0,0,0,.25)">
+    <div style="font-weight:800;font-size:15px;margin-bottom:2px">✏️ ${esc(email)}</div>
+    <div class="hint" style="margin-bottom:12px">Nada se guarda hasta que pulses Guardar.</div>
+    <label style="${L}">Nombre cercano</label>
+    <input id="edNick" style="${F}" value="${esc(i.nickname||'')}" placeholder="${esc((i.full_name||'').trim().split(/\s+/)[0]||'sin nombre')}">
+    <label style="${L}">Cohorte</label>
+    <select id="edCoh" style="${F}">${cohorts.map(c=>`<option${c===i.cohort?' selected':''}>${esc(c)}</option>`).join('')}</select>
+    <label style="${L}">Estado</label>
+    <select id="edSt" style="${F}">${['proposed','approved','contacted','invited','joined','declined'].map(s=>`<option${s===i.status?' selected':''}>${s}</option>`).join('')}</select>
+    <label style="${L}">Correo de tienda (Apple ID / cuenta Google)</label>
+    <input id="edStore" style="${F}" value="${esc(i.store_email||'')}" placeholder="vacío = sin confirmar">
+    <div class="hint" style="margin:-6px 0 10px">Si lo escribes tú, queda confirmado ✔ — eres la autoridad. El enlace personal sigue siendo el camino normal.</div>
+    <label style="${L}">Plataforma</label>
+    <select id="edPlat" style="${F}"><option value="">—</option><option value="ios"${i.platform==='ios'?' selected':''}>iOS</option><option value="android"${i.platform==='android'?' selected':''}>Android</option></select>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:6px">
+      <button onclick="document.getElementById('rowEd').remove()">Cancelar</button>
+      <button class="pri" id="edSave">Guardar</button>
+    </div><div id="edErr" style="color:#C73A20;font-size:12px;min-height:16px;margin-top:6px"></div></div>`;
+  document.body.appendChild(d);
+  d.addEventListener('click',e=>{if(e.target===d)d.remove();});
+  document.getElementById('edSave').onclick=async()=>{
+    const g=id=>document.getElementById(id);
+    const btn=g('edSave');btn.disabled=true;btn.textContent='Guardando…';
+    const nS=g('edStore').value.trim().toLowerCase();
+    const{data,error}=await sb.rpc('admin_pilot_update',{
+      p_email:email,
+      p_nickname:g('edNick').value,
+      p_cohort:g('edCoh').value,
+      p_status:g('edSt').value,
+      p_store_email:(nS!==(i.store_email||''))?(nS||null):null,
+      p_platform:g('edPlat').value||null});
+    if(error||!(data&&data.ok)){btn.disabled=false;btn.textContent='Guardar';
+      g('edErr').textContent='⚠ No guardado: '+esc(error?error.message:(data&&data.error)||'error desconocido');
+      if(error&&/admin_pilot_update/.test(error.message))g('edErr').textContent+=' — ¿SQL 2026-08-05-pilot-row-update.sql aplicado?';
+      return;}
+    d.remove();await refreshOv();};
+};
 function invSel(){const s=invChecked();
   if(s.length)return s;const c=$('rvCohort').value;
   return OV.invites.filter(i=>(!c||i.cohort===c)).map(i=>i.email);}
