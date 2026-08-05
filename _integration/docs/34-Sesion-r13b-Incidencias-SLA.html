@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>34 · Sesión r13b — Incidencias, SLA y doble sentido con las testers</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.65}
+.w{max-width:860px;margin:0 auto;padding:30px 22px 90px}
+h1{font-size:24px;margin:0 0 6px}h2{font-size:17px;margin:28px 0 8px;color:#C73A20}
+p,li{font-size:14px}.meta{color:#8A7F78;font-size:12.5px;margin-bottom:18px}
+code{background:#F4F0EA;border-radius:5px;padding:1px 6px;font-size:12.5px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+th,td{padding:7px 9px;border-bottom:1px solid #EFE3D7;text-align:left;vertical-align:top}
+th{color:#8A7F78;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.tag{display:inline-block;font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#E8F5EE;color:#0F6E56;margin-right:5px}
+.box{background:#FFF8EF;border-left:3px solid #E8B072;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;margin:12px 0}
+</style></head><body><div class="w">
+
+<h1>🎫 Sesión r13b — Incidencias, SLA y doble sentido</h1>
+<div class="meta">5 de agosto de 2026 · web po108–po112 · SQL: joined-fix · pilot-row-update · feedback-tickets · ticket-sla · Edge Function nueva: <code>ticket-escalation</code></div>
+
+<p>El feedback dejó de ser una lista que se lee y pasa a ser un circuito que se cierra:
+cada mensaje de una tester genera un ticket, el ticket se trabaja, y la respuesta
+<b>vuelve a la app de la tester</b>. Nada de un solo sentido.</p>
+
+<h2>1 · Incidencias (pestaña nueva del hub)</h2>
+<ul>
+<li><b>Cada feedback genera su ticket automáticamente</b> (NS-0001, NS-0002…), incluido lo recibido antes de existir el sistema.</li>
+<li>Por ticket: <b>estado</b> (nuevo → en curso → esperando a la usuaria → resuelto → cerrado), <b>asignación</b> a cualquier founder o dirección nutrisync, <b>acción interna</b> (qué vamos a hacer — no lo ve la usuaria) y <b>rastro completo</b>: quién hizo qué y cuándo.</li>
+<li><b>Responder</b>: dos botones distintos a propósito — «Guardar respuesta» (borrador interno) y «Guardar y enviar a la usuaria», con confirmación. Al enviar, la tester ve la respuesta <b>dentro de su app</b>, en su centro de notificaciones, con su número de ticket.</li>
+<li><b>Cerrar incidencia</b>: un clic, con confirmación, y el motivo queda en el rastro.</li>
+<li><b>Export CSV</b> de lo que ves con los filtros puestos (se abre directo en Excel).</li>
+</ul>
+
+<h2>2 · SLA: el tiempo se ve y escala solo</h2>
+<ul>
+<li>Cada ticket abierto enseña su edad: <b>gris</b> hasta 8 h, <b>ámbar</b> de 8 a 24, <b>rojo ⚠</b> pasadas 24.</li>
+<li>Los resueltos enseñan <b>cuánto se tardó</b> (apertura → cierre), y arriba hay dos números nuevos: <b>Abiertas +24 h</b> y <b>Media de resolución</b>.</li>
+<li><b>Escalado automático</b>: un proceso revisa cada hora; toda incidencia con más de 24 h sin resolver dispara <b>un correo digest a las founders</b> — número, horas abierta, asignación y mensaje original. Cada ticket se escala una sola vez y queda marcado 📣 en el hub.</li>
+</ul>
+
+<h2>3 · Edición de registros (CRUD) en el piloto</h2>
+<ul>
+<li>En la pestaña Piloto, cada tester tiene un <b>✏️</b> que abre su registro entero: nombre cercano, cohorte, estado, <b>correo de tienda</b> y plataforma, con <b>Guardar/Cancelar</b> explícitos — nada se guarda hasta pulsar Guardar.</li>
+<li>El correo de tienda ahora <b>se puede corregir desde el hub</b> (antes solo la tester por su enlace). Resuelve los casos «no sé qué cuenta tengo» y los correos ocultos de Apple.</li>
+<li>El nombre cercano en línea confirma con palabras: <b>guardando… → ✓ guardado</b>, y Enter también guarda.</li>
+<li>Arreglado además el «siguen invited con cuenta creada»: la comparación de correos ignoraba mayúsculas solo a medias. Normalizado y con guardia permanente.</li>
+</ul>
+
+<h2>4 · Automatismos (pestaña Daily Ops)</h2>
+<table>
+<tr><th>Cron</th><th>Cuándo</th><th>Qué hace</th></tr>
+<tr><td><code>nutrisync-store-stats</code></td><td>06:30 UTC</td><td>Instantánea diaria de TestFlight (quién instaló) + sincroniza cohortes</td></tr>
+<tr><td><code>nutrisync-pilot-reminders</code></td><td>07:00 UTC</td><td>Recordatorios a testers: correo de tienda · instalar. Máx. 2 por persona, paran al avanzar</td></tr>
+<tr><td><code>nutrisync-ticket-escalation</code></td><td>cada hora</td><td>Incidencias +24 h sin resolver → correo a founders (una vez por ticket)</td></tr>
+</table>
+<div class="box">La pestaña <b>Daily Ops</b> del hub enseña la salud de los tres con su última ejecución.
+Mirarla cada mañana es un vistazo de 30 segundos: verde = todo corrió; rojo = el propio panel dice qué falló y qué hacer.</div>
+
+<h2>5 · Además, hoy</h2>
+<ul>
+<li><span class="tag">iOS</span>Build 0.20.0 (nº 6) subido a App Store Connect — en Beta App Review. What to Test publicado.</li>
+<li><span class="tag">Android</span>Verificación de identidad de Google <b>completada</b>; primer build de Android en marcha. Regla nueva: todo build nativo sale <b>para las dos plataformas a la vez</b>.</li>
+<li><span class="tag">OTA</span>Las respuestas a tickets llegan a las apps ya instaladas sin pasar por las tiendas.</li>
+<li><span class="tag">Guardarraíles</span><code>verify-anchors</code> (avisa si un pack de Design mueve un gancho nuestro antes de integrar), <code>pre-deploy</code> (siete comprobaciones, una puerta) y <code>pwa-tests</code> (la PWA no se despliega vieja ni rota).</li>
+</ul>
+
+</div></body></html>
