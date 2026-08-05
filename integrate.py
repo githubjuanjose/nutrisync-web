@@ -1137,6 +1137,7 @@ for _pg in ("index.html",):
             open(_pp, "w", encoding="utf-8").write(_ps)
             print("- ns-legal-footer: columna LEGAL del footer cableada a /legal/")
 
+
 # ns-tester: public store-email capture page — ours, packs never carry it.
 ts = os.path.join(ASSETS, "tester.html")
 if os.path.exists(ts):
@@ -1628,3 +1629,28 @@ if os.path.exists(_fb):
             if not _bad:
                 open(_fb, "w", encoding="utf-8").write(_s)
                 print("- ns-footer-brand: columna de marca a 400px (ritmo del pie uniforme)")
+
+# ÚLTIMO PASO (r13c): el banner va al final — cualquier paso anterior que
+# reescriba index.html desde una copia vieja lo perdería (medido, no teoría).
+# ns-pilot-banner (r13c, requisito legal): franja fija al pie de la web de
+# marketing — NutriSync en desarrollo, piloto interno cerrado, no comercializado.
+# En línea + vigilante (po82): el re-render del motor no puede borrarla.
+for _pg in ("index.html", "app.html"):
+    _pp = os.path.join(PUB, _pg)
+    if os.path.exists(_pp):
+        _ph = open(_pp, encoding="utf-8").read()
+        _ph = re.sub(r'<script id="ns-pilot-banner">.*?</script>', '', _ph, flags=re.S)
+        _PB = ('<script id="ns-pilot-banner">(function(){'
+          "var ES=(navigator.language||'en').toLowerCase().indexOf('es')===0;"
+          "var TXT=ES?'🚧 NutriSync está en fase de desarrollo · piloto interno cerrado — aún no disponible para el público · <a href=\"mailto:contact@nutrisynccollective.com\" style=\"color:#FFB48A;text-decoration:underline\">contact@nutrisynccollective.com</a>'"
+          ":'🚧 NutriSync is in development · closed internal pilot — not yet available to the public · <a href=\"mailto:contact@nutrisynccollective.com\" style=\"color:#FFB48A;text-decoration:underline\">contact@nutrisynccollective.com</a>';"
+          "function put(){"
+          "if(document.getElementById('ns-pilot-bar'))return;"
+          "var d=document.createElement('div');d.id='ns-pilot-bar';"
+          "d.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:380;background:#241D1A;color:#F5EFE7;font:600 11.5px/1.4 Poppins,system-ui,sans-serif;text-align:center;padding:8px 14px;letter-spacing:.2px;box-shadow:0 -4px 18px rgba(0,0,0,.18)';"
+          "d.innerHTML=TXT;document.body.appendChild(d);}"
+          "if(document.readyState!=='loading')put();else document.addEventListener('DOMContentLoaded',put);"
+          "setInterval(put,1500);"
+          '})();</script>')
+        open(_pp, "w", encoding="utf-8").write(_ph.replace("</head>", _PB + "</head>", 1))
+        print(f"- ns-pilot-banner en {_pg} (franja fija de fase de desarrollo)")
