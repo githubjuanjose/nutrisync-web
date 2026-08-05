@@ -171,6 +171,7 @@ select,input[type=text]{font-family:inherit;font-size:13px;padding:8px 10px;bord
       <select id="fPlat"><option value="">plataforma: todas</option><option>ios</option><option>android</option><option>web</option></select>
       <input type="text" id="q" placeholder="buscar en los mensajes…" style="flex:1;min-width:180px">
       <button onclick="load()">Actualizar</button>
+      <button onclick="exportCsv()" title="Exporta lo que ves con los filtros actuales">⬇ CSV</button>
       <span class="count" id="count"></span>
     </div>
   </div>
@@ -193,6 +194,20 @@ function render(){
     <span class="pill">v${esc(r.app_version||'?')} · ${esc(r.platform||'?')}</span></div>
     <div class="msg">${esc(r.message)}</div></div>`).join('')||'<div class="hint">Sin mensajes con esos filtros.</div>';
 }
+const csvCell=v=>'"'+String(v??'').replace(/"/g,'""').replace(/\r?\n/g,' · ')+'"';
+window.exportCsv=()=>{
+  const c=$('fCohort').value,p=$('fPlat').value,q=$('q').value.toLowerCase();
+  const rows=ALL.filter(r=>(!c||r.cohort===c)&&(!p||(r.platform||'').toLowerCase().startsWith(p))&&(!q||(r.message||'').toLowerCase().includes(q)||(r.email||'').toLowerCase().includes(q)));
+  if(!rows.length)return alert('Nada que exportar con esos filtros.');
+  const CAB=['fecha','usuaria','cohorte','version','plataforma','mensaje'];
+  const csv='\ufeff'+CAB.join(';')+'\n'+rows.map(r=>[r.created_at||'',r.email||'',r.cohort||'',
+    r.app_version||'',r.platform||'',r.message||''].map(csvCell).join(';')).join('\n');
+  const d=new Date(),pad=n=>String(n).padStart(2,'0');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download='nutrisync-feedback-'+pad(d.getDate())+pad(d.getMonth()+1)+'-'+pad(d.getHours())+pad(d.getMinutes())+'.csv';
+  a.click();URL.revokeObjectURL(a.href);
+};
 window.load=async()=>{
   const{data,error}=await sb.rpc('admin_pilot_feedback',{p_cohort:null});
   if(error){$('list').innerHTML='<div class="hint">Sin acceso: '+esc(error.message)+' — ¿sesión admin con MFA?</div>';return;}

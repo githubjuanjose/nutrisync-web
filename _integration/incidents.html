@@ -41,6 +41,12 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
 .ok-chip{font-size:11px;font-weight:800;color:#0F9B57}
 .err{background:#FFF1EC;border:2px solid #E8472A;border-radius:12px;padding:13px 15px;font-size:13px;color:#8A2A18;margin:14px 0}
 .enviada{font-size:11px;font-weight:800;color:#1D4ED8;background:#E6F0FF;border-radius:999px;padding:2px 10px}
+.edad{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;font-variant-numeric:tabular-nums}
+.edad.ok{background:#F1F5F9;color:#475569}
+.edad.aviso{background:#FFF3E0;color:#B4700F}
+.edad.tarde{background:#FFE4E0;color:#A32D2D}
+.edad.hecha{background:#E8F5EE;color:#0F6E56}
+.escal{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#FDE68A;color:#92400E}
 </style></head><body><div class="w">
 
 <h1>🎫 Incidencias y resolución de problemas</h1>
@@ -55,6 +61,7 @@ Nada se guarda hasta que pulsas un botón de guardar.</p>
     <option value="esperando_usuaria">esperando a la usuaria</option>
     <option value="resuelto">resuelto</option><option value="cerrado">cerrado</option></select>
   <select id="fAs"><option value="">asignado a: todas</option></select>
+  <button onclick="window.nsExport()" title="Exporta lo que ves con los filtros actuales">⬇ CSV</button>
   <span class="meta" id="count"></span>
 </div>
 <div id="err"></div>
@@ -88,12 +95,33 @@ function fecha(s){if(!s)return '—';var d=new Date(s);
   return d.toLocaleDateString('es-ES',{day:'2-digit',month:'short'})+' '+
          d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});}
 
+/* SLA (Juanjo, 5-ago): la edad se VE. <8 h gris, 8-24 h ámbar, >24 h rojo —
+   el mismo umbral que dispara el correo automático a founders. Cerradas:
+   cuánto se tardó, que es la métrica que importa mirar en retro. */
+function horasEntre(a,b){return (new Date(b)-new Date(a))/36e5;}
+function fmtDur(h){
+  if(!isFinite(h)||h<0)return '—';
+  if(h<1)return Math.round(h*60)+' min';
+  if(h<48)return (h<10?h.toFixed(1):Math.round(h))+' h';
+  return Math.round(h/24)+' d';
+}
+function badgeEdad(t){
+  if(t.resolved_at)
+    return '<span class="edad hecha">⏱ resuelta en '+fmtDur(horasEntre(t.created_at,t.resolved_at))+'</span>';
+  if(t.status==='cerrado'||t.status==='resuelto')
+    return '<span class="edad hecha">⏱ resuelta</span>';
+  var h=horasEntre(t.created_at,Date.now());
+  var cls=h>=24?'tarde':(h>=8?'aviso':'ok');
+  return '<span class="edad '+cls+'">⏱ abierta '+fmtDur(h)+(h>=24?' ⚠':'')+'</span>';
+}
 function ticket(t){
   var abierto=ABIERTOS[t.id]?' open':'';
   var h='<div class="t'+abierto+'" data-id="'+esc(t.id)+'">'
     +'<div class="th" onclick="window.nsToggle(\''+esc(t.id)+'\')">'
     +'<span class="no">'+esc(t.ticket_no)+'</span>'
     +'<span class="pill s-'+esc(t.status)+'">'+esc(t.status.replace(/_/g,' '))+'</span>'
+    +badgeEdad(t)
+    +(t.escalated_at?'<span class="escal">📣 escalada a founders</span>':'')
     +(t.respuesta_enviada_at?'<span class="enviada">📨 respondida en la app</span>':'')
     +'<span class="msg">'+esc(t.message).slice(0,110)+(t.message.length>110?'…':'')+'</span>'
     +'<span class="meta">'+esc(t.cohort)+' · '+esc(t.app_version||'?')+' · '+esc(t.platform||'?')
@@ -138,13 +166,40 @@ function render(){
   $('count').textContent=rows.length+' de '+(D.tickets||[]).length;
   var r=D.resumen||{};
   $('kpis').innerHTML=[['Tickets',r.total],['Nuevos',r.nuevos],['En curso',r.en_curso],
-    ['Esperando usuaria',r.esperando],['Resueltos',r.resueltos]].map(function(x){
+    ['Esperando usuaria',r.esperando],['Resueltos',r.resueltos],
+    ['Abiertas +24 h ⚠',r.abiertas_24h],
+    ['Media resolución',r.media_resolucion_h!=null?fmtDur(Number(r.media_resolucion_h)):'—']].map(function(x){
     return '<div class="kpi"><div class="l">'+x[0]+'</div><div class="v">'+(x[1]==null?'—':x[1])+'</div></div>';}).join('');
   var asigs=[];(D.tickets||[]).forEach(function(t){if(t.assigned_to&&asigs.indexOf(t.assigned_to)<0)asigs.push(t.assigned_to);});
   $('fAs').innerHTML='<option value="">asignado a: todas</option>'+asigs.map(function(a){
     return '<option value="'+esc(a)+'"'+(a===as?' selected':'')+'>'+esc(a.split('@')[0])+'</option>';}).join('');
 }
 
+/* Export CSV (Juanjo, 5-ago): lo que ves con los filtros es lo que te llevas.
+   BOM + punto y coma = doble clic y Excel en español lo abre en columnas. */
+function csvCell(v){return '"'+String(v==null?'':v).replace(/"/g,'""').replace(/\r?\n/g,' · ')+'"';}
+function filtrados(){
+  var st=$('fSt').value, as=$('fAs').value;
+  return (D&&D.tickets||[]).filter(function(t){return (!st||t.status===st)&&(!as||t.assigned_to===as);});
+}
+window.nsExport=function(){
+  var rows=filtrados();
+  if(!rows.length)return alert('Nada que exportar con esos filtros.');
+  var CAB=['ticket','estado','asignado_a','fecha_feedback','usuaria','cohorte','version','plataforma',
+           'mensaje','accion_interna','respuesta','respuesta_enviada','ultima_actualizacion',
+           'resuelta_el','horas_hasta_resolver','escalada_el'];
+  var cuerpo=rows.map(function(t){return [t.ticket_no,t.status,t.assigned_to||'',t.feedback_at||'',
+    t.user_email||'',t.cohort||'',t.app_version||'',t.platform||'',t.message||'',t.accion||'',
+    t.respuesta||'',t.respuesta_enviada_at||'',t.updated_at||'',
+    t.resolved_at||'',t.resolved_at?fmtDur(horasEntre(t.created_at,t.resolved_at)):'',
+    t.escalated_at||''].map(csvCell).join(';');});
+  var csv='\ufeff'+CAB.join(';')+'\n'+cuerpo.join('\n');
+  var d=new Date(),pad=function(n){return String(n).padStart(2,'0');};
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download='nutrisync-incidencias-'+pad(d.getDate())+pad(d.getMonth()+1)+'-'+pad(d.getHours())+pad(d.getMinutes())+'.csv';
+  a.click();URL.revokeObjectURL(a.href);
+};
 window.nsToggle=function(id){ABIERTOS[id]=!ABIERTOS[id];
   var el=document.querySelector('.t[data-id="'+id+'"]');if(el)el.classList.toggle('open');};
 
