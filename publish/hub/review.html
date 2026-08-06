@@ -163,7 +163,8 @@ input.cm{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8
 <!-- /ns-hub-navbar -->
 <div class="top">
   <a href="/" onclick="if(history.length>1){history.back();return false;}return true;" style="display:inline-block;color:var(--coral-deep);font-weight:800;font-size:13px;text-decoration:none;margin-bottom:6px">‹ Back</a>
-  <h1>Founders' Review Checklist</h1>
+  <h1>Review de founders · Founders' Review Checklist</h1>
+<div style="font-size:11px;font-weight:800;color:#0F6E56;margin:2px 0 8px">actualizado r14 · 6-ago-2026 · las 20 correcciones de la revisión de Juanjo están en curso — el estado vivo se sigue en Docs</div>
   <p>Go journey by journey, section by section. For each, set a status per dimension (Design · Copy/Language · Business logic · Assets · UX/Flow) and add comments. Saves on this device — <b>Export</b> to hand the team a machine-readable file.</p>
   <div class="controls">
     <input class="name" id="rev" placeholder="Your name"/>
@@ -185,6 +186,12 @@ var LS='ns_review_v1';
 var DIMS=[['design','Design & layout'],['copy','Copy & language'],['logic','Business logic'],['assets','Assets & icons'],['ux','UX & flow']];
 // Customer journeys -> sections to review
 var DATA=[
+ ['🧭','r14 · Nuevas superficies (6-ago) / New surfaces',[
+   ['Incidencias / Incidents (hub)','Ticket por feedback con nº, respuesta que llega a la app, SLA, escalado 24 h, KPIs FCR y días hábiles.'],
+   ['Consentimiento tester / Consent gate','Puerta bloqueante en el enlace personal + registro auditable + pie legal en correos + banner web.'],
+   ['Android · internal testing','Build 0.20 instalable por opt-in; closed testing tras el checklist del store.'],
+   ['StartUp Admin (contabilidad build)','Partida doble en céntimos, costes SaaS + esfuerzo founders, IAS 38 con revisión.'],
+   ['Hub reordenado + bilingüe','5 familias con color, títulos por equipo, ES/EN progresivo.']]],
  ['🌐','Marketing & acquisition',[
    ['Landing hero + live phase preview','First impression, value prop, live cycle preview.'],
    ['The Problem / The Science (4 phases)','Scientific framing; the four cycle phases.'],

@@ -190,7 +190,7 @@ td.msg{max-width:520px;white-space:pre-wrap}
   <div class="card">
     <div class="hint" data-t="fbHint"></div>
     <table id="fb"><thead><tr>
-      <th data-t="cWhen"></th><th data-t="cCohort"></th><th data-t="cWho"></th><th data-t="cMsg"></th><th data-t="cVer"></th>
+      <th data-t="cWhen"></th><th data-t="cCohort"></th><th data-t="cWho"></th><th data-t="cMsg"></th><th data-t="cVer"></th><th data-t="cTicket"></th>
     </tr></thead><tbody></tbody></table>
   </div>
 </div>
@@ -210,7 +210,7 @@ const T=ES?{
   autoSub:'Se comprueba solo cada vez que abres esta página · nada que ejecutar a mano',
   jNever:'sin ejecutar todavía', jStale:'sin correr en más de 26 h', jFail:'último intento fallido',
   snapLbl:'Última foto de TestFlight',
-  h1:'Estado de distribución del build', h2:'Uso real', h3:'Embudo por cohorte', h4:'Feedback reciente',
+  h1:'Estado de distribución del build', h2:'Uso real', h3:'Embudo por cohorte', h4:'Feedback reciente', cTicket:'Ticket',
   statesHint:'Invitada (le mandamos el correo) → build asignado (está en TestFlight o en el track interno de Play) → instalada (ya tiene cuenta). "Sin responder" son las invitadas que aún no nos han dado su correo de tienda.',
   activeHint:'Activas por semana frente al objetivo. Una tester que instala y no vuelve no cuenta como piloto.',
   dailyHint:'Últimos 7 días de actividad (todas las usuarias, no solo el piloto).',
@@ -232,7 +232,7 @@ const T=ES?{
   autoSub:'Checked automatically every time you open this page · nothing to run by hand',
   jNever:'never run yet', jStale:'no run in over 26 h', jFail:'last attempt failed',
   snapLbl:'Latest TestFlight snapshot',
-  h1:'Build distribution status', h2:'Real usage', h3:'Funnel by cohort', h4:'Recent feedback',
+  h1:'Build distribution status', h2:'Real usage', h3:'Funnel by cohort', h4:'Recent feedback', cTicket:'Ticket',
   statesHint:'Invited (we emailed her) → build assigned (she is in TestFlight or the Play internal track) → installed (account created). "Not assigned" are invited testers who have not given us their store email yet.',
   activeHint:'Weekly actives against target. A tester who installs and never returns is not a pilot.',
   dailyHint:'Last 7 days of activity (all users, not just the pilot).',
@@ -343,10 +343,25 @@ async function loadHealth(){
       .map(x=>'<div><b>'+(x[0]??0)+'</b><span>'+x[1]+'</span></div>').join('')+
     '</div></div>').join(''):'<div class="hint">'+T.noRows+'</div>';
 
+  /* r14 (punto 10): el estado del ticket se ve aquí mismo — abierto/edad/resuelto/📣 */
+  const tk=r=>{
+    if(!r.ticket_no)return '<span class="hint">—</span>';
+    const ST={nuevo:'#A32D2D',en_curso:'#B4700F',esperando_usuaria:'#1D4ED8',resuelto:'#0F6E56',cerrado:'#475569'};
+    const col=ST[r.ticket_status]||'#475569';
+    let edad='';
+    if(r.resolved_at){const h=(new Date(r.resolved_at)-new Date(r.ticket_created))/36e5;
+      edad=' · ✔ '+(h<48?Math.round(h)+' h':Math.round(h/24)+' d');}
+    else if(r.ticket_status!=='cerrado'){const h=(Date.now()-new Date(r.ticket_created))/36e5;
+      edad=' · ⏱ '+(h<48?Math.round(h)+' h':Math.round(h/24)+' d')+(h>=24?' ⚠':'');}
+    return '<span style="font-weight:800;color:#C73A20">'+esc(r.ticket_no)+'</span>'
+      +' <span style="font-size:10.5px;font-weight:800;border-radius:999px;padding:1px 8px;background:'+col+'1a;color:'+col+'">'
+      +esc((r.ticket_status||'').replace(/_/g,' '))+'</span>'
+      +'<span class="hint">'+edad+(r.escalated_at?' · 📣':'')+'</span>';
+  };
   const fb=await sb.rpc('admin_pilot_feedback',{p_cohort:null});
   $('fb').tBodies[0].innerHTML=((fb.data||[]).map(r=>
     '<tr><td>'+esc((r.created_at||'').slice(0,16).replace('T',' '))+'</td><td>'+esc(r.cohort||'')+'</td><td>'+esc(r.email||'')+'</td>'+
-    '<td class="msg">'+esc(r.message||'')+'</td><td>'+esc(r.app_version||'?')+' · '+esc(r.platform||'?')+'</td></tr>').join(''))
+    '<td class="msg">'+esc(r.message||'')+'</td><td>'+esc(r.app_version||'?')+' · '+esc(r.platform||'?')+'</td>'+'<td>'+tk(r)+'</td></tr>').join(''))
     ||'<tr><td colspan="5" class="hint">'+T.noFb+'</td></tr>';
 })();
 </script>

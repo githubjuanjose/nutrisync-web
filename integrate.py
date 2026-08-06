@@ -336,6 +336,21 @@ _ACCESS_EMAILS = [
 _rows = "".join(
     '<tr><td><code>%s</code></td><td>%s</td></tr>' % (e, w) for e, w in _ACCESS_EMAILS
 )
+# r14 (punto 19, revisión Juanjo 6-ago): buzones IONOS — foto informativa;
+# la fuente de verdad es el panel de IONOS (lo administra Pilar).
+_IONOS_BOXES = [
+    ("feedback@nutrisynccollective.com", "Remitente de TODOS los env\u00edos autom\u00e1ticos (SMTP) / sender of all automated mail", "\u2705 activo"),
+    ("contact@nutrisynccollective.com", "Reply-to \u00b7 digest diario founders / daily founder digest", "\u2705 activo"),
+    ("engineering@nutrisynccollective.com", "Asignable en Incidencias / assignable in Incidents", "\u2705 creado 5-ago"),
+    ("review@nutrisynccollective.com", "Digest diario founders / daily founder digest", "\u26a0 PENDIENTE DE CREAR \u2192 Pilar"),
+    ("build@nutrisynccollective.com", "Asignable en Incidencias", "por confirmar / to confirm"),
+    ("hello@nutrisynccollective.com", "Asignable en Incidencias", "por confirmar / to confirm"),
+    ("lcebrian@ \u00b7 pgonzalez@ \u00b7 mgarzon@", "Identidades de dominio (Cloudflare Access)", "\u00bfbuz\u00f3n o solo identidad? \u2192 Pilar"),
+    ("lucia@ \u00b7 mariapaula@", "Usados como asignables en Incidencias", "\u26a0 confirmar si existen o son alias"),
+]
+_irows = "".join(
+    '<tr><td><code>%s</code></td><td>%s</td><td>%s</td></tr>' % t for t in _IONOS_BOXES
+)
 _ACCESS_HTML = ('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">'
   '<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Access \u00b7 NutriSync Builders</title>'
   '<style>body{font-family:Inter,system-ui,sans-serif;background:#FBF4EE;color:#241D1A;margin:0;line-height:1.6}'
@@ -353,6 +368,9 @@ _ACCESS_HTML = ('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">'
   '<p>These addresses pass the Cloudflare Access gate (email + one-time PIN) on <code>/hub/*</code>. '
   'Sessions last 24h. This page is a snapshot \u2014 the live list is the Access policy.</p>'
   '<table><tr><th>Email</th><th>Who</th></tr>' + _rows + '</table>'
+  + '<h2 style="font-size:19px;margin:26px 0 4px">Buzones IONOS \u00b7 IONOS mailboxes</h2>'
+  + '<p style="font-size:13px">Foto informativa r14 \u00b7 la fuente de verdad es el panel de IONOS (Pilar). / Informational snapshot \u00b7 source of truth is the IONOS panel (Pilar).</p>'
+  + '<table><tr><th>Buz\u00f3n / Mailbox</th><th>Uso / Purpose</th><th>Estado / Status</th></tr>' + _irows + '</table>' 
   '<div class="card"><b>How login works</b>Open any Builders/Pitch link \u2192 enter your email \u2192 '
   'a 6-digit code arrives by email \u2192 you are in for 24h. Only listed addresses receive codes.</div>'
   '<div class="card"><b>Add / remove someone</b>Cloudflare dashboard \u2192 Zero Trust \u2192 Access \u2192 '
