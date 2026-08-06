@@ -342,7 +342,7 @@ _IONOS_BOXES = [
     ("feedback@nutrisynccollective.com", "Remitente de TODOS los env\u00edos autom\u00e1ticos (SMTP) / sender of all automated mail", "\u2705 activo"),
     ("contact@nutrisynccollective.com", "Reply-to \u00b7 digest diario founders / daily founder digest", "\u2705 activo"),
     ("engineering@nutrisynccollective.com", "Asignable en Incidencias / assignable in Incidents", "\u2705 creado 5-ago"),
-    ("review@nutrisynccollective.com", "Digest diario founders / daily founder digest", "\u26a0 PENDIENTE DE CREAR \u2192 Pilar"),
+    ("review@nutrisynccollective.com", "Digest diario founders / daily founder digest", "\u2705 activo (creado 6-ago)"),
     ("build@nutrisynccollective.com", "Asignable en Incidencias", "por confirmar / to confirm"),
     ("hello@nutrisynccollective.com", "Asignable en Incidencias", "por confirmar / to confirm"),
     ("lcebrian@ \u00b7 pgonzalez@ \u00b7 mgarzon@", "Identidades de dominio (Cloudflare Access)", "\u00bfbuz\u00f3n o solo identidad? \u2192 Pilar"),
@@ -1034,6 +1034,10 @@ fin = os.path.join(ASSETS, "finance.html")
 if os.path.exists(fin):
     shutil.copy(fin, os.path.join(PUB, "hub", "finance.html"))
     print("- finance tool copied to hub/finance.html")
+lp = os.path.join(ASSETS, "launch-plan.html")
+if os.path.exists(lp):
+    shutil.copy(lp, os.path.join(PUB, "hub", "launch-plan.html"))
+    print("- launch-plan (r14, punto 21) copied to hub/launch-plan.html")
     _figh = os.path.join(PUB, "hub", "full-hub-gated-site.html")
     _fiht = open(os.path.join(ASSETS, "finance-htab.snippet"), encoding="utf-8").read()
     if os.path.exists(_figh):
@@ -1678,6 +1682,31 @@ if os.path.exists(_ibc):
     _bh = open(_ibc, encoding="utf-8").read()
     _bh = re.sub(r'<div id="ns-pitch-deck">[\s\S]*?</div><!-- /ns-pitch-deck -->', '', _bh)
     _ANCLA_DOCS = '<h2 class="title" style="margin-top:14px;">Documents</h2>'
+    # r14 (punto 22): la historia como INTRO del storyline — la misma lamina
+    # que el deck (hub/docs/NutriSync-Historia-Storyline-2026-08.png|pptx).
+    _HIT = [
+        ("nutri-bubble-left.svg",  "JUN 2026", "La idea y el equipo|Idea & founding team", "#0F6E56"),
+        ("nutri-bubble-right.svg", "JUL 2026", "Se construye el producto|Building the product", "#0F6E56"),
+        ("nutri-bubble-front.svg", "AGO 2026", "Piloto real en 2 stores|Live pilot on both stores", "#FF7600"),
+        ("nutricalendar.svg",      "SEP 2026", "Piloto ampliado + pagos|Expanded pilot + payments", "#FF7600"),
+        ("big-tick.svg",           "8 OCT",    "Lanzamiento comercial|Commercial launch", "#FD400C"),
+        ("nutri-bubble-left.svg",  "A\u00d1O 1", "2.634 subs \u00b7 74.772 \u20ac|2,634 subs \u00b7 \u20ac74,772", "#C73A20"),
+    ]
+    _chips = "".join(
+        '<div style="flex:1;min-width:130px;background:#fff;border:1px solid #EFE3D7;border-radius:14px;padding:26px 10px 12px;text-align:center;position:relative">'
+        '<img src="/assets/figma/%s" alt="" style="position:absolute;top:-20px;left:50%%;transform:translateX(-50%%);width:40px;height:40px">'
+        '<div style="font-size:10px;font-weight:800;color:#fff;background:%s;border-radius:999px;padding:2px 10px;display:inline-block">%s</div>'
+        '<div class="ns-hi" data-i="%s" style="font-size:11.5px;font-weight:700;margin-top:6px;line-height:1.3"></div></div>'
+        % (svg, col, fecha, txt) for svg, fecha, txt, col in _HIT)
+    _HIST = ('<div id="ns-historia" style="margin:26px 0 6px">'
+      '<h2 class="title" data-i="La historia \u00b7 de d\u00f3nde venimos y a d\u00f3nde vamos|The story \u00b7 where we started and where we are going" style="margin:0 0 26px"></h2>'
+      '<div style="display:flex;gap:14px;flex-wrap:wrap">' + _chips + '</div>'
+      '<div style="font-size:11.5px;margin-top:10px"><a href="/hub/docs/NutriSync-Historia-Storyline-2026-08.png" target="_blank" style="font-weight:700">\u2b07 Infograf\u00eda PNG</a> \u00b7 '
+      '<a href="/hub/docs/NutriSync-Historia-Storyline-2026-08.pptx" style="font-weight:700">\u2b07 L\u00e1mina PPTX (para el deck de Canva)</a></div>'
+      '<script>(function(){var en=(navigator.language||"").slice(0,2)!=="es";'
+      'document.querySelectorAll("#ns-historia [data-i]").forEach(function(n){var p=n.getAttribute("data-i").split("|");n.textContent=en?(p[1]||p[0]):p[0];});})();</script>'
+      '</div><!-- /ns-historia -->')
+
     _CARD = ('<div id="ns-pitch-deck">'
       '<div style="background:linear-gradient(135deg,#241D1A,#3A2F2A);border-radius:18px;padding:22px 24px;margin:14px 0;color:#F5EFE7">'
       '<div style="font-size:10.5px;font-weight:800;letter-spacing:.14em;color:#FFB48A;text-transform:uppercase">Pitch deck · August 2026 · updated</div>'
@@ -1699,8 +1728,9 @@ if os.path.exists(_ibc):
       'border-radius:22px;padding:10px 20px;text-decoration:none">📊 Financial model (Excel · Aug 2026)</a>'
       '<span style="font-size:11px;color:#B8AAA0">Deck PDF/PPTX archived internally (28 MB) · ask contact@nutrisynccollective.com</span>'
       '</div></div></div><!-- /ns-pitch-deck -->')
+    _bh = re.sub(r'<div id="ns-historia"[\s\S]*?</div><!-- /ns-historia -->', '', _bh)
     if _ANCLA_DOCS in _bh:
-        _bh = _bh.replace(_ANCLA_DOCS, _ANCLA_DOCS + _CARD, 1)
+        _bh = _bh.replace(_ANCLA_DOCS, _ANCLA_DOCS + _HIST + _CARD, 1)
         open(_ibc, "w", encoding="utf-8").write(_bh)
         print("- ns-pitch-deck: deck agosto 2026 + Canva en la pagina del Pitch")
     else:

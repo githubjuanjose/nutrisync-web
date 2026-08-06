@@ -1,0 +1,247 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan de comercialización — NutriSync</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.55}
+.w{max-width:1020px;margin:0 auto;padding:26px 20px 90px}
+h1{font-size:23px;margin:0 0 4px}
+p.lead{color:#6E655D;font-size:13.5px;margin:0 0 18px}
+h2{font-size:16.5px;margin:30px 0 10px;color:#C73A20}
+.hint{font-size:11.5px;color:#8A7F78}
+/* ── serpentina de hitos ── */
+.tl{position:relative;margin:18px 0 6px}
+.fila{display:flex;gap:14px;justify-content:space-between;margin:0 0 34px;position:relative}
+.fila.rev{flex-direction:row-reverse}
+.hito{flex:1;max-width:300px;background:#fff;border:1px solid #EFE3D7;border-radius:16px;padding:14px 15px;position:relative;box-shadow:0 10px 26px -20px rgba(0,0,0,.35)}
+.hito .fecha{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.5px;border-radius:999px;padding:3px 11px;color:#fff;margin-bottom:7px}
+.hito .nom{font-weight:800;font-size:14px;line-height:1.3}
+.hito .det{font-size:12px;color:#6E655D;margin-top:5px}
+.hito img{position:absolute;top:-24px;right:10px;width:46px;height:46px}
+.hito.done{border-color:#BFE3D2;background:#F4FBF7}
+.hito.done .fecha{background:#0F6E56}
+.hito.next .fecha{background:#FF7600}
+.hito.fut .fecha{background:#8A7F78}
+.hito.meta{border:2px solid #FD400C;background:#FFF6F2}
+.hito.meta .fecha{background:linear-gradient(135deg,#FF7600,#FD400C)}
+.aqui{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:#241D1A;color:#fff;font-size:10.5px;font-weight:800;border-radius:999px;padding:4px 13px;white-space:nowrap;z-index:3}
+.aqui::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#241D1A}
+/* ── estado ── */
+.estado{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:720px){.estado{grid-template-columns:1fr}.fila,.fila.rev{flex-direction:column}.hito{max-width:none}}
+.est{background:#fff;border:1px solid #EFE3D7;border-radius:14px;padding:13px 15px}
+.est b.t{font-size:13.5px}
+.est ul{margin:8px 0 0;padding-left:18px;font-size:12.5px}
+.est li{margin:3px 0}
+.ok{color:#0F6E56;font-weight:700}.pen{color:#B4700F;font-weight:700}.blo{color:#A32D2D;font-weight:800}
+/* ── camino crítico ── */
+table{width:100%;border-collapse:collapse;font-size:12.5px;background:#fff;border:1px solid #EFE3D7;border-radius:14px;overflow:hidden}
+th{background:#C73A20;color:#fff;text-align:left;padding:8px 11px;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+td{padding:8px 11px;border-bottom:1px solid #F4EADF;vertical-align:top}
+tr.cero td{background:#FFF1EC}
+.holgura{font-weight:800;font-variant-numeric:tabular-nums}
+</style></head><body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Salir a la web pública"
+     aria-label="Salir a la web pública" style="text-decoration:none">↗</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Launch plan" href="/hub/launch-plan.html">🗺 Plan 8-oct</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g4" data-en="Backlog" href="/hub/development-planning-backlog.html">🗂 Backlog</a><a class="nsnb-tab nsnb-g4" data-en="Docs" href="/hub/documentation/index.html">📚 Docs</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14: etiquetas bilingües — ES por defecto, EN si el navegador no va en español */
+  if((navigator.language||'').slice(0,2)!=='es'){
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      var p=a.textContent.trim().split(' ')[0];a.textContent=p+' '+a.getAttribute('data-en');});
+  }
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  var here=(location.pathname.split('/').pop()||'').toLowerCase();
+  var dir=location.pathname.toLowerCase();
+  var ON='background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : f.split('/').pop()===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar --><div class="w">
+
+<h1>🗺 <span data-i>Plan de comercialización · hacia el 8-oct|Commercialization plan · road to Oct 8</span></h1>
+<p class="lead" data-i>Los hitos, el camino crítico y el estado real — una sola página, actualizada con cada release. El plan completo con gates y sprints vive en Docs.|Milestones, critical path and live status — one page, updated with every release. The full plan with gates and sprints lives in Docs.</p>
+
+<div class="tl">
+  <div class="fila">
+    <div class="hito done"><img src="/assets/figma/nutri-bubble-front.svg" alt="">
+      <span class="fecha">HOY · 6 AGO</span><div class="nom" data-i>Piloto interno vivo|Internal pilot live</div>
+      <div class="det" data-i>iOS 0.20 en TestFlight · Android 0.20 en internal testing · 32 testers|iOS 0.20 on TestFlight · Android 0.20 internal testing · 32 testers</div>
+      <span class="aqui" data-i>📍 ESTÁS AQUÍ|📍 YOU ARE HERE</span></div>
+    <div class="hito next"><img src="/assets/figma/nutri-bubble-right.svg" alt="">
+      <span class="fecha">8 AGO</span><div class="nom" data-i>TestFlight iOS ampliado|iOS TestFlight expanded</div>
+      <div class="det" data-i>Advisory + wave-1 completas (kickoff operativo: lunes 10)|Advisory + full wave-1 (operational kickoff: Mon 10)</div></div>
+    <div class="hito next"><img src="/assets/figma/nutricalendar.svg" alt="">
+      <span class="fecha">18 AGO</span><div class="nom" data-i>Android closed testing GO|Android closed testing GO</div>
+      <div class="det" data-i>12 testers × 14 días seguidos — el reloj de Google que abre producción|12 testers × 14 straight days — Google's clock that unlocks production</div></div>
+  </div>
+  <div class="fila rev">
+    <div class="hito fut"><img src="/assets/figma/nutri-bubble-left.svg" alt="">
+      <span class="fecha">8 SEP</span><div class="nom" data-i>Piloto · Fase 1|Pilot · Phase 1</div>
+      <div class="det" data-i>Legal publicado + consentimientos + cohortes ampliadas|Legal published + consents + expanded cohorts</div></div>
+    <div class="hito fut"><img src="/assets/figma/nutri-bubble-front.svg" alt="">
+      <span class="fecha">18 SEP</span><div class="nom" data-i>Piloto · Fase 2|Pilot · Phase 2</div>
+      <div class="det" data-i>Pagos en sandbox (Epic L) + ciclo M + fichas de stores listas|Payments sandbox (Epic L) + cycle M + store listings ready</div></div>
+    <div class="hito fut"><img src="/assets/figma/nutri-intro-frame.svg" alt="">
+      <span class="fecha">~25 SEP</span><div class="nom" data-i>Go/No-Go + envío a stores|Go/No-Go + store submissions</div>
+      <div class="det" data-i>Submissions 21-25 sep · revisión de Apple y Google|Submissions Sep 21-25 · Apple & Google review</div></div>
+  </div>
+  <div class="fila">
+    <div class="hito meta"><img src="/assets/figma/big-tick.svg" alt="">
+      <span class="fecha">🎯 8 OCT</span><div class="nom" data-i>PRODUCCIÓN · comercialización|PRODUCTION · go to market</div>
+      <div class="det" data-i>App en las dos stores con pagos · Y1 realista: 2.634 suscripciones · 74.772 €|Live in both stores with payments · realistic Y1: 2,634 subs · €74,772</div></div>
+  </div>
+</div>
+
+<h2 data-i>Estado real a 6 de agosto|Where we actually are · Aug 6</h2>
+<div class="estado">
+  <div class="est"><b class="t">🛠 Build</b><ul>
+    <li data-i><span class="ok">✔</span> iOS 0.20.0 en TestFlight (Beta App Review externa en curso)|<span class="ok">✔</span> iOS 0.20.0 on TestFlight (external Beta App Review in progress)</li>
+    <li data-i><span class="ok">✔</span> Android 0.20.0 instalable (internal testing, 5-ago 22:07)|<span class="ok">✔</span> Android 0.20.0 installable (internal testing, Aug 5)</li>
+    <li data-i><span class="ok">✔</span> OTA auto-aplicada al abrir — fix NS-0010 (día local) fuera|<span class="ok">✔</span> OTA auto-applies on open — NS-0010 fix (local day) shipped</li>
+    <li data-i><span class="pen">◔</span> 0.21.0 lista para cablear notificaciones — <b>bloqueada por las elecciones 🔔 de founders</b>|<span class="pen">◔</span> 0.21.0 ready to wire notifications — <b>blocked on founders' 🔔 choices</b></li>
+  </ul></div>
+  <div class="est"><b class="t">📣 Comercialización · Go to market</b><ul>
+    <li data-i><span class="ok">✔</span> Piloto: 32 invitadas · consentimiento auditable · incidencias con SLA|<span class="ok">✔</span> Pilot: 32 invited · auditable consent · incidents with SLA</li>
+    <li data-i><span class="pen">◔</span> 12 Androids confirmadas ≤17-ago — <b>holgura cero</b>|<span class="pen">◔</span> 12 Androids confirmed by Aug 17 — <b>zero slack</b></li>
+    <li data-i><span class="pen">◔</span> Fichas de stores: plantilla → Lucía ≤5-sep|<span class="pen">◔</span> Store listings: template → Lucía by Sep 5</li>
+    <li data-i><span class="blo">✘</span> Abogado ≤8-ago y decisiones de pagos D5-D8 — <b>co-críticos</b>|<span class="blo">✘</span> Lawyer by Aug 8 and payment decisions D5-D8 — <b>co-critical</b></li>
+  </ul></div>
+</div>
+
+<h2 data-i>Camino crítico — quien lo alimenta va primero en cada sprint|Critical path — whatever feeds it goes first every sprint</h2>
+<table><thead><tr><th>#</th><th data-i>Tarea crítica|Critical task</th><th data-i>Quién|Owner</th><th data-i>Ventana|Window</th><th data-i>Holgura|Slack</th><th data-i>Si se retrasa…|If late…</th></tr></thead><tbody>
+<tr class="cero"><td>1</td><td data-i>Verificación identidad Play <b>✔ hecha 5-ago</b>|Play identity check <b>✔ done Aug 5</b></td><td>Juanjo/Google</td><td>→ 7 ago</td><td class="holgura">✔</td><td data-i>toda la cadena Android|entire Android chain</td></tr>
+<tr class="cero"><td>2</td><td data-i>12 testers Android confirmadas (✔ correo tienda)|12 Android testers confirmed (✔ store email)</td><td>Founders</td><td>→ 17 ago</td><td class="holgura">0</td><td data-i>el reloj 12×14 → Play de octubre|the 12×14 clock → October Play</td></tr>
+<tr><td>3</td><td data-i>Checklist del store + promoción a closed|Store checklist + promote to closed</td><td>Juanjo/Lucía</td><td>8-14 ago</td><td class="holgura">2-3 d</td><td data-i>closed testing del 18|Aug 18 closed testing</td></tr>
+<tr class="cero"><td>4</td><td data-i>Ventana 12×14 sin caídas de opt-in|12×14 window with zero opt-outs</td><td>Operations</td><td>18 ago → 1 sep</td><td class="holgura">0</td><td data-i>acceso a producción Play|Play production access</td></tr>
+<tr><td>5</td><td data-i>Beta review externa de Apple|Apple external beta review</td><td>Juanjo/Apple</td><td data-i>esta semana|this week</td><td class="holgura">2-3 d</td><td data-i>TF iOS del 8-ago|Aug 8 iOS TF</td></tr>
+<tr class="cero"><td>6</td><td data-i>Abogado contratado (Audidat u otro)|Lawyer signed (Audidat or other)</td><td>Founders/Juanjo</td><td>→ 8 ago</td><td class="holgura">~0</td><td data-i>legal publicado (G4) → piloto F1|published legal (G4) → pilot P1</td></tr>
+<tr class="cero"><td>7</td><td data-i>Privacidad + términos finales publicados|Final privacy + terms published</td><td data-i>Abogado→Juanjo|Lawyer→Juanjo</td><td>→ 4 sep</td><td class="holgura">0</td><td data-i>piloto F1 y fichas de stores|pilot P1 and store listings</td></tr>
+<tr class="cero"><td>8</td><td data-i>Decisiones D5-D8 (pagos) → Epic L|Payment decisions D5-D8 → Epic L</td><td>Founders</td><td data-i>¡vencida 4-ago!|overdue Aug 4!</td><td class="holgura">0</td><td data-i>lanzar CON ingresos el 8-oct|launching WITH revenue on Oct 8</td></tr>
+</tbody></table>
+<p class="hint" data-i>La cadena Android/Play ES el camino crítico (holgura total ≈ 1 semana); el legal corre co-crítico en paralelo. Filas rojas = holgura cero. Plan completo: Docs → Plan de lanzamiento 8-oct.|The Android/Play chain IS the critical path (~1 week total slack); legal runs co-critical in parallel. Red rows = zero slack. Full plan: Docs → Oct-8 launch plan.</p>
+
+<script>
+/* bilingüe: data-i="ES|EN" — ES por defecto, EN si el navegador no va en español */
+(function(){
+  var en=(navigator.language||'').slice(0,2)!=='es';
+  document.querySelectorAll('[data-i]').forEach(function(n){
+    var p=n.getAttribute('data-i').split('|');
+    n.innerHTML=en?(p[1]||p[0]):p[0];
+  });
+})();
+</script>
+</div></body></html>
