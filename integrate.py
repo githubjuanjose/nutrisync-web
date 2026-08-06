@@ -1703,7 +1703,7 @@ if os.path.exists(_ibc):
     _HIST = ('<div id="ns-historia" style="margin:26px 0 6px">'
       '<h2 class="title" data-i="La historia \u00b7 de d\u00f3nde venimos y a d\u00f3nde vamos|The story \u00b7 where we started and where we are going" style="margin:0 0 26px"></h2>'
       '<div style="display:flex;gap:14px;flex-wrap:wrap">' + _chips + '</div>'
-      '<div style="font-size:11.5px;margin-top:10px"><a href="/hub/docs/NutriSync-Historia-Storyline-2026-08.png" target="_blank" style="font-weight:700">\u2b07 Infograf\u00eda PNG</a> \u00b7 '
+      '<div style="font-size:11.5px;margin-top:10px"><a href="/hub/docs/NutriSync-Historia-Storyline-2026-08.png" target="_blank" style="font-weight:700">\u2b07 PNG (ES)</a> \u00b7 <a href="/hub/docs/NutriSync-Historia-Storyline-2026-08-EN.png" target="_blank" style="font-weight:700">\u2b07 PNG (EN)</a> \u00b7 '
       '<a href="/hub/docs/NutriSync-Historia-Storyline-2026-08.pptx" style="font-weight:700">\u2b07 L\u00e1mina PPTX (para el deck de Canva)</a></div>'
       '<script>(function(){function L(){var v=null;try{v=localStorage.getItem("ns_lang");}catch(e){}'
       'return v||(((navigator.language||"").slice(0,2)==="es")?"es":"en");}'

@@ -215,6 +215,23 @@ tr.cero td{background:#FFF1EC}
 <h1>🗺 <span data-i>Plan de comercialización · hacia el 8-oct|Commercialization plan · road to Oct 8</span></h1>
 <p class="lead" data-i>Hitos, camino crítico y estado real — actualizado con cada release. El plan completo con gates y sprints vive en Docs.|Milestones, critical path and live status — updated with every release. The full plan with gates and sprints lives in Docs.</p>
 
+<a id="heroLink" href="/hub/docs/NutriSync-Historia-Storyline-2026-08.png" target="_blank" title="Abrir a tamaño completo / open full size">
+  <img id="heroImg" src="/hub/docs/NutriSync-Historia-Storyline-2026-08.png" alt="NutriSync — storyline"
+       style="width:100%;border-radius:16px;border:1px solid #EFE3D7;box-shadow:0 18px 40px -22px rgba(36,29,26,.45);margin:6px 0 2px">
+</a>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px;align-items:center">
+  <span style="font-size:11px;font-weight:800;color:#8A7F78;text-transform:uppercase;letter-spacing:.5px" data-i>📎 Documentos|📎 Documents</span>
+  <a class="doc" href="/hub/docs/NutriSync-Historia-Storyline-2026-08.png" target="_blank">🖼 PNG ES</a>
+  <a class="doc" href="/hub/docs/NutriSync-Historia-Storyline-2026-08-EN.png" target="_blank">🖼 PNG EN</a>
+  <a class="doc" href="/hub/docs/NutriSync-Historia-Storyline-2026-08.pptx">📽 Lámina PPTX</a>
+  <a class="doc" href="/hub/docs/NutriSync-Financial-Model-2026-08.xlsx">📊 <span data-i>Modelo financiero|Financial model</span></a>
+  <a class="doc" href="/hub/docs/NutriSync-Costes-SaaS-y-Esfuerzo-Founders-2026-08.xlsx">📄 <span data-i>Costes y esfuerzo|Costs & effort</span></a>
+  <a class="doc" href="/hub/investors-business-case.html">🎯 Pitch</a>
+  <a class="doc" href="/hub/documentation/index.html">📚 <span data-i>Plan completo (Docs)|Full plan (Docs)</span></a>
+</div>
+<style>.doc{font-size:12px;font-weight:700;color:#241D1A;background:#fff;border:1px solid #EFE3D7;border-radius:18px;padding:6px 13px;text-decoration:none}
+.doc:hover{border-color:#F3C8B8;background:#FFF6F2}</style>
+
 <div class="rail">
   <div class="linea"></div>
   <div class="nodo" style="--c:#0F6E56">
@@ -310,7 +327,7 @@ tr.cero td{background:#FFF1EC}
 .sprints tr.go td.sN{background:#FD400C;color:#fff}
 .sprints td{border-bottom:1px solid #F4EADF}
 </style>
-<p class="hint" data-i>La cadena Android/Play ES el camino crítico (holgura ≈ 1 semana); el legal corre co-crítico. Filas rojas = holgura cero. Plan completo: Docs → Plan de lanzamiento 8-oct. Descargas: <a href="/hub/docs/NutriSync-Historia-Storyline-2026-08.png">infografía PNG</a> · <a href="/hub/docs/NutriSync-Historia-Storyline-2026-08.pptx">lámina PPTX</a>.|The Android/Play chain IS the critical path (~1 week slack); legal runs co-critical. Red rows = zero slack. Full plan: Docs → Oct-8 launch plan. Downloads: <a href="/hub/docs/NutriSync-Historia-Storyline-2026-08.png">infographic PNG</a> · <a href="/hub/docs/NutriSync-Historia-Storyline-2026-08.pptx">PPTX slide</a>.</p>
+<p class="hint" data-i>La cadena Android/Play ES el camino crítico (holgura ≈ 1 semana); el legal corre co-crítico. Filas rojas = holgura cero. Plan completo: Docs → Plan de lanzamiento 8-oct. Descargas: <a href="/hub/docs/NutriSync-Historia-Storyline-2026-08.png">infografía PNG ES</a> · <a href="/hub/docs/NutriSync-Historia-Storyline-2026-08-EN.png">EN</a> · <a href="/hub/docs/NutriSync-Historia-Storyline-2026-08.pptx">lámina PPTX</a>.|The Android/Play chain IS the critical path (~1 week slack); legal runs co-critical. Red rows = zero slack. Full plan: Docs → Oct-8 launch plan. Downloads: <a href="/hub/docs/NutriSync-Historia-Storyline-2026-08.png">infographic PNG ES</a> · <a href="/hub/docs/NutriSync-Historia-Storyline-2026-08-EN.png">EN</a> · <a href="/hub/docs/NutriSync-Historia-Storyline-2026-08.pptx">PPTX slide</a>.</p>
 
 <script>
 (function(){
@@ -322,7 +339,11 @@ tr.cero td{background:#FFF1EC}
       if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}   // data-i sin valor: el texto ES|EN vive dentro
       var p=src.split('|');
       n.innerHTML=en?(p[1]||p[0]):p[0];});}
-  document.addEventListener('ns-lang',pinta);pinta();
+  function heroLang(){var en=idioma()==='en';
+    var u='/hub/docs/NutriSync-Historia-Storyline-2026-08'+(en?'-EN':'')+'.png';
+    var im=document.getElementById('heroImg'),lk=document.getElementById('heroLink');
+    if(im)im.src=u; if(lk)lk.href=u;}
+  document.addEventListener('ns-lang',function(){pinta();heroLang();});pinta();heroLang();
 })();
 </script>
 </div></body></html>
