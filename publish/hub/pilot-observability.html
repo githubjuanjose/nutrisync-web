@@ -271,7 +271,17 @@ td.msg{max-width:520px;white-space:pre-wrap}
   <h2>4 · <span data-t="h4"></span></h2>
   <div class="card">
     <div class="hint" data-t="fbHint"></div>
-    <table id="fb"><thead><tr>
+    <h2 data-t="h5"></h2>
+<div class="card" id="trafKpis" style="display:flex;gap:18px;flex-wrap:wrap"></div>
+<div class="grid2" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
+  <div class="card"><b style="font-size:12.5px" data-t="tWeb"></b><div id="trafWeb" style="margin-top:8px"></div></div>
+  <div class="card"><b style="font-size:12.5px" data-t="tApp"></b><div id="trafApp" style="margin-top:8px"></div></div>
+</div>
+<div class="card" style="margin-top:10px"><b style="font-size:12.5px" data-t="tPaises"></b><div id="trafPaises" style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap"></div>
+<div class="hint" data-t="notaBots" style="margin-top:8px"></div></div>
+<style>@media(max-width:700px){.grid2{grid-template-columns:1fr!important}}</style>
+
+<table id="fb"><thead><tr>
       <th data-t="cWhen"></th><th data-t="cCohort"></th><th data-t="cWho"></th><th data-t="cMsg"></th><th data-t="cVer"></th><th data-t="cTicket"></th>
     </tr></thead><tbody></tbody></table>
   </div>
@@ -295,7 +305,7 @@ const T=ES?{
   autoSub:'Se comprueba solo cada vez que abres esta página · nada que ejecutar a mano',
   jNever:'sin ejecutar todavía', jStale:'sin correr en más de 26 h', jFail:'último intento fallido',
   snapLbl:'Última foto de TestFlight',
-  h1:'Estado de distribución del build', h2:'Uso real', h3:'Embudo por cohorte', h4:'Feedback reciente', cTicket:'Ticket',
+  h1:'Estado de distribución del build', h2:'Uso real', h3:'Embudo por cohorte', h4:'Feedback reciente', cTicket:'Ticket', h5:'📡 Tráfico y accesos (Cloudflare + señales propias)', tWeb:'Web · visitantes únicos por día', tApp:'App · personas que la abren por día', tPaises:'Países (peticiones de ayer)', kUnicos:'únicos ayer', kVistas:'páginas vistas ayer', kIos:'iOS instaladas (TestFlight)', kAnd:'Android dentro', kAct:'activas 7d (todas)', notaBots:'Peticiones brutas incluyen bots; «únicos» y «páginas vistas» se acercan más a humanos. Fuente: Cloudflare (cron 07:45) + access_log propio. Cero vendors nuevos.', noWeb:'Sin instantáneas aún — ejecuta el SQL de web-stats y espera al cron (o dispara la prueba).',
   statesHint:'Invitada (le mandamos el correo) → build asignado (está en TestFlight o en el track interno de Play) → instalada (ya tiene cuenta). "Sin responder" son las invitadas que aún no nos han dado su correo de tienda.',
   activeHint:'Activas por semana frente al objetivo. Una tester que instala y no vuelve no cuenta como piloto.',
   dailyHint:'Últimos 7 días de actividad (todas las usuarias, no solo el piloto).',
@@ -317,7 +327,7 @@ const T=ES?{
   autoSub:'Checked automatically every time you open this page · nothing to run by hand',
   jNever:'never run yet', jStale:'no run in over 26 h', jFail:'last attempt failed',
   snapLbl:'Latest TestFlight snapshot',
-  h1:'Build distribution status', h2:'Real usage', h3:'Funnel by cohort', h4:'Recent feedback', cTicket:'Ticket',
+  h1:'Build distribution status', h2:'Real usage', h3:'Funnel by cohort', h4:'Recent feedback', cTicket:'Ticket', h5:'📡 Traffic & access (Cloudflare + own signals)', tWeb:'Web · unique visitors per day', tApp:'App · people opening it per day', tPaises:'Countries (yesterday\'s requests)', kUnicos:'uniques yesterday', kVistas:'page views yesterday', kIos:'iOS installed (TestFlight)', kAnd:'Android in', kAct:'active 7d (all)', notaBots:'Raw requests include bots; uniques and page views are closer to humans. Source: Cloudflare (07:45 cron) + our access_log. Zero new vendors.', noWeb:'No snapshots yet — run the web-stats SQL and wait for the cron (or fire the test).',
   statesHint:'Invited (we emailed her) → build assigned (she is in TestFlight or the Play internal track) → installed (account created). "Not assigned" are invited testers who have not given us their store email yet.',
   activeHint:'Weekly actives against target. A tester who installs and never returns is not a pilot.',
   dailyHint:'Last 7 days of activity (all users, not just the pilot).',
@@ -443,6 +453,29 @@ async function loadHealth(){
       +esc((r.ticket_status||'').replace(/_/g,' '))+'</span>'
       +'<span class="hint">'+edad+(r.escalated_at?' · 📣':'')+'</span>';
   };
+  /* r14f · tráfico y accesos: Cloudflare + señales propias, una RPC */
+  try{
+    const ws=await sb.rpc('admin_web_stats',{p_days:30});
+    const W=ws.data||{};
+    const days=W.days||[], last=days[days.length-1];
+    const st=W.stores||{};
+    $('trafKpis').innerHTML=[
+      [T.kUnicos,last?last.uniques:'—'],[T.kVistas,last?last.page_views:'—'],
+      [T.kIos,st.ios_instaladas??'—'],[T.kAnd,st.android_dentro??'—'],[T.kAct,st.activas_7d??'—']
+    ].map(x=>'<div><div class="hint">'+x[0]+'</div><b style="font-size:22px">'+x[1]+'</b></div>').join('');
+    const barras=(rows,vKey,lKey,color)=>{
+      if(!rows.length)return '<div class="hint">'+T.noWeb+'</div>';
+      const max=Math.max(...rows.map(r=>+r[vKey]||0),1);
+      return '<div style="display:flex;align-items:flex-end;gap:2px;height:90px">'+rows.map(r=>
+        '<div title="'+(r[lKey]||'')+' · '+(+r[vKey]||0)+'" style="flex:1;background:'+color+';border-radius:3px 3px 0 0;height:'+Math.max(3,Math.round((+r[vKey]||0)/max*88))+'px"></div>').join('')+'</div>'
+        +'<div class="hint" style="display:flex;justify-content:space-between"><span>'+(rows[0][lKey]||'').slice(5)+'</span><span>'+(rows[rows.length-1][lKey]||'').slice(5)+'</span></div>';
+    };
+    $('trafWeb').innerHTML=barras(days,'uniques','day','#FF7600');
+    $('trafApp').innerHTML=barras(W.app_dias||[],'personas','dia','#0F6E56');
+    const pais=(last&&last.countries)||[];
+    $('trafPaises').innerHTML=pais.map(c=>'<span style="font-size:11.5px;font-weight:700;background:#FFF6F2;border:1px solid #F3C8B8;border-radius:999px;padding:3px 11px">'+esc(c.clientCountryName)+' · '+c.requests+'</span>').join('')||'<span class="hint">—</span>';
+  }catch(e){ $('trafKpis').innerHTML='<div class="hint">'+esc(String(e&&e.message||e))+'</div>'; }
+
   const fb=await sb.rpc('admin_pilot_feedback',{p_cohort:null});
   $('fb').tBodies[0].innerHTML=((fb.data||[]).map(r=>
     '<tr><td>'+esc((r.created_at||'').slice(0,16).replace('T',' '))+'</td><td>'+esc(r.cohort||'')+'</td><td>'+esc(r.email||'')+'</td>'+
