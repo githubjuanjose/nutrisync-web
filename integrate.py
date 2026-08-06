@@ -202,8 +202,8 @@ if os.path.exists(ap):
 # hub gates (the 123456 code still works; it's just no longer advertised on-screen).
 if os.path.exists(idx):
     ih = open(idx, encoding="utf-8").read()
-    new = re.sub(r'Demo access[\s\S]{0,240}?use code 123456<\\u002Fbutton>', '', ih)
-    new = re.sub(r'Demo access[\s\S]{0,240}?use code 123456</button>', '', new)
+    # v11.56: sin bundle ya no hay escapado \u002F — solo la forma llana
+    new = re.sub(r'Demo access[\s\S]{0,240}?use code 123456</button>', '', ih)
     if new != ih:
         open(idx, "w", encoding="utf-8").write(new); print("- removed public demo-code hint")
 
@@ -479,14 +479,14 @@ open(_qr_asset, 'wb').write(_b64.b64decode(_QR_M_PNG))
 print('- footer QR asset -> assets/qr-m.png (encodes the PWA URL)')
 if os.path.exists(IDX):
     _s = open(IDX, encoding='utf-8', errors='surrogateescape').read()
-    _s2 = re.sub(r'src=\\"[^"\\]*\\" alt=\\"QR code', r'src=\\"assets/qr-m.png\\" alt=\\"QR code', _s, count=1)
+    _s2 = re.sub(r'src="[^"]*" alt="QR code', 'src="assets/qr-m.png" alt="QR code', _s, count=1)   # v11.56: HTML llano
     if _s2 != _s:
         open(IDX, 'w', encoding='utf-8', errors='surrogateescape').write(_s2)
         print('- footer QR img re-pointed to assets/qr-m.png')
 if os.path.exists(IDX):
     _s = open(IDX, encoding='utf-8', errors='surrogateescape').read()
-    _a = 'sc-camel-on-click=\\"{{ enterApp }}\\" title=\\"{{ t.ftScan }}\\"'
-    _b = 'href=\\"https://m.nutrisynccollective.com\\" title=\\"{{ t.ftScan }}\\"'
+    _a = 'sc-camel-on-click="{{ enterApp }}" title="{{ t.ftScan }}"'
+    _b = 'href="https://m.nutrisynccollective.com" title="{{ t.ftScan }}"'
     if _a in _s:
         open(IDX, 'w', encoding='utf-8', errors='surrogateescape').write(_s.replace(_a, _b, 1))
         print('- footer QR tile click -> PWA')
@@ -785,15 +785,9 @@ print("- W1 reset.html page")
 #   (keep https://nutrisync-collective.pages.dev/reset.html as alias).
 # ═══════════════ end PO Round 1 · Iteration 1 ═══════════════
 
-# Cloudflare Pages cache policy: force browsers to revalidate HTML + language
-# files so new deploys and newly-shipped language packs appear immediately
-# (the ~660KB app.html otherwise caches hard and shows a stale UI/selector).
-# Static assets (js/css/images/fonts) keep normal caching.
-open(os.path.join(PUB, "_headers"), "w", encoding="utf-8").write(
-    "/\n  Cache-Control: public, max-age=0, must-revalidate\n"
-    "/*.html\n  Cache-Control: public, max-age=0, must-revalidate\n"
-    "/hub/*\n  Cache-Control: public, max-age=0, must-revalidate\n"
-    "/i18n/*\n  Cache-Control: public, max-age=0, must-revalidate\n")
+# v11.56: _headers lo TRAE el pack (HTML revalida · /assets 30d+SWR · support.js 7d).
+# Nuestro writer antiguo se retira: el fichero del pack es la política vigente.
+
 print("- _headers cache policy (revalidate HTML + i18n)")
 
 
@@ -1472,6 +1466,12 @@ if os.path.isdir(_shd):
         # 3 · unpkg react/react-dom → local
         _s = _s.replace("https://unpkg.com/react@18.3.1/umd/react.production.min.js", "/assets/vendor/react.production.min.js")
         _s = _s.replace("https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js", "/assets/vendor/react-dom.production.min.js")
+        # v11.56 (aviso 2 del CHANGELOG): los tags traen SRI de unpkg; nuestra
+        # copia local se sirve sin integrity/crossorigin o el navegador la bloquea.
+        _s = re.sub(r'(<script[^>]*src="/assets/vendor/react[^"]*"[^>]*?)\s+integrity="[^"]*"', r"\1", _s)
+        _s = re.sub(r'(<script[^>]*src="/assets/vendor/react[^"]*"[^>]*?)\s+crossorigin="[^"]*"', r"\1", _s)
+        # y los preconnect a CDNs de terceros se retiran (po74: cero terceros)
+        _s = re.sub(r'\s*<link[^>]*rel="preconnect"[^>]*(?:unpkg\.com|fonts\.g(?:oogleapis|static)\.com)[^>]*>', "", _s)
         if _s != _s0:
             open(_hp, "w", encoding="utf-8").write(_s); _nrw += 1
     print(f"- ns-selfhost: fuentes+librerias locales · {_nrw} paginas reescritas sin CDNs")
@@ -1749,6 +1749,8 @@ if os.path.exists(_ibc):
         print("- ns-pitch-deck: deck agosto 2026 + Canva en la pagina del Pitch")
     else:
         print("- AVISO ns-pitch-deck: el ancla Documents no esta — Design la movio, revisar")
+
+# (ns-loader retirado en v11.56: el export ya no trae pantalla de carga)
 
 # ÚLTIMO PASO (r13c): el banner va al final — cualquier paso anterior que
 # reescriba index.html desde una copia vieja lo perdería (medido, no teoría).

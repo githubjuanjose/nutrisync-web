@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Propuesta 31 · Cycle Intelligence — ciclo, inputs, inteligencia · wireframes + customer journey</title>
+<style>
+  :root{--coral:#E4572E;--naranja:#F07E3C;--rosa:#E75480;--crema:#FFF4E8;--tinta:#2B2B2B;--suave:#8A8078;--lila:#B8A7E8;}
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--crema);color:var(--tinta);margin:0;padding:24px;line-height:1.55}
+  .wrap{max-width:980px;margin:0 auto}
+  h1{color:var(--coral);font-size:25px;margin:0 0 4px}
+  h2{color:var(--coral);font-size:19px;margin:36px 0 10px;border-bottom:2px solid #f3d9c8;padding-bottom:6px}
+  h3{font-size:15.5px;margin:20px 0 6px}
+  .sub{color:var(--suave);font-size:14px;margin-bottom:20px}
+  .card{background:#fff;border-radius:14px;padding:16px 20px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+  .quien{font-weight:700;color:var(--coral)}
+  .reco{background:#e9f7ee;border:2px solid #bfe5cc;border-radius:12px;padding:12px 16px;margin:12px 0}
+  .ojo{background:#fdf0e7;border:2px solid #f0c9b2;border-radius:12px;padding:12px 16px;margin:12px 0}
+  .fase{background:#fff;border:2px solid #f3d9c8;border-radius:12px;padding:12px 16px;margin:10px 0}
+  .fase b:first-child{color:var(--coral)}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:10px 0}
+  th{background:var(--coral);color:#fff;text-align:left;padding:8px 10px;font-size:13px}
+  td{padding:8px 10px;border-bottom:1px solid #f2e6da;vertical-align:top}
+  tr:nth-child(even) td{background:#fdf8f3}
+  code{background:#f6ece2;border-radius:5px;padding:1px 6px;font-size:13px}
+  .pie{color:var(--suave);font-size:12.5px;margin-top:30px;text-align:center}
+  /* journey */
+  .jrow{display:flex;gap:12px;overflow-x:auto;padding:6px 2px 14px}
+  .jstep{min-width:225px;max-width:225px;background:#fff;border-radius:14px;padding:12px 14px;box-shadow:0 2px 10px rgba(0,0,0,.06);border-top:5px solid var(--naranja)}
+  .jstep.warn{border-top-color:#e8a052}
+  .jstep.good{border-top-color:#6dbd8a}
+  .jstep.rare{border-top-color:var(--rosa)}
+  .jnum{background:var(--coral);color:#fff;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;margin-right:6px}
+  .jstep h5{display:inline;font-size:13.5px;margin:0}
+  .jstep p{font-size:12px;margin:8px 0 0;color:#5a5148}
+  .jstep .app{font-size:11px;color:var(--suave);margin-top:7px;border-top:1px dashed #eee0d3;padding-top:6px}
+  .bocadillo{background:#fdf7f1;border-radius:10px;padding:7px 9px;font-size:11.5px;color:#6a5344;margin-top:7px;border-left:3px solid var(--naranja);font-style:italic}
+  /* wireframes */
+  .row{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start;justify-content:center}
+  .phone{width:300px;background:#fff;border:10px solid #2b2b2b;border-radius:34px;padding:14px 12px;box-shadow:0 8px 24px rgba(0,0,0,.15)}
+  .phone h4{margin:2px 0 10px;text-align:center;font-size:13px;color:var(--suave);font-weight:600;letter-spacing:.4px}
+  .lbl{font-size:11px;color:var(--suave);text-transform:uppercase;letter-spacing:.5px;margin:10px 0 4px}
+  .capt{width:300px;font-size:13px;color:#5a5148;margin-top:8px}
+  .capt b{color:var(--coral)}
+  .hdr{background:linear-gradient(135deg,#F0632C,#F2853F);border-radius:16px;color:#fff;padding:12px 14px}
+  .hdr .dia{font-size:20px;font-weight:800}
+  .hdr .chip{float:right;border:1.5px solid rgba(255,255,255,.8);border-radius:14px;padding:1px 10px;font-size:11px}
+  .minibar{display:flex;gap:3px;margin:8px 0}
+  .minibar i{height:5px;border-radius:3px;display:block}
+  .cajas{display:flex;gap:8px;margin-top:8px}
+  .caja{flex:1;border:1.5px solid rgba(255,255,255,.65);border-radius:10px;padding:7px 9px;font-size:11px}
+  .caja b{display:block;font-size:15px}
+  .spark{display:flex;align-items:flex-end;gap:2px;height:22px;margin-top:4px}
+  .spark i{width:7px;background:rgba(255,255,255,.85);border-radius:2px 2px 0 0;display:block}
+  .chev{float:right;font-weight:800;opacity:.8}
+  .seg{display:flex;background:#f4ebe2;border-radius:20px;padding:3px;margin:12px 0;font-size:12.5px;text-align:center}
+  .seg span{flex:1;padding:6px 0;border-radius:17px;color:#8a8078}
+  .seg .on{background:#fff;color:var(--tinta);font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+  .tcard{border:1.5px solid #f2e3d5;border-radius:12px;padding:10px 12px;margin:8px 0}
+  .bars{display:flex;align-items:flex-end;gap:10px;height:110px;padding:6px 4px 0;position:relative}
+  .banda{position:absolute;left:0;right:0;top:18%;height:38%;background:#f9ede2;border-radius:6px}
+  .bar{position:relative;width:30px;background:linear-gradient(180deg,#F2853F,#E4572E);border-radius:8px 8px 3px 3px;z-index:1}
+  .bar.out{background:repeating-linear-gradient(45deg,#e8b39e,#e8b39e 4px,#f6d9cb 4px,#f6d9cb 8px)}
+  .bar em{position:absolute;top:-16px;left:0;right:0;text-align:center;font-size:10.5px;font-style:normal;font-weight:700;color:#7a4a33}
+  .bar u{position:absolute;bottom:-15px;left:0;right:0;text-align:center;font-size:9px;color:#b9ada4;text-decoration:none}
+  .media{position:absolute;left:2%;right:2%;top:34%;border-top:2px dashed var(--rosa);z-index:2}
+  .media b{position:absolute;right:0;top:-14px;font-size:9.5px;color:var(--rosa)}
+  .kpis{display:flex;gap:8px;margin-top:16px}
+  .kpi{flex:1;background:#fdf7f1;border-radius:10px;padding:7px 8px;font-size:10.5px;color:#5a5148}
+  .kpi b{display:block;font-size:14px;color:var(--tinta)}
+  .hist{font-size:11.5px;margin-top:8px}
+  .hist div{display:flex;justify-content:space-between;padding:6px 4px;border-bottom:1px solid #f4ebe2}
+  .pill{background:#f4ebe2;border-radius:9px;padding:0 7px;font-size:9.5px;color:#8a8078}
+  .pill.o{background:#fdeee6;color:#c05621}
+  .gauge{width:86px;height:52px;border:9px solid #eee2d6;border-bottom:none;border-radius:90px 90px 0 0;position:relative;margin:6px auto 2px}
+  .gauge:after{content:"";position:absolute;inset:-9px;border:9px solid transparent;border-top-color:var(--coral);border-left-color:var(--naranja);border-radius:90px 90px 0 0}
+  .csslbl{text-align:center;font-size:10.5px;color:var(--suave)}
+  .sparkb{display:flex;align-items:flex-end;gap:4px;height:34px;margin:8px 2px 2px}
+  .sparkb i{flex:1;background:linear-gradient(180deg,#F2853F,#E4572E);border-radius:3px 3px 0 0;display:block}
+  .sparkb i.out{background:repeating-linear-gradient(45deg,#e8b39e,#e8b39e 3px,#f6d9cb 3px,#f6d9cb 6px)}
+  .vh{background:var(--coral);color:#fff;border-radius:18px;text-align:center;padding:7px;font-size:12px;font-weight:700;margin-top:10px}
+  .grace{background:#fff8ef;border:1.5px dashed #e8b072;border-radius:10px;padding:8px 10px;font-size:11px;color:#7a5a33;margin-top:8px}
+</style>
+</head>
+<body><div class="wrap">
+
+<h1>🧠 Propuesta 31 · Cycle Intelligence</h1>
+<div class="sub">Duración del ciclo · gestión de inputs · inteligencia en app y web — con wireframes y customer journey para trabajar en Design · basada en el intercambio de founders del 31-jul · Epic M</div>
+
+<h2>1 · Lo que descubrió el intercambio</h2>
+<div class="card">
+  <p><span class="quien">Lucía</span> reportó "first bug": su Home marcaba <b>Luteal · Día 37</b> con un baseline de onboarding de <b>28 días</b> (último período 26-jun). La app sigue contando sin decir nada.</p>
+  <p><span class="quien">Pilar</span> lo defendió como diseño, no bug: <i>hay mujeres que llegan a día 37 y más</i>; el ciclo <b>no se cierra artificialmente</b> — lo cierra la usuaria con "Start my cycle" o registrando su período. Lo dejó así a propósito.</p>
+  <p><span class="quien">Lucía</span> aceptó, con matiz clave: <i>no es intuitivo</i> — la app debe <b>avisar al final esperado</b> para pedir el nuevo registro.</p>
+  <p><span class="quien">Juanjo</span> elevó la apuesta: rebaseline <b>automático</b> con datos reales ("the users should not think"), detección de datos fuera de patrón (ej. 57 días), notificaciones, y una <b>pantalla de tendencias</b> en la zona del Calendario.</p>
+  <p><span class="quien">Pilar</span>: existe un <b>doc de notificaciones</b> preparado con Lucía → semilla del sistema. <i>(Pendiente: compartirlo.)</i></p>
+</div>
+<div class="ojo"><b>⚠ Dos bugs colaterales reales detectados en la misma conversación:</b><br>
+1 · <b>El sábado desaparecido</b> (Lucía): columna S de sábado vacía y sábados saltando al domingo siguiente. A Pilar le va bien → desfase de primer-día-de-semana según locale. Fix inmediato (M-0).<br>
+2 · <b>El anillo sin señal</b>: en día 37 de 28 el anillo pinta como si nada — debe pasar a estado "esperando tu nuevo ciclo".</div>
+
+<h2>2 · Los tres principios (cada founder puso uno)</h2>
+<div class="card">
+<p><b>1 · El ciclo lo cierra la usuaria, nunca el algoritmo</b> <i>(Pilar)</i> — la variabilidad es información fisiológica, no un error a corregir.</p>
+<p><b>2 · El silencio no es neutral</b> <i>(Lucía)</i> — en día 37/28 sin mensaje, la usuaria concluye "esto está roto". Cuando el dato se sale del patrón, la app habla.</p>
+<p><b>3 · La inteligencia trabaja para que la usuaria no piense</b> <i>(Juanjo)</i> — el baseline se recalibra solo; la usuaria registra hechos, no mantiene parámetros.</p>
+</div>
+
+<h2>3 · Customer journey — "el viaje de María" (baseline 28 días)</h2>
+<div class="sub" style="margin-top:-4px">Cada tarjeta: qué ve → qué hace → qué hace la app por detrás → el copy propuesto (Lucía/Pilar: vuestro terreno — ajustad tono y palabras).</div>
+<div class="jrow">
+  <div class="jstep"><span class="jnum">0</span><h5>Onboarding</h5>
+    <p><b>Ve:</b> las preguntas de siempre (último período, 28 días, 5 días).<br><b>Hace:</b> responde y entra.</p>
+    <div class="app">🔧 Se crea el ciclo 0 en <code>cycle_records</code> (origen: onboarding). Baseline efectivo = 28.</div>
+  </div>
+  <div class="jstep"><span class="jnum">1</span><h5>Días 1–28 · en rango</h5>
+    <p><b>Ve:</b> Home y Calendario como hoy: fase, día, recomendaciones.<br><b>Hace:</b> registra comidas, ánimo, síntomas.</p>
+    <div class="app">🔧 Nada nuevo. El día se clasifica "en rango".</div>
+  </div>
+  <div class="jstep good"><span class="jnum">1b</span><h5>Cambio de fase</h5>
+    <p><b>Ve:</b> al entrar en cada fase (menstrual → folicular → ovulatoria → luteal), un aviso que celebra el cambio y explica qué se ajusta.<br><b>Hace:</b> nada — o abre las recomendaciones del día.</p>
+    <div class="app">🔧 4 momentos por ciclo, calculados del modelo de fases. In-app siempre; push opcional (M-3). <i>Añadido por comentarios founders 1-ago.</i></div>
+    <div class="bocadillo">"🌱 Hoy empiezas la fase folicular — tu energía tiende a subir. He ajustado tu nutrición y movimiento a esta fase."</div>
+  </div>
+  <div class="jstep warn"><span class="jnum">2</span><h5>Día 29–31 · gracia</h5>
+    <p><b>Ve:</b> el anillo se congela lleno y cambia de copy; banda ámbar en Home y Calendario; badges del mes en hueco discontinuo.<br><b>Hace:</b> nada, o registra su período si le vino.</p>
+    <div class="app">🔧 Estado "gracia" (baseline+1…+7). Fase mostrada: "Luteal (extendida)". Predicciones no se rompen.</div>
+    <div class="bocadillo">"Día 30 · tu media es 28. ¿Te ha venido? Los ciclos varían — es normal. → Registrar período"</div>
+  </div>
+  <div class="jstep warn"><span class="jnum">3</span><h5>Día 31 noche · aviso</h5>
+    <p><b>Ve:</b> primera notificación (push + Notification Center).<br><b>Hace:</b> la abre → aterriza en Registrar período.</p>
+    <div class="app">🔧 Regla T+3 del registro de notificaciones (D9). Solo una, no insistimos a diario.</div>
+    <div class="bocadillo">"🌙 ¿Cómo vas? Si tu período llegó, cuéntamelo y ajusto tus recomendaciones. Si no, tranquila — te acompaño."</div>
+  </div>
+  <div class="jstep good"><span class="jnum">4</span><h5>Día 32 · registra</h5>
+    <p><b>Ve:</b> confirmación cálida; Home renace en fase Menstrual día 1.<br><b>Hace:</b> pulsa "Empezó mi período" (botón de Pilar).</p>
+    <div class="app">🔧 Ciclo anterior se cierra en 31 días y se guarda; se abre ciclo nuevo. El dato entra en la media móvil.</div>
+    <div class="bocadillo">"Ciclo de 31 días guardado 💾 Ya son 2 ciclos reales — uno más y tu ciclo personal sustituye al inicial."</div>
+  </div>
+  <div class="jstep good"><span class="jnum">5</span><h5>3 ciclos · rebaseline</h5>
+    <p><b>Ve:</b> aviso informativo, no una pregunta (D10).<br><b>Hace:</b> nada. Cero mantenimiento.</p>
+    <div class="app">🔧 Ciclo personal = media móvil de 3 (29·33·31 → 31). Sustituye al onboarding en anillo, calendario, predicciones.</div>
+    <div class="bocadillo">"✨ Tu ciclo personal es de 31 días (media de tus 3 últimos). Tus predicciones ya lo usan. Puedes verlo en Trends."</div>
+  </div>
+  <div class="jstep rare"><span class="jnum">6</span><h5>Un ciclo raro · 47 días</h5>
+    <p><b>Ve:</b> a los +8: mensaje de deriva; a los +14: mensaje de cuidado con enlace al Aviso de Salud. Al cerrar, el ciclo aparece rayado en Trends.<br><b>Hace:</b> registra cuando llegue; o corrige su baseline si se equivocó al configurar.</p>
+    <div class="app">🔧 Flag <code>outlier</code>: se guarda pero NO mueve la media. Dos seguidos = nueva normalidad → entran. Jamás diagnóstico.</div>
+    <div class="bocadillo">"Llevas 42 días — puede ser normal, pero si quieres revisa tu perfil o consulta a un profesional. Estoy aquí."</div>
+  </div>
+  <div class="jstep"><span class="jnum">7</span><h5>Consulta · Trends</h5>
+    <p><b>Ve:</b> en Calendario → Trends: sus barras, su media, sus predicciones ±. En Progress: la estabilidad con las mini-barras.<br><b>Hace:</b> entender su cuerpo. Editar un ciclo mal registrado si hace falta.</p>
+    <div class="app">🔧 Una sola vista de datos, dos puertas (ver wireframes).</div>
+  </div>
+</div>
+
+<h2>4 · Diseño — tres capas</h2>
+<div class="card">
+<p><b>Capa 1 · Memoria</b> — <code>cycle_records</code> (una fila por ciclo: inicio, fin, longitud, origen) + vista <code>cycle_stats</code> (media/mediana/desviación de los últimos 3–6). Ciclo 0 sembrado por el onboarding. RLS por usuaria, borrado en cascada con la cuenta. <b>Rebaseline automático tras 3 ciclos cerrados</b> con media recortada (outliers fuera salvo repetición).</p>
+<p><b>Capa 2 · Estados + inputs</b> — cada día se clasifica contra el baseline efectivo: <b>en rango</b> (≤ baseline) · <b>gracia</b> (+1…+7, copy suave + CTA) · <b>deriva</b> (+8…+14, notificación + card) · <b>fuera de patrón</b> (&gt;+14, mensaje de cuidado, jamás diagnóstico). Formularios: ciclo 21–45 pasa sin fricción; 15–90 con confirmación explícita. <b>Nunca bloquear, siempre confirmar.</b></p>
+<p><b>Capa 3 · Superficie</b> — pantalla Trends en Calendario + asomo en Progress (wireframes abajo) + registro <code>notification_rules</code> sembrado con el doc de Pilar y Lucía. Tipos: fin de ciclo esperado (T-1/T0) · gracia (T+3) · deriva (T+8/T+14) · <b>cierre de ciclo</b> (confirmación con resumen: <i>"Ciclo de 31 días guardado — empiezas fase menstrual, día 1"</i>) · <b>cambio de fase</b> (4 por ciclo, al entrar en cada una — añadido por comentarios founders 1-ago) · rebaseline aplicado · engagement contextual. Push del sistema + Notification Center in-app. Copy i18n ×14 desde el día uno.</p>
+</div>
+
+<h2>5 · Wireframes — Calendario (la casa del trend)</h2>
+<div class="reco" style="margin-bottom:16px"><b>Reparto recomendado: ambas pantallas, papeles distintos, UNA sola vista de datos.</b> Calendario = los hechos y el futuro (vista completa como tercer segmento Month | Year | <b>Trends</b> — cero navegación nueva). Progress = la calidad y la constancia (se asoma y enlaza).</div>
+<div class="row">
+
+<div>
+<div class="phone"><h4>A — CABECERA VIVA + ESTADO GRACIA</h4>
+  <div class="hdr">
+    <span class="chip">Luteal</span>
+    <div style="font-size:11px;opacity:.9">Hoy · 31 julio</div>
+    <div class="dia">Día 32 del ciclo</div>
+    <div class="minibar"><i style="width:18%;background:#f3a19a"></i><i style="width:30%;background:#d9c48f"></i><i style="width:12%;background:#f3c98f"></i><i style="width:40%;background:var(--lila)"></i></div>
+    <div class="cajas">
+      <div class="caja">Ciclo personal <span class="chev">›</span><b>31 días</b>
+        <div class="spark"><i style="height:60%"></i><i style="height:75%"></i><i style="height:55%"></i><i style="height:90%"></i><i style="height:70%"></i><i style="height:80%"></i></div>
+        <span style="opacity:.85">media de tus últimos 3</span>
+      </div>
+      <div class="caja">Avg period<b>5–6 días</b><span style="opacity:.85">estable ✓</span></div>
+    </div>
+  </div>
+  <div class="grace">⏳ <b>Día 32 · tu media es 31.</b> ¿Te ha venido? <u>Registrar período</u> — los ciclos varían, es normal.</div>
+</div>
+<div class="capt"><b>La caja "Avg cycle" se vuelve viva:</b> muestra el ciclo personal (no el del onboarding), mini-spark de los últimos 6 ciclos y chevron → abre Trends. En gracia/deriva aparece la banda ámbar con CTA. El dato deja de ser un rótulo muerto.</div>
+</div>
+
+<div>
+<div class="phone"><h4>B — TERCER SEGMENTO: TRENDS</h4>
+  <div class="seg"><span>Month</span><span>Year</span><span class="on">Trends</span></div>
+  <div class="tcard">
+    <div class="lbl">Duración de tus ciclos</div>
+    <div class="bars">
+      <div class="banda"></div>
+      <div class="media"><b>media 31</b></div>
+      <div class="bar" style="height:58%"><em>29</em><u>mar</u></div>
+      <div class="bar" style="height:66%"><em>33</em><u>abr</u></div>
+      <div class="bar" style="height:56%"><em>28</em><u>may</u></div>
+      <div class="bar out" style="height:94%"><em>47</em><u>jun</u></div>
+      <div class="bar" style="height:62%"><em>31</em><u>jul</u></div>
+    </div>
+    <div style="font-size:9.5px;color:#b9ada4;margin-top:18px">▨ atípico (no cuenta en tu media) · franja = tu rango normal</div>
+  </div>
+  <div class="kpis">
+    <div class="kpi">Ciclo personal<b>31 días</b>vs 28 onboarding</div>
+    <div class="kpi">Próximo período<b>≈ 27 ago</b>± 2 días</div>
+    <div class="kpi">Ovulación est.<b>≈ 13 ago</b>± 2 días</div>
+  </div>
+  <div class="lbl">Histórico (editable)</div>
+  <div class="hist">
+    <div><span>26 jun – 31 jul · 31 d</span><span class="pill">registro</span></div>
+    <div><span>10 may – 25 jun · 47 d</span><span class="pill o">atípico</span></div>
+    <div><span>12 abr – 9 may · 28 d</span><span class="pill">botón</span></div>
+  </div>
+</div>
+<div class="capt"><b>Trends como tercer segmento</b> de un control que ya existe: aparece exactamente "en la zona del calendario". Barras por ciclo, línea rosa = media móvil, franja crema = tu rango normal, atípicos rayados. Debajo: predicciones ± y el histórico editable por fila.</div>
+</div>
+
+</div>
+<div class="card" style="font-size:14px"><b>C — La grid del mes:</b> los días posteriores al baseline llevan el badge del número de ciclo <b>hueco con borde discontinuo</b> (en vez de relleno lila): la cuadrícula misma cuenta que son días "en gracia". Solo un estado más del badge existente.</div>
+
+<h2>6 · Wireframe — Progress (el asomo)</h2>
+<div class="row">
+<div>
+<div class="phone"><h4>CYCLE STABILITY, AMPLIADA</h4>
+  <div class="tcard">
+    <div style="font-weight:800;color:var(--coral);font-size:14px">Cycle Stability</div>
+    <div class="gauge"></div>
+    <div class="csslbl">Volatile · <b>Aligned</b> · Stable</div>
+    <div class="lbl">Duración de ciclos · últimos 6</div>
+    <div class="sparkb"><i style="height:60%"></i><i style="height:75%"></i><i style="height:55%"></i><i class="out" style="height:100%"></i><i style="height:65%"></i><i style="height:72%"></i></div>
+    <div style="font-size:10.5px;color:var(--suave)">29 · 33 · 28 · <s>47</s> · 31 · 31 días — variación ±2.1</div>
+    <div class="vh">View Trends ›</div>
+  </div>
+</div>
+<div class="capt"><b>La tarjeta Cycle Stability gana la franja "Duración de ciclos":</b> mini-barras de los últimos 6 + valores + desviación. Es su sitio natural: la estabilidad se calcula con esa varianza — el score enseña sus ingredientes. "View History" pasa a "View Trends" y salta al segmento del Calendario. Las filas "Last cycle / Best score" (hoy a "—") se rellenan con datos reales. Progress no duplica el gráfico grande: se asoma y enlaza.</div>
+</div>
+</div>
+
+<h2>7 · Fases de ejecución (Epic M)</h2>
+<div class="fase"><b>M-0 · Hotfix (OTA, esta semana)</b> — sábado/locale del calendario, cap visual del anillo, banda de gracia mínima con CTA "Registrar período". Sin nativo.</div>
+<div class="fase"><b>M-1 · Memoria + Trends v1</b> — <code>cycle_records</code> + stats + cierre por botón/registro <b>con confirmación y resumen del ciclo guardado</b> + avisos in-app de cambio de fase + segmento Trends + cabecera viva + badges huecos + franja en Progress. SQL + OTA.</div>
+<div class="fase"><b>M-2 · Rebaseline automático</b> — media móvil de 3 con outliers recortados, mensaje de recalibración, histórico editable.</div>
+<div class="fase"><b>M-3 · Push + engagement</b> — expo-notifications (<b>nativo → build</b>), doc de notificaciones de las founders como semilla, push de cambio de fase y cierre de ciclo, mensajes contextuales anti-abandono ("día nublado, ¿cómo está tu ánimo?").</div>
+
+<h2>8 · Tres decisiones para founders</h2>
+<div class="card">
+<table>
+<tr><th></th><th>Pregunta</th><th>Opciones</th></tr>
+<tr><td><b>D9</b></td><td>¿Cuántos días de gracia antes del primer aviso?</td><td><b>A · +3 días (recomendada)</b> &nbsp;·&nbsp; B · +5 &nbsp;·&nbsp; C · el mismo día del fin esperado</td></tr>
+<tr><td><b>D10</b></td><td>¿El rebaseline se aplica solo o pide confirmación?</td><td><b>A · Automático con aviso informativo (recomendada)</b> — "users should not think" &nbsp;·&nbsp; B · Sugerido, la usuaria acepta</td></tr>
+<tr><td><b>D11</b></td><td>¿Push de fin de ciclo activado por defecto?</td><td><b>A · Sí, con opt-out en Settings (recomendada)</b> &nbsp;·&nbsp; B · Opt-in explícito</td></tr>
+</table>
+<p style="font-size:13.5px;color:var(--suave)">Responder por WhatsApp con "D9-A, D10-A, D11-A" (o la combinación que sea) basta.</p>
+</div>
+
+<h2>9 · Qué necesitamos de Lucía y Pilar</h2>
+<div class="card">
+<p>1 · <b>El doc de notificaciones</b> que preparasteis — es la semilla directa del registro de M-3.</p>
+<p>2 · <b>El copy en vuestra voz</b>: los bocadillos del journey (§3) son propuestas — ajustad tono, palabras y emojis; los llevo a 14 idiomas después.</p>
+<p>3 · <b>Validación de umbrales</b> (Pilar, criterio de salud): gracia +3/+5, deriva +8, cuidado +14, rango sin fricción 21–45, admisible 15–90, outlier fuera de media salvo 2 seguidos.</p>
+<p>4 · <b>Figma sobre estos wireframes</b> (Lucía): cabecera viva A, segmento Trends B, badges huecos C y franja de Progress — con vuestro sistema visual (los míos son esqueletos de trabajo, no diseño final).</p>
+</div>
+
+<div class="reco"><b>✅ Resumen en una frase</b> — El día 37 no era un bug: era la app callándose algo importante. Guardamos cada ciclo real, avisamos con cariño cuando el patrón se rompe, recalibramos solos tras 3 ciclos y lo enseñamos en Trends (Calendario) con un asomo en Progress — la usuaria solo registra hechos; pensar es trabajo nuestro.</div>
+
+<div class="pie">NutriSync · Propuesta 31 · Cycle Intelligence (Epic M) · wireframes + customer journey · 1 de agosto de 2026</div>
+</div></body>
+</html>
