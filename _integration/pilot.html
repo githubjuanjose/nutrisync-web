@@ -449,16 +449,23 @@ async function loadUnmatched(){
    +'<div style="margin-left:18px"><div class="hint">activas 7d · cruzadas con el piloto (lo que ven las gráficas)</div><b style="font-size:20px;color:'+(d.activas_7d_piloto<d.activas_7d_total?'#C73A20':'#0F6E56')+'">'+d.activas_7d_piloto+'</b></div>';
   const invs=(OV&&OV.invites||[]).map(i=>i.email).sort();
   const opts='<option value="">— elegir invitada —</option>'+invs.map(e=>`<option>${esc(e)}</option>`).join('');
-  const filas=(d.huerfanas||[]).filter(h=>h.accesos_7d>0||h.es_relay);
+  const filas=(d.huerfanas||[]).slice().sort((a,b)=>(b.accesos_7d||0)-(a.accesos_7d||0)||(b.ultimo?1:0)-(a.ultimo?1:0));   // r14h: TODAS — la basura (0 accesos) queda al fondo, con 🗑
   tb.innerHTML=filas.map(h=>`<tr>
     <td>${esc(h.email)}</td>
     <td class="num">${h.accesos_7d||0}</td>
     <td>${h.ultimo?esc(String(h.ultimo).slice(0,16).replace('T',' ')):'—'}</td>
     <td>${h.es_relay?'🍎 relay':'✉️'}</td>
     <td><select class="umSel" data-e="${esc(h.email)}" style="max-width:230px">${opts}</select></td>
-    <td><button class="mini" onclick="window.umCasar('${esc(h.email)}')">💍 Casar</button></td></tr>`).join('')
+    <td><button class="mini" onclick="window.umCasar('${esc(h.email)}')">💍 Casar</button>
+        <button class="mini" title="Borrar cuenta que NO aplica (pruebas, typos). Protegida si tiene feedback o casa con el piloto. / Delete non-applicable account" onclick="window.umBorrar('${esc(h.email)}')">🗑</button></td></tr>`).join('')
    ||'<tr><td colspan="6" class="hint">Ninguna cuenta activa sin casar — todo el uso real está contado. 🎉</td></tr>';
 }
+window.umBorrar=async cuenta=>{
+  if(!confirm('Borrar la cuenta '+cuenta+' de la app (no aplica al piloto: pruebas/typos).\nSi tiene feedback o casa con una invitada, la base se negará.\n¿Borrar? / Delete this account?'))return;
+  const r=await sb.rpc('admin_account_delete',{p_email:cuenta});
+  if(r.error||!(r.data&&r.data.ok))return alert('⚠ '+((r.error&&r.error.message)||(r.data&&r.data.error)||'error')+'\n(¿ejecutaste backend-sql/2026-08-06-account-delete.sql?)');
+  loadUnmatched();
+};
 window.umCasar=async cuenta=>{
   const sel=document.querySelector('.umSel[data-e="'+cuenta+'"]');
   const inv=sel&&sel.value;

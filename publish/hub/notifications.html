@@ -325,6 +325,8 @@ function tarjeta(t){
     + (t.severidad ? '<span class="sev '+esc(t.severidad)+'">'+esc(t.severidad)+'</span>' : '')
     + '<span class="pill '+esc(t.estado)+'">'+esc(t.estado)+'</span>'
     + (t.eleccion ? '<span class="elegido">'+(t.eleccion==='propuesta'?'✓ propuesta adoptada':'✓ se mantiene la original')+'</span>' : '')
+    + ((t.eleccion==='original' && t.severidad==='critica' && t.estado==='borrador')
+        ? '<span class="sev critica" title="Tu elección está guardada. Al ser un mensaje CRÍTICO (pasada de lenguaje inclusivo), quedarse la original no lo activa sola: púlsale «activa» o adopta la propuesta. / Choice saved; CRITICAL messages need explicit activation.">⚠ elegido · falta activar</span>' : '')
     + (t.duplicada_de ? '<span class="pill descartada">'+esc(t.duplicada_de)+'</span>' : '')
     + (t.veces_enviada ? '<span class="meta">enviada '+t.veces_enviada+'×</span>' : '')
     + '</div>';
@@ -429,7 +431,11 @@ function enlaza(){
       // quedarse con una crítica no se hace por descuido: se avisa
       if (v[1]==='original' && t && t.severidad==='critica' &&
           !confirm('Esta está marcada como CRÍTICA por la revisión.\n\n«'+t.hallazgo+'»\n\nSi la mantienes, se queda en borrador y no se enviará hasta que alguien la reescriba. ¿Seguro?')) return;
-      guarda('admin_notification_choose',{p_code:v[0],p_eleccion:v[1]});
+      guarda('admin_notification_choose',{p_code:v[0],p_eleccion:v[1]},function(){
+        if(v[1]==='original' && t && t.severidad==='critica'){
+          alert('✓ Elección guardada.\n\nEste mensaje es CRÍTICO (pasada de lenguaje inclusivo): quedarse la original NO lo activa automáticamente.\nPara encenderlo: botón «activa» en su fila — o adopta la propuesta.\n\n(Regla deliberada; tus elecciones nunca se pierden.)');
+        }
+      });
     };
   });
 
@@ -460,10 +466,10 @@ function enlaza(){
   });
 }
 
-function guarda(fn,args){
+function guarda(fn,args,despues){
   sb.rpc(fn,args).then(function(r){
     if(r.error){alert('No se pudo guardar: '+r.error.message);return;}
-    carga();
+    carga().then(function(){ if(despues) despues(); });
   });
 }
 
