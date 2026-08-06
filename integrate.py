@@ -1630,7 +1630,7 @@ if os.path.exists(_ad):
             print("! ns-admin-door: no encuentro la puerta de Builders — SIN TOCAR")
         else:
             _DOOR = ('<a data-ns="ns-admin-door" href="https://admin.nutrisynccollective.com" '
-              'target="_blank" rel="noopener" style="grid-column: 1 / -1; cursor: pointer; text-decoration: none; '
+              'target="_blank" rel="noopener" style="grid-column: 1 / -1; justify-self: center; cursor: pointer; text-decoration: none; '
               'display: inline-flex; align-items: center; justify-content: center; gap: 9px; background: #2A2421; '
               'border: 1px solid #3A322F; border-radius: 11px; padding: 7px 12px;">'
               '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E1946C" '
@@ -1652,6 +1652,21 @@ _dg = os.path.join(PUB, "index.html")
 if os.path.exists(_dg) and 'flex-wrap' not in open(_dg, encoding="utf-8").read()[:0]:
     pass
 print("- ns-doors-grid: no aplica en v11.56 (flex-wrap nativo)")
+
+# ── ns-footer-even (r14i, medido: el footer tiene 2 hijos; las columnas
+# PRODUCT/COMPANY/LEGAL/QR viven en el sub-contenedor [1], no sueltas — por eso
+# el space-between de fuera dejaba el hueco. Se lo ponemos al sub-contenedor. ──
+_fe = os.path.join(PUB, "index.html")
+if os.path.exists(_fe):
+    _h = open(_fe, encoding="utf-8").read()
+    _a = "gap: clamp(14px,1.6vw,24px) clamp(28px,3vw,52px); flex-wrap: wrap; flex: 1"
+    _b = "gap: clamp(14px,1.6vw,24px) clamp(28px,3vw,52px); flex-wrap: wrap; justify-content: space-between; flex: 1"
+    if _a in _h and "justify-content: space-between; flex: 1" not in _h:
+        _h = _h.replace(_a, _b, 1)
+        open(_fe, "w", encoding="utf-8").write(_h)
+        print("- ns-footer-even: columnas repartidas (space-between en el sub-contenedor)")
+    else:
+        print("- ns-footer-even: ya aplicado o ancla movida")
 
 # ── ns-footer-brand ──────────────────────────────────────────────────────────
 # El QR parecía descolgado de la columna Legal, pero la causa no era que las
