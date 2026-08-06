@@ -40,15 +40,49 @@ async function boot(){
         +'<button class="sec" id="un">Quitar este factor</button>';
       document.getElementById('un').onclick=async()=>{if(confirm('¿Quitar tu MFA?')){await sb.auth.mfa.unenroll({factorId:tot.id});location.reload();}};
     }else{
-      box.innerHTML='<p>Tienes MFA configurado. Introduce el código de tu app para reforzar esta sesión:</p>'
-        +'<input id="code" inputmode="numeric" maxlength="6" placeholder="123456"><button id="go">Verificar</button><p class="err" id="e"></p>';
-      document.getElementById('go').onclick=async()=>{
+      /* r14h (diseño pedido por Juanjo, patrón banca): puntos + teclado BARAJADO.
+         Nada que teclear: ni keylogger ni mirada ajena. El orden cambia en cada carga. */
+      const EN=(()=>{let v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+        return (v||((navigator.language||'en').toLowerCase().indexOf('es')===0?'es':'en'))==='en';})();
+      const T=(es,en)=>EN?en:es;
+      let pin='';
+      const teclas=[0,1,2,3,4,5,6,7,8,9];
+      for(let i=teclas.length-1;i>0;i--){const k=Math.floor(Math.random()*(i+1));[teclas[i],teclas[k]]=[teclas[k],teclas[i]];}
+      box.innerHTML='<style>'
+        +'.pin-dots{display:flex;gap:13px;justify-content:center;margin:16px 0 20px}'
+        +'.pin-dot{width:24px;height:24px;border-radius:50%;border:2px solid #E8B072;background:#fff;transition:.15s}'
+        +'.pin-dot.on{background:#0F6E56;border-color:#0F6E56}'
+        +'.pin-dot.next{box-shadow:0 0 0 4px rgba(232,176,114,.3)}'
+        +'.pin-pad{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:#EFE3D7;border:1px solid #EFE3D7;border-radius:14px;overflow:hidden;max-width:420px;margin:0 auto}'
+        +'.pin-k{background:#fffdfa;border:0;font:800 25px/1 Poppins,system-ui,sans-serif;color:#241D1A;padding:19px 0;cursor:pointer}'
+        +'.pin-k:hover{background:#FFF1EC;color:#C73A20}.pin-k:active{transform:scale(.95)}'
+        +'.pin-clear{margin-top:12px;background:none;border:0;font:600 12.5px Poppins,system-ui,sans-serif;color:#8A7F78;cursor:pointer;text-decoration:underline}'
+        +'</style>'
+        +'<p>'+T('Tienes MFA configurado. Introduce el código de tu app de autenticación para reforzar esta sesión:',
+                'MFA is set up. Enter the code from your authenticator app to reinforce this session:')+'</p>'
+        +'<div class="pin-dots" id="dots"></div><div class="pin-pad" id="pad"></div>'
+        +'<button class="pin-clear" id="clr">'+T('Borrar','Clear')+'</button><p class="err" id="e"></p>';
+      const pinta=()=>{
+        document.getElementById('dots').innerHTML=[0,1,2,3,4,5].map(i=>
+          '<div class="pin-dot'+(i<pin.length?' on':(i===pin.length?' next':''))+'"></div>').join('');
+      };
+      const verifica=async()=>{
+        const e=document.getElementById('e'); e.textContent=T('Comprobando…','Checking…');
         const ch=await sb.auth.mfa.challenge({factorId:tot.id});
-        if(ch.error){document.getElementById('e').textContent=ch.error.message;return;}
-        const v=await sb.auth.mfa.verify({factorId:tot.id,challengeId:ch.data.id,code:document.getElementById('code').value.trim()});
-        if(v.error){document.getElementById('e').textContent=v.error.message;return;}
+        if(ch.error){e.textContent=ch.error.message;pin='';pinta();return;}
+        const v=await sb.auth.mfa.verify({factorId:tot.id,challengeId:ch.data.id,code:pin});
+        if(v.error){e.textContent=v.error.message;pin='';pinta();return;}
         location.reload();
       };
+      document.getElementById('pad').innerHTML=teclas.map(d=>
+        '<button type="button" class="pin-k" data-d="'+d+'">'+d+'</button>').join('');
+      document.getElementById('pad').onclick=(ev)=>{
+        const b=ev.target.closest('.pin-k'); if(!b||pin.length>=6)return;
+        pin+=b.getAttribute('data-d'); pinta();
+        if(pin.length===6) verifica();
+      };
+      document.getElementById('clr').onclick=()=>{pin='';document.getElementById('e').textContent='';pinta();};
+      pinta();
     }
     return;
   }

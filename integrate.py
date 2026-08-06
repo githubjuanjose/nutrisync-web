@@ -1400,6 +1400,25 @@ if os.path.exists(_hidx):
     print("- hub/index.html (puerta /hub) creado → #/builders")
 
 # ---------------------------------------------------------------------------
+# ── ns-doors-grid v2 (r14h, regresión pescada por Juanjo): el contenedor del
+# pack es flex-wrap y la 3ª puerta (StartUp Admin, etiqueta más larga) cae sola
+# y descuadra el pie. Volvemos a la REJILLA calibrada en r13: 2 columnas de
+# 340px máx. y la tercera ocupando el ancho — ritmo uniforme, QR incluido.
+_dg = os.path.join(PUB, "index.html")
+if os.path.exists(_dg):
+    _h = open(_dg, encoding="utf-8").read()
+    _FLEX = '<div style="display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap;">'
+    _GRID = ('<div data-ns="ns-doors-grid" style="display: grid; grid-template-columns: 1fr 1fr; '
+             'gap: 8px; margin-top: 14px; max-width: 340px;">')
+    if 'data-ns="ns-doors-grid"' in _h:
+        print("- ns-doors-grid v2: ya aplicado (idempotente)")
+    elif _FLEX in _h:
+        _h = _h.replace(_FLEX, _GRID, 1)
+        open(_dg, "w", encoding="utf-8").write(_h)
+        print("- ns-doors-grid v2: rejilla 2 columnas + 3ª a lo ancho (pie recalibrado)")
+    else:
+        print("! ns-doors-grid v2: el contenedor flex del pie no está donde esperaba — SIN TOCAR")
+
 # ── ns-builders-direct (r14h v3, Juanjo: «simplifica»): las salas del builder
 # se jubilan. Pitch y Builders llevan DIRECTO a sus páginas del hub, donde la
 # puerta real (Cloudflare Access + sesión) ya vigila. Cero portadas, cero
@@ -1419,6 +1438,7 @@ if os.path.exists(_bd):
                     '<a data-ns="ns-pitch-direct" href="%s"' % _HUB_P)
     _h = _h.replace('onClick="{{ openBuilders }}"', 'href="%s"' % _HUB_B)
     _h = _h.replace('onClick="{{ openInvestors }}"', 'href="%s"' % _HUB_P)
+    _h = _h.replace("hubCode: '123456'", "hubCode: ''")   # sin salas, sin código de teatro en el HTML
     _RED = ('<script id="ns-rooms-off">(function(){'
       "var B='/hub/full-hub-gated-site.html?r=builders', P='/hub/investors-business-case.html';"
       "function fuera(){"
@@ -1555,12 +1575,14 @@ if os.path.exists(_ad):
         pass  # idempotente
     else:
         _k = _s0.find('{{ openBuilders }}')
+        if _k < 0:
+            _k = _s0.find('data-ns="ns-builders-direct"')   # ya reescrita por el paso anterior
         _close = _s0.find('</a>', _k) + len('</a>') if _k > 0 else -1
         if _k < 0 or _close < 4:
             print("! ns-admin-door: no encuentro la puerta de Builders — SIN TOCAR")
         else:
             _DOOR = ('<a data-ns="ns-admin-door" href="https://admin.nutrisynccollective.com" '
-              'target="_blank" rel="noopener" style="cursor: pointer; text-decoration: none; '
+              'target="_blank" rel="noopener" style="grid-column: 1 / -1; cursor: pointer; text-decoration: none; '
               'display: inline-flex; align-items: center; gap: 9px; background: #2A2421; '
               'border: 1px solid #3A322F; border-radius: 11px; padding: 7px 12px;">'
               '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E1946C" '
