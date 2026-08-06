@@ -1400,6 +1400,27 @@ if os.path.exists(_hidx):
     print("- hub/index.html (puerta /hub) creado → #/builders")
 
 # ---------------------------------------------------------------------------
+# ── ns-builders-direct (r14h, Juanjo): la puerta Builders lleva DIRECTO al hub.
+# El salón intermedio del builder (portada + cortinilla de código) ya no aporta:
+# Cloudflare Access + sesión admin son la puerta real. Un enlace, un destino.
+_bd = os.path.join(PUB, "index.html")
+if os.path.exists(_bd):
+    _h = open(_bd, encoding="utf-8").read()
+    _HUB = "https://nutrisynccollective.com/hub/full-hub-gated-site.html?r=builders"
+    _n = 0
+    if 'data-ns="ns-builders-direct"' not in _h:
+        # la tarjeta del pie: onClick dinámico → href llano al hub
+        _a = '<a onClick="{{ openBuilders }}"'
+        if _a in _h:
+            _n += _h.count(_a)
+            _h = _h.replace(_a, '<a data-ns="ns-builders-direct" href="%s"' % _HUB)
+        # cualquier otro disparador de la sala (cabecera, botones del hero)
+        _h = _h.replace('onClick="{{ openBuilders }}"', 'href="%s"' % _HUB)
+        open(_bd, "w", encoding="utf-8").write(_h)
+        print(f"- ns-builders-direct: {_n} puerta(s) Builders → {_HUB}")
+    else:
+        print("- ns-builders-direct: ya aplicado (idempotente)")
+
 # ── ns-room-gate (r14h, Juanjo): la sala Builders con código REAL 888000 y
 # reto de DOS posiciones aleatorias (patrón banca). El gate del pack aceptaba
 # cualquier 6 dígitos (length===6, sin comparación) — puro teatro. Ahora:

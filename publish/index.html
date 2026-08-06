@@ -552,7 +552,7 @@ setTimeout(function(){if(!have()&&!document.getElementById("ns-consent"))build()
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E1946C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2.4"/><path d="M8 10.5V8a4 4 0 018 0v2.5"/><circle cx="12" cy="15" r="1.3" fill="#E1946C" stroke="none"/></svg>
             <span style="line-height: 1.15;"><span style="display: block; font-size: 8.5px; color: #9B9089; letter-spacing: .09em;">2FA SECURED</span><span style="display: block; font-size: 13px; font-weight: 700; color: #FFF9F7;">Pitch</span></span>
           </a>
-          <a onClick="{{ openBuilders }}" style="cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 9px; background: #2A2421; border: 1px solid #3A322F; border-radius: 11px; padding: 7px 12px;" style-hover="border-color: #E1946C;">
+          <a data-ns="ns-builders-direct" href="https://nutrisynccollective.com/hub/full-hub-gated-site.html?r=builders" style="cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 9px; background: #2A2421; border: 1px solid #3A322F; border-radius: 11px; padding: 7px 12px;" style-hover="border-color: #E1946C;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E1946C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 8L4.5 12l4 4M15.5 8l4 4-4 4"/></svg>
             <span style="line-height: 1.15;"><span style="display: block; font-size: 8.5px; color: #9B9089; letter-spacing: .09em;">2FA SECURED</span><span style="display: block; font-size: 13px; font-weight: 700; color: #FFF9F7;">Builders</span></span>
           </a><a data-ns="ns-admin-door" href="https://admin.nutrisynccollective.com" target="_blank" rel="noopener" style="cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 9px; background: #2A2421; border: 1px solid #3A322F; border-radius: 11px; padding: 7px 12px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E1946C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2.4"/><path d="M8 10.5V8a4 4 0 018 0v2.5"/><circle cx="12" cy="15" r="1.3" fill="#E1946C" stroke="none"/></svg><span style="line-height: 1.15;"><span style="display: block; font-size: 8.5px; color: #9B9089; letter-spacing: .09em;">2FA SECURED</span><span style="display: block; font-size: 13px; font-weight: 700; color: #FFF9F7;">StartUp Admin</span></span></a>
@@ -1797,7 +1797,7 @@ setTimeout(function(){if(!have()&&!document.getElementById("ns-consent"))build()
             <div style="margin-top: 24px; font-family: 'Bricolage Grotesque'; font-weight: 700; font-size: 17px;">{{ t.pxWhatReads }}</div>
             <div style="font-size: 12.5px; color: #897E77; margin-top: 2px;">{{ t.pxToggleOff }}</div>
             <div style="background: #fff; border: 1px solid #F0E4DA; border-radius: 18px; padding: 2px 16px; margin-top: 12px;">
-              <sc-for list="{{ metricRows }}" as="m" hint-placeholder-count="6">
+              <sc-for list="{{ metricRows }}" as="m" hint-placeholder-count="2">
                 <div style="display: flex; align-items: center; justify-content: space-between; padding: 13px 0; border-bottom: 1px solid #F4EADF;">
                   <span style="font-size: 14.5px; color: #231F20;">{{ m.label }}</span>
                   <div onClick="{{ m.onToggle }}" style="{{ m.trackStyle }}"><span style="{{ m.knobStyle }}"></span></div>
@@ -2105,7 +2105,7 @@ setTimeout(function(){if(!have()&&!document.getElementById("ns-consent"))build()
     <h1 style="font-family: 'Bricolage Grotesque'; font-weight: 800; font-size: 30px; letter-spacing: -.02em; margin: 22px 0 0;">Investor access</h1>
     <p style="font-size: 15px; color: #6B615C; margin: 10px 0 0; line-height: 1.5;">Sala del equipo · team room. <span class="ns-gate-pos">Introduce las posiciones del código / enter the code digits</span>.</p>
     <div style="display: flex; gap: 8px; justify-content: center; margin: 26px 0 0;">
-      <sc-for list="{{ otpBoxes }}" as="b" hint-placeholder-count="6"><span style="{{ b.boxStyle }}">{{ b.char }}</span></sc-for>
+      <sc-for list="{{ otpBoxes }}" as="b" hint-placeholder-count="2"><span style="{{ b.boxStyle }}">{{ b.char }}</span></sc-for>
     </div>
     <input value="{{ hubCodeVal }}" onInput="{{ onHubCode }}" inputmode="numeric" placeholder="Enter code" style="width: 100%; margin-top: 16px; text-align: center; letter-spacing: .3em; background: #fff; border: 1px solid #E6D2C2; border-radius: 14px; padding: 13px; font-family: 'Poppins'; font-size: 16px; outline: none;" />
     <button onClick="{{ verifyHub }}" style="{{ verifyStyle }}">Verify &amp; enter</button>
@@ -2296,7 +2296,7 @@ setTimeout(function(){if(!have()&&!document.getElementById("ns-consent"))build()
     <h1 style="font-family: 'Bricolage Grotesque'; font-weight: 800; font-size: 30px; letter-spacing: -.02em; margin: 22px 0 0;">Builder access</h1>
     <p style="font-size: 15px; color: #6B615C; margin: 10px 0 0; line-height: 1.5;">Sala del equipo · team room. <span class="ns-gate-pos">Introduce las posiciones del código / enter the code digits</span>.</p>
     <div style="display: flex; gap: 8px; justify-content: center; margin: 26px 0 0;">
-      <sc-for list="{{ otpBoxes }}" as="b" hint-placeholder-count="6"><span style="{{ b.boxStyle }}">{{ b.char }}</span></sc-for>
+      <sc-for list="{{ otpBoxes }}" as="b" hint-placeholder-count="2"><span style="{{ b.boxStyle }}">{{ b.char }}</span></sc-for>
     </div>
     <input value="{{ hubCodeVal }}" onInput="{{ onHubCode }}" inputmode="numeric" placeholder="Enter code" style="width: 100%; margin-top: 16px; text-align: center; letter-spacing: .3em; background: #fff; border: 1px solid #E6D2C2; border-radius: 14px; padding: 13px; font-family: 'Poppins'; font-size: 16px; outline: none;" />
     <button onClick="{{ verifyHub }}" style="{{ verifyStyle }}">Verify &amp; enter</button>
@@ -2315,7 +2315,7 @@ setTimeout(function(){if(!have()&&!document.getElementById("ns-consent"))build()
       <button onClick="{{ enterApp }}" style="border: 1px solid #E0CDBB; cursor: pointer; background: #fff; color: #231F20; font-family: 'Poppins'; font-weight: 600; font-size: 16px; padding: 15px 24px; border-radius: 100px;">Explore the app →</button>
     </div>
     <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px;">
-      <sc-for list="{{ builderStack }}" as="tech" hint-placeholder-count="6">
+      <sc-for list="{{ builderStack }}" as="tech" hint-placeholder-count="2">
         <span style="font-size: 13.5px; font-weight: 600; color: #4A4340; background: #fff; border: 1px solid #E6DBC9; padding: 9px 15px; border-radius: 100px;">{{ tech }}</span>
       </sc-for>
     </div>
