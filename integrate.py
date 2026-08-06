@@ -1400,68 +1400,42 @@ if os.path.exists(_hidx):
     print("- hub/index.html (puerta /hub) creado → #/builders")
 
 # ---------------------------------------------------------------------------
-# ── ns-builders-direct (r14h, Juanjo): la puerta Builders lleva DIRECTO al hub.
-# El salón intermedio del builder (portada + cortinilla de código) ya no aporta:
-# Cloudflare Access + sesión admin son la puerta real. Un enlace, un destino.
+# ── ns-builders-direct (r14h v3, Juanjo: «simplifica»): las salas del builder
+# se jubilan. Pitch y Builders llevan DIRECTO a sus páginas del hub, donde la
+# puerta real (Cloudflare Access + sesión) ya vigila. Cero portadas, cero
+# cortinillas, cero códigos de teatro. Con red de seguridad: si alguien cae en
+# una sala por un enlace viejo o estado guardado, se le lleva al hub.
 _bd = os.path.join(PUB, "index.html")
 if os.path.exists(_bd):
     _h = open(_bd, encoding="utf-8").read()
-    _HUB = "https://nutrisynccollective.com/hub/full-hub-gated-site.html?r=builders"
-    _n = 0
-    if 'data-ns="ns-builders-direct"' not in _h:
-        # la tarjeta del pie: onClick dinámico → href llano al hub
-        _a = '<a onClick="{{ openBuilders }}"'
-        if _a in _h:
-            _n += _h.count(_a)
-            _h = _h.replace(_a, '<a data-ns="ns-builders-direct" href="%s"' % _HUB)
-        # cualquier otro disparador de la sala (cabecera, botones del hero)
-        _h = _h.replace('onClick="{{ openBuilders }}"', 'href="%s"' % _HUB)
-        open(_bd, "w", encoding="utf-8").write(_h)
-        print(f"- ns-builders-direct: {_n} puerta(s) Builders → {_HUB}")
-    else:
-        print("- ns-builders-direct: ya aplicado (idempotente)")
-
-# ── ns-room-gate (r14h, Juanjo): la sala Builders con código REAL 888000 y
-# reto de DOS posiciones aleatorias (patrón banca). El gate del pack aceptaba
-# cualquier 6 dígitos (length===6, sin comparación) — puro teatro. Ahora:
-# posiciones nuevas en cada carga, validación real (cosmética: la seguridad
-# de verdad sigue siendo Cloudflare Access + sesión en /hub/*).
-_rg = os.path.join(PUB, "index.html")
-if os.path.exists(_rg):
-    _h = open(_rg, encoding="utf-8").read()
-    _h = re.sub(r'<script id="ns-room-gate">[\s\S]*?</script>', '', _h)
-    _reps_gate = [
-        ("verifyHub: () => { if (this.state.hubCode.length === 6) {",
-         "verifyHub: () => { if (window.nsGateCheck && window.nsGateCheck(this.state.hubCode)) {"),
-        ("onHubCode: (e) => this.setState({ hubCode: (e.target.value || '').replace(/\\D/g, '').slice(0, 6) }),",
-         "onHubCode: (e) => this.setState({ hubCode: (e.target.value || '').replace(/\\D/g, '').slice(0, 2) }),"),
-        ("demoFill: () => this.setState({ hubCode: '123456' }),",
-         "demoFill: () => {},"),
-        ("otpBoxes: [0, 1, 2, 3, 4, 5].map((i) =>",
-         "otpBoxes: [0, 1].map((i) =>"),
-        ('hint-placeholder-count="6"', 'hint-placeholder-count="2"'),
-        ("This room is protected with two-factor authentication. Enter your 6-digit code to continue.",
-         'Sala del equipo · team room. <span class="ns-gate-pos">Introduce las posiciones del código / enter the code digits</span>.'),
-    ]
-    _n = 0
-    for _a, _b in _reps_gate:
-        if _a in _h:
-            _n += _h.count(_a); _h = _h.replace(_a, _b)   # ×N: la sala Investors comparte plantilla
-    _GATE = ('<script id="ns-room-gate">(function(){'
-      "var CODE='888000';"
-      "var p1=Math.floor(Math.random()*6),p2=Math.floor(Math.random()*6);"
-      "while(p2===p1)p2=Math.floor(Math.random()*6);"
-      "if(p1>p2){var t=p1;p1=p2;p2=t;}"
-      "window.nsGateCheck=function(v){v=String(v||'');"
-      "return v.length===2 && v.charAt(0)===CODE.charAt(p1) && v.charAt(1)===CODE.charAt(p2);};"
-      "function rotula(){document.querySelectorAll('.ns-gate-pos').forEach(function(n){"
-      "n.textContent='Introduce las posiciones '+(p1+1)+' y '+(p2+1)+' del c\u00f3digo del equipo / enter digits '+(p1+1)+' and '+(p2+1)+' of the team code';});}"
-      "if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',rotula);else rotula();"
-      "setInterval(rotula,1500);"   # sobrevive a re-renders del runtime (lección po82)
+    _HUB_B = "/hub/full-hub-gated-site.html?r=builders"
+    _HUB_P = "/hub/investors-business-case.html"
+    _h = re.sub(r'<script id="ns-rooms-off">[\s\S]*?</script>', '', _h)
+    _h = re.sub(r'<script id="ns-room-gate">[\s\S]*?</script>', '', _h)   # limpieza del gate jubilado
+    _n = _h.count('onClick="{{ openBuilders }}"') + _h.count('onClick="{{ openInvestors }}"')
+    _h = _h.replace('<a onClick="{{ openBuilders }}"',
+                    '<a data-ns="ns-builders-direct" href="%s"' % _HUB_B)
+    _h = _h.replace('<a onClick="{{ openInvestors }}"',
+                    '<a data-ns="ns-pitch-direct" href="%s"' % _HUB_P)
+    _h = _h.replace('onClick="{{ openBuilders }}"', 'href="%s"' % _HUB_B)
+    _h = _h.replace('onClick="{{ openInvestors }}"', 'href="%s"' % _HUB_P)
+    _RED = ('<script id="ns-rooms-off">(function(){'
+      "var B='/hub/full-hub-gated-site.html?r=builders', P='/hub/investors-business-case.html';"
+      "function fuera(){"
+        "var t=(document.body&&document.body.innerText||'');"
+        "if(t.indexOf('BUILDER ROOM')>-1){location.replace(B);return;}"
+        "if(t.indexOf('Builder access')>-1||t.indexOf('Investor access')>-1){location.replace(B);return;}"
+        "if(t.indexOf('INVESTOR ROOM')>-1){location.replace(P);}"
+      "}"
+      "if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fuera);else fuera();"
+      "setInterval(fuera,700);"   # el runtime pinta tarde: vigilancia continua (po82)
       "})();</script>")
-    _h = _h.replace("</body>", _GATE + "</body>", 1)
-    open(_rg, "w", encoding="utf-8").write(_h)
-    print(f"- ns-room-gate: codigo 888000 + reto de 2 posiciones ({_n}/6 anclas)")
+    _h = _h.replace("</body>", _RED + "</body>", 1)
+    open(_bd, "w", encoding="utf-8").write(_h)
+    print(f"- ns-builders-direct v3: {_n} puerta(s) al hub + red anti-sala")
+
+# (ns-room-gate retirado r14h-v3: las salas del builder ya no se visitan —
+#  Pitch y Builders van directos al hub, donde manda Cloudflare Access.)
 
 # ── ns-titulos (r14, revisión Juanjo 6-ago): títulos por equipo ─────────────
 _patch(os.path.join(PUB, "hub", "documentation", "index.html"),
