@@ -76,6 +76,20 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
     (nunca se duplica ni se pisa su estado). / Existing testers are updated, status is never touched.</div>
   </div>
 
+  <h2>1c · 🧩 Cuentas sin casar — usan la app pero no cuentan / unmatched accounts</h2>
+  <div class="card">
+    <div class="hint">Cuentas reales de la app que NO casan con ninguna invitada — relays de Apple («ocultar mi correo»)
+    o gente sin invite. Mientras no se casen, son <b>invisibles</b> para activas, instaladas y el plan semanal.
+    Casar = elegir a quién pertenece: se guarda como su «correo de tienda» y cuenta al instante.
+    / Real app accounts not matching any invite. Marry each to its tester and it counts instantly.</div>
+    <div class="row" style="margin:8px 0" id="umKpis"></div>
+    <div style="max-height:280px;overflow:auto"><table id="um"><thead><tr>
+      <th>Cuenta / account</th><th>Accesos 7d</th><th>Último acceso</th><th>Tipo</th><th style="min-width:230px">Casar con / marry to</th><th></th>
+    </tr></thead><tbody><tr><td colspan="6" class="hint">Cargando…</td></tr></tbody></table></div>
+    <div class="hint" style="margin-top:6px">Los relays no revelan el correo real (así los diseñó Apple): pregunta a cada tester iOS
+    si activó «ocultar mi correo» y casadla aquí. Las cuentas con 0 accesos y pinta de prueba (test@…, typos) se ignoran sin más.</div>
+  </div>
+
   <h2>2 · Validación de founders + export</h2>
   <div class="card">
     <div class="row">
@@ -423,6 +437,37 @@ window.wlDel=async e=>{
   if(error)return alert(error.message+'\n(¿ejecutaste backend-sql/2026-08-06-hub-crud.sql?)');
   boot();
 };
+/* r14d · cuentas sin casar: enseñar la verdad + casar con un clic */
+async function loadUnmatched(){
+  const r=await sb.rpc('admin_pilot_unmatched');
+  const tb=document.querySelector('#um tbody');
+  if(r.error||!r.data){tb.innerHTML='<tr><td colspan="6" class="hint">Ejecuta backend-sql/2026-08-06-cuentas-sin-casar.sql y recarga.</td></tr>';return;}
+  const d=r.data;
+  $('umKpis').innerHTML=
+    '<div><div class="hint">activas 7d · TODAS las cuentas</div><b style="font-size:20px">'+d.activas_7d_total+'</b></div>'
+   +'<div style="margin-left:18px"><div class="hint">activas 7d · cruzadas con el piloto (lo que ven las gráficas)</div><b style="font-size:20px;color:'+(d.activas_7d_piloto<d.activas_7d_total?'#C73A20':'#0F6E56')+'">'+d.activas_7d_piloto+'</b></div>';
+  const invs=(OV&&OV.invites||[]).map(i=>i.email).sort();
+  const opts='<option value="">— elegir invitada —</option>'+invs.map(e=>`<option>${esc(e)}</option>`).join('');
+  const filas=(d.huerfanas||[]).filter(h=>h.accesos_7d>0||h.es_relay);
+  tb.innerHTML=filas.map(h=>`<tr>
+    <td>${esc(h.email)}</td>
+    <td class="num">${h.accesos_7d||0}</td>
+    <td>${h.ultimo?esc(String(h.ultimo).slice(0,16).replace('T',' ')):'—'}</td>
+    <td>${h.es_relay?'🍎 relay':'✉️'}</td>
+    <td><select class="umSel" data-e="${esc(h.email)}" style="max-width:230px">${opts}</select></td>
+    <td><button class="mini" onclick="window.umCasar('${esc(h.email)}')">💍 Casar</button></td></tr>`).join('')
+   ||'<tr><td colspan="6" class="hint">Ninguna cuenta activa sin casar — todo el uso real está contado. 🎉</td></tr>';
+}
+window.umCasar=async cuenta=>{
+  const sel=document.querySelector('.umSel[data-e="'+cuenta+'"]');
+  const inv=sel&&sel.value;
+  if(!inv)return alert('Elige primero a qué invitada pertenece esta cuenta. / Pick the tester first.');
+  if(!confirm('Casar '+cuenta+' con '+inv+': se guardará como su correo de tienda y contará en todas las métricas. ¿Seguir?'))return;
+  const r=await sb.rpc('admin_pilot_update',{p_email:inv,p_nickname:null,p_cohort:null,p_status:null,p_store_email:cuenta,p_platform:null});
+  if(r.error||!(r.data&&r.data.ok))return alert('⚠ '+((r.error&&r.error.message)||(r.data&&r.data.error)||'error'));
+  loadUnmatched();load();
+};
+loadUnmatched();
 ['q','fSource','fConv','fAssigned'].forEach(i=>$(i).addEventListener('input',renderWl));
 $('rvCohort').addEventListener('change',renderInv);
 boot();
