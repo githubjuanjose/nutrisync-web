@@ -1,5 +1,22 @@
 # NutriSync — Release Notes / Change Log
 
+## 2026-08-06 — Home performance: bundled export retired (v11.56)
+
+**Root cause.** The 3,99 MB `index.html` and its multi-second «Unpacking…» were not a payload problem, they were a *packaging* problem: the export inlined every asset as a base64 manifest that the page had to re-parse and rebuild into the DOM on **every** visit. But the pack already ships the real `assets/` tree next to the HTML — the manifest was 3,4 MB of pure duplication. So neither option A nor B was needed: the fix is to stop bundling and let the browser do what it already does well.
+
+**What changed**
+- `index.html` **3,99 MB → 0,37 MB** (−90%) · `app.html` **0,85 MB → 0,21 MB**. No manifest, no unpack step, no «Unpacking…» splash. The template is plain markup the parser handles directly.
+- Assets now load as normal files from `assets/` — fetched in parallel, cached individually, and **reused across navigations**. Returning to the home is an HTTP-cache hit with zero unpack.
+- **New required file in the pack: `publish/support.js`** (69 KB, the runtime that was previously inlined). It must sit next to `index.html` / `app.html`. Your `rm -rf publish && unzip -o …` flow picks it up automatically.
+- **React is now loaded by explicit `<script>` tags in `<head>`** instead of from inside the runtime — same two unpkg URLs, with SRI. Two wins: the download starts during HTML parse rather than after the runtime evaluates, and the URLs stay literal in the HTML so **anchors 2 and 3 of the contract keep matching**.
+- Added `preconnect` to `unpkg.com` and `fonts.gstatic.com`; the three founder photos are now `loading="lazy" decoding="async"` (below the fold).
+- **New `publish/_headers`** (Cloudflare Pages): HTML `must-revalidate`, `/assets/*` 30 days + `stale-while-revalidate`, `support.js` 7 days, `/i18n/*` 1 day.
+- **Bonus fix**: the 6 long-standing «asset not found: {{ … }}» export warnings are gone. Those were dynamic Figma paths the bundler could not inline; unbundled they resolve normally from `assets/figma/`.
+
+**Contract check (doc §2).** All 13 anchors verified present after the change — including the two React URLs, which briefly broke mid-work and were deliberately restored (see above). `#science`, `>Builders<` and the mailto anchors are unchanged; the 4 MIS-console anchors were not touched.
+
+**⚠ One thing to check on your side.** The React tags now carry `integrity` (SRI). If your layer rewrites those CDN URLs to `/assets`, the self-hosted copy must be **byte-identical** to unpkg's or the browser will block it — otherwise strip the `integrity` and `crossorigin` attributes as part of the rewrite.
+
 ## 2026-08-05 — Wearables v2 review fixes (v11.55)
 - **«What we read» heading now renders** — the neutral label replacing the «essentials» framing (brief point 1) was authored in EN/ES but never referenced by the template, so the three needed signals sat under no heading. Added above the signal list in both languages.
 - **ES catalogue fixes on the Health Flows gallery**: the `wearstatus` card subtitle still carried the stale v1 key (`Connected · off · partial · N/A`) and fell through to English — now «Conectado · solicitado · sin conectar · N/D»; and the new privacy-centre card was untranslated — now «Tus datos de salud / Centro de privacidad · pausar, desconectar, borrar».

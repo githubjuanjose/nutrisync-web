@@ -1,8 +1,14 @@
-/
-  Cache-Control: public, max-age=0, must-revalidate
+# Cloudflare Pages cache policy — NutriSync
+# HTML is small and revalidates cheaply; assets are the heavy, stable payload.
+
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
-/hub/*
-  Cache-Control: public, max-age=0, must-revalidate
+
+/assets/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+/support.js
+  Cache-Control: public, max-age=604800
+
 /i18n/*
-  Cache-Control: public, max-age=0, must-revalidate
+  Cache-Control: public, max-age=86400

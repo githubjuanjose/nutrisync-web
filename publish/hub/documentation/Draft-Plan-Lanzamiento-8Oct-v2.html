@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NutriSync · Milestone Plan — Lanzamiento 8 de octubre / October 8 Launch</title>
+<style>
+  :root{--coral:#E4572E;--naranja:#F07E3C;--verde:#2E7D4F;--crema:#FFF4E8;--tinta:#2B2B2B;--suave:#8A8078;--line:#f3d9c8;}
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--crema);color:var(--tinta);margin:0;padding:24px;line-height:1.5}
+  .wrap{max-width:1000px;margin:0 auto}
+  h1{color:var(--coral);font-size:24px;margin:0 0 4px}
+  h2{color:var(--coral);font-size:18px;margin:30px 0 10px;border-bottom:2px solid var(--line);padding-bottom:6px}
+  .sub{color:var(--suave);font-size:13.5px;margin-bottom:16px}
+  .lang{float:right;background:#fff;border:1.5px solid var(--line);border-radius:20px;padding:6px 16px;font-weight:700;font-size:13px;cursor:pointer}
+  .card{background:#fff;border-radius:14px;padding:16px 18px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+  th{background:var(--coral);color:#fff;text-align:left;padding:7px 9px;font-size:12px}
+  td{padding:7px 9px;border-bottom:1px solid #f2e6da;vertical-align:top}
+  tr:nth-child(even) td{background:#fdf8f3}
+  .ref{font-size:11.5px;color:var(--suave)}
+  .ref b{color:#a56a3f}
+  code{background:#f6ece2;border-radius:5px;padding:1px 6px;font-size:12px}
+  /* timeline */
+  .tl{position:relative;margin:26px 0 10px;padding-bottom:8px}
+  .tl .bar{position:absolute;left:2%;right:2%;top:26px;height:6px;background:linear-gradient(90deg,#F2A66C,#E4572E);border-radius:3px}
+  .tl .stops{display:flex;justify-content:space-between;position:relative}
+  .stop{width:16%;text-align:center;position:relative}
+  .stop .dot{width:18px;height:18px;border-radius:50%;background:#fff;border:5px solid var(--coral);margin:18px auto 8px;position:relative;z-index:2}
+  .stop.mega .dot{border-color:var(--verde);width:22px;height:22px}
+  .stop .d{font-weight:800;font-size:13.5px}
+  .stop .t{font-size:11.5px;color:var(--suave);line-height:1.35;margin-top:2px}
+  .gate{background:#fdf0e7;border:1.5px solid #f0c9b2;border-radius:10px;padding:8px 12px;font-size:12.5px;margin:6px 0}
+  .gate b{color:#b45309}
+  .risk{background:#fee2e2;border:1.5px solid #f5b5b5;border-radius:10px;padding:8px 12px;font-size:12.5px;margin:6px 0}
+  .cad{background:#e9f7ee;border:2px solid #bfe5cc;border-radius:12px;padding:12px 14px;font-size:13.5px;margin:12px 0}
+  .pie{color:var(--suave);font-size:12px;margin-top:26px;text-align:center}
+  .sN{white-space:nowrap;font-weight:800;color:var(--coral)}
+</style>
+<script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head>
+<body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+.nsnb-tab{cursor:grab}
+.nsnb-tab.nsnb-drag{opacity:.35;cursor:grabbing}
+#nsnb-reset{display:none}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Web de marketing / marketing site"
+     aria-label="Web de marketing" style="text-decoration:none">🏠</a>
+  <a class="nsnb-btn" href="https://admin.nutrisynccollective.com" title="StartUp Admin (contabilidad del build)"
+     aria-label="StartUp Admin" style="text-decoration:none">🛠</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Launch plan" href="/hub/launch-plan.html">🗺 Plan 8-oct</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g4" data-en="Backlog by Nutri-Engineering" href="/hub/development-planning-backlog.html">🗂 Backlog by Nutri-Engineering</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync-Sprint Backlog" href="/hub/documentation/index.html">📚 NutriSync-Sprint Backlog</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14b (feedback Juanjo): idioma con CONMUTADOR visible y persistente.
+     localStorage ns_lang ('es'|'en') manda; sin él, el navegador decide.
+     Las páginas con data-i leen la misma clave — un idioma, todas las superficies. */
+  function nsLang(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pintaIdioma(){
+    var en=nsLang()==='en';
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      if(!a.getAttribute('data-es'))a.setAttribute('data-es',a.textContent.trim());
+      var em=a.getAttribute('data-es').split(' ')[0];
+      a.textContent=en?(em+' '+a.getAttribute('data-en')):a.getAttribute('data-es');});
+    var b=document.getElementById('nsnb-lang');if(b)b.textContent=en?'ES':'EN';
+  }
+  (function(){
+    var brand=document.querySelector('#ns-hub-navbar .nsnb-btn');
+    if(brand&&!document.getElementById('nsnb-lang')){
+      var b=document.createElement('a');b.id='nsnb-lang';b.className='nsnb-btn';b.href='#';
+      b.title='Cambiar idioma / switch language';
+      b.onclick=function(e){e.preventDefault();
+        try{localStorage.setItem('ns_lang',nsLang()==='en'?'es':'en');}catch(err){}
+        pintaIdioma();
+        document.dispatchEvent(new CustomEvent('ns-lang'));
+        if(typeof relayout==='function')relayout();
+        return false;};
+      brand.parentNode.insertBefore(b,brand);
+    }
+    pintaIdioma();
+    /* r14e: pintor data-i UNIVERSAL — cualquier página del hub con data-i="ES|EN"
+       (o data-i sin valor con "ES|EN" dentro) se vuelve bilingüe gratis. */
+    function pintaDataI(){
+      var en=nsLang()==='en';
+      document.querySelectorAll('[data-i]').forEach(function(n){
+        if(n.closest&&n.closest('#ns-hub-navbar'))return;
+        var src=n.getAttribute('data-i');
+        if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+        var p=src.split('|');
+        n.innerHTML=en?(p[1]||p[0]):p[0];});
+    }
+    document.addEventListener('ns-lang',pintaDataI);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',pintaDataI);
+    else pintaDataI();
+  })();
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  var here=(location.pathname.split('/').pop()||'').toLowerCase();
+  var dir=location.pathname.toLowerCase();
+  var ON='background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : f.split('/').pop()===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  /* r14e (idea Juanjo): pestañas ARRASTRABLES — cada cual su orden, guardado
+     en este navegador (ns_tab_order). ↺ vuelve al orden de fábrica. */
+  (function(){
+    var KEY='ns_tab_order';
+    function filas(){return [document.getElementById('nsnb-r1'),document.getElementById('nsnb-r2')].filter(Boolean);}
+    function todas(){var t=[];filas().forEach(function(r){t=t.concat([].slice.call(r.querySelectorAll('.nsnb-tab')));});return t;}
+    var ORIG=todas().map(function(a){return a.getAttribute('href');});
+    function guardar(){try{localStorage.setItem(KEY,JSON.stringify(todas().map(function(a){return a.getAttribute('href');})));}catch(e){}
+      var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';}
+    function aplicar(orden){
+      var r1=document.getElementById('nsnb-r1');if(!r1)return;
+      var por={};todas().forEach(function(a){por[a.getAttribute('href')]=a;});
+      orden.forEach(function(h){if(por[h])r1.appendChild(por[h]);});
+      todas().forEach(function(a){if(orden.indexOf(a.getAttribute('href'))<0)r1.appendChild(a);});
+    }
+    try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&sv.length){aplicar(sv);
+      setTimeout(function(){var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';},0);}}catch(e){}
+    var drag=null;
+    todas().forEach(function(a){
+      a.setAttribute('draggable','true');
+      a.title=(a.title?a.title+' · ':'')+'Arrastra para reordenar / drag to reorder';
+      a.addEventListener('dragstart',function(e){drag=a;a.classList.add('nsnb-drag');
+        try{e.dataTransfer.setData('text/plain',a.getAttribute('href'));e.dataTransfer.effectAllowed='move';}catch(err){}});
+      a.addEventListener('dragend',function(){if(drag)drag.classList.remove('nsnb-drag');drag=null;});
+      a.addEventListener('dragover',function(e){e.preventDefault();if(!drag||drag===a)return;
+        var r=a.getBoundingClientRect(),antes=(e.clientX-r.left)<r.width/2;
+        a.parentNode.insertBefore(drag,antes?a:a.nextSibling);});
+      a.addEventListener('drop',function(e){e.preventDefault();guardar();relayout();});
+    });
+    filas().forEach(function(r){r.addEventListener('dragover',function(e){e.preventDefault();});
+      r.addEventListener('drop',function(e){e.preventDefault();if(drag){guardar();relayout();}});});
+    var brand=document.getElementById('nsnb-lang');
+    if(brand&&!document.getElementById('nsnb-reset')){
+      var rb=document.createElement('a');rb.id='nsnb-reset';rb.className='nsnb-btn';rb.href='#';rb.textContent='↺';
+      rb.title='Orden de pestañas original / reset tab order';
+      rb.onclick=function(e){e.preventDefault();try{localStorage.removeItem(KEY);}catch(err){}
+        aplicar(ORIG);rb.style.display='none';relayout();return false;};
+      brand.parentNode.insertBefore(rb,brand);
+    }
+  })();
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar --><div class="wrap">
+<button class="lang" onclick="toggle()">EN 🇬🇧</button>
+
+<!-- ══════════════════════════ ESPAÑOL ══════════════════════════ -->
+<div id="es">
+<h1>🚀 Milestone Plan · Lanzamiento 8 de octubre</h1>
+<div class="sub">Plan integrado Business · Operations · Tech · Readiness — sprints de 5 días · v1 del 1-ago-2026 · se revisa en cada planning de lunes</div>
+
+<h2>1 · Timeline de hitos</h2>
+<div class="card">
+<div class="tl">
+  <div class="bar"></div>
+  <div class="stops">
+    <div class="stop"><div class="dot"></div><div class="d">8 AGO</div><div class="t">TestFlight iOS<br>(advisory + wave-1)</div></div>
+    <div class="stop"><div class="dot"></div><div class="d">18 AGO</div><div class="t">Android<br>closed testing GO</div></div>
+    <div class="stop"><div class="dot"></div><div class="d">8 SEP</div><div class="t">Piloto · Fase 1</div></div>
+    <div class="stop"><div class="dot"></div><div class="d">18 SEP</div><div class="t">Piloto · Fase 2</div></div>
+    <div class="stop"><div class="dot"></div><div class="d">~25 SEP</div><div class="t">Go/No-Go +<br>envío a stores</div></div>
+    <div class="stop mega"><div class="dot"></div><div class="d">8 OCT</div><div class="t">🎯 PRODUCCIÓN /<br>comercialización</div></div>
+  </div>
+</div>
+<div class="ref">Nota: el 8-ago cae en sábado — las invitaciones TestFlight salen igual (proceso asíncrono); el kickoff operativo es el lunes 10.</div>
+</div>
+
+<h2>2 · Hitos con criterios de entrada (gates)</h2>
+<div class="card">
+<table>
+<tr><th>Gate</th><th>Fecha</th><th>Hito</th><th>Criterio para el GO</th><th>Fuente</th></tr>
+<tr><td><b>G1</b></td><td>3-4 ago</td><td>Planning Sprint 11 (reunión founders)</td><td>Decisiones <b>D9-D11</b> (ciclo) y <b>D5-D8</b> (pagos) tomadas · doc de notificaciones entregado · listas de cohortes cerradas</td><td class="ref"><b>Propuesta-31</b> §8 · <b>decisiones-pagos/</b> 5-8 · <b>Doc 27</b> Pilot Strategy</td></tr>
+<tr><td><b>G2</b></td><td>7 ago</td><td>TestFlight iOS listo</td><td>Beta review de Apple aprobada (grupo externo) · wave-1 iOS con correo de tienda ✔ en el hub · build 5 (0.19.0) "Ready to Test"</td><td class="ref"><b>hub → Pilot</b> · What to Test entregados</td></tr>
+<tr><td><b>G3</b></td><td>17 ago</td><td>Android listo</td><td>Cuenta Play verificada · AAB subido a closed testing · <b>≥12 testers Android</b> con ✔ y opt-in (arranca el reloj 12×14 de Google)</td><td class="ref"><b>Google-Play-Publicacion.html</b> (kit completo)</td></tr>
+<tr><td><b>G4</b></td><td>4 sep</td><td>Piloto Fase 1 GO</td><td>Crash-free &gt;99% · feedback P0 = 0 · legal (privacidad/términos) revisado por abogado y publicado · Epic M-1 desplegado</td><td class="ref"><b>Propuesta-31</b> fases · Audidat/abogado</td></tr>
+<tr><td><b>G5</b></td><td>17 sep</td><td>Piloto Fase 2 GO</td><td>Métricas F1 aceptables (activación, retención D7, funnel instalación) · fixes F1 cerrados · waves 2-3 con ✔</td><td class="ref"><b>Consola Admin → Funnel</b> · KPIs</td></tr>
+<tr><td><b>G6</b></td><td>~25 sep</td><td>Go/No-Go comercial + envío a stores</td><td>Review de resultados F2 · fichas de stores finales · pricing configurado (si Epic L llegó) · App Review + Play production solicitados</td><td class="ref"><b>Doc 29</b> Epic L · roadmap comercial</td></tr>
+<tr><td><b>G7</b></td><td>7 oct</td><td>Day-1 listo</td><td>Runbook día-1 (rollout escalonado, rollback, monitorización, soporte) · comms de lanzamiento programadas · CTAs del marketing apuntando a stores</td><td class="ref"><b>tech.launch.roadmap</b> · OPS-RUNBOOK</td></tr>
+</table>
+</div>
+
+<h2>3 · Camino crítico hacia el 8-oct</h2>
+<div class="card">
+<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:11.5px;font-weight:700;margin-bottom:12px">
+  <span style="background:#FFF1EC;border:1.5px solid var(--coral);border-radius:10px;padding:6px 9px">Verificación Play<br><span style="font-weight:400">en curso → ≤7 ago</span></span><span>→</span>
+  <span style="background:#FFF1EC;border:1.5px solid var(--coral);border-radius:10px;padding:6px 9px">AAB + formularios<br><span style="font-weight:400">8-14 ago</span></span><span>→</span>
+  <span style="background:#FEE2E2;border:1.5px solid #C73A20;border-radius:10px;padding:6px 9px">12 Androids ✔<br><span style="font-weight:400">≤17 ago · holgura 0</span></span><span>→</span>
+  <span style="background:#FEE2E2;border:1.5px solid #C73A20;border-radius:10px;padding:6px 9px">🔒 14 días intactos<br><span style="font-weight:400">18 ago → 1 sep · fija</span></span><span>→</span>
+  <span style="background:#FFF1EC;border:1.5px solid var(--coral);border-radius:10px;padding:6px 9px">Acceso producción<br><span style="font-weight:400">solicitar 1 sep</span></span><span>→</span>
+  <span style="background:#FFF1EC;border:1.5px solid var(--coral);border-radius:10px;padding:6px 9px">Submissions stores<br><span style="font-weight:400">21-25 sep</span></span><span>→</span>
+  <span style="background:#E0F7E5;border:1.5px solid var(--verde);border-radius:10px;padding:6px 9px">🎯 8 OCT</span>
+</div>
+<div class="ref" style="margin-bottom:10px"><b>La cadena Android/Play ES el camino crítico</b> (holgura total ≈ 1 semana). En paralelo co-crítico: el legal (abogado → revisión → publicado antes de G4). Todo lo que alimenta estas dos cadenas va primero en cada sprint.</div>
+<table>
+<tr><th>#</th><th>Tarea crítica</th><th>Responsable</th><th>Ventana</th><th>Holgura</th><th>Si se retrasa, retrasa…</th></tr>
+<tr><td>1</td><td>Verificación de identidad Play (en curso)</td><td>Juanjo/Google</td><td>→ 7 ago</td><td>~0</td><td>toda la cadena Android</td></tr>
+<tr><td>2</td><td><b>Reclutar + confirmar 12 testers Android (✔ correo tienda)</b></td><td><b>Founders</b></td><td>hoy → 17 ago</td><td><b>0</b></td><td>el reloj 12×14 → Play de octubre</td></tr>
+<tr><td>3</td><td>AAB + formularios Play + pista interna</td><td>Juanjo</td><td>8-14 ago</td><td>2-3 días</td><td>closed testing del 18</td></tr>
+<tr><td>4</td><td><b>Ventana 12×14 sin caídas de opt-in</b></td><td>Operations</td><td>18 ago → 1 sep</td><td><b>0 (duración fija)</b></td><td>acceso a producción Play</td></tr>
+<tr><td>5</td><td>Beta review externa de Apple (build 5)</td><td>Juanjo/Apple</td><td>esta semana</td><td>2-3 días</td><td>TF iOS del 8 ago</td></tr>
+<tr><td>6</td><td><b>Abogado contratado (Audidat u otro)</b></td><td><b>Founders/Juanjo</b></td><td>→ 8 ago</td><td>~0</td><td>legal publicado (G4) → piloto F1</td></tr>
+<tr><td>7</td><td>Privacidad + términos finales publicados</td><td>Abogado→Juanjo</td><td>→ 4 sep</td><td>0</td><td>piloto F1 y fichas de stores</td></tr>
+<tr><td>8</td><td>Decisiones D5-D8 (pagos)</td><td>Founders</td><td>4 ago</td><td>0 <i>(para lanzar CON ingresos)</i></td><td>Epic L → sandbox en F2 → comercialización con pagos el 8-oct</td></tr>
+<tr><td>8b</td><td>Fichas de stores: textos + OK screenshots (plantilla → <b>Lucía ≤5 sep</b>) → frames (Design ≤15 sep) → capturas finales (Juanjo)</td><td>Lucía → Design</td><td>ago → 15 sep</td><td>~10 días</td><td>fichas finales de G6 → submissions</td></tr>
+<tr><td>9</td><td>Submissions producción (App Review + Play)</td><td>Juanjo</td><td>21-25 sep</td><td>~1 semana</td><td>el 8-oct</td></tr>
+<tr><td>10</td><td>Runbook día-1 + comms programadas</td><td>Todos</td><td>→ 7 oct</td><td>2 días</td><td>la calidad del día de lanzamiento</td></tr>
+</table>
+<div class="gate" style="margin-top:10px"><b>⚡ Próximos 7 días (alimentan las holguras-cero):</b> ① reunión lunes/martes con D5-D11 decididas · ② cada founder consigue ≥3 Androids y lanza su captura de correo · ③ build 5 enviado a beta review externa YA · ④ seguimiento diario de la verificación Play · ⑤ cerrar abogado (respuesta Audidat o alternativa).</div>
+</div>
+
+<h2>4 · Calendario por sprints (5 días) — 4 pistas</h2>
+<div class="card">
+<table>
+<tr><th>Sprint</th><th>Business</th><th>Operations</th><th>Tech</th><th>Readiness</th></tr>
+<tr><td class="sN">S11<br>3-7 ago</td><td>Reunión planning (G1) · decisiones D5-D11 · arranque empresa/legal (según <b>CORPORATE-MIGRATION-PLAN</b> + respuesta Audidat)</td><td>Captura de correos corriendo (✉️ lotes) · reclutar 12+ Androids · guía testers fuera</td><td>M-1 arranque (memoria ciclos + Trends) · build 5 a beta review externa · AAB Android + Play internal</td><td>Formularios Play (data safety, health, IARC — kit listo) · What to Test</td></tr>
+<tr><td class="sN">🎯 8 AGO</td><td colspan="4"><b>TESTFLIGHT iOS GO</b> — invitaciones advisory + wave-1</td></tr>
+<tr><td class="sN">S12<br>10-14 ago</td><td>Pricing y planes (marco en <b>Doc 29</b>) · borrador fichas stores producción</td><td>Triage feedback diario 15' · seguimiento funnel · soporte contact@ con SLA</td><td>M-1 cierre + OTA · Epic L P0 (RevenueCat + productos) si D5-D8 ok</td><td>QA pass iOS wave-1 · revisión legal en curso</td></tr>
+<tr><td class="sN">🎯 18 AGO</td><td colspan="4"><b>ANDROID GO</b> — closed testing (empieza el reloj 12×14 → acceso a producción ~1 sep)</td></tr>
+<tr><td class="sN">S13<br>17-21 ago</td><td>Comms waitlist #1 ("ya estamos en beta") · empresa en trámite</td><td>Vigilar opt-in de los 12 Androids (¡no pueden caerse 14 días!)</td><td>M-2 rebaseline · pasada de revisores i18n (aranés primero) · push M-3 si procede (build 6)</td><td>Bug bash multiplataforma · accesibilidad básica</td></tr>
+<tr><td class="sN">S14<br>24-28 ago</td><td>Definición oferta de lanzamiento · materiales marketing</td><td>Preparar cohortes F1 del piloto (waves ampliadas con ✔)</td><td>Epic L P1 (paywall + flujos según <b>Doc 29</b>) · hardening</td><td>Checklist Piloto F1 · legal final para publicar</td></tr>
+<tr><td class="sN">S15<br>31 ago-4 sep</td><td>Revisión pricing con datos beta · <b>Lucía entrega Plantilla-Store-Listings (≤5 sep)</b></td><td>Comms piloto F1 programadas</td><td>Congelación pre-piloto (solo fixes) · <b>solicitar producción Play</b> (1 sep, tras 12×14)</td><td><b>G4</b> · publicar legal definitivo</td></tr>
+<tr><td class="sN">🎯 8 SEP</td><td colspan="4"><b>PILOTO FASE 1</b> — objetivo: activación y estabilidad con volumen real</td></tr>
+<tr><td class="sN">S16<br>7-11 sep</td><td>Entrevistas usuarias F1 (guion en <b>Doc 27</b>)</td><td>Soporte reforzado · funnel diario</td><td>Hotfixes OTA diarios si hacen falta</td><td>Medir: crash-free, D1/D7, NPS informal</td></tr>
+<tr><td class="sN">S17<br>14-18 sep</td><td>Ajustes de propuesta de valor con feedback F1</td><td>Waves 2-3 con ✔ listas</td><td>Fixes F1 · IAP en sandbox/TestFlight si L listo</td><td><b>G5</b> · fichas stores ES/EN + resto idiomas</td></tr>
+<tr><td class="sN">🎯 18 SEP</td><td colspan="4"><b>PILOTO FASE 2</b> — objetivo: volumen, retención y (si L llegó) flujo de pago en sandbox</td></tr>
+<tr><td class="sN">S18<br>21-25 sep</td><td><b>G6 · Go/No-Go</b> (founders) · plan comms lanzamiento</td><td>Cierre métricas F2 · informe piloto</td><td><b>Envío App Review + Play production</b> (rollout escalonado)</td><td>Checklist submission (ambos stores)</td></tr>
+<tr><td class="sN">S19<br>28 sep-2 oct</td><td>Countdown: waitlist blast programado · redes</td><td>Escalado de soporte listo · FAQs</td><td>Correcciones de review si las hay · switch CTAs marketing → stores</td><td><b>G7</b> · runbook día-1 (rollback, monitor, guardias)</td></tr>
+<tr><td class="sN">🎯 8 OCT</td><td colspan="4"><b>🎉 LANZAMIENTO A PRODUCCIÓN / COMERCIALIZACIÓN</b> — rollout escalonado + anuncio + waitlist</td></tr>
+<tr><td class="sN">S20<br>5-9 oct</td><td>Anuncio + prensa/redes</td><td>Guardia día-1 · respuesta reviews stores</td><td>Monitorización intensiva · hotfix channel</td><td>Retro de lanzamiento (vie 9)</td></tr>
+</table>
+</div>
+
+<h2>5 · Cadencia de trabajo</h2>
+<div class="cad"><b>Sprints de 5 días</b> (lunes-viernes): <b>lunes</b> planning 45' (prioridades + gates de la semana) · <b>diario</b> triage de feedback 15' async en WhatsApp/hub · <b>viernes</b> demo + retro 30' y corte de release (OTA o build). Los hitos en fecha fija actúan de forcing function; el contenido de cada sprint se ajusta en su planning sin mover los hitos salvo decisión de founders en un gate.</div>
+
+<h2>6 · Dependencias críticas y riesgos</h2>
+<div class="card">
+<div class="gate"><b>⛓ D5-D8 (pagos)</b> — sin decisión el 4-ago, Epic L no llega al piloto F2 → el 8-oct se lanza <b>solo con app gratuita</b> y la monetización entra post-lanzamiento. El plan aguanta, el negocio decide.</div>
+<div class="gate"><b>⛓ 12 testers Android</b> — deben estar opted-in el 18-ago y NO caerse en 14 días; si el reloj se rompe, reinicia → riesgo directo al Play de octubre. Plan B: lanzar iOS-first el 8-oct y Android días después.</div>
+<div class="gate"><b>⛓ Legal (abogado/Audidat)</b> — privacidad y términos finales deben estar publicados antes del piloto F1 (G4): app de salud, no es opcional.</div>
+<div class="gate"><b>⛓ Empresa (SL)</b> — prerequisito solo del rail de pago web (<b>Doc 29</b>); los pagos in-app de stores funcionan como individual. No bloquea el 8-oct.</div>
+<div class="risk"><b>⚠ Riesgos externos</b>: revisión beta externa de Apple (1-3 días, a veces más) · App Review de producción (1-3 días, margen puesto en S18) · verificación de identidad de Play (en curso) · disponibilidad de founders en agosto (vacaciones) — los gates de founders (G1, G6) tienen fecha fija a propósito.</div>
+</div>
+
+<h2>7 · Documentos de referencia (no se repite contenido aquí)</h2>
+<div class="card ref" style="font-size:12.5px;line-height:2">
+<b>Propuesta-31-Cycle-Intelligence.html</b> — Epic M completo (fases M-0…M-3, decisiones D9-D11) ·
+<b>decisiones-pagos/Decision-5..8.html</b> + <b>Doc 29</b> — pagos/suscripciones (Epic L) ·
+<b>Doc 27</b> — estrategia de piloto (cohortes, objetivos, guion) ·
+<b>Google-Play-Publicacion.html</b> — kit Android día-D (formularios listos) ·
+<b>Plantilla-Store-Listings.html</b> — fichas de stores para rellenar (Lucía ≤5 sep) ·
+<b>GUIA-Builders-Founders.html</b> — accesos del hub ·
+<b>NutriSync-Backlog.html</b> — backlog maestro por épicas ·
+<b>roadmaps/</b> (commercialization · enterprise.setup · tech.build · tech.launch) — detalle por área ·
+<b>CORPORATE-MIGRATION-PLAN.html</b> — constitución/empresa ·
+<b>OPS-RUNBOOK.md</b> — operación y despliegues
+</div>
+</div>
+
+<!-- ══════════════════════════ ENGLISH ══════════════════════════ -->
+<div id="en" style="display:none">
+<h1>🚀 Milestone Plan · October 8 Launch</h1>
+<div class="sub">Integrated Business · Operations · Tech · Readiness plan — 5-day sprints · v1, Aug 1 2026 · reviewed at every Monday planning</div>
+
+<h2>1 · Milestone timeline</h2>
+<div class="card">
+<div class="tl">
+  <div class="bar"></div>
+  <div class="stops">
+    <div class="stop"><div class="dot"></div><div class="d">AUG 8</div><div class="t">TestFlight iOS<br>(advisory + wave-1)</div></div>
+    <div class="stop"><div class="dot"></div><div class="d">AUG 18</div><div class="t">Android<br>closed testing GO</div></div>
+    <div class="stop"><div class="dot"></div><div class="d">SEP 8</div><div class="t">Pilot · Phase 1</div></div>
+    <div class="stop"><div class="dot"></div><div class="d">SEP 18</div><div class="t">Pilot · Phase 2</div></div>
+    <div class="stop"><div class="dot"></div><div class="d">~SEP 25</div><div class="t">Go/No-Go +<br>store submissions</div></div>
+    <div class="stop mega"><div class="dot"></div><div class="d">OCT 8</div><div class="t">🎯 PRODUCTION /<br>commercial launch</div></div>
+  </div>
+</div>
+<div class="ref">Note: Aug 8 is a Saturday — TestFlight invites go out anyway (async process); operational kickoff is Monday the 10th.</div>
+</div>
+
+<h2>2 · Milestones with entry criteria (gates)</h2>
+<div class="card">
+<table>
+<tr><th>Gate</th><th>Date</th><th>Milestone</th><th>GO criteria</th><th>Source</th></tr>
+<tr><td><b>G1</b></td><td>Aug 3-4</td><td>Sprint 11 planning (founders meeting)</td><td>Decisions <b>D9-D11</b> (cycle) and <b>D5-D8</b> (payments) taken · notifications doc delivered · cohort lists closed</td><td class="ref"><b>Propuesta-31</b> §8 · <b>decisiones-pagos/</b> 5-8 · <b>Doc 27</b> Pilot Strategy</td></tr>
+<tr><td><b>G2</b></td><td>Aug 7</td><td>TestFlight iOS ready</td><td>Apple beta review approved (external group) · iOS wave-1 with store email ✔ in hub · build 5 (0.19.0) "Ready to Test"</td><td class="ref"><b>hub → Pilot</b> · What to Test delivered</td></tr>
+<tr><td><b>G3</b></td><td>Aug 17</td><td>Android ready</td><td>Play account verified · AAB in closed testing · <b>≥12 Android testers</b> confirmed ✔ and opted-in (Google's 12×14 clock starts)</td><td class="ref"><b>Google-Play-Publicacion.html</b> (full kit)</td></tr>
+<tr><td><b>G4</b></td><td>Sep 4</td><td>Pilot Phase 1 GO</td><td>Crash-free &gt;99% · P0 feedback = 0 · legal (privacy/terms) lawyer-reviewed and published · Epic M-1 shipped</td><td class="ref"><b>Propuesta-31</b> phases · Audidat/lawyer</td></tr>
+<tr><td><b>G5</b></td><td>Sep 17</td><td>Pilot Phase 2 GO</td><td>Acceptable P1 metrics (activation, D7 retention, install funnel) · P1 fixes closed · waves 2-3 confirmed ✔</td><td class="ref"><b>Admin Console → Funnel</b> · KPIs</td></tr>
+<tr><td><b>G6</b></td><td>~Sep 25</td><td>Commercial Go/No-Go + store submissions</td><td>Phase-2 results review · final store listings · pricing configured (if Epic L landed) · App Review + Play production submitted</td><td class="ref"><b>Doc 29</b> Epic L · commercialization roadmap</td></tr>
+<tr><td><b>G7</b></td><td>Oct 7</td><td>Day-1 ready</td><td>Day-1 runbook (staged rollout, rollback, monitoring, support) · launch comms scheduled · marketing CTAs pointing at stores</td><td class="ref"><b>tech.launch.roadmap</b> · OPS-RUNBOOK</td></tr>
+</table>
+</div>
+
+<h2>3 · Critical path to Oct 8</h2>
+<div class="card">
+<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:11.5px;font-weight:700;margin-bottom:12px">
+  <span style="background:#FFF1EC;border:1.5px solid var(--coral);border-radius:10px;padding:6px 9px">Play verification<br><span style="font-weight:400">in progress → ≤Aug 7</span></span><span>→</span>
+  <span style="background:#FFF1EC;border:1.5px solid var(--coral);border-radius:10px;padding:6px 9px">AAB + forms<br><span style="font-weight:400">Aug 8-14</span></span><span>→</span>
+  <span style="background:#FEE2E2;border:1.5px solid #C73A20;border-radius:10px;padding:6px 9px">12 Androids ✔<br><span style="font-weight:400">≤Aug 17 · zero float</span></span><span>→</span>
+  <span style="background:#FEE2E2;border:1.5px solid #C73A20;border-radius:10px;padding:6px 9px">🔒 14 unbroken days<br><span style="font-weight:400">Aug 18 → Sep 1 · fixed</span></span><span>→</span>
+  <span style="background:#FFF1EC;border:1.5px solid var(--coral);border-radius:10px;padding:6px 9px">Production access<br><span style="font-weight:400">apply Sep 1</span></span><span>→</span>
+  <span style="background:#FFF1EC;border:1.5px solid var(--coral);border-radius:10px;padding:6px 9px">Store submissions<br><span style="font-weight:400">Sep 21-25</span></span><span>→</span>
+  <span style="background:#E0F7E5;border:1.5px solid var(--verde);border-radius:10px;padding:6px 9px">🎯 OCT 8</span>
+</div>
+<div class="ref" style="margin-bottom:10px"><b>The Android/Play chain IS the critical path</b> (total float ≈ 1 week). Co-critical in parallel: legal (lawyer → review → published before G4). Whatever feeds these two chains goes first in every sprint.</div>
+<table>
+<tr><th>#</th><th>Critical task</th><th>Owner</th><th>Window</th><th>Float</th><th>A delay delays…</th></tr>
+<tr><td>1</td><td>Play identity verification (in progress)</td><td>Juanjo/Google</td><td>→ Aug 7</td><td>~0</td><td>the whole Android chain</td></tr>
+<tr><td>2</td><td><b>Recruit + confirm 12 Android testers (store email ✔)</b></td><td><b>Founders</b></td><td>today → Aug 17</td><td><b>0</b></td><td>the 12×14 clock → October Play</td></tr>
+<tr><td>3</td><td>AAB + Play forms + internal track</td><td>Juanjo</td><td>Aug 8-14</td><td>2-3 days</td><td>Aug 18 closed testing</td></tr>
+<tr><td>4</td><td><b>12×14 window with no opt-in drops</b></td><td>Operations</td><td>Aug 18 → Sep 1</td><td><b>0 (fixed duration)</b></td><td>Play production access</td></tr>
+<tr><td>5</td><td>Apple external beta review (build 5)</td><td>Juanjo/Apple</td><td>this week</td><td>2-3 days</td><td>Aug 8 TF iOS</td></tr>
+<tr><td>6</td><td><b>Lawyer engaged (Audidat or alternative)</b></td><td><b>Founders/Juanjo</b></td><td>→ Aug 8</td><td>~0</td><td>published legal (G4) → pilot P1</td></tr>
+<tr><td>7</td><td>Final privacy + terms published</td><td>Lawyer→Juanjo</td><td>→ Sep 4</td><td>0</td><td>pilot P1 and store listings</td></tr>
+<tr><td>8</td><td>Decisions D5-D8 (payments)</td><td>Founders</td><td>Aug 4</td><td>0 <i>(to launch WITH revenue)</i></td><td>Epic L → P2 sandbox → paid launch on Oct 8</td></tr>
+<tr><td>8b</td><td>Store listings: copy + screenshot sign-off (template → <b>Lucía ≤Sep 5</b>) → frames (Design ≤Sep 15) → final captures (Juanjo)</td><td>Lucía → Design</td><td>Aug → Sep 15</td><td>~10 days</td><td>final listings for G6 → submissions</td></tr>
+<tr><td>9</td><td>Production submissions (App Review + Play)</td><td>Juanjo</td><td>Sep 21-25</td><td>~1 week</td><td>Oct 8</td></tr>
+<tr><td>10</td><td>Day-1 runbook + scheduled comms</td><td>All</td><td>→ Oct 7</td><td>2 days</td><td>launch-day quality</td></tr>
+</table>
+<div class="gate" style="margin-top:10px"><b>⚡ Next 7 days (they feed the zero-float items):</b> ① Mon/Tue meeting with D5-D11 decided · ② each founder finds ≥3 Androids and fires their email capture · ③ build 5 submitted to external beta review NOW · ④ daily check on Play verification · ⑤ close the lawyer (Audidat reply or alternative).</div>
+</div>
+
+<h2>4 · Sprint calendar (5 days) — 4 tracks</h2>
+<div class="card">
+<table>
+<tr><th>Sprint</th><th>Business</th><th>Operations</th><th>Tech</th><th>Readiness</th></tr>
+<tr><td class="sN">S11<br>Aug 3-7</td><td>Planning meeting (G1) · D5-D11 decisions · company/legal kickoff (<b>CORPORATE-MIGRATION-PLAN</b> + Audidat reply)</td><td>Email-capture running (✉️ batches) · recruit 12+ Androids · testers guide out</td><td>M-1 start (cycle memory + Trends) · build 5 to external beta review · Android AAB + Play internal</td><td>Play forms (data safety, health, IARC — kit ready) · What to Test</td></tr>
+<tr><td class="sN">🎯 AUG 8</td><td colspan="4"><b>TESTFLIGHT iOS GO</b> — advisory + wave-1 invites</td></tr>
+<tr><td class="sN">S12<br>Aug 10-14</td><td>Pricing & plans (framework in <b>Doc 29</b>) · production store listings draft</td><td>Daily 15' feedback triage · funnel tracking · contact@ support with SLA</td><td>M-1 close + OTA · Epic L P0 (RevenueCat + products) if D5-D8 ok</td><td>iOS wave-1 QA pass · legal review in progress</td></tr>
+<tr><td class="sN">🎯 AUG 18</td><td colspan="4"><b>ANDROID GO</b> — closed testing (12×14 clock starts → production access ~Sep 1)</td></tr>
+<tr><td class="sN">S13<br>Aug 17-21</td><td>Waitlist comms #1 ("we're in beta") · company paperwork moving</td><td>Watch the 12 Androids' opt-in (they can't drop for 14 days!)</td><td>M-2 rebaseline · i18n reviewer pass (Aranese first) · M-3 push if approved (build 6)</td><td>Cross-platform bug bash · basic accessibility</td></tr>
+<tr><td class="sN">S14<br>Aug 24-28</td><td>Launch offer definition · marketing assets</td><td>Prepare pilot P1 cohorts (expanded waves, ✔ confirmed)</td><td>Epic L P1 (paywall + flows per <b>Doc 29</b>) · hardening</td><td>Pilot P1 checklist · final legal ready to publish</td></tr>
+<tr><td class="sN">S15<br>Aug 31-Sep 4</td><td>Pricing review with beta data · <b>Lucía delivers the store-listings template (≤Sep 5)</b></td><td>Pilot P1 comms scheduled</td><td>Pre-pilot freeze (fixes only) · <b>apply for Play production</b> (Sep 1, after 12×14)</td><td><b>G4</b> · publish final legal</td></tr>
+<tr><td class="sN">🎯 SEP 8</td><td colspan="4"><b>PILOT PHASE 1</b> — goal: activation & stability at real volume</td></tr>
+<tr><td class="sN">S16<br>Sep 7-11</td><td>P1 user interviews (guide in <b>Doc 27</b>)</td><td>Reinforced support · daily funnel</td><td>Daily OTA hotfixes as needed</td><td>Measure: crash-free, D1/D7, informal NPS</td></tr>
+<tr><td class="sN">S17<br>Sep 14-18</td><td>Value-prop tweaks from P1 feedback</td><td>Waves 2-3 confirmed ✔ and ready</td><td>P1 fixes · IAP in sandbox/TestFlight if L ready</td><td><b>G5</b> · store listings ES/EN + other languages</td></tr>
+<tr><td class="sN">🎯 SEP 18</td><td colspan="4"><b>PILOT PHASE 2</b> — goal: volume, retention and (if L landed) sandbox payment flow</td></tr>
+<tr><td class="sN">S18<br>Sep 21-25</td><td><b>G6 · Go/No-Go</b> (founders) · launch comms plan</td><td>P2 metrics close · pilot report</td><td><b>App Review + Play production submissions</b> (staged rollout)</td><td>Submission checklist (both stores)</td></tr>
+<tr><td class="sN">S19<br>Sep 28-Oct 2</td><td>Countdown: waitlist blast scheduled · socials</td><td>Support scaling ready · FAQs</td><td>Review fixes if any · switch marketing CTAs → stores</td><td><b>G7</b> · day-1 runbook (rollback, monitoring, on-call)</td></tr>
+<tr><td class="sN">🎯 OCT 8</td><td colspan="4"><b>🎉 PRODUCTION / COMMERCIAL LAUNCH</b> — staged rollout + announcement + waitlist</td></tr>
+<tr><td class="sN">S20<br>Oct 5-9</td><td>Announcement + press/socials</td><td>Day-1 watch · store reviews responses</td><td>Intensive monitoring · hotfix channel</td><td>Launch retro (Fri 9)</td></tr>
+</table>
+</div>
+
+<h2>5 · Working cadence</h2>
+<div class="cad"><b>5-day sprints</b> (Mon-Fri): <b>Monday</b> 45' planning (priorities + week's gates) · <b>daily</b> 15' async feedback triage on WhatsApp/hub · <b>Friday</b> 30' demo + retro and release cut (OTA or build). Fixed-date milestones act as forcing functions; sprint content adjusts at each planning without moving milestones unless founders decide so at a gate.</div>
+
+<h2>6 · Critical dependencies & risks</h2>
+<div class="card">
+<div class="gate"><b>⛓ D5-D8 (payments)</b> — without a decision on Aug 4, Epic L misses pilot P2 → Oct 8 launches <b>free-only</b> and monetisation lands post-launch. The plan holds; the business decides.</div>
+<div class="gate"><b>⛓ 12 Android testers</b> — must be opted-in on Aug 18 and NOT drop for 14 days; a broken clock restarts → direct risk to October Play. Plan B: iOS-first on Oct 8, Android days later.</div>
+<div class="gate"><b>⛓ Legal (lawyer/Audidat)</b> — final privacy & terms must be live before pilot P1 (G4): health app, non-negotiable.</div>
+<div class="gate"><b>⛓ Company (SL)</b> — prerequisite only for the web payment rail (<b>Doc 29</b>); store in-app payments work as individual. Does not block Oct 8.</div>
+<div class="risk"><b>⚠ External risks</b>: Apple external beta review (1-3 days, sometimes more) · production App Review (1-3 days, margin built into S18) · Play identity verification (in progress) · founder availability in August (holidays) — founder gates (G1, G6) have fixed dates on purpose.</div>
+</div>
+
+<h2>7 · Reference documents (content not repeated here)</h2>
+<div class="card ref" style="font-size:12.5px;line-height:2">
+<b>Propuesta-31-Cycle-Intelligence.html</b> — full Epic M (phases M-0…M-3, decisions D9-D11) ·
+<b>decisiones-pagos/Decision-5..8.html</b> + <b>Doc 29</b> — payments/subscriptions (Epic L) ·
+<b>Doc 27</b> — pilot strategy (cohorts, goals, interview guide) ·
+<b>Google-Play-Publicacion.html</b> — Android day-D kit (forms ready) ·
+<b>Plantilla-Store-Listings.html</b> — store listings fill-in template (Lucía ≤Sep 5) ·
+<b>GUIA-Builders-Founders.html</b> — hub access ·
+<b>NutriSync-Backlog.html</b> — master backlog by epic ·
+<b>roadmaps/</b> (commercialization · enterprise.setup · tech.build · tech.launch) — per-area detail ·
+<b>CORPORATE-MIGRATION-PLAN.html</b> — incorporation ·
+<b>OPS-RUNBOOK.md</b> — operations & deployments
+</div>
+</div>
+
+<div class="pie">NutriSync · Milestone Plan v1 · 1-ago/Aug-2026 · vive en el planning de los lunes / owned by Monday planning</div>
+<script>
+function toggle(){
+  var es=document.getElementById('es'),en=document.getElementById('en'),b=document.querySelector('.lang');
+  var showEn=en.style.display==='none';
+  en.style.display=showEn?'block':'none';es.style.display=showEn?'none':'block';
+  b.textContent=showEn?'ES 🇪🇸':'EN 🇬🇧';
+}
+</script>
+</div></body>
+</html>

@@ -1507,120 +1507,44 @@ if os.path.isdir(_afig):
     open(os.path.join(_afig, "index.html"), "w", encoding="utf-8").write(_idx)
     print(f"- ns-assets-index: galería de {len(_files)} recursos en /assets/figma/")
 
-# ── ns-admin-door ────────────────────────────────────────────────────────────
-# Tercera puerta en el pie del marketing, junto a Pitch y Builders: StartUp
-# Admin (r13). Vive en OTRO dominio (admin.nutrisynccollective.com), pero la
-# entrada tiene que estar donde ya está el resto: si no, nadie la encuentra.
-#
-# El ancla se CLONA de la de Builders en lugar de escribirse a mano: el pie vive
-# dentro del payload JSON del motor y reutilizar la cadena real hereda su
-# escapado exacto (lección po74).
-#
-# OJO con las barras: dentro de un valor de atributo van LITERALES (hub/x.html);
-# solo las etiquetas de cierre llevan <\u002F. Confundirlas dejó una vez el href
-# como "hub/https://..." — enlace roto. Por eso ahora se sustituye el href
-# ENTERO (comilla a comilla) y se verifica el resultado antes de escribir.
+# ── ns-admin-door (v11.56: INSERCIÓN, ya no transformación) ────────────────
+# Las puertas del pie son dinámicas (onClick {{ openInvestors/openBuilders }},
+# resueltas por support.js) y el contenedor trae flex-wrap: la tercera puerta
+# StartUp Admin se INSERTA como hermana tras la de Builders, con href llano.
 _ad = os.path.join(PUB, "index.html")
 if os.path.exists(_ad):
     _s0 = open(_ad, encoding="utf-8").read()
-    if "ns-admin-door" in _s0:
-        pass  # ya integrado — el bloque es idempotente
-    else:
-        _k = _s0.find("?r=builders")
-        _open = _s0.rfind("<a href=", 0, _k) if _k > 0 else -1
-        _close = _s0.find("<\\u002Fa>", _k) if _k > 0 else -1
-        if _open < 0 or _close < 0:
-            print("! ns-admin-door: no acoté el ancla de Builders — SIN TOCAR")
-        else:
-            _close += len("<\\u002Fa>")
-            _anchor = _s0[_open:_close]
-            _URL = "https://admin.nutrisynccollective.com"
-            # 1) href entero, de comilla a comilla (sea cual sea el prefijo)
-            _href_re = re.compile(r'href=\\"[^"\\]*full-hub-gated-site\.html\?r=builders\\"')
-            _n_href = len(_href_re.findall(_anchor))
-            _new = _href_re.sub('href=\\\\"%s\\\\" target=\\\\"_blank\\\\" rel=\\\\"noopener\\\\"' % _URL,
-                                _anchor)
-            # 2) icono propio: libro mayor
-            _icon_old = '<path d=\\"M8.5 8L4.5 12l4 4M15.5 8l4 4-4 4\\"><\\u002Fpath>'
-            _icon_new = ('<path d=\\"M5 4.5h11.5a2 2 0 012 2v13H7a2 2 0 01-2-2z\\"><\\u002Fpath>'
-                         '<path d=\\"M8.5 9h7M8.5 12.5h7M8.5 16h4\\"><\\u002Fpath>')
-            _n_icon = _new.count(_icon_old)
-            _new = _new.replace(_icon_old, _icon_new)
-            # 3) etiqueta visible + marca del bloque
-            _n_lbl = _new.count(">Builders<")
-            _new = _new.replace(">Builders<", ">StartUp Admin<")
-            _new = _new.replace("<a href=", "<a data-ns=\\\"ns-admin-door\\\" href=", 1)
-            # 4) el href final tiene que ser EXACTAMENTE la url absoluta
-            _hrefs = re.findall(r'href=\\"([^"\\]*)\\"', _new)
-            _ok = (_n_href == 1 and _n_icon == 1 and _n_lbl == 1
-                   and _hrefs == [_URL] and ">StartUp Admin<" in _new)
-            if not _ok:
-                print("! ns-admin-door: el clon no quedó limpio (href=%r) — SIN TOCAR" % (_hrefs,))
-            else:
-                _s = _s0[:_close] + "\\n          " + _new + _s0[_close:]
-                # C2: el payload tiene que seguir siendo JSON válido
-                import json as _json2
-                _bad = False
-                for _m in re.finditer(r'<script type="application/json"[^>]*>(.*?)</script>', _s, re.S):
-                    try:
-                        _json2.loads(_m.group(1))
-                    except Exception as _e:
-                        _bad = True
-                        print("! ns-admin-door: rompería el payload (%s) — SIN TOCAR" % _e)
-                        break
-                if not _bad:
-                    open(_ad, "w", encoding="utf-8").write(_s)
-                    print("- ns-admin-door: 3ª puerta → %s" % _URL)
-
-# ── ns-doors-grid ────────────────────────────────────────────────────────────
-# Las 3 puertas del pie en rejilla 2×2 con la tercera ocupando las dos columnas.
-# Con flex-wrap cada ficha medía lo que su texto ("StartUp Admin" es más ancho
-# que "Pitch") y la segunda fila quedaba descolgada. Con grid, las dos de arriba
-# comparten ancho y la de abajo mide exactamente su suma — alineación garantizada
-# sin depender de la longitud de las etiquetas ni del idioma.
-# En una sola fila no caben: la columna de marca son 290px y tres fichas piden 400+.
-_dg = os.path.join(PUB, "index.html")
-if os.path.exists(_dg):
-    _s0 = open(_dg, encoding="utf-8").read()
-    if "ns-doors-grid" in _s0:
+    if 'data-ns="ns-admin-door"' in _s0:
         pass  # idempotente
     else:
-        _i = _s0.find("2FA SECURED")
-        _j = _s0.rfind("<div style=", 0, _i) if _i > 0 else -1
-        _end = _s0.find("\\\">", _j) + 3 if _j > 0 else -1
-        if _j < 0 or _end < 3:
-            print("! ns-doors-grid: no acoté el contenedor de las puertas — SIN TOCAR")
+        _k = _s0.find('{{ openBuilders }}')
+        _close = _s0.find('</a>', _k) + len('</a>') if _k > 0 else -1
+        if _k < 0 or _close < 4:
+            print("! ns-admin-door: no encuentro la puerta de Builders — SIN TOCAR")
         else:
-            _cont_old = _s0[_j:_end]
-            if "display: flex" not in _cont_old:
-                print("! ns-doors-grid: el contenedor no es el esperado — SIN TOCAR")
-            else:
-                _cont_new = ('<div data-ns=\\"ns-doors-grid\\" style=\\"display: grid; '
-                             'grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; '
-                             'max-width: 340px;\\">')
-                _s = _s0[:_j] + _cont_new + _s0[_end:]
-                # la 3ª puerta ocupa las dos columnas
-                _k = _s.find("ns-admin-door")
-                _a = _s.rfind("<a ", 0, _k) if _k > 0 else -1
-                _st = _s.find("style=\\\"", _a) if _a > 0 else -1
-                if _st < 0:
-                    print("! ns-doors-grid: no encontré el style de la 3ª puerta — SIN TOCAR")
-                else:
-                    _st += len("style=\\\"")
-                    _s = _s[:_st] + "grid-column: 1 \\u002F -1; justify-content: center; " + _s[_st:]
-                    import json as _json3
-                    _bad = False
-                    for _m in re.finditer(r'<script type="application/json"[^>]*>(.*?)</script>',
-                                          _s, re.S):
-                        try:
-                            _json3.loads(_m.group(1))
-                        except Exception as _e:
-                            _bad = True
-                            print("! ns-doors-grid: rompería el payload (%s) — SIN TOCAR" % _e)
-                            break
-                    if not _bad:
-                        open(_dg, "w", encoding="utf-8").write(_s)
-                        print("- ns-doors-grid: 3 puertas en rejilla 2×2 (la 3ª a doble ancho)")
+            _DOOR = ('<a data-ns="ns-admin-door" href="https://admin.nutrisynccollective.com" '
+              'target="_blank" rel="noopener" style="cursor: pointer; text-decoration: none; '
+              'display: inline-flex; align-items: center; gap: 9px; background: #2A2421; '
+              'border: 1px solid #3A322F; border-radius: 11px; padding: 7px 12px;">'
+              '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E1946C" '
+              'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'
+              '<rect x="5" y="10.5" width="14" height="9.5" rx="2.4"/>'
+              '<path d="M8 10.5V8a4 4 0 018 0v2.5"/>'
+              '<circle cx="12" cy="15" r="1.3" fill="#E1946C" stroke="none"/></svg>'
+              '<span style="line-height: 1.15;">'
+              '<span style="display: block; font-size: 8.5px; color: #9B9089; letter-spacing: .09em;">2FA SECURED</span>'
+              '<span style="display: block; font-size: 13px; font-weight: 700; color: #FFF9F7;">StartUp Admin</span>'
+              '</span></a>')
+            open(_ad, "w", encoding="utf-8").write(_s0[:_close] + _DOOR + _s0[_close:])
+            print("- ns-admin-door: tercera puerta insertada junto a Builders (v11.56)")
+
+# ── ns-doors-grid: JUBILADO en v11.56 ───────────────────────────────────────
+# El contenedor del pack ya trae flex-wrap: tres puertas caben sin cirugía.
+# (Si algún pack futuro lo pierde, el linkcheck/foto lo delatará.)
+_dg = os.path.join(PUB, "index.html")
+if os.path.exists(_dg) and 'flex-wrap' not in open(_dg, encoding="utf-8").read()[:0]:
+    pass
+print("- ns-doors-grid: no aplica en v11.56 (flex-wrap nativo)")
 
 # ── ns-footer-brand ──────────────────────────────────────────────────────────
 # El QR parecía descolgado de la columna Legal, pero la causa no era que las
@@ -1635,8 +1559,8 @@ if os.path.exists(_fb):
     _s0 = open(_fb, encoding="utf-8").read()
     _reps = [
         # columna de marca: 290 → 400 (el párrafo cabe en 2 líneas, no 3)
-        ('style=\\"flex: 0 1 290px; min-width: 240px;\\"',
-         'data-ns=\\"ns-footer-brand\\" style=\\"flex: 0 1 400px; min-width: 240px;\\"'),
+        ('style="flex: 0 1 290px; min-width: 240px;"',
+         'data-ns="ns-footer-brand" style="flex: 0 1 400px; min-width: 240px;"'),
         ('color: #B8ADA4; max-width: 290px;', 'color: #B8ADA4; max-width: 380px;'),
         # las fichas no crecen con la columna: se quedan en 340
         ('grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; max-width: 340px;',
