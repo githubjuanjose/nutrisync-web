@@ -1630,8 +1630,8 @@ if os.path.exists(_ad):
             print("! ns-admin-door: no encuentro la puerta de Builders — SIN TOCAR")
         else:
             _DOOR = ('<a data-ns="ns-admin-door" href="https://admin.nutrisynccollective.com" '
-              'target="_blank" rel="noopener" style="grid-column: 1 / -1; justify-self: center; cursor: pointer; text-decoration: none; '
-              'display: inline-flex; align-items: center; justify-content: center; gap: 9px; background: #2A2421; '
+              'target="_blank" rel="noopener" style="grid-column: 1 / -1; cursor: pointer; text-decoration: none; '
+              'display: flex; align-items: center; justify-content: center; gap: 9px; background: #2A2421; '
               'border: 1px solid #3A322F; border-radius: 11px; padding: 7px 12px;">'
               '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E1946C" '
               'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'
@@ -1653,6 +1653,23 @@ if os.path.exists(_dg) and 'flex-wrap' not in open(_dg, encoding="utf-8").read()
     pass
 print("- ns-doors-grid: no aplica en v11.56 (flex-wrap nativo)")
 
+# ── ns-footer-font (r14i, regresión de fuente del pack v11.56 vs v11.55):
+# los enlaces de columna del pie (Open app, Our team, Privacy…) NO llevan estilo
+# inline; los botones (App Store, Pitch, sociales) SÍ. Por eso `footer a:not([style])`
+# los aísla con precisión. Override CSS ADITIVO — no toca el markup de Design.
+_ff = os.path.join(PUB, "index.html")
+if os.path.exists(_ff):
+    _h = open(_ff, encoding="utf-8").read()
+    if 'id="ns-footer-font"' not in _h:
+        _CSS = ('<style id="ns-footer-font">'
+          'footer a:not([style]){font-size:15px;line-height:1.85}''[data-ns="ns-footer-cols"]>div:empty{display:none}''@media(min-width:900px){[data-ns="ns-footer-cols"]>div:not(:empty){flex:1 1 0;min-width:0}}'
+          '</style>')
+        _h = _h.replace("</body>", _CSS + "</body>", 1)
+        open(_ff, "w", encoding="utf-8").write(_h)
+        print("- ns-footer-font: enlaces de columna a 15px (aditivo, botones intactos)")
+    else:
+        print("- ns-footer-font: ya aplicado")
+
 # ── ns-footer-even (r14i, medido: el footer tiene 2 hijos; las columnas
 # PRODUCT/COMPANY/LEGAL/QR viven en el sub-contenedor [1], no sueltas — por eso
 # el space-between de fuera dejaba el hueco. Se lo ponemos al sub-contenedor. ──
@@ -1663,8 +1680,12 @@ if os.path.exists(_fe):
     _b = "gap: clamp(14px,1.6vw,24px) clamp(28px,3vw,52px); flex-wrap: wrap; justify-content: space-between; flex: 1"
     if _a in _h and "justify-content: space-between; flex: 1" not in _h:
         _h = _h.replace(_a, _b, 1)
+        # r14i (MEDIDO en navegador): el sub-contenedor tiene un hijo VACÍO (ancho 0)
+        # que se come un hueco del space-between → reparto 156/234 en vez de uniforme.
+        # Lo marcamos para poder ocultarlo por CSS sin tocar el markup de Design.
+        _h = _h.replace('<div style="' + _b, '<div data-ns="ns-footer-cols" style="' + _b, 1)
         open(_fe, "w", encoding="utf-8").write(_h)
-        print("- ns-footer-even: columnas repartidas (space-between en el sub-contenedor)")
+        print("- ns-footer-even: columnas repartidas + sub-contenedor marcado")
     else:
         print("- ns-footer-even: ya aplicado o ancla movida")
 
