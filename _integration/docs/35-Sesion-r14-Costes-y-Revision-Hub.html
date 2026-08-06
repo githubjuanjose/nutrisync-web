@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>35 · Sesión r14 — El dinero se hace real y el hub pasa revista</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.65}
+.w{max-width:860px;margin:0 auto;padding:30px 22px 90px}
+h1{font-size:24px;margin:0 0 6px}h2{font-size:17px;margin:28px 0 8px;color:#C73A20}
+p,li{font-size:14px}.meta{color:#8A7F78;font-size:12.5px;margin-bottom:18px}
+code{background:#F4F0EA;border-radius:5px;padding:1px 6px;font-size:12.5px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+th,td{padding:7px 9px;border-bottom:1px solid #EFE3D7;text-align:left;vertical-align:top}
+th{color:#8A7F78;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.tag{display:inline-block;font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#E8F5EE;color:#0F6E56;margin-right:5px}
+.box{background:#FFF8EF;border-left:3px solid #E8B072;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;margin:12px 0}
+</style></head><body><div class="w">
+
+<h1>💶 Sesión r14 — El dinero se hace real y el hub pasa revista</h1>
+<div class="meta">6 de agosto de 2026 · web po119–po129 · SQL: founder-reminders · hub-crud · mis-costes-y-obs · seed del diario · Edge nueva: <code>founder-reminders</code> · OTA NS-0010</div>
+
+<h2>1 · La contabilidad deja de ser una promesa</h2>
+<ul>
+<li><b>11 asientos sembrados</b> en StartUp Admin (julio + agosto): todas las suscripciones SaaS/IA con su <b>% imputado</b> (decisión Juanjo 5-ago: Claude 80 · ChatGPT 40 · iCloud/Google One 20 · resto 100) y el <b>esfuerzo de julio de Juanjo</b> — 15,5 man/days × 1.288 €/día (resto de founders: 288 €/día, pendiente de horas). Total registrado: <b>20.398,30 € ≈ $23.458</b>; 20.033,92 € en cola de <b>revisión IAS 38</b> (nada capitaliza solo — lo firmáis en la pestaña Coste).</li>
+<li><b>El MIS suma por fin los DOS libros</b> (caja + diario del build) y Finanzas estrena el espejo de solo lectura del diario. Una fuente: se edita en StartUp Admin, se mira en todas partes.</li>
+<li>Hoja de costes <b>EUR + USD</b> (inversores americanos) publicada en Finanzas, Modelos del Admin y hub/docs.</li>
+</ul>
+
+<h2>2 · La revisión de Juanjo: 23 puntos, 23 cerrados</h2>
+<table>
+<tr><th>Bloque</th><th>Qué cambió</th></tr>
+<tr><td>Orden y familias</td><td>21 pestañas en 5 familias con acento de color (Dirección · Operación · Piloto · Producto · Acceso) + <b>bilingüe ES/EN</b> en barra y páginas tocadas</td></tr>
+<tr><td>Recordatorios</td><td>Cron nuevo <code>founder-reminders</code> 07:15 UTC: UN digest a founders + contact@ + review@ SOLO si hay pendientes (🗳 🔔 🎫 🔐)</td></tr>
+<tr><td>CRUD en todo</td><td>Piloto (+ subida CSV con formato <code>email;nickname;cohorte;plataforma</code>), plan semanal, waitlist (las policies que la página esperaba desde su construcción), finanzas (✏️ en línea), traducciones (borrar = vaciar, ahora explicado)</td></tr>
+<tr><td>Incidencias v2</td><td>Cascada por estados, KPIs de servicio: media de resolución, &lt;24 h, <b>&gt;1 día hábil</b> (el finde no corre) y <b>FCR</b> mismo día · engineering@ asignable</td></tr>
+<tr><td>Coherencia</td><td>Modelo realista ago-2026 (2.634 · 74.772 €) en TODAS las superficies — el plan viejo fosilizado en el panel Growth, desenterrado y corregido con refresco permanente</td></tr>
+<tr><td>🗺 Plan 8-oct</td><td>Pestaña nueva: serpentina de hitos con nutris, 📍 estás-aquí, estado build/comercialización y camino crítico con holguras (Android/Play ES el camino crítico; D5-D8 pagos, vencida)</td></tr>
+<tr><td>📖 La historia</td><td>Infografía junio→8-oct→Año-1 como intro del storyline en Pitch + lámina PNG/PPTX para el deck de Canva</td></tr>
+</table>
+
+<h2>3 · NS-0010: el desayuno que desaparecía</h2>
+<p>Toda clave de día usaba <code>toISOString()</code> — el día de <b>Greenwich</b>, no el de la usuaria. Un desayuno a las 7:30 en un huso al este caía en «ayer» y se esfumaba de la lista al mediodía. Fuente única nueva <code>lib/localDay.ts</code> (pura, 5 unitarios) para todayISO, calendario, rachas, Hoy/Ayer, ventanas y DOB. <b>OTA publicada a los 3 runtimes</b> — y el comando OTA ya no pregunta: mensaje autogenerado, argumento opcional. NS-0006 («no recuerda mis datos») era con casi total seguridad el mismo tronco; ambas testers avisadas dentro de su app.</p>
+
+<h2>4 · Además</h2>
+<ul>
+<li><span class="tag">Android</span>Lista de testers cargada en Play + WhatsApp ES/EN con el enlace opt-in listo para enviar.</li>
+<li><span class="tag">Guardarraíles</span>74 web-tests (KPIs de servicio con unitario propio, contrato RPC↔SQL ampliado) · 51 admin-tests · pre-deploy vigila launch-plan · <b>172 jest</b> en la app.</li>
+<li><span class="tag">Correo</span>review@ y engineering@ activos en IONOS; tabla de buzones en Access con estado.</li>
+<li><span class="tag">Lección</span>Dos funciones «nuevas» ya existían (admin_ledger_update, y el CRUD que waitlist esperaba): <b>antes de crear, excavar</b> — el repo es el registro histórico.</li>
+</ul>
+
+<div class="box"><b>Pendiente que bloquea:</b> elecciones 🔔 de founders (única puerta de la 0.21) · decisiones D5-D8 de pagos (vencida 4-ago; sin ella el 8-oct sale sin ingresos) · 12 Androids confirmadas ≤17-ago (holgura cero) · horas de julio de Lucía, Pilar y María Paula + factura IONOS.</div>
+
+</div></body></html>
