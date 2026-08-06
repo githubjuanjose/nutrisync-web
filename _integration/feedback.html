@@ -46,7 +46,7 @@ const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 let ALL=[];
 function render(){
   const c=$('fCohort').value,p=$('fPlat').value,q=$('q').value.toLowerCase();
-  const rows=ALL.filter(r=>(!c||r.cohort===c)&&(!p||(r.platform||'').toLowerCase().startsWith(p))&&(!q||(r.message||'').toLowerCase().includes(q)||(r.email||'').toLowerCase().includes(q)));
+  const rows=ALL.filter(r=>(!c||(r.cohort||'—')===c)&&(!p||(r.platform||'').toLowerCase().startsWith(p))&&(!q||(r.message||'').toLowerCase().includes(q)||(r.email||'').toLowerCase().includes(q)));
   $('count').textContent=rows.length+' de '+ALL.length;
   $('list').innerHTML=rows.map(r=>`<div class="fb">
     <div class="meta"><b>${esc(r.email)}</b><span class="pill c">${esc(r.cohort||'—')}</span>
@@ -57,7 +57,7 @@ function render(){
 const csvCell=v=>'"'+String(v??'').replace(/"/g,'""').replace(/\r?\n/g,' · ')+'"';
 window.exportCsv=()=>{
   const c=$('fCohort').value,p=$('fPlat').value,q=$('q').value.toLowerCase();
-  const rows=ALL.filter(r=>(!c||r.cohort===c)&&(!p||(r.platform||'').toLowerCase().startsWith(p))&&(!q||(r.message||'').toLowerCase().includes(q)||(r.email||'').toLowerCase().includes(q)));
+  const rows=ALL.filter(r=>(!c||(r.cohort||'—')===c)&&(!p||(r.platform||'').toLowerCase().startsWith(p))&&(!q||(r.message||'').toLowerCase().includes(q)||(r.email||'').toLowerCase().includes(q)));
   if(!rows.length)return alert('Nada que exportar con esos filtros.');
   const CAB=['fecha','usuaria','cohorte','version','plataforma','mensaje'];
   const csv='\ufeff'+CAB.join(';')+'\n'+rows.map(r=>[r.created_at||'',r.email||'',r.cohort||'',
@@ -72,7 +72,7 @@ window.load=async()=>{
   const{data,error}=await sb.rpc('admin_pilot_feedback',{p_cohort:null});
   if(error){$('list').innerHTML='<div class="hint">Sin acceso: '+esc(error.message)+' — ¿sesión admin con MFA?</div>';return;}
   ALL=data||[];
-  const cs=[...new Set(ALL.map(r=>r.cohort).filter(x=>x&&x!=='—'))];
+  const cs=[...new Set(ALL.map(r=>r.cohort||'—'))].sort();  // r14: sin cohorte también es filtrable
   $('fCohort').innerHTML='<option value="">todas las cohortes</option>'+cs.map(c=>`<option>${esc(c)}</option>`).join('');
   render();
 };

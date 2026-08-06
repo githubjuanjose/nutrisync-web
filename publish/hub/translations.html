@@ -221,7 +221,9 @@ function render(){
   var label={marketing:'Marketing site',app:'Web app',ob:'App onboarding (mobile + PWA)',mob:'App mobile strings (R3\u2013R5)',ui:'App shared UI',catalog:'Catalog (list content)'},order=['marketing','app','ob','mob','ui','catalog'];
   for(var s=0;s<order.length;s++){var sk=order[s];if(!bySec[sk])continue;
     var h=document.createElement('div');h.className='sec';h.textContent=label[sk]+' — '+bySec[sk].length;rows.appendChild(h);
-    var t=document.createElement('table');t.innerHTML='<thead><tr><th>Key</th><th>English</th><th>'+NAME[lang]+'</th></tr></thead>';
+    var t=document.createElement('table');t.innerHTML='<caption style="caption-side:top;text-align:left;font-size:11.5px;color:#8A7F78;padding:4px 0">
+✏️ editar y salir del campo = guardar · 🧹 vaciar el campo = borrar la traducción (vuelve al inglés) /
+edit & blur = saved · clear the field = translation deleted (falls back to English)</caption><thead><tr><th>Key</th><th>English</th><th>'+NAME[lang]+'</th></tr></thead>';
     var tb=document.createElement('tbody');
     for(var r=0;r<bySec[sk].length;r++){(function(e){var ev=enVal(e.p),tv=curVal(lang,e.p);
       var tr=document.createElement('tr');

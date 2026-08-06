@@ -195,7 +195,7 @@ const T=ES?{
   title:'Pilot Planning', gate:'Inicia sesión de founder (Access + admin con MFA) y recarga.',
   sub:'El plan del piloto semana a semana: cuántas testers queremos dentro y cuántas activas, con los hitos que no se pueden mover. Aquí se edita el objetivo; en Pilot Observability se mira el resultado.',
   cohAll:'Todos los grupos', cohLbl:'Grupo de test', byCoh:'Por grupo de test',
-  h1:'Objetivo vs real · 13 semanas', h2:'Plan semanal (editable)',
+  h1:'Objetivo vs real · 13 semanas', h2:'Plan semanal (editable)', delTip:'Borrar el plan de esta semana', delAsk:'Borrar el plan de la semana {w} (objetivos a cero). ¿Seguir?',
   chartHint:'Línea discontinua = objetivo de testers dentro. Sólidas = instaladas reales por plataforma, solo hasta la semana en curso.',
   tableHint:'Edita cualquier celda y pulsa Guardar. La escala de las gráficas la marca el objetivo más alto de la tabla.',
   scaleHint:'La semana en curso va resaltada. Las columnas "real" solo se rellenan en semanas pasadas.',
@@ -212,7 +212,7 @@ const T=ES?{
   title:'Pilot Planning', gate:'Sign in as a founder (Access + admin with MFA) and reload.',
   sub:'The pilot plan week by week: how many testers we want in and how many active, with the milestones that cannot move. Targets are edited here; results live in Pilot Observability.',
   cohAll:'All test groups', cohLbl:'Test group', byCoh:'By test group',
-  h1:'Target vs actual · 13 weeks', h2:'Weekly plan (editable)',
+  h1:'Target vs actual · 13 weeks', h2:'Weekly plan (editable)', delTip:'Delete this week\u2019s plan', delAsk:'Delete the plan for week {w} (targets back to zero). Continue?',
   chartHint:'Dashed line = target testers in. Solid = real installs by platform, only up to the current week.',
   tableHint:'Edit any cell and hit Save. The highest target in this table sets the charts’ scale.',
   scaleHint:'The current week is highlighted. "Actual" columns only fill in for past weeks.',
@@ -278,8 +278,18 @@ function render(){
       '<td class="num">'+inp('active',w.active_plan)+'</td>'+
       '<td class="num">'+(w.is_past?w.installed:'—')+'</td>'+
       '<td class="num">'+(w.is_past?w.active:'—')+'</td>'+
-      '<td><button class="mini" data-save="'+w.week+'">'+T.save+'</button></td></tr>';
+      '<td><button class="mini" data-save="'+w.week+'">'+T.save+'</button> '+'<button class="mini" data-del="'+w.week+'" title="'+T.delTip+'">🗑</button></td></tr>';
   }).join('')||'<tr><td colspan="6" class="hint">'+T.noRows+'</td></tr>';
+  tb.querySelectorAll('button[data-del]').forEach(b=>{
+    b.onclick=async()=>{
+      const w=b.getAttribute('data-del');
+      if(!confirm(T.delAsk.replace('{w}',w)))return;
+      b.disabled=true;b.textContent='…';
+      const{error}=await sb.rpc('admin_pilot_plan_delete',{p_week:w});
+      if(error){b.disabled=false;b.textContent='⚠';return;}
+      load();
+    };
+  });
   tb.querySelectorAll('button[data-save]').forEach(b=>{
     b.onclick=async()=>{
       const w=b.getAttribute('data-save');

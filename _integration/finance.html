@@ -62,7 +62,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
       <input type="number" id="nCredit" placeholder="HABER € (ingreso)" step="0.01" min="0" style="width:160px">
       <button class="pri" onclick="add()">Añadir →</button>
     </div>
-    <div class="hint">Un asiento es gasto (DEBE) o ingreso (HABER), no ambos. "otros" existe para reclasificar después con calma.</div>
+    <div class="hint">Un asiento es gasto (DEBE) o ingreso (HABER), no ambos. "otros" existe para reclasificar después con calma. En el libro: ✏️ edita y ✕ borra cualquier asiento de un mes sin candado. / In the ledger: ✏️ edits and ✕ deletes any entry of an unlocked month.</div>
   </div>
 
   <h2>2 · Libro diario</h2>
@@ -171,7 +171,7 @@ window.loadLedger=async()=>{
     `<tr><td>${esc(r.entry_date)}</td><td>${esc(CONCEPTS[r.concept]||r.concept)}${r.source!=='manual'?' <span class="pill auto">auto</span>':''}</td>
     <td>${esc(r.description)}</td><td>${esc(r.invoice_no||'')}</td><td>${esc(r.counterparty||'')}</td>
     <td class="num">${r.debit>0?eur(r.debit):''}</td><td class="num">${r.credit>0?eur(r.credit):''}</td>
-    <td>${closed?'🔒':`<button class="mini" onclick="del(${r.id})">✕</button>`}</td></tr>`).join('')||'<tr><td colspan=8 class="hint">Sin asientos ese mes.</td></tr>';
+    <td>${closed?'🔒':`<button class="mini" onclick="edit(${r.id})" title="Editar / Edit">✏️</button> <button class="mini" onclick="del(${r.id})">✕</button>`}</td></tr>`).join('')||'<tr><td colspan=8 class="hint">Sin asientos ese mes.</td></tr>';
 };
 window.add=async()=>{
   const debit=parseFloat($('nDebit').value)||0,credit=parseFloat($('nCredit').value)||0;
@@ -187,6 +187,32 @@ window.add=async()=>{
 window.del=async id=>{
   if(!confirm('¿Eliminar el asiento '+id+'?'))return;
   const{error}=await sb.rpc('admin_ledger_delete',{p_id:id});
+  if(error)return alert(error.message);
+  await loadSummary();await loadLedger();
+};
+/* r14 · edición en línea de asientos (meses sin candado; el trigger de cierres vigila) */
+window.edit=id=>{
+  const r=ROWS.find(x=>x.id===id); if(!r)return;
+  const btn=document.querySelector(`#ledger button[onclick="edit(${id})"]`); if(!btn)return;
+  const tr=btn.closest('tr');
+  const opt=Object.keys(CONCEPTS).map(k=>`<option value="${k}"${k===r.concept?' selected':''}>${CONCEPTS[k]}</option>`).join('');
+  tr.innerHTML=`<td><input type="date" id="eD" value="${r.entry_date}" style="width:132px"></td>
+    <td><select id="eC">${opt}</select></td>
+    <td><input id="eDs" value="${esc(r.description)}" style="width:95%"></td>
+    <td><input id="eI" value="${esc(r.invoice_no||'')}" style="width:92px"></td>
+    <td><input id="eP" value="${esc(r.counterparty||'')}" style="width:118px"></td>
+    <td class="num"><input id="eDb" type="number" step="0.01" min="0" value="${r.debit>0?r.debit:''}" style="width:92px;text-align:right"></td>
+    <td class="num"><input id="eCr" type="number" step="0.01" min="0" value="${r.credit>0?r.credit:''}" style="width:92px;text-align:right"></td>
+    <td><button class="mini" onclick="saveEdit(${id})" title="Guardar / Save">💾</button>
+        <button class="mini" onclick="loadLedger()" title="Cancelar / Cancel">↩</button></td>`;
+};
+window.saveEdit=async id=>{
+  const debit=parseFloat($('eDb').value)||0,credit=parseFloat($('eCr').value)||0;
+  if((debit>0)===(credit>0))return alert('DEBE o HABER, solo uno. / Debit OR credit, only one.');
+  if(!$('eDs').value.trim())return alert('La descripción no puede quedar vacía. / Description required.');
+  const{error}=await sb.rpc('admin_ledger_update',{p_id:id,p_date:$('eD').value,p_concept:$('eC').value,
+    p_description:$('eDs').value.trim(),p_invoice:$('eI').value,p_counterparty:$('eP').value,
+    p_debit:debit,p_credit:credit});
   if(error)return alert(error.message);
   await loadSummary();await loadLedger();
 };

@@ -65,6 +65,15 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
       <button class="pri" onclick="proposeManual()">Proponer →</button>
     </div>
     <div class="hint">Para el consejo asesor y gente de confianza que no pasó por la waitlist. Entran al mismo flujo: proponer → validar → CSV.</div>
+    <div class="row" style="margin-top:10px;align-items:center">
+      <input type="file" id="csvFile" accept=".csv,text/csv" style="font-size:12.5px">
+      <button onclick="subirCsv()">⬆ Subir CSV / Upload CSV</button>
+      <span class="hint" id="csvMsg"></span>
+    </div>
+    <div class="hint">Formato / format: <code>email;nickname;cohorte;plataforma</code> — cabecera opcional,
+    también vale con comas. Cohorte: <code>wave-1</code>/<code>wave-1b</code>/<code>advisory</code> ·
+    plataforma: <code>ios</code>/<code>android</code>/<code>both</code>. Las que ya existen se ACTUALIZAN
+    (nunca se duplica ni se pisa su estado). / Existing testers are updated, status is never touched.</div>
   </div>
 
   <h2>2 · Validación de founders + export</h2>
@@ -281,6 +290,28 @@ window.exportTF=()=>{
 };
 window.copyEmails=async()=>{const so=storeOf();const e=invSel().map(x=>so[x]||x).join('\n');await navigator.clipboard.writeText(e);alert(e.split('\n').length+' emails (correo de tienda si está confirmado) copiados.');};
 window.copyLink=async t=>{await navigator.clipboard.writeText('https://nutrisynccollective.com/tester.html?t='+t);alert('Enlace personal copiado.');};
+/* r14 · CSV masivo: separador ; o , · cabecera opcional · confirmación con recuento */
+window.subirCsv=function(){
+  var f=document.getElementById('csvFile').files[0], msg=document.getElementById('csvMsg');
+  if(!f){msg.textContent='elige un fichero / pick a file';return;}
+  var rd=new FileReader();
+  rd.onload=function(){
+    var sep=(rd.result.indexOf(';')>-1)?';':',';
+    var filas=rd.result.split(/\r?\n/).map(function(l){return l.trim();}).filter(Boolean)
+      .map(function(l){return l.split(sep).map(function(c){return c.trim().replace(/^"|"$/g,'');});});
+    if(filas.length&&!/@/.test(filas[0][0]))filas.shift();   // cabecera fuera
+    var rows=filas.filter(function(c){return /@/.test(c[0]);}).map(function(c){
+      return {email:c[0],nickname:c[1]||null,cohort:c[2]||null,platform:c[3]||null};});
+    if(!rows.length){msg.textContent='ningún email válido / no valid emails';return;}
+    if(!confirm(rows.length+' filas → proponer/actualizar en el piloto. ¿Seguir? / rows to add or update. Continue?'))return;
+    msg.textContent='subiendo… / uploading…';
+    sb.rpc('admin_pilot_bulk_add',{p:rows}).then(function(r){
+      if(r.error||!(r.data&&r.data.ok)){msg.textContent='⚠ '+((r.error&&r.error.message)||'error');return;}
+      msg.textContent='✓ '+r.data.altas+' altas · '+r.data.actualizadas+' actualizadas';
+      load();});
+  };
+  rd.readAsText(f);
+};
 window.copyWa=async(e,t)=>{
   const msg='¡Hola! 🧡 GRACIAS por apuntarte a la lista de espera y al piloto de NutriSync — ¡estás dentro! La invitación de la app se envía al correo con el que tu MÓVIL instala aplicaciones (tu Apple ID en iPhone o tu cuenta de Google en Android), que muchas veces no es el mismo con el que te registraste. Entra en tu enlace personal: si es el mismo, UN toque y listo; si es otro, lo escribes ahí (30 seg): https://nutrisynccollective.com/tester.html?t='+t+' — Si no lo tienes claro: iPhone → Ajustes → tu nombre arriba = tu Apple ID · Android → Play Store → tu foto arriba a la derecha = tu cuenta Google. NOTA IMPORTANTE: NutriSync está en fase de desarrollo — piloto interno cerrado, no comercializado ni abierto al público; participas como colaboradora voluntaria e invitada. En tu enlace personal verás y aceptarás las condiciones antes de continuar. ¡Gracias! — El equipo NutriSync';
   await navigator.clipboard.writeText(msg);alert('Mensaje WhatsApp copiado para '+e);
