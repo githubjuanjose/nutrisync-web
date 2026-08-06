@@ -809,7 +809,7 @@ if os.path.exists(adm):
           '<label style="font-size:12px;color:var(--muted);">ARPU €/month<br/><input id="aA" type="number" step="0.01" min="0" style="width:110px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;font-size:14px;margin-top:4px;"/></label>'
           '</div>'
           '<table><thead><tr><th>Month</th><th>Users</th><th>Premium</th><th>MRR</th></tr></thead><tbody id="projTable"></tbody></table>'
-          '<div style="font-size:12px;color:var(--muted);margin-top:8px;">Projection = current real user total compounded by your assumptions, 12 months forward. Plan reference: Y1 755 users · €28,068 revenue (Conservative).</div>'
+          '<div style="font-size:12px;color:var(--muted);margin-top:8px;">Projection = current real user total compounded by your assumptions, 12 months forward. Plan reference: Y1 2,634 paying · €74,772 revenue (Realistic Aug-2026).</div>'
           '</div>')
         i = h.find('<h3>Business case tracking')
         j = h.rfind('<div class="panel">', 0, i)
@@ -845,6 +845,11 @@ if os.path.exists(adm):
         h = h.replace("</body>", GJS + "</body>", 1)
         open(adm, "w", encoding="utf-8").write(h)
         print("- G3 growth panel + assumptions (admin console)")
+    # r14: el panel se inyecta una vez, pero sus TEXTOS se refrescan siempre
+    # (lección 6-ago: guard por marcador dejó el plan viejo fosilizado)
+    _patch(adm, [("Y1 755 users \u00b7 \u20ac28,068 revenue (Conservative).",
+                  "Y1 2,634 paying \u00b7 \u20ac74,772 revenue (Realistic Aug-2026).", False)],
+           "ns-growth: referencia del plan → realista ago-2026")
 
 
 # ---------------------------------------------------------------------------
@@ -1378,6 +1383,14 @@ if os.path.exists(_hidx):
     print("- hub/index.html (puerta /hub) creado → #/builders")
 
 # ---------------------------------------------------------------------------
+# ── ns-titulos (r14, revisión Juanjo 6-ago): títulos por equipo ─────────────
+_patch(os.path.join(PUB, "hub", "documentation", "index.html"),
+       [("<h1>NutriSync — Documentation</h1>",
+         "<h1>Docs by Nutri-Backlog</h1>", False)], "ns-titulos: Docs by Nutri-Backlog")
+_patch(os.path.join(PUB, "hub", "development-planning-backlog.html"),
+       [("<h1>NutriSync — Platform &amp; Infrastructure Backlog</h1>",
+         "<h1>Backlog by Nutri-Engineering</h1>", False)], "ns-titulos: Backlog by Nutri-Engineering")
+
 # ns-selfhost (po74, requisito jurídico): CERO CDNs de terceros en el sitio.
 # Copia fuentes variables (fontsource) y librerías UMD a /assets y reescribe
 # TODAS las páginas: Google Fonts → /assets/fonts/fonts.css · esm.sh →

@@ -12,8 +12,8 @@
     noAct: 'Sin actividad registrada todavía — las barras aparecen cuando las testers empiecen a registrar.',
     subs: 'Suscripciones', subsPend: 'Pendiente de Epic L (pagos)',
     subsBody: 'Todavía no hay suscripciones: el cobro se activa con Epic L (RevenueCat + tiendas), previsto antes del lanzamiento del 8-oct.',
-    planLbl: 'Plan Y1 conservador', users: 'usuarias', conv: 'conversión prevista',
-    bc: 'Business case · plan vs real', bcSub: 'Escenario conservador · Y1 755 usuarias · 28.068 €',
+    planLbl: 'Plan Y1 realista (ago-2026)', users: 'usuarias', conv: 'conversión prevista',
+    bc: 'Business case · plan vs real', bcSub: 'Escenario realista ago-2026 · Y1 2.634 usuarias · 74.772 €',
     revenue: 'Ingresos', costs: 'Costes', profit: 'Beneficio', plan: 'plan', real: 'real',
     burnup: 'Usuarias acumuladas · plan vs real', month: 'mes',
     noBC: 'Falta cargar el baseline del business case (hub → Finanzas).',
@@ -27,8 +27,8 @@
     noAct: 'No activity logged yet — bars appear once testers start logging.',
     subs: 'Subscriptions', subsPend: 'Pending Epic L (payments)',
     subsBody: 'No subscriptions yet: billing goes live with Epic L (RevenueCat + stores), planned before the 8 Oct launch.',
-    planLbl: 'Conservative Y1 plan', users: 'users', conv: 'planned conversion',
-    bc: 'Business case · plan vs actual', bcSub: 'Conservative scenario · Y1 755 users · €28,068',
+    planLbl: 'Realistic Y1 plan (Aug-2026)', users: 'users', conv: 'planned conversion',
+    bc: 'Business case · plan vs actual', bcSub: 'Realistic scenario (Aug-2026) · Y1 2,634 users · €74,772',
     revenue: 'Revenue', costs: 'Costs', profit: 'Profit', plan: 'plan', real: 'actual',
     burnup: 'Cumulative users · plan vs actual', month: 'month',
     noBC: 'Business case baseline not loaded yet (hub → Finance).',
@@ -158,8 +158,8 @@
       '<div style="font-weight:800;color:#7A5A33;font-size:13px;margin-bottom:4px">⏳ ' + T.subsPend + '</div>' +
       '<div style="font-size:12.5px;color:#7A5A33;line-height:1.5">' + T.subsBody + '</div></div>' +
       '<div style="display:flex;gap:18px;margin-top:12px">' +
-      stat(T.planLbl, '755', T.users) + stat('ARPU', '8 €', 'LTV 24,03 € · CAC 15 €') +
-      stat(T.conv, '10%', 'Y1 28.068 €') + '</div>');
+      stat(T.planLbl, '2.634', T.users) + stat('ARPU', '4,99 €', 'LTV 62,40 € · CAC 15 €') +
+      stat(T.conv, '6,5%', 'Y1 74.772 €') + '</div>');
 
     sb.auth.getSession().then(function (r) {
       var session = r && r.data && r.data.session;

@@ -1,5 +1,5 @@
 <!-- ns-kpi-live --><script type="module">
-/* r11d → po56 · KPIs honestos: actual (live) vs plan (modelo conservador).
+/* r11d → po56 · KPIs honestos: actual (live) vs plan (modelo realista ago-2026).
    po56: selección por ETIQUETA (.lab) en vez de id kTotal — el mismo snippet
    sirve en admin-mis-console.html Y en el MIS del gated site de Builders
    (que seguía enseñando "Illustrative sample data"). Pre-lanzamiento:
@@ -7,7 +7,7 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
 const sb=createClient(U,K);
-const PLAN={users_y1:755, revenue_y1:28068, conv:0.10};   // modelo Conservative (Business Tracker G3)
+const PLAN={users_y1:2634, revenue_y1:74772, conv:0.065};   // modelo realista ago-2026 (misma fuente que admin_business_case)
 
 const kpis=[...document.querySelectorAll('.kpi')];
 const by=re=>kpis.find(k=>re.test((k.querySelector('.lab')||{textContent:''}).textContent));
@@ -22,7 +22,7 @@ function setCard(k,val,sub,subColor){
   // cabecera + fecha SIEMPRE sinceras (con o sin sesión)
   document.querySelectorAll('*').forEach(n=>{
     if(n.children.length===0&&/Illustrative sample data/.test(n.textContent))
-      n.textContent=session?'LIVE · actuals vs plan (Conservative Y1: 755 users · €28,068)':'MUESTRA — inicia sesión de admin para ver datos reales';
+      n.textContent=session?'LIVE · actuals vs plan (Realistic Y1: 2,634 users · €74,772)':'MUESTRA — inicia sesión de admin para ver datos reales';
     if(n.children.length===0&&/^As of /.test(n.textContent.trim()))
       n.textContent='As of '+new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
   });

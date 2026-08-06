@@ -47,6 +47,10 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
 .edad.tarde{background:#FFE4E0;color:#A32D2D}
 .edad.hecha{background:#E8F5EE;color:#0F6E56}
 .escal{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#FDE68A;color:#92400E}
+.sec{display:flex;align-items:center;gap:10px;margin:16px 0 4px;padding:8px 12px;background:#FBF6EF;border:1px solid #EFE3D7;border-radius:10px;cursor:pointer;user-select:none}
+.sec:hover{background:#FFF6F2}
+.sec .n{font-weight:800;font-size:13px}
+.sec .chev{margin-left:auto;color:#8A7F78;font-size:12px}
 </style></head><body><!-- ns-hub-navbar -->
 <div id="ns-hub-navbar">
 <style>
@@ -76,6 +80,11 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
 #ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
 @media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
 @media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
 </style>
 <div class="nsnb-app">
   <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
@@ -94,27 +103,7 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
 </div>
 <div class="nsnb-strip">
   <nav class="nsnb-tabs" id="nsnb-tabs">
-    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a>
-      <a class="nsnb-tab" href="/hub/daily-ops.html">📋 Operación</a>
-      <a class="nsnb-tab" href="/hub/decisions.html">🗳 Decisiones</a>
-      <a class="nsnb-tab" href="/hub/notifications.html">🔔 Notificaciones</a>
-      <a class="nsnb-tab" href="/hub/incidents.html">🎫 Incidencias</a>
-      <a class="nsnb-tab" href="/hub/admin-mis-console.html">📊 MIS</a>
-      <a class="nsnb-tab" href="/hub/finance.html">💶 Finanzas</a>
-      <a class="nsnb-tab" href="/hub/pilot.html">🧪 Piloto</a>
-      <a class="nsnb-tab" href="/hub/pilot-planning.html">🗓 Plan piloto</a>
-      <a class="nsnb-tab" href="/hub/pilot-observability.html">📡 Obs. piloto</a>
-      <a class="nsnb-tab" href="/hub/feedback.html">💬 Feedback</a>
-      <a class="nsnb-tab" href="/hub/waitlist.html">📬 Waitlist</a>
-      <a class="nsnb-tab" href="/hub/documentation/index.html">📚 Docs</a>
-    <a class="nsnb-tab" href="/hub/translations.html">🌍 Traducciones</a>
-      <a class="nsnb-tab" href="/hub/review.html">🔎 Review</a>
-      <a class="nsnb-tab" href="/hub/prototypes.html">🧩 Prototipos</a>
-      <a class="nsnb-tab" href="/hub/development-planning-backlog.html">🗂 Backlog</a>
-      <a class="nsnb-tab" href="/hub/investors-business-case.html">🎯 Pitch</a>
-      <a class="nsnb-tab" href="/hub/access.html">🔑 Access</a>
-      <a class="nsnb-tab" href="/hub/mfa.html">🔐 MFA</a>
-    </div>
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g4" data-en="Backlog" href="/hub/development-planning-backlog.html">🗂 Backlog</a><a class="nsnb-tab nsnb-g4" data-en="Docs" href="/hub/documentation/index.html">📚 Docs</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
     <div class="nsnb-row" id="nsnb-r2"></div>
   </nav>
 </div>
@@ -123,6 +112,11 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
   /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
      toda la navegación de la barra toma la ventana superior — adiós bucles */
   document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14: etiquetas bilingües — ES por defecto, EN si el navegador no va en español */
+  if((navigator.language||'').slice(0,2)!=='es'){
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      var p=a.textContent.trim().split(' ')[0];a.textContent=p+' '+a.getAttribute('data-en');});
+  }
   /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
      (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
   function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
@@ -228,7 +222,7 @@ function fail(e,fn){
 }
 
 var ASIGNABLES=['juanjose.cebrian@gmail.com','pilargonz05@gmail.com','lucia@nutrisynccollective.com',
-  'mariapaula@nutrisynccollective.com','build@nutrisynccollective.com','hello@nutrisynccollective.com'];
+  'mariapaula@nutrisynccollective.com','engineering@nutrisynccollective.com','build@nutrisynccollective.com','hello@nutrisynccollective.com'];
 var KINDS={creado:'🎫',comentario:'💬',estado:'🔁',asignacion:'👤',respuesta:'✍️',respuesta_enviada:'📨'};
 
 function fecha(s){if(!s)return '—';var d=new Date(s);
@@ -245,6 +239,36 @@ function fmtDur(h){
   if(h<48)return (h<10?h.toFixed(1):Math.round(h))+' h';
   return Math.round(h/24)+' d';
 }
+/* NSINC:begin */
+/* KPIs de servicio (Juanjo, 6-ago): puros y testeados en web-tests.
+   Día hábil = L-V; sáb/dom no corren. FCR = resuelta el MISMO día local. */
+window.NSINC={
+  diasHabilesEntre:function(a,b){
+    var ini=new Date(a).getTime(), fin=new Date(b).getTime(), ms=0;
+    if(!(fin>ini))return 0;
+    var d=new Date(ini);
+    while(d.getTime()<fin){
+      var sig=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1).getTime();
+      var dow=d.getDay();
+      if(dow!==0&&dow!==6)ms+=Math.min(fin,sig)-d.getTime();
+      d=new Date(sig);
+    }
+    return ms/864e5;
+  },
+  mismoDiaLocal:function(a,b){var x=new Date(a),y=new Date(b);
+    return x.getFullYear()===y.getFullYear()&&x.getMonth()===y.getMonth()&&x.getDate()===y.getDate();},
+  resumen:function(rows,nowMs){
+    var abiertas=rows.filter(function(t){return t.status!=='resuelto'&&t.status!=='cerrado';});
+    var res=rows.filter(function(t){return t.resolved_at;});
+    var lt24=abiertas.filter(function(t){return (nowMs-new Date(t.created_at).getTime())/36e5<24;}).length;
+    var hab=abiertas.filter(function(t){return window.NSINC.diasHabilesEntre(t.created_at,nowMs)>1;}).length;
+    var media=res.length?res.reduce(function(s,t){return s+(new Date(t.resolved_at)-new Date(t.created_at))/36e5;},0)/res.length:null;
+    var fcr=res.length?Math.round(100*res.filter(function(t){return window.NSINC.mismoDiaLocal(t.created_at,t.resolved_at);}).length/res.length):null;
+    return {total:rows.length,abiertas:abiertas.length,abiertas_lt24:lt24,abiertas_habil:hab,media_h:media,fcr_pct:fcr};
+  }
+};
+/* NSINC:end */
+
 function badgeEdad(t){
   if(t.resolved_at)
     return '<span class="edad hecha">⏱ resuelta en '+fmtDur(horasEntre(t.created_at,t.resolved_at))+'</span>';
@@ -277,7 +301,7 @@ function ticket(t){
     +'<div class="fld"><label>Asignado a</label><input type="text" class="edAs" list="nsAsig" value="'+esc(t.assigned_to||'')+'" placeholder="founder o dirección nutrisync"></div>'
     +'<div class="fld"><label>Acción interna (qué vamos a hacer — no lo ve la usuaria)</label>'
     +'<textarea class="edAc" placeholder="p. ej.: reproducir en 0.19, corregido en 0.21.0, pedir más datos…">'+esc(t.accion||'')+'</textarea></div>'
-    +'<div class="fld"><label>Comentario al rastro (opcional)</label><input type="text" class="edCm" placeholder="nota corta para el seguimiento"></div>'
+    +'<div class="fld"><label>Comentarios, observaciones (opcional)</label><input type="text" class="edCm" placeholder="nota corta para el seguimiento"></div>'
     +'<div class="acts"><button class="pri" onclick="window.nsGuardar(\''+esc(t.id)+'\')">Guardar seguimiento</button>'
     +(t.status!=='cerrado'?'<button onclick="window.nsCerrar(\''+esc(t.id)+'\',\''+esc(t.ticket_no)+'\')">✔ Cerrar incidencia</button>':'')
     +'<span class="ok-chip edOk1"></span></div>'
@@ -298,17 +322,36 @@ function ticket(t){
   return h+'</div></div>';
 }
 
+var ESTADOS=[['nuevo','🆕 Nuevas'],['en_curso','🔧 En curso'],['esperando_usuaria','⏳ Esperando a la usuaria'],
+  ['resuelto','✅ Resueltas'],['cerrado','🗄 Cerradas']];
+var SEC={resuelto:true,cerrado:true};   // plegadas por defecto; las vivas, abiertas
+window.nsSec=function(k){SEC[k]=!SEC[k];render();};
 function render(){
   var st=$('fSt').value, as=$('fAs').value;
   var rows=(D.tickets||[]).filter(function(t){
     return (!st||t.status===st)&&(!as||t.assigned_to===as);});
-  $('lista').innerHTML=rows.length?rows.map(ticket).join(''):'<p class="meta">Nada con esos filtros.</p>';
+  /* cascada: un bloque por estado, con contador y plegado */
+  var html='';
+  ESTADOS.forEach(function(e){
+    var g=rows.filter(function(t){return t.status===e[0];});
+    if(!g.length)return;
+    var plegada=SEC[e[0]]&&!st;
+    html+='<div class="sec" onclick="window.nsSec(\''+e[0]+'\')">'
+      +'<span class="pill s-'+e[0]+'">'+e[1]+'</span><span class="n">'+g.length+'</span>'
+      +'<span class="chev">'+(plegada?'▸ desplegar':'▾')+'</span></div>';
+    if(!plegada)html+=g.map(ticket).join('');
+  });
+  $('lista').innerHTML=html||'<p class="meta">Nada con esos filtros.</p>';
   $('count').textContent=rows.length+' de '+(D.tickets||[]).length;
+  var k=window.NSINC.resumen(D.tickets||[],Date.now());
   var r=D.resumen||{};
-  $('kpis').innerHTML=[['Tickets',r.total],['Nuevos',r.nuevos],['En curso',r.en_curso],
-    ['Esperando usuaria',r.esperando],['Resueltos',r.resueltos],
-    ['Abiertas +24 h ⚠',r.abiertas_24h],
-    ['Media resolución',r.media_resolucion_h!=null?fmtDur(Number(r.media_resolucion_h)):'—']].map(function(x){
+  var media=(r.media_resolucion_h!=null)?Number(r.media_resolucion_h):k.media_h;
+  $('kpis').innerHTML=[
+    ['Tickets',k.total],['Abiertas',k.abiertas],
+    ['Abiertas <24 h',k.abiertas_lt24],
+    ['Abiertas >1 día hábil ⚠',k.abiertas_habil],
+    ['Media resolución',media!=null?fmtDur(media):'—'],
+    ['FCR · cierre mismo día',k.fcr_pct!=null?k.fcr_pct+'%':'—']].map(function(x){
     return '<div class="kpi"><div class="l">'+x[0]+'</div><div class="v">'+(x[1]==null?'—':x[1])+'</div></div>';}).join('');
   var asigs=[];(D.tickets||[]).forEach(function(t){if(t.assigned_to&&asigs.indexOf(t.assigned_to)<0)asigs.push(t.assigned_to);});
   $('fAs').innerHTML='<option value="">asignado a: todas</option>'+asigs.map(function(a){

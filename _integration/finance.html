@@ -33,6 +33,19 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
   <h1>💶 Finanzas</h1>
   <div class="sub">Libro diario de caja (debe/haber) mantenido por founders + asientos automáticos de altas/suscripciones · cierres con candado · P&amp;L. Moneda: EUR. Cuando exista la SL, el asesor hereda el export limpio.</div>
 
+  <div class="card" id="costes-saas-card" style="border-left:3px solid #0F6E56">
+    <b style="font-size:14px">📄 Costes SaaS y esfuerzo founders — agosto 2026</b>
+    <div class="hint" style="margin-top:4px">Hoja con todas las suscripciones (Claude, ChatGPT, Supabase, Canva, iCloud, Google One, IONOS…),
+    el % imputado a NutriSync decidido el 5-ago y el bottom line (≈ 315 €/mes imputable · ≈ 3.800 €/año), más la hoja de esfuerzo
+    en horas por founder. Faltan: factura IONOS (Pilar), recibo Google One (Juanjo) y horas de julio de Lucía, Pilar y María Paula.</div>
+    <div class="row" style="margin-top:8px">
+      <a href="/hub/docs/NutriSync-Costes-SaaS-y-Esfuerzo-Founders-2026-08.xlsx" style="font-weight:700;font-size:13px">⬇ Descargar la hoja (Excel)</a>
+    </div>
+    <div class="hint" style="margin-top:6px">Con la hoja delante, los gastos se registran aquí mismo en <b>«1 · Nuevo asiento»</b> (DEBE, en euros,
+    un asiento por cargo con su nº de factura). Los indicadores, el P&amp;L y el MIS se recalculan solos al guardar cada asiento —
+    no hay nada más que actualizar a mano.</div>
+  </div>
+
   <div class="kpis" id="kpis"></div>
 
   <h2>1 · Nuevo asiento</h2>
@@ -86,7 +99,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
     <!-- r12: baseline del BUSINESS CASE, editable aquí; el MIS lo compara con los actuals -->
     <b style="display:block;margin-top:22px">📈 Business case · baseline mensual</b>
     <p style="font-size:12.5px;color:#6E655D;margin:4px 0 10px">
-      Plan del caso de negocio (escenario conservador Y1: 755 usuarias · 28.068 €). Edita cualquier celda y
+      Plan del caso de negocio (escenario realista ago-2026 · Y1: 2.634 usuarias · 74.772 €). Edita cualquier celda y
       guarda: el MIS y el Overview compararán estos números con los ingresos y costes reales del libro diario.
     </p>
     <table id="bc"><thead><tr><th>Mes</th><th class="num">Usuarias (acum.)</th><th class="num">Suscripciones</th>
