@@ -1049,10 +1049,11 @@ if os.path.exists(lp):
 fmis = os.path.join(ASSETS, "finance-mis.html")
 if os.path.exists(fmis) and os.path.exists(cns):
     ch = open(cns, encoding="utf-8").read()
-    if "ns-finance-mis" not in ch:
-        ch = ch.replace("</body>", open(fmis, encoding="utf-8").read() + "</body>", 1)
-        open(cns, "w", encoding="utf-8").write(ch)
-        print("- finance summary card wired into the admin console")
+    # r14c: refresh-on-change — el bloque viejo se retira y entra el vigente
+    ch = re.sub(r'<!-- ns-finance-mis -->[\s\S]*?</script>\n?', '', ch, count=1)
+    ch = ch.replace("</body>", open(fmis, encoding="utf-8").read() + "\n</body>", 1)
+    open(cns, "w", encoding="utf-8").write(ch)
+    print("- finance summary card (refresh) wired into the admin console")
 
 # ns-feedback-page: App Feedback as its OWN hub tab (r11d — moved out of the
 # console). Copies the page + adds the 💬 htab; also STRIPS the legacy embedded
@@ -1408,9 +1409,11 @@ if os.path.exists(_hidx):
 # ── ns-titulos (r14, revisión Juanjo 6-ago): títulos por equipo ─────────────
 _patch(os.path.join(PUB, "hub", "documentation", "index.html"),
        [("<h1>NutriSync — Documentation</h1>",
-         "<h1>Docs by NutriSync-Sprint Backlog</h1>", False),
+         "<h1>NutriSync-Sprint Backlog</h1>", False),
         ("<h1>Docs by Nutri-Backlog</h1>",
-         "<h1>Docs by NutriSync-Sprint Backlog</h1>", False)], "ns-titulos: Docs by NutriSync-Sprint Backlog")
+         "<h1>NutriSync-Sprint Backlog</h1>", False),
+        ("<h1>Docs by NutriSync-Sprint Backlog</h1>",
+         "<h1>NutriSync-Sprint Backlog</h1>", False)], "ns-titulos: NutriSync-Sprint Backlog")
 _patch(os.path.join(PUB, "hub", "development-planning-backlog.html"),
        [("<h1>NutriSync — Platform &amp; Infrastructure Backlog</h1>",
          "<h1>Backlog by Nutri-Engineering</h1>", False)], "ns-titulos: Backlog by Nutri-Engineering")
@@ -1728,6 +1731,12 @@ if os.path.exists(_ibc):
       '<a href="https://canva.link/0e050fpa0ewj4e4" target="_blank" rel="noopener" '
       'style="display:inline-block;background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;'
       'font-size:13px;border-radius:22px;padding:10px 20px;text-decoration:none">▶ View the deck on Canva</a>'
+            '<a href="/hub/docs/NutriSync-10-Types-Introduction-2026-08.pptx" '
+      'style="display:inline-block;background:#fff;color:#241D1A;font-weight:800;font-size:13px;'
+      'border-radius:22px;padding:10px 20px;text-decoration:none">\U0001f9e9 10 Types \u00b7 Introduction & Overlay</a>'
+      '<a href="/hub/docs/NutriSync-10-Types-Innovation-Proposal-2026-08.pptx" '
+      'style="display:inline-block;background:#fff;color:#241D1A;font-weight:800;font-size:13px;'
+      'border-radius:22px;padding:10px 20px;text-decoration:none">\U0001f9e9 10 Types \u00b7 Innovation Proposal</a>'
       '<a href="/hub/docs/NutriSync-Financial-Model-2026-08.xlsx" '
       'style="display:inline-block;background:#fff;color:#241D1A;font-weight:800;font-size:13px;'
       'border-radius:22px;padding:10px 20px;text-decoration:none">📊 Financial model (Excel · Aug 2026)</a>'

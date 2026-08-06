@@ -55,6 +55,7 @@
   }
 
   /* ── barras agrupadas plan vs real (SVG puro, sin librerías) ─────────────── */
+  function fmtN(v){v=+v||0;if(v>=1000)return (v/1000).toFixed(v>=10000?0:1).replace('.0','')+'k';return String(Math.round(v));}
   function barChart(rows, key, keyPlan, color) {
     var W = 560, H = 150, pad = 26, n = rows.length || 1;
     var max = 1;
@@ -64,6 +65,8 @@
     [0.25, 0.5, 0.75, 1].forEach(function (f) {
       var y = H - f * (H - 12);
       s += '<line x1="' + pad + '" y1="' + y + '" x2="' + (W - pad) + '" y2="' + y + '" stroke="' + C.line + '" stroke-width="1"/>';
+      /* r14c (revisión 2.1): la escala se LEE — número de referencia en cada línea */
+      s += '<text x="' + (pad - 3) + '" y="' + (y + 3) + '" font-size="8.5" fill="' + C.muted + '" text-anchor="end">' + fmtN(max * f) + '</text>';
     });
     rows.forEach(function (r, i) {
       var x = pad + i * bw + gap / 2;
@@ -71,6 +74,9 @@
       s += '<rect x="' + x + '" y="' + (H - hp) + '" width="' + half + '" height="' + hp + '" fill="' + C.plan + '" opacity="0.55" rx="3"/>';
       s += '<rect x="' + (x + half + gap) + '" y="' + (H - ha) + '" width="' + half + '" height="' + ha + '" fill="' + color + '" rx="3"/>';
       s += '<text x="' + (x + half) + '" y="' + (H + 16) + '" font-size="9" fill="' + C.muted + '" text-anchor="middle">' + r.month.slice(5) + '</text>';
+      /* valor real encima de su barra (si hay sitio y valor) */
+      if ((+r[key] || 0) > 0 && ha > 14)
+        s += '<text x="' + (x + half + gap + half / 2) + '" y="' + (H - ha - 3) + '" font-size="8.5" font-weight="700" fill="' + color + '" text-anchor="middle">' + fmtN(+r[key]) + '</text>';
     });
     return s + '</svg>';
   }

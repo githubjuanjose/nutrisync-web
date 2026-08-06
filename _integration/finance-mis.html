@@ -8,8 +8,10 @@ const card=(l,v,neg)=>`<div style="flex:1;min-width:170px;background:#fff;border
   const{data:{session}}=await sb.auth.getSession();
   if(!session){box.innerHTML='<div style="color:var(--muted);font-size:13px">Inicia sesi&oacute;n de admin arriba para ver finanzas.</div>';return;}
   const{data,error}=await sb.rpc('admin_finance_summary');
+  const bl=await sb.rpc('admin_build_ledger',{p_limit:1});   // r14c (2.3): el build también cuenta
+  const BG=(bl.data&&Number(bl.data.total_gasto_eur))||0, BR=(bl.data&&Number(bl.data.en_revision_eur))||0;
   if(error){box.innerHTML='<div style="color:var(--muted);font-size:13px">Sin acceso ('+String(error.message).replace(/[<>]/g,'')+') &mdash; &iquest;SQL finance aplicado?</div>';return;}
   const m=data.month||{},y=data.ytd||{};const rm=(m.in||0)-(m.out||0),ry=(y.in||0)-(y.out||0);
-  box.innerHTML=card('Caja',eur(data.cash),data.cash<0)+card('Ingresos mes',eur(m.in),false)+card('Gastos mes',eur(m.out),false)+card('Resultado mes',eur(rm),rm<0)+card('Resultado YTD',eur(ry),ry<0);
+  box.innerHTML=card('Caja',eur(data.cash),data.cash<0)+card('Ingresos mes',eur(m.in),false)+card('Gastos mes (caja)',eur(m.out),false)+card('Gasto build YTD',eur(BG),BG>0)+card('En revisión IAS 38',eur(BR),false)+card('Resultado YTD (caja+build)',eur(ry-BG),(ry-BG)<0);
 })();
 </script>

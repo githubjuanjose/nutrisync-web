@@ -141,13 +141,16 @@ function render(){
   $('chart').innerHTML=WEEKS.length?P.platformChart(WEEKS,SCALE):'<div class="warn">'+T.noRows+'</div>';
   $('chartLegend').innerHTML=WEEKS.length?P.legend([[T.plan,P.C.plan,1],['iOS',P.C.coral],['Android',P.C.good]]):'';
   const tb=document.querySelector('#pp tbody');
+  /* r14c: semana en curso = enseña reales YA (is_current derivado en cliente, día local) */
+  function esActual(w){var d=new Date(w.week+'T00:00:00');var hoy=new Date();hoy.setHours(0,0,0,0);
+    return d<=hoy && hoy<new Date(d.getTime()+7*864e5);}
   tb.innerHTML=WEEKS.map((w,i)=>{
     const inp=(k,v)=>'<input data-w="'+w.week+'" data-k="'+k+'" value="'+v+'" style="width:80px;text-align:right">';
     return '<tr class="'+(i===now?'now':'')+'"><td><b>'+esc(w.label)+'</b> <span class="hint">'+esc(w.week)+'</span></td>'+
       '<td class="num">'+inp('testers',w.testers_plan)+'</td>'+
       '<td class="num">'+inp('active',w.active_plan)+'</td>'+
-      '<td class="num">'+(w.is_past?w.installed:'—')+'</td>'+
-      '<td class="num">'+(w.is_past?w.active:'—')+'</td>'+
+      '<td class="num">'+((w.is_past||esActual(w))?w.installed:'—')+'</td>'+
+      '<td class="num">'+((w.is_past||esActual(w))?w.active:'—')+'</td>'+
       '<td><button class="mini" data-save="'+w.week+'">'+T.save+'</button> '+'<button class="mini" data-del="'+w.week+'" title="'+T.delTip+'">🗑</button></td></tr>';
   }).join('')||'<tr><td colspan="6" class="hint">'+T.noRows+'</td></tr>';
   tb.querySelectorAll('button[data-del]').forEach(b=>{

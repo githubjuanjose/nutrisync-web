@@ -72,7 +72,7 @@ select,input[type=text]{font-family:inherit;font-size:13px;padding:8px 10px;bord
 </div>
 <div class="nsnb-strip">
   <nav class="nsnb-tabs" id="nsnb-tabs">
-    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Launch plan" href="/hub/launch-plan.html">🗺 Plan 8-oct</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g4" data-en="Backlog by Nutri-Engineering" href="/hub/development-planning-backlog.html">🗂 Backlog by Nutri-Engineering</a><a class="nsnb-tab nsnb-g4" data-en="Docs by NutriSync-Sprint Backlog" href="/hub/documentation/index.html">📚 Docs by NutriSync-Sprint Backlog</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Launch plan" href="/hub/launch-plan.html">🗺 Plan 8-oct</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g4" data-en="Backlog by Nutri-Engineering" href="/hub/development-planning-backlog.html">🗂 Backlog by Nutri-Engineering</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync-Sprint Backlog" href="/hub/documentation/index.html">📚 NutriSync-Sprint Backlog</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
     <div class="nsnb-row" id="nsnb-r2"></div>
   </nav>
 </div>
@@ -212,8 +212,41 @@ function render(){
     <div class="meta"><b>${esc(r.email)}</b><span class="pill c">${esc(r.cohort||'—')}</span>${tk(r)}
     <span>${esc((r.created_at||'').slice(0,16).replace('T',' '))}</span>
     <span class="pill">v${esc(r.app_version||'?')} · ${esc(r.platform||'?')}</span></div>
-    <div class="msg">${esc(r.message)}</div></div>`).join('')||'<div class="hint">Sin mensajes con esos filtros.</div>';
+    <div class="msg">${esc(r.message)}</div>
+    ${r.ticket_id?`<div style="margin-top:8px"><button class="mini" onclick="window.fbTog('${esc(r.ticket_id)}')">✏️ Gestionar / Manage</button></div>
+    <div id="fb-${esc(r.ticket_id)}" style="display:none;border-top:1px dashed #EADFD0;margin-top:8px;padding-top:8px">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <select id="st-${esc(r.ticket_id)}">${['nuevo','en_curso','esperando_usuaria','resuelto','cerrado'].map(x=>`<option value="${x}"${x===r.ticket_status?' selected':''}>${x.replace(/_/g,' ')}</option>`).join('')}</select>
+        <input id="ac-${esc(r.ticket_id)}" type="text" placeholder="acción interna / internal action" style="flex:1;min-width:180px">
+        <button class="mini" onclick="window.fbSave('${esc(r.ticket_id)}')">💾 Guardar seguimiento</button>
+      </div>
+      <textarea id="re-${esc(r.ticket_id)}" placeholder="Respuesta a la usuaria (le llega a su app con el ${esc(r.ticket_no||'ticket')}) / reply lands in her app" style="width:100%;box-sizing:border-box;min-height:56px;margin-top:8px">${esc(r.respuesta||'')}</textarea>
+      <div style="display:flex;gap:8px;margin-top:6px;align-items:center">
+        <button class="mini" onclick="window.fbResp('${esc(r.ticket_id)}',false)">Guardar respuesta</button>
+        <button class="mini" style="background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:none" onclick="window.fbResp('${esc(r.ticket_id)}',true)">📨 Guardar y enviar a la usuaria</button>
+        <span class="hint" id="ok-${esc(r.ticket_id)}"></span>
+        <a class="hint" href="/hub/incidents.html" style="margin-left:auto">rastro completo → 🎫 Incidencias</a>
+      </div>
+    </div>`:''}</div>`).join('')||'<div class="hint">Sin mensajes con esos filtros.</div>';
 }
+/* r14c (punto 8): gestión ligera desde Feedback — mismo motor que Incidencias.
+   Hoy feedback y ticket van 1:1; cuando se separen, este panel solo saldrá donde haya ticket. */
+window.fbTog=id=>{const d=document.getElementById('fb-'+id);if(d)d.style.display=d.style.display==='none'?'block':'none';};
+window.fbSave=async id=>{
+  const ok=document.getElementById('ok-'+id);ok.textContent='guardando…';
+  const r=await sb.rpc('admin_ticket_update',{p_id:id,p_status:document.getElementById('st-'+id).value,
+    p_assigned:null,p_accion:document.getElementById('ac-'+id).value||null,p_comentario:'gestionado desde Feedback'});
+  ok.textContent=(r.error||!(r.data&&r.data.ok))?('⚠ '+((r.error&&r.error.message)||'error')):'✓ guardado';
+  if(!r.error)load();
+};
+window.fbResp=async(id,enviar)=>{
+  const txt=document.getElementById('re-'+id).value.trim(),ok=document.getElementById('ok-'+id);
+  if(!txt){ok.textContent='⚠ respuesta vacía';return;}
+  if(enviar&&!confirm('La usuaria verá esta respuesta en su app. ¿Enviar? / Send to her app?'))return;
+  ok.textContent=enviar?'enviando…':'guardando…';
+  const r=await sb.rpc('admin_ticket_respond',{p_id:id,p_respuesta:txt,p_enviar:enviar});
+  ok.textContent=(r.error||!(r.data&&r.data.ok))?('⚠ '+((r.error&&r.error.message)||'error')):(enviar?'📨 enviada':'✓ guardada');
+};
 const csvCell=v=>'"'+String(v??'').replace(/"/g,'""').replace(/\r?\n/g,' · ')+'"';
 window.exportCsv=()=>{
   const c=$('fCohort').value,p=$('fPlat').value,q=$('q').value.toLowerCase();
