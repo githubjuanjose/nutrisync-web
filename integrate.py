@@ -1660,9 +1660,11 @@ print("- ns-doors-grid: no aplica en v11.56 (flex-wrap nativo)")
 _ff = os.path.join(PUB, "index.html")
 if os.path.exists(_ff):
     _h = open(_ff, encoding="utf-8").read()
-    if 'id="ns-footer-font"' not in _h:
+    if True:
+        import re as _re2
+        _h = _re2.sub(r'<style id="ns-footer-font">[\s\S]*?</style>', '', _h)   # refresh-on-change
         _CSS = ('<style id="ns-footer-font">'
-          'footer a:not([style]){font-size:15px;line-height:1.85}''[data-ns="ns-footer-cols"]>div:empty{display:none}''@media(min-width:900px){[data-ns="ns-footer-cols"]>div:not(:empty){flex:1 1 0;min-width:0}}'
+          'footer a:not([style]){font-size:15px;line-height:1.85}''[data-ns="ns-footer-cols"]>div:not(:has(*)){display:none}''@media(min-width:900px){[data-ns="ns-footer-cols"]>div:not(:empty){flex:1 1 0;min-width:0}}'
           '</style>')
         _h = _h.replace("</body>", _CSS + "</body>", 1)
         open(_ff, "w", encoding="utf-8").write(_h)
