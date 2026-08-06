@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>36 · Analítica y visibilidad — dos raíles y una decisión</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.65}
+.w{max-width:860px;margin:0 auto;padding:30px 22px 90px}
+h1{font-size:24px;margin:0 0 6px}h2{font-size:17px;margin:28px 0 8px;color:#C73A20}
+p,li{font-size:14px}.meta{color:#8A7F78;font-size:12.5px;margin-bottom:18px}
+code{background:#F4F0EA;border-radius:5px;padding:1px 6px;font-size:12.5px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+th,td{padding:7px 9px;border-bottom:1px solid #EFE3D7;text-align:left;vertical-align:top}
+th{color:#8A7F78;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.box{background:#FFF8EF;border-left:3px solid #E8B072;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;margin:12px 0}
+.ok{color:#0F6E56;font-weight:700}.no{color:#A32D2D;font-weight:700}
+</style></head><body><div class="w">
+
+<h1 data-i="📈 Propuesta 36 — Analítica y visibilidad: dos raíles y una decisión|📈 Proposal 36 — Analytics & visibility: two rails and one decision"></h1>
+<div class="meta">6-ago-2026 · r14f · <span data-i="decisión D20 en la pestaña Decisions|decision D20 in the Decisions tab"></span></div>
+
+<p data-i="Queremos tráfico, descargas, ubicaciones y accesos en un dashboard sencillo para founders. La pregunta no es «¿Firebase sí o no?» sino «¿qué necesitamos que no tengamos ya?». Respuesta corta: el 80% ya es nuestro — solo hay que enchufarlo.|We want traffic, downloads, locations and access in one simple founders dashboard. The question is not “Firebase yes or no” but “what do we need that we don't already have?”. Short answer: 80% is already ours — it just needs plugging in."></p>
+
+<h2 data-i="Rail A — sin vendors nuevos (se activa YA)|Rail A — no new vendors (activates NOW)"></h2>
+<table>
+<tr><th data-i="Qué|What"></th><th data-i="De dónde sale|Source"></th><th data-i="Estado|Status"></th></tr>
+<tr><td data-i="Tráfico web (las 3 webs): visitas, páginas, únicos, países|Web traffic (all 3 sites): visits, pages, uniques, countries"></td><td>Cloudflare GraphQL API</td><td data-i="Edge <code>web-stats</code> lista + cron 07:45 — solo falta el token (2 min)|Edge <code>web-stats</code> ready + 07:45 cron — only the token missing (2 min)"></td></tr>
+<tr><td data-i="Descargas/instalaciones iOS|iOS installs"></td><td>App Store Connect API</td><td class="ok" data-i="YA corre (store-stats 06:30)|Already running (store-stats 06:30)"></td></tr>
+<tr><td data-i="Instalaciones Android + activas diarias|Android installs + daily actives"></td><td data-i="Señales propias (auth + access_log)|Our own signals (auth + access_log)"></td><td class="ok" data-i="YA corren|Already running"></td></tr>
+<tr><td data-i="Ubicaciones de usuarias de la app|App user locations"></td><td data-i="Ciudad del onboarding (permiso explícito, agregada sin PII)|Onboarding city (explicit consent, aggregated, no PII)"></td><td class="ok" data-i="YA se captura|Already captured"></td></tr>
+<tr><td data-i="Dashboard founders 📈 Panorama|Founders dashboard 📈 Panorama"></td><td data-i="Página nueva del hub, bilingüe|New hub page, bilingual"></td><td data-i="r15 (mañana) — bebe de todo lo anterior|r15 (tomorrow) — feeds on all of the above"></td></tr>
+</table>
+
+<h2 data-i="Rail B — Firebase: qué añade DE VERDAD y qué cuesta|Rail B — Firebase: what it TRULY adds and what it costs"></h2>
+<table>
+<tr><th data-i="Añade|Adds"></th><th data-i="Cuesta|Costs"></th></tr>
+<tr><td data-i="Crashlytics: stack traces de cierres inesperados (esto NO lo tenemos y es oro en piloto grande)|Crashlytics: crash stack traces (we do NOT have this; gold in a large pilot)"></td>
+<td data-i="SDK nativo → build nuevo en las DOS stores · datos a servidores de Google (EEUU)|Native SDK → new build on BOTH stores · data to Google servers (US)"></td></tr>
+<tr><td data-i="Analytics: retención por cohortes y funnels automáticos|Analytics: retention cohorts and automatic funnels"></td>
+<td data-i="App de SALUD: DPA con Google + consentimiento in-app + REDECLARAR privacy labels en App Store y data safety en Play (reabre revisiones) + dictamen del abogado (transferencias EEUU)|HEALTH app: Google DPA + in-app consent + REDECLARING App Store privacy labels and Play data safety (reopens reviews) + lawyer sign-off (US transfers)"></td></tr>
+</table>
+<div class="box" data-i="<b>Recomendación de ingeniería:</b> Rail A ya. Firebase solo con la firma del abogado (llega ≤8-ago: preguntarle esta semana), y si entra, empezar por <b>Crashlytics sin Analytics</b> — resuelve el dolor real (fallos) con la mínima superficie de datos. La retención por cohortes la calculamos nosotros con access_log cuando haga falta: los datos ya son nuestros.|<b>Engineering recommendation:</b> Rail A now. Firebase only with the lawyer's signature (arriving by Aug 8: ask this week), and if it enters, start with <b>Crashlytics without Analytics</b> — it solves the real pain (crashes) with minimal data surface. Cohort retention we can compute ourselves from access_log: the data is already ours."></div>
+
+<h2 data-i="Los 3 clics de Juanjo para encender el Rail A|Juanjo's 3 clicks to switch Rail A on"></h2>
+<ol>
+<li data-i="Cloudflare → dash.cloudflare.com → My Profile → API Tokens → Create Token → plantilla «Read analytics and logs» → zona nutrisynccollective.com → copiar TOKEN. El Zone ID está en la portada de la zona, columna derecha.|Cloudflare → dash.cloudflare.com → My Profile → API Tokens → Create Token → “Read analytics and logs” template → zone nutrisynccollective.com → copy TOKEN. Zone ID is on the zone overview, right column."></li>
+<li data-i="Terminal: <code>cd &quot;/Users/juanjo/SKG_AI_Tribe_Projects/NutriSync/backend-sql&quot; &amp;&amp; npx supabase secrets set CF_API_TOKEN=PEGAR_TOKEN CF_ZONE_ID=PEGAR_ZONE --project-ref nebkqncvapelrarruyqb &amp;&amp; npx supabase functions deploy web-stats --project-ref nebkqncvapelrarruyqb</code>|Terminal: same command."></li>
+<li data-i="SQL de la sesión (tabla + RPC + cron + decisión D20) — inline en el chat, como siempre.|Session SQL (table + RPC + cron + D20 decision) — inline in chat, as always."></li>
+</ol>
+
+</div></body></html>
