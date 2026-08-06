@@ -1400,6 +1400,48 @@ if os.path.exists(_hidx):
     print("- hub/index.html (puerta /hub) creado → #/builders")
 
 # ---------------------------------------------------------------------------
+# ── ns-room-gate (r14h, Juanjo): la sala Builders con código REAL 888000 y
+# reto de DOS posiciones aleatorias (patrón banca). El gate del pack aceptaba
+# cualquier 6 dígitos (length===6, sin comparación) — puro teatro. Ahora:
+# posiciones nuevas en cada carga, validación real (cosmética: la seguridad
+# de verdad sigue siendo Cloudflare Access + sesión en /hub/*).
+_rg = os.path.join(PUB, "index.html")
+if os.path.exists(_rg):
+    _h = open(_rg, encoding="utf-8").read()
+    _h = re.sub(r'<script id="ns-room-gate">[\s\S]*?</script>', '', _h)
+    _reps_gate = [
+        ("verifyHub: () => { if (this.state.hubCode.length === 6) {",
+         "verifyHub: () => { if (window.nsGateCheck && window.nsGateCheck(this.state.hubCode)) {"),
+        ("onHubCode: (e) => this.setState({ hubCode: (e.target.value || '').replace(/\\D/g, '').slice(0, 6) }),",
+         "onHubCode: (e) => this.setState({ hubCode: (e.target.value || '').replace(/\\D/g, '').slice(0, 2) }),"),
+        ("demoFill: () => this.setState({ hubCode: '123456' }),",
+         "demoFill: () => {},"),
+        ("otpBoxes: [0, 1, 2, 3, 4, 5].map((i) =>",
+         "otpBoxes: [0, 1].map((i) =>"),
+        ('hint-placeholder-count="6"', 'hint-placeholder-count="2"'),
+        ("This room is protected with two-factor authentication. Enter your 6-digit code to continue.",
+         'Sala del equipo · team room. <span class="ns-gate-pos">Introduce las posiciones del código / enter the code digits</span>.'),
+    ]
+    _n = 0
+    for _a, _b in _reps_gate:
+        if _a in _h:
+            _n += _h.count(_a); _h = _h.replace(_a, _b)   # ×N: la sala Investors comparte plantilla
+    _GATE = ('<script id="ns-room-gate">(function(){'
+      "var CODE='888000';"
+      "var p1=Math.floor(Math.random()*6),p2=Math.floor(Math.random()*6);"
+      "while(p2===p1)p2=Math.floor(Math.random()*6);"
+      "if(p1>p2){var t=p1;p1=p2;p2=t;}"
+      "window.nsGateCheck=function(v){v=String(v||'');"
+      "return v.length===2 && v.charAt(0)===CODE.charAt(p1) && v.charAt(1)===CODE.charAt(p2);};"
+      "function rotula(){document.querySelectorAll('.ns-gate-pos').forEach(function(n){"
+      "n.textContent='Introduce las posiciones '+(p1+1)+' y '+(p2+1)+' del c\u00f3digo del equipo / enter digits '+(p1+1)+' and '+(p2+1)+' of the team code';});}"
+      "if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',rotula);else rotula();"
+      "setInterval(rotula,1500);"   # sobrevive a re-renders del runtime (lección po82)
+      "})();</script>")
+    _h = _h.replace("</body>", _GATE + "</body>", 1)
+    open(_rg, "w", encoding="utf-8").write(_h)
+    print(f"- ns-room-gate: codigo 888000 + reto de 2 posiciones ({_n}/6 anclas)")
+
 # ── ns-titulos (r14, revisión Juanjo 6-ago): títulos por equipo ─────────────
 _patch(os.path.join(PUB, "hub", "documentation", "index.html"),
        [("<h1>NutriSync — Documentation</h1>",
