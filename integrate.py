@@ -25,6 +25,18 @@ Assets it needs live next to it in ./_integration/ :
 # ---------------------------------------------------------------------------
 import os, re, json, shutil, sys
 
+# ── AUTOBACKUP (r14i, regla Juanjo): red automática antes de CADA integración.
+# Guarda el publish/ vigente (la marcha atrás real) con rotación. Nunca más se
+# integra sin foto previa. Silencioso si algo falla — jamás bloquea el build.
+import subprocess as _sp, os as _os
+try:
+    _bk = _os.path.join(_os.path.dirname(__file__), "..", "..", "tools", "ns-autobackup.sh")
+    _root = _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "..", ".."))
+    if _os.path.exists(_bk):
+        _sp.run(["bash", _bk, _root], timeout=120, check=False)
+except Exception:
+    pass
+
 ROOT   = os.path.dirname(os.path.abspath(__file__))
 PUB    = os.path.join(ROOT, "publish")
 ASSETS = os.path.join(ROOT, "_integration")
@@ -1419,35 +1431,72 @@ if os.path.exists(_dg):
     else:
         print("! ns-doors-grid v2: el contenedor flex del pie no está donde esperaba — SIN TOCAR")
 
-# ── ns-builders-direct (r14h FINAL, Juanjo: «directos, sin vueltas»): las
-# tarjetas Pitch y Builders del pie llevan DIRECTO a sus páginas del hub. La
-# «BUILDER ROOM» del builder de Design es un aterrizaje intermedio que sobra;
-# Cloudflare Access + sesión son la puerta real dentro de /hub/. Con red de
-# seguridad: si alguien cae en esa room por un enlace viejo, se le lleva al hub.
+# ── ns-room-gate (r14i, diseño de Juanjo para el PIN admin): las tarjetas
+# Pitch/Builders del pie abren su sala; nosotros VESTIMOS la cortinilla del
+# código con el patrón banca (6 puntos · 2 posiciones aleatorias de 888000 ·
+# teclado barajado, nada que teclear) y, al acertar, saltamos DIRECTO al hub —
+# la «BUILDER ROOM» de Design nunca se llega a ver. Cosmético: la seguridad
+# real sigue siendo Cloudflare Access + sesión dentro de /hub/.
 _bd = os.path.join(PUB, "index.html")
 if os.path.exists(_bd):
     _h = open(_bd, encoding="utf-8").read()
     import re as _re
-    _h = _re.sub(r'<script id="ns-room-gate">[\s\S]*?</script>', '', _h)   # fuera cualquier cortinilla previa
-    _HUB_B = "/hub/full-hub-gated-site.html?r=builders"
-    _HUB_P = "/hub/investors-business-case.html"
-    _n = _h.count('onClick="{{ openBuilders }}"') + _h.count('onClick="{{ openInvestors }}"')
-    _h = _h.replace('<a onClick="{{ openBuilders }}"',  '<a data-ns="ns-builders-direct" href="%s"' % _HUB_B)
-    _h = _h.replace('<a onClick="{{ openInvestors }}"', '<a data-ns="ns-pitch-direct" href="%s"'   % _HUB_P)
-    _h = _h.replace('onClick="{{ openBuilders }}"',  'href="%s"' % _HUB_B)
-    _h = _h.replace('onClick="{{ openInvestors }}"', 'href="%s"' % _HUB_P)
-    _h = _h.replace("hubCode: '123456'", "hubCode: ''")
-    _RED = ('<script id="ns-rooms-off">(function(){'
-      "var B='/hub/full-hub-gated-site.html?r=builders', P='/hub/investors-business-case.html';"
-      "function fuera(){var t=(document.body&&document.body.innerText||'');"
-        "if(t.indexOf('BUILDER ROOM')>-1||t.indexOf('Builder access')>-1){location.replace(B);return;}"
-        "if(t.indexOf('INVESTOR ROOM')>-1||t.indexOf('Investor access')>-1){location.replace(P);}}"
-      "if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fuera);else fuera();"
-      "setInterval(fuera,600);"
+    _h = _re.sub(r'<script id="ns-room-gate">[\s\S]*?</script>', '', _h)
+    _h = _h.replace("hubCode: '123456'", "hubCode: ''")   # sin código de teatro en el HTML
+    _h = _h.replace("This room is protected with two-factor authentication. Enter your 6-digit code to continue.",
+                    "Sala del equipo \u00b7 team room")
+    _GATE = ('<script id="ns-room-gate">(function(){'
+      "var CODE='888000', HUB='/hub/full-hub-gated-site.html?r=builders';"
+      "function nuevas(){var a=Math.floor(Math.random()*6),b=Math.floor(Math.random()*6);"
+        "while(b===a)b=Math.floor(Math.random()*6);return a<b?[a,b]:[b,a];}"
+      "var PIDE=nuevas(), puestos=['',''], cursor=0;"
+      "var teclas=[0,1,2,3,4,5,6,7,8,9];"
+      "for(var i=teclas.length-1;i>0;i--){var k=Math.floor(Math.random()*(i+1));var tt=teclas[i];teclas[i]=teclas[k];teclas[k]=tt;}"
+      "var ES=(navigator.language||'en').toLowerCase().indexOf('es')===0;"
+      "try{var L=localStorage.getItem('ns_lang');if(L)ES=(L==='es');}catch(e){}"
+      "function T(es,en){return ES?es:en;}"
+      "function css(){return '<style id=\"nsg-css\">"
+        ".nsg{margin:22px 0 0;text-align:center}"
+        ".nsg-msg{font:600 14px/1.5 Poppins,system-ui,sans-serif;color:#6B615C;margin:0 0 16px}.nsg-msg b{color:#C73A20}"
+        ".nsg-dots{display:flex;gap:12px;justify-content:center;margin:0 0 20px}"
+        ".nsg-dot{width:24px;height:24px;border-radius:50%;border:2px solid #C9BEB4;background:#C9BEB4}"
+        ".nsg-dot.pide{background:#fff;border-color:#E1946C}"
+        ".nsg-dot.activo{box-shadow:0 0 0 5px rgba(225,148,108,.30)}"
+        ".nsg-dot.hecho{background:#0F6E56;border-color:#0F6E56}"
+        ".nsg-pad{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:#E6D2C2;border:1px solid #E6D2C2;border-radius:14px;overflow:hidden;max-width:440px;margin:0 auto}"
+        ".nsg-k{background:#fffdfa;border:0;font:700 25px/1 Poppins,system-ui,sans-serif;color:#241D1A;padding:20px 0;cursor:pointer}"
+        ".nsg-k:hover{background:#FFF1EC;color:#C73A20}.nsg-k:active{transform:scale(.95)}"
+        ".nsg-clr{margin-top:12px;background:none;border:0;font:600 12.5px Poppins,system-ui,sans-serif;color:#8A7F78;cursor:pointer;text-decoration:underline}"
+        ".nsg-err{color:#C73A20;font-weight:800}</style>';}"
+      "function pinta(el){var d='';for(var i=0;i<6;i++){var idx=PIDE.indexOf(i),pide=idx>-1;"
+          "var cls='nsg-dot'+(pide?' pide':'')+(pide&&puestos[idx]?' hecho':'')+(pide&&idx===cursor&&!puestos[idx]?' activo':'');"
+          "d+='<div class=\"'+cls+'\"></div>';}"
+        "var k='';for(var j=0;j<teclas.length;j++)k+='<button type=\"button\" class=\"nsg-k\" data-d=\"'+teclas[j]+'\">'+teclas[j]+'</button>';"
+        "el.innerHTML=css()+'<div class=\"nsg-msg\" id=\"nsg-msg\">'"
+          "+T('Completa las posiciones <b>'+(PIDE[0]+1)+'</b> y <b>'+(PIDE[1]+1)+'</b> de la clave del equipo',"
+             "'Complete positions <b>'+(PIDE[0]+1)+'</b> and <b>'+(PIDE[1]+1)+'</b> of the team key')"
+          "+'</div><div class=\"nsg-dots\">'+d+'</div><div class=\"nsg-pad\">'+k+'</div>'"
+          "+'<button type=\"button\" class=\"nsg-clr\" id=\"nsg-clr\">'+T('Borrar','Clear')+'</button>';"
+        "el.querySelectorAll('.nsg-k').forEach(function(b){b.onclick=function(){pulsa(el,b.getAttribute('data-d'));};});"
+        "el.querySelector('#nsg-clr').onclick=function(){puestos=['',''];cursor=0;pinta(el);};}"
+      "function pulsa(el,d){if(cursor>1)return;puestos[cursor]=String(d);cursor++;pinta(el);"
+        "if(cursor===2){var ok=puestos[0]===CODE.charAt(PIDE[0])&&puestos[1]===CODE.charAt(PIDE[1]);"
+          "var m=document.getElementById('nsg-msg');"
+          "if(ok){if(m)m.innerHTML=T('\u2713 Correcto \u2014 entrando\u2026','\u2713 Correct \u2014 entering\u2026');"
+            "setTimeout(function(){location.href=HUB;},450);}"
+          "else{if(m){m.innerHTML=T('Esas cifras no son \u2014 prueba otra vez','Wrong digits \u2014 try again');m.className='nsg-msg nsg-err';}"
+            "PIDE=nuevas();setTimeout(function(){puestos=['',''];cursor=0;pinta(el);},900);}}}"
+      "function montar(){var inp=document.querySelector('input[placeholder=\"Enter code\"]');"
+        "if(!inp)return;var card=inp.parentNode;if(!card||card.querySelector('.nsg'))return;"
+        "inp.style.display='none';var prev=inp.previousElementSibling;if(prev)prev.style.display='none';"
+        "var nx=inp.nextElementSibling;if(nx&&nx.tagName==='BUTTON')nx.style.display='none';"
+        "var box=document.createElement('div');box.className='nsg';card.insertBefore(box,inp);pinta(box);}"
+      "if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',montar);else montar();"
+      "setInterval(montar,900);"
       "})();</script>")
-    _h = _h.replace("</body>", _RED + "</body>", 1)
+    _h = _h.replace("</body>", _GATE + "</body>", 1)
     open(_bd, "w", encoding="utf-8").write(_h)
-    print(f"- ns-builders-direct FINAL: {_n} puerta(s) al hub + red anti-room")
+    print("- ns-room-gate: PIN admin con tu diseño (puntos + teclado barajado, 888000)")
 
 # ── ns-titulos (r14, revisión Juanjo 6-ago): títulos por equipo ─────────────
 _patch(os.path.join(PUB, "hub", "documentation", "index.html"),
@@ -1568,14 +1617,14 @@ if os.path.exists(_ad):
     else:
         _k = _s0.find('{{ openBuilders }}')
         if _k < 0:
-            _k = _s0.find('data-ns="ns-builders-direct"')   # el pie ya lleva la puerta directa
+            _k = _s0.find('data-ns="ns-builders-direct"')
         _close = _s0.find('</a>', _k) + len('</a>') if _k > 0 else -1
         if _k < 0 or _close < 4:
             print("! ns-admin-door: no encuentro la puerta de Builders — SIN TOCAR")
         else:
             _DOOR = ('<a data-ns="ns-admin-door" href="https://admin.nutrisynccollective.com" '
               'target="_blank" rel="noopener" style="grid-column: 1 / -1; cursor: pointer; text-decoration: none; '
-              'display: inline-flex; align-items: center; gap: 9px; background: #2A2421; '
+              'display: inline-flex; align-items: center; justify-content: center; gap: 9px; background: #2A2421; '
               'border: 1px solid #3A322F; border-radius: 11px; padding: 7px 12px;">'
               '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E1946C" '
               'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'
