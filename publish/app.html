@@ -9,21 +9,7 @@
 <script src="/assets/vendor/react.production.min.js"></script>
 <script src="/assets/vendor/react-dom.production.min.js"></script>
 <script src="./support.js"></script>
-<style id="ns-err-hide">#__bundler_err{display:none!important}</style><script id="ns-forgot-pw" type="module">
-const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
-const { createClient } = window.supabase;
-const sb=createClient(U,K,{auth:{persistSession:false}});
-document.addEventListener('click',async(e)=>{
-  const el=e.target.closest('#ns-forgot'); if(!el) return;
-  if((location.hash||'').indexOf('demo')>-1){alert('Demo mode \u2014 password reset works in the live app.');return;}
-  let email='';
-  document.querySelectorAll('input').forEach(i=>{if(!email&&/@.+\./.test(i.value||''))email=i.value.trim();});
-  if(!email) email=(window.prompt('Enter your account email:')||'').trim();
-  if(!email||!/@.+\./.test(email)) return;
-  const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname.replace(/[^\/]*$/,'')+'reset.html'});
-  alert(error?('Could not send reset email: '+error.message):('Reset link sent to '+email+' \u2014 check your inbox.'));
-},true);
-</script><script src="/assets/vendor/supabase.js"></script><style id="ns-consent-css">
+<style id="ns-err-hide">#__bundler_err{display:none!important}</style><style id="ns-consent-css">
 #ns-consent{position:fixed;left:16px;right:16px;bottom:16px;z-index:99998;background:#fff;border:1px solid #EADFD5;border-radius:16px;box-shadow:0 20px 50px -20px rgba(0,0,0,.35);padding:18px 20px;max-width:640px;margin:0 auto;font-family:'Inter',system-ui,sans-serif;color:#241D1A}
 #ns-consent h4{margin:0 0 6px;font-size:15px;font-weight:800}#ns-consent p{margin:0 0 12px;font-size:13px;color:#736862;line-height:1.5}
 #ns-consent .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}#ns-consent button{border:none;border-radius:24px;padding:10px 18px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit}
@@ -58,7 +44,21 @@ d.innerHTML='<div style="display:flex;align-items:center;gap:9px;margin-bottom:6
 document.body.appendChild(d);
 document.getElementById("ns-accept").onclick=function(){save({essential:true,analytics:false,personalization:false});};}
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",build);else build();
-setTimeout(function(){if(!have()&&!document.getElementById("ns-consent"))build();},1600);})();</script><script id="ns-pilot-banner">(function(){var ES=(navigator.language||'en').toLowerCase().indexOf('es')===0;var TXT=ES?'🚧 NutriSync está en fase de desarrollo · piloto interno cerrado — aún no disponible para el público · <a href="mailto:contact@nutrisynccollective.com" style="color:#FFB48A;text-decoration:underline">contact@nutrisynccollective.com</a>':'🚧 NutriSync is in development · closed internal pilot — not yet available to the public · <a href="mailto:contact@nutrisynccollective.com" style="color:#FFB48A;text-decoration:underline">contact@nutrisynccollective.com</a>';function put(){if(document.getElementById('ns-pilot-bar'))return;var d=document.createElement('div');d.id='ns-pilot-bar';d.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:380;background:#241D1A;color:#F5EFE7;font:600 11.5px/1.4 Poppins,system-ui,sans-serif;text-align:center;padding:8px 14px;letter-spacing:.2px;box-shadow:0 -4px 18px rgba(0,0,0,.18)';d.innerHTML=TXT;document.body.appendChild(d);}if(document.readyState!=='loading')put();else document.addEventListener('DOMContentLoaded',put);setInterval(put,1500);})();</script></head>
+setTimeout(function(){if(!have()&&!document.getElementById("ns-consent"))build();},1600);})();</script><script id="ns-forgot-pw" type="module">
+const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+const { createClient } = window.supabase;
+const sb=createClient(U,K,{auth:{persistSession:false}});
+document.addEventListener('click',async(e)=>{
+  const el=e.target.closest('#ns-forgot'); if(!el) return;
+  if((location.hash||'').indexOf('demo')>-1){alert('Demo mode \u2014 password reset works in the live app.');return;}
+  let email='';
+  document.querySelectorAll('input').forEach(i=>{if(!email&&/@.+\./.test(i.value||''))email=i.value.trim();});
+  if(!email) email=(window.prompt('Enter your account email:')||'').trim();
+  if(!email||!/@.+\./.test(email)) return;
+  const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname.replace(/[^\/]*$/,'')+'reset.html'});
+  alert(error?('Could not send reset email: '+error.message):('Reset link sent to '+email+' \u2014 check your inbox.'));
+},true);
+</script><script src="/assets/vendor/supabase.js"></script><script id="ns-pilot-banner">(function(){var ES=(navigator.language||'en').toLowerCase().indexOf('es')===0;var TXT=ES?'🚧 NutriSync está en fase de desarrollo · piloto interno cerrado — aún no disponible para el público · <a href="mailto:contact@nutrisynccollective.com" style="color:#FFB48A;text-decoration:underline">contact@nutrisynccollective.com</a>':'🚧 NutriSync is in development · closed internal pilot — not yet available to the public · <a href="mailto:contact@nutrisynccollective.com" style="color:#FFB48A;text-decoration:underline">contact@nutrisynccollective.com</a>';function put(){if(document.getElementById('ns-pilot-bar'))return;var d=document.createElement('div');d.id='ns-pilot-bar';d.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:380;background:#241D1A;color:#F5EFE7;font:600 11.5px/1.4 Poppins,system-ui,sans-serif;text-align:center;padding:8px 14px;letter-spacing:.2px;box-shadow:0 -4px 18px rgba(0,0,0,.18)';d.innerHTML=TXT;document.body.appendChild(d);}if(document.readyState!=='loading')put();else document.addEventListener('DOMContentLoaded',put);setInterval(put,1500);})();</script></head>
 <body>
 <x-dc>
 <helmet>

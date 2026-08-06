@@ -1419,43 +1419,35 @@ if os.path.exists(_dg):
     else:
         print("! ns-doors-grid v2: el contenedor flex del pie no está donde esperaba — SIN TOCAR")
 
-# ── ns-builders-direct (r14h v3, Juanjo: «simplifica»): las salas del builder
-# se jubilan. Pitch y Builders llevan DIRECTO a sus páginas del hub, donde la
-# puerta real (Cloudflare Access + sesión) ya vigila. Cero portadas, cero
-# cortinillas, cero códigos de teatro. Con red de seguridad: si alguien cae en
-# una sala por un enlace viejo o estado guardado, se le lleva al hub.
+# ── ns-builders-direct (r14h FINAL, Juanjo: «directos, sin vueltas»): las
+# tarjetas Pitch y Builders del pie llevan DIRECTO a sus páginas del hub. La
+# «BUILDER ROOM» del builder de Design es un aterrizaje intermedio que sobra;
+# Cloudflare Access + sesión son la puerta real dentro de /hub/. Con red de
+# seguridad: si alguien cae en esa room por un enlace viejo, se le lleva al hub.
 _bd = os.path.join(PUB, "index.html")
 if os.path.exists(_bd):
     _h = open(_bd, encoding="utf-8").read()
+    import re as _re
+    _h = _re.sub(r'<script id="ns-room-gate">[\s\S]*?</script>', '', _h)   # fuera cualquier cortinilla previa
     _HUB_B = "/hub/full-hub-gated-site.html?r=builders"
     _HUB_P = "/hub/investors-business-case.html"
-    _h = re.sub(r'<script id="ns-rooms-off">[\s\S]*?</script>', '', _h)
-    _h = re.sub(r'<script id="ns-room-gate">[\s\S]*?</script>', '', _h)   # limpieza del gate jubilado
     _n = _h.count('onClick="{{ openBuilders }}"') + _h.count('onClick="{{ openInvestors }}"')
-    _h = _h.replace('<a onClick="{{ openBuilders }}"',
-                    '<a data-ns="ns-builders-direct" href="%s"' % _HUB_B)
-    _h = _h.replace('<a onClick="{{ openInvestors }}"',
-                    '<a data-ns="ns-pitch-direct" href="%s"' % _HUB_P)
-    _h = _h.replace('onClick="{{ openBuilders }}"', 'href="%s"' % _HUB_B)
+    _h = _h.replace('<a onClick="{{ openBuilders }}"',  '<a data-ns="ns-builders-direct" href="%s"' % _HUB_B)
+    _h = _h.replace('<a onClick="{{ openInvestors }}"', '<a data-ns="ns-pitch-direct" href="%s"'   % _HUB_P)
+    _h = _h.replace('onClick="{{ openBuilders }}"',  'href="%s"' % _HUB_B)
     _h = _h.replace('onClick="{{ openInvestors }}"', 'href="%s"' % _HUB_P)
-    _h = _h.replace("hubCode: '123456'", "hubCode: ''")   # sin salas, sin código de teatro en el HTML
+    _h = _h.replace("hubCode: '123456'", "hubCode: ''")
     _RED = ('<script id="ns-rooms-off">(function(){'
       "var B='/hub/full-hub-gated-site.html?r=builders', P='/hub/investors-business-case.html';"
-      "function fuera(){"
-        "var t=(document.body&&document.body.innerText||'');"
-        "if(t.indexOf('BUILDER ROOM')>-1){location.replace(B);return;}"
-        "if(t.indexOf('Builder access')>-1||t.indexOf('Investor access')>-1){location.replace(B);return;}"
-        "if(t.indexOf('INVESTOR ROOM')>-1){location.replace(P);}"
-      "}"
+      "function fuera(){var t=(document.body&&document.body.innerText||'');"
+        "if(t.indexOf('BUILDER ROOM')>-1||t.indexOf('Builder access')>-1){location.replace(B);return;}"
+        "if(t.indexOf('INVESTOR ROOM')>-1||t.indexOf('Investor access')>-1){location.replace(P);}}"
       "if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fuera);else fuera();"
-      "setInterval(fuera,700);"   # el runtime pinta tarde: vigilancia continua (po82)
+      "setInterval(fuera,600);"
       "})();</script>")
     _h = _h.replace("</body>", _RED + "</body>", 1)
     open(_bd, "w", encoding="utf-8").write(_h)
-    print(f"- ns-builders-direct v3: {_n} puerta(s) al hub + red anti-sala")
-
-# (ns-room-gate retirado r14h-v3: las salas del builder ya no se visitan —
-#  Pitch y Builders van directos al hub, donde manda Cloudflare Access.)
+    print(f"- ns-builders-direct FINAL: {_n} puerta(s) al hub + red anti-room")
 
 # ── ns-titulos (r14, revisión Juanjo 6-ago): títulos por equipo ─────────────
 _patch(os.path.join(PUB, "hub", "documentation", "index.html"),
@@ -1576,7 +1568,7 @@ if os.path.exists(_ad):
     else:
         _k = _s0.find('{{ openBuilders }}')
         if _k < 0:
-            _k = _s0.find('data-ns="ns-builders-direct"')   # ya reescrita por el paso anterior
+            _k = _s0.find('data-ns="ns-builders-direct"')   # el pie ya lleva la puerta directa
         _close = _s0.find('</a>', _k) + len('</a>') if _k > 0 else -1
         if _k < 0 or _close < 4:
             print("! ns-admin-door: no encuentro la puerta de Builders — SIN TOCAR")
