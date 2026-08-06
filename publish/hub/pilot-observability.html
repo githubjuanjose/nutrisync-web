@@ -273,6 +273,13 @@ td.msg{max-width:520px;white-space:pre-wrap}
     <div class="hint" data-t="fbHint"></div>
     <h2 data-t="h5"></h2>
 <div class="card" id="trafKpis" style="display:flex;gap:18px;flex-wrap:wrap"></div>
+<div style="display:flex;gap:6px;margin-top:10px;align-items:center">
+  <span class="hint" id="granNota"></span>
+  <span style="margin-left:auto"></span>
+  <button class="mini gran on" data-g="d"></button><button class="mini gran" data-g="w"></button>
+  <button class="mini gran" data-g="m"></button><button class="mini gran" data-g="y"></button>
+</div>
+<style>.gran.on{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:none}</style>
 <div class="grid2" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
   <div class="card"><b style="font-size:12.5px" data-t="tWeb"></b><div id="trafWeb" style="margin-top:8px"></div></div>
   <div class="card"><b style="font-size:12.5px" data-t="tApp"></b><div id="trafApp" style="margin-top:8px"></div></div>
@@ -305,7 +312,7 @@ const T=ES?{
   autoSub:'Se comprueba solo cada vez que abres esta página · nada que ejecutar a mano',
   jNever:'sin ejecutar todavía', jStale:'sin correr en más de 26 h', jFail:'último intento fallido',
   snapLbl:'Última foto de TestFlight',
-  h1:'Estado de distribución del build', h2:'Uso real', h3:'Embudo por cohorte', h4:'Feedback reciente', cTicket:'Ticket', h5:'📡 Tráfico y accesos (Cloudflare + señales propias)', tWeb:'Web · visitantes únicos por día', tApp:'App · personas que la abren por día', tPaises:'Países (peticiones de ayer)', kUnicos:'únicos ayer', kVistas:'páginas vistas ayer', kIos:'iOS instaladas (TestFlight)', kAnd:'Android dentro', kAct:'activas 7d (todas)', notaBots:'Peticiones brutas incluyen bots; «únicos» y «páginas vistas» se acercan más a humanos. Fuente: Cloudflare (cron 07:45) + access_log propio. Cero vendors nuevos.', noWeb:'Sin instantáneas aún — ejecuta el SQL de web-stats y espera al cron (o dispara la prueba).',
+  h1:'Estado de distribución del build', h2:'Uso real', h3:'Embudo por cohorte', h4:'Feedback reciente', cTicket:'Ticket', h5:'📡 Tráfico y accesos (Cloudflare + señales propias)', tWeb:'Web · visitantes únicos por día', tApp:'App · personas que la abren por día', tPaises:'Países (peticiones de ayer)', kUnicos:'únicos ayer', kVistas:'páginas vistas ayer', kIos:'iOS instaladas (TestFlight)', kAnd:'Android dentro', kAct:'activas 7d (todas)', notaBots:'Peticiones brutas incluyen bots; «únicos» y «páginas vistas» se acercan más a humanos. Fuente: Cloudflare (cron 07:45) + access_log propio. Cero vendors nuevos.', noWeb:'Sin instantáneas aún — ejecuta el SQL de web-stats y espera al cron (o dispara la prueba).', gD:'Día', gS:'Semana', gM:'Mes', gA:'Año', notaMedia:'Semana/Mes/Año enseñan la MEDIA DIARIA del periodo (sumar «únicos diarios» inflaría).',
   statesHint:'Invitada (le mandamos el correo) → build asignado (está en TestFlight o en el track interno de Play) → instalada (ya tiene cuenta). "Sin responder" son las invitadas que aún no nos han dado su correo de tienda.',
   activeHint:'Activas por semana frente al objetivo. Una tester que instala y no vuelve no cuenta como piloto.',
   dailyHint:'Últimos 7 días de actividad (todas las usuarias, no solo el piloto).',
@@ -327,7 +334,7 @@ const T=ES?{
   autoSub:'Checked automatically every time you open this page · nothing to run by hand',
   jNever:'never run yet', jStale:'no run in over 26 h', jFail:'last attempt failed',
   snapLbl:'Latest TestFlight snapshot',
-  h1:'Build distribution status', h2:'Real usage', h3:'Funnel by cohort', h4:'Recent feedback', cTicket:'Ticket', h5:'📡 Traffic & access (Cloudflare + own signals)', tWeb:'Web · unique visitors per day', tApp:'App · people opening it per day', tPaises:'Countries (yesterday\'s requests)', kUnicos:'uniques yesterday', kVistas:'page views yesterday', kIos:'iOS installed (TestFlight)', kAnd:'Android in', kAct:'active 7d (all)', notaBots:'Raw requests include bots; uniques and page views are closer to humans. Source: Cloudflare (07:45 cron) + our access_log. Zero new vendors.', noWeb:'No snapshots yet — run the web-stats SQL and wait for the cron (or fire the test).',
+  h1:'Build distribution status', h2:'Real usage', h3:'Funnel by cohort', h4:'Recent feedback', cTicket:'Ticket', h5:'📡 Traffic & access (Cloudflare + own signals)', tWeb:'Web · unique visitors per day', tApp:'App · people opening it per day', tPaises:'Countries (yesterday\'s requests)', kUnicos:'uniques yesterday', kVistas:'page views yesterday', kIos:'iOS installed (TestFlight)', kAnd:'Android in', kAct:'active 7d (all)', notaBots:'Raw requests include bots; uniques and page views are closer to humans. Source: Cloudflare (07:45 cron) + our access_log. Zero new vendors.', noWeb:'No snapshots yet — run the web-stats SQL and wait for the cron (or fire the test).', gD:'Day', gS:'Week', gM:'Month', gA:'Year', notaMedia:'Week/Month/Year show the DAILY AVERAGE for each period (summing daily uniques would inflate).',
   statesHint:'Invited (we emailed her) → build assigned (she is in TestFlight or the Play internal track) → installed (account created). "Not assigned" are invited testers who have not given us their store email yet.',
   activeHint:'Weekly actives against target. A tester who installs and never returns is not a pilot.',
   dailyHint:'Last 7 days of activity (all users, not just the pilot).',
@@ -455,7 +462,7 @@ async function loadHealth(){
   };
   /* r14f · tráfico y accesos: Cloudflare + señales propias, una RPC */
   try{
-    const ws=await sb.rpc('admin_web_stats',{p_days:30});
+    const ws=await sb.rpc('admin_web_stats',{p_days:730});
     const W=ws.data||{};
     const days=W.days||[], last=days[days.length-1];
     const st=W.stores||{};
@@ -463,15 +470,35 @@ async function loadHealth(){
       [T.kUnicos,last?last.uniques:'—'],[T.kVistas,last?last.page_views:'—'],
       [T.kIos,st.ios_instaladas??'—'],[T.kAnd,st.android_dentro??'—'],[T.kAct,st.activas_7d??'—']
     ].map(x=>'<div><div class="hint">'+x[0]+'</div><b style="font-size:22px">'+x[1]+'</b></div>').join('');
-    const barras=(rows,vKey,lKey,color)=>{
-      if(!rows.length)return '<div class="hint">'+T.noWeb+'</div>';
-      const max=Math.max(...rows.map(r=>+r[vKey]||0),1);
-      return '<div style="display:flex;align-items:flex-end;gap:2px;height:90px">'+rows.map(r=>
-        '<div title="'+(r[lKey]||'')+' · '+(+r[vKey]||0)+'" style="flex:1;background:'+color+';border-radius:3px 3px 0 0;height:'+Math.max(3,Math.round((+r[vKey]||0)/max*88))+'px"></div>').join('')+'</div>'
-        +'<div class="hint" style="display:flex;justify-content:space-between"><span>'+(rows[0][lKey]||'').slice(5)+'</span><span>'+(rows[rows.length-1][lKey]||'').slice(5)+'</span></div>';
-    };
-    $('trafWeb').innerHTML=barras(days,'uniques','day','#FF7600');
-    $('trafApp').innerHTML=barras(W.app_dias||[],'personas','dia','#0F6E56');
+    /* r14f-3 (Juanjo): métricas EN las barras + tendencias D/S/M/A.
+       Semana/Mes/Año = MEDIA DIARIA del periodo (sumar únicos diarios inflaría). */
+    const clave=(iso,g)=>{const d=new Date(iso+'T00:00:00');
+      if(g==='y')return String(d.getFullYear());
+      if(g==='m')return iso.slice(0,7);
+      if(g==='w'){const x=new Date(d);x.setDate(d.getDate()-((d.getDay()+6)%7));
+        return x.toISOString().slice(0,10);}
+      return iso;};
+    const agrega=(rows,vKey,lKey,g)=>{
+      if(g==='d')return rows.map(r=>({l:r[lKey],v:+r[vKey]||0}));
+      const b={};rows.forEach(r=>{const k=clave(r[lKey],g);(b[k]=b[k]||[]).push(+r[vKey]||0);});
+      return Object.keys(b).sort().map(k=>({l:k,v:Math.round(b[k].reduce((s,x)=>s+x,0)/b[k].length)}));};
+    const barras=(pares,color)=>{
+      if(!pares.length)return '<div class="hint">'+T.noWeb+'</div>';
+      const max=Math.max(...pares.map(p=>p.v),1);
+      const conNum=pares.length<=16;
+      return '<div class="hint" style="text-align:right;border-bottom:1px dashed #EADFD0;margin-bottom:2px">máx '+max+'</div>'
+        +'<div style="display:flex;align-items:flex-end;gap:2px;height:96px">'+pares.map(p=>
+          '<div title="'+p.l+' · '+p.v+'" style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:96px">'
+          +(conNum&&p.v>0?'<span style="font-size:8.5px;font-weight:800;color:#6E655D">'+p.v+'</span>':'')
+          +'<div style="width:100%;background:'+color+';border-radius:3px 3px 0 0;height:'+Math.max(3,Math.round(p.v/max*76))+'px"></div></div>').join('')+'</div>'
+        +'<div class="hint" style="display:flex;justify-content:space-between"><span>'+(pares[0].l||'').slice(2)+'</span><span>'+(pares[pares.length-1].l||'').slice(2)+'</span></div>';};
+    let GRAN='d';
+    const pinta=()=>{ $('trafWeb').innerHTML=barras(agrega(days,'uniques','day',GRAN),'#FF7600');
+      $('trafApp').innerHTML=barras(agrega(W.app_dias||[],'personas','dia',GRAN),'#0F6E56'); };
+    document.querySelectorAll('.gran').forEach((b,i)=>{ b.textContent=[T.gD,T.gS,T.gM,T.gA][i];
+      b.onclick=()=>{GRAN=b.dataset.g;document.querySelectorAll('.gran').forEach(x=>x.classList.toggle('on',x===b));pinta();};});
+    document.getElementById('granNota').textContent=T.notaMedia;
+    pinta();
     const pais=(last&&last.countries)||[];
     $('trafPaises').innerHTML=pais.map(c=>'<span style="font-size:11.5px;font-weight:700;background:#FFF6F2;border:1px solid #F3C8B8;border-radius:999px;padding:3px 11px">'+esc(c.clientCountryName)+' · '+c.requests+'</span>').join('')||'<span class="hint">—</span>';
   }catch(e){ $('trafKpis').innerHTML='<div class="hint">'+esc(String(e&&e.message||e))+'</div>'; }
