@@ -1408,7 +1408,9 @@ if os.path.exists(_hidx):
 # ── ns-titulos (r14, revisión Juanjo 6-ago): títulos por equipo ─────────────
 _patch(os.path.join(PUB, "hub", "documentation", "index.html"),
        [("<h1>NutriSync — Documentation</h1>",
-         "<h1>Docs by Nutri-Backlog</h1>", False)], "ns-titulos: Docs by Nutri-Backlog")
+         "<h1>Docs by NutriSync-Sprint Backlog</h1>", False),
+        ("<h1>Docs by Nutri-Backlog</h1>",
+         "<h1>Docs by NutriSync-Sprint Backlog</h1>", False)], "ns-titulos: Docs by NutriSync-Sprint Backlog")
 _patch(os.path.join(PUB, "hub", "development-planning-backlog.html"),
        [("<h1>NutriSync — Platform &amp; Infrastructure Backlog</h1>",
          "<h1>Backlog by Nutri-Engineering</h1>", False)], "ns-titulos: Backlog by Nutri-Engineering")
@@ -1703,8 +1705,11 @@ if os.path.exists(_ibc):
       '<div style="display:flex;gap:14px;flex-wrap:wrap">' + _chips + '</div>'
       '<div style="font-size:11.5px;margin-top:10px"><a href="/hub/docs/NutriSync-Historia-Storyline-2026-08.png" target="_blank" style="font-weight:700">\u2b07 Infograf\u00eda PNG</a> \u00b7 '
       '<a href="/hub/docs/NutriSync-Historia-Storyline-2026-08.pptx" style="font-weight:700">\u2b07 L\u00e1mina PPTX (para el deck de Canva)</a></div>'
-      '<script>(function(){var en=(navigator.language||"").slice(0,2)!=="es";'
-      'document.querySelectorAll("#ns-historia [data-i]").forEach(function(n){var p=n.getAttribute("data-i").split("|");n.textContent=en?(p[1]||p[0]):p[0];});})();</script>'
+      '<script>(function(){function L(){var v=null;try{v=localStorage.getItem("ns_lang");}catch(e){}'
+      'return v||(((navigator.language||"").slice(0,2)==="es")?"es":"en");}'
+      'function P(){var en=L()==="en";'
+      'document.querySelectorAll("#ns-historia [data-i]").forEach(function(n){var p=n.getAttribute("data-i").split("|");n.textContent=en?(p[1]||p[0]):p[0];});}'
+      'document.addEventListener("ns-lang",P);P();})();</script>'
       '</div><!-- /ns-historia -->')
 
     _CARD = ('<div id="ns-pitch-deck">'

@@ -44,12 +44,19 @@ const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2
 const sb=createClient(U,K);const $=i=>document.getElementById(i);
 const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let ALL=[];
+/* r14b (punto 8): el estado del ticket, visible en cada mensaje */
+const STC={nuevo:'#A32D2D',en_curso:'#B4700F',esperando_usuaria:'#1D4ED8',resuelto:'#0F6E56',cerrado:'#475569'};
+const tk=r=>{if(!r.ticket_no)return '';
+  const col=STC[r.ticket_status]||'#475569';let edad='';
+  if(r.resolved_at){const h=(new Date(r.resolved_at)-new Date(r.ticket_created))/36e5;edad=' ✔ '+(h<48?Math.round(h)+'h':Math.round(h/24)+'d');}
+  else if(r.ticket_status!=='cerrado'&&r.ticket_created){const h=(Date.now()-new Date(r.ticket_created))/36e5;edad=' ⏱ '+(h<48?Math.round(h)+'h':Math.round(h/24)+'d')+(h>=24?'⚠':'');}
+  return ` <b style="color:#C73A20;font-size:11px">${esc(r.ticket_no)}</b> <span style="font-size:10px;font-weight:800;border-radius:999px;padding:1px 7px;background:${col}1a;color:${col}">${esc((r.ticket_status||'').replace(/_/g,' '))}</span><span style="font-size:10px;color:#8A7F78">${edad}${r.escalated_at?' 📣':''}</span>`;};
 function render(){
   const c=$('fCohort').value,p=$('fPlat').value,q=$('q').value.toLowerCase();
   const rows=ALL.filter(r=>(!c||(r.cohort||'—')===c)&&(!p||(r.platform||'').toLowerCase().startsWith(p))&&(!q||(r.message||'').toLowerCase().includes(q)||(r.email||'').toLowerCase().includes(q)));
   $('count').textContent=rows.length+' de '+ALL.length;
   $('list').innerHTML=rows.map(r=>`<div class="fb">
-    <div class="meta"><b>${esc(r.email)}</b><span class="pill c">${esc(r.cohort||'—')}</span>
+    <div class="meta"><b>${esc(r.email)}</b><span class="pill c">${esc(r.cohort||'—')}</span>${tk(r)}
     <span>${esc((r.created_at||'').slice(0,16).replace('T',' '))}</span>
     <span class="pill">v${esc(r.app_version||'?')} · ${esc(r.platform||'?')}</span></div>
     <div class="msg">${esc(r.message)}</div></div>`).join('')||'<div class="hint">Sin mensajes con esos filtros.</div>';

@@ -93,7 +93,7 @@ function render(){
     var h=document.createElement('div');h.className='sec';h.textContent=label[sk]+' — '+bySec[sk].length;rows.appendChild(h);
     var t=document.createElement('table');t.innerHTML='<caption style="caption-side:top;text-align:left;font-size:11.5px;color:#8A7F78;padding:4px 0">
 ✏️ editar y salir del campo = guardar · 🧹 vaciar el campo = borrar la traducción (vuelve al inglés) /
-edit & blur = saved · clear the field = translation deleted (falls back to English)</caption><thead><tr><th>Key</th><th>English</th><th>'+NAME[lang]+'</th></tr></thead>';
+edit & blur = saved · clear the field = translation deleted (falls back to English)</caption><thead><tr><th>Key</th><th>English</th><th>'+NAME[lang]+'</th><th style="width:76px">Acciones</th></tr></thead>';
     var tb=document.createElement('tbody');
     for(var r=0;r<bySec[sk].length;r++){(function(e){var ev=enVal(e.p),tv=curVal(lang,e.p);
       var tr=document.createElement('tr');
@@ -104,7 +104,17 @@ edit & blur = saved · clear the field = translation deleted (falls back to Engl
       cls();
       if(isRO(e.p)){/* editable target even for catalog */}
       a2.oninput=function(){eEdits(lang)[keyId(e.p)]=a2.value;cls();persist();updateProg();};
-      tT.appendChild(a2);tr.appendChild(tT);tb.appendChild(tr);})(bySec[sk][r]);}
+      tT.appendChild(a2);tr.appendChild(tT);
+      /* r14b (punto 15): CRUD explícito por fila — guardar y borrar con botón */
+      var act=document.createElement('td');
+      var b1=document.createElement('button');b1.textContent='💾';b1.title='Guardar / Save';
+      b1.onclick=function(){eEdits(lang)[keyId(e.p)]=a2.value;cls();persist();updateProg();
+        b1.textContent='✓';setTimeout(function(){b1.textContent='💾';},900);};
+      var b2=document.createElement('button');b2.textContent='🧹';b2.title='Borrar traducción (vuelve al inglés) / clear';
+      b2.onclick=function(){if(!confirm('¿Borrar esta traducción? / Clear this translation?'))return;
+        a2.value='';eEdits(lang)[keyId(e.p)]='';cls();persist();updateProg();};
+      act.appendChild(b1);act.appendChild(document.createTextNode(' '));act.appendChild(b2);
+      tr.appendChild(act);tb.appendChild(tr);})(bySec[sk][r]);}
     t.appendChild(tb);rows.appendChild(t);}
   if(!shown)rows.innerHTML='<p style="color:var(--muted);padding:20px">No entries match.</p>';
   updateProg(shown);

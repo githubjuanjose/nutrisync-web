@@ -158,11 +158,18 @@ async function loadSummary(){
   SUM=data;CLOSES=data.closes||[];
   const m=data.month||{},y=data.ytd||{};
   const kpi=(l,v,cls)=>`<div class="kpi"><div class="l">${l}</div><div class="v ${cls||''}">${v}</div></div>`;
-  $('kpis').innerHTML=
-    kpi('Caja acumulada',eur(data.cash),data.cash>=0?'pos':'neg')+
-    kpi('Ingresos mes',eur(m.in))+kpi('Gastos mes',eur(m.out))+
-    kpi('Resultado mes',eur((m.in||0)-(m.out||0)),((m.in||0)-(m.out||0))>=0?'pos':'neg')+
-    kpi('Resultado YTD',eur((y.in||0)-(y.out||0)),((y.in||0)-(y.out||0))>=0?'pos':'neg');
+  window.NS_FIN={cash:data.cash,mi:m.in||0,mo:m.out||0,yi:y.in||0,yo:y.out||0};
+  window.pintaKpis=function(){
+    const B=window.NS_BUILD||{gasto:0,rev:0};
+    const F=window.NS_FIN;
+    $('kpis').innerHTML=
+      kpi('Caja acumulada',eur(F.cash),F.cash>=0?'pos':'neg')+
+      kpi('Ingresos mes',eur(F.mi))+kpi('Gastos mes (caja)',eur(F.mo))+
+      kpi('Gasto build acumulado',eur(B.gasto),'neg')+
+      kpi('En revisión IAS 38',eur(B.rev))+
+      kpi('Resultado YTD (caja + build)',eur((F.yi-F.yo)-B.gasto),((F.yi-F.yo)-B.gasto)>=0?'pos':'neg');
+  };
+  pintaKpis();
   $('daily').tBodies[0].innerHTML=(data.daily||[]).map(d=>{const net=(d.ingresos||0)-(d.gastos||0);
     return `<tr><td>${esc(d.dia)}</td><td class="num">${eur(d.ingresos)}</td><td class="num">${eur(d.gastos)}</td><td class="num ${net>=0?'pos':'neg'}">${eur(net)}</td><td class="num">${d.asientos}</td></tr>`;}).join('')||'<tr><td colspan=5 class="hint">Sin movimientos aún.</td></tr>';
   const closed=Object.fromEntries(CLOSES.map(c=>[c.period,c]));
@@ -177,6 +184,10 @@ async function loadBuild(){
   const{data,error}=await sb.rpc('admin_build_ledger',{p_limit:40});
   const tb=document.querySelector('#buildTbl tbody');
   if(error||!data){tb.innerHTML='<tr><td colspan="4" class="hint">Ejecuta backend-sql/2026-08-06-mis-costes-y-obs.sql y recarga. / Run the SQL and reload.</td></tr>';return;}
+  /* r14b (3.2/3.3): la cabecera suma los DOS libros — caja + build — para que
+     el estado real nunca salga a cero mientras el build gasta de verdad. */
+  window.NS_BUILD={gasto:Number(data.total_gasto_eur)||0,rev:Number(data.en_revision_eur)||0};
+  if(typeof pintaKpis==='function')pintaKpis();
   $('buildKpis').innerHTML=
     '<div><div class="hint">Gasto build acumulado / total build spend</div><b style="font-size:20px">'+eur(data.total_gasto_eur)+'</b></div>'+
     '<div><div class="hint">En revisión de capitalización (IAS 38)</div><b style="font-size:20px">'+eur(data.en_revision_eur)+'</b></div>';
@@ -286,7 +297,7 @@ async function loadBC(){
 }
 /* ── r12-b3 · objetivo SEMANAL del piloto (13 semanas) ───────────────────── */
 async function loadPP(){
-  const{data,error}=await sb.rpc('admin_pilot_weekly');
+  const{data,error}=await sb.rpc('admin_pilot_weekly',{p_cohort:null});
   const tb=document.querySelector('#pp tbody'); if(!tb)return;
   if(error||!data){tb.innerHTML='<tr><td colspan="6">No disponible: '+esc(error?.message||'')+'</td></tr>';return;}
   tb.innerHTML=(data.weeks||[]).map(w=>{

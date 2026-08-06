@@ -54,7 +54,7 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
       <input type="text" id="cohortNew" placeholder="…o nueva cohorte" style="width:140px">
       <button class="pri" onclick="propose()">Proponer seleccionados →</button>
     </div>
-    <div style="max-height:340px;overflow:auto"><table id="wl"><thead><tr><th></th><th class="sh" onclick="sortWl('email')">Email <span data-aw="email"></span></th><th class="sh" onclick="sortWl('name')">Nombre <span data-aw="name"></span></th><th class="sh" onclick="sortWl('src')">Origen <span data-aw="src"></span></th><th class="sh" onclick="sortWl('at')">Apuntada <span data-aw="at"></span></th><th class="sh" onclick="sortWl('acct')">Cuenta <span data-aw="acct"></span></th><th class="sh" onclick="sortWl('coh')">Cohorte <span data-aw="coh"></span></th></tr></thead><tbody></tbody></table></div>
+    <div style="max-height:340px;overflow:auto"><table id="wl"><thead><tr><th></th><th class="sh" onclick="sortWl('email')">Email <span data-aw="email"></span></th><th class="sh" onclick="sortWl('name')">Nombre <span data-aw="name"></span></th><th class="sh" onclick="sortWl('src')">Origen <span data-aw="src"></span></th><th class="sh" onclick="sortWl('at')">Apuntada <span data-aw="at"></span></th><th class="sh" onclick="sortWl('acct')">Cuenta <span data-aw="acct"></span></th><th class="sh" onclick="sortWl('coh')">Cohorte <span data-aw="coh"></span></th><th></th></tr></thead><tbody></tbody></table></div>
   </div>
 
   <h2>1b · Añadir emails a mano (advisory y externas a la waitlist)</h2>
@@ -108,7 +108,7 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
   <div class="card">
     <div class="row"><select id="fbCohort"><option value="">todas las cohortes</option></select>
     <button onclick="loadFb()">Actualizar</button></div>
-    <div style="max-height:400px;overflow:auto"><table id="fb"><thead><tr><th>Fecha</th><th>Cohorte</th><th>Email</th><th>Mensaje</th><th>v · plat</th></tr></thead><tbody></tbody></table></div>
+    <div style="max-height:400px;overflow:auto"><table id="fb"><thead><tr><th>Fecha</th><th>Cohorte</th><th>Email</th><th>Mensaje</th><th>v · plat</th><th>Ticket</th></tr></thead><tbody></tbody></table></div>
   </div>
 </div>
 <div id="gate">Inicia sesión de founder (Access) y recarga — esta página es solo para admins.</div>
@@ -163,7 +163,7 @@ function renderWl(){
   });
   $('wlCount').textContent=rows.length+' de '+WL.length;
   $('wl').tBodies[0].innerHTML=rows.slice(0,400).map(r=>{const e=(r.email||'').toLowerCase(),pi=be[e];
-    return `<tr><td><input type="checkbox" class="ck" data-e="${esc(e)}"></td><td>${esc(r.email)}</td><td>${esc(r.full_name||'')}</td><td>${esc(r.source||'')}</td><td>${esc((r.created_at||'').slice(0,10))}</td><td>${r.converted_at?'✅':'—'}</td><td>${pi?esc(pi.cohort):''}</td></tr>`;}).join('');
+    return `<tr><td><input type="checkbox" class="ck" data-e="${esc(e)}"></td><td>${esc(r.email)}</td><td>${esc(r.full_name||'')}</td><td>${esc(r.source||'')}</td><td>${esc((r.created_at||'').slice(0,10))}</td><td>${r.converted_at?'✅':'—'}</td><td>${pi?esc(pi.cohort):''}</td><td><button class="mini" onclick="wlEdit('${esc(e)}')" title="Editar nombre / edit name">✏️</button> <button class="mini" onclick="wlDel('${esc(e)}')" title="Borrar de la waitlist / delete">🗑</button></td></tr>`;}).join('');
   document.querySelectorAll('#wl th [data-aw]').forEach(el=>{
     el.textContent=(el.dataset.aw===SORTW.k)?(SORTW.dir>0?'▲':'▼'):'';});
 }
@@ -396,9 +396,32 @@ window.sendOutreach=async()=>{
 };
 window.loadFb=async()=>{
   const c=$('fbCohort').value||null;
-  const{data,error}=await sb.rpc('admin_pilot_feedback',{p_cohort:c});
+  const{data,error}=await sb.rpc('admin_pilot_feedback',{p_cohort:null});   // r14b: el filtro es del cliente, normalizado ('—' también filtra)
   if(error){$('fb').tBodies[0].innerHTML='<tr><td colspan=5>'+esc(error.message)+'</td></tr>';return;}
-  $('fb').tBodies[0].innerHTML=(data||[]).map(r=>`<tr><td>${esc(r.created_at.slice(0,16).replace('T',' '))}</td><td>${esc(r.cohort)}</td><td>${esc(r.email)}</td><td class="msg">${esc(r.message)}</td><td>${esc(r.app_version||'?')} · ${esc(r.platform||'?')}</td></tr>`).join('')||'<tr><td colspan=5 class="hint">Sin mensajes aún.</td></tr>';
+  const ST={nuevo:'#A32D2D',en_curso:'#B4700F',esperando_usuaria:'#1D4ED8',resuelto:'#0F6E56',cerrado:'#475569'};
+  const tk=r=>{if(!r.ticket_no)return '<span class="hint">—</span>';
+    const col=ST[r.ticket_status]||'#475569';
+    let edad='';
+    if(r.resolved_at){const h=(new Date(r.resolved_at)-new Date(r.ticket_created))/36e5;edad=' ✔ '+(h<48?Math.round(h)+'h':Math.round(h/24)+'d');}
+    else if(r.ticket_status!=='cerrado'&&r.ticket_created){const h=(Date.now()-new Date(r.ticket_created))/36e5;edad=' ⏱ '+(h<48?Math.round(h)+'h':Math.round(h/24)+'d')+(h>=24?'⚠':'');}
+    return `<b style="color:#C73A20">${esc(r.ticket_no)}</b> <span style="font-size:10px;font-weight:800;border-radius:999px;padding:1px 7px;background:${col}1a;color:${col}">${esc((r.ticket_status||'').replace(/_/g,' '))}</span><span class="hint">${edad}${r.escalated_at?' 📣':''}</span>`;};
+  const rows=(data||[]).filter(r=>!c||(r.cohort||'—')===c);
+  $('fb').tBodies[0].innerHTML=rows.map(r=>`<tr><td>${esc(r.created_at.slice(0,16).replace('T',' '))}</td><td>${esc(r.cohort||'—')}</td><td>${esc(r.email)}</td><td class="msg">${esc(r.message)}</td><td>${esc(r.app_version||'?')} · ${esc(r.platform||'?')}</td><td>${tk(r)}</td></tr>`).join('')||'<tr><td colspan=6 class="hint">Sin mensajes con ese filtro.</td></tr>';
+};
+/* r14b (punto 11): CRUD por registro en el lote — usa las policies de hub-crud.sql */
+window.wlEdit=async e=>{
+  const r=(WL||[]).find(x=>(x.email||'').toLowerCase()===e); if(!r)return;
+  const v=prompt('Nombre para '+e+' / name:', r.full_name||''); if(v===null)return;
+  const{error}=await sb.from('waitlist').update({full_name:v.trim()||null}).eq('email',r.email);
+  if(error)return alert(error.message+'\n(¿ejecutaste backend-sql/2026-08-06-hub-crud.sql?)');
+  boot();
+};
+window.wlDel=async e=>{
+  const r=(WL||[]).find(x=>(x.email||'').toLowerCase()===e); if(!r)return;
+  if(!confirm('Borrar '+e+' de la waitlist (PII fuera, no afecta al piloto si ya fue propuesta). ¿Seguir? / Delete from waitlist?'))return;
+  const{error}=await sb.from('waitlist').delete().eq('email',r.email);
+  if(error)return alert(error.message+'\n(¿ejecutaste backend-sql/2026-08-06-hub-crud.sql?)');
+  boot();
 };
 ['q','fSource','fConv','fAssigned'].forEach(i=>$(i).addEventListener('input',renderWl));
 $('rvCohort').addEventListener('change',renderInv);

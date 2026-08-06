@@ -157,8 +157,11 @@ async function loadTodos(){
 }
 
 $('sop').innerHTML=T.sop.map(([h,steps])=>
-  '<details><summary>'+h+'</summary><ol>'+steps.map(s=>'<li>'+s+'</li>
-<li><b>founder-reminders</b> · 07:15 UTC — digest diario a founders si hay pendientes (🗳 decisiones · 🔔 notificaciones · 🎫 incidencias · 🔐 MFA). Si el tablero está limpio, no envía nada. / Daily founder digest at 07:15 UTC — only sent while something is pending; a clean board sends nothing.</li>').join('')+'</ol></details>').join('');
+  '<details><summary>'+h+'</summary><ol>'+steps.map(s=>'<li>'+s+'</li>').join('')+'</ol></details>').join('')
+ +'<details><summary>⏰ founder-reminders · 07:15 UTC</summary><ol>'
+ +'<li>Digest diario a founders + contact@ + review@ SOLO si hay pendientes (🗳 decisiones · 🔔 notificaciones · 🎫 incidencias · 🔐 MFA).</li>'
+ +'<li>Si el tablero está limpio no envía nada — el silencio es la señal buena. / Daily digest, only sent while something is pending; a clean board sends nothing.</li>'
+ +'</ol></details>';
 
 (async()=>{
   const{data:{session}}=await sb.auth.getSession();

@@ -3,37 +3,55 @@
 <title>Plan de comercialización — NutriSync</title>
 <style>
 body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.55}
-.w{max-width:1020px;margin:0 auto;padding:26px 20px 90px}
+.w{max-width:1080px;margin:0 auto;padding:26px 20px 90px}
 h1{font-size:23px;margin:0 0 4px}
-p.lead{color:#6E655D;font-size:13.5px;margin:0 0 18px}
-h2{font-size:16.5px;margin:30px 0 10px;color:#C73A20}
+p.lead{color:#6E655D;font-size:13.5px;margin:0 0 6px}
+h2{font-size:16.5px;margin:34px 0 12px;color:#C73A20}
 .hint{font-size:11.5px;color:#8A7F78}
-/* ── serpentina de hitos ── */
-.tl{position:relative;margin:18px 0 6px}
-.fila{display:flex;gap:14px;justify-content:space-between;margin:0 0 34px;position:relative}
-.fila.rev{flex-direction:row-reverse}
-.hito{flex:1;max-width:300px;background:#fff;border:1px solid #EFE3D7;border-radius:16px;padding:14px 15px;position:relative;box-shadow:0 10px 26px -20px rgba(0,0,0,.35)}
-.hito .fecha{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.5px;border-radius:999px;padding:3px 11px;color:#fff;margin-bottom:7px}
-.hito .nom{font-weight:800;font-size:14px;line-height:1.3}
-.hito .det{font-size:12px;color:#6E655D;margin-top:5px}
-.hito img{position:absolute;top:-24px;right:10px;width:46px;height:46px}
-.hito.done{border-color:#BFE3D2;background:#F4FBF7}
-.hito.done .fecha{background:#0F6E56}
-.hito.next .fecha{background:#FF7600}
-.hito.fut .fecha{background:#8A7F78}
-.hito.meta{border:2px solid #FD400C;background:#FFF6F2}
-.hito.meta .fecha{background:linear-gradient(135deg,#FF7600,#FD400C)}
-.aqui{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:#241D1A;color:#fff;font-size:10.5px;font-weight:800;border-radius:999px;padding:4px 13px;white-space:nowrap;z-index:3}
+/* ══ LA LÍNEA DEL VIAJE — infografía ══ */
+.rail{display:flex;gap:8px;position:relative;padding:40px 4px 8px;margin-top:26px}
+.rail .linea{position:absolute;left:3%;right:3%;top:96px;height:7px;border-radius:4px;
+  background:linear-gradient(90deg,#0F6E56 0%,#0F6E56 30%,#FF7600 55%,#FD400C 85%,#C73A20 100%);
+  box-shadow:0 2px 8px rgba(199,58,32,.25)}
+.rail .linea::after{content:'';position:absolute;right:-14px;top:-6px;border:10px solid transparent;border-left-color:#C73A20}
+.nodo{flex:1;text-align:center;position:relative;z-index:2;min-width:0}
+.circ{width:96px;height:96px;border-radius:50%;background:#fff;margin:0 auto;
+  display:flex;align-items:center;justify-content:center;position:relative;
+  border:6px solid var(--c);box-shadow:0 12px 26px -12px rgba(36,29,26,.4)}
+.circ img{width:58px;height:58px}
+.circ .num{position:absolute;top:-9px;right:-4px;width:26px;height:26px;border-radius:50%;
+  background:var(--c);color:#fff;font-size:12.5px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2.5px solid #fff}
+.pill{display:inline-block;margin-top:12px;background:var(--c);color:#fff;font-size:11px;font-weight:800;
+  letter-spacing:.5px;border-radius:4px;padding:4px 12px;position:relative}
+.pill::before{content:'';position:absolute;left:50%;top:-9px;transform:translateX(-50%);
+  border:5px solid transparent;border-bottom-color:var(--c)}
+.tit{font-weight:800;font-size:12.5px;line-height:1.25;margin-top:8px;padding:0 2px}
+.txt{font-size:10.5px;color:#6E655D;line-height:1.4;margin-top:4px;padding:0 4px}
+.aqui{position:absolute;top:-38px;left:50%;transform:translateX(-50%);background:#241D1A;color:#fff;
+  font-size:10px;font-weight:800;border-radius:999px;padding:5px 13px;white-space:nowrap;
+  box-shadow:0 6px 16px -6px rgba(0,0,0,.5);animation:aqui 2s ease-in-out infinite}
+@keyframes aqui{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,-5px)}}
 .aqui::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#241D1A}
-/* ── estado ── */
+.nodo.meta .circ{background:linear-gradient(135deg,#FF7600,#FD400C);border-color:#FD400C}
+@media(max-width:820px){
+  .rail{flex-direction:column;gap:26px;padding-top:12px}
+  .rail .linea{left:47px;right:auto;top:2%;bottom:2%;width:7px;height:auto;
+    background:linear-gradient(180deg,#0F6E56,#FF7600,#FD400C,#C73A20)}
+  .rail .linea::after{right:-6px;top:auto;bottom:-14px;border:10px solid transparent;border-top-color:#C73A20;border-left-color:transparent}
+  .nodo{display:grid;grid-template-columns:100px 1fr;column-gap:14px;text-align:left;align-items:center}
+  .circ{margin:0;grid-row:1/span 3}
+  .pill{margin-top:0;justify-self:start}.pill::before{display:none}
+  .aqui{left:110px;top:-24px;transform:none}
+  @keyframes aqui{0%,100%{transform:translate(0,0)}50%{transform:translate(0,-5px)}}
+}
+/* estado + camino crítico */
 .estado{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:720px){.estado{grid-template-columns:1fr}.fila,.fila.rev{flex-direction:column}.hito{max-width:none}}
+@media(max-width:720px){.estado{grid-template-columns:1fr}}
 .est{background:#fff;border:1px solid #EFE3D7;border-radius:14px;padding:13px 15px}
 .est b.t{font-size:13.5px}
 .est ul{margin:8px 0 0;padding-left:18px;font-size:12.5px}
 .est li{margin:3px 0}
 .ok{color:#0F6E56;font-weight:700}.pen{color:#B4700F;font-weight:700}.blo{color:#A32D2D;font-weight:800}
-/* ── camino crítico ── */
 table{width:100%;border-collapse:collapse;font-size:12.5px;background:#fff;border:1px solid #EFE3D7;border-radius:14px;overflow:hidden}
 th{background:#C73A20;color:#fff;text-align:left;padding:8px 11px;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
 td{padding:8px 11px;border-bottom:1px solid #F4EADF;vertical-align:top}
@@ -42,36 +60,46 @@ tr.cero td{background:#FFF1EC}
 </style></head><body><div class="w">
 
 <h1>🗺 <span data-i>Plan de comercialización · hacia el 8-oct|Commercialization plan · road to Oct 8</span></h1>
-<p class="lead" data-i>Los hitos, el camino crítico y el estado real — una sola página, actualizada con cada release. El plan completo con gates y sprints vive en Docs.|Milestones, critical path and live status — one page, updated with every release. The full plan with gates and sprints lives in Docs.</p>
+<p class="lead" data-i>Hitos, camino crítico y estado real — actualizado con cada release. El plan completo con gates y sprints vive en Docs.|Milestones, critical path and live status — updated with every release. The full plan with gates and sprints lives in Docs.</p>
 
-<div class="tl">
-  <div class="fila">
-    <div class="hito done"><img src="/assets/figma/nutri-bubble-front.svg" alt="">
-      <span class="fecha">HOY · 6 AGO</span><div class="nom" data-i>Piloto interno vivo|Internal pilot live</div>
-      <div class="det" data-i>iOS 0.20 en TestFlight · Android 0.20 en internal testing · 32 testers|iOS 0.20 on TestFlight · Android 0.20 internal testing · 32 testers</div>
-      <span class="aqui" data-i>📍 ESTÁS AQUÍ|📍 YOU ARE HERE</span></div>
-    <div class="hito next"><img src="/assets/figma/nutri-bubble-right.svg" alt="">
-      <span class="fecha">8 AGO</span><div class="nom" data-i>TestFlight iOS ampliado|iOS TestFlight expanded</div>
-      <div class="det" data-i>Advisory + wave-1 completas (kickoff operativo: lunes 10)|Advisory + full wave-1 (operational kickoff: Mon 10)</div></div>
-    <div class="hito next"><img src="/assets/figma/nutricalendar.svg" alt="">
-      <span class="fecha">18 AGO</span><div class="nom" data-i>Android closed testing GO|Android closed testing GO</div>
-      <div class="det" data-i>12 testers × 14 días seguidos — el reloj de Google que abre producción|12 testers × 14 straight days — Google's clock that unlocks production</div></div>
+<div class="rail">
+  <div class="linea"></div>
+  <div class="nodo" style="--c:#0F6E56">
+    <span class="aqui" data-i>📍 ESTÁS AQUÍ · 6 AGO|📍 YOU ARE HERE · AUG 6</span>
+    <div class="circ"><span class="num">✓</span><img src="/assets/figma/nutri-bubble-front.svg" alt=""></div>
+    <div class="pill">HOY · 6 AGO</div>
+    <div class="tit" data-i>Piloto interno vivo|Internal pilot live</div>
+    <div class="txt" data-i>iOS + Android 0.20 en manos de 32 testers · consentimiento auditable|iOS + Android 0.20 with 32 testers · auditable consent</div>
   </div>
-  <div class="fila rev">
-    <div class="hito fut"><img src="/assets/figma/nutri-bubble-left.svg" alt="">
-      <span class="fecha">8 SEP</span><div class="nom" data-i>Piloto · Fase 1|Pilot · Phase 1</div>
-      <div class="det" data-i>Legal publicado + consentimientos + cohortes ampliadas|Legal published + consents + expanded cohorts</div></div>
-    <div class="hito fut"><img src="/assets/figma/nutri-bubble-front.svg" alt="">
-      <span class="fecha">18 SEP</span><div class="nom" data-i>Piloto · Fase 2|Pilot · Phase 2</div>
-      <div class="det" data-i>Pagos en sandbox (Epic L) + ciclo M + fichas de stores listas|Payments sandbox (Epic L) + cycle M + store listings ready</div></div>
-    <div class="hito fut"><img src="/assets/figma/nutri-intro-frame.svg" alt="">
-      <span class="fecha">~25 SEP</span><div class="nom" data-i>Go/No-Go + envío a stores|Go/No-Go + store submissions</div>
-      <div class="det" data-i>Submissions 21-25 sep · revisión de Apple y Google|Submissions Sep 21-25 · Apple & Google review</div></div>
+  <div class="nodo" style="--c:#0F6E56">
+    <div class="circ"><span class="num">1</span><img src="/assets/figma/nutri-bubble-right.svg" alt=""></div>
+    <div class="pill">8 AGO</div>
+    <div class="tit" data-i>TestFlight iOS ampliado|iOS TestFlight expanded</div>
+    <div class="txt" data-i>Advisory + wave-1 completas · kickoff lunes 10|Advisory + full wave-1 · kickoff Mon 10</div>
   </div>
-  <div class="fila">
-    <div class="hito meta"><img src="/assets/figma/big-tick.svg" alt="">
-      <span class="fecha">🎯 8 OCT</span><div class="nom" data-i>PRODUCCIÓN · comercialización|PRODUCTION · go to market</div>
-      <div class="det" data-i>App en las dos stores con pagos · Y1 realista: 2.634 suscripciones · 74.772 €|Live in both stores with payments · realistic Y1: 2,634 subs · €74,772</div></div>
+  <div class="nodo" style="--c:#FF7600">
+    <div class="circ"><span class="num">2</span><img src="/assets/figma/nutricalendar.svg" alt=""></div>
+    <div class="pill">18 AGO</div>
+    <div class="tit" data-i>Android closed GO|Android closed GO</div>
+    <div class="txt" data-i>12 testers × 14 días — el reloj de Google que abre producción|12 testers × 14 days — Google's clock to production</div>
+  </div>
+  <div class="nodo" style="--c:#FF7600">
+    <div class="circ"><span class="num">3</span><img src="/assets/figma/nutri-bubble-left.svg" alt=""></div>
+    <div class="pill">8 · 18 SEP</div>
+    <div class="tit" data-i>Piloto Fase 1 y 2|Pilot Phase 1 & 2</div>
+    <div class="txt" data-i>Legal publicado · pagos en sandbox · fichas de stores|Legal published · payments sandbox · store listings</div>
+  </div>
+  <div class="nodo" style="--c:#FD400C">
+    <div class="circ"><span class="num">4</span><img src="/assets/figma/nutri-bubble-right.svg" alt=""></div>
+    <div class="pill">~25 SEP</div>
+    <div class="tit" data-i>Go/No-Go + envío a stores|Go/No-Go + submissions</div>
+    <div class="txt" data-i>Submissions 21-25 sep · revisión Apple y Google|Submissions Sep 21-25 · Apple & Google review</div>
+  </div>
+  <div class="nodo meta" style="--c:#FD400C">
+    <div class="circ"><img src="/assets/figma/big-tick.svg" alt=""></div>
+    <div class="pill">🎯 8 OCT</div>
+    <div class="tit" data-i>PRODUCCIÓN|PRODUCTION</div>
+    <div class="txt" data-i>En las dos stores con pagos · Y1: 2.634 subs · 74.772 €|Both stores, payments on · Y1: 2,634 subs · €74,772</div>
   </div>
 </div>
 
@@ -79,15 +107,15 @@ tr.cero td{background:#FFF1EC}
 <div class="estado">
   <div class="est"><b class="t">🛠 Build</b><ul>
     <li data-i><span class="ok">✔</span> iOS 0.20.0 en TestFlight (Beta App Review externa en curso)|<span class="ok">✔</span> iOS 0.20.0 on TestFlight (external Beta App Review in progress)</li>
-    <li data-i><span class="ok">✔</span> Android 0.20.0 instalable (internal testing, 5-ago 22:07)|<span class="ok">✔</span> Android 0.20.0 installable (internal testing, Aug 5)</li>
-    <li data-i><span class="ok">✔</span> OTA auto-aplicada al abrir — fix NS-0010 (día local) fuera|<span class="ok">✔</span> OTA auto-applies on open — NS-0010 fix (local day) shipped</li>
-    <li data-i><span class="pen">◔</span> 0.21.0 lista para cablear notificaciones — <b>bloqueada por las elecciones 🔔 de founders</b>|<span class="pen">◔</span> 0.21.0 ready to wire notifications — <b>blocked on founders' 🔔 choices</b></li>
+    <li data-i><span class="ok">✔</span> Android 0.20.0 instalable — primera instalación real hecha|<span class="ok">✔</span> Android 0.20.0 installable — first real install done</li>
+    <li data-i><span class="ok">✔</span> OTA auto-aplicada · fix NS-0010 (día local) en los 3 runtimes|<span class="ok">✔</span> OTA auto-applies · NS-0010 fix (local day) on all 3 runtimes</li>
+    <li data-i><span class="pen">◔</span> 0.21.0 lista para notificaciones — <b>bloqueada por las elecciones 🔔</b>|<span class="pen">◔</span> 0.21.0 ready for notifications — <b>blocked on 🔔 choices</b></li>
   </ul></div>
   <div class="est"><b class="t">📣 Comercialización · Go to market</b><ul>
-    <li data-i><span class="ok">✔</span> Piloto: 32 invitadas · consentimiento auditable · incidencias con SLA|<span class="ok">✔</span> Pilot: 32 invited · auditable consent · incidents with SLA</li>
-    <li data-i><span class="pen">◔</span> 12 Androids confirmadas ≤17-ago — <b>holgura cero</b>|<span class="pen">◔</span> 12 Androids confirmed by Aug 17 — <b>zero slack</b></li>
+    <li data-i><span class="ok">✔</span> 32 invitadas · consentimiento auditable · incidencias con SLA|<span class="ok">✔</span> 32 invited · auditable consent · incidents with SLA</li>
+    <li data-i><span class="pen">◔</span> 12 Androids confirmadas ≤17-ago — <b>holgura cero</b>|<span class="pen">◔</span> 12 Androids by Aug 17 — <b>zero slack</b></li>
     <li data-i><span class="pen">◔</span> Fichas de stores: plantilla → Lucía ≤5-sep|<span class="pen">◔</span> Store listings: template → Lucía by Sep 5</li>
-    <li data-i><span class="blo">✘</span> Abogado ≤8-ago y decisiones de pagos D5-D8 — <b>co-críticos</b>|<span class="blo">✘</span> Lawyer by Aug 8 and payment decisions D5-D8 — <b>co-critical</b></li>
+    <li data-i><span class="blo">✘</span> Abogado ≤8-ago · decisiones pagos D5-D8 — <b>co-críticos</b>|<span class="blo">✘</span> Lawyer by Aug 8 · payment decisions D5-D8 — <b>co-critical</b></li>
   </ul></div>
 </div>
 
@@ -102,16 +130,46 @@ tr.cero td{background:#FFF1EC}
 <tr class="cero"><td>7</td><td data-i>Privacidad + términos finales publicados|Final privacy + terms published</td><td data-i>Abogado→Juanjo|Lawyer→Juanjo</td><td>→ 4 sep</td><td class="holgura">0</td><td data-i>piloto F1 y fichas de stores|pilot P1 and store listings</td></tr>
 <tr class="cero"><td>8</td><td data-i>Decisiones D5-D8 (pagos) → Epic L|Payment decisions D5-D8 → Epic L</td><td>Founders</td><td data-i>¡vencida 4-ago!|overdue Aug 4!</td><td class="holgura">0</td><td data-i>lanzar CON ingresos el 8-oct|launching WITH revenue on Oct 8</td></tr>
 </tbody></table>
-<p class="hint" data-i>La cadena Android/Play ES el camino crítico (holgura total ≈ 1 semana); el legal corre co-crítico en paralelo. Filas rojas = holgura cero. Plan completo: Docs → Plan de lanzamiento 8-oct.|The Android/Play chain IS the critical path (~1 week total slack); legal runs co-critical in parallel. Red rows = zero slack. Full plan: Docs → Oct-8 launch plan.</p>
+<h2 data-i>Calendario por sprints — 4 pistas (5 días, lunes planning · viernes demo)|Sprint calendar — 4 tracks (5 days, Mon planning · Fri demo)</h2>
+<div class="sprints"><table>
+<tr><th>Sprint</th><th>Business</th><th>Operations</th><th>Tech</th><th>Readiness</th></tr>
+<tr><td class="sN">S11<br>3-7 ago</td><td>Reunión planning (G1) · decisiones D5-D11 · arranque empresa/legal (según <b>CORPORATE-MIGRATION-PLAN</b> + respuesta Audidat)</td><td>Captura de correos corriendo (✉️ lotes) · reclutar 12+ Androids · guía testers fuera</td><td>M-1 arranque (memoria ciclos + Trends) · build 5 a beta review externa · AAB Android + Play internal</td><td>Formularios Play (data safety, health, IARC — kit listo) · What to Test</td></tr>
+<tr class="go"><td class="sN">🎯 8 AGO</td><td colspan="4"><b>TESTFLIGHT iOS GO</b> — invitaciones advisory + wave-1</td></tr>
+<tr><td class="sN">S12<br>10-14 ago</td><td>Pricing y planes (marco en <b>Doc 29</b>) · borrador fichas stores producción</td><td>Triage feedback diario 15' · seguimiento funnel · soporte contact@ con SLA</td><td>M-1 cierre + OTA · Epic L P0 (RevenueCat + productos) si D5-D8 ok</td><td>QA pass iOS wave-1 · revisión legal en curso</td></tr>
+<tr class="go"><td class="sN">🎯 18 AGO</td><td colspan="4"><b>ANDROID GO</b> — closed testing (empieza el reloj 12×14 → acceso a producción ~1 sep)</td></tr>
+<tr><td class="sN">S13<br>17-21 ago</td><td>Comms waitlist #1 ("ya estamos en beta") · empresa en trámite</td><td>Vigilar opt-in de los 12 Androids (¡no pueden caerse 14 días!)</td><td>M-2 rebaseline · pasada de revisores i18n (aranés primero) · push M-3 si procede (build 6)</td><td>Bug bash multiplataforma · accesibilidad básica</td></tr>
+<tr><td class="sN">S14<br>24-28 ago</td><td>Definición oferta de lanzamiento · materiales marketing</td><td>Preparar cohortes F1 del piloto (waves ampliadas con ✔)</td><td>Epic L P1 (paywall + flujos según <b>Doc 29</b>) · hardening</td><td>Checklist Piloto F1 · legal final para publicar</td></tr>
+<tr><td class="sN">S15<br>31 ago-4 sep</td><td>Revisión pricing con datos beta · <b>Lucía entrega Plantilla-Store-Listings (≤5 sep)</b></td><td>Comms piloto F1 programadas</td><td>Congelación pre-piloto (solo fixes) · <b>solicitar producción Play</b> (1 sep, tras 12×14)</td><td><b>G4</b> · publicar legal definitivo</td></tr>
+<tr class="go"><td class="sN">🎯 8 SEP</td><td colspan="4"><b>PILOTO FASE 1</b> — objetivo: activación y estabilidad con volumen real</td></tr>
+<tr><td class="sN">S16<br>7-11 sep</td><td>Entrevistas usuarias F1 (guion en <b>Doc 27</b>)</td><td>Soporte reforzado · funnel diario</td><td>Hotfixes OTA diarios si hacen falta</td><td>Medir: crash-free, D1/D7, NPS informal</td></tr>
+<tr><td class="sN">S17<br>14-18 sep</td><td>Ajustes de propuesta de valor con feedback F1</td><td>Waves 2-3 con ✔ listas</td><td>Fixes F1 · IAP en sandbox/TestFlight si L listo</td><td><b>G5</b> · fichas stores ES/EN + resto idiomas</td></tr>
+<tr class="go"><td class="sN">🎯 18 SEP</td><td colspan="4"><b>PILOTO FASE 2</b> — objetivo: volumen, retención y (si L llegó) flujo de pago en sandbox</td></tr>
+<tr><td class="sN">S18<br>21-25 sep</td><td><b>G6 · Go/No-Go</b> (founders) · plan comms lanzamiento</td><td>Cierre métricas F2 · informe piloto</td><td><b>Envío App Review + Play production</b> (rollout escalonado)</td><td>Checklist submission (ambos stores)</td></tr>
+<tr><td class="sN">S19<br>28 sep-2 oct</td><td>Countdown: waitlist blast programado · redes</td><td>Escalado de soporte listo · FAQs</td><td>Correcciones de review si las hay · switch CTAs marketing → stores</td><td><b>G7</b> · runbook día-1 (rollback, monitor, guardias)</td></tr>
+<tr class="go"><td class="sN">🎯 8 OCT</td><td colspan="4"><b>🎉 LANZAMIENTO A PRODUCCIÓN / COMERCIALIZACIÓN</b> — rollout escalonado + anuncio + waitlist</td></tr>
+<tr><td class="sN">S20<br>5-9 oct</td><td>Anuncio + prensa/redes</td><td>Guardia día-1 · respuesta reviews stores</td><td>Monitorización intensiva · hotfix channel</td><td>Retro de lanzamiento (vie 9)</td></tr>
+</table></div>
+<style>
+.sprints table{font-size:11.5px}
+.sprints th{background:#241D1A}
+.sprints td.sN{font-weight:800;white-space:nowrap;color:#C73A20;background:#FFFBF5}
+.sprints tr.go td{background:linear-gradient(90deg,#FF7600,#FD400C);color:#fff;font-weight:800;font-size:12.5px}
+.sprints tr.go td.sN{background:#FD400C;color:#fff}
+.sprints td{border-bottom:1px solid #F4EADF}
+</style>
+<p class="hint" data-i>La cadena Android/Play ES el camino crítico (holgura ≈ 1 semana); el legal corre co-crítico. Filas rojas = holgura cero. Plan completo: Docs → Plan de lanzamiento 8-oct. Descargas: <a href="/hub/docs/NutriSync-Historia-Storyline-2026-08.png">infografía PNG</a> · <a href="/hub/docs/NutriSync-Historia-Storyline-2026-08.pptx">lámina PPTX</a>.|The Android/Play chain IS the critical path (~1 week slack); legal runs co-critical. Red rows = zero slack. Full plan: Docs → Oct-8 launch plan. Downloads: <a href="/hub/docs/NutriSync-Historia-Storyline-2026-08.png">infographic PNG</a> · <a href="/hub/docs/NutriSync-Historia-Storyline-2026-08.pptx">PPTX slide</a>.</p>
 
 <script>
-/* bilingüe: data-i="ES|EN" — ES por defecto, EN si el navegador no va en español */
 (function(){
-  var en=(navigator.language||'').slice(0,2)!=='es';
-  document.querySelectorAll('[data-i]').forEach(function(n){
-    var p=n.getAttribute('data-i').split('|');
-    n.innerHTML=en?(p[1]||p[0]):p[0];
-  });
+  function idioma(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pinta(){var en=idioma()==='en';
+    document.querySelectorAll('[data-i]').forEach(function(n){
+      var src=n.getAttribute('data-i');
+      if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}   // data-i sin valor: el texto ES|EN vive dentro
+      var p=src.split('|');
+      n.innerHTML=en?(p[1]||p[0]):p[0];});}
+  document.addEventListener('ns-lang',pinta);pinta();
 })();
 </script>
 </div></body></html>
