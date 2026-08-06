@@ -1244,18 +1244,23 @@ if os.path.exists(mf):
             print("- mfa htab added to hub nav")
 
 # ---------------------------------------------------------------------------
-# ns-footer-mailto: wire footer placeholders by template key (labels are i18n vars).
+# ns-footer-mailto (r14j): cablear Careers/Contact CONSERVANDO su markup
+# ({{ t.* }} los rinde support.js). LECCIÓN r14j — LA RAÍZ DEL PIE ROTO:
+# el replacement llevaba '\1' SIN raw → Python emitía el byte 0x01 en vez de la
+# backreference: ancla sin '>', sin etiqueta, DOM corrupto (el <a> fantasma, la
+# columna Legal anidada, reparto desigual). SIEMPRE r'"\1' en re.sub.
 fidx = os.path.join(PUB, "index.html")
 if os.path.exists(fidx):
     fh = open(fidx, encoding="utf-8").read()
-    if 'mailto:contact@nutrisynccollective.com' not in fh:
-        import re as _re
-        for _k, _t in (("ftContact", "mailto:contact@nutrisynccollective.com"),
-                       ("ftCareers", "mailto:contact@nutrisynccollective.com?subject=Empleo%20NutriSync")):
-            fh = _re.sub(r'href=\"#\"([^>]*>\{\{ t\.' + _k + r' \}\})', 'href=\"' + _t + '\"\1', fh)
-        fh = fh.replace('href=\"#science\"', 'href=\"#platform\"')
+    import re as _re
+    _antes = fh
+    for _k, _t in (("ftContact", "mailto:contact@nutrisynccollective.com"),
+                   ("ftCareers", "mailto:contact@nutrisynccollective.com?subject=Empleo%20NutriSync")):
+        fh = _re.sub(r'href="#"([^>]*>\{\{ t\.' + _k + r' \}\})', 'href="' + _t + r'"\1', fh)
+    fh = fh.replace('href="#science"', 'href="#platform"')
+    if fh != _antes:
         open(fidx, "w", encoding="utf-8").write(fh)
-        print("- footer links wired (contact/careers mailto, science anchor)")
+        print("- footer links wired (Careers/Contact con markup INTACTO, r14j)")
 
 # ---------------------------------------------------------------------------
 # ns-auth-redirects: signup emails always land on production (belt & braces
@@ -1527,6 +1532,31 @@ if os.path.isdir(_shd):
     _af = os.path.join(PUB, "assets", "fonts"); _av = os.path.join(PUB, "assets", "vendor")
     os.makedirs(os.path.join(_af, "files"), exist_ok=True); os.makedirs(_av, exist_ok=True)
     shutil.copy(os.path.join(_shd, "fonts", "fonts.css"), os.path.join(_af, "fonts.css"))
+    # r14j: fuentes DETERMINISTAS — URL versionada por contenido (regla r12-b11),
+    # preload de las caras críticas (las pide el CSS sin ?v: mismos nombres) y
+    # respaldo tipográfico global (el body sin familia caía a Times).
+    import hashlib as _hl
+    _fcss_txt = open(os.path.join(_af, "fonts.css"), encoding="utf-8").read()
+    _FSHA = _hl.sha256(_fcss_txt.encode()).hexdigest()[:8]
+    _NSPRE = ""; _pre_urls = set(); _pop = {"400","600","700"}; _bric = False
+    for _m in re.finditer(r'@font-face\{[^}]*\}', _fcss_txt):
+        _blk = _m.group(0)
+        if 'U+0000' not in _blk: continue
+        _fam = re.search(r"font-family:\s*'([^']+)'", _blk)
+        _w   = re.search(r"font-weight:\s*(\d+)", _blk)
+        _u   = re.search(r"url\(([^)]+)\)", _blk)
+        if not (_fam and _u) or _u.group(1) in _pre_urls: continue
+        _f, _wv = _fam.group(1), (_w.group(1) if _w else "")
+        _toma = (_f == "Poppins" and _wv in _pop) or (_f == "Bricolage Grotesque" and not _bric)
+        if _f == "Poppins" and _wv in _pop: _pop.discard(_wv)
+        if _f == "Bricolage Grotesque": _bric = True
+        if _toma:
+            _pre_urls.add(_u.group(1))
+            _NSPRE += '<link rel="preload" href="' + _u.group(1) + '" as="font" type="font/woff2" crossorigin>'
+    _NSTYPE = ('<style id="ns-type-system">'
+               "html,body,button,input,select,textarea{font-family:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}"
+               "h1,h2,h3{font-family:'Bricolage Grotesque','Poppins',sans-serif}"
+               '</style>')
     for _f in os.listdir(os.path.join(_shd, "fonts", "files")):
         shutil.copy(os.path.join(_shd, "fonts", "files", _f), os.path.join(_af, "files", _f))
     for _f in os.listdir(os.path.join(_shd, "vendor")):
@@ -1548,9 +1578,9 @@ if os.path.isdir(_shd):
             for _lk in _links:
                 if _first:
                     if '\\"' in _lk:   # contexto JSON-escapado
-                        _rep = '<link rel=\\"stylesheet\\" href=\\"/assets/fonts/fonts.css\\">'
+                        _rep = '<link rel=\\"stylesheet\\" href=\\"/assets/fonts/fonts.css?v=' + _FSHA + '\\">'
                     else:              # HTML crudo
-                        _rep = '<link rel="stylesheet" href="/assets/fonts/fonts.css">'
+                        _rep = _NSPRE + '<link rel="stylesheet" href="/assets/fonts/fonts.css?v=' + _FSHA + '">' + _NSTYPE
                     _first = False
                 else:
                     _rep = ""
@@ -1653,25 +1683,17 @@ if os.path.exists(_dg) and 'flex-wrap' not in open(_dg, encoding="utf-8").read()
     pass
 print("- ns-doors-grid: no aplica en v11.56 (flex-wrap nativo)")
 
-# ── ns-footer-font (r14i, regresión de fuente del pack v11.56 vs v11.55):
-# los enlaces de columna del pie (Open app, Our team, Privacy…) NO llevan estilo
-# inline; los botones (App Store, Pitch, sociales) SÍ. Por eso `footer a:not([style])`
-# los aísla con precisión. Override CSS ADITIVO — no toca el markup de Design.
+# ── ns-footer-font RETIRADO (r14j): el «descuadre» del pie era DOM corrupto
+# por el \1 sin raw (ver ns-footer-mailto). Reparada la causa, el pie vuelve al
+# 13.5px de Design (po117). Aquí solo se limpian restos de builds anteriores.
 _ff = os.path.join(PUB, "index.html")
 if os.path.exists(_ff):
     _h = open(_ff, encoding="utf-8").read()
-    if True:
-        import re as _re2
-        _h = _re2.sub(r'<style id="ns-footer-font">[\s\S]*?</style>', '', _h)   # refresh-on-change
-        _CSS = ('<style id="ns-footer-font">'
-          'footer a:not([style]){font-size:15px;line-height:1.85}''footer div[style*="flex-wrap"] > a:not(:has(*)){display:none}''footer div[style*="flex-wrap"] > :not(:has(*)):empty{display:none}''@media(min-width:900px){[data-ns="ns-footer-cols"]>div:not(:empty){flex:1 1 0;min-width:0}}'
-          '</style>')
-        _h = _h.replace("</body>", _CSS + "</body>", 1)
-        open(_ff, "w", encoding="utf-8").write(_h)
-        print("- ns-footer-font: enlaces de columna a 15px (aditivo, botones intactos)")
-    else:
-        print("- ns-footer-font: ya aplicado")
-
+    import re as _re2
+    _h2 = _re2.sub(r'<style id="ns-footer-font">[\s\S]*?</style>', '', _h)
+    if _h2 != _h:
+        open(_ff, "w", encoding="utf-8").write(_h2)
+        print("- ns-footer-font: retirado (r14j)")
 # ── ns-footer-even (r14i, medido: el footer tiene 2 hijos; las columnas
 # PRODUCT/COMPANY/LEGAL/QR viven en el sub-contenedor [1], no sueltas — por eso
 # el space-between de fuera dejaba el hueco. Se lo ponemos al sub-contenedor. ──
@@ -1685,7 +1707,7 @@ if os.path.exists(_fe):
         # r14i (MEDIDO en navegador): el sub-contenedor tiene un hijo VACÍO (ancho 0)
         # que se come un hueco del space-between → reparto 156/234 en vez de uniforme.
         # Lo marcamos para poder ocultarlo por CSS sin tocar el markup de Design.
-        _h = _h.replace('<div style="' + _b, '<div data-ns="ns-footer-cols" style="' + _b, 1)
+        _h = _h.replace('style="display: flex; ' + _b, 'data-ns="ns-footer-cols" style="display: flex; ' + _b, 1)
         open(_fe, "w", encoding="utf-8").write(_h)
         print("- ns-footer-even: columnas repartidas + sub-contenedor marcado")
     else:
