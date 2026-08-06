@@ -60,7 +60,10 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
 const sb=createClient(U,K);const $=i=>document.getElementById(i);
 const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const ES=(navigator.language||'en').toLowerCase().indexOf('es')===0;
+function nsL(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+  return v||(((navigator.language||'en').toLowerCase().indexOf('es')===0)?'es':'en');}
+const ES=nsL()==='es';
+document.addEventListener('ns-lang',()=>location.reload());
 const T=ES?{
   title:'Pilot Planning', gate:'Inicia sesión de founder (Access + admin con MFA) y recarga.',
   sub:'El plan del piloto semana a semana: cuántas testers queremos dentro y cuántas activas, con los hitos que no se pueden mover. Aquí se edita el objetivo; en Pilot Observability se mira el resultado.',

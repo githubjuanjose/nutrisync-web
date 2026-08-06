@@ -46,7 +46,10 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
 const sb=createClient(U,K);const $=i=>document.getElementById(i);
 const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const ES=(navigator.language||'en').toLowerCase().indexOf('es')===0;
+function nsL(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+  return v||(((navigator.language||'en').toLowerCase().indexOf('es')===0)?'es':'en');}
+const ES=nsL()==='es';
+document.addEventListener('ns-lang',()=>location.reload());
 const T=ES?{
   title:'Operación diaria y SOP', gate:'Inicia sesión de founder (Access + admin con MFA) y recarga.',
   sub:'Lo que hay que mirar hoy y cómo se hace cada cosa. Se calcula solo al abrir: no hay nada que ejecutar a mano.',

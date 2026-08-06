@@ -5,7 +5,10 @@
    (consola MIS y Overview del gated) — misma fuente, mismos números.
    Sin CDNs: usa window.supabase (auto-alojado) y SVG inline. */
 (function () {
-  var ES = (navigator.language || 'en').toLowerCase().indexOf('es') === 0;
+  function nsL(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'en').toLowerCase().indexOf('es')===0)?'es':'en');}
+  var ES = nsL() === 'es';
+  if (typeof document.addEventListener === 'function') document.addEventListener('ns-lang', function(){ location.reload(); });
   var T = ES ? {
     access: 'Actividad (últimos 7 días)', dau: 'DAU', wau: 'WAU', mau: 'MAU',
     dauL: 'activas hoy', wauL: 'activas 7 días', mauL: 'activas 30 días',
