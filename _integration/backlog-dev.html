@@ -28,6 +28,10 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
 .hoyb{font-size:10px;font-weight:800;background:#FFF1EC;color:#C73A20;border-radius:999px;padding:1px 8px}
 .err{background:#FFF1EC;border:2px solid #E8472A;border-radius:12px;padding:13px 15px;font-size:13px;color:#8A2A18;margin:14px 0}
 .hint{font-size:11.5px;color:#8A7F78}
+#snack{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#241D1A;color:#fff;
+  font-size:13px;padding:10px 18px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.25);
+  opacity:0;pointer-events:none;transition:opacity .25s;z-index:50;max-width:90vw}
+#snack.on{opacity:1}
 select.mini{font-size:11.5px;padding:4px 7px}
 </style></head><body><div class="w">
 
@@ -54,6 +58,7 @@ Las 🐞 de <a href="/hub/feedback.html">Feedback</a> entran con un clic; la pla
 </div>
 <div id="err"></div>
 <div id="board">Cargando…</div>
+<div id="snack"></div>
 
 </div>
 <script src="/assets/vendor/supabase.js"></script>
@@ -110,17 +115,27 @@ function render(){
   $('kpis').innerHTML=[['Items vivos',r.total],['Añadidos hoy',r.hoy],['P0 abiertas ⚠',r.p0_abiertas],['En curso',r.en_curso]]
     .map(function(x){return '<div class="kpi"><div class="l">'+x[0]+'</div><div class="v">'+(x[1]==null?'—':x[1])+'</div></div>';}).join('');
 }
+var SNT=null;
+function snack(msg){var el=$('snack');el.textContent=msg;el.classList.add('on');
+  clearTimeout(SNT);SNT=setTimeout(function(){el.classList.remove('on');},3600);}
 window.bkSet=function(id,patch){patch.id=id;
+  var it=(D&&D.items||[]).find(function(x){return x.id===id;});
+  var campo=Object.keys(patch).filter(function(k){return k!=='id';})[0];
   sb.rpc('admin_backlog_upsert',{p:patch}).then(function(r){
-    if(r.error||!(r.data&&r.data.ok))return alert('No guardado: '+((r.error&&r.error.message)||'error'));
+    if(r.error||!(r.data&&r.data.ok))return snack('⚠ No guardado: '+((r.error&&r.error.message)||'error'));
+    var extra='';
+    var fe=$('fEst').value||'';
+    if(campo==='estado'&&patch.estado==='hecho'&&fe!=='hecho'&&fe!=='todos')extra=' · sale de la vista (filtro «estado: todos» para verlo)';
+    if(campo==='estado'&&patch.estado==='descartado')extra=' · fuera del tablero';
+    snack('✓ «'+((it&&it.titulo)||'item').slice(0,50)+'» — '+campo+' → '+patch[campo]+extra);
     cargar();});
 };
 window.bkAdd=function(){
   var t=$('nTit').value.trim();if(!t)return alert('Escribe el título del item.');
   sb.rpc('admin_backlog_upsert',{p:{titulo:t,tipo:$('nTipo').value,prioridad:$('nPri').value,sprint:$('nSpr').value,origen:'founder'}})
     .then(function(r){
-      if(r.error||!(r.data&&r.data.ok))return alert('No añadido: '+((r.error&&r.error.message)||'error'));
-      $('nTit').value='';cargar();});
+      if(r.error||!(r.data&&r.data.ok))return snack('⚠ No añadido: '+((r.error&&r.error.message)||'error'));
+      $('nTit').value='';snack('✓ Añadido al tablero');cargar();});
 };
 function csvCell(v){return '"'+String(v==null?'':v).replace(/"/g,'""').replace(/\r?\n/g,' · ')+'"';}
 window.bkCsv=function(){

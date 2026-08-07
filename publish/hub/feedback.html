@@ -33,6 +33,13 @@ select,input[type=text]{font-family:inherit;font-size:13px;padding:8px 10px;bord
 .hoy .it{display:flex;gap:8px;align-items:center;font-size:12.5px;padding:4px 0;flex-wrap:wrap}
 .shot{max-width:150px;max-height:110px;border-radius:8px;border:1px solid var(--line);margin-top:8px;cursor:zoom-in}
 .mini{font-size:11px;padding:4px 10px}
+#snack{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#241D1A;color:#fff;
+  font-size:13px;padding:10px 18px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.25);
+  opacity:0;pointer-events:none;transition:opacity .25s;z-index:50;max-width:90vw}
+#snack.on{opacity:1}
+.stats{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.stats span{font-size:11px;font-weight:800;border-radius:999px;padding:3px 10px;background:#F6EEE7;color:#6E655D}
+.enbk{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#FFF1EC;color:#C73A20}
 </style><script src="/assets/vendor/supabase.js"></script></head><body><!-- ns-hub-navbar -->
 <div id="ns-hub-navbar">
 <style>
@@ -254,14 +261,16 @@ select,input[type=text]{font-family:inherit;font-size:13px;padding:8px 10px;bord
     <div class="row">
       <select id="fCohort"><option value="">todas las cohortes</option></select>
       <select id="fPlat"><option value="">plataforma: todas</option><option>ios</option><option>android</option><option>web</option></select>
-      <select id="fTri"><option value="">triage: todo</option><option value="bug">🐞 incidencias</option><option value="mejora">🔧 mejoras</option><option value="idea">💡 ideas</option><option value="sin">sin clasificar</option></select>
+      <select id="fTri"><option value="sin" selected>📥 bandeja: sin clasificar</option><option value="">todo</option><option value="bug">🐞 incidencias</option><option value="mejora">🔧 mejoras</option><option value="idea">💡 ideas</option></select>
       <input type="text" id="q" placeholder="buscar en los mensajes…" style="flex:1;min-width:180px">
       <button onclick="load()">Actualizar</button>
       <button onclick="exportCsv()" title="Exporta lo que ves con los filtros actuales">⬇ CSV</button>
       <span class="count" id="count"></span>
     </div>
   </div>
+  <div class="stats" id="stats"></div>
   <div id="hoy"></div>
+  <div id="snack"></div>
   <div id="list"><div class="hint">Cargando…</div></div>
 </div>
 <div id="gate">Inicia sesión de founder (Access + admin) y recarga — esta página es solo para admins.</div>
@@ -295,7 +304,7 @@ function render(){
       <button class="${r.categoria==='bug'?'on-bug':''}" onclick="window.fbTri('${esc(r.ticket_id)}','bug')">🐞 Incidencia</button>
       <button class="${r.categoria==='mejora'?'on-mej':''}" onclick="window.fbTri('${esc(r.ticket_id)}','mejora')">🔧 Mejora</button>
       <button class="${r.categoria==='idea'?'on-idea':''}" onclick="window.fbTri('${esc(r.ticket_id)}','idea')">💡 Idea</button>
-      ${r.categoria==='bug'&&r.ticket_no?`<button class="mini" style="margin-left:8px" onclick="window.fbToBk('${esc(r.ticket_no)}')">📌 → Backlog S12</button>`:''}
+      ${r.categoria==='bug'&&r.ticket_no?(r.en_backlog?`<span class="enbk" style="margin-left:8px">📌 en backlog</span>`:`<button class="mini" style="margin-left:8px" onclick="window.fbToBk('${esc(r.ticket_no)}')">📌 → Backlog S12</button>`):''}
     </div>`:''}
     ${r.ticket_id?`<div style="margin-top:8px"><button class="mini" onclick="window.fbTog('${esc(r.ticket_id)}')">✏️ Gestionar / Manage</button></div>
     <div id="fb-${esc(r.ticket_id)}" style="display:none;border-top:1px dashed #EADFD0;margin-top:8px;padding-top:8px">
@@ -312,10 +321,18 @@ function render(){
         <a class="hint" href="/hub/incidents.html" style="margin-left:auto">rastro completo → 🎫 Incidencias</a>
       </div>
     </div>`:''}</div>`).join('')||'<div class="hint">Sin mensajes con esos filtros.</div>';
-  pintaHoy();pintaShots();
+  pintaHoy();pintaShots();pintaStats();
 }
 /* r14c (punto 8): gestión ligera desde Feedback — mismo motor que Incidencias.
    Hoy feedback y ticket van 1:1; cuando se separen, este panel solo saldrá donde haya ticket. */
+let SNT=null;
+function snack(msg){const el=$('snack');el.textContent=msg;el.classList.add('on');
+  clearTimeout(SNT);SNT=setTimeout(()=>el.classList.remove('on'),3600);}
+function pintaStats(){
+  const n={bug:0,mejora:0,idea:0,sin:0};
+  ALL.forEach(r=>{n[r.categoria]!==undefined?n[r.categoria]++:n.sin++;});
+  $('stats').innerHTML=`<span>📥 sin clasificar: ${n.sin}</span><span>🐞 ${n.bug}</span><span>🔧 ${n.mejora}</span><span>💡 ${n.idea}</span>`;
+}
 function hoyISO(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function pintaHoy(){
   const h=hoyISO();
@@ -323,7 +340,7 @@ function pintaHoy(){
   $('hoy').innerHTML=bugs.length?`<div class="hoy"><h3>🐞 Incidencias de HOY · ${bugs.length} — al backlog y a su sprint</h3>${bugs.map(r=>`
     <div class="it">${r.criticidad?`<span class="fbcrit ${r.criticidad.toLowerCase()}">${esc(r.criticidad)}</span>`:''}
     <b>${esc(r.ticket_no||'')}</b> ${esc(r.titulo||r.message.slice(0,70))}
-    <button class="mini" onclick="window.fbToBk('${esc(r.ticket_no)}')">📌 → Backlog S12</button></div>`).join('')}
+    ${r.en_backlog?`<span class="enbk">📌 en backlog</span>`:`<button class="mini" onclick="window.fbToBk('${esc(r.ticket_no)}')">📌 → Backlog S12</button>`}</div>`).join('')}
     <div class="hint">El backlog completo vive en la pestaña 🗂 — <a href="/hub/backlog-dev.html">abrir</a>.</div></div>`:'';
 }
 async function pintaShots(){
@@ -332,15 +349,21 @@ async function pintaShots(){
     if(data?.signedUrl){img.src=data.signedUrl;img.removeAttribute('data-shot');}
   }
 }
+const DESTINO={bug:'🐞 Incidencia — gestión y respuesta en 🎫 Incidencias',
+  mejora:'🔧 Mejora — al backlog cuando toque (🗂)',idea:'💡 Idea — guardada; se revisa en planning'};
 window.fbTri=async(id,cat)=>{
   const r=await sb.rpc('admin_ticket_update',{p_id:id,p_categoria:cat});
-  if(!r.error&&r.data&&r.data.ok){const row=ALL.find(x=>x.ticket_id===id);if(row)row.categoria=cat;render();}
-  else alert('No guardado: '+((r.error&&r.error.message)||'error'));
+  if(!r.error&&r.data&&r.data.ok){
+    const row=ALL.find(x=>x.ticket_id===id);if(row)row.categoria=cat;
+    render();
+    snack('✓ '+(r.data.ticket_no||'')+' clasificado: '+DESTINO[cat]+($('fTri').value==='sin'?' · sale de la bandeja':''));
+  } else snack('⚠ No guardado: '+((r.error&&r.error.message)||'error'));
 };
 window.fbToBk=async(no)=>{
   const r=await sb.rpc('admin_ticket_to_backlog',{p_ticket_no:no,p_sprint:'S12'});
-  if(r.error||!(r.data&&r.data.ok))return alert('No añadido: '+((r.error&&r.error.message)||(r.data&&r.data.error)||''));
-  alert(r.data.ya_estaba?no+' ya estaba en el backlog.':no+' añadido al backlog (S12, prioridad por criticidad).');
+  if(r.error||!(r.data&&r.data.ok))return snack('⚠ No añadido: '+((r.error&&r.error.message)||(r.data&&r.data.error)||''));
+  const row=ALL.find(x=>x.ticket_no===no);if(row)row.en_backlog=true;render();
+  snack(r.data.ya_estaba?('📌 '+no+' ya estaba en el backlog (🗂)'):('📌 '+no+' → Backlog S12 · prioridad por criticidad · pestaña 🗂'));
 };
 window.fbTog=id=>{const d=document.getElementById('fb-'+id);if(d)d.style.display=d.style.display==='none'?'block':'none';};
 window.fbSave=async id=>{
