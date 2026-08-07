@@ -448,7 +448,7 @@ async function loadUnmatched(){
     '<div><div class="hint">activas 7d · TODAS las cuentas</div><b style="font-size:20px">'+d.activas_7d_total+'</b></div>'
    +'<div style="margin-left:18px"><div class="hint">activas 7d · cruzadas con el piloto (lo que ven las gráficas)</div><b style="font-size:20px;color:'+(d.activas_7d_piloto<d.activas_7d_total?'#C73A20':'#0F6E56')+'">'+d.activas_7d_piloto+'</b></div>';
   const invs=(OV&&OV.invites||[]).map(i=>i.email).sort();
-  const opts='<option value="">— elegir invitada —</option>'+invs.map(e=>`<option>${esc(e)}</option>`).join('');
+  const opts='<option value="">— elegir invitada —</option>'+invs.map(e=>`<option>${esc(e)}</option>`).join('')+'<option value="__nueva__">➕ nueva invitada…</option>';
   const filas=(d.huerfanas||[]).slice().sort((a,b)=>(b.accesos_7d||0)-(a.accesos_7d||0)||(b.ultimo?1:0)-(a.ultimo?1:0));   // r14h: TODAS — la basura (0 accesos) queda al fondo, con 🗑
   tb.innerHTML=filas.map(h=>`<tr>
     <td>${esc(h.email)}</td>
@@ -468,8 +468,18 @@ window.umBorrar=async cuenta=>{
 };
 window.umCasar=async cuenta=>{
   const sel=document.querySelector('.umSel[data-e="'+cuenta+'"]');
-  const inv=sel&&sel.value;
+  let inv=sel&&sel.value;
   if(!inv)return alert('Elige primero a qué invitada pertenece esta cuenta. / Pick the tester first.');
+  /* r16: ➕ alta al vuelo — crea la invitada aquí mismo y sigue el casorio */
+  if(inv==='__nueva__'){
+    const email=(prompt('Correo PRINCIPAL de la nueva invitada (el suyo de contacto, no el relay):')||'').trim().toLowerCase();
+    if(!email||!email.includes('@'))return;
+    const apodo=(prompt('Apodo (opcional):')||'').trim();
+    const alta=await sb.rpc('admin_pilot_bulk_add',{p:[{email:email,nickname:apodo||null,cohort:'wave-1',platform:'ios'}]});
+    if(alta.error)return alert('⚠ No se pudo dar de alta: '+alta.error.message);
+    inv=email;
+    alert('✓ '+email+' dada de alta en wave-1 (iOS). Ahora se casa con la cuenta.');
+  }
   if(!confirm('Casar '+cuenta+' con '+inv+': se guardará como su correo de tienda y contará en todas las métricas. ¿Seguir?'))return;
   const r=await sb.rpc('admin_pilot_update',{p_email:inv,p_nickname:null,p_cohort:null,p_status:null,p_store_email:cuenta,p_platform:null});
   if(r.error||!(r.data&&r.data.ok))return alert('⚠ '+((r.error&&r.error.message)||(r.data&&r.data.error)||'error'));
