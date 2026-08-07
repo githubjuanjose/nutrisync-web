@@ -1694,6 +1694,19 @@ if os.path.exists(_ff):
     if _h2 != _h:
         open(_ff, "w", encoding="utf-8").write(_h2)
         print("- ns-footer-font: retirado (r14j)")
+# ── ns-build-stamp (r15-C): sello de build en el <head>. Un curl a producción
+# responde QUÉ build sirve — nunca más «¿qué po corre?» (la pregunta que ayer
+# costó dos horas). Refresh-on-change: cada integrate re-sella con su hora.
+_bs = os.path.join(PUB, "index.html")
+if os.path.exists(_bs):
+    import re as _re9, datetime as _dt
+    _h = open(_bs, encoding="utf-8").read()
+    _h = _re9.sub(r'<meta name="ns-build"[^>]*>\n?', '', _h)
+    _sello = _dt.datetime.now().strftime("%d%m-%H%M%S")
+    _h = _h.replace("<head>", '<head><meta name="ns-build" content="' + _sello + '">', 1)
+    open(_bs, "w", encoding="utf-8").write(_h)
+    print("- ns-build-stamp: " + _sello)
+
 # ── ns-footer-even (r14i, medido: el footer tiene 2 hijos; las columnas
 # PRODUCT/COMPANY/LEGAL/QR viven en el sub-contenedor [1], no sueltas — por eso
 # el space-between de fuera dejaba el hueco. Se lo ponemos al sub-contenedor. ──
