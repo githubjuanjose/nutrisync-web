@@ -47,6 +47,14 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
 .edad.tarde{background:#FFE4E0;color:#A32D2D}
 .edad.hecha{background:#E8F5EE;color:#0F6E56}
 .escal{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#FDE68A;color:#92400E}
+.tit{font-weight:800;font-size:13px}
+.fb{font-size:10.5px;font-weight:900;border-radius:7px;padding:2px 8px;letter-spacing:.3px}
+.fb1{background:#C73A20;color:#fff}.fb2{background:#FFB020;color:#5B3A00}.fb3{background:#E7E2DC;color:#5F564F}
+.cat{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#F1EAE2;color:#6E655D}
+.pcerr{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#DCFCE7;color:#166534;border:1px dashed #16A34A}
+.fixchip{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#EDE9FE;color:#5B21B6}
+.leyfb{font-size:11.5px;color:#6E655D;background:#FBF6EF;border:1px solid #EFE3D7;border-radius:10px;padding:8px 12px;margin:0 0 14px}
+.leyfb b{color:#241D1A}
 .sec{display:flex;align-items:center;gap:10px;margin:16px 0 4px;padding:8px 12px;background:#FBF6EF;border:1px solid #EFE3D7;border-radius:10px;cursor:pointer;user-select:none}
 .sec:hover{background:#FFF6F2}
 .sec .n{font-weight:800;font-size:13px}
@@ -270,6 +278,10 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
 quién lo lleva, y se responde a la usuaria — <b>la respuesta le llega dentro de su app</b>.
 Nada se guarda hasta que pulsas un botón de guardar.</p>
 
+<div class="leyfb"><b>FB = Feature Bug.</b> <span class="fb fb1">FB1</span> crítico: rompe la promesa o bloquea el uso → fix ≤48 h / próxima OTA ·
+<span class="fb fb2">FB2</span> importante: degradado con rodeo → siguiente versión ·
+<span class="fb fb3">FB3</span> menor / mejora → backlog priorizado.
+El ciclo de cierre: fix enviado → <i>esperando a la usuaria</i> → sin respuesta en 72 h aparece <span class="pcerr">✔ para cerrar</span> y una founder la cierra.</div>
 <div class="kpis" id="kpis"></div>
 <div class="filtros">
   <select id="fSt"><option value="">estado: todos</option>
@@ -300,11 +312,11 @@ function fail(e,fn){
   $('lista').innerHTML='';
   $('err').innerHTML='<div class="err"><b>⚠️ Falta aplicar SQL en Supabase</b><div style="margin-top:5px">'+
     'La consulta <code>'+esc(fn)+'</code> no responde: <i>'+esc(String(e&&e.message||e)).slice(0,160)+'</i></div>'+
-    '<div style="margin-top:5px">Ejecuta <b>backend-sql/2026-08-05-feedback-tickets.sql</b> entero y recarga.</div></div>';
+    '<div style="margin-top:5px">Ejecuta <b>backend-sql/2026-08-07-incidencias-v2.sql</b> entero y recarga.</div></div>';
 }
 
-var ASIGNABLES=['juanjose.cebrian@gmail.com','pilargonz05@gmail.com','lucia@nutrisynccollective.com',
-  'mariapaula@nutrisynccollective.com','engineering@nutrisynccollective.com','build@nutrisynccollective.com','hello@nutrisynccollective.com'];
+var ASIGNABLES=['engineering@nutrisynccollective.com','build@nutrisynccollective.com',
+  'lcebrian@nutrisynccollective.com','pgonzalez@nutrisynccollective.com','mgarzon@nutrisynccollective.com','contact@nutrisynccollective.com'];
 var KINDS={creado:'🎫',comentario:'💬',estado:'🔁',asignacion:'👤',respuesta:'✍️',respuesta_enviada:'📨'};
 
 function fecha(s){if(!s)return '—';var d=new Date(s);
@@ -360,12 +372,19 @@ function badgeEdad(t){
   var cls=h>=24?'tarde':(h>=8?'aviso':'ok');
   return '<span class="edad '+cls+'">⏱ abierta '+fmtDur(h)+(h>=24?' ⚠':'')+'</span>';
 }
+function paraCerrar(t){return t.status==='esperando_usuaria'&&t.respuesta_enviada_at
+  &&(Date.now()-new Date(t.respuesta_enviada_at).getTime())/36e5>72;}
 function ticket(t){
   var abierto=ABIERTOS[t.id]?' open':'';
   var h='<div class="t'+abierto+'" data-id="'+esc(t.id)+'">'
     +'<div class="th" onclick="window.nsToggle(\''+esc(t.id)+'\')">'
     +'<span class="no">'+esc(t.ticket_no)+'</span>'
+    +(t.criticidad?'<span class="fb '+esc(t.criticidad).toLowerCase()+'">'+esc(t.criticidad)+'</span>':'')
+    +(t.titulo?'<span class="tit">'+esc(t.titulo)+'</span>':'')
+    +(t.categoria?'<span class="cat">'+esc(t.categoria)+'</span>':'')
     +'<span class="pill s-'+esc(t.status)+'">'+esc(t.status.replace(/_/g,' '))+'</span>'
+    +(paraCerrar(t)?'<span class="pcerr">✔ para cerrar</span>':'')
+    +(t.fix_enviado_at?'<span class="fixchip">🔧 fix enviado</span>':'')
     +badgeEdad(t)
     +(t.escalated_at?'<span class="escal">📣 escalada a founders</span>':'')
     +(t.respuesta_enviada_at?'<span class="enviada">📨 respondida en la app</span>':'')
@@ -380,7 +399,15 @@ function ticket(t){
     +['nuevo','en_curso','esperando_usuaria','resuelto','cerrado'].map(function(s){
        return '<option value="'+s+'"'+(s===t.status?' selected':'')+'>'+s.replace(/_/g,' ')+'</option>';}).join('')
     +'</select></div>'
-    +'<div class="fld"><label>Asignado a</label><input type="text" class="edAs" list="nsAsig" value="'+esc(t.assigned_to||'')+'" placeholder="founder o dirección nutrisync"></div>'
+    +'<div class="fld"><label>Título breve (cómo la llamamos nosotros)</label><input type="text" class="edTi" value="'+esc(t.titulo||'')+'" placeholder="p. ej.: sin predicción + períodos fantasma"></div>'
+    +'<div class="fld" style="display:flex;gap:8px"><div style="flex:1"><label>Categoría</label><select class="edCa">'
+    +['','bug','mejora','consulta','datos'].map(function(c){return '<option value="'+c+'"'+(c===(t.categoria||'')?' selected':'')+'>'+(c||'—')+'</option>';}).join('')
+    +'</select></div><div style="flex:1"><label>Criticidad</label><select class="edCr">'
+    +['','FB1','FB2','FB3'].map(function(c){return '<option value="'+c+'"'+(c===(t.criticidad||'')?' selected':'')+'>'+(c||'—')+'</option>';}).join('')
+    +'</select></div><div style="flex:1"><label>Fix enviado</label><select class="edFx"><option value=""'+(!t.fix_enviado_at?' selected':'')+'>no</option><option value="1"'+(t.fix_enviado_at?' selected':'')+'>sí</option></select></div></div>'
+    +'<div class="fld"><label>Responsable</label><select class="edAs"><option value="">—</option>'
+    +ASIGNABLES.map(function(a2){return '<option value="'+a2+'"'+(a2===(t.assigned_to||'')?' selected':'')+'>'+a2.split('@')[0]+'</option>';}).join('')
+    +'</select></div>'
     +'<div class="fld"><label>Acción interna (qué vamos a hacer — no lo ve la usuaria)</label>'
     +'<textarea class="edAc" placeholder="p. ej.: reproducir en 0.19, corregido en 0.21.0, pedir más datos…">'+esc(t.accion||'')+'</textarea></div>'
     +'<div class="fld"><label>Comentarios, observaciones (opcional)</label><input type="text" class="edCm" placeholder="nota corta para el seguimiento"></div>'
@@ -432,6 +459,7 @@ function render(){
     ['Tickets',k.total],['Abiertas',k.abiertas],
     ['Abiertas <24 h',k.abiertas_lt24],
     ['Abiertas >1 día hábil ⚠',k.abiertas_habil],
+    ['Para cerrar ✔',(D.tickets||[]).filter(paraCerrar).length],
     ['Media resolución',media!=null?fmtDur(media):'—'],
     ['FCR · cierre mismo día',k.fcr_pct!=null?k.fcr_pct+'%':'—']].map(function(x){
     return '<div class="kpi"><div class="l">'+x[0]+'</div><div class="v">'+(x[1]==null?'—':x[1])+'</div></div>';}).join('');
@@ -450,10 +478,10 @@ function filtrados(){
 window.nsExport=function(){
   var rows=filtrados();
   if(!rows.length)return alert('Nada que exportar con esos filtros.');
-  var CAB=['ticket','estado','asignado_a','fecha_feedback','usuaria','cohorte','version','plataforma',
+  var CAB=['ticket','titulo','categoria','criticidad','estado','asignado_a','fecha_feedback','usuaria','cohorte','version','plataforma',
            'mensaje','accion_interna','respuesta','respuesta_enviada','ultima_actualizacion',
            'resuelta_el','horas_hasta_resolver','escalada_el'];
-  var cuerpo=rows.map(function(t){return [t.ticket_no,t.status,t.assigned_to||'',t.feedback_at||'',
+  var cuerpo=rows.map(function(t){return [t.ticket_no,t.titulo||'',t.categoria||'',t.criticidad||'',t.status,t.assigned_to||'',t.feedback_at||'',
     t.user_email||'',t.cohort||'',t.app_version||'',t.platform||'',t.message||'',t.accion||'',
     t.respuesta||'',t.respuesta_enviada_at||'',t.updated_at||'',
     t.resolved_at||'',t.resolved_at?fmtDur(horasEntre(t.created_at,t.resolved_at)):'',
@@ -474,7 +502,9 @@ window.nsGuardar=function(id){
   var chip=tEl(id,'edOk1');chip.textContent='guardando…';chip.style.color='#8A7F78';
   sb.rpc('admin_ticket_update',{p_id:id,
     p_status:tEl(id,'edSt').value, p_assigned:tEl(id,'edAs').value||null,
-    p_accion:tEl(id,'edAc').value, p_comentario:tEl(id,'edCm').value||null
+    p_accion:tEl(id,'edAc').value, p_comentario:tEl(id,'edCm').value||null,
+    p_titulo:tEl(id,'edTi').value||null, p_categoria:tEl(id,'edCa').value||null,
+    p_criticidad:tEl(id,'edCr').value||null, p_fix_enviado:tEl(id,'edFx').value==='1'
   }).then(function(r){
     if(r.error||!(r.data&&r.data.ok)){chip.textContent='⚠ no guardado: '+((r.error&&r.error.message)||(r.data&&r.data.error)||'');chip.style.color='#C73A20';return;}
     chip.textContent='✓ guardado';chip.style.color='#0F9B57';cargar(false);});
