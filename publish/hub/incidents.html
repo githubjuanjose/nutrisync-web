@@ -387,6 +387,7 @@ function ticket(t){
     +(t.fix_enviado_at?'<span class="fixchip">🔧 fix enviado</span>':'')
     +badgeEdad(t)
     +(t.escalated_at?'<span class="escal">📣 escalada a founders</span>':'')
+    +(t.source==='testflight'?'<span class="pill" style="background:#241D1A;color:#fff">🍎 TestFlight</span>':'')
     +(t.respuesta_enviada_at?'<span class="enviada">📨 respondida en la app</span>':'')
     +'<span class="msg">'+esc(t.message).slice(0,110)+(t.message.length>110?'…':'')+'</span>'
     +'<span class="meta">'+esc(t.cohort)+' · '+esc(t.app_version||'?')+' · '+esc(t.platform||'?')

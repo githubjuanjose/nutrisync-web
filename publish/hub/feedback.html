@@ -294,7 +294,7 @@ function render(){
     &&(!tri||(tri==='sin'?!r.categoria:(r.categoria===tri))));
   $('count').textContent=rows.length+' de '+ALL.length;
   $('list').innerHTML=rows.map(r=>`<div class="fb">
-    <div class="meta"><b>${esc(r.email)}</b><span class="pill c">${esc(r.cohort||'—')}</span>${tk(r)}
+    <div class="meta"><b>${esc(r.email)}</b>${r.source==='testflight'?'<span class="pill" style="background:#241D1A;color:#fff">🍎 TestFlight</span>':''}<span class="pill c">${esc(r.cohort||'—')}</span>${tk(r)}
     ${r.criticidad?`<span class="fbcrit ${r.criticidad.toLowerCase()}">${esc(r.criticidad)}</span>`:''}${r.titulo?`<span class="tit">${esc(r.titulo)}</span>`:''}
     <span>${esc((r.created_at||'').slice(0,16).replace('T',' '))}</span>
     <span class="pill">v${esc(r.app_version||'?')} · ${esc(r.platform||'?')}</span></div>
@@ -313,10 +313,10 @@ function render(){
         <input id="ac-${esc(r.ticket_id)}" type="text" placeholder="acción interna / internal action" style="flex:1;min-width:180px">
         <button class="mini" onclick="window.fbSave('${esc(r.ticket_id)}')">💾 Guardar seguimiento</button>
       </div>
-      <textarea id="re-${esc(r.ticket_id)}" placeholder="Respuesta a la usuaria (le llega a su app con el ${esc(r.ticket_no||'ticket')}) / reply lands in her app" style="width:100%;box-sizing:border-box;min-height:56px;margin-top:8px">${esc(r.respuesta||'')}</textarea>
+      ${r.source==='testflight'?'<div class="hint" style="margin-top:8px">🍎 Canal TestFlight: Apple no permite responder in-app. Gestiona estado y triage; si hace falta contacto, por correo a su tester.</div>':`<textarea id="re-${esc(r.ticket_id)}" placeholder="Respuesta a la usuaria (le llega a su app con el ${esc(r.ticket_no||'ticket')}) / reply lands in her app" style="width:100%;box-sizing:border-box;min-height:56px;margin-top:8px">${esc(r.respuesta||'')}</textarea>`}
       <div style="display:flex;gap:8px;margin-top:6px;align-items:center">
-        <button class="mini" onclick="window.fbResp('${esc(r.ticket_id)}',false)">Guardar respuesta</button>
-        <button class="mini" style="background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:none" onclick="window.fbResp('${esc(r.ticket_id)}',true)">📨 Guardar y enviar a la usuaria</button>
+        ${r.source==='testflight'?'':`<button class="mini" onclick="window.fbResp('${esc(r.ticket_id)}',false)">Guardar respuesta</button>
+        <button class="mini" style="background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:none" onclick="window.fbResp('${esc(r.ticket_id)}',true)">📨 Guardar y enviar a la usuaria</button>`}
         <span class="hint" id="ok-${esc(r.ticket_id)}"></span>
         <a class="hint" href="/hub/incidents.html" style="margin-left:auto">rastro completo → 🎫 Incidencias</a>
       </div>
