@@ -448,7 +448,7 @@ async function loadUnmatched(){
     '<div><div class="hint">activas 7d · TODAS las cuentas</div><b style="font-size:20px">'+d.activas_7d_total+'</b></div>'
    +'<div style="margin-left:18px"><div class="hint">activas 7d · cruzadas con el piloto (lo que ven las gráficas)</div><b style="font-size:20px;color:'+(d.activas_7d_piloto<d.activas_7d_total?'#C73A20':'#0F6E56')+'">'+d.activas_7d_piloto+'</b></div>';
   const invs=(OV&&OV.invites||[]).map(i=>i.email).sort();
-  const opts='<option value="">— elegir invitada —</option>'+invs.map(e=>`<option>${esc(e)}</option>`).join('')+'<option value="__nueva__">➕ nueva invitada…</option>';
+  const opts='<option value="">— elegir invitada —</option><option value="__nueva__">➕ nueva invitada…</option>'+invs.map(e=>`<option>${esc(e)}</option>`).join('');
   const filas=(d.huerfanas||[]).slice().sort((a,b)=>(b.accesos_7d||0)-(a.accesos_7d||0)||(b.ultimo?1:0)-(a.ultimo?1:0));   // r14h: TODAS — la basura (0 accesos) queda al fondo, con 🗑
   tb.innerHTML=filas.map(h=>`<tr>
     <td>${esc(h.email)}</td>
