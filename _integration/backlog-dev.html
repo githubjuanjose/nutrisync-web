@@ -91,6 +91,8 @@ function item(b){
     +['propuesto','aceptado','en_curso','hecho','descartado'].map(function(x){return '<option value="'+x+'"'+(x===b.estado?' selected':'')+'>'+x.replace('_',' ')+'</option>';}).join('')+'</select>'
     +'<select class="mini" onchange="window.bkSet(\''+b.id+'\',{sprint:this.value})">'
     +SPRINTS.map(function(sp){return '<option value="'+sp[0]+'"'+(sp[0]===b.sprint?' selected':'')+'>'+sp[0]+'</option>';}).join('')+'</select>'
+    +'<select class="mini" title="release" onchange="window.bkSet(\''+b.id+'\',{release:this.value})">'
+    +['—','0.21.1','0.22.0','0.23.0','GA','0.21.0','0.20.0'].map(function(v){return '<option value="'+v+'"'+(v===(b.release||'—')?' selected':'')+'>'+v+'</option>';}).join('')+'</select>'
     +'<select class="mini" onchange="window.bkSet(\''+b.id+'\',{prioridad:this.value})">'
     +['P0','P1','P2','P3'].map(function(x){return '<option'+(x===b.prioridad?' selected':'')+'>'+x+'</option>';}).join('')+'</select>'
     +'</div>';

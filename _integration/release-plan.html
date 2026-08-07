@@ -1,0 +1,172 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Release Plan — NutriSync Engineering</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.55}
+.w{max-width:1080px;margin:0 auto;padding:26px 20px 90px}
+h1{font-size:23px;margin:0 0 4px}
+p.lead{color:#6E655D;font-size:13.5px;margin:0 0 16px}
+.rel{background:#fff;border:1px solid #EFE3D7;border-radius:16px;margin:14px 0;overflow:hidden}
+.rh{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:14px 16px;cursor:pointer;background:#FFFBF5}
+.rh:hover{background:#FFF6EE}
+.ver{font-size:17px;font-weight:800}
+.nom{font-size:13px;color:#6E655D}
+.est{font-size:10.5px;font-weight:800;border-radius:999px;padding:3px 11px}
+.e-planificada{background:#F1F5F9;color:#475569}.e-en_construccion{background:#FFF3E0;color:#B4700F}
+.e-en_review{background:#E6F0FF;color:#1D4ED8}.e-en_tiendas{background:#E8F5EE;color:#0F6E56}.e-ga{background:#241D1A;color:#fff}
+.fechas{font-size:11.5px;color:#8A7F78;margin-left:auto}
+.rb{display:none;padding:6px 16px 16px;border-top:1px solid #F4EADF}
+.rel.open .rb{display:block}
+.spr{margin-top:12px}
+.sph{font-size:12px;font-weight:800;color:#8A7F78;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px dashed #EADFD0;padding-bottom:4px;margin-bottom:6px}
+.carril{margin:8px 0 2px;font-size:11.5px;font-weight:800;color:#6E655D}
+.it{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:5px 0;font-size:13px}
+.pr{font-size:10px;font-weight:900;border-radius:6px;padding:1px 7px}
+.P0{background:#C73A20;color:#fff}.P1{background:#FFB020;color:#5B3A00}.P2{background:#E7E2DC;color:#5F564F}.P3{background:#F4F0EA;color:#8A7F78}
+.ref{font-size:11px;color:#C73A20;font-weight:700}
+.hecho{color:#0F6E56;font-weight:800;font-size:11px}
+.notas{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+@media(max-width:760px){.notas{grid-template-columns:1fr}}
+.nota{background:#FBF6EF;border:1px solid #EFE3D7;border-radius:12px;padding:11px 13px}
+.nota h4{margin:0 0 6px;font-size:11.5px;color:#8A7F78;text-transform:uppercase;letter-spacing:.5px;display:flex;gap:8px;align-items:center}
+.nota .txt{font-size:12.5px;white-space:pre-wrap}
+.nota textarea{width:100%;box-sizing:border-box;min-height:110px;font-family:inherit;font-size:12.5px;border:1px solid #EFE3D7;border-radius:8px;padding:8px}
+button{font-family:inherit;font-weight:700;font-size:11.5px;border-radius:16px;padding:5px 12px;border:1px solid #EFE3D7;background:#fff;color:#241D1A;cursor:pointer}
+button:hover{border-color:#F3C8B8;background:#FFF6F2}
+select.mini{font-family:inherit;font-size:11px;padding:3px 6px;border:1px solid #EFE3D7;border-radius:8px;background:#fff}
+.err{background:#FFF1EC;border:2px solid #E8472A;border-radius:12px;padding:13px 15px;font-size:13px;color:#8A2A18;margin:14px 0}
+.hint{font-size:11.5px;color:#8A7F78}
+#snack{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#241D1A;color:#fff;
+  font-size:13px;padding:10px 18px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.25);
+  opacity:0;pointer-events:none;transition:opacity .25s;z-index:50;max-width:90vw}
+#snack.on{opacity:1}
+.sinrel{background:#FFF8EF;border:1px dashed #E8B072;border-radius:14px;padding:12px 15px;margin-top:16px}
+</style></head><body><div class="w">
+
+<h1>🚢 Release Plan</h1>
+<p class="lead">Qué va en cada build: Release → Sprint → carriles (🐞 fixes con su ticket · 🔧 mejoras del feedback · 🚀 nuevas capacidades con su referencia).
+Las <b>release notes ES/EN</b> de cada versión viven aquí — las tiendas copian de esta fuente. El detalle diario está en
+<a href="/hub/backlog-dev.html">🗂 Backlog</a>; los tickets en <a href="/hub/incidents.html">🎫 Incidencias</a>.</p>
+
+<div id="err"></div>
+<div id="plan">Cargando…</div>
+<div id="snack"></div>
+
+</div>
+<script src="/assets/vendor/supabase.js"></script>
+<script>
+(function(){
+'use strict';
+var sb=window.supabase.createClient('https://nebkqncvapelrarruyqb.supabase.co',
+  'sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau');
+var $=function(i){return document.getElementById(i);};
+var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+var REL=[],ITEMS=[],ABIERTAS={},SNT=null;
+var ORDEN=['0.21.0','0.21.1','0.22.0','0.23.0','GA','0.20.0'];
+var RELS_ASIGNABLES=['—','0.21.1','0.22.0','0.23.0','GA'];
+var SPRINTS={S11:'Sprint 11 · 3–7 ago',S12:'Sprint 12 · 10–14 ago',S13:'Sprint 13 · 17–21 ago',
+  S14:'Sprint 14 · 24–28 ago',S15:'Sprint 15 · 31 ago–4 sep',S16:'Sprint 16 · 7–11 sep',GA:'Tramo GA',backlog:'Sin sprint'};
+var ESTADOS=['planificada','en_construccion','en_review','en_tiendas','ga'];
+
+function snack(m){var el=$('snack');el.textContent=m;el.classList.add('on');
+  clearTimeout(SNT);SNT=setTimeout(function(){el.classList.remove('on');},3600);}
+function fail(e,fn){$('plan').innerHTML='';
+  $('err').innerHTML='<div class="err"><b>⚠️ Falta SQL</b> — <code>'+esc(fn)+'</code>: <i>'+esc(String(e&&e.message||e)).slice(0,150)
+  +'</i><br>Ejecuta <b>backend-sql/2026-08-07-release-plan.sql</b> y recarga.</div>';}
+
+function carril(items,titulo,filtro){
+  var g=items.filter(filtro);
+  if(!g.length)return '';
+  return '<div class="carril">'+titulo+'</div>'+g.map(function(b){
+    return '<div class="it"><span class="pr '+esc(b.prioridad)+'">'+esc(b.prioridad)+'</span>'
+      +(b.estado==='hecho'?'<span class="hecho">✓</span>':'')
+      +'<span'+(b.estado==='hecho'?' style="color:#8A7F78"':'')+'>'+esc(b.titulo)+'</span>'
+      +(b.ticket_no?'<span class="ref">'+esc(b.ticket_no)+'</span>':'')
+      +(b.origen&&!b.ticket_no?'<span class="hint">'+esc(b.origen)+'</span>':'')
+      +'<select class="mini" title="mover de release" onchange="window.rpMove(\''+b.id+'\',this.value)">'
+      +RELS_ASIGNABLES.concat(['0.21.0','0.20.0']).map(function(v){return '<option value="'+v+'"'+(v===b.release?' selected':'')+'>'+v+'</option>';}).join('')
+      +'</select></div>';}).join('');
+}
+function relCard(r){
+  var items=ITEMS.filter(function(b){return b.release===r.version;});
+  var abierta=ABIERTAS[r.version]!==undefined?ABIERTAS[r.version]:(r.estado!=='en_tiendas');
+  var sprints=[];
+  Object.keys(SPRINTS).forEach(function(sp){
+    var g=items.filter(function(b){return b.sprint===sp;});
+    if(!g.length)return;
+    sprints.push('<div class="spr"><div class="sph">'+SPRINTS[sp]+'</div>'
+      +carril(g,'🐞 Incidencias / fixes',function(b){return b.tipo==='fix';})
+      +carril(g,'🔧 Mejoras (feedback)',function(b){return b.tipo==='mejora';})
+      +carril(g,'🚀 Nuevas capacidades',function(b){return b.tipo==='feature'||b.tipo==='capability';})
+      +'</div>');
+  });
+  return '<div class="rel'+(abierta?' open':'')+'" data-v="'+esc(r.version)+'">'
+    +'<div class="rh" onclick="window.rpTog(\''+esc(r.version)+'\')">'
+    +'<span class="ver">'+esc(r.version)+'</span><span class="nom">'+esc(r.nombre||'')+'</span>'
+    +'<select class="mini est e-'+esc(r.estado)+'" onclick="event.stopPropagation()" onchange="window.rpEstado(\''+esc(r.version)+'\',this.value)">'
+    +ESTADOS.map(function(x){return '<option value="'+x+'"'+(x===r.estado?' selected':'')+'>'+x.replace(/_/g,' ')+'</option>';}).join('')+'</select>'
+    +'<span class="fechas">'+(r.fecha_objetivo?'obj '+esc(r.fecha_objetivo):'')+(r.fecha_real?' · real '+esc(r.fecha_real):'')+' · '+items.length+' items</span></div>'
+    +'<div class="rb">'+(sprints.join('')||'<p class="hint">Sin items asignados aún — asígnalos desde 🗂 Backlog o aquí abajo.</p>')
+    +'<div class="notas">'
+    +'<div class="nota"><h4>📝 Notas ES <button onclick="window.rpCopy(\''+esc(r.version)+'\',\'es\')">📋 copiar</button><button onclick="window.rpEdit(\''+esc(r.version)+'\',\'es\')">✏️</button></h4>'
+    +'<div class="txt" id="nes-'+esc(r.version)+'">'+esc(r.notas_es||'— sin notas aún —')+'</div></div>'
+    +'<div class="nota"><h4>📝 Notes EN <button onclick="window.rpCopy(\''+esc(r.version)+'\',\'en\')">📋 copy</button><button onclick="window.rpEdit(\''+esc(r.version)+'\',\'en\')">✏️</button></h4>'
+    +'<div class="txt" id="nen-'+esc(r.version)+'">'+esc(r.notas_en||'— no notes yet —')+'</div></div>'
+    +'</div></div></div>';
+}
+function render(){
+  var orden=ORDEN.filter(function(v){return REL.some(function(r){return r.version===v;});});
+  REL.sort(function(a,b){return orden.indexOf(a.version)-orden.indexOf(b.version);});
+  var html=REL.map(relCard).join('');
+  var sueltos=ITEMS.filter(function(b){return b.release==='—'&&b.estado!=='hecho';});
+  if(sueltos.length){
+    html+='<div class="sinrel"><b>📥 Sin release asignada · '+sueltos.length+'</b>'
+      +sueltos.map(function(b){return '<div class="it"><span class="pr '+esc(b.prioridad)+'">'+esc(b.prioridad)+'</span>'
+        +esc(b.titulo)
+        +'<select class="mini" onchange="window.rpMove(\''+b.id+'\',this.value)">'
+        +RELS_ASIGNABLES.map(function(v){return '<option value="'+v+'"'+(v===b.release?' selected':'')+'>'+v+'</option>';}).join('')
+        +'</select></div>';}).join('')+'</div>';
+  }
+  $('plan').innerHTML=html;
+}
+window.rpTog=function(v){var el=document.querySelector('.rel[data-v="'+v+'"]');
+  ABIERTAS[v]=!el.classList.contains('open');el.classList.toggle('open');};
+window.rpMove=function(id,rel){
+  sb.rpc('admin_backlog_upsert',{p:{id:id,release:rel}}).then(function(r){
+    if(r.error||!(r.data&&r.data.ok))return snack('⚠ No movido: '+((r.error&&r.error.message)||'error'));
+    snack('✓ Item → release '+rel);cargar();});
+};
+window.rpEstado=function(v,est){
+  sb.rpc('admin_release_upsert',{p:{version:v,estado:est}}).then(function(r){
+    if(r.error||!(r.data&&r.data.ok))return snack('⚠ No guardado');
+    snack('✓ '+v+' → '+est.replace(/_/g,' '));cargar();});
+};
+window.rpCopy=function(v,lang){
+  var el=$( (lang==='es'?'nes-':'nen-')+v );
+  navigator.clipboard.writeText(el.textContent).then(function(){snack('📋 Notas '+lang.toUpperCase()+' de '+v+' copiadas — listas para la tienda');});
+};
+window.rpEdit=function(v,lang){
+  var el=$((lang==='es'?'nes-':'nen-')+v);
+  if(el.querySelector('textarea'))return;
+  var cur=el.textContent.indexOf('— sin')===0||el.textContent.indexOf('— no')===0?'':el.textContent;
+  el.innerHTML='<textarea id="ta-'+v+'-'+lang+'">'+esc(cur)+'</textarea><div style="margin-top:6px"><button onclick="window.rpSave(\''+v+'\',\''+lang+'\')">💾 Guardar</button></div>';
+};
+window.rpSave=function(v,lang){
+  var txt=$('ta-'+v+'-'+lang).value;
+  var p={version:v};p[lang==='es'?'notas_es':'notas_en']=txt;
+  sb.rpc('admin_release_upsert',{p:p}).then(function(r){
+    if(r.error||!(r.data&&r.data.ok))return snack('⚠ No guardado');
+    snack('✓ Notas '+lang.toUpperCase()+' de '+v+' guardadas');cargar();});
+};
+function cargar(){
+  sb.auth.getSession().then(function(s){
+    if(!s.data.session){$('plan').innerHTML='<p class="hint">Inicia sesión admin desde el hub y recarga.</p>';return;}
+    Promise.all([sb.rpc('admin_releases_list'),sb.rpc('admin_backlog_list')]).then(function(rs){
+      if(rs[0].error)return fail(rs[0].error,'admin_releases_list');
+      if(rs[1].error)return fail(rs[1].error,'admin_backlog_list');
+      REL=rs[0].data||[];ITEMS=(rs[1].data&&rs[1].data.items)||[];render();});
+  });
+}
+cargar();
+})();
+</script></body></html>

@@ -1065,6 +1065,11 @@ if os.path.exists(fmis) and os.path.exists(cns):
 # console). Copies the page + adds the 💬 htab; also STRIPS the legacy embedded
 # panel from the console if a pack or old integrate left it there.
 # r16-F: el backlog VIVO de desarrollos (fixes+mejoras+features), pestaña 🗂
+rppage = os.path.join(ASSETS, "release-plan.html")
+if os.path.exists(rppage):
+    shutil.copy(rppage, os.path.join(PUB, "hub", "release-plan.html"))
+    print("- release-plan copied to hub/release-plan.html")
+
 bkpage = os.path.join(ASSETS, "backlog-dev.html")
 if os.path.exists(bkpage):
     shutil.copy(bkpage, os.path.join(PUB, "hub", "backlog-dev.html"))

@@ -1,32 +1,47 @@
-<!DOCTYPE html><html lang="es"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pilot Planning — NutriSync Founders</title>
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Release Plan — NutriSync Engineering</title>
 <style>
-:root{--coral:#E8472A;--ink:#231F20;--muted:#8A7F78;--line:#EFE3D7;--bg:#FFFDF8;--good:#0F9B57;--bad:#C73A20;}
-*{box-sizing:border-box}body{margin:0;font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:var(--ink);}
-.wrap{max-width:1150px;margin:0 auto;padding:26px 20px 80px;}
-h1{font-size:24px;margin:0 0 2px}h2{font-size:17px;margin:26px 0 10px}
-.sub{color:var(--muted);font-size:13px;margin-bottom:18px}
-.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:10px}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-button{font-family:inherit;font-weight:700;font-size:13px;border-radius:22px;padding:8px 16px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
-button.mini{font-size:11px;padding:3px 9px;border-radius:9px}
-input{font-family:inherit;font-size:13px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#fff}
-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px}
-th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
-th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
-td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
-tr.now td{background:#FFF6EF}
-.kpis{display:flex;gap:10px;flex-wrap:wrap}
-.kpi{flex:1;min-width:150px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
-.kpi .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
-.kpi .v{font-size:22px;font-weight:800;margin-top:3px}
-.ms{background:#FFF8EF;border:1px solid #F0DCC4;border-radius:12px;padding:10px 12px;font-size:12.5px;margin-top:10px}
-#gate{display:none;padding:60px 20px;text-align:center;color:var(--muted)}
-.hint{font-size:11.5px;color:var(--muted);margin-top:6px}
-.back{font-size:13px;color:var(--muted);text-decoration:none}
-.warn{background:#FFF8EF;border:1.5px dashed #E8B072;border-radius:10px;padding:10px 12px;font-size:12.5px;color:#7A5A33}
-</style><script src="/assets/vendor/supabase.js"></script></head><body><!-- ns-hub-navbar -->
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.55}
+.w{max-width:1080px;margin:0 auto;padding:26px 20px 90px}
+h1{font-size:23px;margin:0 0 4px}
+p.lead{color:#6E655D;font-size:13.5px;margin:0 0 16px}
+.rel{background:#fff;border:1px solid #EFE3D7;border-radius:16px;margin:14px 0;overflow:hidden}
+.rh{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:14px 16px;cursor:pointer;background:#FFFBF5}
+.rh:hover{background:#FFF6EE}
+.ver{font-size:17px;font-weight:800}
+.nom{font-size:13px;color:#6E655D}
+.est{font-size:10.5px;font-weight:800;border-radius:999px;padding:3px 11px}
+.e-planificada{background:#F1F5F9;color:#475569}.e-en_construccion{background:#FFF3E0;color:#B4700F}
+.e-en_review{background:#E6F0FF;color:#1D4ED8}.e-en_tiendas{background:#E8F5EE;color:#0F6E56}.e-ga{background:#241D1A;color:#fff}
+.fechas{font-size:11.5px;color:#8A7F78;margin-left:auto}
+.rb{display:none;padding:6px 16px 16px;border-top:1px solid #F4EADF}
+.rel.open .rb{display:block}
+.spr{margin-top:12px}
+.sph{font-size:12px;font-weight:800;color:#8A7F78;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px dashed #EADFD0;padding-bottom:4px;margin-bottom:6px}
+.carril{margin:8px 0 2px;font-size:11.5px;font-weight:800;color:#6E655D}
+.it{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:5px 0;font-size:13px}
+.pr{font-size:10px;font-weight:900;border-radius:6px;padding:1px 7px}
+.P0{background:#C73A20;color:#fff}.P1{background:#FFB020;color:#5B3A00}.P2{background:#E7E2DC;color:#5F564F}.P3{background:#F4F0EA;color:#8A7F78}
+.ref{font-size:11px;color:#C73A20;font-weight:700}
+.hecho{color:#0F6E56;font-weight:800;font-size:11px}
+.notas{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+@media(max-width:760px){.notas{grid-template-columns:1fr}}
+.nota{background:#FBF6EF;border:1px solid #EFE3D7;border-radius:12px;padding:11px 13px}
+.nota h4{margin:0 0 6px;font-size:11.5px;color:#8A7F78;text-transform:uppercase;letter-spacing:.5px;display:flex;gap:8px;align-items:center}
+.nota .txt{font-size:12.5px;white-space:pre-wrap}
+.nota textarea{width:100%;box-sizing:border-box;min-height:110px;font-family:inherit;font-size:12.5px;border:1px solid #EFE3D7;border-radius:8px;padding:8px}
+button{font-family:inherit;font-weight:700;font-size:11.5px;border-radius:16px;padding:5px 12px;border:1px solid #EFE3D7;background:#fff;color:#241D1A;cursor:pointer}
+button:hover{border-color:#F3C8B8;background:#FFF6F2}
+select.mini{font-family:inherit;font-size:11px;padding:3px 6px;border:1px solid #EFE3D7;border-radius:8px;background:#fff}
+.err{background:#FFF1EC;border:2px solid #E8472A;border-radius:12px;padding:13px 15px;font-size:13px;color:#8A2A18;margin:14px 0}
+.hint{font-size:11.5px;color:#8A7F78}
+#snack{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#241D1A;color:#fff;
+  font-size:13px;padding:10px 18px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.25);
+  opacity:0;pointer-events:none;transition:opacity .25s;z-index:50;max-width:90vw}
+#snack.on{opacity:1}
+.sinrel{background:#FFF8EF;border:1px dashed #E8B072;border-radius:14px;padding:12px 15px;margin-top:16px}
+</style></head><body><!-- ns-hub-navbar -->
 <div id="ns-hub-navbar">
 <style>
 #ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
@@ -238,174 +253,132 @@ tr.now td{background:#FFF6EF}
 })();
 </script>
 </div>
-<!-- /ns-hub-navbar -->
-<div class="wrap" id="app" style="display:none">
-  <a class="back" href="full-hub-gated-site.html#/builders">‹ Hub</a>
-  <h1>🗓 <span data-t="title"></span></h1>
-  <div class="sub" data-t="sub"></div>
+<!-- /ns-hub-navbar --><div class="w">
 
-  <div class="kpis" id="kpis"></div>
-  <div class="card" style="margin-top:12px"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><b style="font-size:12.5px" data-t="cohLbl"></b><select id="coh" style="font-family:inherit;font-size:13px;padding:6px 10px;border:1px solid var(--line);border-radius:10px"></select></div><div id="cohCards" style="margin-top:10px"></div></div>
-  <div class="ms" id="milestones"></div>
+<h1>🚢 Release Plan</h1>
+<p class="lead">Qué va en cada build: Release → Sprint → carriles (🐞 fixes con su ticket · 🔧 mejoras del feedback · 🚀 nuevas capacidades con su referencia).
+Las <b>release notes ES/EN</b> de cada versión viven aquí — las tiendas copian de esta fuente. El detalle diario está en
+<a href="/hub/backlog-dev.html">🗂 Backlog</a>; los tickets en <a href="/hub/incidents.html">🎫 Incidencias</a>.</p>
 
-  <h2>1 · <span data-t="h1"></span></h2>
-  <div class="card">
-    <div class="hint" data-t="chartHint"></div>
-    <div id="chart"></div>
-    <div id="chartLegend"></div>
-  </div>
+<div id="err"></div>
+<div id="plan">Cargando…</div>
+<div id="snack"></div>
 
-  <h2>2 · <span data-t="h2"></span></h2>
-  <div class="card">
-    <div class="hint" data-t="tableHint"></div>
-    <table id="pp"><thead><tr>
-      <th data-t="cWeek"></th><th class="num" data-t="cTesters"></th><th class="num" data-t="cActive"></th>
-      <th class="num" data-t="cRealT"></th><th class="num" data-t="cRealA"></th><th></th>
-    </tr></thead><tbody></tbody></table>
-    <div class="hint" data-t="scaleHint"></div>
-  </div>
 </div>
-<div id="gate" data-t="gate"></div>
-<script src="/hub/pilot-charts.js?v=04d52021"></script>
-<script type="module">
-const { createClient } = window.supabase;
-const U='https://nebkqncvapelrarruyqb.supabase.co',K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
-const sb=createClient(U,K);const $=i=>document.getElementById(i);
-const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-function nsL(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
-  return v||(((navigator.language||'en').toLowerCase().indexOf('es')===0)?'es':'en');}
-const ES=nsL()==='es';
-document.addEventListener('ns-lang',()=>location.reload());
-const T=ES?{
-  title:'Pilot Planning', gate:'Inicia sesión de founder (Access + admin con MFA) y recarga.',
-  sub:'El plan del piloto semana a semana: cuántas testers queremos dentro y cuántas activas, con los hitos que no se pueden mover. Aquí se edita el objetivo; en Pilot Observability se mira el resultado.',
-  cohAll:'Todos los grupos', cohLbl:'Grupo de test', byCoh:'Por grupo de test',
-  h1:'Objetivo vs real · 13 semanas', h2:'Plan semanal (editable)', delTip:'Borrar el plan de esta semana', delAsk:'Borrar el plan de la semana {w} (objetivos a cero). ¿Seguir?',
-  chartHint:'Línea discontinua = objetivo de testers dentro. Sólidas = instaladas reales por plataforma, solo hasta la semana en curso.',
-  tableHint:'Edita cualquier celda y pulsa Guardar. La escala de las gráficas la marca el objetivo más alto de la tabla.',
-  scaleHint:'La semana en curso va resaltada. Las columnas "real" solo se rellenan en semanas pasadas.',
-  cWeek:'Semana (lunes)', cTesters:'Testers dentro (obj.)', cActive:'Activas (obj.)',
-  cRealT:'Real dentro', cRealA:'Real activas',
-  kTarget:'Población objetivo', kTargetS:'testers al lanzamiento',
-  kNow:'Dentro hoy', kGap:'Desvío vs plan', kGapS:'de la semana en curso',
-  kWeeks:'Semanas al lanzamiento', kWeeksS:'hasta el 8-oct',
-  plan:'objetivo', save:'Guardar', saved:'✓',
-  ms:'<b>Hitos que no se mueven</b> · <b>17-ago</b>: 12 testers Android instaladas y activas 14 días seguidos (requisito de Google Play para pasar a producción). · <b>8-oct</b>: lanzamiento.',
-  noSql:'⚠️ Falta aplicar backend-sql/2026-08-04-pilot-weekly.sql en Supabase (RPC admin_pilot_weekly).',
-  noRows:'Sin semanas de plan todavía.'
-}:{
-  title:'Pilot Planning', gate:'Sign in as a founder (Access + admin with MFA) and reload.',
-  sub:'The pilot plan week by week: how many testers we want in and how many active, with the milestones that cannot move. Targets are edited here; results live in Pilot Observability.',
-  cohAll:'All test groups', cohLbl:'Test group', byCoh:'By test group',
-  h1:'Target vs actual · 13 weeks', h2:'Weekly plan (editable)', delTip:'Delete this week\u2019s plan', delAsk:'Delete the plan for week {w} (targets back to zero). Continue?',
-  chartHint:'Dashed line = target testers in. Solid = real installs by platform, only up to the current week.',
-  tableHint:'Edit any cell and hit Save. The highest target in this table sets the charts’ scale.',
-  scaleHint:'The current week is highlighted. "Actual" columns only fill in for past weeks.',
-  cWeek:'Week (Monday)', cTesters:'Testers in (target)', cActive:'Active (target)',
-  cRealT:'Actual in', cRealA:'Actual active',
-  kTarget:'Target population', kTargetS:'testers at launch',
-  kNow:'In today', kGap:'Gap vs plan', kGapS:'for the current week',
-  kWeeks:'Weeks to launch', kWeeksS:'until 8 Oct',
-  plan:'target', save:'Save', saved:'✓',
-  ms:'<b>Milestones that cannot move</b> · <b>17 Aug</b>: 12 Android testers installed and active for 14 consecutive days (Google Play requirement to reach production). · <b>8 Oct</b>: launch.',
-  noSql:'⚠️ backend-sql/2026-08-04-pilot-weekly.sql not applied yet in Supabase (RPC admin_pilot_weekly).',
-  noRows:'No plan weeks yet.'
-};
-document.querySelectorAll('[data-t]').forEach(el=>{el.innerHTML=T[el.dataset.t]||'';});
-document.title=T.title+' — NutriSync Founders';
+<script src="/assets/vendor/supabase.js"></script>
+<script>
+(function(){
+'use strict';
+var sb=window.supabase.createClient('https://nebkqncvapelrarruyqb.supabase.co',
+  'sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau');
+var $=function(i){return document.getElementById(i);};
+var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+var REL=[],ITEMS=[],ABIERTAS={},SNT=null;
+var ORDEN=['0.21.0','0.21.1','0.22.0','0.23.0','GA','0.20.0'];
+var RELS_ASIGNABLES=['—','0.21.1','0.22.0','0.23.0','GA'];
+var SPRINTS={S11:'Sprint 11 · 3–7 ago',S12:'Sprint 12 · 10–14 ago',S13:'Sprint 13 · 17–21 ago',
+  S14:'Sprint 14 · 24–28 ago',S15:'Sprint 15 · 31 ago–4 sep',S16:'Sprint 16 · 7–11 sep',GA:'Tramo GA',backlog:'Sin sprint'};
+var ESTADOS=['planificada','en_construccion','en_review','en_tiendas','ga'];
 
+function snack(m){var el=$('snack');el.textContent=m;el.classList.add('on');
+  clearTimeout(SNT);SNT=setTimeout(function(){el.classList.remove('on');},3600);}
+function fail(e,fn){$('plan').innerHTML='';
+  $('err').innerHTML='<div class="err"><b>⚠️ Falta SQL</b> — <code>'+esc(fn)+'</code>: <i>'+esc(String(e&&e.message||e)).slice(0,150)
+  +'</i><br>Ejecuta <b>backend-sql/2026-08-07-release-plan.sql</b> y recarga.</div>';}
 
-/* r12-b9 (fallo de hoy): si una RPC no existe, la pagina se quedaba en blanco y
-   parecia que "no hay datos". Ahora GRITA, y dice el fichero que falta correr. */
-function nsFail(err,fn){
-  var d=document.getElementById('nsfail');
-  if(!d){d=document.createElement('div');d.id='nsfail';
-    d.style.cssText='background:#FFF1EC;border:2px solid #E8472A;border-radius:12px;padding:14px 16px;margin:0 0 14px;font-size:13px;color:#8A2A18';
-    var w=document.querySelector('.wrap');w.insertBefore(d,w.children[2]||null);}
-  d.innerHTML='<b>⚠️ Falta aplicar SQL en Supabase</b><div style="margin-top:6px">La consulta <code>'+fn+
-    '</code> no responde: <i>'+String((err&&err.message)||err).slice(0,160)+'</i></div>'+
-    '<div style="margin-top:6px">Ejecuta <b>backend-sql/2026-08-04-EJECUTAR-TODO-PENDIENTE.sql</b> entero y recarga.</div>';
+function carril(items,titulo,filtro){
+  var g=items.filter(filtro);
+  if(!g.length)return '';
+  return '<div class="carril">'+titulo+'</div>'+g.map(function(b){
+    return '<div class="it"><span class="pr '+esc(b.prioridad)+'">'+esc(b.prioridad)+'</span>'
+      +(b.estado==='hecho'?'<span class="hecho">✓</span>':'')
+      +'<span'+(b.estado==='hecho'?' style="color:#8A7F78"':'')+'>'+esc(b.titulo)+'</span>'
+      +(b.ticket_no?'<span class="ref">'+esc(b.ticket_no)+'</span>':'')
+      +(b.origen&&!b.ticket_no?'<span class="hint">'+esc(b.origen)+'</span>':'')
+      +'<select class="mini" title="mover de release" onchange="window.rpMove(\''+b.id+'\',this.value)">'
+      +RELS_ASIGNABLES.concat(['0.21.0','0.20.0']).map(function(v){return '<option value="'+v+'"'+(v===b.release?' selected':'')+'>'+v+'</option>';}).join('')
+      +'</select></div>';}).join('');
 }
-
-/* r12-b11: si pilot-charts.js no llegó a cargar, TODO lo que viene despues
-   moria en silencio (incluido el embudo). Ahora se dice y se sigue. */
-if(!window.NSPilot){
-  nsFail(new Error('pilot-charts.js no se ha cargado en el navegador'),'hub/pilot-charts.js');
+function relCard(r){
+  var items=ITEMS.filter(function(b){return b.release===r.version;});
+  var abierta=ABIERTAS[r.version]!==undefined?ABIERTAS[r.version]:(r.estado!=='en_tiendas');
+  var sprints=[];
+  Object.keys(SPRINTS).forEach(function(sp){
+    var g=items.filter(function(b){return b.sprint===sp;});
+    if(!g.length)return;
+    sprints.push('<div class="spr"><div class="sph">'+SPRINTS[sp]+'</div>'
+      +carril(g,'🐞 Incidencias / fixes',function(b){return b.tipo==='fix';})
+      +carril(g,'🔧 Mejoras (feedback)',function(b){return b.tipo==='mejora';})
+      +carril(g,'🚀 Nuevas capacidades',function(b){return b.tipo==='feature'||b.tipo==='capability';})
+      +'</div>');
+  });
+  return '<div class="rel'+(abierta?' open':'')+'" data-v="'+esc(r.version)+'">'
+    +'<div class="rh" onclick="window.rpTog(\''+esc(r.version)+'\')">'
+    +'<span class="ver">'+esc(r.version)+'</span><span class="nom">'+esc(r.nombre||'')+'</span>'
+    +'<select class="mini est e-'+esc(r.estado)+'" onclick="event.stopPropagation()" onchange="window.rpEstado(\''+esc(r.version)+'\',this.value)">'
+    +ESTADOS.map(function(x){return '<option value="'+x+'"'+(x===r.estado?' selected':'')+'>'+x.replace(/_/g,' ')+'</option>';}).join('')+'</select>'
+    +'<span class="fechas">'+(r.fecha_objetivo?'obj '+esc(r.fecha_objetivo):'')+(r.fecha_real?' · real '+esc(r.fecha_real):'')+' · '+items.length+' items</span></div>'
+    +'<div class="rb">'+(sprints.join('')||'<p class="hint">Sin items asignados aún — asígnalos desde 🗂 Backlog o aquí abajo.</p>')
+    +'<div class="notas">'
+    +'<div class="nota"><h4>📝 Notas ES <button onclick="window.rpCopy(\''+esc(r.version)+'\',\'es\')">📋 copiar</button><button onclick="window.rpEdit(\''+esc(r.version)+'\',\'es\')">✏️</button></h4>'
+    +'<div class="txt" id="nes-'+esc(r.version)+'">'+esc(r.notas_es||'— sin notas aún —')+'</div></div>'
+    +'<div class="nota"><h4>📝 Notes EN <button onclick="window.rpCopy(\''+esc(r.version)+'\',\'en\')">📋 copy</button><button onclick="window.rpEdit(\''+esc(r.version)+'\',\'en\')">✏️</button></h4>'
+    +'<div class="txt" id="nen-'+esc(r.version)+'">'+esc(r.notas_en||'— no notes yet —')+'</div></div>'
+    +'</div></div></div>';
 }
-const NOOP={kpi:function(){return'';},legend:function(){return'';},cohortCards:function(){return'';},
-  platformChart:function(){return'';},statesChart:function(){return'';},activeChart:function(){return'';},
-  lineChart:function(){return'';},lastPast:function(){return -1;},linePath:function(){return'';},C:{}};
-const P=Object.assign({},NOOP,window.NSPilot||{});
-if(window.NSPilot&&typeof window.NSPilot.cohortCards!=='function'){
-  nsFail(new Error('pilot-charts.js cacheado y desactualizado — recarga forzada'),'hub/pilot-charts.js');
-}
-let WEEKS=[],SCALE=58,COH=[];
-
 function render(){
-  const cur=WEEKS.filter(w=>w.is_past).pop()||{};
-  const gap=(+cur.installed||0)-(+cur.testers_plan||0);
-  const launch=WEEKS.findIndex(w=>w.week>='2026-10-05');
-  const now=WEEKS.filter(w=>w.is_past).length-1;
-  $('kpis').innerHTML=
-    P.kpi(T.kTarget,SCALE,T.kTargetS)+
-    P.kpi(T.kNow,(+cur.installed||0),'iOS '+(+cur.ios||0)+' · Android '+(+cur.android||0))+
-    P.kpi(T.kGap,(gap>=0?'+':'')+gap,T.kGapS)+
-    P.kpi(T.kWeeks,(launch>=0?Math.max(0,launch-now):'—'),T.kWeeksS);
-  $('milestones').innerHTML=T.ms;
-  $('cohCards').innerHTML=P.cohortCards(COH,{lInv:'invitadas',lAsg:'asignadas',lIns:'instaladas',lAct:'activas 7d'});
-  $('chart').innerHTML=WEEKS.length?P.platformChart(WEEKS,SCALE):'<div class="warn">'+T.noRows+'</div>';
-  $('chartLegend').innerHTML=WEEKS.length?P.legend([[T.plan,P.C.plan,1],['iOS',P.C.coral],['Android',P.C.good]]):'';
-  const tb=document.querySelector('#pp tbody');
-  /* r14c: semana en curso = enseña reales YA (is_current derivado en cliente, día local) */
-  function esActual(w){var d=new Date(w.week+'T00:00:00');var hoy=new Date();hoy.setHours(0,0,0,0);
-    return d<=hoy && hoy<new Date(d.getTime()+7*864e5);}
-  tb.innerHTML=WEEKS.map((w,i)=>{
-    const inp=(k,v)=>'<input data-w="'+w.week+'" data-k="'+k+'" value="'+v+'" style="width:80px;text-align:right">';
-    return '<tr class="'+(i===now?'now':'')+'"><td><b>'+esc(w.label)+'</b> <span class="hint">'+esc(w.week)+'</span></td>'+
-      '<td class="num">'+inp('testers',w.testers_plan)+'</td>'+
-      '<td class="num">'+inp('active',w.active_plan)+'</td>'+
-      '<td class="num">'+((w.is_past||esActual(w))?w.installed:'—')+'</td>'+
-      '<td class="num">'+((w.is_past||esActual(w))?w.active:'—')+'</td>'+
-      '<td><button class="mini" data-save="'+w.week+'">'+T.save+'</button> '+'<button class="mini" data-del="'+w.week+'" title="'+T.delTip+'">🗑</button></td></tr>';
-  }).join('')||'<tr><td colspan="6" class="hint">'+T.noRows+'</td></tr>';
-  tb.querySelectorAll('button[data-del]').forEach(b=>{
-    b.onclick=async()=>{
-      const w=b.getAttribute('data-del');
-      if(!confirm(T.delAsk.replace('{w}',w)))return;
-      b.disabled=true;b.textContent='…';
-      const{error}=await sb.rpc('admin_pilot_plan_delete',{p_week:w});
-      if(error){b.disabled=false;b.textContent='⚠';return;}
-      load();
-    };
-  });
-  tb.querySelectorAll('button[data-save]').forEach(b=>{
-    b.onclick=async()=>{
-      const w=b.getAttribute('data-save');
-      const g=k=>Number(tb.querySelector('input[data-w="'+w+'"][data-k="'+k+'"]').value||0);
-      b.disabled=true;b.textContent='…';
-      const{error}=await sb.rpc('admin_pilot_plan_set',{p_week:w,p_testers:g('testers'),p_active:g('active'),p_note:null});
-      b.disabled=false;b.textContent=error?'Error':T.saved;
-      if(!error)setTimeout(load,600);
-    };
-  });
-}
-async function load(){
-  const c=$('coh').value||null;
-  const{data,error}=await sb.rpc('admin_pilot_weekly',{p_cohort:c});
-  if(error){$('chart').innerHTML='<div class="warn">'+T.noSql+'<br>'+esc(error.message)+'</div>';return;}
-  WEEKS=(data||{}).weeks||[];SCALE=+(data||{}).scale||58;COH=(data||{}).cohorts||[];
-  if($('coh').options.length<=1){
-    $('coh').innerHTML='<option value="">'+T.cohAll+'</option>'+COH.map(x=>'<option value="'+esc(x.cohort)+'">'+esc(x.cohort)+' ('+x.total+')</option>').join('');
-    $('coh').onchange=load;
+  var orden=ORDEN.filter(function(v){return REL.some(function(r){return r.version===v;});});
+  REL.sort(function(a,b){return orden.indexOf(a.version)-orden.indexOf(b.version);});
+  var html=REL.map(relCard).join('');
+  var sueltos=ITEMS.filter(function(b){return b.release==='—'&&b.estado!=='hecho';});
+  if(sueltos.length){
+    html+='<div class="sinrel"><b>📥 Sin release asignada · '+sueltos.length+'</b>'
+      +sueltos.map(function(b){return '<div class="it"><span class="pr '+esc(b.prioridad)+'">'+esc(b.prioridad)+'</span>'
+        +esc(b.titulo)
+        +'<select class="mini" onchange="window.rpMove(\''+b.id+'\',this.value)">'
+        +RELS_ASIGNABLES.map(function(v){return '<option value="'+v+'"'+(v===b.release?' selected':'')+'>'+v+'</option>';}).join('')
+        +'</select></div>';}).join('')+'</div>';
   }
-  render();
+  $('plan').innerHTML=html;
 }
-(async()=>{
-  const{data:{session}}=await sb.auth.getSession();
-  if(!session){$('gate').style.display='block';return;}
-  $('app').style.display='block';
-  $('coh').innerHTML='<option value="">'+T.cohAll+'</option>';
-  await load();
+window.rpTog=function(v){var el=document.querySelector('.rel[data-v="'+v+'"]');
+  ABIERTAS[v]=!el.classList.contains('open');el.classList.toggle('open');};
+window.rpMove=function(id,rel){
+  sb.rpc('admin_backlog_upsert',{p:{id:id,release:rel}}).then(function(r){
+    if(r.error||!(r.data&&r.data.ok))return snack('⚠ No movido: '+((r.error&&r.error.message)||'error'));
+    snack('✓ Item → release '+rel);cargar();});
+};
+window.rpEstado=function(v,est){
+  sb.rpc('admin_release_upsert',{p:{version:v,estado:est}}).then(function(r){
+    if(r.error||!(r.data&&r.data.ok))return snack('⚠ No guardado');
+    snack('✓ '+v+' → '+est.replace(/_/g,' '));cargar();});
+};
+window.rpCopy=function(v,lang){
+  var el=$( (lang==='es'?'nes-':'nen-')+v );
+  navigator.clipboard.writeText(el.textContent).then(function(){snack('📋 Notas '+lang.toUpperCase()+' de '+v+' copiadas — listas para la tienda');});
+};
+window.rpEdit=function(v,lang){
+  var el=$((lang==='es'?'nes-':'nen-')+v);
+  if(el.querySelector('textarea'))return;
+  var cur=el.textContent.indexOf('— sin')===0||el.textContent.indexOf('— no')===0?'':el.textContent;
+  el.innerHTML='<textarea id="ta-'+v+'-'+lang+'">'+esc(cur)+'</textarea><div style="margin-top:6px"><button onclick="window.rpSave(\''+v+'\',\''+lang+'\')">💾 Guardar</button></div>';
+};
+window.rpSave=function(v,lang){
+  var txt=$('ta-'+v+'-'+lang).value;
+  var p={version:v};p[lang==='es'?'notas_es':'notas_en']=txt;
+  sb.rpc('admin_release_upsert',{p:p}).then(function(r){
+    if(r.error||!(r.data&&r.data.ok))return snack('⚠ No guardado');
+    snack('✓ Notas '+lang.toUpperCase()+' de '+v+' guardadas');cargar();});
+};
+function cargar(){
+  sb.auth.getSession().then(function(s){
+    if(!s.data.session){$('plan').innerHTML='<p class="hint">Inicia sesión admin desde el hub y recarga.</p>';return;}
+    Promise.all([sb.rpc('admin_releases_list'),sb.rpc('admin_backlog_list')]).then(function(rs){
+      if(rs[0].error)return fail(rs[0].error,'admin_releases_list');
+      if(rs[1].error)return fail(rs[1].error,'admin_backlog_list');
+      REL=rs[0].data||[];ITEMS=(rs[1].data&&rs[1].data.items)||[];render();});
+  });
+}
+cargar();
 })();
-</script>
-</body></html>
+</script></body></html>
