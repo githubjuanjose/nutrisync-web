@@ -20,6 +20,19 @@ select,input[type=text]{font-family:inherit;font-size:13px;padding:8px 10px;bord
 .hint{font-size:11.5px;color:var(--muted);margin-top:6px}
 .back{font-size:13px;color:var(--muted);text-decoration:none}
 .count{font-size:12px;color:var(--muted)}
+.tri{display:inline-flex;gap:4px}
+.tri button{font-size:10.5px;padding:3px 9px;border-radius:999px;font-weight:800}
+.tri .on-bug{background:#C73A20;color:#fff;border-color:#C73A20}
+.tri .on-mej{background:#1D4ED8;color:#fff;border-color:#1D4ED8}
+.tri .on-idea{background:#0F6E56;color:#fff;border-color:#0F6E56}
+.fbcrit{font-size:10px;font-weight:900;border-radius:6px;padding:1px 7px}
+.fb1{background:#C73A20;color:#fff}.fb2{background:#FFB020;color:#5B3A00}.fb3{background:#E7E2DC;color:#5F564F}
+.tit{font-weight:800;font-size:12.5px}
+.hoy{background:#FFF1EC;border:1px solid #F3C8B8;border-radius:14px;padding:12px 15px;margin-top:10px}
+.hoy h3{margin:0 0 6px;font-size:13.5px;color:#C73A20}
+.hoy .it{display:flex;gap:8px;align-items:center;font-size:12.5px;padding:4px 0;flex-wrap:wrap}
+.shot{max-width:150px;max-height:110px;border-radius:8px;border:1px solid var(--line);margin-top:8px;cursor:zoom-in}
+.mini{font-size:11px;padding:4px 10px}
 </style><script src="/assets/vendor/supabase.js"></script></head><body><!-- ns-hub-navbar -->
 <div id="ns-hub-navbar">
 <style>
@@ -77,7 +90,7 @@ select,input[type=text]{font-family:inherit;font-size:13px;padding:8px 10px;bord
 </div>
 <div class="nsnb-strip">
   <nav class="nsnb-tabs" id="nsnb-tabs">
-    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Launch plan" href="/hub/launch-plan.html">🗺 Plan 8-oct</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g4" data-en="Backlog by Nutri-Engineering" href="/hub/development-planning-backlog.html">🗂 Backlog by Nutri-Engineering</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync-Sprint Backlog" href="/hub/documentation/index.html">📚 NutriSync-Sprint Backlog</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Launch plan" href="/hub/launch-plan.html">🗺 Plan 8-oct</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g4" data-en="Backlog by Nutri-Engineering" href="/hub/backlog-dev.html">🗂 Backlog by Nutri-Engineering</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync-Sprint Backlog" href="/hub/documentation/index.html">📚 NutriSync-Sprint Backlog</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
     <div class="nsnb-row" id="nsnb-r2"></div>
   </nav>
 </div>
@@ -241,12 +254,14 @@ select,input[type=text]{font-family:inherit;font-size:13px;padding:8px 10px;bord
     <div class="row">
       <select id="fCohort"><option value="">todas las cohortes</option></select>
       <select id="fPlat"><option value="">plataforma: todas</option><option>ios</option><option>android</option><option>web</option></select>
+      <select id="fTri"><option value="">triage: todo</option><option value="bug">🐞 incidencias</option><option value="mejora">🔧 mejoras</option><option value="idea">💡 ideas</option><option value="sin">sin clasificar</option></select>
       <input type="text" id="q" placeholder="buscar en los mensajes…" style="flex:1;min-width:180px">
       <button onclick="load()">Actualizar</button>
       <button onclick="exportCsv()" title="Exporta lo que ves con los filtros actuales">⬇ CSV</button>
       <span class="count" id="count"></span>
     </div>
   </div>
+  <div id="hoy"></div>
   <div id="list"><div class="hint">Cargando…</div></div>
 </div>
 <div id="gate">Inicia sesión de founder (Access + admin) y recarga — esta página es solo para admins.</div>
@@ -265,13 +280,23 @@ const tk=r=>{if(!r.ticket_no)return '';
   return ` <b style="color:#C73A20;font-size:11px">${esc(r.ticket_no)}</b> <span style="font-size:10px;font-weight:800;border-radius:999px;padding:1px 7px;background:${col}1a;color:${col}">${esc((r.ticket_status||'').replace(/_/g,' '))}</span><span style="font-size:10px;color:#8A7F78">${edad}${r.escalated_at?' 📣':''}</span>`;};
 function render(){
   const c=$('fCohort').value,p=$('fPlat').value,q=$('q').value.toLowerCase();
-  const rows=ALL.filter(r=>(!c||(r.cohort||'—')===c)&&(!p||(r.platform||'').toLowerCase().startsWith(p))&&(!q||(r.message||'').toLowerCase().includes(q)||(r.email||'').toLowerCase().includes(q)));
+  const tri=$('fTri').value;
+  const rows=ALL.filter(r=>(!c||(r.cohort||'—')===c)&&(!p||(r.platform||'').toLowerCase().startsWith(p))&&(!q||(r.message||'').toLowerCase().includes(q)||(r.email||'').toLowerCase().includes(q))
+    &&(!tri||(tri==='sin'?!r.categoria:(r.categoria===tri))));
   $('count').textContent=rows.length+' de '+ALL.length;
   $('list').innerHTML=rows.map(r=>`<div class="fb">
     <div class="meta"><b>${esc(r.email)}</b><span class="pill c">${esc(r.cohort||'—')}</span>${tk(r)}
+    ${r.criticidad?`<span class="fbcrit ${r.criticidad.toLowerCase()}">${esc(r.criticidad)}</span>`:''}${r.titulo?`<span class="tit">${esc(r.titulo)}</span>`:''}
     <span>${esc((r.created_at||'').slice(0,16).replace('T',' '))}</span>
     <span class="pill">v${esc(r.app_version||'?')} · ${esc(r.platform||'?')}</span></div>
     <div class="msg">${esc(r.message)}</div>
+    ${r.screenshot_path?`<img class="shot" data-shot="${esc(r.screenshot_path)}" alt="screenshot" onclick="window.open(this.src)">`:''}
+    ${r.ticket_id?`<div class="tri" style="margin-top:8px">
+      <button class="${r.categoria==='bug'?'on-bug':''}" onclick="window.fbTri('${esc(r.ticket_id)}','bug')">🐞 Incidencia</button>
+      <button class="${r.categoria==='mejora'?'on-mej':''}" onclick="window.fbTri('${esc(r.ticket_id)}','mejora')">🔧 Mejora</button>
+      <button class="${r.categoria==='idea'?'on-idea':''}" onclick="window.fbTri('${esc(r.ticket_id)}','idea')">💡 Idea</button>
+      ${r.categoria==='bug'&&r.ticket_no?`<button class="mini" style="margin-left:8px" onclick="window.fbToBk('${esc(r.ticket_no)}')">📌 → Backlog S12</button>`:''}
+    </div>`:''}
     ${r.ticket_id?`<div style="margin-top:8px"><button class="mini" onclick="window.fbTog('${esc(r.ticket_id)}')">✏️ Gestionar / Manage</button></div>
     <div id="fb-${esc(r.ticket_id)}" style="display:none;border-top:1px dashed #EADFD0;margin-top:8px;padding-top:8px">
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
@@ -287,9 +312,36 @@ function render(){
         <a class="hint" href="/hub/incidents.html" style="margin-left:auto">rastro completo → 🎫 Incidencias</a>
       </div>
     </div>`:''}</div>`).join('')||'<div class="hint">Sin mensajes con esos filtros.</div>';
+  pintaHoy();pintaShots();
 }
 /* r14c (punto 8): gestión ligera desde Feedback — mismo motor que Incidencias.
    Hoy feedback y ticket van 1:1; cuando se separen, este panel solo saldrá donde haya ticket. */
+function hoyISO(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function pintaHoy(){
+  const h=hoyISO();
+  const bugs=ALL.filter(r=>r.categoria==='bug'&&(r.created_at||'').slice(0,10)===h&&!['resuelto','cerrado'].includes(r.ticket_status));
+  $('hoy').innerHTML=bugs.length?`<div class="hoy"><h3>🐞 Incidencias de HOY · ${bugs.length} — al backlog y a su sprint</h3>${bugs.map(r=>`
+    <div class="it">${r.criticidad?`<span class="fbcrit ${r.criticidad.toLowerCase()}">${esc(r.criticidad)}</span>`:''}
+    <b>${esc(r.ticket_no||'')}</b> ${esc(r.titulo||r.message.slice(0,70))}
+    <button class="mini" onclick="window.fbToBk('${esc(r.ticket_no)}')">📌 → Backlog S12</button></div>`).join('')}
+    <div class="hint">El backlog completo vive en la pestaña 🗂 — <a href="/hub/backlog-dev.html">abrir</a>.</div></div>`:'';
+}
+async function pintaShots(){
+  for(const img of document.querySelectorAll('img.shot[data-shot]')){
+    const {data}=await sb.storage.from('feedback-shots').createSignedUrl(img.dataset.shot,3600);
+    if(data?.signedUrl){img.src=data.signedUrl;img.removeAttribute('data-shot');}
+  }
+}
+window.fbTri=async(id,cat)=>{
+  const r=await sb.rpc('admin_ticket_update',{p_id:id,p_categoria:cat});
+  if(!r.error&&r.data&&r.data.ok){const row=ALL.find(x=>x.ticket_id===id);if(row)row.categoria=cat;render();}
+  else alert('No guardado: '+((r.error&&r.error.message)||'error'));
+};
+window.fbToBk=async(no)=>{
+  const r=await sb.rpc('admin_ticket_to_backlog',{p_ticket_no:no,p_sprint:'S12'});
+  if(r.error||!(r.data&&r.data.ok))return alert('No añadido: '+((r.error&&r.error.message)||(r.data&&r.data.error)||''));
+  alert(r.data.ya_estaba?no+' ya estaba en el backlog.':no+' añadido al backlog (S12, prioridad por criticidad).');
+};
 window.fbTog=id=>{const d=document.getElementById('fb-'+id);if(d)d.style.display=d.style.display==='none'?'block':'none';};
 window.fbSave=async id=>{
   const ok=document.getElementById('ok-'+id);ok.textContent='guardando…';
@@ -311,9 +363,9 @@ window.exportCsv=()=>{
   const c=$('fCohort').value,p=$('fPlat').value,q=$('q').value.toLowerCase();
   const rows=ALL.filter(r=>(!c||(r.cohort||'—')===c)&&(!p||(r.platform||'').toLowerCase().startsWith(p))&&(!q||(r.message||'').toLowerCase().includes(q)||(r.email||'').toLowerCase().includes(q)));
   if(!rows.length)return alert('Nada que exportar con esos filtros.');
-  const CAB=['fecha','usuaria','cohorte','version','plataforma','mensaje'];
+  const CAB=['fecha','usuaria','cohorte','version','plataforma','triage','criticidad','titulo','mensaje'];
   const csv='\ufeff'+CAB.join(';')+'\n'+rows.map(r=>[r.created_at||'',r.email||'',r.cohort||'',
-    r.app_version||'',r.platform||'',r.message||''].map(csvCell).join(';')).join('\n');
+    r.app_version||'',r.platform||'',r.categoria||'',r.criticidad||'',r.titulo||'',r.message||''].map(csvCell).join(';')).join('\n');
   const d=new Date(),pad=n=>String(n).padStart(2,'0');
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
@@ -328,7 +380,7 @@ window.load=async()=>{
   $('fCohort').innerHTML='<option value="">todas las cohortes</option>'+cs.map(c=>`<option>${esc(c)}</option>`).join('');
   render();
 };
-['fCohort','fPlat'].forEach(i=>$(i).addEventListener('change',render));
+['fCohort','fPlat','fTri'].forEach(i=>$(i).addEventListener('change',render));
 $('q').addEventListener('input',render);
 (async()=>{
   const{data:{session}}=await sb.auth.getSession();

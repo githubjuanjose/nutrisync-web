@@ -1064,6 +1064,12 @@ if os.path.exists(fmis) and os.path.exists(cns):
 # ns-feedback-page: App Feedback as its OWN hub tab (r11d — moved out of the
 # console). Copies the page + adds the 💬 htab; also STRIPS the legacy embedded
 # panel from the console if a pack or old integrate left it there.
+# r16-F: el backlog VIVO de desarrollos (fixes+mejoras+features), pestaña 🗂
+bkpage = os.path.join(ASSETS, "backlog-dev.html")
+if os.path.exists(bkpage):
+    shutil.copy(bkpage, os.path.join(PUB, "hub", "backlog-dev.html"))
+    print("- backlog-dev copied to hub/backlog-dev.html")
+
 fbpage = os.path.join(ASSETS, "feedback.html")
 if os.path.exists(fbpage):
     shutil.copy(fbpage, os.path.join(PUB, "hub", "feedback.html"))

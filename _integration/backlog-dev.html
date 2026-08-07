@@ -1,0 +1,148 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Backlog de desarrollos — NutriSync Engineering</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.55}
+.w{max-width:1080px;margin:0 auto;padding:26px 20px 90px}
+h1{font-size:23px;margin:0 0 4px}
+p.lead{color:#6E655D;font-size:13.5px;margin:0 0 14px}
+.kpis{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+.kpi{flex:1;min-width:120px;background:#fff;border:1px solid #EFE3D7;border-radius:12px;padding:10px 13px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:2px}
+.kpi .l{font-size:10.5px;color:#8A7F78;text-transform:uppercase;letter-spacing:.5px}
+.kpi .v{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
+.filtros,.alta{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px;align-items:center}
+select,input[type=text]{font-family:inherit;font-size:13px;padding:8px 10px;border:1px solid #EFE3D7;border-radius:10px;background:#fff}
+button{font-family:inherit;font-weight:700;font-size:12.5px;border-radius:18px;padding:7px 14px;border:1px solid #EFE3D7;background:#fff;color:#241D1A;cursor:pointer}
+button:hover{border-color:#F3C8B8;background:#FFF6F2}
+button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:none}
+.sec{display:flex;align-items:center;gap:10px;margin:18px 0 6px;padding:8px 12px;background:#FBF6EF;border:1px solid #EFE3D7;border-radius:10px}
+.sec .n{font-weight:800;font-size:13px}
+.sec .cnt{margin-left:auto;color:#8A7F78;font-size:12px}
+.it{background:#fff;border:1px solid #EFE3D7;border-radius:12px;padding:10px 13px;margin:6px 0;display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.pr{font-size:10.5px;font-weight:900;border-radius:7px;padding:2px 8px}
+.P0{background:#C73A20;color:#fff}.P1{background:#FFB020;color:#5B3A00}.P2{background:#E7E2DC;color:#5F564F}.P3{background:#F4F0EA;color:#8A7F78}
+.tp{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px}
+.t-fix{background:#FDEEE6;color:#C05621}.t-mejora{background:#E6F0FF;color:#1D4ED8}.t-feature{background:#E8F5EE;color:#0F6E56}.t-capability{background:#EDE9FE;color:#5B21B6}
+.tit{font-weight:700;font-size:13.5px;flex:1;min-width:220px}
+.orig{font-size:11px;color:#8A7F78}
+.hoyb{font-size:10px;font-weight:800;background:#FFF1EC;color:#C73A20;border-radius:999px;padding:1px 8px}
+.err{background:#FFF1EC;border:2px solid #E8472A;border-radius:12px;padding:13px 15px;font-size:13px;color:#8A2A18;margin:14px 0}
+.hint{font-size:11.5px;color:#8A7F78}
+select.mini{font-size:11.5px;padding:4px 7px}
+</style></head><body><div class="w">
+
+<h1>🗂 Backlog de desarrollos · by Nutri-Engineering</h1>
+<p class="lead">El backlog VIVO: fixes de testers, mejoras, features y capabilities — con prioridad, sprint y estado.
+Las 🐞 de <a href="/hub/feedback.html">Feedback</a> entran con un clic; la planificación histórica sigue en
+<a href="/hub/development-planning-backlog.html">Development Planning</a> y los épicos en <a href="/hub/documentation/index.html">📚 Docs</a>.</p>
+
+<div class="kpis" id="kpis"></div>
+
+<div class="alta" id="alta">
+  <input type="text" id="nTit" placeholder="nuevo item… (qué haremos, en una frase)" style="flex:1;min-width:240px">
+  <select id="nTipo"><option value="fix">fix</option><option value="mejora">mejora</option><option value="feature" selected>feature</option><option value="capability">capability</option></select>
+  <select id="nPri"><option>P0</option><option>P1</option><option selected>P2</option><option>P3</option></select>
+  <select id="nSpr"><option>S12</option><option>S13</option><option>S14</option><option>S15</option><option>S16</option><option>GA</option><option selected>backlog</option></select>
+  <button class="pri" onclick="window.bkAdd()">＋ Añadir</button>
+</div>
+
+<div class="filtros">
+  <select id="fTipo"><option value="">tipo: todos</option><option>fix</option><option>mejora</option><option>feature</option><option>capability</option></select>
+  <select id="fEst"><option value="">estado: activos</option><option value="propuesto">propuesto</option><option value="aceptado">aceptado</option><option value="en_curso">en curso</option><option value="hecho">hecho</option><option value="todos">todos (incl. hechos)</option></select>
+  <button onclick="window.bkCsv()">⬇ CSV</button>
+  <span class="hint" id="count"></span>
+</div>
+<div id="err"></div>
+<div id="board">Cargando…</div>
+
+</div>
+<script src="/assets/vendor/supabase.js"></script>
+<script>
+(function(){
+'use strict';
+var sb=window.supabase.createClient('https://nebkqncvapelrarruyqb.supabase.co',
+  'sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau');
+var $=function(i){return document.getElementById(i);};
+var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+var D=null;
+var SPRINTS=[['S12','Sprint 12 · 10–14 ago'],['S13','Sprint 13 · 17–21 ago'],['S14','Sprint 14 · 24–28 ago'],
+  ['S15','Sprint 15 · 31 ago–4 sep'],['S16','Sprint 16 · 7–11 sep'],['GA','Camino GA · 8 oct'],['backlog','📥 Backlog (sin sprint)']];
+
+function fail(e,fn){$('board').innerHTML='';
+  $('err').innerHTML='<div class="err"><b>⚠️ Falta aplicar SQL</b> — la consulta <code>'+esc(fn)+'</code> dice: <i>'
+    +esc(String(e&&e.message||e)).slice(0,160)+'</i><br>Ejecuta <b>backend-sql/2026-08-07-feedback-v3.sql</b> y recarga.</div>';}
+
+function hoyISO(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+
+function item(b){
+  var esHoy=(b.creado_el||'').slice(0,10)===hoyISO();
+  return '<div class="it">'
+    +'<span class="pr '+esc(b.prioridad)+'">'+esc(b.prioridad)+'</span>'
+    +'<span class="tp t-'+esc(b.tipo)+'">'+esc(b.tipo)+'</span>'
+    +'<span class="tit">'+esc(b.titulo)+(esHoy?' <span class="hoyb">HOY</span>':'')
+    +(b.notas?'<div class="orig">'+esc(b.notas)+'</div>':'')+'</span>'
+    +'<span class="orig">'+esc(b.origen||'')+(b.ticket_no?' · <b>'+esc(b.ticket_no)+'</b>':'')+'</span>'
+    +'<select class="mini" onchange="window.bkSet(\''+b.id+'\',{estado:this.value})">'
+    +['propuesto','aceptado','en_curso','hecho','descartado'].map(function(x){return '<option value="'+x+'"'+(x===b.estado?' selected':'')+'>'+x.replace('_',' ')+'</option>';}).join('')+'</select>'
+    +'<select class="mini" onchange="window.bkSet(\''+b.id+'\',{sprint:this.value})">'
+    +SPRINTS.map(function(sp){return '<option value="'+sp[0]+'"'+(sp[0]===b.sprint?' selected':'')+'>'+sp[0]+'</option>';}).join('')+'</select>'
+    +'<select class="mini" onchange="window.bkSet(\''+b.id+'\',{prioridad:this.value})">'
+    +['P0','P1','P2','P3'].map(function(x){return '<option'+(x===b.prioridad?' selected':'')+'>'+x+'</option>';}).join('')+'</select>'
+    +'</div>';
+}
+function render(){
+  var ft=$('fTipo').value, fe=$('fEst').value||'';
+  var rows=(D.items||[]).filter(function(b){
+    if(ft&&b.tipo!==ft)return false;
+    if(fe==='todos')return true;
+    if(fe)return b.estado===fe;
+    return b.estado!=='hecho';                 // por defecto: lo vivo
+  });
+  var html='';
+  SPRINTS.forEach(function(sp){
+    var g=rows.filter(function(b){return b.sprint===sp[0];});
+    if(!g.length)return;
+    html+='<div class="sec"><span class="n">'+sp[1]+'</span><span class="cnt">'+g.length+' items</span></div>'+g.map(item).join('');
+  });
+  $('board').innerHTML=html||'<p class="hint">Nada con esos filtros.</p>';
+  $('count').textContent=rows.length+' de '+(D.items||[]).length;
+  var r=D.resumen||{};
+  $('kpis').innerHTML=[['Items vivos',r.total],['Añadidos hoy',r.hoy],['P0 abiertas ⚠',r.p0_abiertas],['En curso',r.en_curso]]
+    .map(function(x){return '<div class="kpi"><div class="l">'+x[0]+'</div><div class="v">'+(x[1]==null?'—':x[1])+'</div></div>';}).join('');
+}
+window.bkSet=function(id,patch){patch.id=id;
+  sb.rpc('admin_backlog_upsert',{p:patch}).then(function(r){
+    if(r.error||!(r.data&&r.data.ok))return alert('No guardado: '+((r.error&&r.error.message)||'error'));
+    cargar();});
+};
+window.bkAdd=function(){
+  var t=$('nTit').value.trim();if(!t)return alert('Escribe el título del item.');
+  sb.rpc('admin_backlog_upsert',{p:{titulo:t,tipo:$('nTipo').value,prioridad:$('nPri').value,sprint:$('nSpr').value,origen:'founder'}})
+    .then(function(r){
+      if(r.error||!(r.data&&r.data.ok))return alert('No añadido: '+((r.error&&r.error.message)||'error'));
+      $('nTit').value='';cargar();});
+};
+function csvCell(v){return '"'+String(v==null?'':v).replace(/"/g,'""').replace(/\r?\n/g,' · ')+'"';}
+window.bkCsv=function(){
+  var rows=(D&&D.items)||[];if(!rows.length)return alert('Nada que exportar.');
+  var CAB=['prioridad','tipo','titulo','sprint','estado','origen','ticket','notas','creado'];
+  var csv='﻿'+CAB.join(';')+'\n'+rows.map(function(b){return [b.prioridad,b.tipo,b.titulo,b.sprint,b.estado,b.origen||'',b.ticket_no||'',b.notas||'',b.creado_el||''].map(csvCell).join(';');}).join('\n');
+  var d=new Date(),pad=function(n){return String(n).padStart(2,'0');};
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download='nutrisync-backlog-'+pad(d.getDate())+pad(d.getMonth()+1)+'.csv';
+  a.click();URL.revokeObjectURL(a.href);
+};
+function cargar(){
+  sb.auth.getSession().then(function(s){
+    if(!s.data.session){$('board').innerHTML='<p class="hint">Inicia sesión admin desde el hub y recarga.</p>';return;}
+    sb.rpc('admin_backlog_list').then(function(r){
+      if(r.error)return fail(r.error,'admin_backlog_list');
+      D=r.data;render();});
+  });
+}
+['fTipo','fEst'].forEach(function(i){$(i).addEventListener('change',render);});
+$('nTit').addEventListener('keydown',function(e){if(e.key==='Enter')window.bkAdd();});
+cargar();
+})();
+</script></body></html>
