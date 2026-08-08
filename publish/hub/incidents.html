@@ -60,6 +60,14 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
 .soptab{width:100%;border-collapse:collapse;margin:5px 0 12px}
 .soptab td{padding:4px 7px 4px 0;vertical-align:top;border-bottom:1px solid #F1E8DD}
 .soptab td:last-child{color:#8A7F78;white-space:nowrap;text-align:right}
+.flowbar{display:flex;align-items:stretch;gap:5px;flex-wrap:wrap;margin:0 0 18px}
+.fstep{flex:1;min-width:132px;background:#fff;border:1px solid #EFE3D7;border-radius:11px;padding:9px 11px;display:flex;flex-direction:column;gap:2px}
+.fstep.on{border-color:#F3C8B8;background:#FFF6F2;box-shadow:0 0 0 2px #FDE7DC}
+.fstep .fem{font-size:17px;line-height:1.1}
+.fstep b{font-size:12.3px}
+.fstep span:last-child{font-size:10.8px;color:#8A7F78;line-height:1.42}
+.fstep i{color:#A79C94}
+.farrow{align-self:center;color:#C9BDB2;font-weight:800;font-size:15px}
 .cat{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#F1EAE2;color:#6E655D}
 .pcerr{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#DCFCE7;color:#166534;border:1px dashed #16A34A}
 .fixchip{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#EDE9FE;color:#5B21B6}
@@ -335,6 +343,23 @@ Nada se guarda hasta que pulsas un botón de guardar.</p>
      la guía se lee donde se trabaja, no en un documento que nadie abre. -->
 <div class="sopft">
   <h3>📖 Guía de uso · How to use this page</h3>
+
+  <!-- r16-F13: el circuito entero de un vistazo — de dónde viene cada ficha y
+       a dónde va. Sin esto, cada pestaña parece una isla. -->
+  <div class="flowbar">
+    <div class="fstep"><span class="fem">📱</span><b>App del piloto</b><span>La tester usa la app y encuentra algo<br><i>Pilot app · she hits something</i></span></div>
+    <div class="farrow">→</div>
+    <div class="fstep"><span class="fem">💬</span><b>Feedback</b><span>Llega su mensaje (app o TestFlight) y se clasifica: 🐞 🔧 💡<br><i>Message arrives · triage</i></span></div>
+    <div class="farrow">→</div>
+    <div class="fstep on"><span class="fem">🎫</span><b>Incidencias</b><span>Aquí: analizar, priorizar P0-P3, asignar y responderle<br><i>Analyse · prioritise · reply</i></span></div>
+    <div class="farrow">→</div>
+    <div class="fstep"><span class="fem">🗂</span><b>Sprint Planning</b><span>Entra sola con su P · le asignas la release<br><i>Lands automatically · pick a release</i></span></div>
+    <div class="farrow">→</div>
+    <div class="fstep"><span class="fem">🚢</span><b>Release</b><span>Se construye y sale a las tiendas u OTA<br><i>Built and shipped</i></span></div>
+    <div class="farrow">↩</div>
+    <div class="fstep"><span class="fem">✔</span><b>Cierre</b><span>«Fix enviado» → le avisamos → cerrada<br><i>Fix sent · user told · closed</i></span></div>
+  </div>
+
   <div class="sopcols">
     <div>
       <b>Prioridad — la misma escala que en 🗂 Sprint Planning</b>
