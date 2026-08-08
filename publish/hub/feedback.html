@@ -291,7 +291,9 @@ function render(){
   const c=$('fCohort').value,p=$('fPlat').value,q=$('q').value.toLowerCase();
   const tri=$('fTri').value;
   const rows=ALL.filter(r=>(!c||(r.cohort||'—')===c)&&(!p||(r.platform||'').toLowerCase().startsWith(p))&&(!q||(r.message||'').toLowerCase().includes(q)||(r.email||'').toLowerCase().includes(q))
-    &&(!tri||(tri==='sin'?!r.categoria:(r.categoria===tri))));
+    &&(!tri||(tri==='sin'?(!r.categoria&&r.ticket_status!=='cerrado'):(r.categoria===tri))));
+  // r16-F7 (regla Juanjo): la bandeja = pendiente de MI acción — un ticket
+  // cerrado no pide triage y no pinta nada en «sin clasificar» (vive en «todo»).
   $('count').textContent=rows.length+' de '+ALL.length;
   $('list').innerHTML=rows.map(r=>`<div class="fb">
     <div class="meta"><b>${esc(r.email)}</b>${r.source==='testflight'?'<span class="pill" style="background:#241D1A;color:#fff">🍎 TestFlight</span>':''}<span class="pill c">${esc(r.cohort||'—')}</span>${tk(r)}
@@ -315,10 +317,11 @@ function render(){
         <input id="ac-${esc(r.ticket_id)}" type="text" placeholder="acción interna / internal action" style="flex:1;min-width:180px">
         <button class="mini" onclick="window.fbSave('${esc(r.ticket_id)}')">💾 Guardar seguimiento</button>
       </div>
-      ${r.source==='testflight'?'<div class="hint" style="margin-top:8px">🍎 Canal TestFlight: Apple no permite responder in-app. Gestiona estado y triage; si hace falta contacto, por correo a su tester.</div>':`<textarea id="re-${esc(r.ticket_id)}" placeholder="Respuesta a la usuaria (le llega a su app con el ${esc(r.ticket_no||'ticket')}) / reply lands in her app" style="width:100%;box-sizing:border-box;min-height:56px;margin-top:8px">${esc(r.respuesta||'')}</textarea>`}
+      <textarea id="re-${esc(r.ticket_id)}" placeholder="Respuesta a la usuaria (le llega a su app con el ${esc(r.ticket_no||'ticket')}) / reply lands in her app" style="width:100%;box-sizing:border-box;min-height:56px;margin-top:8px">${esc(r.respuesta||'')}</textarea>
+      ${r.source==='testflight'?'<div class="hint" style="margin-top:4px">🍎 r16-F5: si su email de TestFlight casa con una cuenta de la app, la respuesta le llega in-app; si no, queda registrada en el ticket (el rastro lo dice).</div>':''}
       <div style="display:flex;gap:8px;margin-top:6px;align-items:center">
-        ${r.source==='testflight'?'':`<button class="mini" onclick="window.fbResp('${esc(r.ticket_id)}',false)">Guardar respuesta</button>
-        <button class="mini" style="background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:none" onclick="window.fbResp('${esc(r.ticket_id)}',true)">📨 Guardar y enviar a la usuaria</button>`}
+        <button class="mini" onclick="window.fbResp('${esc(r.ticket_id)}',false)">Guardar respuesta</button>
+        <button class="mini" style="background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:none" onclick="window.fbResp('${esc(r.ticket_id)}',true)">📨 Guardar y enviar a la usuaria</button>
         <span class="hint" id="ok-${esc(r.ticket_id)}"></span>
         <a class="hint" href="/hub/incidents.html" style="margin-left:auto">rastro completo → 🎫 Incidencias</a>
       </div>
@@ -332,7 +335,7 @@ function snack(msg){const el=$('snack');el.textContent=msg;el.classList.add('on'
   clearTimeout(SNT);SNT=setTimeout(()=>el.classList.remove('on'),3600);}
 function pintaStats(){
   const n={bug:0,mejora:0,idea:0,sin:0};
-  ALL.forEach(r=>{n[r.categoria]!==undefined?n[r.categoria]++:n.sin++;});
+  ALL.forEach(r=>{if(n[r.categoria]!==undefined)n[r.categoria]++;else if(r.ticket_status!=='cerrado')n.sin++;});
   $('stats').innerHTML=`<span>📥 sin clasificar: ${n.sin}</span><span>🐞 ${n.bug}</span><span>🔧 ${n.mejora}</span><span>💡 ${n.idea}</span>`;
 }
 function hoyISO(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
