@@ -299,7 +299,9 @@ function render(){
     <span>${esc((r.created_at||'').slice(0,16).replace('T',' '))}</span>
     <span class="pill">v${esc(r.app_version||'?')} · ${esc(r.platform||'?')}</span></div>
     <div class="msg">${esc(r.message)}</div>
-    ${r.screenshot_path?`<img class="shot" data-shot="${esc(r.screenshot_path)}" alt="screenshot" onclick="window.open(this.src)">`:''}
+    ${r.screenshot_path?(r.screenshot_path.slice(-4)==='.txt'
+      ?`<a class="shotlog" data-shot="${esc(r.screenshot_path)}" target="_blank" rel="noopener" style="display:inline-block;margin-top:6px;font-size:12px;font-weight:700">📄 crash log completo · full crash log</a>`
+      :`<img class="shot" data-shot="${esc(r.screenshot_path)}" alt="screenshot" onclick="window.open(this.src)">`):''}
     ${r.ticket_id?`<div class="tri" style="margin-top:8px">
       <button class="${r.categoria==='bug'?'on-bug':''}" onclick="window.fbTri('${esc(r.ticket_id)}','bug')">🐞 Incidencia</button>
       <button class="${r.categoria==='mejora'?'on-mej':''}" onclick="window.fbTri('${esc(r.ticket_id)}','mejora')">🔧 Mejora</button>
@@ -347,6 +349,10 @@ async function pintaShots(){
   for(const img of document.querySelectorAll('img.shot[data-shot]')){
     const {data}=await sb.storage.from('feedback-shots').createSignedUrl(img.dataset.shot,3600);
     if(data?.signedUrl){img.src=data.signedUrl;img.removeAttribute('data-shot');}
+  }
+  for(const a of document.querySelectorAll('a.shotlog[data-shot]')){
+    const {data}=await sb.storage.from('feedback-shots').createSignedUrl(a.dataset.shot,3600);
+    if(data?.signedUrl){a.href=data.signedUrl;a.removeAttribute('data-shot');}
   }
 }
 const DESTINO={bug:'🐞 Incidencia — gestión y respuesta en 🎫 Incidencias',

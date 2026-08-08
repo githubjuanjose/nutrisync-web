@@ -59,7 +59,8 @@ th{color:#8A7F78;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
 <ul>
 <li>0.21.0 (iOS b7) quedó <b>en beta review</b> de Apple con los grupos externos; Play internal release 5 instalable.</li>
 <li>Crons nocturnos: 200s con un <b>502 puntual</b> en una pasada horaria — reintento automático a la siguiente, sin acción.</li>
-<li>La cosecha 🍎 (06:30 UTC) y el digest 📬 a founders@ (07:15 UTC) — que hoy estrena la J5 — se verifican en 💬/🎫 y en los buzones; su día a día vive en Operación, no en este doc.</li>
+<li><b>Veredicto de la cosecha 🍎 (8-ago tarde)</b>: la pasada de las 06:30 vino VACÍA porque en producción seguía la versión vieja de <code>store-stats</code> — el deploy de la víspera «salió bien» en el CLI pero nunca tomó efecto. Redeploy verificado con curl → <b>25 feedbacks de TestFlight cosechados al instante</b>: 25 filas 🍎, 25 capturas en el bucket, 25 tickets NS-####. Y a la segunda pasada (r16-F4), <b>los 5 crashes</b> con su log completo como 📄 .txt en el bucket — 30 entradas en total, con el dedupe demostrando en vivo que no duplica (nuevos:0 en la repesca). pg_cron, mientras, impecable: 6 jobs, 36 pasadas, 0 fallos. Bonus de la tarde: los asuntos de los correos pasan a ASCII puro — el webmail pintaba los emojis del header en crudo (=f0=9f…), item FB3 del backlog cerrado con foto.</li>
+<li>El digest 📬 (07:15 UTC) salió según pg_cron; estrena la J5 ante las founders.</li>
 </ul>
 
 <h2>8 · Lecciones que se quedan</h2>
@@ -67,6 +68,7 @@ th{color:#8A7F78;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
 <li><b>El sello ns-build volvió a pagar la cena</b>: «no veo la pestaña» se resolvió con un curl — producción servía el build de anoche, no había nada roto. Ante «X no aparece»: primero el sello, después las hipótesis.</li>
 <li><b>La vía de emergencia wrangler quedó ratificada en combate</b> (deploys de Actions dormidos a medianoche): <code>cd</code> ABSOLUTO primero — lanzada desde <code>~</code> buscó <code>publish/</code> en casa (2ª reincidencia de la regla de rutas).</li>
 <li><b>Jamás inventar un importe</b>: GitHub/Supabase/Cloudflare sin recibo a la vista → PTE, no estimación. El diario solo come recibos reales.</li>
+<li><b>Un deploy de Edge Function no existe hasta VER la respuesta nueva en vivo</b> (curl con el secreto). El «Deployed ✔» del CLI sirvió versión vieja 12 horas — hermana de la regla r15-B («una función de correo no está viva hasta ver UN correo en una bandeja»). El pg_cron en verde tampoco prueba nada: solo dice que la llamada salió.</li>
 </ul>
 
 </div></body></html>
