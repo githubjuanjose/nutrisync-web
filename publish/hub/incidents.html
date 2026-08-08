@@ -411,19 +411,20 @@ function ticket(t){
     +'</select></div>'
     +'<div class="fld"><label>Acción interna (qué vamos a hacer — no lo ve la usuaria)</label>'
     +'<textarea class="edAc" placeholder="p. ej.: reproducir en 0.19, corregido en 0.21.0, pedir más datos…">'+esc(t.accion||'')+'</textarea></div>'
-    +'<div class="fld"><label>Comentarios, observaciones (opcional)</label><input type="text" class="edCm" placeholder="nota corta para el seguimiento"></div>'
-    +'<div class="acts"><button class="pri" onclick="window.nsGuardar(\''+esc(t.id)+'\')">Guardar seguimiento</button>'
-    +(t.status!=='cerrado'?'<button onclick="window.nsCerrar(\''+esc(t.id)+'\',\''+esc(t.ticket_no)+'\')">✔ Cerrar incidencia</button>':'')
-    +'<span class="ok-chip edOk1"></span></div>'
+    +(t.categoria==='bug'?'<div class="meta" style="margin-top:2px">🗂 Al marcarla <b>bug</b> entra sola en <a href="/hub/backlog-dev.html">Sprint Planning</a> con prioridad según la criticidad (FB1→P0 · FB2→P1 · FB3→P2). La release se asigna allí.</div>':'')
     +'</div><div>'
-    +'<div class="fld"><label>Respuesta a la usuaria (la verá en su app, con su ticket '+esc(t.ticket_no)+')</label>'
-    +'<textarea class="edRe" style="min-height:118px" placeholder="Escríbele como le hablarías por WhatsApp: qué pasó, qué hemos hecho, qué puede esperar.">'+esc(t.respuesta||'')+'</textarea></div>'
-    +'<div class="acts">'
-    +'<button onclick="window.nsResponder(\''+esc(t.id)+'\',false)">Guardar respuesta</button>'
-    +'<button class="pri" onclick="window.nsResponder(\''+esc(t.id)+'\',true)">Guardar y enviar a la usuaria</button>'
-    +'<span class="ok-chip edOk2"></span></div>'
-    +(t.respuesta_enviada_at?'<div class="meta" style="margin-top:6px">Última enviada: '+fecha(t.respuesta_enviada_at)+'</div>':'')
-    +'</div></div>';
+    +'<div class="fld"><label>Mensaje a la usuaria (lo verá en su app, con su ticket '+esc(t.ticket_no)+')</label>'
+    +'<textarea class="edRe" style="min-height:200px" placeholder="Escríbele como le hablarías por WhatsApp: qué pasó, qué hemos hecho, qué puede esperar.">'+esc(t.respuesta||'')+'</textarea></div>'
+    +(t.respuesta_enviada_at?'<div class="meta" style="margin-top:6px">✉️ Último mensaje enviado: '+fecha(t.respuesta_enviada_at)+'</div>':'')
+    +'</div></div>'
+    /* r16-F9 (regla Juanjo): UNA barra de acciones al final — se rellena todo
+       (izquierda + mensaje) y luego se elige qué hacer. Ningún botón pierde lo
+       escrito en el otro lado, y la ficha nunca desaparece de la vista. */
+    +'<div class="acts" style="border-top:1px dashed #EADFD0;margin-top:12px;padding-top:12px">'
+    +'<button class="pri" onclick="window.nsGuardar(\''+esc(t.id)+'\')">💾 Guardar incidencia</button>'
+    +'<button onclick="window.nsResponder(\''+esc(t.id)+'\',true)">📨 Guardar y enviar mensaje a la usuaria</button>'
+    +(t.status!=='cerrado'?'<button onclick="window.nsCerrar(\''+esc(t.id)+'\',\''+esc(t.ticket_no)+'\')">✔ Cerrar incidencia</button>':'')
+    +'<span class="ok-chip edOk1"></span><span class="ok-chip edOk2"></span></div>';
 
   h+='<div class="trail">'+(t.events||[]).map(function(e){
     return '<div>'+(KINDS[e.kind]||'·')+' <span class="k">'+fecha(e.at)+' · '+esc(e.author.split('@')[0])+'</span> '
@@ -504,32 +505,45 @@ function tEl(id,cls){return document.querySelector('.t[data-id="'+id+'"] .'+cls)
 function nsLeftSave(id){
   return sb.rpc('admin_ticket_update',{p_id:id,
     p_status:tEl(id,'edSt').value, p_assigned:tEl(id,'edAs').value||null,
-    p_accion:tEl(id,'edAc').value, p_comentario:tEl(id,'edCm').value||null,
+    p_accion:tEl(id,'edAc').value, p_comentario:null,
     p_titulo:tEl(id,'edTi').value||null, p_categoria:tEl(id,'edCa').value||null,
     p_criticidad:tEl(id,'edCr').value||null, p_fix_enviado:tEl(id,'edFx').value==='1'
   });
+}
+/* r16-F9: tras guardar, la ficha SIGUE donde el ojo la dejó — se mantiene
+   abierta, se despliega su nueva sección (el estado puede haber cambiado) y
+   se hace scroll hasta ella. Nada de «ha desaparecido». */
+function nsRecargar(id){
+  ABIERTOS[id]=true;
+  cargar(false);
+  setTimeout(function(){
+    var el=document.querySelector('.t[data-id="'+id+'"]');
+    if(!el){var st=(D.tickets||[]).filter(function(x){return x.id===id;})[0];
+      if(st&&SEC[st.status]){SEC[st.status]=false;render();
+        el=document.querySelector('.t[data-id="'+id+'"]');}}
+    if(el){el.classList.add('open');el.scrollIntoView({block:'center',behavior:'smooth'});}
+  },450);
 }
 window.nsGuardar=function(id){
   var chip=tEl(id,'edOk1');chip.textContent='guardando…';chip.style.color='#8A7F78';
   nsLeftSave(id).then(function(r){
     if(r.error||!(r.data&&r.data.ok)){chip.textContent='⚠ no guardado: '+((r.error&&r.error.message)||(r.data&&r.data.error)||'');chip.style.color='#C73A20';return;}
-    var re=tEl(id,'edRe'), draft=re&&re.value.trim()&&re.value!==re.defaultValue;
-    if(!draft){chip.textContent='✓ guardado';chip.style.color='#0F9B57';cargar(false);return;}
+    var re=tEl(id,'edRe'), draft=re&&re.value.trim();
+    if(!draft){chip.textContent='✓ guardada (sin enviar mensaje)';chip.style.color='#0F9B57';nsRecargar(id);return;}
     sb.rpc('admin_ticket_respond',{p_id:id,p_respuesta:re.value.trim(),p_enviar:false}).then(function(r2){
-      if(r2.error||!(r2.data&&r2.data.ok)){chip.textContent='✓ seguimiento OK · ⚠ borrador de respuesta NO: '+((r2.error&&r2.error.message)||(r2.data&&r2.data.error)||'');chip.style.color='#C73A20';return;}
-      chip.textContent='✓ guardado todo (seguimiento + borrador de respuesta)';chip.style.color='#0F9B57';cargar(false);});
+      if(r2.error||!(r2.data&&r2.data.ok)){chip.textContent='✓ incidencia OK · ⚠ mensaje NO: '+((r2.error&&r2.error.message)||(r2.data&&r2.data.error)||'');chip.style.color='#C73A20';return;}
+      chip.textContent='✓ guardada · mensaje guardado SIN enviar';chip.style.color='#0F9B57';nsRecargar(id);});
   });
 };
 
 window.nsCerrar=function(id,no){
   if(!confirm('Cerrar '+no+': se da por terminada. Si la acción interna está vacía, mejor rellénala antes — el porqué del cierre queda en el rastro. ¿Cerrar?'))return;
   var chip=tEl(id,'edOk1');chip.textContent='cerrando…';chip.style.color='#8A7F78';
-  var cm=tEl(id,'edCm').value||'incidencia cerrada';
   sb.rpc('admin_ticket_update',{p_id:id,p_status:'cerrado',p_assigned:null,
-    p_accion:tEl(id,'edAc').value||null,p_comentario:cm
+    p_accion:tEl(id,'edAc').value||null,p_comentario:'incidencia cerrada'
   }).then(function(r){
     if(r.error||!(r.data&&r.data.ok)){chip.textContent='⚠ no cerrada: '+((r.error&&r.error.message)||(r.data&&r.data.error)||'');chip.style.color='#C73A20';return;}
-    chip.textContent='✔ cerrada';chip.style.color='#475569';cargar(false);});
+    chip.textContent='✔ cerrada — baja a la sección «cerrado»';chip.style.color='#475569';nsRecargar(id);});
 };
 window.nsResponder=function(id,enviar){
   var chip=tEl(id,'edOk2'), txt=tEl(id,'edRe').value.trim();
@@ -541,9 +555,9 @@ window.nsResponder=function(id,enviar){
   nsLeftSave(id).then(function(ru){
     if(ru.error||!(ru.data&&ru.data.ok)){chip.textContent='⚠ seguimiento no guardado (respuesta no enviada): '+((ru.error&&ru.error.message)||(ru.data&&ru.data.error)||'');chip.style.color='#C73A20';return;}
     sb.rpc('admin_ticket_respond',{p_id:id,p_respuesta:txt,p_enviar:enviar}).then(function(r){
-      if(r.error||!(r.data&&r.data.ok)){chip.textContent='⚠ seguimiento OK · respuesta NO: '+((r.error&&r.error.message)||(r.data&&r.data.error)||'');chip.style.color='#C73A20';return;}
-      chip.textContent=enviar?'📨 enviada a su app (+ seguimiento guardado)':'✓ guardado todo (respuesta sin enviar)';chip.style.color=enviar?'#1D4ED8':'#0F9B57';
-      cargar(false);});
+      if(r.error||!(r.data&&r.data.ok)){chip.textContent='⚠ incidencia OK · mensaje NO: '+((r.error&&r.error.message)||(r.data&&r.data.error)||'');chip.style.color='#C73A20';return;}
+      chip.textContent=enviar?'📨 enviado a su app · la ficha pasa a «esperando a la usuaria» (abajo)':'✓ guardado todo (mensaje sin enviar)';chip.style.color=enviar?'#1D4ED8':'#0F9B57';
+      nsRecargar(id);});
   });
 };
 
