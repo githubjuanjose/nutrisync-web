@@ -287,16 +287,26 @@ window.nsToggle=function(id){ABIERTOS[id]=!ABIERTOS[id];
 
 function tEl(id,cls){return document.querySelector('.t[data-id="'+id+'"] .'+cls);}
 
-window.nsGuardar=function(id){
-  var chip=tEl(id,'edOk1');chip.textContent='guardando…';chip.style.color='#8A7F78';
-  sb.rpc('admin_ticket_update',{p_id:id,
+// r16-F6 (regla Juanjo): guardar un lado NUNCA borra el otro — cada botón
+// persiste AMBOS. El seguimiento arrastra el borrador de respuesta si cambió.
+function nsLeftSave(id){
+  return sb.rpc('admin_ticket_update',{p_id:id,
     p_status:tEl(id,'edSt').value, p_assigned:tEl(id,'edAs').value||null,
     p_accion:tEl(id,'edAc').value, p_comentario:tEl(id,'edCm').value||null,
     p_titulo:tEl(id,'edTi').value||null, p_categoria:tEl(id,'edCa').value||null,
     p_criticidad:tEl(id,'edCr').value||null, p_fix_enviado:tEl(id,'edFx').value==='1'
-  }).then(function(r){
+  });
+}
+window.nsGuardar=function(id){
+  var chip=tEl(id,'edOk1');chip.textContent='guardando…';chip.style.color='#8A7F78';
+  nsLeftSave(id).then(function(r){
     if(r.error||!(r.data&&r.data.ok)){chip.textContent='⚠ no guardado: '+((r.error&&r.error.message)||(r.data&&r.data.error)||'');chip.style.color='#C73A20';return;}
-    chip.textContent='✓ guardado';chip.style.color='#0F9B57';cargar(false);});
+    var re=tEl(id,'edRe'), draft=re&&re.value.trim()&&re.value!==re.defaultValue;
+    if(!draft){chip.textContent='✓ guardado';chip.style.color='#0F9B57';cargar(false);return;}
+    sb.rpc('admin_ticket_respond',{p_id:id,p_respuesta:re.value.trim(),p_enviar:false}).then(function(r2){
+      if(r2.error||!(r2.data&&r2.data.ok)){chip.textContent='✓ seguimiento OK · ⚠ borrador de respuesta NO: '+((r2.error&&r2.error.message)||(r2.data&&r2.data.error)||'');chip.style.color='#C73A20';return;}
+      chip.textContent='✓ guardado todo (seguimiento + borrador de respuesta)';chip.style.color='#0F9B57';cargar(false);});
+  });
 };
 
 window.nsCerrar=function(id,no){
@@ -314,10 +324,15 @@ window.nsResponder=function(id,enviar){
   if(!txt){chip.textContent='⚠ la respuesta está vacía';chip.style.color='#C73A20';return;}
   if(enviar&&!confirm('La usuaria verá esta respuesta en su app, con el número de ticket. ¿Enviar?'))return;
   chip.textContent=enviar?'enviando…':'guardando…';chip.style.color='#8A7F78';
-  sb.rpc('admin_ticket_respond',{p_id:id,p_respuesta:txt,p_enviar:enviar}).then(function(r){
-    if(r.error||!(r.data&&r.data.ok)){chip.textContent='⚠ no guardado: '+((r.error&&r.error.message)||(r.data&&r.data.error)||'');chip.style.color='#C73A20';return;}
-    chip.textContent=enviar?'📨 enviada a su app':'✓ respuesta guardada (sin enviar)';chip.style.color=enviar?'#1D4ED8':'#0F9B57';
-    cargar(false);});
+  // r16-F6: primero se persiste el lado izquierdo tal cual está en pantalla —
+  // responder jamás tira el seguimiento que tenías a medias.
+  nsLeftSave(id).then(function(ru){
+    if(ru.error||!(ru.data&&ru.data.ok)){chip.textContent='⚠ seguimiento no guardado (respuesta no enviada): '+((ru.error&&ru.error.message)||(ru.data&&ru.data.error)||'');chip.style.color='#C73A20';return;}
+    sb.rpc('admin_ticket_respond',{p_id:id,p_respuesta:txt,p_enviar:enviar}).then(function(r){
+      if(r.error||!(r.data&&r.data.ok)){chip.textContent='⚠ seguimiento OK · respuesta NO: '+((r.error&&r.error.message)||(r.data&&r.data.error)||'');chip.style.color='#C73A20';return;}
+      chip.textContent=enviar?'📨 enviada a su app (+ seguimiento guardado)':'✓ guardado todo (respuesta sin enviar)';chip.style.color=enviar?'#1D4ED8':'#0F9B57';
+      cargar(false);});
+  });
 };
 
 function cargar(primera){
