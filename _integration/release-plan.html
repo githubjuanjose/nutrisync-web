@@ -64,6 +64,7 @@ var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){re
 var REL=[],ITEMS=[],ABIERTAS={},SNT=null;
 var ORDEN=['0.21.0','0.21.1','0.22.0','0.23.0','GA','0.20.0'];
 var RELS_ASIGNABLES=['—','0.21.1','0.22.0','0.23.0','GA'];
+var SINREL_ABIERTO=true;   // r16-F14: lo pendiente arriba y abierto; se pliega con un clic
 var SPRINTS={S11:'Sprint 11 · 3–7 ago',S12:'Sprint 12 · 10–14 ago',S13:'Sprint 13 · 17–21 ago',
   S14:'Sprint 14 · 24–28 ago',S15:'Sprint 15 · 31 ago–4 sep',S16:'Sprint 16 · 7–11 sep',GA:'Tramo GA',backlog:'Sin sprint'};
 var ESTADOS=['planificada','en_construccion','en_review','en_tiendas','ga'];
@@ -118,17 +119,28 @@ function render(){
   var orden=ORDEN.filter(function(v){return REL.some(function(r){return r.version===v;});});
   REL.sort(function(a,b){return orden.indexOf(a.version)-orden.indexOf(b.version);});
   var html=REL.map(relCard).join('');
-  var sueltos=ITEMS.filter(function(b){return b.release==='—'&&b.estado!=='hecho';});
+  /* r16-F14 (regla Juanjo): lo que ESPERA decisión va PRIMERO — asignar release
+     es la acción pendiente; las releases ya montadas son consulta. Ordenado por
+     prioridad (P0 arriba) para que la decisión sea obvia. */
+  var sueltos=ITEMS.filter(function(b){return b.release==='—'&&b.estado!=='hecho';})
+    .sort(function(a,b){return String(a.prioridad||'P9').localeCompare(String(b.prioridad||'P9'));});
+  var cab='';
   if(sueltos.length){
-    html+='<div class="sinrel"><b>📥 Sin release asignada · '+sueltos.length+'</b>'
+    cab='<div class="sinrel'+(SINREL_ABIERTO?' open':'')+'" id="sinrel">'
+      +'<b style="cursor:pointer" onclick="window.rpSinrel()">📥 Pendientes de asignar release · '+sueltos.length
+      +' <span style="font-weight:400;color:#8A7F78">'+(SINREL_ABIERTO?'▾':'▸ desplegar')+'</span></b>'
+      +'<div class="sinrelb" style="display:'+(SINREL_ABIERTO?'block':'none')+'">'
+      +'<div class="hint" style="margin:2px 0 8px">Elige en qué build entra cada una. Al asignarla, sale de aquí y aparece en su release.</div>'
       +sueltos.map(function(b){return '<div class="it"><span class="pr '+esc(b.prioridad)+'">'+esc(b.prioridad)+'</span>'
         +esc(b.titulo)
+        +(b.ticket_no?' <a href="/hub/incidents.html" class="hint" title="Ver la incidencia con su prueba">'+esc(b.ticket_no)+' 📎</a>':'')
         +'<select class="mini" onchange="window.rpMove(\''+b.id+'\',this.value)">'
         +RELS_ASIGNABLES.map(function(v){return '<option value="'+v+'"'+(v===b.release?' selected':'')+'>'+v+'</option>';}).join('')
-        +'</select></div>';}).join('')+'</div>';
+        +'</select></div>';}).join('')+'</div></div>';
   }
-  $('plan').innerHTML=html;
+  $('plan').innerHTML=cab+html;
 }
+window.rpSinrel=function(){SINREL_ABIERTO=!SINREL_ABIERTO;render();};
 window.rpTog=function(v){var el=document.querySelector('.rel[data-v="'+v+'"]');
   ABIERTAS[v]=!el.classList.contains('open');el.classList.toggle('open');};
 window.rpMove=function(id,rel){
