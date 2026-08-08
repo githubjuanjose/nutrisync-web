@@ -50,6 +50,16 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
 .tit{font-weight:800;font-size:13px}
 .fb{font-size:10.5px;font-weight:900;border-radius:7px;padding:2px 8px;letter-spacing:.3px}
 .fb1,.p0{background:#C73A20;color:#fff}.fb2,.p1{background:#FFB020;color:#5B3A00}.fb3,.p2{background:#E7E2DC;color:#5F564F}.fb4,.p3{background:#F4F0EA;color:#8A7F78}
+.sopft{margin:34px 0 0;padding:18px 20px;background:#FBF6EF;border:1px solid #EFE3D7;border-radius:14px;font-size:12.8px;line-height:1.62}
+.sopft h3{margin:0 0 12px;font-size:14.5px}
+.sopcols{display:flex;gap:26px;flex-wrap:wrap}
+.sopcols>div{flex:1;min-width:290px}
+.sopft ol,.sopft ul{margin:5px 0 12px;padding-left:19px}
+.sopft li{margin:2px 0}
+.sopft b{display:inline}
+.soptab{width:100%;border-collapse:collapse;margin:5px 0 12px}
+.soptab td{padding:4px 7px 4px 0;vertical-align:top;border-bottom:1px solid #F1E8DD}
+.soptab td:last-child{color:#8A7F78;white-space:nowrap;text-align:right}
 .cat{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#F1EAE2;color:#6E655D}
 .pcerr{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#DCFCE7;color:#166534;border:1px dashed #16A34A}
 .fixchip{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#EDE9FE;color:#5B21B6}
@@ -319,6 +329,75 @@ Nada se guarda hasta que pulsas un botón de guardar.</p>
 </div>
 <div id="err"></div>
 <div id="lista">Cargando…</div>
+
+<!-- ns-inc-sop · r16-F13: el SOP vive al pie de la propia página, siempre a la
+     vista. Bilingüe ES/EN porque las founders leen en los dos idiomas. Regla:
+     la guía se lee donde se trabaja, no en un documento que nadie abre. -->
+<div class="sopft">
+  <h3>📖 Guía de uso · How to use this page</h3>
+  <div class="sopcols">
+    <div>
+      <b>Prioridad — la misma escala que en 🗂 Sprint Planning</b>
+      <table class="soptab">
+        <tr><td><span class="fb p0">P0</span></td><td>La app se rompe (crash) o algo básico no funciona</td><td><i>este sprint</i></td></tr>
+        <tr><td><span class="fb p1">P1</span></td><td>Funciona mal o da datos incorrectos, pero se puede seguir usando</td><td><i>siguiente versión</i></td></tr>
+        <tr><td><span class="fb p2">P2</span></td><td>Molesta o confunde, no impide usar la app</td><td><i>cuando toque</i></td></tr>
+        <tr><td><span class="fb p3">P3</span></td><td>Detalle menor o estético</td><td><i>si sobra tiempo</i></td></tr>
+      </table>
+      <b>Cómo se rellena una ficha (2 minutos)</b>
+      <ol>
+        <li><b>Título breve</b> — cómo la llamamos entre nosotros («crash al abrir Body Insights»).</li>
+        <li><b>Categoría</b> — bug (algo falla) · mejora · consulta · datos.</li>
+        <li><b>Prioridad</b> — P0-P3. Si es bug, entra sola en 🗂 con esa prioridad.</li>
+        <li><b>Responsable</b> — quién la lleva.</li>
+        <li><b>Acción interna</b> — qué vamos a hacer (esto NO lo ve la usuaria).</li>
+        <li><b>Mensaje a la usuaria</b> — opcional; se envía cuando quieras y no cambia el estado.</li>
+      </ol>
+      <b>El ciclo de estados</b>
+      <ul>
+        <li><b>nuevo</b> — nadie la ha mirado todavía.</li>
+        <li><b>en curso</b> — alguien la lleva o está en el sprint (ponlo tú al empezar).</li>
+        <li><b>esperando a la usuaria</b> — SOLO cuando le hemos pedido algo. Hablar con ella no cambia el estado.</li>
+        <li><b>resuelto</b> — arreglado y probado, enviado en una versión.</li>
+        <li><b>cerrado</b> — terminado: arreglado <u>y</u> la usuaria informada.</li>
+      </ul>
+      <b>Dos cierres, no uno</b><br>
+      <b>Técnico</b>: arreglado y probado → marca «fix enviado: sí». <b>Con la usuaria</b>: le contamos y lo da por bueno. Con fix enviado y sin respuesta en 72 h, sale en <span class="pcerr">✔ para cerrar</span> del correo diario.<br><br>
+      <b>Del reporte al código</b><br>
+      bug → 🗂 <a href="/hub/backlog-dev.html">Sprint Planning</a> (automático, con su P) → le asignas una <b>release</b> → 🚢 <a href="/hub/release-plan.html">Release Plan</a> → se construye → vuelve aquí como «fix enviado» → mensaje a la usuaria → cierre.
+    </div>
+    <div>
+      <b>Priority — same scale as 🗂 Sprint Planning</b>
+      <table class="soptab">
+        <tr><td><span class="fb p0">P0</span></td><td>App crashes or something basic doesn't work</td><td><i>this sprint</i></td></tr>
+        <tr><td><span class="fb p1">P1</span></td><td>Works badly or shows wrong data, but you can carry on</td><td><i>next version</i></td></tr>
+        <tr><td><span class="fb p2">P2</span></td><td>Annoying or confusing, doesn't block usage</td><td><i>when it fits</i></td></tr>
+        <tr><td><span class="fb p3">P3</span></td><td>Minor or cosmetic detail</td><td><i>if there's time</i></td></tr>
+      </table>
+      <b>Filling in a ticket (2 minutes)</b>
+      <ol>
+        <li><b>Short title</b> — what we call it internally ("crash opening Body Insights").</li>
+        <li><b>Category</b> — bug · improvement · question · data.</li>
+        <li><b>Priority</b> — P0-P3. If it's a bug, it lands in 🗂 automatically with that priority.</li>
+        <li><b>Owner</b> — who's on it.</li>
+        <li><b>Internal action</b> — what we're going to do (the user never sees this).</li>
+        <li><b>Message to the user</b> — optional; send it whenever, it doesn't change the status.</li>
+      </ol>
+      <b>The status cycle</b>
+      <ul>
+        <li><b>new</b> — nobody has looked at it yet.</li>
+        <li><b>in progress</b> — someone owns it or it's in the sprint (you set this when you start).</li>
+        <li><b>waiting on user</b> — ONLY when we've asked her for something. Talking to her doesn't change the status.</li>
+        <li><b>resolved</b> — fixed and tested, shipped in a version.</li>
+        <li><b>closed</b> — done: fixed <u>and</u> the user informed.</li>
+      </ul>
+      <b>Two closures, not one</b><br>
+      <b>Technical</b>: fixed and tested → mark "fix sent: yes". <b>With the user</b>: we tell her and she's happy. Once a fix is sent and she doesn't reply within 72 h, it appears in <span class="pcerr">✔ ready to close</span> in the daily email.<br><br>
+      <b>From report to code</b><br>
+      bug → 🗂 <a href="/hub/backlog-dev.html">Sprint Planning</a> (automatic, with its P) → you assign a <b>release</b> → 🚢 <a href="/hub/release-plan.html">Release Plan</a> → gets built → comes back here as "fix sent" → message to the user → closed.
+    </div>
+  </div>
+</div>
 
 </div>
 <script src="/assets/vendor/supabase.js"></script>
