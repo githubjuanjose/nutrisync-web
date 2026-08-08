@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>38 · Sesión r16 — El feedback aprende a triarse y el proyecto abre los libros</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.65}
+.w{max-width:860px;margin:0 auto;padding:30px 22px 90px}
+h1{font-size:24px;margin:0 0 6px}h2{font-size:17px;margin:28px 0 8px;color:#C73A20}
+p,li{font-size:14px}.meta{color:#8A7F78;font-size:12.5px;margin-bottom:18px}
+code{background:#F4F0EA;border-radius:5px;padding:1px 6px;font-size:12.5px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+th,td{padding:7px 9px;border-bottom:1px solid #EFE3D7;text-align:left;vertical-align:top}
+th{color:#8A7F78;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.tag{display:inline-block;font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#E8F5EE;color:#0F6E56;margin-right:5px}
+.box{background:#FFF8EF;border-left:3px solid #E8B072;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;margin:12px 0}
+.rojo{background:#FFF1EC;border-left:3px solid #E8472A}
+</style></head><body><div class="w">
+
+<h1>🗂 Sesión r16 — El feedback aprende a triarse y el proyecto abre los libros</h1>
+<div class="meta">7-8 de agosto de 2026 · web po168–po175 + wrangler directo (sello <code>0708-222909</code>) · Edge ampliada: <code>store-stats</code> (cosecha TestFlight) · SQL: feedback-v3 · release-plan · tf-feedback · libros-recibos-y-decisión-J5 · pestañas nuevas: 🗂 Backlog · 🚢 Releases · 🛡 Compliance (23 en total)</div>
+
+<h2>1 · Feedback v3 — bandeja, triage a 3 vías y capturas de verdad</h2>
+<ul>
+<li>💬 Feedback pasa de lista a <b>bandeja</b>: por defecto solo lo «sin clasificar». Cada entrada se tría a una de tres vías — <b>Incidencia</b> (crea/usa su NS-####), <b>Observación/mejora</b> o <b>Idea/propuesta</b> — y al triarse <b>desaparece de la bandeja</b> con un snackbar que dice a qué pestaña se fue. Nada de cambios silenciosos.</li>
+<li>Las incidencias FB1 se agrupan a diario y entran al backlog con prioridad mapeada (FB1→P0 · FB2→P1 · FB3→P2) vía <code>admin_ticket_to_backlog</code>.</li>
+<li><b>Capturas</b>: medido antes de tocar — la subida <i>nunca existió</i> (ni picker, ni bucket, ni columna). Ahora: bucket privado <code>feedback-shots</code> (RLS carpeta-propia), subida desde la app antes del insert, miniaturas con URL firmada en el hub. El módulo nativo viaja en el próximo build (0.21.1/0.22); el JS ya está listo y protegido con carga perezosa.</li>
+</ul>
+
+<h2>2 · Backlog de desarrollos (🗂) — no solo fixes</h2>
+<ul>
+<li>Tabla <code>dev_backlog</code>: tipo (fix · mejora · feature · capability), origen, prioridad P0-P3, sprint S12-S16/GA, estado, release. Alta rápida en la propia pestaña; tablero agrupado por sprint; 16 items sembrados el día uno (5 fixes ya <i>hecho 0.21</i> + wearables O1-O3, golden-set, D20, RevenueCat…).</li>
+</ul>
+
+<h2>3 · Release Plan (🚢) — qué va en cada build, con sus notas</h2>
+<ul>
+<li>Tabla <code>releases</code> como <b>fuente única</b> de las release notes ES/EN de las tiendas (📋 copiar · ✏️ editar). Estructura Release → Sprint → carriles 🐞 fix / 🔧 mejora / 🚀 capability. Cinco releases sembradas: 0.20.0 (en tiendas) · 0.21.0 (en review, con sus notas reales) · 0.21.1 (14-ago) · 0.22.0 (28-ago) · GA (8-oct).</li>
+</ul>
+
+<h2>4 · El feedback nativo de TestFlight ya es nuestro</h2>
+<ul>
+<li><code>store-stats</code> (06:30 UTC) ahora también cosecha <b>betaFeedbackScreenshotSubmissions</b> del App Store Connect: comentario + capturas + build + tester. Dedupe por <code>tf_asc_id</code>, capturas al bucket (<code>testflight/…</code>), fila en <code>feedback</code> con fuente 🍎 y ticket NS-#### automático (el trigger dejó de exigir user_id). Try/catch aislado: si Apple falla, la sincronización de testers no se cae.</li>
+</ul>
+
+<h2>5 · Piloto — dos altas y una puerta menos</h2>
+<ul>
+<li>Lucía López y Constanza (iPhone, venían de la waitlist) → flujo completo aprobar-lote → email de captura → TestFlight.</li>
+<li>El 💍 casar-cuentas admite <b>➕ nueva invitada</b> como primera opción del desplegable: alta y matrimonio en un gesto, sin salir de la página.</li>
+</ul>
+
+<h2>6 · Compliance (🛡) y los libros se estrenan</h2>
+<ul>
+<li><b>Pestaña nueva</b> con los 4 documentos confidenciales servidos SOLO tras el candado (<code>/hub/compliance-docs/</code>): propuesta Audidat, lista EIPD de la AEPD, Carta Acuerdo Intelectium y su roadmap de financiación.</li>
+<li><b>Audidat (Cumplimiento Normativo)</b>: DPD externo + consultoría RGPD/LOPDGDD por <b>1.500 €/año</b> — el gabinete que J1/J3 esperaban. Decisión <b>J5</b> abierta para founders (recomendación: aceptar; pedir en la firma el presupuesto de la EIPD, que va APARTE). Checklist EIPD contra los 11 criterios AEPD: <b>3 cumplidos YA</b> (perfilado · monitorización · datos de salud art. 9) + 2 futuros (wearables · IA) → <b>EIPD obligatoria y previa al 8-oct</b>.</li>
+<li><b>Intelectium (financiación pública)</b>: solo honorarios de éxito (ENISA 5,5→4,5% · CDTI/CAM 6,5→6,0% · subvención 9,0→8,5% · Cert. Emergente 950 €). Pendiente de <b>constitución de la SL</b> — hito del roadmap de comercialización. Avisos pre-firma: errata «Oryon technology» en el Alcance, exclusividad total, clawback 80/100%, vigencia indefinida (salida desde mes 12, preaviso 60 días).</li>
+<li><b>Primeros asientos reales del diario StartUp Admin</b>: 7 recibos jul-ago (Claude ×4, ChatGPT, Canva, iCloud) al <b>tipo BCE del día de cada cargo</b>, % de imputación r14, total <b>241,88 €</b> contra la cuenta nueva <code>2300 Socios, cuenta corriente</code>. La parte personal no entra. Hoja de costes: filas Audidat + Intelectium, run-rate con Audidat ≈ 435 €/mes.</li>
+</ul>
+<div class="box">Los recibos viven en TRES buzones: Gmail de Juanjo (Anthropic, Canva, Apple), <b>outlook</b> (GitHub, cuenta githubjuanjose) y el correo de <b>Pilar</b> (Supabase — la org es suya — e IONOS). Regla: solo se asienta lo que tiene recibo delante; lo demás queda PTE con nombre y buzón.</div>
+
+<h2>7 · La noche y la mañana</h2>
+<ul>
+<li>0.21.0 (iOS b7) quedó <b>en beta review</b> de Apple con los grupos externos; Play internal release 5 instalable.</li>
+<li>Crons nocturnos: 200s con un <b>502 puntual</b> en una pasada horaria — reintento automático a la siguiente, sin acción.</li>
+<li>La cosecha 🍎 (06:30 UTC) y el digest 📬 a founders@ (07:15 UTC) — que hoy estrena la J5 — se verifican en 💬/🎫 y en los buzones; su día a día vive en Operación, no en este doc.</li>
+</ul>
+
+<h2>8 · Lecciones que se quedan</h2>
+<ul>
+<li><b>El sello ns-build volvió a pagar la cena</b>: «no veo la pestaña» se resolvió con un curl — producción servía el build de anoche, no había nada roto. Ante «X no aparece»: primero el sello, después las hipótesis.</li>
+<li><b>La vía de emergencia wrangler quedó ratificada en combate</b> (deploys de Actions dormidos a medianoche): <code>cd</code> ABSOLUTO primero — lanzada desde <code>~</code> buscó <code>publish/</code> en casa (2ª reincidencia de la regla de rutas).</li>
+<li><b>Jamás inventar un importe</b>: GitHub/Supabase/Cloudflare sin recibo a la vista → PTE, no estimación. El diario solo come recibos reales.</li>
+</ul>
+
+</div></body></html>

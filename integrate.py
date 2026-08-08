@@ -1075,6 +1075,19 @@ if os.path.exists(bkpage):
     shutil.copy(bkpage, os.path.join(PUB, "hub", "backlog-dev.html"))
     print("- backlog-dev copied to hub/backlog-dev.html")
 
+# ns-compliance (r16, 8-ago): pestaña 🛡 Compliance — propuesta Audidat (DPD
+# 1.500 €/año), lista EIPD de la AEPD e Intelectium (financiación pública,
+# pendiente de constitución de la SL). Los PDF son CONFIDENCIALES: viven en
+# /hub/compliance-docs/ y por tanto detrás de Access + sesión admin.
+cppage = os.path.join(ASSETS, "compliance", "compliance.html")
+if os.path.exists(cppage):
+    shutil.copy(cppage, os.path.join(PUB, "hub", "compliance.html"))
+    _cdocs = os.path.join(ASSETS, "compliance", "docs")
+    if os.path.isdir(_cdocs):
+        shutil.copytree(_cdocs, os.path.join(PUB, "hub", "compliance-docs"),
+                        dirs_exist_ok=True)
+    print("- compliance page + confidential docs copied to hub/")
+
 fbpage = os.path.join(ASSETS, "feedback.html")
 if os.path.exists(fbpage):
     shutil.copy(fbpage, os.path.join(PUB, "hub", "feedback.html"))
