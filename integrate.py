@@ -1079,6 +1079,16 @@ if os.path.exists(bkpage):
 # 1.500 €/año), lista EIPD de la AEPD e Intelectium (financiación pública,
 # pendiente de constitución de la SL). Los PDF son CONFIDENCIALES: viven en
 # /hub/compliance-docs/ y por tanto detrás de Access + sesión admin.
+# ns-user-guide (r16-F16): la guía completa del ERP + el bloque «qué es esta
+# página» inyectado en TODAS las del hub. Un solo fichero alimenta a todas
+# (page-help.js), versionado por sha8 como manda r12-b11: un JS viejo en caché
+# contra un HTML nuevo es la peor avería posible (página a medias, sin error).
+_gdir = os.path.join(ASSETS, "guide")
+if os.path.isdir(_gdir):
+    shutil.copy(os.path.join(_gdir, "user-guide.html"),
+                os.path.join(PUB, "hub", "user-guide.html"))
+    print("- user-guide copiada a hub/user-guide.html")
+
 cppage = os.path.join(ASSETS, "compliance", "compliance.html")
 if os.path.exists(cppage):
     shutil.copy(cppage, os.path.join(PUB, "hub", "compliance.html"))
@@ -1904,3 +1914,32 @@ for _pg in ("index.html", "app.html"):
           '})();</script>')
         open(_pp, "w", encoding="utf-8").write(_ph.replace("</head>", _PB + "</head>", 1))
         print(f"- ns-pilot-banner en {_pg} (franja fija de fase de desarrollo)")
+
+# ns-page-help (r16-F16) — EL ÚLTIMO paso de las páginas del hub: el bloque
+# «¿qué es esta página?» se inyecta cuando ya se han copiado todas (si se hace
+# antes, la copia posterior de una página se lleva el <script> por delante —
+# lección aprendida al primer intento). Un solo fichero alimenta a las 23,
+# versionado por sha8 (r12-b11): JS viejo en caché + HTML nuevo = página muda.
+_gdir2 = os.path.join(ASSETS, "guide")
+if os.path.isdir(_gdir2):
+    import hashlib as _hh, glob as _gg
+    _hjs = open(os.path.join(_gdir2, "page-help.js"), encoding="utf-8").read()
+    _hsha = _hh.sha256(_hjs.encode("utf-8")).hexdigest()[:8]
+    os.makedirs(os.path.join(PUB, "hub", "assets"), exist_ok=True)
+    open(os.path.join(PUB, "hub", "assets", "page-help.js"), "w", encoding="utf-8").write(_hjs)
+    _tag = '<script src="/hub/assets/page-help.js?v=%s"></script>' % _hsha
+    _n = 0
+    for _hp in _gg.glob(os.path.join(PUB, "hub", "*.html")):
+        _bn = os.path.basename(_hp)
+        if _bn in ("index.html", "user-guide.html"):
+            continue
+        _s0 = open(_hp, encoding="utf-8").read()
+        _s = re.sub(r'<script src="/hub/assets/page-help\.js[^"]*"></script>', "", _s0)
+        _m = re.search(r"</body>", _s)
+        if not _m:
+            continue
+        _s = _s[:_m.start()] + _tag + _s[_m.start():]
+        if _s != _s0:
+            open(_hp, "w", encoding="utf-8").write(_s)
+            _n += 1
+    print("- ns-page-help: ayuda por pagina (page-help.js?v=%s) en %d paginas" % (_hsha, _n))
