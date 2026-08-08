@@ -298,7 +298,8 @@ function item(b){
     +'<span class="tp t-'+esc(b.tipo)+'">'+esc(b.tipo)+'</span>'
     +'<span class="tit">'+esc(b.titulo)+(esHoy?' <span class="hoyb">HOY</span>':'')
     +(b.notas?'<div class="orig">'+esc(b.notas)+'</div>':'')+'</span>'
-    +'<span class="orig">'+esc(b.origen||'')+(b.ticket_no?' · <b>'+esc(b.ticket_no)+'</b>':'')+'</span>'
+    /* r16-F11: el nº de ticket lleva a 🎫, donde vive la prueba (captura/log) */
+    +'<span class="orig">'+esc(b.origen||'')+(b.ticket_no?' · <a href="/hub/incidents.html" title="Ver la incidencia con su captura o crash log"><b>'+esc(b.ticket_no)+'</b> 📎</a>':'')+'</span>'
     +'<select class="mini" onchange="window.bkSet(\''+b.id+'\',{estado:this.value})">'
     +['propuesto','aceptado','en_curso','hecho','descartado'].map(function(x){return '<option value="'+x+'"'+(x===b.estado?' selected':'')+'>'+x.replace('_',' ')+'</option>';}).join('')+'</select>'
     +'<select class="mini" onchange="window.bkSet(\''+b.id+'\',{sprint:this.value})">'

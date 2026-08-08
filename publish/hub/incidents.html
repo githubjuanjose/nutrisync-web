@@ -394,7 +394,12 @@ function ticket(t){
     +' · '+fecha(t.feedback_at)+(t.assigned_to?' · 👤 '+esc(t.assigned_to.split('@')[0]):'')+'</span></div>';
 
   h+='<div class="body">'
-    +'<div class="orig"><b>Feedback original · '+esc(t.user_email)+'</b>'+esc(t.message)+'</div>'
+    +'<div class="orig"><b>Feedback original · '+esc(t.user_email)+'</b>'+esc(t.message)
+    /* r16-F11: la PRUEBA viaja con el ticket — captura o crash log completo */
+    +(t.screenshot_path?(t.screenshot_path.slice(-4)==='.txt'
+      ?'<div style="margin-top:8px"><a class="nsShotLog" data-shot="'+esc(t.screenshot_path)+'" target="_blank" rel="noopener" style="font-size:12.5px;font-weight:700;color:#C05621">📄 Crash log completo · full crash log</a></div>'
+      :'<div style="margin-top:8px"><img class="nsShot" data-shot="'+esc(t.screenshot_path)+'" alt="captura de la usuaria" style="max-width:190px;border-radius:9px;border:1px solid #EFE3D7;cursor:zoom-in" onclick="window.open(this.src)"></div>'):'')
+    +'</div>'
     +'<div class="grid"><div>'
     +'<div class="fld"><label>Estado</label><select class="edSt">'
     +['nuevo','en_curso','esperando_usuaria','resuelto','cerrado'].map(function(s){
@@ -453,6 +458,7 @@ function render(){
     if(!plegada)html+=g.map(ticket).join('');
   });
   $('lista').innerHTML=html||'<p class="meta">Nada con esos filtros.</p>';
+  nsPintaPruebas();
   $('count').textContent=rows.length+' de '+(D.tickets||[]).length;
   var k=window.NSINC.resumen(D.tickets||[],Date.now());
   var r=D.resumen||{};
@@ -499,6 +505,19 @@ window.nsToggle=function(id){ABIERTOS[id]=!ABIERTOS[id];
   var el=document.querySelector('.t[data-id="'+id+'"]');if(el)el.classList.toggle('open');};
 
 function tEl(id,cls){return document.querySelector('.t[data-id="'+id+'"] .'+cls);}
+
+/* r16-F11: el bucket feedback-shots es privado — cada prueba se pinta con una
+   URL firmada de 1 h (mismo patrón que 💬 Feedback). */
+function nsPintaPruebas(){
+  document.querySelectorAll('img.nsShot[data-shot]').forEach(function(img){
+    sb.storage.from('feedback-shots').createSignedUrl(img.dataset.shot,3600).then(function(r){
+      if(r.data&&r.data.signedUrl){img.src=r.data.signedUrl;img.removeAttribute('data-shot');}});
+  });
+  document.querySelectorAll('a.nsShotLog[data-shot]').forEach(function(a){
+    sb.storage.from('feedback-shots').createSignedUrl(a.dataset.shot,3600).then(function(r){
+      if(r.data&&r.data.signedUrl){a.href=r.data.signedUrl;a.removeAttribute('data-shot');}});
+  });
+}
 
 // r16-F6 (regla Juanjo): guardar un lado NUNCA borra el otro — cada botón
 // persiste AMBOS. El seguimiento arrastra el borrador de respuesta si cambió.
