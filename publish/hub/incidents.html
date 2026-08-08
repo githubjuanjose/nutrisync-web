@@ -49,7 +49,7 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
 .escal{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#FDE68A;color:#92400E}
 .tit{font-weight:800;font-size:13px}
 .fb{font-size:10.5px;font-weight:900;border-radius:7px;padding:2px 8px;letter-spacing:.3px}
-.fb1{background:#C73A20;color:#fff}.fb2{background:#FFB020;color:#5B3A00}.fb3{background:#E7E2DC;color:#5F564F}
+.fb1,.p0{background:#C73A20;color:#fff}.fb2,.p1{background:#FFB020;color:#5B3A00}.fb3,.p2{background:#E7E2DC;color:#5F564F}.fb4,.p3{background:#F4F0EA;color:#8A7F78}
 .cat{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#F1EAE2;color:#6E655D}
 .pcerr{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#DCFCE7;color:#166534;border:1px dashed #16A34A}
 .fixchip{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#EDE9FE;color:#5B21B6}
@@ -278,10 +278,35 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
 quién lo lleva, y se responde a la usuaria — <b>la respuesta le llega dentro de su app</b>.
 Nada se guarda hasta que pulsas un botón de guardar.</p>
 
-<div class="leyfb"><b>FB = Feature Bug.</b> <span class="fb fb1">FB1</span> crítico: rompe la promesa o bloquea el uso → fix ≤48 h / próxima OTA ·
-<span class="fb fb2">FB2</span> importante: degradado con rodeo → siguiente versión ·
-<span class="fb fb3">FB3</span> menor / mejora → backlog priorizado.
-El ciclo de cierre: fix enviado → <i>esperando a la usuaria</i> → sin respuesta en 72 h aparece <span class="pcerr">✔ para cerrar</span> y una founder la cierra.</div>
+<!-- r16-F12: UNA escala (la misma que Sprint Planning) + SOP corto. Plegable:
+     quien ya lo sabe no lo sufre, quien llega nuevo lo tiene a un clic. -->
+<div class="leyfb">
+<b>Prioridad — la misma que en 🗂 Sprint Planning:</b>
+<span class="fb fb1">P0</span> la app se rompe (crash) o algo básico no funciona · <b>este sprint</b> ·
+<span class="fb fb2">P1</span> funciona mal o da datos incorrectos, pero se puede seguir usando · <b>siguiente versión</b> ·
+<span class="fb fb3">P2</span> molesta o confunde, no impide usar la app · <b>cuando toque</b> ·
+<span class="fb fb4">P3</span> detalle menor o estético · <b>si sobra tiempo</b>.
+<a href="#" onclick="var s=document.getElementById('nsSop');s.style.display=s.style.display==='none'?'block':'none';return false;" style="margin-left:6px;font-weight:700">¿cómo se rellena? ▾</a>
+<div id="nsSop" style="display:none;margin-top:10px;padding-top:10px;border-top:1px dashed #EADFD0;line-height:1.7">
+  <b>Cómo se rellena una ficha (2 minutos)</b><br>
+  1 · <b>Título breve</b> — cómo la llamamos entre nosotros («crash al abrir Body Insights»).<br>
+  2 · <b>Categoría</b> — bug (algo falla) · mejora · consulta · datos.<br>
+  3 · <b>Prioridad</b> — P0-P3 según la tabla de arriba. Si es bug, entra sola en 🗂 con esa prioridad.<br>
+  4 · <b>Responsable</b> — quién la lleva.<br>
+  5 · <b>Acción interna</b> — qué vamos a hacer (esto NO lo ve la usuaria).<br>
+  6 · <b>Mensaje a la usuaria</b> — opcional; se envía cuando quieras, no cambia el estado.<br>
+  <br>
+  <b>El ciclo de estados</b><br>
+  <b>nuevo</b> → nadie la ha mirado todavía.<br>
+  <b>en curso</b> → alguien la lleva o está en el sprint. <i>Ponlo tú al empezar.</i><br>
+  <b>esperando a la usuaria</b> → SOLO cuando le hemos pedido algo (más datos, o confirmar que ya funciona). Hablar con ella no cambia el estado.<br>
+  <b>resuelto</b> → arreglado y probado, fix enviado en una versión.<br>
+  <b>cerrado</b> → terminado: técnicamente arreglado <u>y</u> la usuaria informada.<br>
+  <br>
+  <b>Dos cierres, no uno</b> — el <i>técnico</i> (arreglado y probado → marca «fix enviado: sí») y el <i>de la usuaria</i> (le contamos y lo da por bueno). Cuando hay fix enviado y no contesta en 72 h, sale en <span class="pcerr">✔ para cerrar</span> del correo diario y se cierra.<br>
+  <br>
+  <b>Y de aquí al desarrollo</b>: bug → 🗂 Sprint Planning (automático, con su P) → le asignas una <b>release</b> → aparece en 🚢 Release Plan → se construye → vuelve aquí como «fix enviado».
+</div></div>
 <div class="kpis" id="kpis"></div>
 <div class="filtros">
   <select id="fSt"><option value="">estado: todos</option>
@@ -408,8 +433,8 @@ function ticket(t){
     +'<div class="fld"><label>Título breve (cómo la llamamos nosotros)</label><input type="text" class="edTi" value="'+esc(t.titulo||'')+'" placeholder="p. ej.: sin predicción + períodos fantasma"></div>'
     +'<div class="fld" style="display:flex;gap:8px"><div style="flex:1"><label>Categoría</label><select class="edCa">'
     +['','bug','mejora','consulta','datos'].map(function(c){return '<option value="'+c+'"'+(c===(t.categoria||'')?' selected':'')+'>'+(c||'—')+'</option>';}).join('')
-    +'</select></div><div style="flex:1"><label>Criticidad</label><select class="edCr">'
-    +['','FB1','FB2','FB3'].map(function(c){return '<option value="'+c+'"'+(c===(t.criticidad||'')?' selected':'')+'>'+(c||'—')+'</option>';}).join('')
+    +'</select></div><div style="flex:1"><label>Prioridad (P0-P3)</label><select class="edCr">'
+    +['','P0','P1','P2','P3'].map(function(c){return '<option value="'+c+'"'+(c===(t.criticidad||'')?' selected':'')+'>'+(c||'—')+'</option>';}).join('')
     +'</select></div><div style="flex:1"><label>Fix enviado</label><select class="edFx"><option value=""'+(!t.fix_enviado_at?' selected':'')+'>no</option><option value="1"'+(t.fix_enviado_at?' selected':'')+'>sí</option></select></div></div>'
     +'<div class="fld"><label>Responsable</label><select class="edAs"><option value="">—</option>'
     +ASIGNABLES.map(function(a2){return '<option value="'+a2+'"'+(a2===(t.assigned_to||'')?' selected':'')+'>'+a2.split('@')[0]+'</option>';}).join('')
