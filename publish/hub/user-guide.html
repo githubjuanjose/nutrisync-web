@@ -25,7 +25,12 @@ td{border-bottom:1px solid #F4EEE6;padding:6px 8px;vertical-align:top}
 .idx a:hover{border-color:#F3C8B8;background:#FFF6F2}
 .tip{background:#FFF8EF;border-left:3px solid #E8B072;border-radius:0 8px 8px 0;padding:9px 13px;font-size:12.7px;margin:8px 0}
 a{color:#C05621}
-.l-en{display:none}          /* r14e: el idioma lo manda el conmutador 🌐 del hub */
+/* r16-F17 (lección: la guía salió EN BLANCO con el switch en EN) — el idioma
+   lo decide una CLASE en <html>, no el JS elemento a elemento. Sin JS, o si
+   algo falla, SIEMPRE se ve el español: una página nunca puede quedar vacía
+   (regla r12-b9). El JS solo pone o quita la clase. */
+html:not(.ns-en) .l-en{display:none}
+html.ns-en .l-es{display:none}
 </style></head><body><!-- ns-hub-navbar -->
 <div id="ns-hub-navbar">
 <style>
@@ -407,14 +412,15 @@ a{color:#C05621}
 
 </div>
 <script>
-/* r14e: el idioma lo manda el conmutador 🌐 de la barra (localStorage ns_lang
-   + evento ns-lang). Aquí solo se muestra el bloque del idioma elegido. */
+/* r14e + r16-F17: el idioma lo manda el conmutador 🌐 de la barra (ns_lang +
+   evento ns-lang). Aquí solo se pone/quita UNA clase en <html>; el CSS hace el
+   resto. Si este script no llega a correr, la página se ve en español — nunca
+   vacía. */
 (function(){
   function pinta(){
     var en = (localStorage.getItem('ns_lang')||'ES').toUpperCase()==='EN';
-    document.querySelectorAll('.l-es').forEach(function(x){x.style.display=en?'none':'';});
-    document.querySelectorAll('.l-en').forEach(function(x){x.style.display=en?'':'none';});
-    document.documentElement.lang = en?'en':'es';
+    document.documentElement.classList.toggle('ns-en', en);
+    document.documentElement.lang = en ? 'en' : 'es';
   }
   pinta();
   window.addEventListener('ns-lang', pinta);
