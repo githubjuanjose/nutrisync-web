@@ -133,14 +133,19 @@ th{color:#8A7F78;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
      ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
      (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
      al hacer clic, sin esperar a que cargue la página siguiente. */
-  var here=(location.pathname.split('/').pop()||'').toLowerCase();
+  /* r16c (cazado POR JUANJO con el flash del clic): Cloudflare Pages sirve
+     URLs LIMPIAS — /hub/incidents.html se visita como /hub/incidents — así
+     que comparar con ".html" no casaba JAMÁS en carga de página. Se normaliza
+     quitando la extensión en LOS DOS lados. */
+  function nsLimpia(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';}
+  var here=nsLimpia(location.pathname.split('/').pop());
   var dir=location.pathname.toLowerCase();
   /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
      texto blanco. Antes era un matiz; ahora es un semáforo. */
   var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
   function isHere(a){
     var f=(a.getAttribute('href')||'').toLowerCase();
-    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : f.split('/').pop()===here;
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : nsLimpia(f.split('/').pop())===here;
   }
   function paint(a,on){
     a.classList.toggle('on',!!on);
@@ -243,11 +248,13 @@ th{color:#8A7F78;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
 (function(){
   function marca(){
     try{
-      var here=(location.pathname.split('/').pop()||'index.html').toLowerCase();
+      /* r16c: Pages sirve URLs sin .html — normalizar ambos lados */
+      var lim=function(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';};
+      var here=lim(location.pathname.split('/').pop());
       var esDoc=location.pathname.toLowerCase().indexOf('/documentation/')>-1;
       document.querySelectorAll('#ns-hub-navbar .nsnb-tab').forEach(function(a){
         var f=(a.getAttribute('href')||'').toLowerCase();
-        var on=esDoc ? f.indexOf('/documentation/')>-1 : f.split('/').pop()===here;
+        var on=esDoc ? f.indexOf('/documentation/')>-1 : lim(f.split('/').pop())===here;
         a.classList.toggle('on',on);
       });
     }catch(e){}
