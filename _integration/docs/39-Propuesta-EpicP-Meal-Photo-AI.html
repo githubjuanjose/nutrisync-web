@@ -1,0 +1,138 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>39 · Epic P — Meal Photo AI: la comida entra por la cámara</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.65}
+.w{max-width:880px;margin:0 auto;padding:30px 22px 90px}
+h1{font-size:24px;margin:0 0 6px}h2{font-size:17px;margin:28px 0 8px;color:#C73A20}h3{font-size:14px;margin:16px 0 5px}
+p,li{font-size:14px}.meta{color:#8A7F78;font-size:12.5px;margin-bottom:18px}
+code{background:#F4F0EA;border-radius:5px;padding:1px 6px;font-size:12.5px}
+pre{background:#241D1A;color:#F5EFE7;border-radius:10px;padding:14px 16px;font-size:12px;line-height:1.55;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+th,td{padding:7px 9px;border-bottom:1px solid #EFE3D7;text-align:left;vertical-align:top}
+th{color:#8A7F78;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.tag{display:inline-block;font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#E8F5EE;color:#0F6E56;margin-right:5px}
+.box{background:#FFF8EF;border-left:3px solid #E8B072;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;margin:12px 0}
+.rojo{background:#FFF1EC;border-left:3px solid #E8472A}
+.quote{font-size:14.5px;font-weight:700;background:#241D1A;color:#FFF6F2;border-radius:12px;padding:14px 18px;margin:12px 0;line-height:1.5}
+</style></head><body><div class="w">
+
+<h1>📸 Epic P — Meal Photo AI: la comida entra por la cámara</h1>
+<div class="meta">Propuesta 39 · 9 de agosto de 2026 · decisión Juanjo: <b>entra en la 0.22</b> («yes, 22!») · game changer, no mejora incremental · nace del feedback del piloto (NS-0033 💡) y del análisis competitivo v1.1 (pestaña 🥊)</div>
+
+<div class="quote">Foto → borrador creíble → corregir en uno o dos toques → dato nutricional estructurado. Y a partir de ahí, lo estratégico: aprender qué patrones funcionan para CADA usuaria a lo largo de sus ciclos.</div>
+
+<h2>1 · Por qué es EL epic (y por qué ahora)</h2>
+<ul>
+<li>El registro manual de comidas es la fricción nº 1 de cualquier app de nutrición. La foto la elimina.</li>
+<li>La competencia ya lo hace (28 desde julio, Aluna) — <b>reconocer el plato es commodity</b>. Nuestro hueco: convertir cada comida en dato estructurado y consciente del ciclo, y aprender del bucle recomendar → hacer → responder (informe v1.1, pestaña 🥊).</li>
+<li>El dato de CORRECCIÓN de la usuaria («era pollo, no atún») es el activo que nadie puede comprar.</li>
+</ul>
+
+<h2>2 · Reparto (quién trae qué)</h2>
+<table>
+<tr><th>Quién</th><th>Trae</th></tr>
+<tr><td><b>Lucía</b></td><td>Screenflows y diseños: captura, «analizando…», pantalla de confirmación/corrección (borrador, no veredicto), diario visual.</td></tr>
+<tr><td><b>Pilar</b></td><td>Deontología del mapeo foto→nutrientes: qué se estima, cómo se comunica la incertidumbre, qué NUNCA se afirma (nada clínico), reglas de porciones y rangos.</td></tr>
+<tr><td><b>Engineering</b></td><td>Toda la lógica: captura, Edge Function de análisis, casado con base nutricional (USDA ya con clave ✔ · EuroFIR pendiente de alta), cálculo determinista, patrones.</td></tr>
+</table>
+
+<h2>3 · Arquitectura — el stack que ya tenemos, sin piezas nuevas</h2>
+<p>Cero servidores nuevos (principio rector). Todo Supabase + React Native + un proveedor de visión:</p>
+<pre>App RN (Expo)
+  ├─ foto → redimensionar 1024px JPEG (compress .75, SIN EXIF)
+  ├─ subir a Storage PRIVADO  meal-images/{user_id}/{meal_id}.jpg
+  └─ crear meal_log (status: uploading → queued)
+        ▼
+Edge Function analyse-meal
+  ├─ verificar sesión de la usuaria (y que el meal es SUYO)
+  ├─ descargar imagen privada → base64
+  ├─ visión IA → JSON ESTRICTO (json_schema, strict:true)
+  ├─ casar alimentos contra canonical_foods (USDA/EuroFIR)
+  ├─ macros DETERMINISTAS: per100g × gramos ÷ 100  ← jamás el LLM
+  └─ guardar borrador (status: needs_review)
+        ▼
+Pantalla de confirmación (borrador, no hecho)
+  ├─ «La IA detectó esto» + confianza
+  ├─ corrige porciones/ingredientes → meal_edits (ORO)
+  └─ confirmar (status: confirmed)
+        ▼
+Motor de patrones (SQL primero, LLM solo EXPLICA después)
+  └─ grupos + macros + fase + síntomas + energía + sueño + ejercicio</pre>
+
+<h3>Modelos y enrutado</h3>
+<table>
+<tr><th>Caso</th><th>Modelo</th></tr>
+<tr><td>Comida normal (volumen alto)</td><td><code>gpt-5.6-luna</code> (visión, Responses API, salida JSON estricta)</td></tr>
+<tr><td>Confianza &lt; 0.65 · platos mixtos · salsas · etiquetas/menús</td><td>reintento con <code>gpt-5.6-terra</code></td></tr>
+<tr><td>Sigue dudoso</td><td>UNA pregunta simple a la usuaria: «¿era pollo o atún?»</td></tr>
+</table>
+<div class="box">Encaje con el Epic N (Propuesta 32): mismo régimen — router reversible, golden-set propio (fotos de comidas reales del piloto con corrección como etiqueta), <b>cero PII en prompts</b>: a la visión viaja SOLO la imagen, jamás el historial de ciclo o salud. El proveedor de visión es una elección revisable, no un matrimonio.</div>
+
+<h2>4 · Las reglas que no se negocian</h2>
+<ul>
+<li><b>El formulario manual NUNCA desaparece</b> (requisito Juanjo, 9-ago). «Log Today's Meal» ofrece SIEMPRE dos caminos: 📸 <b>foto con IA</b> (el nuevo) y ✍️ <b>apuntarlo a mano</b> (el sencillo de hoy) — como fallback permanente: sin cámara, sin cobertura, IA caída, o simplemente porque ella prefiera teclear. Ambos acaban en el MISMO databed (<code>meal_captures.origen = 'foto' | 'manual'</code>); mientras el flujo IA madura, el manual sigue escribiendo donde siempre (<code>meal_logs</code>) sin tocarse. La IA profesionaliza el NutriLog; no le quita la puerta simple.</li>
+<li><b>El LLM identifica, la base de datos calcula.</b> La IA dice «yogur griego, ~180 g, confianza 0.89»; los macros salen de <code>canonical_foods</code> (USDA per-100g × gramos). Nada de calorías inventadas con tres decimales.</li>
+<li><b>Nutrientes ≠ grupos de alimentos</b> — dos capas separadas (proteína/hidratos/grasa/fibra vs legumbres/cereales/verduras/lácteos…). Una comida pertenece a varios grupos.</li>
+<li><b>Borrador, no veredicto:</b> todo se presenta como estimación con confianza visible y corrección en un toque. Rangos, no falsa precisión. Cero decisiones clínicas.</li>
+<li><b>La corrección se guarda separada</b> de la estimación original (<code>meal_edits</code>: before/after) — es el dataset de entrenamiento futuro. No se afina ningún modelo hasta acumular corrección limpia.</li>
+<li><b>Imágenes:</b> análisis a 1024px JPEG temporal → miniatura 256-384px WebP/JPEG con consentimiento → el grande se borra salvo que ella elija conservar su diario visual. EXIF y localización fuera. Bucket privado, URLs firmadas cortas, borrado explícito en sus manos.</li>
+<li><b>Claves solo en el backend</b> (Edge secrets): OpenAI, USDA, EuroFIR. Jamás en la app.</li>
+<li><b>Patrones por SQL primero</b>; el LLM recibe la evidencia calculada y solo la explica («asociación en tus propios datos, no causa»). Comparación contra SU historia, no contra una dieta ideal.</li>
+</ul>
+
+<h2>5 · Modelo de datos (resumen — SQL completo en el anexo del chat de ingeniería)</h2>
+<table>
+<tr><th>Tabla</th><th>Qué guarda</th></tr>
+<tr><td><code>meal_logs</code></td><td>La comida: tipo, imagen, status (uploading→queued→processing→needs_review→confirmed→failed), modelo/prompt/confianza IA, macros confirmados, snapshot de fase y día de ciclo, raw JSON de auditoría.</td></tr>
+<tr><td><code>meal_items</code></td><td>Cada alimento detectado: nombre, casado canónico (fuente+id), gramos estimados (con rango bajo/alto), confianza, preparación, macros calculados, grupos[], ingredientes visibles y ocultos posibles, confirmado o no.</td></tr>
+<tr><td><code>meal_edits</code></td><td>Cada corrección de la usuaria: before/after JSON + motivo. El oro.</td></tr>
+<tr><td><code>canonical_foods</code></td><td>La base nutricional propia: fuente (USDA/EuroFIR/OFF/propia), per-100g de energía/proteína/hidratos/grasa/fibra, aliases multiidioma (pgvector después), payload de origen. <b>Cambiar de fuente no rompe la app.</b></td></tr>
+</table>
+<p>RLS en todo (cada usuaria solo lo suyo), bucket <code>meal-images</code> privado con carpeta por usuaria — el mismo patrón que feedback-shots.</p>
+
+<h2>6 · Fuentes nutricionales</h2>
+<table>
+<tr><th>Fuente</th><th>Para</th><th>Estado</th></tr>
+<tr><td><b>USDA FoodData Central</b></td><td>Ingredientes y alimentos genéricos</td><td><span class="tag">CLAVE ACTIVA 9-ago</span> gratuita, en Edge secrets</td></tr>
+<tr><td><b>EuroFIR AISBL</b></td><td>Alimentos europeos/españoles (pan, legumbres, quesos, platos locales)</td><td>Alta de membresía pendiente → pedir cuota → 🗳 Decisiones. <b>Muestra ES ya en casa</b>: <code>inputs/2026-08-09-EuroFIR-ES-sample.xlsx</code> (2.456 filas de alimentos españoles con nombre original/inglés, grupo y FoodExplorer ID — el formato exacto que casará con <code>canonical_foods</code>)</td></tr>
+<tr><td>Open Food Facts</td><td>Envasados y códigos de barras (después)</td><td>Comunidad → con flag de calidad de dato</td></tr>
+<tr><td>Recetario propio verificado</td><td>Platos NutriSync de expertas</td><td>Con la capa experta (Incremento 4)</td></tr>
+</table>
+
+<h2>6b · El databed ya existe (9-ago tarde)</h2>
+<div class="box">
+<b>Hecho el mismo día:</b> los 5 datasets oficiales de USDA descargados a <code>datasets/usda/</code> (Foundation · SR Legacy · FNDDS · Branded · full CSV + el PDF de definiciones de campos, con README de cadencias y avisos), la migración completa del modelo (<code>2026-08-09-epic-p-databed.sql</code>: meal_logs con <code>origen foto|manual</code> para compatibilidad con el formulario manual de hoy, meal_items, meal_edits, canonical_foods agnóstica de fuente, RLS y bucket privado) y el primer seed real: <b>363 Foundation Foods con macros analíticos per-100g</b> vía <code>tools/usda-import-foundation.mjs</code> (re-ejecutable en cada release semestral de USDA). Estrategia de fuentes: Foundation sembrado entero · Branded (3 GB) por API bajo demanda con caché · FNDDS para porciones estándar · EuroFIR al llegar la membresía (muestra ES ya en inputs/).
+</div>
+
+<h2>7 · Los 5 incrementos y dónde caen</h2>
+<table>
+<tr><th>#</th><th>Incremento</th><th>Entrega</th><th>Release</th></tr>
+<tr><td>P1</td><td><b>Borrador de comida por IA</b>: foto → detección + ingredientes + grupos + confirmación. (Cámara = dependencia nativa → build)</td><td>📦 nativo</td><td><b>0.22</b></td></tr>
+<tr><td>P2</td><td><b>Cálculo nutricional</b>: casado canónico USDA + porciones + macros/fibra deterministas</td><td>🔄 OTA sobre 0.22</td><td>0.22.x</td></tr>
+<tr><td>P3</td><td><b>Patrones</b>: agregados semanales y por ciclo, observaciones personales, dashboard</td><td>🔄 OTA</td><td>0.22.x / 0.23</td></tr>
+<tr><td>P4</td><td><b>Propuestas expertas</b>: fichas de nutricionistas gobernadas, filtros duros, ranking, registro de aceptación</td><td>📦 + backend</td><td>0.23</td></tr>
+<tr><td>P5</td><td><b>Capa comunidad</b>: recetas moderadas, matching, popularidad y respuesta personal</td><td>backend</td><td>0.23 / GA</td></tr>
+</table>
+<div class="box rojo"><b>Realismo de calendario:</b> la 0.22 es el build nativo del miércoles. El Incremento P1 entra si Lucía trae los screenflows a tiempo y el piloto lo prueba como BETA (flag por cohorte). P2+ viajan por OTA encima — esa es la gracia de haber separado la cámara (nativa) del cerebro (Edge Functions).</div>
+
+<h2>8 · Qué mide el éxito (piloto)</h2>
+<ul>
+<li>% de fotos que producen borrador útil (is_food + ≥1 item correcto) — objetivo &gt;80%</li>
+<li>% de comidas confirmadas sin corrección — el 72% de referencia del informe</li>
+<li>Tiempo foto→confirmación &lt; 20 segundos</li>
+<li>Correcciones/semana (el dataset creciendo) y comidas/usuaria/día (adopción real)</li>
+</ul>
+
+<h2>9 · Encaje en los planes</h2>
+<ul>
+<li><b>🗂 Sprint Planning:</b> el epic entra como P·Increments con release asignada (SQL 2026-08-09).</li>
+<li><b>🥊 Competencia:</b> es la respuesta al «commodity» — la sección 5 del informe es la especificación funcional de este epic.</li>
+<li><b>Epic N (Propuesta 32):</b> comparte router, golden-set y regla cero-PII. Este epic APORTA el mejor golden-set posible: fotos reales + correcciones reales del piloto.</li>
+<li><b>Wearables (Epic O):</b> el ejercicio NO va por foto — jerarquía: Health/wearables → un toque → voz → foto de pantalla como último recurso.</li>
+<li><b>Compliance:</b> imágenes = dato personal; el flujo de retención/borrado entra en el RAT y la EIPD con Audidat (J5).</li>
+</ul>
+
+<div class="meta">Anexo técnico completo (SQL de tablas + RLS + Edge Function analyse-meal + captureMeal.ts) archivado en el chat de ingeniería del 9-ago y listo para arrancar el Incremento P1 cuando lleguen los screenflows.</div>
+
+</div></body></html>

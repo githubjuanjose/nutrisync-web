@@ -231,7 +231,36 @@ html.ns-en .l-es{display:none}
   <b>And the style rule:</b> always “not publicly evidenced”, never “they don’t have it”.</span>
 </div>
 
-<h2><span class="l-es">7 · Qué hacemos con esto</span><span class="l-en">7 · What we do with this</span></h2>
+<!-- ══════ FUENTES NUTRICIONALES ══════ -->
+<h2><span class="l-es">7 · Las fuentes de datos nutricionales <span class="pill new">decidido 9-ago</span></span><span class="l-en">7 · Nutritional data sources <span class="pill new">decided 9 Aug</span></span></h2>
+<div class="card">
+  <span class="l-es">Reconocer la comida es la mitad; la otra mitad es <b>de dónde salen los valores nutricionales</b>. Inventarlos no es opción, así que vamos con dos fuentes autorizadas:</span>
+  <span class="l-en">Recognising the meal is half of it; the other half is <b>where the nutritional values come from</b>. Inventing them isn’t an option, so we go with two authoritative sources:</span>
+  <div class="cols" style="margin-top:10px">
+    <div class="card" style="margin:0">
+      <b>1 · USDA FoodData Central</b> <span class="pill">gratis / free</span><br>
+      <span class="l-es">API pública con clave. <b>Empezamos por aquí.</b> Casa alimentos e ingredientes confirmados por la usuaria con registros autorizados y devuelve energía, proteína, hidratos, grasa, fibra, vitaminas y minerales.</span>
+      <span class="l-en">Public API with a key. <b>We start here.</b> Matches user-confirmed foods and ingredients to authoritative records and returns energy, protein, carbs, fat, fibre, vitamins and minerals.</span>
+      <div style="margin-top:6px"><a href="https://fdc.nal.usda.gov/api-key-signup" target="_blank" rel="noopener">fdc.nal.usda.gov →</a></div>
+    </div>
+    <div class="card" style="margin:0">
+      <b>2 · EuroFIR AISBL</b> <span class="pill" style="background:#FFF1EC;color:#C73A20">membresía / membership</span><br>
+      <span class="l-es">Composición de alimentos <b>europeos</b>: pan, legumbres, quesos y platos locales que la USDA no representa bien. Sin esto, las estimaciones en España pierden credibilidad. Requiere alta de pago → pedir cuota y llevarla a 🗳 Decisiones.</span>
+      <span class="l-en">Food composition for <b>European</b> foods: bread, legumes, cheeses and local dishes the USDA doesn’t represent well. Without it, estimates in Spain lose credibility. Paid membership → request the fee and take it to 🗳 Decisions.</span>
+      <div style="margin-top:6px"><a href="https://www.eurofir.org/why-join-eurofir-aisbl/new-membership/" target="_blank" rel="noopener">eurofir.org · new membership →</a></div>
+    </div>
+  </div>
+</div>
+
+<div class="tip"><span class="l-es"><b>Reglas de arquitectura</b> (van en el diseño, no en la letra pequeña): las llamadas salen del <b>backend</b> (Edge Functions de Supabase), <u>nunca</u> desde el móvil · <b>cero</b> datos personales o de salud viajan a USDA · se respetan los límites de uso · se conserva la atribución de la fuente · todo valor se muestra como <b>estimación</b>, nunca como consejo médico.</span><span class="l-en"><b>Architecture rules</b> (design, not fine print): calls are made from the <b>backend</b> (Supabase Edge Functions), <u>never</u> from the mobile apps · <b>zero</b> personal or health data goes to USDA · usage limits respected · source attribution retained · every value shown as an <b>estimate</b>, never as medical advice.</span></div>
+
+<h3><span class="l-es">Texto para la solicitud de la API (USDA) — listo para pegar</span><span class="l-en">USDA API application text — ready to paste</span></h3>
+<div class="card" style="background:#FBF6EF">
+  <div id="usda" style="font-size:12.6px;line-height:1.62;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap">We are developing NutriSync, a mobile nutrition and women's health application currently in pilot testing. We will use the FoodData Central APIs to match user-confirmed foods and ingredients to authoritative food records and retrieve nutritional values such as energy, protein, carbohydrates, fat, fibre, vitamins, and minerals. These values will be combined with estimated or user-confirmed portion sizes to create approximate meal logs and identify nutrition patterns over time. API requests will be made securely from our Supabase backend rather than directly from the mobile applications. We will not send personal, health, or identifiable user data to USDA. We will respect API usage limits, retain source attribution, and clearly label nutritional calculations as estimates rather than medical advice.</div>
+  <button onclick="navigator.clipboard.writeText(document.getElementById('usda').textContent).then(function(){var b=event.target;b.textContent='✓ copiado';setTimeout(function(){b.textContent='📋 copiar texto';},1800);})" style="margin-top:9px;font-family:inherit;font-weight:700;font-size:12.5px;border-radius:18px;padding:7px 14px;border:1px solid #EFE3D7;background:#fff;cursor:pointer">📋 copiar texto</button>
+</div>
+
+<h2><span class="l-es">8 · Qué hacemos con esto</span><span class="l-en">8 · What we do with this</span></h2>
 <div class="card">
   <span class="l-es">Tres capacidades nuevas para el backlog (🗂 Sprint Planning), todas post-GA salvo decisión contraria:
   <ul><li><b>Registro multimodal diario</b> — foto de comida + voz + importación de wearables.</li>
