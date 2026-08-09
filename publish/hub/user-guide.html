@@ -367,7 +367,7 @@ html.ns-en .l-es{display:none}
   <li><b>Owner</b> — who’s on it.</li>
   <li><b>Internal action</b> — what we’re going to do (the user never sees it).</li>
   <li><b>Message to the user</b> — optional; send it whenever, it doesn’t change the status.</li></ol>
-  <b>Statuses:</b> <b>new</b> (nobody looked yet) → <b>in progress</b> (someone owns it) → <b>waiting on user</b> (only if we asked her something) → <b>resolved</b> (fixed and shipped) → <b>closed</b> (fixed and she knows).<br>
+  <b>Statuses:</b> <b>new</b> (nobody looked yet) → <b>in progress</b> (someone owns it) → <b>waiting on user</b> (only if we asked her something) → <b>resolved</b> (fixed and shipped) → <b>closed</b> (fixed and she knows — auto-closes 5 days after resolved or when a release ships).<br>
   <b>Two closures:</b> technical (“fix sent: yes”) and with the user (we tell her, she’s happy). Fix sent and no reply in 72 h → it shows in ✔ ready to close in the daily email.</span>
 </div>
 
