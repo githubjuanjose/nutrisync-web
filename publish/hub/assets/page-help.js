@@ -27,6 +27,13 @@
           'The investor-facing case: market, model, scenarios, team and data room.'],
       c: ['Cada descarga del data room queda registrada.', 'Every data-room download is logged.']
     },
+    'competitive.html': {
+      t: ['🥊 Competencia · quién hace ya qué', '🥊 Competitive · who already does what'],
+      q: ['El informe v1.1: matrices de capacidades, el update de registro de comidas por IA (28 y Aluna) y el hueco que queda libre.',
+          'The v1.1 report: capability matrices, the AI meal-logging update (28 and Aluna) and the remaining whitespace.'],
+      c: ['Regla de estilo: siempre «sin evidencia pública», nunca «no lo tienen».',
+          'Style rule: always “not publicly evidenced”, never “they don’t have it”.']
+    },
     'launch-plan.html': {
       t: ['🗺 Plan 8-oct · el camino al lanzamiento', '🗺 Launch plan · road to 8-Oct'],
       q: ['Los hitos hasta el lanzamiento y las dependencias que bloquean a las demás.',

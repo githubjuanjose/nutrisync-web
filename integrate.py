@@ -1089,6 +1089,19 @@ if os.path.isdir(_gdir):
                 os.path.join(PUB, "hub", "user-guide.html"))
     print("- user-guide copiada a hub/user-guide.html")
 
+# ns-competitive (r16-F19, 9-ago): pestaña 🥊 Competitive Landscape — informe
+# v1.1 con el update de registro de comidas por IA (28 y Aluna), las tres
+# matrices y el hueco defendible. Documentos descargables detrás del candado.
+_cmp = os.path.join(ASSETS, "competitive")
+if os.path.isdir(_cmp):
+    shutil.copy(os.path.join(_cmp, "competitive.html"),
+                os.path.join(PUB, "hub", "competitive.html"))
+    _cdocs2 = os.path.join(_cmp, "docs")
+    if os.path.isdir(_cdocs2):
+        shutil.copytree(_cdocs2, os.path.join(PUB, "hub", "competitive-docs"),
+                        dirs_exist_ok=True)
+    print("- competitive landscape + informe v1.1 copiados a hub/")
+
 cppage = os.path.join(ASSETS, "compliance", "compliance.html")
 if os.path.exists(cppage):
     shutil.copy(cppage, os.path.join(PUB, "hub", "compliance.html"))
