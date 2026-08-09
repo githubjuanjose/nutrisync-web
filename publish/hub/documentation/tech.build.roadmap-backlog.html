@@ -132,7 +132,9 @@ ul,ol{margin:10px 0;padding-left:24px}li{margin:5px 0}strong{font-weight:700}
      al hacer clic, sin esperar a que cargue la página siguiente. */
   var here=(location.pathname.split('/').pop()||'').toLowerCase();
   var dir=location.pathname.toLowerCase();
-  var ON='background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C';
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
   function isHere(a){
     var f=(a.getAttribute('href')||'').toLowerCase();
     return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : f.split('/').pop()===here;
@@ -225,7 +227,16 @@ ul,ol{margin:10px 0;padding-left:24px}li{margin:5px 0}strong{font-weight:700}
 </script>
 </div>
 <!-- /ns-hub-navbar --><div class="top"><b>NUTRISYNC</b> · Roadmaps · 19 Jul 2026</div><div class="wrap"><h1>tech.build — Product &amp; Tech Build Roadmap-Backlog</h1>
-<div style="background:#F4FBF7;border:1px solid #BFE3D2;border-left:4px solid #0F6E56;border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;font-size:13.5px;line-height:1.6">
+
+<div style="background:#FFF6F2;border:1px solid #F3C8B8;border-left:4px solid #FD400C;border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;font-size:13.5px;line-height:1.6">
+<b data-i="📍 Estado a 9-ago-2026 (r16) — el fin de semana que abrió los libros y el Epic P|📍 Status as of Aug 9, 2026 (r16) — the weekend that opened the books and Epic P"></b>
+<ul style="margin:6px 0 0;padding-left:20px">
+<li data-i="✔ v0.21.0 EN TIENDAS (7-ago): TestFlight b7 (beta review en curso) + Play internal 5. Push completo + multi-dieta vivos.|✔ v0.21.0 IN STORES (Aug 7): TestFlight b7 (beta review underway) + Play internal 5. Full push + multi-diet live."></li>
+<li data-i="✔ El feedback de TestFlight se cosecha SOLO (06:30 UTC): 25 capturas + 5 crashes con log completo, ticket NS-#### automático, dedupe probado.|✔ TestFlight feedback harvests ITSELF (06:30 UTC): 25 screenshots + 5 crashes with full logs, automatic NS-#### ticket, dedupe proven."></li>
+<li data-i="✔ Flujo completo de calidad: 💬 triage 3-vías → 🎫 P0-P3 (escala única) → 🗂 backlog automático para bugs → 🚢 release asignada a mano. SOP bilingüe al pie de 🎫.|✔ Full quality loop: 💬 3-way triage → 🎫 P0-P3 (single scale) → 🗂 automatic backlog for bugs → 🚢 release assigned by hand. Bilingual SOP at the foot of 🎫."></li>
+<li data-i="🚀 EPIC P · Meal Photo AI decidido para la 0.22 (doc 39): DATABED YA VIVO (meal_captures + canonical_foods con 363 alimentos USDA), ai-router con visión (Luna/Terra reversibles), Edge analyse-meal desplegada. Gates: screenflows Lucía · deontología Pilar · formulario manual = fallback permanente.|🚀 EPIC P · Meal Photo AI decided for 0.22 (doc 39): DATABED LIVE (meal_captures + canonical_foods with 363 USDA foods), ai-router with vision (Luna/Terra reversible), analyse-meal Edge deployed. Gates: Lucía screenflows · Pilar deontology · manual form = permanent fallback."></li>
+<li data-i="✔ Política de entrega: OTA = parche 0.21.x el mismo día (entrega continua) · nativo = 0.22, build miércoles + actualización viernes. Cada item del backlog declara su vía.|✔ Delivery policy: OTA = 0.21.x patch same day (continuous delivery) · native = 0.22, Wednesday build + Friday update. Every backlog item declares its route."></li>
+</ul></div><div style="background:#F4FBF7;border:1px solid #BFE3D2;border-left:4px solid #0F6E56;border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;font-size:13.5px;line-height:1.6">
 <b data-i="📍 Estado a 6-ago-2026 (r14) — lo que ya es realidad|📍 Status as of Aug 6, 2026 (r14) — what is already real"></b>
 <ul style="margin:6px 0 0;padding-left:20px">
 <li data-i="✔ v0.20.0 viva en las DOS plataformas (TestFlight aprobada por Apple 6-ago · Play internal 5-ago) con OTA auto-aplicada.|✔ v0.20.0 live on BOTH platforms (TestFlight approved by Apple Aug 6 · Play internal Aug 5) with self-applying OTA."></li>

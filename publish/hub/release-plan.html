@@ -161,7 +161,9 @@ select.mini{font-family:inherit;font-size:11px;padding:3px 6px;border:1px solid 
      al hacer clic, sin esperar a que cargue la página siguiente. */
   var here=(location.pathname.split('/').pop()||'').toLowerCase();
   var dir=location.pathname.toLowerCase();
-  var ON='background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C';
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
   function isHere(a){
     var f=(a.getAttribute('href')||'').toLowerCase();
     return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : f.split('/').pop()===here;
@@ -256,7 +258,7 @@ select.mini{font-family:inherit;font-size:11px;padding:3px 6px;border:1px solid 
 <!-- /ns-hub-navbar --><div class="w">
 
 <h1>🚢 Release Plan</h1>
-<p class="lead">Qué va en cada build: Release → Sprint → carriles (🐞 fixes con su ticket · 🔧 mejoras del feedback · 🚀 nuevas capacidades con su referencia).
+<p class="lead" data-i="Qué va en cada build: Release → Sprint → carriles (🐞 fixes con su ticket · 🔧 mejoras del feedback · 🚀 nuevas capacidades con su referencia).|What ships in each build: Release → Sprint → lanes (🐞 fixes with their ticket · 🔧 feedback improvements · 🚀 new capabilities with their reference).">Qué va en cada build: Release → Sprint → carriles (🐞 fixes con su ticket · 🔧 mejoras del feedback · 🚀 nuevas capacidades con su referencia).
 Las <b>release notes ES/EN</b> de cada versión viven aquí — las tiendas copian de esta fuente. El detalle diario está en
 <a href="/hub/backlog-dev.html">🗂 Backlog</a>; los tickets en <a href="/hub/incidents.html">🎫 Incidencias</a>.</p>
 

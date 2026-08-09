@@ -197,7 +197,9 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
      al hacer clic, sin esperar a que cargue la página siguiente. */
   var here=(location.pathname.split('/').pop()||'').toLowerCase();
   var dir=location.pathname.toLowerCase();
-  var ON='background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C';
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
   function isHere(a){
     var f=(a.getAttribute('href')||'').toLowerCase();
     return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : f.split('/').pop()===here;
@@ -291,7 +293,7 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
 </div>
 <!-- /ns-hub-navbar --><div class="w">
 
-<h1>🎫 Incidencias y resolución de problemas</h1>
+<h1 data-i="🎫 Incidencias y resolución de problemas|🎫 Incidents &amp; problem resolution">🎫 Incidencias y resolución de problemas</h1>
 <p class="lead">Cada feedback de la app genera un ticket con número. Aquí se decide qué hacemos,
 quién lo lleva, y se responde a la usuaria — <b>la respuesta le llega dentro de su app</b>.
 Nada se guarda hasta que pulsas un botón de guardar.</p>

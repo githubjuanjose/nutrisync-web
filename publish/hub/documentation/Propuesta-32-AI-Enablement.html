@@ -155,7 +155,9 @@
      al hacer clic, sin esperar a que cargue la página siguiente. */
   var here=(location.pathname.split('/').pop()||'').toLowerCase();
   var dir=location.pathname.toLowerCase();
-  var ON='background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C';
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
   function isHere(a){
     var f=(a.getAttribute('href')||'').toLowerCase();
     return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : f.split('/').pop()===here;
@@ -250,7 +252,7 @@
 <!-- /ns-hub-navbar --><div class="wrap">
 
 <h1>🤖 Propuesta 32 · AI Enablement</h1>
-<div class="sub">Epic N — dónde la IA da valor en NutriSync, con qué stack (coste mínimo, muy escalable) y en qué orden · para el roadmap de negocio y tecnológico · nada de esto toca el camino crítico del 8-oct (<b>Plan-Lanzamiento-8Oct.html</b>) · 1-ago-2026</div>
+<div class="sub">Epic N — dónde la IA da valor en NutriSync, con qué stack (coste mínimo, muy escalable) y en qué orden · para el roadmap de negocio y tecnológico · nada de esto toca el camino crítico del 8-oct (<b>Plan-Lanzamiento-8Oct.html</b>) · 1-ago-2026 · <b>v2 (9-ago): + capacidades de VISIÓN para el Epic P · vision capabilities added (ES/EN addendum, §3b)</b></div>
 
 <h2>1 · Resumen ejecutivo</h2>
 <div class="card">
@@ -306,6 +308,28 @@
 <tr><td><b>14 idiomas (incl. cooficiales)</b></td><td>Bueno, correcto en cooficiales</td><td>Bueno en grandes, flojo en minoritarios</td><td>Bueno en grandes, irregular en minoritarios</td></tr>
 </table>
 <p class="sub" style="margin:6px 0 0">Sesgo declarado: este análisis lo escribe un modelo de Anthropic — por eso D12 se decide con DPA/UE + golden-set en nuestros idiomas y contenido, no con opiniones.</p>
+
+<h2>3b · Adenda v2 (9-ago) — Visión · Vision (Epic P · Meal Photo AI)</h2>
+<div class="box" style="background:#FFF8EF;border-left:3px solid #E8B072;border-radius:0 8px 8px 0;padding:12px 15px;font-size:13.5px;line-height:1.65">
+<b>ES</b> — El Epic P (doc 39: foto de la comida → borrador → dato estructurado) añade la segunda modalidad al stack: <b>visión</b>. Mismo régimen que el texto, sin excepciones:
+<ul>
+<li><b>Todo pasa por el ai-router</b>: el proveedor de visión es una fila en el registro de modelos, reversible en minutos. Puede ser DISTINTO del proveedor de texto.</li>
+<li><b>Propuesta operativa</b>: <code>gpt-5.6-luna</code> (visión, Responses API, salida <b>JSON estricta</b> por json_schema) para el volumen; <code>gpt-5.6-terra</code> como reintento cuando la confianza baja de 0,65 o el plato es mixto; si sigue dudoso, UNA pregunta simple a la usuaria. Alternativas evaluables con el mismo golden-set: visión de Claude y Gemini.</li>
+<li><b>La IA identifica, la base calcula</b>: la visión devuelve alimentos + gramos estimados + confianza; los macros salen SIEMPRE de canonical_foods (USDA sembrado · EuroFIR pendiente) de forma determinista. Jamás calorías inventadas por el modelo.</li>
+<li><b>Cero PII, versión visión</b>: al proveedor viaja SOLO la imagen (1024px, sin EXIF ni localización) — nunca identidad, ciclo ni historial. Región UE/DPA igual que el texto (D12).</li>
+<li><b>Golden-set de fotos</b>: las correcciones reales de las usuarias (meal_edits) son los casos de evaluación etiquetados — el mejor banco de pruebas posible, gratis.</li>
+<li><b>Coste</b>: N2/N3 con presupuesto por usuaria en BD y degradación (reintento Terra solo bajo umbral). El tope hace el coste lineal, como todo el epic.</li>
+</ul>
+<b>EN</b> — Epic P (doc 39: meal photo → draft → structured data) adds the second modality to the stack: <b>vision</b>. Same regime as text, no exceptions:
+<ul>
+<li><b>Everything goes through the ai-router</b>: the vision provider is one row in the model registry, reversible in minutes — and it may DIFFER from the text provider.</li>
+<li><b>Operating proposal</b>: <code>gpt-5.6-luna</code> (vision, Responses API, <b>strict JSON</b> via json_schema) for volume; <code>gpt-5.6-terra</code> retry when confidence drops below 0.65 or the dish is mixed; if still uncertain, ONE simple question to the user. Claude and Gemini vision remain evaluable with the same golden-set.</li>
+<li><b>The AI identifies, the database calculates</b>: vision returns foods + estimated grams + confidence; macros ALWAYS come deterministically from canonical_foods (USDA seeded · EuroFIR pending). Never model-invented calories.</li>
+<li><b>Zero PII, vision edition</b>: only the image travels to the provider (1024px, EXIF and location stripped) — never identity, cycle or history. EU region/DPA same as text (D12).</li>
+<li><b>Photo golden-set</b>: real user corrections (meal_edits) are the labelled evaluation cases — the best possible test bench, for free.</li>
+<li><b>Cost</b>: N2/N3 with per-user budget in the database and graceful degradation (Terra retry only below threshold). The cap keeps cost linear, like the rest of the epic.</li>
+</ul>
+</div>
 </div>
 
 <h3>Lo que NO metemos (y cuándo sí) — Neo4j, orquestadores y familia</h3>
@@ -357,7 +381,7 @@
 <div class="card">
 <table>
 <tr><th></th><th>Pregunta</th><th>Opciones</th></tr>
-<tr><td><b>D12</b></td><td>Proveedor LLM primario (reversible vía router)</td><td><b>A · El grande con mejor DPA/endpoint UE que firmemos primero (recomendada)</b> · B · Open-weights vía proveedor UE (más barato, más QA nuestro) · C · Dual desde el día 1 (más coste de eval)</td></tr>
+<tr><td><b>D12</b></td><td>Proveedor LLM primario de TEXTO + proveedor de VISIÓN (Epic P) — pueden ser distintos; ambos reversibles vía router · Primary TEXT provider + VISION provider — may differ; both reversible via the router</td><td><b>A · El grande con mejor DPA/endpoint UE que firmemos primero (recomendada)</b> · B · Open-weights vía proveedor UE (más barato, más QA nuestro) · C · Dual desde el día 1 (más coste de eval)</td></tr>
 <tr><td><b>D13</b></td><td>Consentimiento de IA</td><td><b>A · Opt-in explícito con pantalla propia (recomendada — salud manda)</b> · B · Incluido en el consentimiento general con toggle en Settings</td></tr>
 <tr><td><b>D14</b></td><td>Papel comercial de la IA</td><td><b>A · Free = compartido (N1), Premium = personal (N2/N3) (recomendada — driver claro del Doc 29)</b> · B · Todo premium · C · Todo free durante 2027 (coste asumido como marketing)</td></tr>
 </table>

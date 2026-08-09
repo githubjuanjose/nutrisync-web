@@ -132,7 +132,9 @@ ul,ol{margin:10px 0;padding-left:24px}li{margin:5px 0}strong{font-weight:700}
      al hacer clic, sin esperar a que cargue la página siguiente. */
   var here=(location.pathname.split('/').pop()||'').toLowerCase();
   var dir=location.pathname.toLowerCase();
-  var ON='background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C';
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
   function isHere(a){
     var f=(a.getAttribute('href')||'').toLowerCase();
     return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : f.split('/').pop()===here;
@@ -225,7 +227,14 @@ ul,ol{margin:10px 0;padding-left:24px}li{margin:5px 0}strong{font-weight:700}
 </script>
 </div>
 <!-- /ns-hub-navbar --><div class="top"><b>NUTRISYNC</b> · Roadmaps · 19 Jul 2026</div><div class="wrap"><h1>enterprise.setup — Corporatisation Roadmap-Backlog</h1>
-<div style="background:#F4FBF7;border:1px solid #BFE3D2;border-left:4px solid #0F6E56;border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;font-size:13.5px;line-height:1.6">
+
+<div style="background:#FFF6F2;border:1px solid #F3C8B8;border-left:4px solid #FD400C;border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;font-size:13.5px;line-height:1.6">
+<b data-i="📍 Estado a 9-ago-2026 (r16) — el fin de semana que abrió los libros y el Epic P|📍 Status as of Aug 9, 2026 (r16) — the weekend that opened the books and Epic P"></b>
+<ul style="margin:6px 0 0;padding-left:20px">
+<li data-i="✔ Pestaña 🛡 Compliance viva: propuesta Audidat (DPD externo + RGPD, 1.500 €/año → decisión J5), lista EIPD de la AEPD (preliminar: 3 de 11 criterios YA → EIPD obligatoria pre-8-oct), Intelectium (financiación pública solo-éxito, pendiente SL).|✔ 🛡 Compliance tab live: Audidat proposal (external DPO + GDPR, €1,500/yr → decision J5), AEPD DPIA list (preliminary: 3 of 11 criteria MET → DPIA mandatory pre-Oct-8), Intelectium (success-fee-only public funding, pending SL)."></li>
+<li data-i="✔ StartUp Admin estrenó asientos REALES (8-ago): 7 recibos jul-ago al tipo BCE del día, 241,88 € contra la cuenta 2300 Socios. Run-rate ≈435 €/mes con Audidat comprometido.|✔ StartUp Admin got its first REAL entries (Aug 8): 7 Jul-Aug receipts at day-of-charge ECB rates, €241.88 against account 2300 Partners. ≈€435/mo run-rate incl. committed Audidat."></li>
+<li data-i="⚠ Recibos en TRES buzones: Gmail (Anthropic/Canva/Apple) · outlook de Juanjo (GitHub) · Pilar (Supabase, IONOS). Solo se asienta lo que tiene recibo delante.|⚠ Receipts live in THREE mailboxes: Gmail (Anthropic/Canva/Apple) · Juanjo’s outlook (GitHub) · Pilar (Supabase, IONOS). Only what has a receipt in front gets posted."></li>
+</ul></div><div style="background:#F4FBF7;border:1px solid #BFE3D2;border-left:4px solid #0F6E56;border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;font-size:13.5px;line-height:1.6">
 <b data-i="📍 Estado a 6-ago-2026 (r14) — lo que ya es realidad|📍 Status as of Aug 6, 2026 (r14) — what is already real"></b>
 <ul style="margin:6px 0 0;padding-left:20px">
 <li data-i="✔ StartUp Admin operativo (5ª superficie): partida doble en céntimos, IAS 38 con cola de revisión, deploy y 51 tests propios.|✔ StartUp Admin live (5th surface): double-entry in cents, IAS 38 review queue, own deploy and 51 tests."></li>
