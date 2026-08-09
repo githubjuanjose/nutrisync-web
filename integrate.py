@@ -1461,7 +1461,7 @@ for _hp in _glob.glob(os.path.join(PUB, "hub", "*.html")):
 _hidx = os.path.join(ASSETS, "hub-index.html")
 if os.path.exists(_hidx):
     shutil.copy(_hidx, os.path.join(PUB, "hub", "index.html"))
-    print("- hub/index.html (puerta /hub) creado → #/builders")
+    print("- hub/index.html (puerta /hub) creado → incidents.html (r16: la casa es 🎫)")
 
 # ---------------------------------------------------------------------------
 # ── ns-doors-grid v2 (r14h, regresión pescada por Juanjo): el contenedor del

@@ -177,6 +177,12 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
     mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
   }
   var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  /* r16: la marca se queda mientras estés en la página — se repinta al volver
+     del historial (bfcache), al recuperar el foco y al cambiar de pestaña del
+     navegador. Nada la apaga salvo navegar a otra página del hub. */
+  window.addEventListener('pageshow',function(){markActive();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)markActive();});
+  window.addEventListener('focus',function(){markActive();});
   var d=new Date();
   var el=document.getElementById('nsnb-date');
   if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
