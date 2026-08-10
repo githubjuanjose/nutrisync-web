@@ -55,6 +55,17 @@ Las <b>release notes ES/EN</b> de cada versión viven aquí — las tiendas copi
   <button onclick="window.rpTodas(true)" title="Desplegar todas">▾ todas</button>
   <button onclick="window.rpTodas(false)" title="Plegar todas">▸ ninguna</button>
 </div>
+<div class="filtros" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 16px">
+  <span style="font-size:13px;color:#8A7F76">Crear release:</span>
+  <input id="rpVer" placeholder="0.23.0" size="8"
+         style="padding:8px 10px;border:1px solid #EADFD0;border-radius:10px;font:inherit;width:96px">
+  <input id="rpNom" placeholder="nombre (opcional)" size="18"
+         style="padding:8px 10px;border:1px solid #EADFD0;border-radius:10px;font:inherit;flex:1 1 200px;min-width:150px">
+  <input id="rpFec" type="date" title="fecha objetivo (opcional)"
+         style="padding:7px 9px;border:1px solid #EADFD0;border-radius:10px;font:inherit">
+  <button class="pri" onclick="window.rpNueva()" title="Crear la ficha de esta release">＋ Nueva release</button>
+</div>
+
 <div id="plan">Cargando…</div>
 <div id="snack"></div>
 
@@ -213,6 +224,25 @@ function render(){
   $('plan').innerHTML=cab+html;
 }
 window.rpSinrel=function(){SINREL_ABIERTO=!SINREL_ABIERTO;render();};
+
+/* r17 (regla Juanjo, 10-ago): las releases se crean AQUÍ, no por SQL. Hasta
+   hoy la página ofrecía asignar 0.23.0 pero nadie había creado su ficha, y los
+   items caían en el limbo (los cazó el aviso de huérfanos). */
+window.rpNueva=async function(){
+  var v=(document.getElementById('rpVer').value||'').trim();
+  if(!/^\d+\.\d+\.\d+$|^GA$/.test(v)){
+    alert('La versión va como 0.23.0 (tres números) o GA.');return;}
+  if(REL.some(function(r){return r.version===v;})){
+    alert('La release '+v+' ya existe.');return;}
+  var nom=(document.getElementById('rpNom').value||'').trim();
+  var fec=document.getElementById('rpFec').value||null;
+  var r=await sb.rpc('admin_release_upsert',{p:{version:v,nombre:nom||null,
+        estado:'planificada',fecha_objetivo:fec}});
+  if(r.error){fail(r.error,'admin_release_upsert');return;}
+  document.getElementById('rpVer').value='';document.getElementById('rpNom').value='';
+  await cargar();                       // recarga el tablero con la ficha nueva
+  ABIERTAS[v]=true;render();
+};
 window.rpTog=function(v){var el=document.querySelector('.rel[data-v="'+v+'"]');
   ABIERTAS[v]=!el.classList.contains('open');el.classList.toggle('open');};
 window.rpMove=function(id,rel){
@@ -243,9 +273,9 @@ window.rpSave=function(v,lang){
     snack('✓ Notas '+lang.toUpperCase()+' de '+v+' guardadas');cargar();});
 };
 function cargar(){
-  sb.auth.getSession().then(function(s){
+  return sb.auth.getSession().then(function(s){
     if(!s.data.session){$('plan').innerHTML='<p class="hint">Inicia sesión admin desde el hub y recarga.</p>';return;}
-    Promise.all([sb.rpc('admin_releases_list'),sb.rpc('admin_backlog_list')]).then(function(rs){
+    return Promise.all([sb.rpc('admin_releases_list'),sb.rpc('admin_backlog_list')]).then(function(rs){
       if(rs[0].error)return fail(rs[0].error,'admin_releases_list');
       if(rs[1].error)return fail(rs[1].error,'admin_backlog_list');
       REL=rs[0].data||[];ITEMS=(rs[1].data&&rs[1].data.items)||[];render();});
