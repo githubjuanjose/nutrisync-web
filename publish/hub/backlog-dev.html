@@ -28,15 +28,22 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
 .hoyb{font-size:10px;font-weight:800;background:#FFF1EC;color:#C73A20;border-radius:999px;padding:1px 8px}
 .err{background:#FFF1EC;border:2px solid #E8472A;border-radius:12px;padding:13px 15px;font-size:13px;color:#8A2A18;margin:14px 0}
 .hint{font-size:11.5px;color:#8A7F78}
-.ent-ota{border-color:#BFE3D2;background:#F0FAF5}
-.ent-nativo{border-color:#F3C8B8;background:#FFF6F2}
+/* r17 (11-ago): la insignia de entrega. Mismos colores que en 🚢 Releases a
+   propósito — es el MISMO dato leído del mismo sitio, no debe parecer otro. */
+.ent{font-size:11px;padding:3px 9px;border-radius:100px;white-space:nowrap;font-weight:700;text-align:center}
+.d-ota{background:#E8F4EC;color:#2C7A52}
+.d-nat{background:#FDEDE6;color:#B4441F}
+.d-web{background:#EDF0FA;color:#3E4E8C}
+.d-ga {background:#F6EFD9;color:#8A6A16}
+.d-none{background:#F4EFE9;color:#A79C93}
+.d-raro{background:#FFE9E4;color:#C73A20}
 .polver{background:#FBF6EF;border:1px solid #EFE3D7;border-radius:11px;padding:9px 13px;font-size:12.3px;line-height:1.6;margin:0 0 12px}
 #snack{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#241D1A;color:#fff;
   font-size:13px;padding:10px 18px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.25);
   opacity:0;pointer-events:none;transition:opacity .25s;z-index:50;max-width:90vw}
 #snack.on{opacity:1}
 select.mini{font-size:11.5px;padding:4px 7px}
-</style></head><body><!-- ns-hub-navbar -->
+</style><script src="/hub/assets/entrega.js?v=60a03155"></script></head><body><!-- ns-hub-navbar -->
 <div id="ns-hub-navbar">
 <style>
 #ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
@@ -297,11 +304,13 @@ select.mini{font-size:11.5px;padding:4px 7px}
 Las 🐞 de <a href="/hub/feedback.html">Feedback</a> entran con un clic; la planificación histórica sigue en
  y los épicos en <a href="/hub/documentation/index.html">📚 Docs</a>.</p>
 
-<!-- r16-F18: la política de versionado, donde se planifica -->
-<div class="polver"><b>Cómo se entrega cada cosa</b> — se decide al analizarla, no al final.<br>
-🔄 <b>OTA</b> (parche <b>0.21.1 · 0.21.2 · 0.21.3</b>): JavaScript puro. Viaja solo y llega a las usuarias <b>el mismo día</b>, sin tiendas ni revisión. Entrega continua: lo que está listo, sale.<br>
-📦 <b>Nativo</b> (versión <b>0.22</b>): toca dependencias nativas, permisos, iconos o config de tiendas. <b>Build el miércoles</b>, actualización de las usuarias <b>el viernes</b>.<br>
-❔ <b>Por ver</b>: aún sin analizar — todo item debería salir del análisis con esto decidido.</div>
+<!-- r17 (11-ago): la política de versionado. Ya no se elige, se DEDUCE. -->
+<div class="polver"><b>Cómo se entrega cada cosa</b> — no se elige aparte: <b>lo dice el número de la release</b>.
+Antes había un desplegable para esto y podía contradecir a la release; ahora hay una sola verdad.<br>
+🔄 <b>OTA</b> — <b>0.N.x con x&gt;0</b> (0.21.1, 0.21.2…): JavaScript puro. Llega a las usuarias <b>el mismo día</b>, sin tiendas ni revisión.<br>
+📦 <b>Nativa</b> — <b>0.N.0</b> (0.22.0): toca dependencias nativas, permisos, iconos o config de tiendas. <b>Build el miércoles</b>, usuarias <b>el viernes</b>.<br>
+🌐 <b>Web · continua</b> — <b>WEB</b>: el carril del deploy web. Nunca «se publica» porque no para; lo que se termina son los items.<br>
+· <b>Sin release</b> — <b>—</b>: aún no comprometido a nada. No es que falte analizarlo: es que todavía no se ha decidido cuándo entra.</div>
 <div class="kpis" id="kpis"></div>
 
 <div class="alta" id="alta">
@@ -328,6 +337,17 @@ Las 🐞 de <a href="/hub/feedback.html">Feedback</a> entran con un clic; la pla
 </div>
 <script src="/assets/vendor/supabase.js"></script>
 <script>
+/* r12-b9: ninguna página del hub se queda muda. `entrega.js` trae la regla de
+   cómo se entrega cada cosa; si no cargó, la fila reventaría al pintarse y la
+   página saldría a medias sin un solo error visible. Mejor decirlo. */
+if(!window.NSEntrega){
+  document.addEventListener('DOMContentLoaded',function(){
+    document.body.insertAdjacentHTML('afterbegin','<div style="background:#FFE9E4;color:#C73A20;'
+      +'border:1px solid #F3C8B8;border-radius:10px;padding:10px 14px;margin:10px;font-weight:700">'
+      +'⚠ No cargó <code>/hub/assets/entrega.js</code> — recarga la página. Si sigue, '
+      +'falta el paso <code>ns-entrega-js</code> de integrate.py en este despliegue.</div>');});
+  window.NSEntrega={como:function(){return {ico:'?',txt:'—',cls:'d-raro',nota:'entrega.js no cargó'};}};
+}
 (function(){
 'use strict';
 var sb=window.supabase.createClient('https://nebkqncvapelrarruyqb.supabase.co',
@@ -357,11 +377,15 @@ function item(b){
     +['propuesto','aceptado','en_curso','hecho','descartado'].map(function(x){return '<option value="'+x+'"'+(x===b.estado?' selected':'')+'>'+x.replace('_',' ')+'</option>';}).join('')+'</select>'
     +'<select class="mini" onchange="window.bkSet(\''+b.id+'\',{sprint:this.value})">'
     +SPRINTS.map(function(sp){return '<option value="'+sp[0]+'"'+(sp[0]===b.sprint?' selected':'')+'>'+sp[0]+'</option>';}).join('')+'</select>'
-    /* r16-F18: CÓMO se entrega — la pregunta que decide la fecha.
-       🔄 OTA = parche 0.21.x, sale el mismo día · 📦 nativo = versión 0.22,
-       build miércoles + actualización el viernes · ❔ por analizar. */
-    +'<select class="mini ent-'+esc(b.entrega||'por_ver')+'" title="Cómo se entrega: OTA (mismo día) o versión nueva en tiendas" onchange="window.bkSet(\''+b.id+'\',{entrega:this.value})">'
-    +[['por_ver','❔ por ver'],['ota','🔄 OTA'],['nativo','📦 nativo']].map(function(x){return '<option value="'+x[0]+'"'+(x[0]===(b.entrega||'por_ver')?' selected':'')+'>'+x[1]+'</option>';}).join('')+'</select>'
+    /* r17 (11-ago): CÓMO se entrega ya no se pregunta, SE DEDUCE de la release.
+       Era un desplegable manual (r16-F18, del 8-ago) que se quedó obsoleto dos
+       días después, cuando la regla pasó a ser «el número dice cómo se entrega».
+       Tres problemas a la vez: (1) segunda verdad — podía decir OTA con release
+       0.22.0, que es nativa; (2) no sabía decir WEB, que es donde vive medio
+       backlog; (3) desde que reescribí `admin_backlog_upsert` el 11-ago para
+       añadir `epic`, la función ya no leía `entrega`: el desplegable parecía
+       guardar y NO guardaba. La función vive en /hub/assets/entrega.js. */
+    +(function(d){return '<span class="ent '+d.cls+'" title="'+esc(d.nota)+' — lo dice el número de la release, no una elección aparte">'+d.ico+' '+d.txt+'</span>';})(window.NSEntrega.como(b.release))
     +'<select class="mini" title="release" onchange="window.bkSet(\''+b.id+'\',{release:this.value})">'
     +opcionesRelease(b.release)+'</select>'
     +'<select class="mini" onchange="window.bkSet(\''+b.id+'\',{prioridad:this.value})">'
@@ -376,7 +400,11 @@ window.bkSec=function(k){SEC[k]=!SEC[k];render();};
 window.bkQ=function(){render();};
 function hay(b,q){
   if(!q)return true;
-  return [b.titulo,b.notas,b.ticket_no,b.release,b.tipo,b.prioridad,b.sprint,b.estado,b.origen,b.entrega]
+  /* «OTA» y «nativa» se buscan por el TEXTO DERIVADO de la release, no por una
+     columna aparte: buscar «ota» tiene que encontrar 0.21.2 aunque nadie haya
+     escrito nunca la palabra en ese item. */
+  return [b.titulo,b.notas,b.ticket_no,b.release,b.tipo,b.prioridad,b.sprint,b.estado,b.origen,
+          window.NSEntrega.como(b.release).txt]
     .map(function(v){return String(v==null?'':v);}).join(' ').toLowerCase().indexOf(q)>=0;
 }
 function filtrados(){

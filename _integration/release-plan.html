@@ -122,18 +122,15 @@ var SPRINTS={S11:'Sprint 11 · 3–7 ago',S12:'Sprint 12 · 10–14 ago',S13:'Sp
   S14:'Sprint 14 · 24–28 ago',S15:'Sprint 15 · 31 ago–4 sep',S16:'Sprint 16 · 7–11 sep',GA:'Tramo GA',backlog:'Sin sprint'};
 var ESTADOS=['planificada','en_construccion','en_review','en_tiendas','ga'];
 
-/* Cómo se entrega una release, leído de su propio número (regla Juanjo):
-   la TERCERA cifra lo dice todo. 0.N.x con x>0 es un parche que viaja por OTA
-   (JS, mismo día, sin tiendas); 0.N.0 es un build nativo (deps, permisos,
-   revisión de Apple). La regla vivía en la cabeza de la gente y en el doc 40;
-   aquí se ve en la tarjeta, que es donde se decide. */
+/* Cómo se entrega una release, leído de su propio número (regla Juanjo, 10-ago):
+   la TERCERA cifra lo dice todo. La función VIVÍA AQUÍ y 🗂 Sprint Planning
+   preguntaba lo mismo con un desplegable manual — dos verdades para el mismo
+   dato. Desde el 11-ago vive en /hub/assets/entrega.js y la usan las dos.
+   Aquí una release siempre tiene número, así que «sin release» no se pinta. */
 function comoSeEntrega(v){
-  if(v==='WEB') return {ico:'🌐',txt:'web · continua',cls:'d-web'};
-  if(v==='GA')  return {ico:'🏁',txt:'GA',cls:'d-ga'};
-  var m=String(v||'').match(/^(\d+)\.(\d+)\.(\d+)$/);
-  if(!m) return null;
-  return +m[3]>0 ? {ico:'🔄',txt:'OTA',cls:'d-ota'}
-                 : {ico:'📦',txt:'nativa',cls:'d-nat'};
+  if(!window.NSEntrega) return null;   // sin el asset, mejor sin insignia que sin página (r12-b9)
+  var d = window.NSEntrega.como(v);
+  return (d.cls==='d-none'||d.cls==='d-raro') ? null : d;
 }
 
 function snack(m){var el=$('snack');el.textContent=m;el.classList.add('on');

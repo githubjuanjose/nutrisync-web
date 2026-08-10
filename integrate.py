@@ -2014,6 +2014,36 @@ if os.path.isdir(_gdir2):
             _n += 1
     print("- ns-page-help: ayuda por pagina (page-help.js?v=%s) en %d paginas" % (_hsha, _n))
 
+# ── ns-entrega-js (r17, 11-ago) ─────────────────────────────────────────────
+# UNA sola fuente para «cómo se entrega esto». La regla (el número de release lo
+# dice: 0.N.x=OTA · 0.N.0=nativa · WEB=continua) vivía duplicada: deducida en 🚢
+# y preguntada con un desplegable manual en 🗂. Dos verdades para el mismo dato
+# siempre acaban discrepando — y la manual ni siquiera sabía decir WEB.
+# Versionado por sha8 (r12-b11): JS viejo en caché + HTML nuevo = página muda.
+_ej = os.path.join(ASSETS, "entrega.js")
+if os.path.isfile(_ej):
+    import hashlib as _he
+    _ejs = open(_ej, encoding="utf-8").read()
+    _esha = _he.sha256(_ejs.encode("utf-8")).hexdigest()[:8]
+    os.makedirs(os.path.join(PUB, "hub", "assets"), exist_ok=True)
+    open(os.path.join(PUB, "hub", "assets", "entrega.js"), "w", encoding="utf-8").write(_ejs)
+    _etag = '<script src="/hub/assets/entrega.js?v=%s"></script>' % _esha
+    _ne = 0
+    for _bn in ("release-plan.html", "backlog-dev.html"):   # 💡 Ideation no maneja releases
+        _ep = os.path.join(PUB, "hub", _bn)
+        if not os.path.isfile(_ep):
+            continue
+        _s0 = open(_ep, encoding="utf-8").read()
+        _s = re.sub(r'<script src="/hub/assets/entrega\.js[^"]*"></script>', "", _s0)
+        _m = re.search(r"</head>", _s)
+        if not _m:
+            continue
+        _s = _s[:_m.start()] + _etag + _s[_m.start():]
+        if _s != _s0:
+            open(_ep, "w", encoding="utf-8").write(_s)
+            _ne += 1
+    print("- ns-entrega-js: como se entrega, una sola fuente (entrega.js?v=%s) en %d paginas" % (_esha, _ne))
+
 # ── ns-i18n-web2 (r17, 10-ago) ──────────────────────────────────────────────
 # El catálogo de la WV2 (repos/web2/i18n/web2.json) viaja a publish/i18n/ para
 # que 🌍 Traducciones del hub lo lea desde su MISMO origen y las founders
