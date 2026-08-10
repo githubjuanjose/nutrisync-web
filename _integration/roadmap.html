@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Build Tech Roadmap — NutriSync Engineering</title>
+<title>Ideation — NutriSync Engineering</title>
 <style>
 body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.55}
 .w{max-width:1080px;margin:0 auto;padding:26px 20px 90px}
@@ -38,7 +38,7 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
 select.mini{font-size:11.5px;padding:4px 7px}
 </style>
 </head><body><div class="w">
-<h1>📚 Build Tech Roadmap</h1>
+<h1>💡 Ideation</h1>
 <p class="lead" data-i="Lo aceptado que todavía NO está comprometido a un sprint. Aquí se agrupa, se prioriza y se decide qué entra en el siguiente sprint — sin fechas, sin promesas.|Accepted work not yet committed to a sprint. This is where it gets grouped, prioritised and picked for the next sprint — no dates, no promises.">Lo aceptado que todavía NO está comprometido a un sprint. Aquí se agrupa, se prioriza y se decide qué entra en el siguiente sprint — sin fechas, sin promesas.</p>
 <p class="hint">El camino: <a href="/hub/feedback.html">💬 Feedback</a> entra por dos puertas — si es un <b>fallo</b> pasa por <a href="/hub/incidents.html">🎫 Incidencias</a> (triage, con respuesta a la usuaria); si es una <b>idea o una mejora</b> viene directo aquí, sin ticket. Después: <b>📚 Roadmap</b> → <a href="/hub/backlog-dev.html">🗂 Sprint Planning</a> → <a href="/hub/release-plan.html">🚢 Releases</a>.</p>
 
@@ -58,7 +58,7 @@ select.mini{font-size:11.5px;padding:4px 7px}
 var sb=window.supabase.createClient('https://nebkqncvapelrarruyqb.supabase.co',
   'sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau');
 var $=function(i){return document.getElementById(i);};
-var ITEMS=[], SPRINTS=[];
+var ITEMS=[], SPRINTS=[], EPICAS=[];
 
 function fail(e,fn){ $('err').innerHTML='<div class="err"><b>No he podido leer los datos.</b><br>Consulta: <code>'+fn+'</code><br>'+(e&&e.message?e.message:'')+'</div>'; }
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
@@ -68,7 +68,15 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return
    nueva — la separación ya existía en los datos y no se veía en ningún sitio. */
 function delRoadmap(b){ return (b.sprint||'backlog')==='backlog' && b.estado!=='hecho' && b.estado!=='descartado'; }
 
-var TIPOS={fix:'🐞 Fixes pendientes',mejora:'🔧 Mejoras del feedback',feature:'🚀 Nuevas capacidades',capability:'🧱 Cimientos técnicos'};
+var TIPOS={fix:'🐞',mejora:'🔧',feature:'🚀',capability:'🧱'};
+
+/* Las épicas salen de la TABLA, no de una lista escrita aquí (regla de hoy:
+   cero datos en el HTML). La letra la asigna la base por serialización, así
+   que nadie tiene que acordarse de por dónde iba el abecedario. */
+function nombreEpica(l){
+  var e=EPICAS.filter(function(x){return x.letra===l;})[0];
+  return e ? 'Epic '+e.letra+' · '+e.nombre : (l ? 'Epic '+l : '— sin épica —');
+}
 
 window.rmPinta=function(){
   var q=($('rmQ').value||'').toLowerCase().trim(), pri=$('rmPri').value, tp=$('rmTipo').value;
@@ -84,18 +92,26 @@ window.rmPinta=function(){
   }).join('')+'<div class="kpi"><span class="l">total sin comprometer</span><span class="v">'+vis.length+'</span></div>';
 
   var h='';
-  Object.keys(TIPOS).forEach(function(t){
-    var g=vis.filter(function(b){return b.tipo===t;})
-             .sort(function(a,b){return (a.prioridad||'P9').localeCompare(b.prioridad||'P9');});
-    if(!g.length) return;
-    h+='<div class="sec"><span class="n">'+TIPOS[t]+'</span><span class="cnt">'+g.length+'</span></div>';
+  // Agrupadas por épica; las huérfanas al final, que son las que piden acción.
+  var grupos={}; vis.forEach(function(b){ (grupos[b.epic||'']=grupos[b.epic||'']||[]).push(b); });
+  var orden=Object.keys(grupos).sort(function(a,b){ return (a||'zz').localeCompare(b||'zz'); });
+
+  orden.forEach(function(k){
+    var g=grupos[k].sort(function(a,b){return (a.prioridad||'P9').localeCompare(b.prioridad||'P9');});
+    h+='<div class="sec"><span class="n">'+(k?esc(nombreEpica(k)):'⚠ sin épica asignada')+'</span>'
+      +'<span class="cnt">'+g.length+'</span></div>';
     h+=g.map(function(b){
       return '<div class="it">'
         +'<span class="pr '+esc(b.prioridad)+'">'+esc(b.prioridad)+'</span>'
-        +'<span class="tp t-'+esc(b.tipo)+'">'+esc(b.tipo)+'</span>'
+        +'<span class="tp t-'+esc(b.tipo)+'">'+(TIPOS[b.tipo]||'')+' '+esc(b.tipo)+'</span>'
         +'<span class="tit">'+esc(b.titulo)+'</span>'
         +(b.ticket_no?'<span class="orig">'+esc(b.ticket_no)+'</span>':'')
-        +(b.origen?'<span class="orig">· '+esc(b.origen)+'</span>':'')
+        +'<select onchange="window.rmEpica(\''+esc(b.id)+'\',this.value)" title="A qué épica pertenece">'
+        +'<option value="">— sin épica —</option>'
+        +EPICAS.map(function(e){return '<option value="'+e.letra+'"'+(e.letra===b.epic?' selected':'')+'>'
+            +'Epic '+e.letra+' · '+esc(e.nombre)+'</option>';}).join('')
+        +'<option value="__nueva__">＋ épica nueva…</option>'
+        +'</select>'
         +'<select onchange="window.rmPromover(\''+esc(b.id)+'\',this.value)" title="Comprometerlo a un sprint">'
         +'<option value="">→ a un sprint…</option>'
         +SPRINTS.map(function(s){return '<option value="'+s+'">'+s+'</option>';}).join('')
@@ -103,11 +119,32 @@ window.rmPinta=function(){
         +'</div>';
     }).join('');
   });
+
   $('lista').innerHTML = h || '<p class="hint">Nada sin comprometer ahora mismo. Todo lo aceptado está ya en un sprint.</p>';
 };
 
 /* Promover = comprometerse. Es el único cambio que se hace desde aquí, y por
    eso está a un clic: el roadmap no es donde se trabaja, es donde se decide. */
+/* Asignar épica. Si eligen «nueva», se pide el nombre y la LETRA la pone la
+   base: elegirla a mano acaba en dos epicas «Q». */
+window.rmEpica=function(id,letra){
+  if(letra==='__nueva__'){
+    var n=prompt('Nombre de la épica nueva (la letra se asigna sola):','');
+    if(!n||!n.trim()){cargar();return;}
+    sb.rpc('admin_epica_nueva',{p_nombre:n.trim()}).then(function(r){
+      if(r.error){fail(r.error,'admin_epica_nueva');return;}
+      var l=(r.data&&r.data.letra)||null;
+      snack('✓ Epic '+l+' · '+n.trim());
+      if(l) sb.rpc('admin_backlog_upsert',{p:{id:id,epic:l}}).then(cargar); else cargar();
+    });
+    return;
+  }
+  sb.rpc('admin_backlog_upsert',{p:{id:id,epic:letra||null}}).then(function(r){
+    if(r.error){fail(r.error,'admin_backlog_upsert');return;}
+    cargar();
+  });
+};
+
 window.rmPromover=function(id,sprint){
   if(!sprint) return;
   sb.rpc('admin_backlog_upsert',{p:{id:id,sprint:sprint,estado:'aceptado'}}).then(function(r){
@@ -119,6 +156,7 @@ window.rmPromover=function(id,sprint){
 function cargar(){
   sb.auth.getSession().then(function(s){
     if(!s.data.session){$('lista').innerHTML='<p class="hint">Inicia sesión admin desde el hub y recarga.</p>';return;}
+    sb.rpc('admin_epicas').then(function(re){ EPICAS = re.data || []; window.rmPinta && window.rmPinta(); });
     sb.rpc('admin_backlog_list').then(function(r){
       if(r.error){fail(r.error,'admin_backlog_list');return;}
       ITEMS=(r.data&&r.data.items)||[];
