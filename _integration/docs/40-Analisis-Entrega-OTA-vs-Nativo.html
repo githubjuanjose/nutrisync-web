@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>40 · Análisis de entrega: OTA vs nativo · 0.21.1 y 0.22.0</title>
+<style>
+:root{--coral:#FD400C;--deep:#6C3732;--cream:#FFF6EC;--line:#EADFD0;--muted:#8A7F78;
+  --ok:#1F6B57;--warn:#B26A00;--bad:#B3261E}
+*{box-sizing:border-box;margin:0}
+body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--cream);
+  color:var(--deep);line-height:1.6;padding:28px clamp(16px,4vw,48px) 80px}
+.wrap{max-width:1080px;margin:0 auto}
+h1{font-size:clamp(23px,3.4vw,32px);line-height:1.2;color:var(--coral);margin-bottom:6px}
+h2{font-size:19px;margin:34px 0 10px;padding-top:16px;border-top:2px solid var(--line)}
+h3{font-size:15px;margin:20px 0 6px;color:var(--coral)}
+p,li{font-size:14.5px}
+ul,ol{margin:6px 0 6px 20px}
+.lede{color:var(--muted);font-size:15px;margin-bottom:4px}
+table{width:100%;border-collapse:collapse;margin:10px 0 4px;background:#fff;
+  border-radius:10px;overflow:hidden;box-shadow:0 2px 10px rgba(108,55,50,.06)}
+th,td{padding:8px 11px;text-align:left;font-size:13.5px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#FBF6EF;font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em}
+tr:last-child td{border-bottom:0}
+code{background:#FBF6EF;padding:1px 5px;border-radius:5px;font-size:12.5px}
+.box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:12px 0}
+.box.ok{border-left:5px solid var(--ok)}
+.box.warn{border-left:5px solid var(--warn);background:#FFF9F0}
+.box.bad{border-left:5px solid var(--bad);background:#FDF3F2}
+.chip{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:800;color:#fff}
+.ota{background:#1F6B57}.nat{background:#FD400C}.dud{background:#8A7F78}
+.mini{font-size:12.5px;color:var(--muted)}
+.fecha{font-size:12.5px;color:var(--muted);margin-bottom:18px}
+</style>
+</head>
+<body><div class="wrap">
+
+<h1>40 · Análisis de entrega: qué va por OTA y qué exige build nativo</h1>
+<p class="lede">Las dos próximas releases · 0.21.1 (OTA) y 0.22.0 (nativa)</p>
+<p class="fecha">10-ago-2026 · Sprint 12 · Regla Juanjo (r16-F18): <b>la decisión se toma en el ANÁLISIS</b>, antes de escribir una línea — no al final, cuando ya no hay marcha atrás.</p>
+
+<h2>1 · La pregunta y por qué importa</h2>
+<p>Un cambio que solo toca JavaScript viaja por <b>OTA</b>: se publica y llega a las usuarias <b>el mismo día</b>, sin tiendas ni revisión. Un cambio que toca el binario exige <b>build nativo</b>: miércoles se construye, pasa revisión, y llega el viernes. Confundirse tiene coste real en las dos direcciones:</p>
+<ul>
+  <li><b>Prometer OTA algo nativo</b> → la usuaria no lo recibe nunca y el fix «desplegado» no existe para ella. El peor fallo: creerlo arreglado.</li>
+  <li><b>Meter en el build nativo algo que era OTA</b> → se retrasa dos días un arreglo que podía estar hoy.</li>
+</ul>
+
+<h2>2 · Qué obliga a build nativo (regla dura)</h2>
+<p>Cualquiera de estas cinco cosas obliga a <span class="chip nat">📦 nativo</span>. Ninguna otra lo hace.</p>
+<table>
+  <tr><th>Detonante</th><th>Por qué</th><th>Cómo se detecta</th></tr>
+  <tr><td><b>Dependencia nativa nueva</b> (o cambio de versión)</td><td>El módulo se compila dentro del binario; el JS solo lo invoca</td><td>Cambia <code>package.json</code> en una dependencia con código nativo</td></tr>
+  <tr><td><b>Permiso nuevo</b> (cámara, salud, ubicación…)</td><td>Vive en Info.plist / AndroidManifest, dentro del binario</td><td>Cambia <code>app.json</code> → <code>infoPlist</code>, <code>permissions</code> o <code>plugins</code></td></tr>
+  <tr><td><b>Icono, splash, nombre, bundle</b></td><td>Recursos empaquetados</td><td>Cambia <code>app.json</code> → <code>icon</code>, <code>splash</code>, <code>name</code></td></tr>
+  <tr><td><b>Subir versión de Expo SDK o RN</b></td><td>Cambia el runtime entero</td><td>Cambia <code>expo</code> o <code>react-native</code></td></tr>
+  <tr><td><b>Configuración de arranque</b> (deep links, esquema, notificaciones push a nivel de sistema)</td><td>Se registra en el sistema operativo al instalar</td><td>Cambia <code>scheme</code>, <code>associatedDomains</code>, canales de notificación</td></tr>
+</table>
+<div class="box ok"><b>Todo lo demás es OTA</b>: pantallas, textos, i18n, lógica de negocio, llamadas a Supabase, Edge Functions (¡el backend no es la app!), consultas, estilos, navegación entre pantallas existentes, correcciones de crash en JS.</div>
+
+<h2>3 · Inventario nativo de la app HOY (0.21.0)</h2>
+<p class="mini">Leído del código, no de memoria: <code>repos/appdev/package.json</code> y <code>app.json</code>.</p>
+<table>
+  <tr><th>Módulo nativo instalado</th><th>Versión</th><th>Para qué</th></tr>
+  <tr><td><code>expo-image-picker</code></td><td>17.0.11</td><td>Adjuntar captura en Feedback (galería). <b>Incluye también la cámara del sistema.</b></td></tr>
+  <tr><td><code>expo-notifications</code></td><td>0.32.17</td><td>Push (r15)</td></tr>
+  <tr><td><code>expo-local-authentication</code></td><td>~17.0.8</td><td>Bloqueo biométrico</td></tr>
+  <tr><td><code>expo-secure-store</code></td><td>~15.0.8</td><td>Secretos del dispositivo</td></tr>
+  <tr><td><code>@kingstinct/react-native-healthkit</code></td><td>plugin</td><td>Salud (iOS)</td></tr>
+  <tr><td><code>expo-location</code></td><td>plugin</td><td>Sugerir ciudad en el alta</td></tr>
+</table>
+<p><b>NO instalados</b> (pedirlos = build nativo): <code>expo-camera</code> · <code>expo-image-manipulator</code> · <code>expo-file-system</code> · <code>expo-media-library</code> · <code>expo-av</code> · <code>expo-sharing</code>.</p>
+<p class="mini">Proyecto <b>managed</b> (sin carpetas <code>ios/</code> ni <code>android/</code>): el prebuild lo hace EAS. Runtime por política <code>appVersion</code> → <b>cada versión de app es un runtime distinto</b> y la OTA debe publicarse en todos los vivos (0.18–0.21).</p>
+
+<h2>4 · Epic P · Meal Photo AI: el análisis que decide la 0.22</h2>
+<p>El doc 39 describe el flujo: foto → <b>1024 px sin EXIF</b> → Storage privado → <code>analyse-meal</code> → borrador. Ese «1024 px sin EXIF» es lo que decide la entrega.</p>
+<table>
+  <tr><th>Pieza del Incremento P1</th><th>Entrega</th><th>Razón técnica</th></tr>
+  <tr><td>Edge Function <code>analyse-meal</code>, tablas, RLS, registro de modelos</td><td><span class="chip ota">🔄 OTA</span></td><td>Backend: no viaja en el binario. Ya desplegado.</td></tr>
+  <tr><td>Pantalla de captura y de confirmación, textos, i18n</td><td><span class="chip ota">🔄 OTA</span></td><td>JavaScript puro</td></tr>
+  <tr><td>Elegir foto de la <b>galería</b></td><td><span class="chip nat">📦 nativo</span></td><td><b>Corregido tras verificarlo en el móvil (ver §4b)</b>: la librería está en <code>package.json</code> pero NO en el binario 0.21</td></tr>
+  <tr><td>Subir a Storage</td><td><span class="chip ota">🔄 OTA</span></td><td>Patrón ya probado en Feedback: <code>fetch(uri) → blob → storage.upload()</code></td></tr>
+  <tr><td><b>Hacer la foto con la cámara</b></td><td><span class="chip nat">📦 nativo</span></td><td>Misma librería + <code>NSCameraUsageDescription</code>, que tampoco estaba configurada. Añadida ya al <code>app.json</code> para el build del miércoles.</td></tr>
+  <tr><td><b>Redimensionar a 1024 px y quitar EXIF</b></td><td><span class="chip nat">📦 nativo</span></td><td>Exige <code>expo-image-manipulator</code>, que NO está instalado</td></tr>
+</table>
+
+<div class="box warn" style="opacity:.72">
+<b>La decisión de producto que había que tomar</b> <span class="mini">— resuelta: la opción 1 no existe (ver §4b). Se queda por su valor de registro.</span> — dos caminos legítimos:
+<ol>
+  <li><b>P1 por OTA esta semana</b>: solo galería, comprimiendo con <code>quality</code> del propio picker, sin recorte a 1024 ni limpieza de EXIF. Llega a las testers <b>hoy o mañana</b>. Coste: se sube más peso del necesario y <b>los metadatos de la foto (incluida la ubicación) viajarían al Storage</b> — aceptable solo si se documenta en el consentimiento del piloto, y con la promesa de limpiarlo en la 0.22.</li>
+  <li><b>P1 completo en la 0.22 nativa</b>: cámara + 1024 px + sin EXIF, tal como manda el doc 39. Build el miércoles, usuarias el viernes. Coste: dos días.</li>
+</ol>
+<b>Recomendación de ingeniería</b>: la opción 2. La privacidad de la foto es el corazón de este epic (doc 39 §4: «cero PII al proveedor»), y subir EXIF con ubicación al Storage contradice esa promesa. Los dos días valen. Si Juanjo prefiere ver algo funcionando ya, la opción 1 es válida <b>solo con galería y avisando</b>.
+</div>
+
+<div class="box bad">
+<b>⚠ Comprobación pendiente que puede morder</b> — el adjuntar captura en Feedback usa <code>launchImageLibraryAsync</code> dentro de un <code>try/catch</code> que <b>traga el error en silencio</b>. Si al binario 0.21 le faltan las cadenas de permiso de iOS, la usuaria toca «adjuntar» y no pasa nada — sin aviso, sin registro. <b>Prueba de 30 segundos</b>: abrir la app 0.21 en el iPhone → Ajustes → Enviar feedback → adjuntar captura. Si aparece el selector, el permiso está y la galería es OTA. Si no aparece nada, es nativo y además hay un bug abierto que nadie ha reportado porque no hace ruido.
+</div>
+
+<h2>4b · La comprobación de 30 segundos dio negativo — y corrige el análisis</h2>
+<div class="box bad">
+<b>Juanjo, 10-ago:</b> «solo puedo adjuntar screenshots utilizando la funcionalidad nativa de TestFlight, pero nada más; no puedo capturar en Send Feedback, solo escribir».
+<p style="margin-top:8px"><b>Diagnóstico (git, no intuición)</b>: <code>expo-image-picker</code> entró en el commit <code>5becee9</code> del 7-ago, cuyo propio mensaje ya avisaba «<i>se enciende con el próximo build</i>». El binario 0.21 se construyó antes, desde <code>935a72d</code>. La librería está en <code>package.json</code> pero <b>no está dentro de la app instalada</b>: el <code>require()</code> falla y el JS no puede hacer nada.</p>
+<p><b>Consecuencia</b>: <b>TODO lo fotográfico del Epic P es nativo</b>, también la galería. No hay versión recortada que pueda salir hoy por OTA. La decisión de producto se resuelve sola: <b>P1 completo en la 0.22</b>, que es además lo correcto por privacidad.</p>
+</div>
+<div class="box warn">
+<b>Lección grabada (r17)</b>: <b>una dependencia en <code>package.json</code> no es una dependencia en el binario</b>. Lo que cuenta es lo que se compiló en el build que la usuaria tiene instalado. Para saberlo: <code>git log -S"&lt;paquete&gt;" -- package.json</code> y comparar la fecha con la del último build nativo. Yo mismo caí en esto hace media hora leyendo solo el <code>package.json</code> — el guardarraíl correcto verifica el ARTEFACTO, no la fuente (meta-lección r11c-3).
+<p style="margin-top:8px"><b>Bug de fontanería asociado</b>: la pantalla de Feedback avisa con un mensaje amable cuando falta el módulo, pero el resto de fallos del picker se tragan en un <code>catch {}</code> vacío. Un fallo que no hace ruido cuesta días. Se arregla en la 0.22 junto con el resto.</p>
+</div>
+
+<h2>5 · Las dos releases, tal como quedan</h2>
+<h3>🔄 0.21.1 — OTA · lista cuando lo esté (mismo día)</h3>
+<ul>
+  <li>Los <b>5 crashes P0</b> de TestFlight, <b>si la causa es JavaScript</b> (lo habitual: navegación, datos nulos, formato). Se confirma leyendo cada log antes de asignar.</li>
+  <li>Textos, i18n y ajustes de pantallas existentes.</li>
+  <li>Cualquier fix de consulta a Supabase o de Edge Function.</li>
+  <li class="mini">Recordatorio del ritual: la OTA se publica en <b>todos los runtimes vivos</b> (0.18/0.19/0.20/0.21) con <code>tools/OTA NutriSync App.command</code>, y se recibe cerrando la app dos veces.</li>
+</ul>
+<h3>📦 0.22.0 — nativa · build miércoles 12 → usuarias viernes 14</h3>
+<ul>
+  <li><b>Epic P Incremento P1 completo</b>: <code>expo-image-manipulator</code> (1024 px + sin EXIF) y, si falta, el permiso de cámara.</li>
+  <li>Cualquier crash P0 cuya causa resulte ser nativa.</li>
+  <li>La deuda nativa que esté lista y merezca viajar en el mismo build — <b>un build nativo se aprovecha</b>: lo que no entre espera al siguiente.</li>
+  <li class="mini">Regla Juanjo (5-ago): <b>siempre las dos plataformas</b> — <code>eas build -p all --profile production</code>. Un build de una sola plataforma es la excepción y se justifica.</li>
+</ul>
+
+<h2>6 · Cómo se decide cada item (dos minutos por item)</h2>
+<ol>
+  <li>¿Toca <code>package.json</code>, <code>app.json</code>, icono, splash o SDK? → <b>nativo</b>. Fin.</li>
+  <li>¿Usa una capacidad del móvil? Mira el inventario del §3: <b>si el módulo ya está en el binario, es OTA</b>; si no, nativo.</li>
+  <li>¿Necesita un permiso que la app aún no pide? → <b>nativo</b> (aunque el módulo esté).</li>
+  <li>En cualquier otro caso → <b>OTA</b>.</li>
+  <li>Se anota en 🗂 Sprint Planning, columna <b>entrega</b>, <b>antes</b> de empezar. Esa columna es la que manda en 🚢.</li>
+</ol>
+<p class="mini">El SQL <code>backend-sql/2026-08-10-analisis-entrega-releases.sql</code> saca los candidatos, los que están sin decidir y las <b>contradicciones</b> (un item nativo colado en una release OTA, que es el error que duele).</p>
+
+</div></body></html>
