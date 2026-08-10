@@ -115,6 +115,8 @@ Nada se guarda hasta que pulsas un botón de guardar.</p>
 </div></div>
 <div class="kpis" id="kpis"></div>
 <div class="filtros">
+  <input id="fQ" type="search" placeholder="🔍 buscar: nº, título, texto, usuaria…" oninput="window.nsQ()"
+         style="flex:1;min-width:200px;padding:8px 10px;border:1px solid #EADFD0;border-radius:10px;font:inherit">
   <select id="fSt"><option value="">estado: todos</option>
     <option value="nuevo">nuevo</option><option value="en_curso">en curso</option>
     <option value="esperando_usuaria">esperando a la usuaria</option>
@@ -357,18 +359,28 @@ function ticket(t){
 
 var ESTADOS=[['nuevo','🆕 Nuevas'],['en_curso','🔧 En curso'],['esperando_usuaria','⏳ Esperando a la usuaria'],
   ['resuelto','✅ Resueltas'],['cerrado','🗄 Cerradas']];
-var SEC={resuelto:true,cerrado:true};   // plegadas por defecto; las vivas, abiertas
+/* r17 (regla Juanjo, 10-ago): la página abre como DASHBOARD compacto — TODAS
+   las secciones plegadas (KPIs + contadores a la vista, cero scroll infinito).
+   Se despliega lo que se toca; buscar o filtrar por estado abre lo que casa. */
+var SEC={nuevo:true,en_curso:true,esperando_usuaria:true,resuelto:true,cerrado:true};
 window.nsSec=function(k){SEC[k]=!SEC[k];render();};
+window.nsQ=function(){render();};
+function hay(t,q){
+  if(!q)return true;
+  var pajar=[t.ticket_no,t.titulo,t.user_email,t.message,t.categoria,t.criticidad,
+    t.assigned_to,t.accion,t.respuesta,t.app_version,t.platform,t.cohort]
+    .map(function(v){return String(v==null?'':v);}).join(' ').toLowerCase();
+  return pajar.indexOf(q)>=0;
+}
 function render(){
-  var st=$('fSt').value, as=$('fAs').value;
-  var rows=(D.tickets||[]).filter(function(t){
-    return (!st||t.status===st)&&(!as||t.assigned_to===as);});
+  var st=$('fSt').value, as=$('fAs').value, q=($('fQ').value||'').trim().toLowerCase();
+  var rows=filtrados();
   /* cascada: un bloque por estado, con contador y plegado */
   var html='';
   ESTADOS.forEach(function(e){
     var g=rows.filter(function(t){return t.status===e[0];});
     if(!g.length)return;
-    var plegada=SEC[e[0]]&&!st;
+    var plegada=SEC[e[0]]&&!st&&!q;
     html+='<div class="sec" onclick="window.nsSec(\''+e[0]+'\')">'
       +'<span class="pill s-'+e[0]+'">'+e[1]+'</span><span class="n">'+g.length+'</span>'
       +'<span class="chev">'+(plegada?'▸ desplegar':'▾')+'</span></div>';
@@ -397,8 +409,9 @@ function render(){
    BOM + punto y coma = doble clic y Excel en español lo abre en columnas. */
 function csvCell(v){return '"'+String(v==null?'':v).replace(/"/g,'""').replace(/\r?\n/g,' · ')+'"';}
 function filtrados(){
-  var st=$('fSt').value, as=$('fAs').value;
-  return (D&&D.tickets||[]).filter(function(t){return (!st||t.status===st)&&(!as||t.assigned_to===as);});
+  var st=$('fSt').value, as=$('fAs').value, q=($('fQ').value||'').trim().toLowerCase();
+  return (D&&D.tickets||[]).filter(function(t){
+    return (!st||t.status===st)&&(!as||t.assigned_to===as)&&hay(t,q);});
 }
 window.nsExport=function(){
   var rows=filtrados();
