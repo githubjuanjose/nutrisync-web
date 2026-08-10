@@ -36,6 +36,19 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
   opacity:0;pointer-events:none;transition:opacity .25s;z-index:50;max-width:90vw}
 #snack.on{opacity:1}
 select.mini{font-size:11.5px;padding:4px 7px}
+
+.cap{background:#fff;border:1px solid #EFE3D7;border-radius:14px;margin:12px 0;overflow:hidden}
+.cap>.ch{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;background:#FBF6EF}
+.cap>.ch:hover{background:#FFF6F2}
+.cap>.cb{display:none;padding:4px 14px 14px}
+.cap.open>.cb{display:block}
+.cap .cod{font-weight:900;font-size:11px;letter-spacing:.5px;background:#241D1A;color:#fff;border-radius:6px;padding:2px 8px}
+.cap .cn{font-weight:800;font-size:14px}
+.cap .meta{margin-left:auto;color:#8A7F78;font-size:12px;white-space:nowrap}
+.epi{margin:10px 0 4px;padding:6px 10px;background:#F7F2EA;border-radius:8px;font-size:12.5px;font-weight:800;display:flex;gap:8px;align-items:center}
+.epi .n{color:#8A7F78;font-weight:600;margin-left:auto}
+.pend{background:#FFF8E6;border:1px solid #F0D9A0;border-radius:10px;padding:10px 12px;font-size:12.5px;margin:8px 0}
+.docs a{font-size:11.5px;color:#1D4ED8;text-decoration:none;margin-right:10px}
 </style>
 </head><body><!-- ns-hub-navbar -->
 <div id="ns-hub-navbar">
@@ -302,6 +315,8 @@ select.mini{font-size:11.5px;padding:4px 7px}
   <input id="rmQ" type="search" placeholder="🔍 buscar: título, origen, ticket…" oninput="window.rmPinta()"
          style="flex:1;min-width:200px;padding:8px 10px;border:1px solid #EFE3D7;border-radius:10px;font:inherit">
   <select id="rmPri" onchange="window.rmPinta()"><option value="">prioridad: todas</option><option>P0</option><option>P1</option><option>P2</option><option>P3</option></select>
+  <button onclick="window.rmTodas(true)">▾ todas</button>
+  <button onclick="window.rmTodas(false)">▸ ninguna</button>
   <select id="rmTipo" onchange="window.rmPinta()"><option value="">tipo: todos</option><option value="fix">🐞 fix</option><option value="mejora">🔧 mejora</option><option value="feature">🚀 feature</option><option value="capability">🧱 capability</option></select>
 </div>
 <div id="lista"></div>
@@ -312,7 +327,7 @@ select.mini{font-size:11.5px;padding:4px 7px}
 var sb=window.supabase.createClient('https://nebkqncvapelrarruyqb.supabase.co',
   'sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau');
 var $=function(i){return document.getElementById(i);};
-var ITEMS=[], SPRINTS=[], EPICAS=[];
+var ITEMS=[], SPRINTS=[], EPICAS=[], CAPS=[], ABIERTA={};
 
 function fail(e,fn){ $('err').innerHTML='<div class="err"><b>No he podido leer los datos.</b><br>Consulta: <code>'+fn+'</code><br>'+(e&&e.message?e.message:'')+'</div>'; }
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
@@ -346,33 +361,78 @@ window.rmPinta=function(){
   }).join('')+'<div class="kpi"><span class="l">total sin comprometer</span><span class="v">'+vis.length+'</span></div>';
 
   var h='';
-  // Agrupadas por épica; las huérfanas al final, que son las que piden acción.
-  var grupos={}; vis.forEach(function(b){ (grupos[b.epic||'']=grupos[b.epic||'']||[]).push(b); });
-  var orden=Object.keys(grupos).sort(function(a,b){ return (a||'zz').localeCompare(b||'zz'); });
 
-  orden.forEach(function(k){
-    var g=grupos[k].sort(function(a,b){return (a.prioridad||'P9').localeCompare(b.prioridad||'P9');});
-    h+='<div class="sec"><span class="n">'+(k?esc(nombreEpica(k)):'⚠ sin épica asignada')+'</span>'
-      +'<span class="cnt">'+g.length+'</span></div>';
-    h+=g.map(function(b){
-      return '<div class="it">'
-        +'<span class="pr '+esc(b.prioridad)+'">'+esc(b.prioridad)+'</span>'
-        +'<span class="tp t-'+esc(b.tipo)+'">'+(TIPOS[b.tipo]||'')+' '+esc(b.tipo)+'</span>'
-        +'<span class="tit">'+esc(b.titulo)+'</span>'
-        +(b.ticket_no?'<span class="orig">'+esc(b.ticket_no)+'</span>':'')
-        +'<select onchange="window.rmEpica(\''+esc(b.id)+'\',this.value)" title="A qué épica pertenece">'
-        +'<option value="">— sin épica —</option>'
-        +EPICAS.map(function(e){return '<option value="'+e.letra+'"'+(e.letra===b.epic?' selected':'')+'>'
-            +'Epic '+e.letra+' · '+esc(e.nombre)+'</option>';}).join('')
-        +'<option value="__nueva__">＋ épica nueva…</option>'
-        +'</select>'
-        +'<select onchange="window.rmPromover(\''+esc(b.id)+'\',this.value)" title="Comprometerlo a un sprint">'
-        +'<option value="">→ a un sprint…</option>'
-        +SPRINTS.map(function(s){return '<option value="'+s+'">'+s+'</option>';}).join('')
-        +'</select>'
-        +'</div>';
-    }).join('');
+  /* TABLERO (petición Juanjo, 10-ago): al abrir, TODO cerrado. Una lista de
+     cuarenta ideas desplegadas no se lee; una de seis secciones, sí. Se abre
+     lo que interesa y el resto no compite por la atención. */
+  function itemHTML(b){
+    return '<div class="it">'
+      +'<span class="pr '+esc(b.prioridad)+'">'+esc(b.prioridad)+'</span>'
+      +'<span class="tp t-'+esc(b.tipo)+'">'+(TIPOS[b.tipo]||'')+'</span>'
+      +'<span class="tit">'+esc(b.titulo)+'</span>'
+      +(b.ticket_no?'<span class="orig">'+esc(b.ticket_no)+'</span>':'')
+      +'<select onchange="window.rmEpica(\''+esc(b.id)+'\',this.value)" title="A qué épica pertenece">'
+      +'<option value="">— sin épica —</option>'
+      +EPICAS.map(function(e){return '<option value="'+e.letra+'"'+(e.letra===b.epic?' selected':'')+'>'
+          +'Epic '+e.letra+' · '+esc(e.nombre)+'</option>';}).join('')
+      +'<option value="__nueva__">＋ épica nueva…</option>'
+      +'</select>'
+      +'<select onchange="window.rmPromover(\''+esc(b.id)+'\',this.value)" title="Comprometerlo a un sprint">'
+      +'<option value="">→ a un sprint…</option>'
+      +SPRINTS.map(function(s){return '<option value="'+s+'">'+s+'</option>';}).join('')
+      +'</select></div>';
+  }
+
+  function seccion(clave, titulo, cuerpo, meta, extra){
+    var ab = ABIERTA[clave] === true;
+    return '<div class="cap'+(ab?' open':'')+'"><div class="ch" onclick="window.rmTog(\''+clave+'\')">'
+      + (extra||'') + '<span class="cn">'+titulo+'</span>'
+      + '<span class="meta">'+meta+(ab?'':' · ▸')+'</span></div>'
+      + '<div class="cb">'+cuerpo+'</div></div>';
+  }
+
+  // ── Por CAPACIDAD: varias épicas sirven a la misma, y sin este techo tres
+  //    esfuerzos que se refuerzan parecen tres proyectos compitiendo.
+  CAPS.forEach(function(c){
+    var suyas = EPICAS.filter(function(e){return e.capability===c.codigo;});
+    var cuerpo = '';
+    if (c.proposito) cuerpo += '<div class="pend">'+esc(c.proposito)+'</div>';
+    if (c.documentos && c.documentos.length)
+      cuerpo += '<div class="docs">'+c.documentos.map(function(d){
+        return '<a href="/hub/documentation/'+d+'" target="_blank">📄 '+esc(d.split('/').pop())+'</a>';}).join('')+'</div>';
+    var n = 0;
+    suyas.forEach(function(e){
+      var g = vis.filter(function(b){return b.epic===e.letra;})
+                 .sort(function(a,b){return (a.prioridad||'P9').localeCompare(b.prioridad||'P9');});
+      n += g.length;
+      cuerpo += '<div class="epi">Epic '+esc(e.letra)+' · '+esc(e.nombre)+'<span class="n">'+g.length+'</span></div>';
+      cuerpo += g.length ? g.map(itemHTML).join('') : '<p class="hint">Sin ideas pendientes en esta épica.</p>';
+    });
+    if (!suyas.length) cuerpo += '<p class="hint">Todavía no tiene épicas. Se desglosa en una sesión dedicada.</p>';
+    h += seccion('cap-'+c.codigo, esc(c.nombre), cuerpo,
+                 suyas.length+' épicas · '+n+' ideas',
+                 '<span class="cod">'+esc(c.codigo)+'</span>');
   });
+
+  // ── Épicas sin capacidad asignada, y al final las ideas sin épica: las dos
+  //    son deuda de clasificación, y por eso van visibles pero abajo.
+  var sueltas = EPICAS.filter(function(e){return !e.capability;});
+  var conIdeas = sueltas.filter(function(e){return vis.some(function(b){return b.epic===e.letra;});});
+  if (conIdeas.length){
+    var cuerpo='';
+    conIdeas.forEach(function(e){
+      var g=vis.filter(function(b){return b.epic===e.letra;})
+               .sort(function(a,b){return (a.prioridad||'P9').localeCompare(b.prioridad||'P9');});
+      cuerpo+='<div class="epi">Epic '+esc(e.letra)+' · '+esc(e.nombre)+'<span class="n">'+g.length+'</span></div>'
+            + g.map(itemHTML).join('');
+    });
+    h += seccion('sin-cap','Épicas sin capacidad asignada', cuerpo,
+                 conIdeas.length+' épicas', '<span class="cod">—</span>');
+  }
+  var huerfanas = vis.filter(function(b){return !b.epic;});
+  if (huerfanas.length)
+    h += seccion('sin-epica','⚠ Ideas sin épica', huerfanas.map(itemHTML).join(''),
+                 huerfanas.length+' por clasificar', '<span class="cod">!</span>');
 
   $('lista').innerHTML = h || '<p class="hint">Nada sin comprometer ahora mismo. Todo lo aceptado está ya en un sprint.</p>';
 };
@@ -381,6 +441,9 @@ window.rmPinta=function(){
    eso está a un clic: el roadmap no es donde se trabaja, es donde se decide. */
 /* Asignar épica. Si eligen «nueva», se pide el nombre y la LETRA la pone la
    base: elegirla a mano acaba en dos epicas «Q». */
+window.rmTog=function(k){ ABIERTA[k] = !ABIERTA[k]; window.rmPinta(); };
+window.rmTodas=function(v){ Object.keys(ABIERTA).forEach(function(k){ABIERTA[k]=v;}); window.rmPinta(); };
+
 window.rmEpica=function(id,letra){
   if(letra==='__nueva__'){
     var n=prompt('Nombre de la épica nueva (la letra se asigna sola):','');
@@ -410,6 +473,7 @@ window.rmPromover=function(id,sprint){
 function cargar(){
   sb.auth.getSession().then(function(s){
     if(!s.data.session){$('lista').innerHTML='<p class="hint">Inicia sesión admin desde el hub y recarga.</p>';return;}
+    sb.rpc('admin_capabilities').then(function(rc){ CAPS = rc.data || []; window.rmPinta && window.rmPinta(); });
     sb.rpc('admin_epicas').then(function(re){ EPICAS = re.data || []; window.rmPinta && window.rmPinta(); });
     sb.rpc('admin_backlog_list').then(function(r){
       if(r.error){fail(r.error,'admin_backlog_list');return;}
