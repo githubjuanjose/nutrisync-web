@@ -80,25 +80,59 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
 
 /* r17 (10-ago): rejilla de incidencias. Columnas fijas = el ojo baja recto por
    una columna en vez de rebotar. Los chips secundarios (fix enviado, escalada,
-   respondida…) se agrupan en la ultima columna para que no rompan la fila. */
+   respondida…) se agrupan en la ultima columna para que no rompan la fila.
+
+   CADA CELDA VA POR NOMBRE, NO POR ORDEN (arreglo 11-ago). La primera version
+   dejaba que el grid colocara los hijos segun aparecian, y TRES de ellos son
+   opcionales: si un ticket no trae criticidad o no trae titulo, todo lo demas
+   se corre una columna y la fila se alinea distinta a la de arriba. Ademas
+   `msg` y `meta`, que en flexbox hacian salto de linea, caian en el primer
+   hueco libre y se montaban encima del resto. Con `grid-area` la presencia y
+   el orden dejan de importar: la celda que falta se queda vacia y ya esta. */
 .t>.th{display:grid;grid-template-columns:96px 46px minmax(0,1fr) 108px 104px auto;
-       gap:10px;align-items:center;padding:9px 12px}
-.t>.th .tit{font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
-.t>.th .cat{display:none}                    /* la categoria vive en el detalle */
-.t>.th .chips{display:flex;gap:5px;align-items:center;flex-wrap:nowrap;justify-self:end}
-.t>.th .chips>*{font-size:9.5px;padding:1px 6px}
+       grid-template-areas:
+         "no   crit tit  est  asig chips"
+         "msg  msg  msg  msg  msg  msg"
+         "meta meta meta meta meta meta";
+       gap:3px 10px;align-items:center;padding:9px 12px}
+.t>.th>.no{grid-area:no}
+.t>.th>.fb{grid-area:crit;justify-self:start}
+.t>.th>.tit{grid-area:tit}
+.t>.th>.pill{grid-area:est;justify-self:start}   /* `>` : el 🍎 de chips es .pill tambien */
+.t>.th>.asig{grid-area:asig}
+.t>.th>.chips{grid-area:chips}
+.t>.th>.msg{grid-area:msg}
+.t>.th>.meta{grid-area:meta}
+/* Todo lo que puede desbordar se corta con puntos suspensivos. Sin `min-width:0`
+   una celda de grid nunca encoge por debajo de su contenido y empuja al resto. */
+.t>.th>.tit,.t>.th>.asig,.t>.th>.msg,.t>.th>.meta{
+  min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t>.th>.tit{font-weight:600;font-size:13px}
+.t>.th>.asig{font-size:11px;color:#6E655D}
+.t>.th>.msg{font-size:12px;color:#6E655D}
+.t>.th>.meta{font-size:11px;color:#A79C93}
+.t>.th>.cat{display:none}                    /* la categoria vive en el detalle */
+.t>.th>.chips{display:flex;gap:5px;align-items:center;flex-wrap:nowrap;justify-self:end}
+.t>.th>.chips>*{font-size:9.5px;padding:1px 6px}
 .gridhead{display:grid;grid-template-columns:96px 46px minmax(0,1fr) 108px 104px auto;
           gap:10px;padding:4px 12px 6px;font-size:10px;letter-spacing:.6px;
           text-transform:uppercase;color:#A79C93;font-weight:800}
 .t{border-radius:10px;margin:3px 0}
 .t.open>.th{background:#FFF6F2;border-radius:10px 10px 0 0}
 @media(max-width:820px){
-  .t>.th{grid-template-columns:80px 40px minmax(0,1fr) auto;gap:7px}
-  .t>.th .chips{display:none}                /* en movil manda el titulo */
+  /* En movil sobran columnas, no filas: asignada y chips se van (la persona ya
+     sale en `meta`), y el titulo se queda con todo el ancho que puede. */
+  .t>.th{grid-template-columns:80px 40px minmax(0,1fr) auto;
+         grid-template-areas:
+           "no   crit tit  est"
+           "msg  msg  msg  msg"
+           "meta meta meta meta";
+         gap:3px 7px}
+  .t>.th>.chips,.t>.th>.asig{display:none}
   .gridhead{display:none}
 }
 
-.t>.th .escal{max-width:104px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.t>.th>.chips .escal{max-width:104px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 </style></head><body><!-- ns-hub-navbar -->
 <div id="ns-hub-navbar">
 <style>
