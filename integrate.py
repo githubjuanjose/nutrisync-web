@@ -550,6 +550,15 @@ if os.path.isdir(_hubdir):
             if not _f.endswith(".html"):
                 continue
             _p = os.path.join(_r, _f)
+            # Los ADJUNTOS no se tocan (r17-g, 11-ago). Un .html que nos entrega
+            # alguien —una propuesta, un informe— es una prueba, no una página
+            # nuestra: se sirve tal cual llegó. Inyectarle nuestro script lo
+            # convierte en un fichero que ya no coincide con el original, que es
+            # justo lo que luego se lee como «este documento está corrupto».
+            # Viven en subcarpetas de documentation/ (las copia ns-docs-adjuntos).
+            _rel = os.path.relpath(_p, _hubdir).split(os.sep)
+            if len(_rel) > 2 and _rel[0] == "documentation":
+                continue
             _s = open(_p, encoding="utf-8", errors="surrogateescape").read()
             if "ns-canonical" in _s or "</head>" not in _s:
                 continue

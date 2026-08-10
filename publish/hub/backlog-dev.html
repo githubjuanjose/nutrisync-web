@@ -310,7 +310,13 @@ Antes había un desplegable para esto y podía contradecir a la release; ahora h
 🔄 <b>OTA</b> — <b>0.N.x con x&gt;0</b> (0.21.1, 0.21.2…): JavaScript puro. Llega a las usuarias <b>el mismo día</b>, sin tiendas ni revisión.<br>
 📦 <b>Nativa</b> — <b>0.N.0</b> (0.22.0): toca dependencias nativas, permisos, iconos o config de tiendas. <b>Build el miércoles</b>, usuarias <b>el viernes</b>.<br>
 🌐 <b>Web · continua</b> — <b>WEB</b>: el carril del deploy web. Nunca «se publica» porque no para; lo que se termina son los items.<br>
-· <b>Sin release</b> — <b>—</b>: aún no comprometido a nada. No es que falte analizarlo: es que todavía no se ha decidido cuándo entra.</div>
+· <b>Sin release</b> — <b>—</b>: aún no comprometido a nada. No es que falte analizarlo: es que todavía no se ha decidido cuándo entra.
+<br><br><b>¿Y cómo se sabe en el triaje?</b> Tres preguntas, en este orden — y si la tercera no está clara, se queda en «sin decidir», que es una respuesta legítima:
+<br>1️⃣ ¿El cambio vive en la web o en el hub? → <b>WEB</b>. Esto no es criterio, es ubicación: se sabe siempre.
+<br>2️⃣ ¿Pide una capacidad del teléfono que la app <i>todavía no pide</i> (cámara, galería, notificaciones, salud, biometría, ubicación), añade un módulo nativo, o toca icono, nombre, permisos o config de tiendas? → <b>Nativa</b>.
+<br>3️⃣ Si no, es JavaScript puro → <b>OTA</b>.
+<br><span style="color:#C73A20"><b>La trampa del paso 2</b> (10-ago, me costó un día): la pregunta NO es «¿está la librería en <code>package.json</code>?» sino <b>«¿estaba en el último build nativo?»</b>. Una dependencia añadida después del build no existe en el móvil de la usuaria — el código la llama y no pasa nada. Se comprueba con
+<code>git log -S"&lt;paquete&gt;" -- package.json</code> contra la fecha del último build.</span></div>
 <div class="kpis" id="kpis"></div>
 
 <div class="alta" id="alta">
