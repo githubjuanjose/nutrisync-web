@@ -70,6 +70,18 @@ var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){re
 var REL=[],ITEMS=[],ABIERTAS={},SNT=null;
 var ORDEN=['0.21.0','0.21.1','0.22.0','0.23.0','GA','0.20.0'];
 var RELS_ASIGNABLES=['—','0.21.1','0.22.0','0.23.0','GA'];
+/* r17 (petición Juanjo, 10-ago): la página se lee por SECCIONES, no como una
+   lista plana de releases. Tres momentos del ciclo de vida, cada uno plegable
+   con su contador: lo que se está construyendo, lo que espera revisión y lo
+   que ya está fuera. Una release solo puede estar en una. */
+var SECCIONES=[
+  ['trabajo',  '🔨 En construcción',  ['planificada','en_construccion']],
+  ['revision', '🧪 En revisión',      ['en_review']],
+  ['fuera',    '✅ Publicadas',       ['en_tiendas','ga']]
+];
+var SECABIERTA={};   // plegadas por defecto (dashboard)
+window.rpSec=function(k){SECABIERTA[k]=!SECABIERTA[k];render();};
+
 var SINREL_ABIERTO=false;  // r17: la pagina abre como DASHBOARD (todo plegado)
 var Q='';                  // texto de busqueda; si hay, se abre lo que casa
 /* r17 (regla Juanjo, 10-ago): mismo patron que Incidencias — se entra y se ven
@@ -80,7 +92,10 @@ function rpHay(b){
     .map(function(v){return String(v==null?'':v);}).join(' ').toLowerCase().indexOf(Q)>=0;
 }
 window.rpQbuscar=function(){Q=(document.getElementById('rpQ').value||'').trim().toLowerCase();render();};
-window.rpTodas=function(abrir){REL.forEach(function(r){ABIERTAS[r.version]=abrir;});SINREL_ABIERTO=abrir;render();};
+window.rpTodas=function(abrir){
+  REL.forEach(function(r){ABIERTAS[r.version]=abrir;});
+  SECCIONES.forEach(function(sec){SECABIERTA[sec[0]]=abrir;});
+  SINREL_ABIERTO=abrir;render();};
 var SPRINTS={S11:'Sprint 11 · 3–7 ago',S12:'Sprint 12 · 10–14 ago',S13:'Sprint 13 · 17–21 ago',
   S14:'Sprint 14 · 24–28 ago',S15:'Sprint 15 · 31 ago–4 sep',S16:'Sprint 16 · 7–11 sep',GA:'Tramo GA',backlog:'Sin sprint'};
 var ESTADOS=['planificada','en_construccion','en_review','en_tiendas','ga'];
@@ -133,10 +148,48 @@ function relCard(r){
     +'<div class="txt" id="nen-'+esc(r.version)+'">'+esc(r.notas_en||'— no notes yet —')+'</div></div>'
     +'</div></div></div>';
 }
+
 function render(){
   var orden=ORDEN.filter(function(v){return REL.some(function(r){return r.version===v;});});
   REL.sort(function(a,b){return orden.indexOf(a.version)-orden.indexOf(b.version);});
-  var html=REL.map(relCard).join('');
+
+  /* Guardarraíl (filosofía nsFail): un item asignado a una version SIN ficha de
+     release no aparece en ninguna tarjeta — se quedaría invisible para siempre.
+     Aquí se ve, con su nombre y su remedio. */
+  var conFicha={}; REL.forEach(function(r){conFicha[r.version]=true;});
+  var huerfanos=ITEMS.filter(function(b){
+    return b.release && b.release!=='—' && !conFicha[b.release];});
+  var avisoH='';
+  if(huerfanos.length){
+    var vers={}; huerfanos.forEach(function(b){vers[b.release]=(vers[b.release]||0)+1;});
+    avisoH='<div class="err" style="margin-bottom:12px"><b>⚠️ '+huerfanos.length
+      +' item(s) asignados a una release que no existe</b> — '
+      +Object.keys(vers).map(function(v){return '<b>'+esc(v)+'</b>: '+vers[v];}).join(' · ')
+      +'.<br>No salen en ninguna tarjeta de abajo. Crea la ficha de esa release '
+      +'(tabla <code>releases</code>) o reasigna los items desde 🗂 Sprint Planning.<br>'
+      +huerfanos.map(function(b){return '· <b>'+esc(b.prioridad||'')+'</b> '+esc(b.titulo)
+        +(b.ticket_no?' <span class="ref">'+esc(b.ticket_no)+'</span>':'');}).join('<br>')
+      +'</div>';
+  }
+
+  var html='';
+  SECCIONES.forEach(function(sec){
+    var grupo=REL.filter(function(r){return sec[2].indexOf(r.estado)>=0;});
+    if(!grupo.length)return;
+    var tarjetas=grupo.map(relCard).join('');
+    if(Q&&!tarjetas)return;                       // buscando: secciones vacías fuera
+    var abierta=Q?true:(SECABIERTA[sec[0]]===true);
+    var nItems=grupo.reduce(function(n,r){
+      return n+ITEMS.filter(function(b){return b.release===r.version;}).length;},0);
+    html+='<div class="sec" style="display:flex;align-items:center;gap:10px;margin:20px 0 8px;'
+      +'padding:10px 14px;background:#FBF6EF;border:1px solid #EFE3D7;border-radius:12px;cursor:pointer" '
+      +'onclick="window.rpSec(\''+sec[0]+'\')">'
+      +'<b style="font-size:14px">'+sec[1]+'</b>'
+      +'<span style="margin-left:auto;color:#8A7F78;font-size:12px">'
+      +grupo.length+' release(s) · '+nItems+' items · '+(abierta?'▾ plegar':'▸ desplegar')+'</span></div>'
+      +(abierta?tarjetas:'');
+  });
+  html=avisoH+html;
   /* r16-F14 (regla Juanjo): lo que ESPERA decisión va PRIMERO — asignar release
      es la acción pendiente; las releases ya montadas son consulta. Ordenado por
      prioridad (P0 arriba) para que la decisión sea obvia. */
