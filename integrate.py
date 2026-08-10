@@ -1577,7 +1577,10 @@ if os.path.exists(_dl):
       "var t0=Date.now();"
       "function abre(){"
         "if(Date.now()-t0>12000)return;"                # se rinde a los 12 s
-        "var a=[].slice.call(document.querySelectorAll('a[onclick],a[href]'))"
+        # OJO: las tarjetas del pie NO llevan href ni onclick en el HTML —
+        # support.js les cuelga el manejador por JS. Filtrar por 'a[onclick]'
+        # no encontraba nada (bug 10-ago, cazado midiendo en el navegador).
+        "var a=[].slice.call(document.querySelectorAll('a,button,[role=button]'))"
           ".filter(function(x){return re.test((x.textContent||'').trim())&&x.offsetParent!==null;})[0];"
         "if(a){a.scrollIntoView({block:'center'});a.click();"
           "history.replaceState({},'',location.pathname);return;}"   # limpia la query
