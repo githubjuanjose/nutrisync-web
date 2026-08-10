@@ -362,7 +362,7 @@ function item(b){
     +'<select class="mini ent-'+esc(b.entrega||'por_ver')+'" title="Cómo se entrega: OTA (mismo día) o versión nueva en tiendas" onchange="window.bkSet(\''+b.id+'\',{entrega:this.value})">'
     +[['por_ver','❔ por ver'],['ota','🔄 OTA'],['nativo','📦 nativo']].map(function(x){return '<option value="'+x[0]+'"'+(x[0]===(b.entrega||'por_ver')?' selected':'')+'>'+x[1]+'</option>';}).join('')+'</select>'
     +'<select class="mini" title="release" onchange="window.bkSet(\''+b.id+'\',{release:this.value})">'
-    +['—','0.21.1','0.22.0','0.23.0','GA','0.21.0','0.20.0'].map(function(v){return '<option value="'+v+'"'+(v===(b.release||'—')?' selected':'')+'>'+v+'</option>';}).join('')+'</select>'
+    +opcionesRelease(b.release)+'</select>'
     +'<select class="mini" onchange="window.bkSet(\''+b.id+'\',{prioridad:this.value})">'
     +['P0','P1','P2','P3'].map(function(x){return '<option'+(x===b.prioridad?' selected':'')+'>'+x+'</option>';}).join('')+'</select>'
     +'</div>';
@@ -440,9 +440,29 @@ window.bkCsv=function(){
   a.download='nutrisync-backlog-'+pad(d.getDate())+pad(d.getMonth()+1)+'.csv';
   a.click();URL.revokeObjectURL(a.href);
 };
+/* Las releases se leen de la TABLA, no de una lista escrita a mano.
+   Habia TRES listas duplicadas en el HTML (dos en 🚢, una aqui) y el 10-ago,
+   al crear la 0.21.2, me deje dos sin tocar: el desplegable de 🗂 no la
+   ofrecia y no habia forma de asignarla. Una verdad, un sitio.
+   Las ya publicadas salen deshabilitadas: no se puede planificar trabajo en
+   algo que ya esta en las tiendas (lo impide tambien el trigger del servidor). */
+var RELS=[];
+function opcionesRelease(actual){
+  var act = actual || '—';
+  var lista = [{version:'—', estado:'planificada'}].concat(RELS);
+  if (!lista.some(function(r){return r.version===act;})) lista.push({version:act, estado:'planificada'});
+  return lista.map(function(r){
+    var pub = r.estado==='en_tiendas' || r.estado==='ga';
+    var sel = r.version===act;
+    return '<option value="'+r.version+'"'+(sel?' selected':'')
+         +(pub && !sel ? ' disabled' : '')+'>'+r.version+(pub?' · publicada':'')+'</option>';
+  }).join('');
+}
+
 function cargar(){
   sb.auth.getSession().then(function(s){
     if(!s.data.session){$('board').innerHTML='<p class="hint">Inicia sesión admin desde el hub y recarga.</p>';return;}
+    sb.rpc('admin_releases_list').then(function(rr){ RELS = rr.data || []; });
     sb.rpc('admin_backlog_list').then(function(r){
       if(r.error)return fail(r.error,'admin_backlog_list');
       D=r.data;render();});

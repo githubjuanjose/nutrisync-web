@@ -338,8 +338,14 @@ var sb=window.supabase.createClient('https://nebkqncvapelrarruyqb.supabase.co',
 var $=function(i){return document.getElementById(i);};
 var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
 var REL=[],ITEMS=[],ABIERTAS={},SNT=null;
-var ORDEN=['0.21.0','0.21.1','0.21.2','0.22.0','0.23.0','GA','0.20.0','WEB'];
-var RELS_ASIGNABLES=['—','0.21.2','0.22.0','0.23.0','GA','WEB'];
+var ORDEN=['0.22.0','0.21.2','0.23.0','GA','0.21.1','0.21.0','0.20.0','WEB'];  // lo vivo primero
+/* Ya no se escribe a mano: asignable = toda release que NO este publicada.
+   Añadir una release deja de ser «editar tres listas» y pasa a ser crearla. */
+function relsAsignables(){
+  return ['—'].concat(REL.filter(function(r){
+    return r.estado!=='en_tiendas' && r.estado!=='ga';
+  }).map(function(r){return r.version;}));
+}
 /* r17 (petición Juanjo, 10-ago): la página se lee por SECCIONES, no como una
    lista plana de releases. Tres momentos del ciclo de vida, cada uno plegable
    con su contador: lo que se está construyendo, lo que espera revisión y lo
@@ -400,7 +406,7 @@ function carril(items,titulo,filtro){
       +(b.ticket_no?'<span class="ref">'+esc(b.ticket_no)+'</span>':'')
       +(b.origen&&!b.ticket_no?'<span class="hint">'+esc(b.origen)+'</span>':'')
       +'<select class="mini" title="mover de release" onchange="window.rpMove(\''+b.id+'\',this.value)">'
-      +RELS_ASIGNABLES.concat(['0.21.0','0.20.0']).map(function(v){return '<option value="'+v+'"'+(v===b.release?' selected':'')+'>'+v+'</option>';}).join('')
+      +relsAsignables().concat(REL.filter(function(r){return r.estado==='en_tiendas'||r.estado==='ga';}).map(function(r){return r.version;})).map(function(v){return '<option value="'+v+'"'+(v===b.release?' selected':'')+'>'+v+'</option>';}).join('')
       +'</select></div>';}).join('');
 }
 function relCard(r){
@@ -436,7 +442,8 @@ function relCard(r){
 }
 
 function render(){
-  var orden=ORDEN.filter(function(v){return REL.some(function(r){return r.version===v;});});
+  var orden=ORDEN.filter(function(v){return REL.some(function(r){return r.version===v;});})
+    .concat(REL.map(function(r){return r.version;}).filter(function(v){return ORDEN.indexOf(v)<0;}));
   REL.sort(function(a,b){return orden.indexOf(a.version)-orden.indexOf(b.version);});
 
   /* Guardarraíl (filosofía nsFail): un item asignado a una version SIN ficha de
