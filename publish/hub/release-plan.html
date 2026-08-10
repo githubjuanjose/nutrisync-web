@@ -41,6 +41,11 @@ select.mini{font-family:inherit;font-size:11px;padding:3px 6px;border:1px solid 
   opacity:0;pointer-events:none;transition:opacity .25s;z-index:50;max-width:90vw}
 #snack.on{opacity:1}
 .sinrel{background:#FFF8EF;border:1px dashed #E8B072;border-radius:14px;padding:12px 15px;margin-top:16px}
+.entrega{font-size:11px;padding:2px 8px;border-radius:100px;white-space:nowrap;font-weight:600}
+.d-ota{background:#E8F4EC;color:#2C7A52}
+.d-nat{background:#FDEDE6;color:#B4441F}
+.d-web{background:#EDF0FA;color:#3E4E8C}
+.d-ga {background:#F6EFD9;color:#8A6A16}
 </style></head><body><!-- ns-hub-navbar -->
 <div id="ns-hub-navbar">
 <style>
@@ -333,8 +338,8 @@ var sb=window.supabase.createClient('https://nebkqncvapelrarruyqb.supabase.co',
 var $=function(i){return document.getElementById(i);};
 var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
 var REL=[],ITEMS=[],ABIERTAS={},SNT=null;
-var ORDEN=['0.21.0','0.21.1','0.22.0','0.23.0','GA','0.20.0'];
-var RELS_ASIGNABLES=['—','0.21.1','0.22.0','0.23.0','GA'];
+var ORDEN=['0.21.0','0.21.1','0.22.0','0.23.0','GA','0.20.0','WEB'];
+var RELS_ASIGNABLES=['—','0.21.1','0.22.0','0.23.0','GA','WEB'];
 /* r17 (petición Juanjo, 10-ago): la página se lee por SECCIONES, no como una
    lista plana de releases. Tres momentos del ciclo de vida, cada uno plegable
    con su contador: lo que se está construyendo, lo que espera revisión y lo
@@ -364,6 +369,20 @@ window.rpTodas=function(abrir){
 var SPRINTS={S11:'Sprint 11 · 3–7 ago',S12:'Sprint 12 · 10–14 ago',S13:'Sprint 13 · 17–21 ago',
   S14:'Sprint 14 · 24–28 ago',S15:'Sprint 15 · 31 ago–4 sep',S16:'Sprint 16 · 7–11 sep',GA:'Tramo GA',backlog:'Sin sprint'};
 var ESTADOS=['planificada','en_construccion','en_review','en_tiendas','ga'];
+
+/* Cómo se entrega una release, leído de su propio número (regla Juanjo):
+   la TERCERA cifra lo dice todo. 0.N.x con x>0 es un parche que viaja por OTA
+   (JS, mismo día, sin tiendas); 0.N.0 es un build nativo (deps, permisos,
+   revisión de Apple). La regla vivía en la cabeza de la gente y en el doc 40;
+   aquí se ve en la tarjeta, que es donde se decide. */
+function comoSeEntrega(v){
+  if(v==='WEB') return {ico:'🌐',txt:'web · continua',cls:'d-web'};
+  if(v==='GA')  return {ico:'🏁',txt:'GA',cls:'d-ga'};
+  var m=String(v||'').match(/^(\d+)\.(\d+)\.(\d+)$/);
+  if(!m) return null;
+  return +m[3]>0 ? {ico:'🔄',txt:'OTA',cls:'d-ota'}
+                 : {ico:'📦',txt:'nativa',cls:'d-nat'};
+}
 
 function snack(m){var el=$('snack');el.textContent=m;el.classList.add('on');
   clearTimeout(SNT);SNT=setTimeout(function(){el.classList.remove('on');},3600);}
@@ -401,7 +420,9 @@ function relCard(r){
   });
   return '<div class="rel'+(abierta?' open':'')+'" data-v="'+esc(r.version)+'">'
     +'<div class="rh" onclick="window.rpTog(\''+esc(r.version)+'\')">'
-    +'<span class="ver">'+esc(r.version)+'</span><span class="nom">'+esc(r.nombre||'')+'</span>'
+    +'<span class="ver">'+esc(r.version)+'</span>'
+    +(function(d){return d?'<span class="entrega '+d.cls+'" title="La tercera cifra manda: 0.N.x = parche por OTA · 0.N.0 = build nativo">'+d.ico+' '+d.txt+'</span>':'';})(comoSeEntrega(r.version))
+    +'<span class="nom">'+esc(r.nombre||'')+'</span>'
     +'<select class="mini est e-'+esc(r.estado)+'" onclick="event.stopPropagation()" onchange="window.rpEstado(\''+esc(r.version)+'\',this.value)">'
     +ESTADOS.map(function(x){return '<option value="'+x+'"'+(x===r.estado?' selected':'')+'>'+x.replace(/_/g,' ')+'</option>';}).join('')+'</select>'
     +'<span class="fechas">'+(r.fecha_objetivo?'obj '+esc(r.fecha_objetivo):'')+(r.fecha_real?' · real '+esc(r.fecha_real):'')+' · '+items.length+' items'+(abierta?'':' · ▸ desplegar')+'</span></div>'
