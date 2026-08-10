@@ -1557,6 +1557,37 @@ if os.path.exists(_bd):
     open(_bd, "w", encoding="utf-8").write(_h)
     print("- ns-room-gate: PIN admin con tu diseño (puntos + teclado barajado, 888000)")
 
+# ── ns-sala-deeplink (r17, 10-ago) ──────────────────────────────────────────
+# Desde la WV2 (u otra superficie) se entra a las salas SIEMPRE por la puerta:
+#   https://nutrisynccollective.com/?sala=builders   ·   ?sala=pitch
+# Este bloque abre la tarjeta correspondiente del pie — y por tanto la
+# cortinilla del PIN — en vez de permitir enlaces directos a /hub/*, que
+# publicarían la URL interna. La seguridad real sigue siendo Cloudflare Access
+# en /hub/*; esto cierra el ATAJO, que es lo que se anuncia y lo que se busca.
+_dl = os.path.join(PUB, "index.html")
+if os.path.exists(_dl):
+    _h = open(_dl, encoding="utf-8").read()
+    import re as _re2
+    _h = _re2.sub(r'<script id="ns-sala-deeplink">[\s\S]*?</script>', '', _h)
+    _LINK = ('<script id="ns-sala-deeplink">(function(){'
+      "var q=new URLSearchParams(location.search).get('sala');"
+      "if(!q)return;q=q.toLowerCase();"
+      "var QUE={builders:/builders/i,pitch:/pitch/i};"
+      "var re=QUE[q];if(!re)return;"
+      "var t0=Date.now();"
+      "function abre(){"
+        "if(Date.now()-t0>12000)return;"                # se rinde a los 12 s
+        "var a=[].slice.call(document.querySelectorAll('a[onclick],a[href]'))"
+          ".filter(function(x){return re.test((x.textContent||'').trim())&&x.offsetParent!==null;})[0];"
+        "if(a){a.scrollIntoView({block:'center'});a.click();"
+          "history.replaceState({},'',location.pathname);return;}"   # limpia la query
+        "setTimeout(abre,250);}"
+      "if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',abre);else abre();"
+      "})();</script>")
+    _h = _h.replace("</body>", _LINK + "</body>", 1)
+    open(_dl, "w", encoding="utf-8").write(_h)
+    print("- ns-sala-deeplink: ?sala=builders|pitch abre la puerta con PIN (sin atajos a /hub)")
+
 # ── ns-titulos (r14, revisión Juanjo 6-ago): títulos por equipo ─────────────
 _patch(os.path.join(PUB, "hub", "documentation", "index.html"),
        [("<h1>NutriSync — Documentation</h1>",
