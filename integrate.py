@@ -1070,6 +1070,14 @@ if os.path.exists(rppage):
     shutil.copy(rppage, os.path.join(PUB, "hub", "release-plan.html"))
     print("- release-plan copied to hub/release-plan.html")
 
+# ns-roadmap (r17, 10-ago): 📚 Build Tech Roadmap. La pestaña existia pero
+# apuntaba al INDICE DE DOCUMENTACION — prometia un roadmap y daba otra cosa.
+# Ahora es lo que dice ser: lo aceptado sin comprometer a ningun sprint.
+rmpage = os.path.join(ASSETS, "roadmap.html")
+if os.path.exists(rmpage):
+    shutil.copy(rmpage, os.path.join(PUB, "hub", "roadmap.html"))
+    print("- roadmap copied to hub/roadmap.html")
+
 bkpage = os.path.join(ASSETS, "backlog-dev.html")
 if os.path.exists(bkpage):
     shutil.copy(bkpage, os.path.join(PUB, "hub", "backlog-dev.html"))
@@ -1599,9 +1607,24 @@ _patch(os.path.join(PUB, "hub", "documentation", "index.html"),
          "<h1>NutriSync-Sprint Backlog</h1>", False),
         ("<h1>Docs by NutriSync-Sprint Backlog</h1>",
          "<h1>NutriSync-Sprint Backlog</h1>", False)], "ns-titulos: NutriSync-Sprint Backlog")
-_patch(os.path.join(PUB, "hub", "development-planning-backlog.html"),
-       [("<h1>NutriSync — Platform &amp; Infrastructure Backlog</h1>",
-         "<h1>Backlog by Nutri-Engineering</h1>", False)], "ns-titulos: Backlog by Nutri-Engineering")
+# (r17, 10-ago) La pagina «Current Release & Backlog» quedo obsoleta al nacer
+# 🗂 Sprint Planning y 🚢 Releases: sus datos eran de otra epoca. Se archiva y
+# deja de parchearse. El fichero historico sigue en archive/, no se borra.
+
+# ns-roadmap-iframe (r17, 10-ago): la sala de Builders enseñaba en un iframe
+# la pagina «Current Release & Backlog», que quedo obsoleta al nacer 🗂 y 🚢.
+# Ese iframe vive en el PAYLOAD del motor (linea de Design), asi que no se
+# edita publish/ a mano: se reescribe aqui, que es lo unico que sobrevive a un
+# pack nuevo. Ahora apunta al 📚 Roadmap, que es lo que la tarjeta prometia.
+_idx = os.path.join(PUB, "index.html")
+if os.path.exists(_idx):
+    _s = open(_idx, encoding="utf-8").read()
+    _n = _s.replace('hub/development-planning-backlog.html', 'hub/roadmap.html')
+    if _n != _s:
+        open(_idx, "w", encoding="utf-8").write(_n)
+        print("- ns-roadmap-iframe: la tarjeta de Builders apunta al 📚 Roadmap")
+    else:
+        print("- ns-roadmap-iframe: nada que reescribir (ya apunta bien)")
 
 # ns-selfhost (po74, requisito jurídico): CERO CDNs de terceros en el sitio.
 # Copia fuentes variables (fontsource) y librerías UMD a /assets y reescribe

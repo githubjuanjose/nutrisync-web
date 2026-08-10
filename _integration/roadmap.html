@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build Tech Roadmap — NutriSync Engineering</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.55}
+.w{max-width:1080px;margin:0 auto;padding:26px 20px 90px}
+h1{font-size:23px;margin:0 0 4px}
+p.lead{color:#6E655D;font-size:13.5px;margin:0 0 14px}
+.kpis{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+.kpi{flex:1;min-width:120px;background:#fff;border:1px solid #EFE3D7;border-radius:12px;padding:10px 13px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:2px}
+.kpi .l{font-size:10.5px;color:#8A7F78;text-transform:uppercase;letter-spacing:.5px}
+.kpi .v{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
+.filtros,.alta{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px;align-items:center}
+select,input[type=text]{font-family:inherit;font-size:13px;padding:8px 10px;border:1px solid #EFE3D7;border-radius:10px;background:#fff}
+button{font-family:inherit;font-weight:700;font-size:12.5px;border-radius:18px;padding:7px 14px;border:1px solid #EFE3D7;background:#fff;color:#241D1A;cursor:pointer}
+button:hover{border-color:#F3C8B8;background:#FFF6F2}
+button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:none}
+.sec{display:flex;align-items:center;gap:10px;margin:18px 0 6px;padding:8px 12px;background:#FBF6EF;border:1px solid #EFE3D7;border-radius:10px}
+.sec .n{font-weight:800;font-size:13px}
+.sec .cnt{margin-left:auto;color:#8A7F78;font-size:12px}
+.it{background:#fff;border:1px solid #EFE3D7;border-radius:12px;padding:10px 13px;margin:6px 0;display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.pr{font-size:10.5px;font-weight:900;border-radius:7px;padding:2px 8px}
+.P0{background:#C73A20;color:#fff}.P1{background:#FFB020;color:#5B3A00}.P2{background:#E7E2DC;color:#5F564F}.P3{background:#F4F0EA;color:#8A7F78}
+.tp{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px}
+.t-fix{background:#FDEEE6;color:#C05621}.t-mejora{background:#E6F0FF;color:#1D4ED8}.t-feature{background:#E8F5EE;color:#0F6E56}.t-capability{background:#EDE9FE;color:#5B21B6}
+.tit{font-weight:700;font-size:13.5px;flex:1;min-width:220px}
+.orig{font-size:11px;color:#8A7F78}
+.hoyb{font-size:10px;font-weight:800;background:#FFF1EC;color:#C73A20;border-radius:999px;padding:1px 8px}
+.err{background:#FFF1EC;border:2px solid #E8472A;border-radius:12px;padding:13px 15px;font-size:13px;color:#8A2A18;margin:14px 0}
+.hint{font-size:11.5px;color:#8A7F78}
+.ent-ota{border-color:#BFE3D2;background:#F0FAF5}
+.ent-nativo{border-color:#F3C8B8;background:#FFF6F2}
+.polver{background:#FBF6EF;border:1px solid #EFE3D7;border-radius:11px;padding:9px 13px;font-size:12.3px;line-height:1.6;margin:0 0 12px}
+#snack{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#241D1A;color:#fff;
+  font-size:13px;padding:10px 18px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.25);
+  opacity:0;pointer-events:none;transition:opacity .25s;z-index:50;max-width:90vw}
+#snack.on{opacity:1}
+select.mini{font-size:11.5px;padding:4px 7px}
+</style>
+</head><body><div class="w">
+<h1>📚 Build Tech Roadmap</h1>
+<p class="lead" data-i="Lo aceptado que todavía NO está comprometido a un sprint. Aquí se agrupa, se prioriza y se decide qué entra en el siguiente sprint — sin fechas, sin promesas.|Accepted work not yet committed to a sprint. This is where it gets grouped, prioritised and picked for the next sprint — no dates, no promises.">Lo aceptado que todavía NO está comprometido a un sprint. Aquí se agrupa, se prioriza y se decide qué entra en el siguiente sprint — sin fechas, sin promesas.</p>
+<p class="hint">El camino: <a href="/hub/feedback.html">💬 Feedback</a> entra por dos puertas — si es un <b>fallo</b> pasa por <a href="/hub/incidents.html">🎫 Incidencias</a> (triage, con respuesta a la usuaria); si es una <b>idea o una mejora</b> viene directo aquí, sin ticket. Después: <b>📚 Roadmap</b> → <a href="/hub/backlog-dev.html">🗂 Sprint Planning</a> → <a href="/hub/release-plan.html">🚢 Releases</a>.</p>
+
+<div id="err"></div>
+<div class="kpis" id="kpis"></div>
+<div class="filtros">
+  <input id="rmQ" type="search" placeholder="🔍 buscar: título, origen, ticket…" oninput="window.rmPinta()"
+         style="flex:1;min-width:200px;padding:8px 10px;border:1px solid #EFE3D7;border-radius:10px;font:inherit">
+  <select id="rmPri" onchange="window.rmPinta()"><option value="">prioridad: todas</option><option>P0</option><option>P1</option><option>P2</option><option>P3</option></select>
+  <select id="rmTipo" onchange="window.rmPinta()"><option value="">tipo: todos</option><option value="fix">🐞 fix</option><option value="mejora">🔧 mejora</option><option value="feature">🚀 feature</option><option value="capability">🧱 capability</option></select>
+</div>
+<div id="lista"></div>
+</div>
+<script src="/assets/vendor/supabase.js"></script>
+<script>
+(function(){
+var sb=window.supabase.createClient('https://nebkqncvapelrarruyqb.supabase.co',
+  'sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau');
+var $=function(i){return document.getElementById(i);};
+var ITEMS=[], SPRINTS=[];
+
+function fail(e,fn){ $('err').innerHTML='<div class="err"><b>No he podido leer los datos.</b><br>Consulta: <code>'+fn+'</code><br>'+(e&&e.message?e.message:'')+'</div>'; }
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+/* El roadmap es, por definición, lo que NO está comprometido a un sprint.
+   Esa es toda la regla: `sprint = 'backlog'`. No hay estado nuevo ni tabla
+   nueva — la separación ya existía en los datos y no se veía en ningún sitio. */
+function delRoadmap(b){ return (b.sprint||'backlog')==='backlog' && b.estado!=='hecho' && b.estado!=='descartado'; }
+
+var TIPOS={fix:'🐞 Fixes pendientes',mejora:'🔧 Mejoras del feedback',feature:'🚀 Nuevas capacidades',capability:'🧱 Cimientos técnicos'};
+
+window.rmPinta=function(){
+  var q=($('rmQ').value||'').toLowerCase().trim(), pri=$('rmPri').value, tp=$('rmTipo').value;
+  var vis=ITEMS.filter(delRoadmap).filter(function(b){
+    if(pri && b.prioridad!==pri) return false;
+    if(tp && b.tipo!==tp) return false;
+    if(!q) return true;
+    return (b.titulo+' '+(b.origen||'')+' '+(b.ticket_no||'')).toLowerCase().indexOf(q)>=0;
+  });
+
+  $('kpis').innerHTML=['P0','P1','P2','P3'].map(function(p){
+    return '<div class="kpi"><span class="l">'+p+'</span><span class="v">'+vis.filter(function(b){return b.prioridad===p;}).length+'</span></div>';
+  }).join('')+'<div class="kpi"><span class="l">total sin comprometer</span><span class="v">'+vis.length+'</span></div>';
+
+  var h='';
+  Object.keys(TIPOS).forEach(function(t){
+    var g=vis.filter(function(b){return b.tipo===t;})
+             .sort(function(a,b){return (a.prioridad||'P9').localeCompare(b.prioridad||'P9');});
+    if(!g.length) return;
+    h+='<div class="sec"><span class="n">'+TIPOS[t]+'</span><span class="cnt">'+g.length+'</span></div>';
+    h+=g.map(function(b){
+      return '<div class="it">'
+        +'<span class="pr '+esc(b.prioridad)+'">'+esc(b.prioridad)+'</span>'
+        +'<span class="tp t-'+esc(b.tipo)+'">'+esc(b.tipo)+'</span>'
+        +'<span class="tit">'+esc(b.titulo)+'</span>'
+        +(b.ticket_no?'<span class="orig">'+esc(b.ticket_no)+'</span>':'')
+        +(b.origen?'<span class="orig">· '+esc(b.origen)+'</span>':'')
+        +'<select onchange="window.rmPromover(\''+esc(b.id)+'\',this.value)" title="Comprometerlo a un sprint">'
+        +'<option value="">→ a un sprint…</option>'
+        +SPRINTS.map(function(s){return '<option value="'+s+'">'+s+'</option>';}).join('')
+        +'</select>'
+        +'</div>';
+    }).join('');
+  });
+  $('lista').innerHTML = h || '<p class="hint">Nada sin comprometer ahora mismo. Todo lo aceptado está ya en un sprint.</p>';
+};
+
+/* Promover = comprometerse. Es el único cambio que se hace desde aquí, y por
+   eso está a un clic: el roadmap no es donde se trabaja, es donde se decide. */
+window.rmPromover=function(id,sprint){
+  if(!sprint) return;
+  sb.rpc('admin_backlog_upsert',{p:{id:id,sprint:sprint,estado:'aceptado'}}).then(function(r){
+    if(r.error){fail(r.error,'admin_backlog_upsert');return;}
+    cargar();
+  });
+};
+
+function cargar(){
+  sb.auth.getSession().then(function(s){
+    if(!s.data.session){$('lista').innerHTML='<p class="hint">Inicia sesión admin desde el hub y recarga.</p>';return;}
+    sb.rpc('admin_backlog_list').then(function(r){
+      if(r.error){fail(r.error,'admin_backlog_list');return;}
+      ITEMS=(r.data&&r.data.items)||[];
+      // Los sprints salen de los datos, no de una lista a mano (regla de hoy).
+      SPRINTS=Array.from(new Set(ITEMS.map(function(b){return b.sprint;})
+                .filter(function(s){return s && s!=='backlog';}))).sort();
+      if(!SPRINTS.length) SPRINTS=['S12'];
+      window.rmPinta();
+    });
+  });
+}
+cargar();
+})();
+</script></body></html>

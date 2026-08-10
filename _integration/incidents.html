@@ -346,6 +346,7 @@ function ticket(t){
        escrito en el otro lado, y la ficha nunca desaparece de la vista. */
     +'<div class="acts" style="border-top:1px dashed #EADFD0;margin-top:12px;padding-top:12px">'
     +'<button class="pri" onclick="window.nsGuardar(\''+esc(t.id)+'\')">💾 Guardar incidencia</button>'
+    +'<button onclick="window.nsVerificado(\''+esc(t.id)+'\')" title="Lo he probado en el movil y funciona. Sella el ticket sin tener que escribirlo a mano.">✅ Verificado en dispositivo</button>'
     +'<button onclick="window.nsResponder(\''+esc(t.id)+'\',true)">📨 Guardar y enviar mensaje a la usuaria</button>'
     +(t.status!=='cerrado'?'<button onclick="window.nsCerrar(\''+esc(t.id)+'\',\''+esc(t.ticket_no)+'\')">✔ Cerrar incidencia</button>':'')
     +'<span class="ok-chip edOk1"></span><span class="ok-chip edOk2"></span></div>';
@@ -451,6 +452,21 @@ function nsPintaPruebas(){
 
 // r16-F6 (regla Juanjo): guardar un lado NUNCA borra el otro — cada botón
 // persiste AMBOS. El seguimiento arrastra el borrador de respuesta si cambió.
+/* r17 (10-ago): una prueba hecha con el telefono en la mano solo existia en
+   el chat hasta que alguien la escribia en el ticket. Ese alguien se olvida.
+   Un toque y queda sellada, con quien la hizo y cuando. */
+window.nsVerificado=function(id){
+  var nota=prompt('¿Algo que añadir? (opcional — se guarda en el timeline)','');
+  if(nota===null) return;                       // cancelar es una respuesta
+  sb.rpc('admin_ticket_verificado',{p_id:id,p_nota:nota||null}).then(function(r){
+    if(r.error){fail(r.error,'admin_ticket_verificado');return;}
+    var d=r.data||{};
+    snack(d.cerrado ? '✅ Verificado y CERRADO — lo reportaste tu, no hay respuesta pendiente'
+                    : '✅ Verificado y RESUELTO — falta escribirle a la usuaria');
+    cargar();
+  });
+};
+
 function nsLeftSave(id){
   return sb.rpc('admin_ticket_update',{p_id:id,
     p_status:tEl(id,'edSt').value, p_assigned:tEl(id,'edAs').value||null,
