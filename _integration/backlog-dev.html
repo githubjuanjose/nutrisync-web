@@ -222,17 +222,11 @@ window.bkCsv=function(){
    Las ya publicadas salen deshabilitadas: no se puede planificar trabajo en
    algo que ya esta en las tiendas (lo impide tambien el trigger del servidor). */
 var RELS=[];
-function opcionesRelease(actual){
-  var act = actual || '—';
-  var lista = [{version:'—', estado:'planificada'}].concat(RELS);
-  if (!lista.some(function(r){return r.version===act;})) lista.push({version:act, estado:'planificada'});
-  return lista.map(function(r){
-    var pub = r.estado==='en_tiendas' || r.estado==='ga';
-    var sel = r.version===act;
-    return '<option value="'+r.version+'"'+(sel?' selected':'')
-         +(pub && !sel ? ' disabled' : '')+'>'+r.version+(pub?' · publicada':'')+'</option>';
-  }).join('');
-}
+/* r17-g (11-ago): las opciones se agrupan POR VEHÍCULO (sin decidir · 🌐 Web ·
+   🔄 OTA · 📦 Nativa), así se elige el cómo y el cuándo en un solo gesto y sin
+   dos campos que puedan contradecirse. La lista la arma entrega.js, que es
+   donde vive la regla. */
+function opcionesRelease(actual){ return window.NSEntrega.opciones(RELS, actual); }
 
 function cargar(){
   sb.auth.getSession().then(function(s){

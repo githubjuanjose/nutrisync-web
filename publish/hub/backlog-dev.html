@@ -43,7 +43,7 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
   opacity:0;pointer-events:none;transition:opacity .25s;z-index:50;max-width:90vw}
 #snack.on{opacity:1}
 select.mini{font-size:11.5px;padding:4px 7px}
-</style><script src="/hub/assets/entrega.js?v=60a03155"></script></head><body><!-- ns-hub-navbar -->
+</style><script src="/hub/assets/entrega.js?v=8a6358b2"></script></head><body><!-- ns-hub-navbar -->
 <div id="ns-hub-navbar">
 <style>
 #ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
@@ -476,17 +476,11 @@ window.bkCsv=function(){
    Las ya publicadas salen deshabilitadas: no se puede planificar trabajo en
    algo que ya esta en las tiendas (lo impide tambien el trigger del servidor). */
 var RELS=[];
-function opcionesRelease(actual){
-  var act = actual || '—';
-  var lista = [{version:'—', estado:'planificada'}].concat(RELS);
-  if (!lista.some(function(r){return r.version===act;})) lista.push({version:act, estado:'planificada'});
-  return lista.map(function(r){
-    var pub = r.estado==='en_tiendas' || r.estado==='ga';
-    var sel = r.version===act;
-    return '<option value="'+r.version+'"'+(sel?' selected':'')
-         +(pub && !sel ? ' disabled' : '')+'>'+r.version+(pub?' · publicada':'')+'</option>';
-  }).join('');
-}
+/* r17-g (11-ago): las opciones se agrupan POR VEHÍCULO (sin decidir · 🌐 Web ·
+   🔄 OTA · 📦 Nativa), así se elige el cómo y el cuándo en un solo gesto y sin
+   dos campos que puedan contradecirse. La lista la arma entrega.js, que es
+   donde vive la regla. */
+function opcionesRelease(actual){ return window.NSEntrega.opciones(RELS, actual); }
 
 function cargar(){
   sb.auth.getSession().then(function(s){

@@ -132,6 +132,14 @@ function comoSeEntrega(v){
   var d = window.NSEntrega.como(v);
   return (d.cls==='d-none'||d.cls==='d-raro') ? null : d;
 }
+/* Mover un item de release: MISMO desplegable que en 🗂 Sprint Planning,
+   agrupado por vehículo (sin decidir · 🌐 Web · 🔄 OTA · 📦 Nativa). Antes cada
+   página se armaba su lista a mano y no coincidían. */
+function opcionesRelease(actual){
+  if(!window.NSEntrega)
+    return REL.map(function(r){return '<option'+(r.version===actual?' selected':'')+'>'+esc(r.version)+'</option>';}).join('');
+  return window.NSEntrega.opciones(REL, actual);
+}
 
 function snack(m){var el=$('snack');el.textContent=m;el.classList.add('on');
   clearTimeout(SNT);SNT=setTimeout(function(){el.classList.remove('on');},3600);}
@@ -149,7 +157,7 @@ function carril(items,titulo,filtro){
       +(b.ticket_no?'<span class="ref">'+esc(b.ticket_no)+'</span>':'')
       +(b.origen&&!b.ticket_no?'<span class="hint">'+esc(b.origen)+'</span>':'')
       +'<select class="mini" title="mover de release" onchange="window.rpMove(\''+b.id+'\',this.value)">'
-      +relsAsignables().concat(REL.filter(function(r){return r.estado==='en_tiendas'||r.estado==='ga';}).map(function(r){return r.version;})).map(function(v){return '<option value="'+v+'"'+(v===b.release?' selected':'')+'>'+v+'</option>';}).join('')
+      +opcionesRelease(b.release)
       +'</select></div>';}).join('');
 }
 function relCard(r){
@@ -243,7 +251,13 @@ function render(){
         +esc(b.titulo)
         +(b.ticket_no?' <a href="/hub/incidents.html" class="hint" title="Ver la incidencia con su prueba">'+esc(b.ticket_no)+' 📎</a>':'')
         +'<select class="mini" onchange="window.rpMove(\''+b.id+'\',this.value)">'
-        +RELS_ASIGNABLES.map(function(v){return '<option value="'+v+'"'+(v===b.release?' selected':'')+'>'+v+'</option>';}).join('')
+        /* r17-g (11-ago): aquí quedaba `RELS_ASIGNABLES`, la lista de releases
+           que estaba escrita a mano en el HTML. Al pasarla a leerse de la BD
+           (`relsAsignables()`) actualicé el sitio de arriba y me dejé ESTE.
+           La constante ya no existía: ReferenceError dentro de la cadena de
+           promesas → promesa rechazada en silencio → «Cargando…» eterno. La
+           página no daba error, simplemente no llegaba nunca. */
+        +relsAsignables().map(function(v){return '<option value="'+v+'"'+(v===b.release?' selected':'')+'>'+v+'</option>';}).join('')
         +'</select></div>';}).join('')+'</div></div>';
   }
   $('plan').innerHTML=cab+html;
@@ -306,6 +320,18 @@ function cargar(){
       REL=rs[0].data||[];ITEMS=(rs[1].data&&rs[1].data.items)||[];render();});
   });
 }
-cargar();
+/* r17-g (11-ago): NINGUNA página se queda en «Cargando…» sin decir por qué.
+   Un fallo dentro de la cadena de promesas —un ReferenceError al pintar, por
+   ejemplo— rechaza la promesa y ahí acaba todo: sin error en pantalla, sin
+   nada. El usuario ve un tab que «no abre» y no hay forma de saber más sin la
+   consola. Esto convierte el silencio en un banner con el mensaje real.
+   Es la regla r12-b9 (nsFail) aplicada al fallo de JS, no solo al de SQL. */
+cargar().catch(function(e){
+  $('plan').innerHTML='';
+  $('err').innerHTML='<div class="err"><b>⚠️ La página no pudo pintarse</b> — '
+    +'<i>'+esc(String(e&&e.message||e)).slice(0,200)+'</i><br>'
+    +'Esto es un fallo de código, no de datos. Pásale este mensaje a ingeniería '
+    +'con el nombre de la página (<code>release-plan.html</code>).</div>';
+});
 })();
 </script></body></html>

@@ -289,6 +289,24 @@ if os.path.isdir(dd):
         if f.endswith(".html"): shutil.copy(os.path.join(dd, f), os.path.join(dst, f)); n += 1
     print("- overlaid %d hub documents" % n)
 
+    # ns-docs-adjuntos (r17-g, 11-ago): las SUBCARPETAS de docs/ también viajan.
+    # Este bucle solo miraba los *.html del primer nivel, así que las propuestas
+    # que archivé el 10-ago en `_integration/docs/propuestas/` NUNCA llegaron a
+    # publish: los enlaces del hub apuntaban a ficheros inexistentes y Cloudflare
+    # Pages responde a eso con 200 y la portada (lección r13) — al abrir un
+    # .docx te bajabas HTML, que es lo que parecía «documento corrupto».
+    # Copia binaria y recursiva: aquí hay .docx y .pdf, no solo texto.
+    for _sub in sorted(os.listdir(dd)):
+        _src = os.path.join(dd, _sub)
+        if not os.path.isdir(_src):
+            continue
+        _dst = os.path.join(dst, _sub)
+        if os.path.isdir(_dst):
+            shutil.rmtree(_dst)
+        shutil.copytree(_src, _dst)
+        print("- ns-docs-adjuntos: %d fichero(s) en /hub/documentation/%s/"
+              % (len(os.listdir(_dst)), _sub))
+
 # ns-docs-path (po58): el router del gated pedía docs/index.html (carpeta que un
 # pack borró y que nunca existió en publish) → 404 → Pages devolvía la portada
 # ("Project documentation lleva a la página principal"). Los docs viven en

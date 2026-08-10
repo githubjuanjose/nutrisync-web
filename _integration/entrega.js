@@ -32,5 +32,47 @@
       ? { ico: '🔄', txt: 'OTA', cls: 'd-ota', nota: 'parche JS: llega el mismo día, sin tiendas' }
       : { ico: '📦', txt: 'nativa', cls: 'd-nat', nota: 'build nativo: tiendas y revisión de Apple' };
   }
-  window.NSEntrega = { como: como };
+  /* Las opciones del desplegable de release, AGRUPADAS POR VEHÍCULO.
+   *
+   * Petición Juanjo (11-ago): «OTA y Nativa se han quedado fijas, debería poder
+   * seleccionarlas». Cierto — pero un selector de vehículo APARTE del de release
+   * es justo la segunda verdad que acabamos de retirar (podría decir OTA con la
+   * 0.22.0). Con un solo desplegable agrupado se elige «📦 Nativa → 0.22.0» y
+   * con eso queda dicho todo: el vehículo se ve al elegir y no puede mentir.
+   *
+   * `rels` = [{version, estado}]. Las publicadas salen deshabilitadas (no se
+   * mete trabajo nuevo en algo que ya está en las tiendas) salvo que sea la que
+   * el item ya tiene — si no, la fila mentiría sobre dónde está.
+   */
+  function opciones(rels, actual) {
+    var act = (actual == null || actual === '') ? '—' : String(actual);
+    var lista = (rels || []).slice();
+    if (act !== '—' && !lista.some(function (r) { return r.version === act; }))
+      lista.push({ version: act, estado: 'planificada' });   // huérfana: se ve, no se esconde
+
+    var GRUPOS = [
+      ['d-web', '🌐 Web · sale con el deploy, sin tiendas'],
+      ['d-ota', '🔄 OTA · parche JS, el mismo día'],
+      ['d-nat', '📦 Nativa · build y revisión de Apple'],
+      ['d-ga',  '🏁 GA'],
+      ['d-raro','?  sin clasificar']
+    ];
+    var html = '<option value="—"' + (act === '—' ? ' selected' : '') + '>— sin decidir</option>';
+    GRUPOS.forEach(function (g) {
+      var dentro = lista.filter(function (r) { return como(r.version).cls === g[0]; });
+      if (!dentro.length) return;
+      html += '<optgroup label="' + g[1] + '">';
+      dentro.forEach(function (r) {
+        var pub = r.estado === 'en_tiendas' || r.estado === 'ga';
+        var sel = r.version === act;
+        html += '<option value="' + r.version + '"' + (sel ? ' selected' : '')
+             + (pub && !sel ? ' disabled' : '') + '>' + r.version
+             + (r.nombre ? ' · ' + r.nombre : '') + (pub ? ' · publicada' : '') + '</option>';
+      });
+      html += '</optgroup>';
+    });
+    return html;
+  }
+
+  window.NSEntrega = { como: como, opciones: opciones };
 })();
