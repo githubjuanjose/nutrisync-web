@@ -286,7 +286,8 @@ textarea.same{border-color:#e6cf9a;background:#fdf7e9;}
   <p>Pick a language, review the machine-translated first pass beside the English source, and amend. Edits save on this device; <b>Export</b> downloads that language file to hand to the team to publish.</p>
   <div class="controls">
     <select id="fLang" title="Language to review"></select>
-    <select id="fSec"><option value="">All sections</option><option value="marketing">Marketing site</option><option value="app">Web app</option><option value="ob">App onboarding</option><option value="mob">App mobile strings</option><option value="ui">App shared UI</option><option value="catalog">Catalog (lists)</option></select>
+    <select id="fSec"><option value="">All sections</option><option value="marketing">Marketing site</option><option value="app">Web app</option><option value="ob">App onboarding</option><option value="mob">App mobile strings</option><option value="ui">App shared UI</option><option value="catalog">Catalog (lists)</option><option value="web2">WV2 · web nueva</option></select>
+    <select id="fSup" title="Dónde se usa la clave"><option value="">Todas las superficies</option><option value="WV1">WV1 · web actual</option><option value="WV2">WV2 · web nueva</option><option value="Móvil">Móvil · app y PWA</option></select>
     <input type="search" id="fTxt" placeholder="Search key or text..."/>
     <label style="font-size:12.5px;color:var(--muted)"><input type="checkbox" id="fEmpty"/> only untranslated (blank or = English)</label>
     <button class="btn btn-p" id="expT">Export</button>
@@ -306,13 +307,27 @@ var LANGS=[['es','Español'],['fr','Français'],['it','Italiano'],['de','Deutsch
   ['oc','Aranés'],['zh','中文'],['ja','日本語']];
 var NAME={en:'English'};LANGS.forEach(function(l){NAME[l[0]]=l[1];});
 var EN={},BASES={},entries=[],edits={},lang='es';
+/* r17 (petición Juanjo, 10-ago): cada clave dice DÓNDE se usa. Una misma
+   cadena puede vivir en varias superficies — por eso es una lista, no un valor. */
+var SUP={marketing:['WV1'],app:['WV1'],ob:['Móvil'],mob:['Móvil'],ui:['Móvil'],
+         catalog:['Móvil','WV1'],web2:['WV2']};
+var WEB2=null;            // catálogo de la WV2 (i18n/web2.json), cargado aparte
+var PORINGLES={};         // inglés normalizado → [{sec, es}] para reutilizar
 function leaves(o,path,out){for(var k in o){if(k==='_note'||k==='_meta')continue;var v=o[k],p=path.concat(k);if(v&&typeof v==='object')leaves(v,p,out);else if(typeof v==='string')out.push([p,v]);}}
 function getBy(o,p){var c=o;for(var i=0;i<p.length;i++){if(c==null)return undefined;c=c[p[i]];}return c;}
 function setBy(o,p,val){var c=o;for(var i=0;i<p.length-1;i++){if(typeof c[p[i]]!=='object'||c[p[i]]==null)c[p[i]]={};c=c[p[i]];}c[p[p.length-1]]=val;}
 function keyId(p){return p.join(' ');}
 function eEdits(code){edits[code]=edits[code]||{};return edits[code];}
 function enVal(p){return getBy(EN,p)||'';}
-function curVal(code,p){var e=eEdits(code)[keyId(p)];if(e!==undefined)return e;var v=getBy(BASES[code]||{},p);return v==null?'':v;}
+function esWeb2(p){return p[0]==='web2';}
+function web2Val(code,p){ /* el catálogo de la WV2 guarda los idiomas en la propia entrada */
+  if(!WEB2||!WEB2.textos)return '';
+  var id=p.slice(1).join('.');
+  for(var i=0;i<WEB2.textos.length;i++){if(WEB2.textos[i].id===id)return WEB2.textos[i][code]||'';}
+  return '';}
+function curVal(code,p){var e=eEdits(code)[keyId(p)];if(e!==undefined)return e;
+  if(esWeb2(p))return web2Val(code,p);
+  var v=getBy(BASES[code]||{},p);return v==null?'':v;}
 function isRO(p){return p[0]==='catalog';} // catalog English is the stored value
 function persist(){localStorage.setItem(LS,JSON.stringify(edits));}
 
@@ -320,8 +335,20 @@ function boot(){
   var sel=document.getElementById('fLang');
   sel.innerHTML=LANGS.map(function(l){return '<option value="'+l[0]+'">'+l[1]+' ('+l[0]+')</option>';}).join('');
   try{edits=JSON.parse(localStorage.getItem(LS))||{};}catch(e){edits={};}
-  fetch('../i18n/en.json').then(function(x){return x.json();}).then(function(en){
+  Promise.all([
+    fetch('../i18n/en.json').then(function(x){return x.json();}),
+    fetch('../i18n/web2.json').then(function(x){return x.ok?x.json():null;}).catch(function(){return null;})
+  ]).then(function(r){
+    var en=r[0]; WEB2=r[1];
     EN=en;var enL=[];leaves(EN,[],enL);entries=enL.map(function(x){return {p:x[0],en:x[1]};});
+    /* La WV2 trae su propio catálogo (repos/web2/i18n/web2.json): sus claves
+       entran como sección «web2» para que se revisen en el mismo sitio. */
+    if(WEB2&&WEB2.textos){WEB2.textos.forEach(function(t){
+      entries.push({p:['web2'].concat(t.id.split('.')),en:t.en,web2:t});});}
+    /* Índice para REUTILIZAR: mismo inglés = misma traducción ya revisada. */
+    entries.forEach(function(e){
+      var k=(e.en||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim().toLowerCase();
+      if(!k)return;(PORINGLES[k]=PORINGLES[k]||[]).push(e);});
     loadLang('es');
   }).catch(function(){document.getElementById('rows').textContent='Could not load en.json.';});
 }
@@ -335,21 +362,47 @@ function loadLang(code){
 function stat(){var filled=0,i;for(i=0;i<entries.length;i++){if(curVal(lang,entries[i].p).trim())filled++;}return filled;}
 function render(){
   var sec=document.getElementById('fSec').value,q=document.getElementById('fTxt').value.toLowerCase(),onlyE=document.getElementById('fEmpty').checked;
+  var sup=document.getElementById('fSup').value;
   var rows=document.getElementById('rows');rows.innerHTML='';
   var bySec={},shown=0,i;
   for(i=0;i<entries.length;i++){var e=entries[i];if(sec&&e.p[0]!==sec)continue;
+    if(sup&&(SUP[e.p[0]]||[]).indexOf(sup)<0)continue;
     var tv=curVal(lang,e.p),ev=enVal(e.p);
     if(onlyE&&tv.trim()&&tv.trim()!==ev.trim())continue;
     if(q&&!(e.p.join('.').toLowerCase().indexOf(q)>=0||ev.toLowerCase().indexOf(q)>=0||tv.toLowerCase().indexOf(q)>=0))continue;
     (bySec[e.p[0]]=bySec[e.p[0]]||[]).push(e);shown++;}
-  var label={marketing:'Marketing site',app:'Web app',ob:'App onboarding (mobile + PWA)',mob:'App mobile strings (R3\u2013R5)',ui:'App shared UI',catalog:'Catalog (list content)'},order=['marketing','app','ob','mob','ui','catalog'];
+  var label={marketing:'Marketing site',app:'Web app',ob:'App onboarding (mobile + PWA)',mob:'App mobile strings (R3\u2013R5)',ui:'App shared UI',catalog:'Catalog (list content)',web2:'WV2 \u00b7 web nueva'},order=['marketing','app','ob','mob','ui','catalog','web2'];
   for(var s=0;s<order.length;s++){var sk=order[s];if(!bySec[sk])continue;
     var h=document.createElement('div');h.className='sec';h.textContent=label[sk]+' — '+bySec[sk].length;rows.appendChild(h);
-    var t=document.createElement('table');t.innerHTML='<caption style="caption-side:top;text-align:left;font-size:11.5px;color:#8A7F78;padding:4px 0">✏️ editar = guardar (o botón 💾) · 🧹 borra la traducción (vuelve al inglés) / edit = saved (or 💾) · 🧹 clears it (falls back to English)</caption><thead><tr><th>Key</th><th>English</th><th>'+NAME[lang]+'</th><th style="width:76px">Acciones</th></tr></thead>';
+    var t=document.createElement('table');t.innerHTML='<caption style="caption-side:top;text-align:left;font-size:11.5px;color:#8A7F78;padding:4px 0">✏️ editar = guardar (o botón 💾) · 🧹 borra la traducción (vuelve al inglés) / edit = saved (or 💾) · 🧹 clears it (falls back to English)</caption><thead><tr><th>Key</th><th style="width:112px">Dónde se usa</th><th>English</th><th>'+NAME[lang]+'</th><th style="width:76px">Acciones</th></tr></thead>';
     var tb=document.createElement('tbody');
     for(var r=0;r<bySec[sk].length;r++){(function(e){var ev=enVal(e.p),tv=curVal(lang,e.p);
       var tr=document.createElement('tr');
       var kd=document.createElement('td');kd.className='k';kd.textContent=e.p.slice(1).join(' / ');tr.appendChild(kd);
+      /* r17 · superficie: dónde se usa esta clave (WV1 / WV2 / Móvil) */
+      var sd=document.createElement('td');
+      (SUP[e.p[0]]||['—']).forEach(function(x){
+        var c=document.createElement('span');c.textContent=x;
+        c.style.cssText='display:inline-block;margin:0 4px 4px 0;padding:2px 8px;border-radius:999px;'
+          +'font-size:11px;font-weight:800;color:#fff;background:'
+          +(x==='WV1'?'#6C3732':x==='WV2'?'#FD400C':'#2E7D6B');
+        sd.appendChild(c);});
+      /* ♻ reutilizar: si el MISMO inglés ya está traducido en otra superficie */
+      var norm=(ev||'').replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim().toLowerCase();
+      var gemelas=(PORINGLES[norm]||[]).filter(function(o){return o.p.join('.')!==e.p.join('.');});
+      var yaTraducida=null;
+      for(var g=0;g<gemelas.length;g++){var v=curVal(lang,gemelas[g].p);
+        if(v&&v.trim()&&v.trim()!==ev.trim()){yaTraducida={e:gemelas[g],v:v};break;}}
+      if(yaTraducida){
+        var rb=document.createElement('button');rb.textContent='♻';
+        rb.title='Reutilizar la traducción de '+(label[yaTraducida.e.p[0]]||yaTraducida.e.p[0])
+          +':\n«'+yaTraducida.v.slice(0,120)+'»';
+        rb.style.cssText='margin-top:2px;font-size:11px;padding:2px 7px;border-radius:8px;'
+          +'border:1px solid #EADFD0;background:#FFF6EC;cursor:pointer';
+        rb.onclick=function(){a2.value=yaTraducida.v;eEdits(lang)[keyId(e.p)]=a2.value;cls();persist();updateProg();
+          rb.textContent='✓';setTimeout(function(){rb.textContent='♻';},900);};
+        sd.appendChild(document.createElement('br'));sd.appendChild(rb);}
+      tr.appendChild(sd);
       var enT=document.createElement('td');var a1=document.createElement('textarea');a1.value=ev;a1.className='ro';a1.readOnly=true;enT.appendChild(a1);tr.appendChild(enT);
       var tT=document.createElement('td');var a2=document.createElement('textarea');a2.value=tv;
       function cls(){a2.className=!a2.value.trim()?'empty':(a2.value.trim()===ev.trim()?'same':'');}
@@ -383,6 +436,7 @@ function exportTarget(code){
 }
 document.getElementById('fLang').onchange=function(){loadLang(this.value);};
 document.getElementById('fSec').onchange=render;
+document.getElementById('fSup').onchange=render;
 document.getElementById('fTxt').oninput=render;
 document.getElementById('fEmpty').onchange=render;
 document.getElementById('expT').onclick=function(){exportTarget(lang);};

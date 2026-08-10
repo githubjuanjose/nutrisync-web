@@ -303,6 +303,12 @@ Las <b>release notes ES/EN</b> de cada versión viven aquí — las tiendas copi
 <a href="/hub/backlog-dev.html">🗂 Backlog</a>; los tickets en <a href="/hub/incidents.html">🎫 Incidencias</a>.</p>
 
 <div id="err"></div>
+<div class="filtros" style="display:flex;gap:10px;align-items:center;margin:0 0 12px">
+  <input id="rpQ" type="search" placeholder="🔍 buscar: título, nº de ticket, release, prioridad…" oninput="window.rpQbuscar()"
+         style="flex:1;min-width:200px;padding:8px 10px;border:1px solid #EADFD0;border-radius:10px;font:inherit">
+  <button onclick="window.rpTodas(true)" title="Desplegar todas">▾ todas</button>
+  <button onclick="window.rpTodas(false)" title="Plegar todas">▸ ninguna</button>
+</div>
 <div id="plan">Cargando…</div>
 <div id="snack"></div>
 
@@ -318,7 +324,17 @@ var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){re
 var REL=[],ITEMS=[],ABIERTAS={},SNT=null;
 var ORDEN=['0.21.0','0.21.1','0.22.0','0.23.0','GA','0.20.0'];
 var RELS_ASIGNABLES=['—','0.21.1','0.22.0','0.23.0','GA'];
-var SINREL_ABIERTO=true;   // r16-F14: lo pendiente arriba y abierto; se pliega con un clic
+var SINREL_ABIERTO=false;  // r17: la pagina abre como DASHBOARD (todo plegado)
+var Q='';                  // texto de busqueda; si hay, se abre lo que casa
+/* r17 (regla Juanjo, 10-ago): mismo patron que Incidencias — se entra y se ven
+   los titulares (releases, contadores, pendientes), no 200 lineas de items. */
+function rpHay(b){
+  if(!Q)return true;
+  return [b.titulo,b.ticket_no,b.release,b.prioridad,b.tipo,b.sprint,b.estado,b.origen]
+    .map(function(v){return String(v==null?'':v);}).join(' ').toLowerCase().indexOf(Q)>=0;
+}
+window.rpQbuscar=function(){Q=(document.getElementById('rpQ').value||'').trim().toLowerCase();render();};
+window.rpTodas=function(abrir){REL.forEach(function(r){ABIERTAS[r.version]=abrir;});SINREL_ABIERTO=abrir;render();};
 var SPRINTS={S11:'Sprint 11 · 3–7 ago',S12:'Sprint 12 · 10–14 ago',S13:'Sprint 13 · 17–21 ago',
   S14:'Sprint 14 · 24–28 ago',S15:'Sprint 15 · 31 ago–4 sep',S16:'Sprint 16 · 7–11 sep',GA:'Tramo GA',backlog:'Sin sprint'};
 var ESTADOS=['planificada','en_construccion','en_review','en_tiendas','ga'];
@@ -330,7 +346,7 @@ function fail(e,fn){$('plan').innerHTML='';
   +'</i><br>Ejecuta <b>backend-sql/2026-08-07-release-plan.sql</b> y recarga.</div>';}
 
 function carril(items,titulo,filtro){
-  var g=items.filter(filtro);
+  var g=items.filter(filtro).filter(rpHay);
   if(!g.length)return '';
   return '<div class="carril">'+titulo+'</div>'+g.map(function(b){
     return '<div class="it"><span class="pr '+esc(b.prioridad)+'">'+esc(b.prioridad)+'</span>'
@@ -344,7 +360,9 @@ function carril(items,titulo,filtro){
 }
 function relCard(r){
   var items=ITEMS.filter(function(b){return b.release===r.version;});
-  var abierta=ABIERTAS[r.version]!==undefined?ABIERTAS[r.version]:(r.estado!=='en_tiendas');
+  var casan=items.filter(rpHay);
+  if(Q&&!casan.length)return '';                       // buscando: solo lo que casa
+  var abierta=Q?true:(ABIERTAS[r.version]===true);     // r17: plegada por defecto
   var sprints=[];
   Object.keys(SPRINTS).forEach(function(sp){
     var g=items.filter(function(b){return b.sprint===sp;});
@@ -360,7 +378,7 @@ function relCard(r){
     +'<span class="ver">'+esc(r.version)+'</span><span class="nom">'+esc(r.nombre||'')+'</span>'
     +'<select class="mini est e-'+esc(r.estado)+'" onclick="event.stopPropagation()" onchange="window.rpEstado(\''+esc(r.version)+'\',this.value)">'
     +ESTADOS.map(function(x){return '<option value="'+x+'"'+(x===r.estado?' selected':'')+'>'+x.replace(/_/g,' ')+'</option>';}).join('')+'</select>'
-    +'<span class="fechas">'+(r.fecha_objetivo?'obj '+esc(r.fecha_objetivo):'')+(r.fecha_real?' · real '+esc(r.fecha_real):'')+' · '+items.length+' items</span></div>'
+    +'<span class="fechas">'+(r.fecha_objetivo?'obj '+esc(r.fecha_objetivo):'')+(r.fecha_real?' · real '+esc(r.fecha_real):'')+' · '+items.length+' items'+(abierta?'':' · ▸ desplegar')+'</span></div>'
     +'<div class="rb">'+(sprints.join('')||'<p class="hint">Sin items asignados aún — asígnalos desde 🗂 Backlog o aquí abajo.</p>')
     +'<div class="notas">'
     +'<div class="nota"><h4>📝 Notas ES <button onclick="window.rpCopy(\''+esc(r.version)+'\',\'es\')">📋 copiar</button><button onclick="window.rpEdit(\''+esc(r.version)+'\',\'es\')">✏️</button></h4>'
@@ -376,14 +394,15 @@ function render(){
   /* r16-F14 (regla Juanjo): lo que ESPERA decisión va PRIMERO — asignar release
      es la acción pendiente; las releases ya montadas son consulta. Ordenado por
      prioridad (P0 arriba) para que la decisión sea obvia. */
-  var sueltos=ITEMS.filter(function(b){return b.release==='—'&&b.estado!=='hecho';})
+  var sueltos=ITEMS.filter(function(b){return b.release==='—'&&b.estado!=='hecho'&&rpHay(b);})
     .sort(function(a,b){return String(a.prioridad||'P9').localeCompare(String(b.prioridad||'P9'));});
   var cab='';
   if(sueltos.length){
-    cab='<div class="sinrel'+(SINREL_ABIERTO?' open':'')+'" id="sinrel">'
+    var pendAbierto=Q?true:SINREL_ABIERTO;
+    cab='<div class="sinrel'+(pendAbierto?' open':'')+'" id="sinrel">'
       +'<b style="cursor:pointer" onclick="window.rpSinrel()">📥 Pendientes de asignar release · '+sueltos.length
-      +' <span style="font-weight:400;color:#8A7F78">'+(SINREL_ABIERTO?'▾':'▸ desplegar')+'</span></b>'
-      +'<div class="sinrelb" style="display:'+(SINREL_ABIERTO?'block':'none')+'">'
+      +' <span style="font-weight:400;color:#8A7F78">'+(pendAbierto?'▾ plegar':'▸ desplegar')+'</span></b>'
+      +'<div class="sinrelb" style="display:'+(pendAbierto?'block':'none')+'">'
       +'<div class="hint" style="margin:2px 0 8px">Elige en qué build entra cada una. Al asignarla, sale de aquí y aparece en su release.</div>'
       +sueltos.map(function(b){return '<div class="it"><span class="pr '+esc(b.prioridad)+'">'+esc(b.prioridad)+'</span>'
         +esc(b.titulo)

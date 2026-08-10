@@ -313,6 +313,8 @@ Las 🐞 de <a href="/hub/feedback.html">Feedback</a> entran con un clic; la pla
 </div>
 
 <div class="filtros">
+  <input id="fQ" type="search" placeholder="🔍 buscar: título, notas, nº de ticket, release…" oninput="window.bkQ()"
+         style="flex:1;min-width:200px;padding:8px 10px;border:1px solid #EADFD0;border-radius:10px;font:inherit">
   <select id="fTipo"><option value="">tipo: todos</option><option>fix</option><option>mejora</option><option>feature</option><option>capability</option></select>
   <select id="fEst"><option value="">estado: activos</option><option value="propuesto">propuesto</option><option value="aceptado">aceptado</option><option value="en_curso">en curso</option><option value="hecho">hecho</option><option value="todos">todos (incl. hechos)</option></select>
   <button onclick="window.bkCsv()">⬇ CSV</button>
@@ -365,19 +367,39 @@ function item(b){
     +['P0','P1','P2','P3'].map(function(x){return '<option'+(x===b.prioridad?' selected':'')+'>'+x+'</option>';}).join('')+'</select>'
     +'</div>';
 }
-function render(){
-  var ft=$('fTipo').value, fe=$('fEst').value||'';
-  var rows=(D.items||[]).filter(function(b){
+/* r17 (regla Juanjo, 10-ago): esta pagina abre como DASHBOARD — sprints
+   PLEGADOS, KPIs y contadores a la vista. Se despliega lo que se toca; buscar
+   o filtrar por estado abre lo que casa. Mismo patron que Incidencias. */
+var SEC={};
+window.bkSec=function(k){SEC[k]=!SEC[k];render();};
+window.bkQ=function(){render();};
+function hay(b,q){
+  if(!q)return true;
+  return [b.titulo,b.notas,b.ticket_no,b.release,b.tipo,b.prioridad,b.sprint,b.estado,b.origen,b.entrega]
+    .map(function(v){return String(v==null?'':v);}).join(' ').toLowerCase().indexOf(q)>=0;
+}
+function filtrados(){
+  var ft=$('fTipo').value, fe=$('fEst').value||'', q=($('fQ').value||'').trim().toLowerCase();
+  return (D.items||[]).filter(function(b){
     if(ft&&b.tipo!==ft)return false;
+    if(!hay(b,q))return false;
     if(fe==='todos')return true;
     if(fe)return b.estado===fe;
     return b.estado!=='hecho';                 // por defecto: lo vivo
   });
+}
+function render(){
+  var fe=$('fEst').value||'', q=($('fQ').value||'').trim().toLowerCase();
+  var rows=filtrados();
   var html='';
   SPRINTS.forEach(function(sp){
     var g=rows.filter(function(b){return b.sprint===sp[0];});
     if(!g.length)return;
-    html+='<div class="sec"><span class="n">'+sp[1]+'</span><span class="cnt">'+g.length+' items</span></div>'+g.map(item).join('');
+    var plegada=(SEC[sp[0]]!==false)&&!q&&!fe;   // plegado por defecto
+    html+='<div class="sec" style="cursor:pointer" onclick="window.bkSec(\''+sp[0]+'\')">'
+      +'<span class="n">'+sp[1]+'</span><span class="cnt">'+g.length+' items · '
+      +(plegada?'▸ desplegar':'▾ plegar')+'</span></div>';
+    if(!plegada)html+=g.map(item).join('');
   });
   $('board').innerHTML=html||'<p class="hint">Nada con esos filtros.</p>';
   $('count').textContent=rows.length+' de '+(D.items||[]).length;

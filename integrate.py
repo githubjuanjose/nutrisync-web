@@ -1956,3 +1956,21 @@ if os.path.isdir(_gdir2):
             open(_hp, "w", encoding="utf-8").write(_s)
             _n += 1
     print("- ns-page-help: ayuda por pagina (page-help.js?v=%s) en %d paginas" % (_hsha, _n))
+
+# ── ns-i18n-web2 (r17, 10-ago) ──────────────────────────────────────────────
+# El catálogo de la WV2 (repos/web2/i18n/web2.json) viaja a publish/i18n/ para
+# que 🌍 Traducciones del hub lo lea desde su MISMO origen y las founders
+# revisen los textos de las tres superficies (WV1 · WV2 · Móvil) en un sitio.
+# La fuente de verdad sigue siendo repos/web2; esto es una copia publicada.
+import shutil as _sh
+_w2_src = os.path.join(ASSETS, "i18n-web2", "web2.json")
+if os.path.exists(_w2_src):
+    _w2_dst = os.path.join(PUB, "i18n", "web2.json")
+    os.makedirs(os.path.dirname(_w2_dst), exist_ok=True)
+    _sh.copyfile(_w2_src, _w2_dst)
+    try:
+        import json as _js
+        _n2 = len(_js.load(open(_w2_src, encoding="utf-8")).get("textos", []))
+    except Exception:
+        _n2 = "?"
+    print("- ns-i18n-web2: catalogo de la WV2 en i18n/web2.json (%s textos)" % _n2)
