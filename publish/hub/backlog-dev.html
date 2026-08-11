@@ -18,7 +18,41 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
 .sec{display:flex;align-items:center;gap:10px;margin:18px 0 6px;padding:8px 12px;background:#FBF6EF;border:1px solid #EFE3D7;border-radius:10px}
 .sec .n{font-weight:800;font-size:13px}
 .sec .cnt{margin-left:auto;color:#8A7F78;font-size:12px}
-.it{background:#fff;border:1px solid #EFE3D7;border-radius:12px;padding:10px 13px;margin:6px 0;display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+/* r17-g (11-ago): la fila CABE EN UNA LÍNEA. Era `flex-wrap`, así que cuando el
+   desplegable de release se ensanchó (llevaba el nombre de la release en cada
+   opción), los controles empezaron a caerse a una segunda línea y cada fila se
+   partía por un sitio distinto — «descuajaringada».
+   Columnas fijas y CADA CELDA POR NOMBRE, no por orden: los hijos opcionales
+   (el ticket, las notas) ya no corren a los demás de sitio. Misma lección que
+   la rejilla de 🎫 Incidencias, aprendida el mismo día. */
+.it{background:#fff;border:1px solid #EFE3D7;border-radius:12px;padding:9px 13px;margin:6px 0;
+    display:grid;gap:4px 9px;align-items:center;
+    grid-template-columns:74px minmax(0,1fr) 116px 96px 62px 84px 104px 54px;
+    grid-template-areas:"tipo tit orig est spr ent rel pri"
+                        "tipo notas notas notas notas notas notas notas"}
+.it>.tp{grid-area:tipo}
+.it>.tit{grid-area:tit;min-width:0}
+.it>.orig{grid-area:orig}
+.it>.est{grid-area:est}
+.it>.spr{grid-area:spr}
+.it>.ent{grid-area:ent}
+.it>.rel{grid-area:rel}
+.it>.pri{grid-area:pri}
+.it>.notas{grid-area:notas}
+/* Nada empuja a nadie: lo que no cabe se corta con puntos suspensivos. */
+.it>.tit,.it>.orig,.it>.notas{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.it>.notas{font-size:11px;color:#8A7F78}
+.it>select.mini{width:100%;min-width:0}
+/* El desplegable de prioridad ES la insignia: mismo color, y además se edita. */
+select.mini.pr{font-weight:900;border:1px solid transparent}
+@media(max-width:900px){
+  /* En pantalla estrecha manda el título: los controles bajan a su propia fila. */
+  .it{grid-template-columns:74px minmax(0,1fr) 96px 62px 104px 54px;
+      grid-template-areas:"tipo tit  tit  tit  tit  tit"
+                          "tipo orig orig orig ent  ent"
+                          "tipo est  spr  rel  rel  pri"
+                          "tipo notas notas notas notas notas"}
+}
 .pr{font-size:10.5px;font-weight:900;border-radius:7px;padding:2px 8px}
 .P0{background:#C73A20;color:#fff}.P1{background:#FFB020;color:#5B3A00}.P2{background:#E7E2DC;color:#5F564F}.P3{background:#F4F0EA;color:#8A7F78}
 .tp{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px}
@@ -43,7 +77,7 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
   opacity:0;pointer-events:none;transition:opacity .25s;z-index:50;max-width:90vw}
 #snack.on{opacity:1}
 select.mini{font-size:11.5px;padding:4px 7px}
-</style><script src="/hub/assets/entrega.js?v=8a6358b2"></script></head><body><!-- ns-hub-navbar -->
+</style><script src="/hub/assets/entrega.js?v=c295c040"></script></head><body><!-- ns-hub-navbar -->
 <div id="ns-hub-navbar">
 <style>
 #ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
@@ -372,16 +406,22 @@ function hoyISO(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth(
 
 function item(b){
   var esHoy=(b.creado_el||'').slice(0,10)===hoyISO();
+  /* r17-g (11-ago): la prioridad salía DOS veces — insignia de color al empezar
+     la fila y desplegable al terminarla, diciendo lo mismo. En una fila que no
+     cabía, eso es una columna regalada. Ahora es una sola cosa: el desplegable
+     lleva el color de la prioridad, así que se escanea igual y además se edita. */
   return '<div class="it">'
-    +'<span class="pr '+esc(b.prioridad)+'">'+esc(b.prioridad)+'</span>'
     +'<span class="tp t-'+esc(b.tipo)+'">'+esc(b.tipo)+'</span>'
-    +'<span class="tit">'+esc(b.titulo)+(esHoy?' <span class="hoyb">HOY</span>':'')
-    +(b.notas?'<div class="orig">'+esc(b.notas)+'</div>':'')+'</span>'
+    +'<span class="tit" title="'+esc(b.titulo)+'">'+esc(b.titulo)+(esHoy?' <span class="hoyb">HOY</span>':'')+'</span>'
+    /* Las notas salen del título y pasan a su PROPIA celda, en la segunda
+       línea de la rejilla. Dentro del título hacían crecer la fila a lo alto y
+       descolocaban los controles de la derecha. */
+    +(b.notas?'<span class="notas" title="'+esc(b.notas)+'">'+esc(b.notas)+'</span>':'')
     /* r16-F11: el nº de ticket lleva a 🎫, donde vive la prueba (captura/log) */
     +'<span class="orig">'+esc(b.origen||'')+(b.ticket_no?' · <a href="/hub/incidents.html" title="Ver la incidencia con su captura o crash log"><b>'+esc(b.ticket_no)+'</b> 📎</a>':'')+'</span>'
-    +'<select class="mini" onchange="window.bkSet(\''+b.id+'\',{estado:this.value})">'
+    +'<select class="mini est" title="estado" onchange="window.bkSet(\''+b.id+'\',{estado:this.value})">'
     +['propuesto','aceptado','en_curso','hecho','descartado'].map(function(x){return '<option value="'+x+'"'+(x===b.estado?' selected':'')+'>'+x.replace('_',' ')+'</option>';}).join('')+'</select>'
-    +'<select class="mini" onchange="window.bkSet(\''+b.id+'\',{sprint:this.value})">'
+    +'<select class="mini spr" title="sprint" onchange="window.bkSet(\''+b.id+'\',{sprint:this.value})">'
     +SPRINTS.map(function(sp){return '<option value="'+sp[0]+'"'+(sp[0]===b.sprint?' selected':'')+'>'+sp[0]+'</option>';}).join('')+'</select>'
     /* r17 (11-ago): CÓMO se entrega ya no se pregunta, SE DEDUCE de la release.
        Era un desplegable manual (r16-F18, del 8-ago) que se quedó obsoleto dos
@@ -392,9 +432,9 @@ function item(b){
        añadir `epic`, la función ya no leía `entrega`: el desplegable parecía
        guardar y NO guardaba. La función vive en /hub/assets/entrega.js. */
     +(function(d){return '<span class="ent '+d.cls+'" title="'+esc(d.nota)+' — lo dice el número de la release, no una elección aparte">'+d.ico+' '+d.txt+'</span>';})(window.NSEntrega.como(b.release))
-    +'<select class="mini" title="release" onchange="window.bkSet(\''+b.id+'\',{release:this.value})">'
+    +'<select class="mini rel" title="release" onchange="window.bkSet(\''+b.id+'\',{release:this.value})">'
     +opcionesRelease(b.release)+'</select>'
-    +'<select class="mini" onchange="window.bkSet(\''+b.id+'\',{prioridad:this.value})">'
+    +'<select class="mini pri pr '+esc(b.prioridad)+'" title="prioridad" onchange="window.bkSet(\''+b.id+'\',{prioridad:this.value})">'
     +['P0','P1','P2','P3'].map(function(x){return '<option'+(x===b.prioridad?' selected':'')+'>'+x+'</option>';}).join('')+'</select>'
     +'</div>';
 }

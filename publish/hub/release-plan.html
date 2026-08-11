@@ -46,7 +46,7 @@ select.mini{font-family:inherit;font-size:11px;padding:3px 6px;border:1px solid 
 .d-nat{background:#FDEDE6;color:#B4441F}
 .d-web{background:#EDF0FA;color:#3E4E8C}
 .d-ga {background:#F6EFD9;color:#8A6A16}
-</style><script src="/hub/assets/entrega.js?v=8a6358b2"></script></head><body><!-- ns-hub-navbar -->
+</style><script src="/hub/assets/entrega.js?v=c295c040"></script></head><body><!-- ns-hub-navbar -->
 <div id="ns-hub-navbar">
 <style>
 #ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
@@ -338,13 +338,26 @@ var sb=window.supabase.createClient('https://nebkqncvapelrarruyqb.supabase.co',
 var $=function(i){return document.getElementById(i);};
 var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
 var REL=[],ITEMS=[],ABIERTAS={},SNT=null;
-var ORDEN=['0.22.0','0.21.2','0.23.0','GA','0.21.1','0.21.0','0.20.0','WEB'];  // lo vivo primero
-/* Ya no se escribe a mano: asignable = toda release que NO este publicada.
-   Añadir una release deja de ser «editar tres listas» y pasa a ser crearla. */
-function relsAsignables(){
-  return ['—'].concat(REL.filter(function(r){
-    return r.estado!=='en_tiendas' && r.estado!=='ga';
-  }).map(function(r){return r.version;}));
+/* r17-g (11-ago): el ORDEN también se deduce. Aquí había una lista de versiones
+   escrita a mano — la TERCERA definición de las releases en esta página — y una
+   release nueva simplemente no se ordenaba: caía al final sin que nadie supiera
+   por qué. Ahora la clave de orden sale del propio número:
+     WEB primero  (el carril continuo, siempre vivo)
+     luego por fecha objetivo, y a igualdad por número de versión
+     GA al final  (es el destino, no una release más)
+   Crear una release vuelve a ser UNA acción, no «editar tres listas». */
+function claveOrden(r){
+  var v=String(r.version||'');
+  if(v==='WEB') return [0,'','' ];
+  if(v==='GA')  return [2,'',''];
+  var m=v.match(/^(\d+)\.(\d+)\.(\d+)$/);
+  var num=m?(+m[1]*1e6 + +m[2]*1e3 + +m[3]):9e8;   // sin numero → al final del grupo
+  return [1, r.fecha_objetivo||'9999-12-31', String(num).padStart(9,'0')];
+}
+function comparaRelease(a,b){
+  var A=claveOrden(a),B=claveOrden(b);
+  for(var i=0;i<A.length;i++){ if(A[i]<B[i])return -1; if(A[i]>B[i])return 1; }
+  return 0;
 }
 /* r17 (petición Juanjo, 10-ago): la página se lee por SECCIONES, no como una
    lista plana de releases. Tres momentos del ciclo de vida, cada uno plegable
@@ -447,9 +460,7 @@ function relCard(r){
 }
 
 function render(){
-  var orden=ORDEN.filter(function(v){return REL.some(function(r){return r.version===v;});})
-    .concat(REL.map(function(r){return r.version;}).filter(function(v){return ORDEN.indexOf(v)<0;}));
-  REL.sort(function(a,b){return orden.indexOf(a.version)-orden.indexOf(b.version);});
+  REL.sort(comparaRelease);
 
   /* Guardarraíl (filosofía nsFail): un item asignado a una version SIN ficha de
      release no aparece en ninguna tarjeta — se quedaría invisible para siempre.
@@ -506,12 +517,13 @@ function render(){
         +(b.ticket_no?' <a href="/hub/incidents.html" class="hint" title="Ver la incidencia con su prueba">'+esc(b.ticket_no)+' 📎</a>':'')
         +'<select class="mini" onchange="window.rpMove(\''+b.id+'\',this.value)">'
         /* r17-g (11-ago): aquí quedaba `RELS_ASIGNABLES`, la lista de releases
-           que estaba escrita a mano en el HTML. Al pasarla a leerse de la BD
-           (`relsAsignables()`) actualicé el sitio de arriba y me dejé ESTE.
-           La constante ya no existía: ReferenceError dentro de la cadena de
-           promesas → promesa rechazada en silencio → «Cargando…» eterno. La
-           página no daba error, simplemente no llegaba nunca. */
-        +relsAsignables().map(function(v){return '<option value="'+v+'"'+(v===b.release?' selected':'')+'>'+v+'</option>';}).join('')
+           escrita a mano en el HTML. Al pasarla a leerse de la BD actualicé el
+           sitio de arriba y me dejé ESTE: la constante ya no existía →
+           ReferenceError dentro de la cadena de promesas → «Cargando…» eterno.
+           Y al arreglarlo lo dejé llamando a una lista PROPIA, distinta de la
+           de 🗂 — que es justo lo que Juanjo vio: «las releases a asignar son
+           diferentes de las del sprint planning». Una sola definición. */
+        +opcionesRelease(b.release)
         +'</select></div>';}).join('')+'</div></div>';
   }
   $('plan').innerHTML=cab+html;

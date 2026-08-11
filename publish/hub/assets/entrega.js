@@ -50,12 +50,15 @@
     if (act !== '—' && !lista.some(function (r) { return r.version === act; }))
       lista.push({ version: act, estado: 'planificada' });   // huérfana: se ve, no se esconde
 
+    // Etiquetas CORTAS: el ancho de un <select> lo fija su contenido más largo,
+    // así que una etiqueta explicativa aquí ensancha la columna en TODAS las
+    // filas. La explicación vive en la leyenda de arriba, que se lee una vez.
     var GRUPOS = [
-      ['d-web', '🌐 Web · sale con el deploy, sin tiendas'],
-      ['d-ota', '🔄 OTA · parche JS, el mismo día'],
-      ['d-nat', '📦 Nativa · build y revisión de Apple'],
+      ['d-web', '🌐 Web'],
+      ['d-ota', '🔄 OTA'],
+      ['d-nat', '📦 Nativa'],
       ['d-ga',  '🏁 GA'],
-      ['d-raro','?  sin clasificar']
+      ['d-raro','? sin clasificar']
     ];
     var html = '<option value="—"' + (act === '—' ? ' selected' : '') + '>— sin decidir</option>';
     GRUPOS.forEach(function (g) {
@@ -65,9 +68,12 @@
       dentro.forEach(function (r) {
         var pub = r.estado === 'en_tiendas' || r.estado === 'ga';
         var sel = r.version === act;
+        // Solo el número. El nombre («Meal Photo») multiplicaba el ancho de la
+        // columna en las dos páginas y ya se lee en 🚢, que es su sitio.
         html += '<option value="' + r.version + '"' + (sel ? ' selected' : '')
-             + (pub && !sel ? ' disabled' : '') + '>' + r.version
-             + (r.nombre ? ' · ' + r.nombre : '') + (pub ? ' · publicada' : '') + '</option>';
+             + (pub && !sel ? ' disabled' : '')
+             + ' title="' + (r.nombre || '') + '">' + r.version
+             + (pub ? ' ✓' : '') + '</option>';
       });
       html += '</optgroup>';
     });
