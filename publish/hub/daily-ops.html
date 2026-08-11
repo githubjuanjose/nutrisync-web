@@ -293,6 +293,19 @@ code{background:#F6EEE7;border-radius:5px;padding:1px 5px;font-size:11.5px}
 
   <h2>2 · <span data-t="h2"></span></h2>
   <div id="sop"></div>
+
+  <h2>3 · <span data-t="h3"></span></h2>
+  <div class="sub" data-t="bkSub" style="margin:-6px 0 10px"></div>
+  <div id="bkVivo"></div>
+  <div id="bk"></div>
+  <div id="bkSop" style="margin-top:12px"></div>
+  <div id="bkEv" style="margin-top:6px"></div>
+
+  <h2>4 · <span data-t="h4"></span></h2>
+  <div class="sub" data-t="cnSub" style="margin:-6px 0 10px"></div>
+  <div id="cnAlarma"></div>
+  <div id="cn"></div>
+  <div id="cnSop" style="margin-top:12px"></div>
 </div>
 <div id="gate" data-t="gate"></div>
 <script type="module">
@@ -319,6 +332,54 @@ const T=ES?{
   go:'Ir', allClear:'Nada pendiente hoy 🎉',
   dates:'<b>Fechas que mandan</b> · <b>17-ago</b>: 12 testers Android activas 14 días seguidos (Google Play). · <b>8-oct</b>: lanzamiento.',
   d17:'días para el hito de Google Play', d8:'días para el lanzamiento', past:'PASADO',
+  h3:'Copias de seguridad',
+  h4:'Continuidad — si mañana falta alguien',
+  cnSub:'Quién puede entrar a qué, y qué hacer si el titular no está. Se lee de la base porque esto cambia cada pocas semanas: escrito en una página envejecería como todo lo demás.',
+  cnAlarma:'<b>⛔ Lo primero, y no es una formalidad.</b> Las copias están cifradas y <b>las dos contraseñas viven solo en la cabeza de Juanjo y en su Mac</b>. Si mañana no está, las founders tendrán acceso al bucket y encontrarán bloques ilegibles. <b>Cifrar sin depósito de claves convierte un backup en un ladrillo justo en el escenario para el que se hizo.</b> Acción: las dos contraseñas a un gestor compartido con Pilar, hoy. Mientras eso no pase, el resto de este plan no sirve.',
+  cnCols:['Sistema','Titular','Quién entra hoy','Si esa persona falta'],
+  cnSop:[
+    ['🚨 Primeras 24 horas',['Respirar: <b>nada se cae solo</b>. Web, hub y app siguen funcionando, y los automatismos siguen corriendo dentro de Supabase sin que nadie los toque.','Entrar a Supabase con la cuenta de Pilar — la única pieza crítica que no depende de Juanjo. Desde ahí se ve todo: usuarias, piloto, incidencias, contabilidad.','Avisar a las testers. Un silencio de días hace más daño que una mala noticia dicha a tiempo.','NO tocar las tiendas. Una app publicada sigue publicada; el riesgo está en mover cosas sin entender la cadena de firma.']],
+    ['📅 Primera semana',['Recuperar las contraseñas de cifrado. Sin ellas no hay copias que valgan.','Pedir a Apple y a Google el acceso a las cuentas de desarrollador: son personales y el proceso es lento.','<b>Descargar el keystore de Android desde EAS</b>. Sin él no se puede volver a publicar la app: es lo único cuya pérdida no tiene arreglo.','Clonar los tres repos de GitHub a otro sitio. Es lo más fácil de salvar y lo primero que se olvida.']],
+    ['🔁 Cómo se despliega cada cosa',['Web y hub: el zip va a <code>inbox/</code> y se lanza <b>Deploy NutriSync Web.command</b>.','App, cambio de JavaScript: <b>OTA NutriSync App.command</b> — llega el mismo día, sin tiendas.','App, cambio nativo: <code>eas build -p all --profile production</code> y enviar a las dos tiendas.','Base de datos: cada cambio es un fichero de <code>backend-sql/</code> que se pega en el editor de Supabase, en orden de fecha.']],
+    ['📖 Dónde está escrito todo',['<code>CLAUDE.md</code>: la memoria operativa completa — convenciones, rituales y las lecciones de cada error cometido.','<code>OPS-RUNBOOK.md</code>: los procedimientos de operación.','<code>secrets/README.md</code>: el mapa de dónde vive cada credencial (el mapa, no las credenciales).','📄 Documentación del hub: propuestas y registro de cada sesión.']],
+  ],
+
+  evT:'📸 Evidencia del montaje',
+  evPin:'PIN',
+  evVer:'Ver',
+  evSub:'Las capturas NO viven en esta web: están en Supabase Storage, en un bucket privado sin URL pública. El enlace se genera al momento y caduca a los 5 minutos. Hace falta el PIN — es la tercera puerta, después de Access y de tu sesión admin.',
+  evNada:'Nada catalogado todavía.',
+  evMal:'PIN incorrecto o demasiados intentos.',
+
+  vivoT:'Última copia de cada cosa',
+  vivoNada:'Aún no hay ninguna copia registrada. En cuanto corra la tarea automática, esto se llena solo.',
+  vivoSub:'Lo reporta la propia copia cada vez que corre. Si algo deja de aparecer o envejece, es que la tarea dejó de correr — no hace falta que nadie avise.',
+  galT:'Cómo quedó configurado',
+  galSub:'Capturas del montaje del 11-ago, por si hay que rehacerlo. <b>Faltan a propósito las dos de la creación del token y las de la etiqueta del router</b>: llevan credenciales en claro y el hub es una web, aunque esté cerrada.',
+
+  bkSub:'Qué se copia, dónde, cada cuánto y cuánto se perdería en el peor caso. Lo que pone MANUAL depende de que alguien se acuerde: es la deuda que queda.',
+  bkCols:['Qué','Dónde vive la copia','Cada cuánto','Incremental','Se perdería','Quién'],
+  bk:[
+    ['🗄 Base de datos','Supabase (plan Pro), copia diaria automática · retención 7 días','diaria','no · foto completa','hasta 24 h','automático'],
+    ['📱 Código de la app','GitHub · githubjuanjose/nutrisync-app','al hacer push','sí · git manda deltas','lo que no hayas subido','MANUAL'],
+    ['🌐 Código de la web','GitHub · githubjuanjose/nutrisync-web','al hacer push','sí','lo que no hayas subido','MANUAL'],
+    ['🧠 Proyecto (SQL · tools · adminsite · memoria)','GitHub PRIVADO · nutrisync-proyecto','al hacer push','sí','lo que no hayas subido','MANUAL'],
+    ['📦 Pesados (releases · archive · datasets · design-packs)','Cloudflare R2 · nutrisync-archivo (UE)','cuando lo lanzas','sí · rclone solo sube lo cambiado','desde la última copia','MANUAL'],
+    ['🔒 Material de usuarias (feedback · inputs)','R2, CIFRADO en tu Mac antes de salir','cuando lo lanzas','sí','desde la última copia','MANUAL'],
+    ['🔑 Secretos','R2, cifrado en tu Mac (XSalsa20) + zip local de respaldo','con la copia de pesados','sí','desde la última copia','MANUAL'],
+    ['🤖 Keystore Android · certificados iOS','Custodiados por EAS (Expo)','—','—','nada: no viven en este disco','automático'],
+  ],
+  bkGaps:'<b>Lo que todavía no está cubierto</b><ul>'
+    +'<li><b>Resuelto el 11-ago:</b> los secretos ya viajan a R2 cifrados en origen. El <code>zip -e</code> que se usó primero era ZipCrypto —algoritmo roto— y se sustituyó por el canal de rclone (XSalsa20-Poly1305), que además oculta los nombres de fichero.</li>'
+    +'<li><b>De la base de datos no tenemos copia propia.</b> La de Supabase protege de un fallo suyo, no de un borrado nuestro que nadie note en 7 días, ni de perder el acceso a la cuenta. Un <code>pg_dump</code> nuestro, cifrado y en R2, cierra ese hueco.</li>'
+    +'<li><b>Nada es continuo.</b> Todo se dispara a mano. Una tarea nocturna (launchd) que corra la copia de los pesados y el dump dejaría el peor caso en 24 h sin que nadie tenga que acordarse.</li>'
+    +'<li><b>Nunca hemos restaurado nada.</b> Una copia que no se ha probado es una hipótesis, no un respaldo. Toca un simulacro: bajar algo de R2 a una carpeta aparte y comprobar que abre.</li></ul>',
+  bkSop:[
+    ['🔄 Hacer la copia de los pesados',['Doble clic en <b>Backup Pesados.command</b>.','Sube solo lo que cambió y al acabar COMPRUEBA fichero a fichero lo subido contra lo local.','Si alguna carpeta sale con diferencias, no des la copia por buena: lo dice y sale en rojo.']],
+    ['♻️ Restaurar los pesados',['Sin cifrar: <code>rclone copy r2:nutrisync-archivo/releases ./releases</code>','Cifrado: <code>rclone copy r2cifrado:feedback ./feedback</code> — pide la contraseña de cifrado.','Sin esa contraseña, <b>feedback/ e inputs/ no se pueden recuperar</b>. Ni Cloudflare ni nadie.']],
+    ['🩺 Comprobar que todo está a salvo',['<code>node tools/backup-estado.mjs</code> — dice qué falta por commitear, subir o copiar.','Corre solo al principio de cada deploy, OTA y build: si algo no está salvado, el despliegue se para.','Regla: no hay desarrollo ni cambio sin backup.']],
+    ['🗄 Restaurar la base de datos',['Panel de Supabase → Database → Backups → elige el día y restaura.','Retención 7 días: pasado ese plazo, ese día ya no existe.','ANTES de restaurar, avisa: la restauración pisa lo que hay ahora.']],
+  ],
   sop:[
     ['Desplegar web',['Deja el zip en <code>inbox/</code>.','Ejecuta <b>Deploy NutriSync Web.command</b>: pasa semáforo, unitarios y grafo de enlaces, y aborta solo si algo está rojo.','Espera ~90 s al build de Cloudflare y recarga con Cmd+Shift+R.','El smoke corre solo al final: si sale algún ✗, míralo antes de seguir.']],
     ['Publicar cambio de app (OTA)',['<code>npm test</code> primero — la regla es que ninguna lógica sale sin sus unitarios.','Doble OTA mientras convivan los runtimes 0.18.0 y 0.19.0.','Las testers reciben el cambio al cerrar la app <b>dos veces</b>.','Si el cambio toca dependencias nativas o permisos, no vale OTA: hay que hacer build.']],
@@ -341,6 +402,54 @@ const T=ES?{
   go:'Open', allClear:'Nothing pending today 🎉',
   dates:'<b>Dates that rule</b> · <b>17 Aug</b>: 12 Android testers active 14 days straight (Google Play). · <b>8 Oct</b>: launch.',
   d17:'days to the Google Play milestone', d8:'days to launch', past:'PASSED',
+  h3:'Backups',
+  h4:'Continuity — if someone is missing tomorrow',
+  cnSub:'Who can get into what, and what to do if the account holder is not around. Read from the database because this changes every few weeks.',
+  cnAlarma:'<b>⛔ First things first, and this is not a formality.</b> The backups are encrypted and <b>both passwords live only with Juanjo and on his Mac</b>. If he is not around tomorrow, the founders will reach the bucket and find unreadable blocks. <b>Encryption without key escrow turns a backup into a brick in exactly the scenario it was built for.</b> Action: both passwords into a shared manager with Pilar, today.',
+  cnCols:['System','Held by','Who gets in today','If that person is missing'],
+  cnSop:[
+    ['🚨 First 24 hours',['Breathe: <b>nothing falls over on its own</b>. Web, hub and app keep running, and the scheduled jobs keep going inside Supabase.','Sign in to Supabase with the account of Pilar — the one critical piece that does not depend on Juanjo.','Tell the testers. Days of silence do more damage than bad news delivered on time.','Do NOT touch the stores. A published app stays published; the risk is moving things without understanding the signing chain.']],
+    ['📅 First week',['Recover the encryption passwords. Without them there are no usable backups.','Start the access requests with Apple and Google: personal accounts, slow process.','<b>Download the Android keystore from EAS</b>. Without it the app can never be updated again.','Clone the three GitHub repos elsewhere.']],
+    ['🔁 How each thing ships',['Web and hub: zip into <code>inbox/</code>, run <b>Deploy NutriSync Web.command</b>.','App, JavaScript change: <b>OTA NutriSync App.command</b> — same day, no stores.','App, native change: <code>eas build -p all --profile production</code>, then submit to both stores.','Database: each change is a file in <code>backend-sql/</code>, pasted into the Supabase SQL editor in date order.']],
+    ['📖 Where everything is written',['<code>CLAUDE.md</code>: the full operating memory.','<code>OPS-RUNBOOK.md</code>: operating procedures.','<code>secrets/README.md</code>: the map of where each credential lives (the map, not the credentials).','📄 Hub documentation: proposals and the record of every session.']],
+  ],
+
+  evT:'📸 Setup evidence',
+  evPin:'PIN',
+  evVer:'View',
+  evSub:'The screenshots do NOT live on this site: they sit in Supabase Storage, in a private bucket with no public URL. The link is minted on the spot and expires in 5 minutes. The PIN is required — third door, after Access and your admin session.',
+  evNada:'Nothing catalogued yet.',
+  evMal:'Wrong PIN, or too many attempts.',
+
+  vivoT:'Last backup of each item',
+  vivoNada:'No backup recorded yet. It fills in on its own once the scheduled task runs.',
+  vivoSub:'Reported by the backup itself every time it runs. If something stops appearing or goes stale, the task stopped running — nobody needs to raise a hand.',
+  galT:'How it was set up',
+  galSub:'Screenshots from the Aug-11 setup, in case it must be rebuilt. <b>The two token-creation shots and the router label are deliberately missing</b>: they carry credentials in the clear, and the hub is still a website.',
+
+  bkSub:'What gets copied, where, how often, and what you would lose at worst. Anything marked MANUAL depends on someone remembering — that is the remaining debt.',
+  bkCols:['What','Where the copy lives','How often','Incremental','You would lose','Who'],
+  bk:[
+    ['🗄 Database','Supabase (Pro), automatic daily backup · 7-day retention','daily','no · full snapshot','up to 24 h','automatic'],
+    ['📱 App code','GitHub · githubjuanjose/nutrisync-app','on push','yes · git ships deltas','whatever you have not pushed','MANUAL'],
+    ['🌐 Web code','GitHub · githubjuanjose/nutrisync-web','on push','yes','whatever you have not pushed','MANUAL'],
+    ['🧠 Project (SQL · tools · adminsite · memory)','GitHub PRIVATE · nutrisync-proyecto','on push','yes','whatever you have not pushed','MANUAL'],
+    ['📦 Heavy folders (releases · archive · datasets · design-packs)','Cloudflare R2 · nutrisync-archivo (EU)','when you run it','yes · rclone uploads only changes','since the last copy','MANUAL'],
+    ['🔒 User material (feedback · inputs)','R2, ENCRYPTED on your Mac before leaving','when you run it','yes','since the last copy','MANUAL'],
+    ['🔑 Secrets','R2, encrypted on your Mac (XSalsa20) + local zip as backup','with the heavy backup','yes','since the last copy','MANUAL'],
+    ['🤖 Android keystore · iOS certs','Held by EAS (Expo)','—','—','nothing: they do not live on this disk','automatic'],
+  ],
+  bkGaps:'<b>Not covered yet</b><ul>'
+    +'<li><b>Fixed on Aug 11:</b> secrets now travel to R2 encrypted at source. The initial <code>zip -e</code> used ZipCrypto — a broken algorithm — and was replaced by rclone crypt (XSalsa20-Poly1305), which also hides filenames.</li>'
+    +'<li><b>We have no copy of the database of our own.</b> Supabase protects against their failure, not against our own deletion going unnoticed for 7 days, nor against losing account access. Our own encrypted <code>pg_dump</code> in R2 closes that gap.</li>'
+    +'<li><b>Nothing is continuous.</b> Everything is triggered by hand. A nightly job (launchd) would cap the worst case at 24 h with nobody having to remember.</li>'
+    +'<li><b>We have never restored anything.</b> An untested backup is a hypothesis, not a safety net. Time for a drill.</li></ul>',
+  bkSop:[
+    ['🔄 Run the heavy backup',['Double-click <b>Backup Pesados.command</b>.','Uploads only what changed, then verifies file by file against local.','If a folder shows differences it fails loudly — do not call it done.']],
+    ['♻️ Restore the heavy folders',['Plain: <code>rclone copy r2:nutrisync-archivo/releases ./releases</code>','Encrypted: <code>rclone copy r2cifrado:feedback ./feedback</code> — asks for the encryption password.','Without that password, <b>feedback/ and inputs/ cannot be recovered</b>. By anyone.']],
+    ['🩺 Check everything is safe',['<code>node tools/backup-estado.mjs</code> — reports what is uncommitted, unpushed or uncopied.','Runs automatically before every deploy, OTA and build; stops them if something is unsaved.','Rule: no development, no change, without a backup.']],
+    ['🗄 Restore the database',['Supabase panel → Database → Backups → pick the day and restore.','7-day retention: past that, the day is gone.','Warn people BEFORE restoring: it overwrites what is there now.']],
+  ],
   sop:[
     ['Deploy web',['Drop the zip in <code>inbox/</code>.','Run <b>Deploy NutriSync Web.command</b>: it runs the guardrail, unit tests and link graph, and aborts on red.','Wait ~90 s for the Cloudflare build and hard-refresh.','The smoke test runs at the end: if any ✗ shows up, look at it before moving on.']],
     ['Ship an app change (OTA)',['<code>npm test</code> first — no logic ships without its unit tests.','Double OTA while runtimes 0.18.0 and 0.19.0 coexist.','Testers get it after closing the app <b>twice</b>.','Native deps or permissions? OTA is not enough: needs a build.']],
@@ -419,6 +528,99 @@ $('sop').innerHTML=T.sop.map(([h,steps])=>
  +'<li>Digest diario a founders + contact@ + review@ SOLO si hay pendientes (🗳 decisiones · 🔔 notificaciones · 🎫 incidencias · 🔐 MFA).</li>'
  +'<li>Si el tablero está limpio no envía nada — el silencio es la señal buena. / Daily digest, only sent while something is pending; a clean board sends nothing.</li>'
  +'</ol></details>';
+
+/* Sección 3 · Copias de seguridad (r17-g, 11-ago). Una tabla honesta: lo que
+   está automatizado y lo que depende de que alguien se acuerde, con el peor
+   caso de cada cosa. Los huecos se listan en vez de esconderse — un inventario
+   que solo enseña lo que funciona no es un inventario. */
+$('bk').innerHTML='<div class="card" style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12.3px">'
+  +'<thead><tr>'+T.bkCols.map(c=>'<th style="text-align:left;padding:6px 8px;border-bottom:2px solid #EADFD0;'
+    +'font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:#8A7F78">'+c+'</th>').join('')+'</tr></thead><tbody>'
+  +T.bk.map(f=>'<tr>'+f.map((c,i)=>'<td style="padding:6px 8px;border-bottom:1px solid #F4EADF;vertical-align:top'
+    +(i===5&&c==='MANUAL'?';color:#B4700F;font-weight:800':'')
+    +(i===5&&c!=='MANUAL'?';color:#0F6E56;font-weight:700':'')+'">'+c+'</td>').join('')+'</tr>').join('')
+  +'</tbody></table></div>'
+  +'<div class="ms" style="margin-top:10px">'+T.bkGaps+'</div>';
+
+/* Estado EN VIVO: lo reporta el script de copias a `backup_runs`. Una página
+   que dijera "las copias van bien" sin leer nada seria decoracion — repetiria
+   lo que alguien escribio una vez, no lo que paso de verdad. */
+sb.rpc('admin_backup_estado').then(r=>{
+  const f=r.data||[];
+  const horas=h=>h==null?'—':(h<1?'hace menos de 1 h':(h<48?'hace '+h+' h':'hace '+Math.round(h/24)+' d'));
+  const mb=b=>b==null?'—':(b>1e9?(b/1e9).toFixed(2)+' GB':(b/1e6).toFixed(0)+' MB');
+  $('bkVivo').innerHTML='<h3 style="font-size:13.5px;margin:14px 0 2px">'+T.vivoT+'</h3>'
+    +'<div class="hint" style="margin-bottom:8px">'+T.vivoSub+'</div>'
+    +(f.length?'<div class="card" style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12.3px"><tbody>'
+      +f.map(x=>{
+        const viejo = x.horas==null || x.horas>8;          // la tarea corre cada 4 h
+        const col = !x.ultimo_ok ? '#C73A20' : (viejo?'#B4700F':'#0F6E56');
+        return '<tr><td style="padding:6px 8px;border-bottom:1px solid #F4EADF;font-weight:700">'+esc(x.activo)+'</td>'
+          +'<td style="padding:6px 8px;border-bottom:1px solid #F4EADF;color:'+col+';font-weight:700">'
+          +(!x.ultimo_ok?'✗ falló':(viejo?'⚠ '+horas(x.horas):'✓ '+horas(x.horas)))+'</td>'
+          +'<td style="padding:6px 8px;border-bottom:1px solid #F4EADF">'+mb(x.bytes)
+          +(x.ficheros!=null?' · '+x.ficheros+' fich.':'')+'</td>'
+          +'<td style="padding:6px 8px;border-bottom:1px solid #F4EADF;color:#8A7F78">'+esc(x.ultimo_detalle||'')
+          +(x.fallos_7d>0?' · <b style="color:#C73A20">'+x.fallos_7d+' fallo(s) en 7 d</b>':'')+'</td></tr>';}).join('')
+      +'</tbody></table></div>'
+      :'<div class="ms">'+T.vivoNada+'</div>');
+}).catch(()=>{ $('bkVivo').innerHTML='<div class="ms">'+T.vivoNada+'</div>'; });
+
+/* Evidencia (decisión Juanjo, 11-ago): «todas a Supabase, nada en HTML; enlace
+   con PIN». Una captura del panel servida como fichero estático es un objeto
+   que existe en una CDN — la puerta la pone Access, pero el objeto está ahí.
+   En Storage privado no hay URL pública: solo una firmada que caduca. */
+window.nsEvVer=function(id){
+  const pin=(document.getElementById('evPin')||{}).value||'';
+  sb.rpc('admin_evidencia_ver',{p_id:id,p_pin:pin}).then(r=>{
+    if(r.error||!r.data||!r.data.url){ document.getElementById('evMsg').textContent=T.evMal; return; }
+    document.getElementById('evMsg').textContent='';
+    window.open(r.data.url,'_blank','noopener');
+  });
+};
+sb.rpc('admin_evidencia_list',{p_tema:'copias'}).then(r=>{
+  const e=r.data||[];
+  document.getElementById('bkEv').innerHTML=
+    '<details><summary>'+T.evT+'</summary>'
+    +'<div class="hint" style="margin:8px 0">'+T.evSub+'</div>'
+    +(e.length?'<div style="display:flex;gap:8px;align-items:center;margin:10px 0">'
+       +'<input id="evPin" type="password" inputmode="numeric" placeholder="'+T.evPin+'" '
+       +'style="width:110px;padding:7px 10px;border:1px solid #EADFD0;border-radius:9px;font:inherit">'
+       +'<span id="evMsg" class="hint" style="color:#C73A20"></span></div>'
+       +'<ol style="font-size:12.5px;line-height:1.9">'
+       +e.map(x=>'<li>'+esc(x.titulo)
+          +' <button onclick="window.nsEvVer('+x.id+')" style="margin-left:6px">'+T.evVer+'</button>'
+          +(x.nota?'<div class="hint">'+esc(x.nota)+'</div>':'')+'</li>').join('')
+       +'</ol>'
+     :'<div class="ms">'+T.evNada+'</div>')
+    +'</details>';
+}).catch(()=>{});
+
+/* Sección 4 · Continuidad. Los accesos salen de `ops_accesos` (regla de oro:
+   quién entra a qué cambia cada pocas semanas y no puede vivir en el HTML). */
+$('cnAlarma').innerHTML='<div style="background:#FFF1EC;border:2px solid #E8472A;'
+  +'border-radius:12px;padding:13px 15px;font-size:12.8px;color:#8A2A18;margin:0 0 12px">'+T.cnAlarma+'</div>';
+sb.rpc('admin_accesos_list').then(r=>{
+  const a=r.data||[];
+  const col={critico:'#C73A20',alto:'#B4700F',medio:'#6E655D',bajo:'#8A7F78'};
+  $('cn').innerHTML=a.length?'<div class="card" style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12.2px">'
+    +'<thead><tr>'+T.cnCols.map(c=>'<th style="text-align:left;padding:6px 8px;border-bottom:2px solid #EADFD0;'
+      +'font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:#8A7F78">'+c+'</th>').join('')+'</tr></thead><tbody>'
+    +a.map(x=>'<tr>'
+      +'<td style="padding:7px 8px;border-bottom:1px solid #F4EADF;font-weight:700;color:'+(col[x.riesgo]||'#241D1A')+'">'
+        +esc(x.sistema)+'<div class="hint" style="font-weight:400">'+esc(x.para_que)+'</div></td>'
+      +'<td style="padding:7px 8px;border-bottom:1px solid #F4EADF">'+esc(x.titular)+'</td>'
+      +'<td style="padding:7px 8px;border-bottom:1px solid #F4EADF">'+esc(x.quien_entra)+'</td>'
+      +'<td style="padding:7px 8px;border-bottom:1px solid #F4EADF">'+esc(x.si_falta)+'</td></tr>').join('')
+    +'</tbody></table></div>':'<div class="ms">—</div>';
+}).catch(()=>{ $('cn').innerHTML='<div class="ms">—</div>'; });
+
+$('cnSop').innerHTML=T.cnSop.map(([h,steps])=>
+  '<details><summary>'+h+'</summary><ol>'+steps.map(x=>'<li>'+x+'</li>').join('')+'</ol></details>').join('');
+
+$('bkSop').innerHTML=T.bkSop.map(([h,steps])=>
+  '<details><summary>'+h+'</summary><ol>'+steps.map(x=>'<li>'+x+'</li>').join('')+'</ol></details>').join('')
+ +'';
 
 (async()=>{
   const{data:{session}}=await sb.auth.getSession();
