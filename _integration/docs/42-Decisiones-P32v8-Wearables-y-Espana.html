@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>42 · Propuesta 32 v8 · registro de decisiones de founders</title>
+<style>
+:root{--coral:#FD400C;--deep:#6C3732;--cream:#FFF6EC;--line:#EADFD0;--muted:#8A7F78;
+  --ok:#1F6B57;--warn:#B26A00;--bad:#B3261E}
+*{box-sizing:border-box;margin:0}
+body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--cream);
+  color:var(--deep);line-height:1.6;padding:28px clamp(16px,4vw,48px) 80px}
+.wrap{max-width:1080px;margin:0 auto}
+h1{font-size:clamp(23px,3.4vw,32px);line-height:1.2;color:var(--coral);margin-bottom:6px}
+h2{font-size:19px;margin:34px 0 10px;padding-top:16px;border-top:2px solid var(--line)}
+p,li{font-size:14.5px}
+ul{margin:6px 0 6px 20px}
+.lede{color:var(--muted);font-size:15px;margin-bottom:4px}
+table{width:100%;border-collapse:collapse;margin:10px 0 4px;background:#fff;
+  border-radius:10px;overflow:hidden;box-shadow:0 2px 10px rgba(108,55,50,.06)}
+th,td{padding:8px 11px;text-align:left;font-size:13.5px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#FBF6EF;font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em}
+tr:last-child td{border-bottom:0}
+code{background:#FBF6EF;padding:1px 5px;border-radius:5px;font-size:12.5px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;
+  box-shadow:0 2px 10px rgba(108,55,50,.06)}
+.verde{border-left:4px solid var(--ok);background:#F4FAF7}
+.adj{display:block;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 16px;
+  margin:8px 0;text-decoration:none;color:var(--deep);font-weight:700}
+.adj:hover{border-color:var(--coral)}
+.adj small{display:block;font-weight:400;color:var(--muted)}
+.muted{color:var(--muted)}
+</style>
+</head>
+<body><div class="wrap">
+
+<h1>42 · Propuesta 32 v8 — registro de decisiones</h1>
+<p class="lede">El documento de marcaje de Lucía: cada decisión con su recomendación y sus casillas
+Agree / Disagree. Aquí el contexto y el fichero; <b>las firmas se hacen en 🗳 Decisiones</b>,
+agrupadas por bloque, para que el recordatorio de founders las persiga solo.</p>
+
+<h2>Qué se decide</h2>
+<table>
+<tr><th>Bloque</th><th>Decisiones</th><th>La recomendación, en una frase</th></tr>
+<tr><td><b>Arquitectura de datos de salud</b></td><td>D28 · D29 · D37 · D38</td>
+<td>HealthKit + Health Connect como ruta por defecto; conectores directos solo para lo que esa ruta no dé; ninguno imprescindible; revisión trimestral de términos de vendors.</td></tr>
+<tr><td><b>Strava</b></td><td>D30 · D31</td>
+<td>Cero dependencia core, y sus datos NO tocan nuestra IA mientras sus términos lo restrinjan.</td></tr>
+<tr><td><b>Procedencia y política</b></td><td>D32 · D33</td>
+<td>Toda señal importada lleva procedencia obligatoria, y las reglas de uso se aplican como registro legible por máquina — no como documento que alguien tiene que recordar.</td></tr>
+<tr><td><b>Oura</b></td><td>D34 · D39-D43</td>
+<td>Primer wearable directo, sujeto a demanda del piloto; sus datos crudos JAMÁS entran al LLM ni entrenan modelos; sus scores siempre atribuidos, nunca como diagnóstico.</td></tr>
+<tr><td><b>Otros wearables</b></td><td>D35 · D36</td>
+<td>Galaxy, Fitbit y Pixel Watch por Health Connect primero; SDKs directos solo para huecos justificados.</td></tr>
+<tr><td><b>Mercado España</b></td><td>D44-D49</td>
+<td>Objetivo primario mujeres 25-44 con 40-55 como co-primario; Gen Z adulta en freemium; sin perfilar menores; «premium» por criterio explícito, nunca inferido del dispositivo o el código postal.</td></tr>
+<tr><td><b>Plataforma y despliegue</b></td><td>D50-D53</td>
+<td>iOS y Android de primera desde el día uno; TAM sin inflar; grupo de piloto por cuotas; refresco trimestral de la evidencia rápida.</td></tr>
+</table>
+<p class="muted">Los bloques de Strava, Oura y otros wearables (D30-D43) no bloquean el piloto de
+Fase 1 — el propio documento los marca como aplazables si falta tiempo.</p>
+
+<h2>Cómo casa con lo que ya está decidido</h2>
+<div class="card verde">
+<p>Tres coherencias que conviene tener a la vista al firmar: la ruta HealthKit/Health Connect
+(D28) es la misma traducción que hicimos de la decisión «Apple Watch ya» — el Watch entra por
+HealthKit, sin integración de marca. La prohibición de que datos crudos de wearables entren al
+LLM (D40-D42) es la misma familia que la regla del scoring de Constanza: la evaluación es
+determinista, el modelo no opina. Y la pregunta de wearables del onboarding que ya está en el
+tablero es justamente la evidencia que D34 pide («sujeto a demanda del piloto en España»).</p>
+</div>
+
+<h2>El documento para marcar</h2>
+<a class="adj" href="propuestas/NutriSync_Proposal_32_v8_Founder_Decisions.docx">📄 NutriSync_Proposal_32_v8_Founder_Decisions.docx
+<small>El registro completo con las casillas Agree/Disagree y columna de notas — tal cual lo preparó Lucía, descargable</small></a>
+
+<h2>Dónde vive cada pieza</h2>
+<ul>
+<li>Las firmas → <b>🗳 Decisiones</b> (7 entradas, una por bloque; el digest de founders las cuenta)</li>
+<li>El razonamiento completo → la Propuesta 32 y este documento</li>
+<li>Lo que se convierta en trabajo → el roadmap 📚 del hub, cuando esté firmado y cumpla la DoR</li>
+</ul>
+
+</div></body>
+</html>
