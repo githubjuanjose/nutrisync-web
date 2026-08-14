@@ -24,6 +24,7 @@ button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:
 .s-nuevo{background:#FFE4E0;color:#A32D2D}.s-en_curso{background:#FFF3E0;color:#B4700F}
 .s-esperando_usuaria{background:#E6F0FF;color:#1D4ED8}.s-resuelto{background:#E8F5EE;color:#0F6E56}
 .s-cerrado{background:#F1F5F9;color:#475569}
+.s-duplicada{background:#F3E8FF;color:#6B21A8}
 .msg{font-size:13.5px;flex:1;min-width:200px}
 .meta{font-size:11px;color:#8A7F78}
 .body{display:none;border-top:1px solid #F4EADF;padding:14px 15px;background:#FFFEFB}
@@ -430,7 +431,8 @@ Nada se guarda hasta que pulsas un botón de guardar.</p>
   <select id="fSt"><option value="">estado: todos</option>
     <option value="nuevo">nuevo</option><option value="en_curso">en curso</option>
     <option value="esperando_usuaria">esperando a la usuaria</option>
-    <option value="resuelto">resuelto</option><option value="cerrado">cerrado</option></select>
+    <option value="resuelto">resuelto</option><option value="cerrado">cerrado</option>
+    <option value="duplicada">duplicada</option></select>
   <select id="fAs"><option value="">asignado a: todas</option></select>
   <button onclick="window.nsExport()" title="Exporta lo que ves con los filtros actuales">⬇ CSV</button>
   <span class="meta" id="count"></span>
@@ -611,7 +613,8 @@ function ticket(t){
     +(t.criticidad?'<span class="fb '+esc(t.criticidad).toLowerCase()+'">'+esc(t.criticidad)+'</span>':'')
     +(t.titulo?'<span class="tit">'+esc(t.titulo)+'</span>':'')
     +(t.categoria?'<span class="cat">'+esc(t.categoria)+'</span>':'')
-    +'<span class="pill s-'+esc(t.status)+'">'+esc(t.status.replace(/_/g,' '))+'</span>'
+    +'<span class="pill s-'+esc(t.status)+'">'+esc(t.status.replace(/_/g,' '))
+    +(t.status==='duplicada'&&t.duplicado_de?' de '+esc(t.duplicado_de):'')+'</span>'
     +'<span class="asig">'+esc(t.assigned_to||'—')+'</span>'
     +'<span class="chips">'
     +(paraCerrar(t)?'<span class="pcerr">✔ cerrar</span>':'')
@@ -633,10 +636,16 @@ function ticket(t){
       :'<div style="margin-top:8px"><img class="nsShot" data-shot="'+esc(t.screenshot_path)+'" alt="captura de la usuaria" style="max-width:190px;border-radius:9px;border:1px solid #EFE3D7;cursor:zoom-in" onclick="window.open(this.src)"></div>'):'')
     +'</div>'
     +'<div class="grid"><div>'
-    +'<div class="fld"><label>Estado</label><select class="edSt">'
-    +['nuevo','en_curso','esperando_usuaria','resuelto','cerrado'].map(function(s){
+    +'<div class="fld"><label>Estado</label><select class="edSt" onchange="window.nsDupTog(this)">'
+    +['nuevo','en_curso','esperando_usuaria','resuelto','cerrado','duplicada'].map(function(s){
        return '<option value="'+s+'"'+(s===t.status?' selected':'')+'>'+s.replace(/_/g,' ')+'</option>';}).join('')
     +'</select></div>'
+    /* r18-c (pedido Juanjo 14-ago): duplicada EXIGE decir de quién. El campo
+       solo aparece con ese estado elegido; el servidor valida que la canónica
+       exista y no sea a su vez duplicada. */
+    +'<div class="fld edDupWrap" style="'+(t.status==='duplicada'?'':'display:none')+'">'
+    +'<label>Duplicada de (nº de incidencia)</label>'
+    +'<input type="text" class="edDup" value="'+esc(t.duplicado_de||'')+'" placeholder="NS-0054"></div>'
     +'<div class="fld"><label>Título breve (cómo la llamamos nosotros)</label><input type="text" class="edTi" value="'+esc(t.titulo||'')+'" placeholder="p. ej.: sin predicción + períodos fantasma"></div>'
     +'<div class="fld" style="display:flex;gap:8px"><div style="flex:1"><label>Categoría</label><select class="edCa">'
     +['','bug','mejora','consulta','datos'].map(function(c){return '<option value="'+c+'"'+(c===(t.categoria||'')?' selected':'')+'>'+(c||'—')+'</option>';}).join('')
@@ -672,7 +681,7 @@ function ticket(t){
 }
 
 var ESTADOS=[['nuevo','🆕 Nuevas'],['en_curso','🔧 En curso'],['esperando_usuaria','⏳ Esperando a la usuaria'],
-  ['resuelto','✅ Resueltas'],['cerrado','🗄 Cerradas']];
+  ['resuelto','✅ Resueltas'],['cerrado','🗄 Cerradas'],['duplicada','🔁 Duplicadas']];
 /* r17 (regla Juanjo, 10-ago): la página abre como DASHBOARD compacto — TODAS
    las secciones plegadas (KPIs + contadores a la vista, cero scroll infinito).
    Se despliega lo que se toca; buscar o filtrar por estado abre lo que casa. */
@@ -782,12 +791,25 @@ window.nsVerificado=function(id){
   });
 };
 
+window.nsDupTog=function(sel){
+  var w=sel.closest('.th')||sel.parentElement.parentElement;
+  var box=w.querySelector('.edDupWrap');
+  if(box)box.style.display=(sel.value==='duplicada')?'':'none';
+};
 function nsLeftSave(id){
+  var st=tEl(id,'edSt').value;
+  var dupEl=tEl(id,'edDup');
+  var dup=(st==='duplicada'&&dupEl)?dupEl.value.trim().toUpperCase():null;
+  if(st==='duplicada'&&!dup){
+    snack('⚠ Para marcar duplicada, di de qué incidencia (NS-####)');
+    return Promise.reject(new Error('duplicada sin referencia'));
+  }
   return sb.rpc('admin_ticket_update',{p_id:id,
-    p_status:tEl(id,'edSt').value, p_assigned:tEl(id,'edAs').value||null,
+    p_status:st, p_assigned:tEl(id,'edAs').value||null,
     p_accion:tEl(id,'edAc').value, p_comentario:null,
     p_titulo:tEl(id,'edTi').value||null, p_categoria:tEl(id,'edCa').value||null,
-    p_criticidad:tEl(id,'edCr').value||null, p_fix_enviado:tEl(id,'edFx').value==='1'
+    p_criticidad:tEl(id,'edCr').value||null, p_fix_enviado:tEl(id,'edFx').value==='1',
+    p_duplicado_de:dup
   });
 }
 /* r16-F9: tras guardar, la ficha SIGUE donde el ojo la dejó — se mantiene

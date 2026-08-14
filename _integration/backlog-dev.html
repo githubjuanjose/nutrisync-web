@@ -277,10 +277,17 @@ function opcionesRelease(actual){ return window.NSEntrega.opciones(RELS, actual)
 function cargar(){
   sb.auth.getSession().then(function(s){
     if(!s.data.session){$('board').innerHTML='<p class="hint">Inicia sesión admin desde el hub y recarga.</p>';return;}
-    sb.rpc('admin_releases_list').then(function(rr){ RELS = rr.data || []; });
-    sb.rpc('admin_backlog_list').then(function(r){
-      if(r.error)return fail(r.error,'admin_backlog_list');
-      D=r.data;render();});
+    /* r18-c: las dos consultas iban EN PARALELO y el tablero se pintaba al
+       llegar el backlog — si ganaba la carrera, RELS seguía vacío y cada
+       desplegable nacía solo con su valor actual (la rama huérfana de
+       entrega.js). Síntoma real del 14-ago: la 0.22.1 existía en la base y
+       «no se podía» elegir. 🚢 y Go Live ya esperaban a las dos (11-ago);
+       esta página era la única con la carrera viva. */
+    Promise.all([sb.rpc('admin_releases_list'), sb.rpc('admin_backlog_list')]).then(function(rs){
+      if(rs[0].error)return fail(rs[0].error,'admin_releases_list');
+      if(rs[1].error)return fail(rs[1].error,'admin_backlog_list');
+      RELS=rs[0].data||[];D=rs[1].data;render();
+    }).catch(function(e){fail(e,'backlog-dev cargar');});
   });
 }
 ['fTipo','fEst'].forEach(function(i){$(i).addEventListener('change',render);});
