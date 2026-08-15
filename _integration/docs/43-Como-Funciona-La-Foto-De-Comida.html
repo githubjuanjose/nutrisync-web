@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>43 · Cómo funciona la foto de comida — la IA percibe, la base calcula, ella decide</title>
+<style>
+:root{--coral:#FD400C;--deep:#6C3732;--cream:#FFF6EC;--line:#EADFD0;--muted:#8A7F78;
+  --ok:#1F6B57;--warn:#B26A00;--bad:#B3261E}
+*{box-sizing:border-box;margin:0}
+body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--cream);
+  color:var(--deep);line-height:1.6;padding:28px clamp(16px,4vw,48px) 80px}
+.wrap{max-width:1080px;margin:0 auto}
+h1{font-size:clamp(23px,3.4vw,32px);line-height:1.2;color:var(--coral);margin-bottom:6px}
+h2{font-size:19px;margin:34px 0 10px;padding-top:16px;border-top:2px solid var(--line)}
+p,li{font-size:14.5px}
+ul{margin:6px 0 6px 20px}
+.lede{color:var(--muted);font-size:15px;margin-bottom:4px}
+code{background:#FBF6EF;padding:1px 5px;border-radius:5px;font-size:12.5px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;
+  box-shadow:0 2px 10px rgba(108,55,50,.06)}
+.verde{border-left:4px solid var(--ok);background:#F4FAF7}
+.rojo{border-left:4px solid var(--bad);background:#FDF5F4}
+.ambar{border-left:4px solid var(--warn);background:#FFFBF2}
+.viaje{display:flex;flex-direction:column;gap:0;margin:14px 0}
+.est{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start;
+  background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 16px;margin:5px 0}
+.est .n{width:34px;height:34px;border-radius:50%;background:var(--coral);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px}
+.est b{display:block;margin-bottom:2px}
+.est small{color:var(--muted)}
+.flecha{text-align:center;color:var(--muted);font-size:18px;line-height:1;margin:-2px 0}
+.tres{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:12px 0}
+.rol{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.rol .quien{font-weight:800;color:var(--coral)}
+.muted{color:var(--muted)}
+</style>
+</head>
+<body><div class="wrap">
+
+<h1>43 · Cómo funciona la foto de comida</h1>
+<p class="lede">La explicación para founders — sin código, con el porqué de cada decisión.
+El detalle técnico vive en el doc 39 (propuesta) y en el repositorio.</p>
+
+<h2>El principio que lo gobierna todo</h2>
+<div class="tres">
+<div class="rol"><span class="quien">La IA percibe</span><br>Mira la foto y <b>propone</b> qué
+alimentos ve. Nada más: no calcula, no evalúa, no juzga. Como un corrector ortográfico que
+subraya pero jamás reescribe por ti.</div>
+<div class="rol"><span class="quien">La base calcula</span><br>Los números nutricionales, cuando
+lleguen, saldrán de <b>tablas oficiales</b> (USDA, EuroFIR) — datos publicados y citables, no
+inventados por un modelo.</div>
+<div class="rol"><span class="quien">Ella decide</span><br><b>Nada queda registrado sin su
+confirmación.</b> Revisa la propuesta, corrige cantidades, y solo al pulsar «guardar» existe la
+comida. Su corrección es además lo que nos enseña.</div>
+</div>
+
+<h2>El viaje de una foto</h2>
+<div class="viaje">
+<div class="est"><div class="n">1</div><div><b>En su móvil: la foto se limpia antes de salir</b>
+<small>Se reduce de tamaño y se recomprime — y esa recompresión borra los metadatos (GPS
+incluido) EN el teléfono. Lo que viaja es solo la imagen: nunca su nombre, su ciclo ni su
+ubicación.</small></div></div>
+<div class="flecha">↓</div>
+<div class="est"><div class="n">2</div><div><b>A su carpeta privada</b>
+<small>La foto aterriza en un almacén privado, en la carpeta de su cuenta. Las reglas de la base
+hacen imposible que otra usuaria —o nosotros por descuido— vea fotos ajenas.</small></div></div>
+<div class="flecha">↓</div>
+<div class="est"><div class="n">3</div><div><b>El servidor pregunta a la visión, con contrato</b>
+<small>Nuestra función de servidor (la única que conoce la clave de la IA — la app jamás la
+lleva encima) envía la imagen al modelo con dos vallas: un presupuesto mensual por usuaria, y
+un contrato estricto de respuesta — el modelo solo puede contestar en la estructura pactada,
+sin prosa libre. El prompt es conservador a propósito: prohibido inventar ingredientes, y si no
+hay comida clara, decir «no es comida» y callar.</small></div></div>
+<div class="flecha">↓</div>
+<div class="est"><div class="n">4</div><div><b>Dos modelos, con relevo automático</b>
+<small>Hay un modelo primario y uno de reserva: si la confianza del primero no llega al umbral,
+se reintenta con el segundo. Los dos viven en un registro editable — cambiar de modelo o de
+proveedor el día de mañana es editar una fila, no reprogramar la app.</small></div></div>
+<div class="flecha">↓</div>
+<div class="est"><div class="n">5</div><div><b>La propuesta, a la pantalla — con su confianza a la vista</b>
+<small>Cada alimento llega con su nivel de confianza («poca confianza: revísalo» incluido) y su
+cantidad estimada ajustable. El texto dice lo que es: «esto es lo que veo», «siempre puedes
+corregirlo» — el lenguaje lo revisó Pilar, palabra a palabra.</small></div></div>
+<div class="flecha">↓</div>
+<div class="est"><div class="n">6</div><div><b>Ella confirma — y su corrección nos enseña</b>
+<small>Solo al confirmar queda registrada la comida. Cada ajuste que hace se guarda con el antes
+y el después: ese es el material con el que mediremos y mejoraremos el modelo, plato real a
+plato real.</small></div></div>
+</div>
+
+<h2>Lo que falta a propósito</h2>
+<div class="card rojo">
+<p><b>Ni un número nutricional en esta fase.</b> No es que no dé tiempo: es una decisión.
+Reconocer «esto es arroz con pollo» y afirmar «esto son tantas calorías» son promesas muy
+distintas — la primera se corrige de un vistazo; la segunda parece una medida cuando es una
+estimación sobre otra estimación.</p>
+<p style="margin-top:8px">Cuando los números lleguen (P2), <b>no los dirá el modelo</b>: cada
+alimento detectado trae una consulta de búsqueda que se casará contra <b>USDA y EuroFIR</b> —
+tablas oficiales, citables — y se mostrarán como rangos, nunca como cifras exactas, y solo tras
+confirmar la cantidad (reglas de la deontología de Pilar).</p>
+<p style="margin-top:8px">Y la evaluación por fase del ciclo será una <b>consulta determinista
+contra el scoring de Constanza</b> — juicio clínico convertido en reglas, no opinión de una IA.
+<b>Si algún día un modelo escribiera esa evaluación, sería otro producto y necesitaría su firma
+de nuevo.</b> Esa frase está en la memoria del proyecto como regla, no como intención.</p>
+</div>
+
+<h2>Las redes de seguridad</h2>
+<div class="card verde">
+<p>Un <b>interruptor de emergencia</b> apaga el botón de la foto en todos los móviles el mismo
+día, sin pasar por las tiendas. Cada fallo posible tiene su mensaje con salida — nunca una
+pantalla en blanco. Cada llamada a la IA queda registrada con su coste. Y las fotos se pueden
+borrar a petición, siempre.</p>
+</div>
+
+<h2>Dónde vive cada pieza</h2>
+<ul>
+<li>La propuesta técnica completa → doc 39 · las decisiones de wearables y datos → doc 42</li>
+<li>El motor de scoring por fase (pendiente de la firma de Constanza) → hoja en el roadmap 📚</li>
+<li>La deontología del mapeo foto→nutrientes → documento de Pilar, pestaña 🛡 Compliance</li>
+</ul>
+
+</div></body>
+</html>
