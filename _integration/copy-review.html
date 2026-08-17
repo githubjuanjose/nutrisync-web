@@ -53,7 +53,7 @@ var sb=window.supabase.createClient(U,K);
 var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
 function nsFail(err,fn){var e=document.getElementById('e');
   e.style.display='block';
-  e.textContent='La consulta '+fn+' ha fallado: '+(err&&err.message||err)+' — si es "not authorized", refuerza la sesión en la página MFA.';}
+  e.textContent='La consulta '+fn+' ha fallado: '+(err&&err.message||err)+' — «not authorized» = refuerza la sesión en la página 🔐 MFA; «could not find» = falta correr el SQL 2026-08-17-copy-review.';}
 
 function pinta(rows){
   var cont=document.getElementById('lista');
@@ -99,7 +99,7 @@ function cargar(){
     if(!s.data.session){document.getElementById('lista').innerHTML=
       '<p class="lede">Inicia sesión admin (p. ej. en 📬 Waitlist) y recarga.</p>';return;}
     sb.rpc('admin_copy_review_list').then(function(r){
-      if(r.error)return nsFail(r.error,'admin_copy_review_list — falta el SQL 2026-08-17-copy-review');
+      if(r.error)return nsFail(r.error,'admin_copy_review_list');
       pinta(r.data||[]);
     });
   });
