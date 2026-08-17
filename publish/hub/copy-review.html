@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisión NutriLog · textos y estados de error</title>
+<style>
+:root{--coral:#FD400C;--deep:#6C3732;--cream:#FFF6EC;--line:#EADFD0;--muted:#8A7F78;
+  --ok:#1F6B57;--warn:#B26A00;--bad:#B3261E}
+*{box-sizing:border-box;margin:0}
+body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--cream);
+  color:var(--deep);padding:24px clamp(14px,3vw,40px) 80px;line-height:1.5}
+h1{font-size:clamp(20px,3vw,27px);color:var(--coral);margin-bottom:4px}
+.lede{color:var(--muted);font-size:14px;margin-bottom:18px}
+.sec{font-weight:800;font-size:15px;margin:26px 0 10px;padding-top:14px;border-top:2px solid var(--line)}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin:8px 0;
+  display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:8px 16px;align-items:start}
+.card .clave{font-family:ui-monospace,monospace;font-size:11px;color:var(--muted)}
+.card .ctx{font-size:12px;color:var(--muted);margin-bottom:6px}
+.txt{font-size:13.5px;margin:2px 0}
+.txt b{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:800}
+.viejo{color:var(--muted)}
+.nuevo{color:var(--deep)}
+.lado{display:flex;flex-direction:column;gap:8px}
+select,textarea,button{font:inherit;border:1px solid var(--line);border-radius:9px;padding:7px 10px;background:#fff}
+textarea{min-height:40px;resize:vertical;font-size:12.5px}
+button{background:var(--coral);color:#fff;border:0;font-weight:700;cursor:pointer;padding:9px 12px}
+button:disabled{opacity:.5}
+.pill{display:inline-block;border-radius:999px;padding:2px 10px;font-size:11px;font-weight:800}
+.p-pendiente{background:#FFE4E0;color:#A32D2D}.p-verificado{background:#E8F5EE;color:#0F6E56}
+.p-retocar{background:#FFF3E0;color:#B4700F}
+.firmado{font-size:11px;color:var(--muted)}
+.err{background:#FDF5F4;border:1px solid #F1C7BE;border-radius:10px;padding:10px 14px;color:var(--bad);
+  font-size:13px;display:none;margin:10px 0}
+@media(max-width:760px){.card{grid-template-columns:1fr}}
+</style>
+</head>
+<body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+/* r16b: la pestaña activa por CLASE con !important — tercera red por si algo
+   pisa el estilo en línea. La pone markActive() y el mini-marcador del final. */
+#ns-hub-navbar .nsnb-tab.on{background:linear-gradient(135deg,#FF7600,#FD400C)!important;color:#fff!important;font-weight:800!important;border-color:#FD400C!important;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)!important}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+.nsnb-tab{cursor:grab}
+.nsnb-tab.nsnb-drag{opacity:.35;cursor:grabbing}
+#nsnb-reset{display:none}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Web de marketing / marketing site"
+     aria-label="Web de marketing" style="text-decoration:none">🏠</a>
+  <a class="nsnb-btn" href="https://admin.nutrisynccollective.com" title="StartUp Admin (contabilidad del build)"
+     aria-label="StartUp Admin" style="text-decoration:none">🛠</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Competitive" href="/hub/competitive.html">🥊 Competencia</a><a class="nsnb-tab nsnb-g1" data-en="Build Roadmap → Go Live" href="/hub/launch-plan.html">🚀 Build Roadmap → Go Live</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync Sprint Planning" href="/hub/backlog-dev.html">🗂 NutriSync Sprint Planning</a><a class="nsnb-tab nsnb-g4" data-en="Release Plan" href="/hub/release-plan.html">🚢 Releases</a><a class="nsnb-tab nsnb-g4" data-en="Compliance" href="/hub/compliance.html">🛡 Compliance</a><a class="nsnb-tab nsnb-g4" data-en="Ideation" href="/hub/roadmap.html">💡 Ideation</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g5" data-en="Documentation" href="/hub/documentation/index.html">📄 Documentación</a><a class="nsnb-tab nsnb-g5" data-en="ERP User Guide" href="/hub/user-guide.html">📖 Guía ERP</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14b (feedback Juanjo): idioma con CONMUTADOR visible y persistente.
+     localStorage ns_lang ('es'|'en') manda; sin él, el navegador decide.
+     Las páginas con data-i leen la misma clave — un idioma, todas las superficies. */
+  function nsLang(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pintaIdioma(){
+    var en=nsLang()==='en';
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      if(!a.getAttribute('data-es'))a.setAttribute('data-es',a.textContent.trim());
+      var em=a.getAttribute('data-es').split(' ')[0];
+      a.textContent=en?(em+' '+a.getAttribute('data-en')):a.getAttribute('data-es');});
+    var b=document.getElementById('nsnb-lang');if(b)b.textContent=en?'ES':'EN';
+  }
+  (function(){
+    var brand=document.querySelector('#ns-hub-navbar .nsnb-btn');
+    if(brand&&!document.getElementById('nsnb-lang')){
+      var b=document.createElement('a');b.id='nsnb-lang';b.className='nsnb-btn';b.href='#';
+      b.title='Cambiar idioma / switch language';
+      b.onclick=function(e){e.preventDefault();
+        try{localStorage.setItem('ns_lang',nsLang()==='en'?'es':'en');}catch(err){}
+        pintaIdioma();
+        document.dispatchEvent(new CustomEvent('ns-lang'));
+        if(typeof relayout==='function')relayout();
+        return false;};
+      brand.parentNode.insertBefore(b,brand);
+    }
+    pintaIdioma();
+    /* r14e: pintor data-i UNIVERSAL — cualquier página del hub con data-i="ES|EN"
+       (o data-i sin valor con "ES|EN" dentro) se vuelve bilingüe gratis. */
+    function pintaDataI(){
+      var en=nsLang()==='en';
+      document.querySelectorAll('[data-i]').forEach(function(n){
+        if(n.closest&&n.closest('#ns-hub-navbar'))return;
+        var src=n.getAttribute('data-i');
+        if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+        var p=src.split('|');
+        n.innerHTML=en?(p[1]||p[0]):p[0];});
+    }
+    document.addEventListener('ns-lang',pintaDataI);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',pintaDataI);
+    else pintaDataI();
+  })();
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  /* r16c (cazado POR JUANJO con el flash del clic): Cloudflare Pages sirve
+     URLs LIMPIAS — /hub/incidents.html se visita como /hub/incidents — así
+     que comparar con ".html" no casaba JAMÁS en carga de página. Se normaliza
+     quitando la extensión en LOS DOS lados. */
+  function nsLimpia(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';}
+  var here=nsLimpia(location.pathname.split('/').pop());
+  var dir=location.pathname.toLowerCase();
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : nsLimpia(f.split('/').pop())===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  /* r16: la marca se queda mientras estés en la página — se repinta al volver
+     del historial (bfcache), al recuperar el foco y al cambiar de pestaña del
+     navegador. Nada la apaga salvo navegar a otra página del hub. */
+  window.addEventListener('pageshow',function(){markActive();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)markActive();});
+  window.addEventListener('focus',function(){markActive();});
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  /* r14e (idea Juanjo): pestañas ARRASTRABLES — cada cual su orden, guardado
+     en este navegador (ns_tab_order). ↺ vuelve al orden de fábrica. */
+  (function(){
+    var KEY='ns_tab_order';
+    function filas(){return [document.getElementById('nsnb-r1'),document.getElementById('nsnb-r2')].filter(Boolean);}
+    function todas(){var t=[];filas().forEach(function(r){t=t.concat([].slice.call(r.querySelectorAll('.nsnb-tab')));});return t;}
+    var ORIG=todas().map(function(a){return a.getAttribute('href');});
+    function guardar(){try{localStorage.setItem(KEY,JSON.stringify(todas().map(function(a){return a.getAttribute('href');})));}catch(e){}
+      var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';}
+    function aplicar(orden){
+      var r1=document.getElementById('nsnb-r1');if(!r1)return;
+      var por={};todas().forEach(function(a){por[a.getAttribute('href')]=a;});
+      orden.forEach(function(h){if(por[h])r1.appendChild(por[h]);});
+      todas().forEach(function(a){if(orden.indexOf(a.getAttribute('href'))<0)r1.appendChild(a);});
+    }
+    try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&sv.length){aplicar(sv);
+      setTimeout(function(){var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';},0);}}catch(e){}
+    var drag=null;
+    todas().forEach(function(a){
+      a.setAttribute('draggable','true');
+      a.title=(a.title?a.title+' · ':'')+'Arrastra para reordenar / drag to reorder';
+      a.addEventListener('dragstart',function(e){drag=a;a.classList.add('nsnb-drag');
+        try{e.dataTransfer.setData('text/plain',a.getAttribute('href'));e.dataTransfer.effectAllowed='move';}catch(err){}});
+      a.addEventListener('dragend',function(){if(drag)drag.classList.remove('nsnb-drag');drag=null;});
+      a.addEventListener('dragover',function(e){e.preventDefault();if(!drag||drag===a)return;
+        var r=a.getBoundingClientRect(),antes=(e.clientX-r.left)<r.width/2;
+        a.parentNode.insertBefore(drag,antes?a:a.nextSibling);});
+      a.addEventListener('drop',function(e){e.preventDefault();guardar();relayout();});
+    });
+    filas().forEach(function(r){r.addEventListener('dragover',function(e){e.preventDefault();});
+      r.addEventListener('drop',function(e){e.preventDefault();if(drag){guardar();relayout();}});});
+    var brand=document.getElementById('nsnb-lang');
+    if(brand&&!document.getElementById('nsnb-reset')){
+      var rb=document.createElement('a');rb.id='nsnb-reset';rb.className='nsnb-btn';rb.href='#';rb.textContent='↺';
+      rb.title='Orden de pestañas original / reset tab order';
+      rb.onclick=function(e){e.preventDefault();try{localStorage.removeItem(KEY);}catch(err){}
+        aplicar(ORIG);rb.style.display='none';relayout();return false;};
+      brand.parentNode.insertBefore(rb,brand);
+    }
+  })();
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+<script>
+/* r16b · MINI-MARCADOR independiente de pestaña activa. Deliberadamente
+   separado y mínimo: si el script grande de la barra muere por lo que sea,
+   ESTE pinta igual. Solo compara el fichero de la URL con el href y pone la
+   clase .on (el CSS !important hace el resto). Se repite unos segundos por si
+   el reordenado o el motor mueven pestañas tarde. */
+(function(){
+  function marca(){
+    try{
+      /* r16c: Pages sirve URLs sin .html — normalizar ambos lados */
+      var lim=function(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';};
+      var here=lim(location.pathname.split('/').pop());
+      var esDoc=location.pathname.toLowerCase().indexOf('/documentation/')>-1;
+      document.querySelectorAll('#ns-hub-navbar .nsnb-tab').forEach(function(a){
+        var f=(a.getAttribute('href')||'').toLowerCase();
+        var on=esDoc ? f.indexOf('/documentation/')>-1 : lim(f.split('/').pop())===here;
+        a.classList.toggle('on',on);
+      });
+    }catch(e){}
+  }
+  marca();
+  var i=0,t=setInterval(function(){marca();if(++i>15)clearInterval(t);},700);
+  window.addEventListener('pageshow',marca);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar -->
+<h1>🔍 Revisión NutriLog — textos nuevos y estados de error</h1>
+<p class="lede">Los textos nuevos ya corren en test interno; nada pasa al piloto completo sin
+vuestro ✓. Cada ficha: el texto viejo (aprobado), el nuevo (de los diseños) y tu decisión —
+<b>verificado</b> o <b>retocar</b> con nota. Los estados de error son la lista de Lucía: los
+construidos con tu patrón esperan tu bendición. Las capturas reales de cada estado llegan a esta
+misma página en cuanto la OTA esté en los móviles.</p>
+<div class="err" id="e"></div>
+<div id="lista"><p class="lede">Cargando…</p></div>
+
+<script src="/assets/vendor/supabase.js"></script>
+<script>
+var U='https://nebkqncvapelrarruyqb.supabase.co',
+    K='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+var sb=window.supabase.createClient(U,K);
+var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+function nsFail(err,fn){var e=document.getElementById('e');
+  e.style.display='block';
+  e.textContent='La consulta '+fn+' ha fallado: '+(err&&err.message||err)+' — si es "not authorized", refuerza la sesión en la página MFA.';}
+
+function pinta(rows){
+  var cont=document.getElementById('lista');
+  if(!rows.length){cont.innerHTML='<p class="lede">La mesa está vacía — falta correr el SQL de la semilla.</p>';return;}
+  var textos=rows.filter(function(r){return r.contexto.indexOf('estado de error')===-1;});
+  var errores=rows.filter(function(r){return r.contexto.indexOf('estado de error')!==-1;});
+  function bloque(titulo,rs){
+    var h='<div class="sec">'+titulo+' <span class="pill p-pendiente">'+rs.filter(function(r){return r.estado==='pendiente';}).length+' pendientes</span></div>';
+    rs.forEach(function(r){
+      h+='<div class="card" data-clave="'+esc(r.clave)+'">'
+        +'<div><div class="clave">'+esc(r.clave)+'</div><div class="ctx">'+esc(r.contexto)+'</div>'
+        +(r.viejo_es&&r.viejo_es!=='—'?'<p class="txt viejo"><b>Viejo·ES</b> '+esc(r.viejo_es)+'</p>':'')
+        +'<p class="txt nuevo"><b>Nuevo·ES</b> '+esc(r.nuevo_es)+'</p>'
+        +'<p class="txt nuevo"><b>Nuevo·EN</b> '+esc(r.nuevo_en)+'</p></div>'
+        +'<div class="lado"><span class="pill p-'+esc(r.estado)+'">'+esc(r.estado)+'</span>'
+        +(r.decidido_por?'<span class="firmado">'+esc(r.decidido_por.split('@')[0])+' · '+esc((r.decidido_el||'').slice(0,10))+'</span>':'')
+        +'<select class="est"><option value="verificado">✓ verificado</option>'
+        +'<option value="retocar">✎ retocar…</option></select>'
+        +'<textarea class="nota" placeholder="si retocas: qué cambiar (o el texto que quieres)">'+esc(r.nota||'')+'</textarea>'
+        +'<button class="guarda">Guardar</button></div></div>';
+    });
+    return h;
+  }
+  cont.innerHTML=bloque('✏️ Textos nuevos (Pilar)',textos)+bloque('🎨 Estados de error (Lucía)',errores);
+  cont.querySelectorAll('.guarda').forEach(function(b){
+    b.onclick=function(){
+      var card=b.closest('.card');
+      var clave=card.getAttribute('data-clave');
+      var est=card.querySelector('.est').value;
+      var nota=card.querySelector('.nota').value;
+      if(est==='retocar'&&!nota.trim()){alert('Si retocas, di qué cambiar — una nota vacía no ayuda a nadie.');return;}
+      b.disabled=true;
+      sb.rpc('admin_copy_review_set',{p_clave:clave,p_estado:est,p_nota:nota||null}).then(function(r){
+        if(r.error){nsFail(r.error,'admin_copy_review_set');b.disabled=false;return;}
+        cargar();
+      });
+    };
+  });
+}
+
+function cargar(){
+  sb.auth.getSession().then(function(s){
+    if(!s.data.session){document.getElementById('lista').innerHTML=
+      '<p class="lede">Inicia sesión admin (p. ej. en 📬 Waitlist) y recarga.</p>';return;}
+    sb.rpc('admin_copy_review_list').then(function(r){
+      if(r.error)return nsFail(r.error,'admin_copy_review_list — falta el SQL 2026-08-17-copy-review');
+      pinta(r.data||[]);
+    });
+  });
+}
+cargar();
+</script>
+<script src="/hub/assets/page-help.js?v=e939f9f3"></script></body>
+</html>
