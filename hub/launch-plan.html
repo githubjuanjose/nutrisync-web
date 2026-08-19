@@ -1,0 +1,611 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build Roadmap → Go Live — NutriSync</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.55}
+.w{max-width:1080px;margin:0 auto;padding:26px 20px 90px}
+h1{font-size:23px;margin:0 0 4px}
+p.lead{color:#6E655D;font-size:13.5px;margin:0 0 6px}
+h2{font-size:16.5px;margin:34px 0 12px;color:#C73A20}
+.hint{font-size:11.5px;color:#8A7F78}
+/* ══ LA LÍNEA DEL VIAJE — infografía ══ */
+.rail{display:flex;gap:8px;position:relative;padding:40px 4px 8px;margin-top:26px}
+.rail .linea{position:absolute;left:3%;right:3%;top:96px;height:7px;border-radius:4px;
+  background:linear-gradient(90deg,#0F6E56 0%,#0F6E56 30%,#FF7600 55%,#FD400C 85%,#C73A20 100%);
+  box-shadow:0 2px 8px rgba(199,58,32,.25)}
+.rail .linea::after{content:'';position:absolute;right:-14px;top:-6px;border:10px solid transparent;border-left-color:#C73A20}
+.nodo{flex:1;text-align:center;position:relative;z-index:2;min-width:0}
+.circ{width:96px;height:96px;border-radius:50%;background:#fff;margin:0 auto;
+  display:flex;align-items:center;justify-content:center;position:relative;
+  border:6px solid var(--c);box-shadow:0 12px 26px -12px rgba(36,29,26,.4)}
+.circ img{width:58px;height:58px}
+.circ .num{position:absolute;top:-9px;right:-4px;width:26px;height:26px;border-radius:50%;
+  background:var(--c);color:#fff;font-size:12.5px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2.5px solid #fff}
+.pill{display:inline-block;margin-top:12px;background:var(--c);color:#fff;font-size:11px;font-weight:800;
+  letter-spacing:.5px;border-radius:4px;padding:4px 12px;position:relative}
+.pill::before{content:'';position:absolute;left:50%;top:-9px;transform:translateX(-50%);
+  border:5px solid transparent;border-bottom-color:var(--c)}
+.tit{font-weight:800;font-size:12.5px;line-height:1.25;margin-top:8px;padding:0 2px}
+.txt{font-size:10.5px;color:#6E655D;line-height:1.4;margin-top:4px;padding:0 4px}
+.aqui{position:absolute;top:-38px;left:50%;transform:translateX(-50%);background:#241D1A;color:#fff;
+  font-size:10px;font-weight:800;border-radius:999px;padding:5px 13px;white-space:nowrap;
+  box-shadow:0 6px 16px -6px rgba(0,0,0,.5);animation:aqui 2s ease-in-out infinite}
+@keyframes aqui{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,-5px)}}
+.aqui::after{content:'';position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#241D1A}
+.nodo.meta .circ{background:linear-gradient(135deg,#FF7600,#FD400C);border-color:#FD400C}
+@media(max-width:820px){
+  .rail{flex-direction:column;gap:26px;padding-top:12px}
+  .rail .linea{left:47px;right:auto;top:2%;bottom:2%;width:7px;height:auto;
+    background:linear-gradient(180deg,#0F6E56,#FF7600,#FD400C,#C73A20)}
+  .rail .linea::after{right:-6px;top:auto;bottom:-14px;border:10px solid transparent;border-top-color:#C73A20;border-left-color:transparent}
+  .nodo{display:grid;grid-template-columns:100px 1fr;column-gap:14px;text-align:left;align-items:center}
+  .circ{margin:0;grid-row:1/span 3}
+  .pill{margin-top:0;justify-self:start}.pill::before{display:none}
+  .aqui{left:110px;top:-24px;transform:none}
+  @keyframes aqui{0%,100%{transform:translate(0,0)}50%{transform:translate(0,-5px)}}
+}
+/* estado + camino crítico */
+.estado{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:720px){.estado{grid-template-columns:1fr}}
+.est{background:#fff;border:1px solid #EFE3D7;border-radius:14px;padding:13px 15px}
+.est b.t{font-size:13.5px}
+.est ul{margin:8px 0 0;padding-left:18px;font-size:12.5px}
+.est li{margin:3px 0}
+.ok{color:#0F6E56;font-weight:700}.pen{color:#B4700F;font-weight:700}.blo{color:#A32D2D;font-weight:800}
+table{width:100%;border-collapse:collapse;font-size:12.5px;background:#fff;border:1px solid #EFE3D7;border-radius:14px;overflow:hidden}
+th{background:#C73A20;color:#fff;text-align:left;padding:8px 11px;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+td{padding:8px 11px;border-bottom:1px solid #F4EADF;vertical-align:top}
+tr.cero td{background:#FFF1EC}
+.holgura{font-weight:800;font-variant-numeric:tabular-nums}
+</style></head><body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+/* r16b: la pestaña activa por CLASE con !important — tercera red por si algo
+   pisa el estilo en línea. La pone markActive() y el mini-marcador del final. */
+#ns-hub-navbar .nsnb-tab.on{background:linear-gradient(135deg,#FF7600,#FD400C)!important;color:#fff!important;font-weight:800!important;border-color:#FD400C!important;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)!important}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+.nsnb-tab{cursor:grab}
+.nsnb-tab.nsnb-drag{opacity:.35;cursor:grabbing}
+#nsnb-reset{display:none}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Web de marketing / marketing site"
+     aria-label="Web de marketing" style="text-decoration:none">🏠</a>
+  <a class="nsnb-btn" href="https://admin.nutrisynccollective.com" title="StartUp Admin (contabilidad del build)"
+     aria-label="StartUp Admin" style="text-decoration:none">🛠</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Competitive" href="/hub/competitive.html">🥊 Competencia</a><a class="nsnb-tab nsnb-g1" data-en="Build Roadmap → Go Live" href="/hub/launch-plan.html">🚀 Build Roadmap → Go Live</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync Sprint Planning" href="/hub/backlog-dev.html">🗂 NutriSync Sprint Planning</a><a class="nsnb-tab nsnb-g4" data-en="Release Plan" href="/hub/release-plan.html">🚢 Releases</a><a class="nsnb-tab nsnb-g4" data-en="Compliance" href="/hub/compliance.html">🛡 Compliance</a><a class="nsnb-tab nsnb-g4" data-en="Ideation" href="/hub/roadmap.html">💡 Ideation</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g5" data-en="Documentation" href="/hub/documentation/index.html">📄 Documentación</a><a class="nsnb-tab nsnb-g5" data-en="ERP User Guide" href="/hub/user-guide.html">📖 Guía ERP</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14b (feedback Juanjo): idioma con CONMUTADOR visible y persistente.
+     localStorage ns_lang ('es'|'en') manda; sin él, el navegador decide.
+     Las páginas con data-i leen la misma clave — un idioma, todas las superficies. */
+  function nsLang(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pintaIdioma(){
+    var en=nsLang()==='en';
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      if(!a.getAttribute('data-es'))a.setAttribute('data-es',a.textContent.trim());
+      var em=a.getAttribute('data-es').split(' ')[0];
+      a.textContent=en?(em+' '+a.getAttribute('data-en')):a.getAttribute('data-es');});
+    var b=document.getElementById('nsnb-lang');if(b)b.textContent=en?'ES':'EN';
+  }
+  (function(){
+    var brand=document.querySelector('#ns-hub-navbar .nsnb-btn');
+    if(brand&&!document.getElementById('nsnb-lang')){
+      var b=document.createElement('a');b.id='nsnb-lang';b.className='nsnb-btn';b.href='#';
+      b.title='Cambiar idioma / switch language';
+      b.onclick=function(e){e.preventDefault();
+        try{localStorage.setItem('ns_lang',nsLang()==='en'?'es':'en');}catch(err){}
+        pintaIdioma();
+        document.dispatchEvent(new CustomEvent('ns-lang'));
+        if(typeof relayout==='function')relayout();
+        return false;};
+      brand.parentNode.insertBefore(b,brand);
+    }
+    pintaIdioma();
+    /* r14e: pintor data-i UNIVERSAL — cualquier página del hub con data-i="ES|EN"
+       (o data-i sin valor con "ES|EN" dentro) se vuelve bilingüe gratis. */
+    function pintaDataI(){
+      var en=nsLang()==='en';
+      document.querySelectorAll('[data-i]').forEach(function(n){
+        if(n.closest&&n.closest('#ns-hub-navbar'))return;
+        var src=n.getAttribute('data-i');
+        if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+        var p=src.split('|');
+        n.innerHTML=en?(p[1]||p[0]):p[0];});
+    }
+    document.addEventListener('ns-lang',pintaDataI);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',pintaDataI);
+    else pintaDataI();
+  })();
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  /* r16c (cazado POR JUANJO con el flash del clic): Cloudflare Pages sirve
+     URLs LIMPIAS — /hub/incidents.html se visita como /hub/incidents — así
+     que comparar con ".html" no casaba JAMÁS en carga de página. Se normaliza
+     quitando la extensión en LOS DOS lados. */
+  function nsLimpia(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';}
+  var here=nsLimpia(location.pathname.split('/').pop());
+  var dir=location.pathname.toLowerCase();
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : nsLimpia(f.split('/').pop())===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  /* r16: la marca se queda mientras estés en la página — se repinta al volver
+     del historial (bfcache), al recuperar el foco y al cambiar de pestaña del
+     navegador. Nada la apaga salvo navegar a otra página del hub. */
+  window.addEventListener('pageshow',function(){markActive();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)markActive();});
+  window.addEventListener('focus',function(){markActive();});
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  /* r14e (idea Juanjo): pestañas ARRASTRABLES — cada cual su orden, guardado
+     en este navegador (ns_tab_order). ↺ vuelve al orden de fábrica. */
+  (function(){
+    var KEY='ns_tab_order';
+    function filas(){return [document.getElementById('nsnb-r1'),document.getElementById('nsnb-r2')].filter(Boolean);}
+    function todas(){var t=[];filas().forEach(function(r){t=t.concat([].slice.call(r.querySelectorAll('.nsnb-tab')));});return t;}
+    var ORIG=todas().map(function(a){return a.getAttribute('href');});
+    function guardar(){try{localStorage.setItem(KEY,JSON.stringify(todas().map(function(a){return a.getAttribute('href');})));}catch(e){}
+      var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';}
+    function aplicar(orden){
+      var r1=document.getElementById('nsnb-r1');if(!r1)return;
+      var por={};todas().forEach(function(a){por[a.getAttribute('href')]=a;});
+      orden.forEach(function(h){if(por[h])r1.appendChild(por[h]);});
+      todas().forEach(function(a){if(orden.indexOf(a.getAttribute('href'))<0)r1.appendChild(a);});
+    }
+    try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&sv.length){aplicar(sv);
+      setTimeout(function(){var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';},0);}}catch(e){}
+    var drag=null;
+    todas().forEach(function(a){
+      a.setAttribute('draggable','true');
+      a.title=(a.title?a.title+' · ':'')+'Arrastra para reordenar / drag to reorder';
+      a.addEventListener('dragstart',function(e){drag=a;a.classList.add('nsnb-drag');
+        try{e.dataTransfer.setData('text/plain',a.getAttribute('href'));e.dataTransfer.effectAllowed='move';}catch(err){}});
+      a.addEventListener('dragend',function(){if(drag)drag.classList.remove('nsnb-drag');drag=null;});
+      a.addEventListener('dragover',function(e){e.preventDefault();if(!drag||drag===a)return;
+        var r=a.getBoundingClientRect(),antes=(e.clientX-r.left)<r.width/2;
+        a.parentNode.insertBefore(drag,antes?a:a.nextSibling);});
+      a.addEventListener('drop',function(e){e.preventDefault();guardar();relayout();});
+    });
+    filas().forEach(function(r){r.addEventListener('dragover',function(e){e.preventDefault();});
+      r.addEventListener('drop',function(e){e.preventDefault();if(drag){guardar();relayout();}});});
+    var brand=document.getElementById('nsnb-lang');
+    if(brand&&!document.getElementById('nsnb-reset')){
+      var rb=document.createElement('a');rb.id='nsnb-reset';rb.className='nsnb-btn';rb.href='#';rb.textContent='↺';
+      rb.title='Orden de pestañas original / reset tab order';
+      rb.onclick=function(e){e.preventDefault();try{localStorage.removeItem(KEY);}catch(err){}
+        aplicar(ORIG);rb.style.display='none';relayout();return false;};
+      brand.parentNode.insertBefore(rb,brand);
+    }
+  })();
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+<script>
+/* r16b · MINI-MARCADOR independiente de pestaña activa. Deliberadamente
+   separado y mínimo: si el script grande de la barra muere por lo que sea,
+   ESTE pinta igual. Solo compara el fichero de la URL con el href y pone la
+   clase .on (el CSS !important hace el resto). Se repite unos segundos por si
+   el reordenado o el motor mueven pestañas tarde. */
+(function(){
+  function marca(){
+    try{
+      /* r16c: Pages sirve URLs sin .html — normalizar ambos lados */
+      var lim=function(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';};
+      var here=lim(location.pathname.split('/').pop());
+      var esDoc=location.pathname.toLowerCase().indexOf('/documentation/')>-1;
+      document.querySelectorAll('#ns-hub-navbar .nsnb-tab').forEach(function(a){
+        var f=(a.getAttribute('href')||'').toLowerCase();
+        var on=esDoc ? f.indexOf('/documentation/')>-1 : lim(f.split('/').pop())===here;
+        a.classList.toggle('on',on);
+      });
+    }catch(e){}
+  }
+  marca();
+  var i=0,t=setInterval(function(){marca();if(++i>15)clearInterval(t);},700);
+  window.addEventListener('pageshow',marca);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar --><div class="w">
+
+<h1>🚀 <span data-i>Build Roadmap → Go Live · camino al 8 de octubre|Build Roadmap → Go Live · road to October 8</span></h1>
+<p class="lead" data-i>Hitos, camino crítico y estado real. <b>Nada de esto está escrito a mano</b>: la posición, los días que faltan y lo vencido se calculan con la fecha de hoy, y el estado del build se lee de la base. Si algo aquí está mal, está mal en los datos.|Milestones, critical path and live status. <b>None of this is hand-written</b>: position, days remaining and overdue items are computed from today's date, and build status is read from the database. If something here is wrong, it's wrong in the data.</p>
+
+<div id="err"></div>
+
+<a id="heroLink" href="/hub/docs/NutriSync-Historia-Storyline-2026-08.png" target="_blank" title="Abrir a tamaño completo / open full size">
+  <img id="heroImg" src="/hub/docs/NutriSync-Historia-Storyline-2026-08.png" alt="NutriSync — storyline"
+       style="width:100%;border-radius:16px;border:1px solid #EFE3D7;box-shadow:0 18px 40px -22px rgba(36,29,26,.45);margin:6px 0 2px">
+</a>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px;align-items:center">
+  <span style="font-size:11px;font-weight:800;color:#8A7F78;text-transform:uppercase;letter-spacing:.5px" data-i>📎 Documentos|📎 Documents</span>
+  <a class="doc" href="/hub/docs/NutriSync-Historia-Storyline-2026-08.png" target="_blank">🖼 PNG ES</a>
+  <a class="doc" href="/hub/docs/NutriSync-Historia-Storyline-2026-08-EN.png" target="_blank">🖼 PNG EN</a>
+  <a class="doc" href="/hub/docs/NutriSync-Historia-Storyline-2026-08.pptx">📽 Lámina PPTX</a>
+  <a class="doc" href="/hub/docs/NutriSync-Financial-Model-2026-08.xlsx">📊 <span data-i>Modelo financiero|Financial model</span></a>
+  <a class="doc" href="/hub/docs/NutriSync-Costes-SaaS-y-Esfuerzo-Founders-2026-08.xlsx">📄 <span data-i>Costes y esfuerzo|Costs & effort</span></a>
+  <a class="doc" href="/hub/investors-business-case.html">🎯 Pitch</a>
+  <a class="doc" href="/hub/documentation/index.html">📚 <span data-i>Plan completo (Docs)|Full plan (Docs)</span></a>
+</div>
+<style>.doc{font-size:12px;font-weight:700;color:#241D1A;background:#fff;border:1px solid #EFE3D7;border-radius:18px;padding:6px 13px;text-decoration:none}
+.doc:hover{border-color:#F3C8B8;background:#FFF6F2}
+.nodo.pasado{opacity:.5}
+.nodo.pasado .circ{border-color:#0F6E56}
+.cuenta{font-size:10px;font-weight:800;color:#8A7F78;margin-top:3px;letter-spacing:.3px}
+.tardio{color:#A32D2D}
+.spr-hoy td{background:#FFF6F2 !important;box-shadow:inset 3px 0 0 #C73A20}
+.spr-pasado{opacity:.45}
+</style>
+
+<div class="rail" id="rail"></div>
+
+<h2 id="h-estado" data-i>Estado real|Where we actually are</h2>
+<div class="estado" id="estado"></div>
+
+<h2 data-i>Camino crítico — quien lo alimenta va primero en cada sprint|Critical path — whatever feeds it goes first every sprint</h2>
+<table><thead><tr><th>#</th><th data-i>Tarea crítica|Critical task</th><th data-i>Quién|Owner</th><th data-i>Vence|Due</th><th data-i>Holgura|Slack</th><th data-i>Si se retrasa…|If late…</th></tr></thead><tbody id="critico"></tbody></table>
+
+<h2 data-i>Calendario por sprints — 4 pistas (5 días, lunes planning · viernes demo)|Sprint calendar — 4 tracks (5 days, Mon planning · Fri demo)</h2>
+<div class="sprints"><table id="sprints"></table></div>
+<style>
+.sprints table{font-size:11.5px}
+.sprints th{background:#241D1A}
+.sprints td.sN{font-weight:800;white-space:nowrap;color:#C73A20;background:#FFFBF5}
+.sprints tr.go td{background:linear-gradient(90deg,#FF7600,#FD400C);color:#fff;font-weight:800;font-size:12.5px}
+.sprints tr.go td.sN{background:#FD400C;color:#fff}
+.sprints td{border-bottom:1px solid #F4EADF}
+</style>
+<p class="hint" data-i>La cadena Android/Play ES el camino crítico; el legal corre co-crítico. Filas rojas = holgura cero o vencidas. Plan completo: Docs → Plan de lanzamiento 8-oct.|The Android/Play chain IS the critical path; legal runs co-critical. Red rows = zero slack or overdue. Full plan: Docs → Oct-8 launch plan.</p>
+
+<script src="/assets/vendor/supabase.js"></script>
+<script>
+(function(){
+/* ══════════════════════════════════════════════════════════════════════════
+   Go Live · r17-g (11-ago) — LA PÁGINA SE CALCULA, NO SE ESCRIBE
+   La versión anterior tenía «📍 ESTÁS AQUÍ · 6 AGO», «Estado real a 6 de
+   agosto» y «¡vencida 4-ago!» escritos a mano en el HTML. Envejecía sola: a
+   los cinco días mentía en todo. Ahora lo único que se declara son los HECHOS
+   (qué hito, qué día, quién lo debe); el dónde estamos, cuánto falta y qué se
+   ha pasado de fecha salen de comparar con hoy. El build se lee de la base.
+   Regla Juanjo, 10-ago: «no tenemos que tener dato en HTML, eso por definición».
+   ══════════════════════════════════════════════════════════════════════════ */
+var SB_URL='https://nebkqncvapelrarruyqb.supabase.co';
+var SB_KEY='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+var sb=window.supabase.createClient(SB_URL,SB_KEY);
+var $=function(i){return document.getElementById(i);};
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+/* El día de HOY es el de la usuaria, no el de Greenwich (lección NS-0010:
+   `toISOString()` nos guardó desayunos en «ayer» durante semanas). */
+function hoyISO(){var d=new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+var HOY=hoyISO();
+function dias(desde,hasta){
+  return Math.round((new Date(hasta+'T00:00:00')-new Date(desde+'T00:00:00'))/86400000);}
+var MES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function corta(f){var p=f.split('-');return (+p[2])+' '+MES[+p[1]-1].toUpperCase();}
+function cuenta(f){                       // «faltan 7 días» / «hace 3 días»
+  var d=dias(HOY,f);
+  if(d===0) return {t:'hoy|today',tarde:false};
+  if(d>0)   return {t:(d===1?'falta 1 día|1 day to go':'faltan '+d+' días|'+d+' days to go'),tarde:false};
+  return {t:(d===-1?'hace 1 día|1 day ago':'hace '+(-d)+' días|'+(-d)+' days ago'),tarde:true};
+}
+
+/* ── LOS HECHOS (lo único escrito a mano, y son fechas y compromisos) ────── */
+var HITOS=[
+ {f:'2026-08-12',c:'#FF7600',img:'nutri-bubble-right.svg',
+  tit:'Build 0.22 nativa|Native build 0.22',
+  txt:'Epic P · la comida entra por la cámara · TestFlight + Play|Epic P · meals via camera · TestFlight + Play'},
+ {f:'2026-08-18',c:'#FF7600',img:'nutricalendar.svg',
+  tit:'Android closed GO|Android closed GO',
+  txt:'12 testers × 14 días — el reloj de Google que abre producción|12 testers × 14 days — Google’s clock to production'},
+ {f:'2026-09-08',c:'#FD400C',img:'nutri-bubble-left.svg',
+  tit:'Piloto Fase 1|Pilot Phase 1',
+  txt:'Legal publicado · pagos en sandbox · volumen real|Legal published · payments sandbox · real volume'},
+ {f:'2026-09-18',c:'#FD400C',img:'nutri-bubble-right.svg',
+  tit:'Piloto Fase 2|Pilot Phase 2',
+  txt:'Retención y flujo de pago · fichas de stores listas|Retention and payment flow · store listings ready'},
+ {f:'2026-09-25',c:'#FD400C',img:'nutri-bubble-left.svg',
+  tit:'Go/No-Go + envío a stores|Go/No-Go + submissions',
+  txt:'Revisión de Apple y Google|Apple & Google review'},
+ {f:'2026-10-08',c:'#FD400C',img:'big-tick.svg',meta:true,
+  tit:'PRODUCCIÓN|PRODUCTION',
+  txt:'En las dos stores con pagos · Y1: 2.634 subs · 74.772 €|Both stores, payments on · Y1: 2,634 subs · €74,772'}
+];
+
+var CRITICO=[
+ {t:'Verificación de identidad en Play|Play identity verification',q:'Juanjo/Google',v:'2026-08-07',hecho:'2026-08-05',
+  si:'toda la cadena Android|the entire Android chain'},
+ {t:'Beta review externa de Apple|Apple external beta review',q:'Juanjo/Apple',v:'2026-08-08',hecho:'2026-08-06',
+  si:'TestFlight ampliado|expanded TestFlight'},
+ {t:'Checklist de la ficha del store + promoción a closed|Store listing checklist + promote to closed',
+  q:'Juanjo/Lucía',v:'2026-08-14',cero:true,
+  si:'el closed testing del 18 — y con él todo Play|Aug 18 closed testing — and with it all of Play'},
+ {t:'12 testers Android confirmadas|12 Android testers confirmed',q:'Founders',v:'2026-08-17',cero:true,
+  si:'el reloj 12×14 → Play se va a noviembre|the 12×14 clock → Play slips to November'},
+ {t:'Ventana 12×14 sin caídas de opt-in|12×14 window with zero opt-outs',q:'Operations',v:'2026-09-01',cero:true,
+  si:'el reloj se REINICIA desde cero|the clock RESTARTS from zero'},
+ {t:'Decisión J5 · Audidat (DPD + EIPD)|Decision J5 · Audidat (DPO + DPIA)',q:'Founders',v:'2026-08-08',cero:true,
+  si:'el legal publicado (G4) → piloto F1|published legal (G4) → pilot P1'},
+ {t:'Decisiones D5-D8 (pagos) → Epic L|Payment decisions D5-D8 → Epic L',q:'Founders',v:'2026-08-04',cero:true,
+  si:'lanzar CON ingresos el 8-oct|launching WITH revenue on Oct 8'},
+ {t:'Constitución de la SL|Incorporating the company',q:'Juanjo',v:'2026-09-01',cero:true,
+  si:'rail web de pagos + firma Intelectium + ENISA|web payment rail + Intelectium + ENISA'},
+ {t:'Privacidad + términos finales publicados|Final privacy + terms published',q:'Abogado→Juanjo|Lawyer→Juanjo',v:'2026-09-04',cero:true,
+  si:'piloto F1 y fichas de stores|pilot P1 and store listings'},
+ {t:'Fichas de stores (plantilla → Lucía)|Store listings (template → Lucía)',q:'Lucía',v:'2026-09-05',
+  si:'el envío del 25-sep|the Sep 25 submission'}
+];
+
+var SPRINTS=[
+ {n:'S11',d:'2026-08-03',h:'2026-08-07',b:'Planning G1 · decisiones D5-D11 · arranque legal',
+  o:'Captura de correos · reclutar 12+ Androids',t:'M-1 · beta review externa · AAB + Play internal',r:'Formularios Play · What to Test'},
+ {go:'2026-08-08',txt:'TESTFLIGHT iOS GO — advisory + wave-1'},
+ {n:'S12',d:'2026-08-10',h:'2026-08-14',b:'Pricing y planes (Doc 29) · borrador fichas stores',
+  o:'Triage diario · funnel · soporte con SLA',t:'0.21.1 OTA ✔ · <b>build 0.22 nativa (mié 12)</b> · Epic L P0 si D5-D8',
+  r:'Checklist del store para promover a closed'},
+ {go:'2026-08-18',txt:'ANDROID GO — closed testing (arranca el reloj 12×14 → producción ~1 sep)'},
+ {n:'S13',d:'2026-08-17',h:'2026-08-21',b:'Comms waitlist #1 · empresa en trámite',
+  o:'Vigilar el opt-in de las 12 (no pueden caerse en 14 días)',t:'Epic P P2 (macros) · i18n: cerrar la deuda de los 12 idiomas',r:'Bug bash multiplataforma'},
+ {n:'S14',d:'2026-08-24',h:'2026-08-28',b:'Oferta de lanzamiento · materiales',
+  o:'Cohortes F1 del piloto',t:'Epic L P1 (paywall) · hardening',r:'Checklist Piloto F1 · legal final'},
+ {n:'S15',d:'2026-08-31',h:'2026-09-04',b:'Revisión de pricing con datos beta · <b>Lucía: fichas ≤5-sep</b>',
+  o:'Comms F1 programadas',t:'Congelación pre-piloto · <b>solicitar producción Play</b>',r:'<b>G4</b> · publicar legal definitivo'},
+ {go:'2026-09-08',txt:'PILOTO FASE 1 — activación y estabilidad con volumen real'},
+ {n:'S16',d:'2026-09-07',h:'2026-09-11',b:'Entrevistas usuarias F1 (Doc 27)',
+  o:'Soporte reforzado · funnel diario',t:'Hotfixes OTA diarios · <b>D20 · Firebase cero-PII</b> (Crashlytics primero, tras dictamen del abogado)',r:'Crash-free · D1/D7 · NPS'},
+ {n:'S17',d:'2026-09-14',h:'2026-09-18',b:'Ajustes de propuesta de valor con F1',
+  o:'Waves 2-3 listas',t:'IAP en sandbox si L llegó',r:'<b>G5</b> · fichas ES/EN + resto'},
+ {go:'2026-09-18',txt:'PILOTO FASE 2 — volumen, retención y pago en sandbox'},
+ {n:'S18',d:'2026-09-21',h:'2026-09-25',b:'<b>G6 · Go/No-Go</b> · plan de comms',
+  o:'Cierre de métricas F2 · informe',t:'<b>Envío App Review + Play production</b>',r:'Checklist de submission'},
+ {n:'S19',d:'2026-09-28',h:'2026-10-02',b:'Countdown · waitlist blast · redes',
+  o:'Escalado de soporte · FAQs',t:'Correcciones de review · CTAs → stores',r:'<b>G7</b> · runbook día-1'},
+ {go:'2026-10-08',txt:'🎉 LANZAMIENTO A PRODUCCIÓN'},
+ {n:'S20',d:'2026-10-05',h:'2026-10-09',b:'Anuncio + prensa',
+  o:'Guardia día-1 · reviews de stores',t:'Monitorización intensiva · hotfix channel',r:'Retro de lanzamiento (vie 9)'}
+];
+
+/* ── EL RAÍL: la posición la pone el calendario, no yo ───────────────────── */
+function pintaRail(vivo){
+  var h='<div class="linea"></div>';
+  // Nodo HOY: siempre el primero, con la fecha real y lo que hay vivo ahora.
+  var aGA=dias(HOY,'2026-10-08');
+  h+='<div class="nodo" style="--c:#0F6E56">'
+    +'<span class="aqui" data-i>📍 ESTÁS AQUÍ · '+corta(HOY)+'|📍 YOU ARE HERE · '+corta(HOY)+'</span>'
+    +'<div class="circ"><span class="num">✓</span><img src="/assets/figma/nutri-bubble-front.svg" alt=""></div>'
+    +'<div class="pill">HOY · '+corta(HOY)+'</div>'
+    +'<div class="tit" data-i>Piloto interno vivo|Internal pilot live</div>'
+    +'<div class="txt">'+esc(vivo)+'</div>'
+    +'<div class="cuenta" data-i>'+aGA+' días para el 8-OCT|'+aGA+' days to OCT 8</div></div>';
+  var siguiente=HITOS.filter(function(x){return x.f>=HOY;})[0];
+  HITOS.forEach(function(x,i){
+    var pasado=x.f<HOY, c=cuenta(x.f);
+    h+='<div class="nodo'+(pasado?' pasado':'')+(x.meta?' meta':'')+'" style="--c:'+(pasado?'#0F6E56':x.c)+'">'
+      +'<div class="circ"><span class="num">'+(pasado?'✓':(i+1))+'</span>'
+      +'<img src="/assets/figma/'+x.img+'" alt=""></div>'
+      +'<div class="pill">'+corta(x.f)+'</div>'
+      +'<div class="tit" data-i>'+x.tit+'</div>'
+      +'<div class="txt" data-i>'+x.txt+'</div>'
+      +'<div class="cuenta'+(c.tarde?' tardio':'')+'" data-i>'
+      +(x===siguiente?'⏳ ':'')+c.t+'</div></div>';
+  });
+  $('rail').innerHTML=h;
+}
+
+/* ── CAMINO CRÍTICO: la holgura se calcula, no se declara ────────────────── */
+function pintaCritico(){
+  $('critico').innerHTML=CRITICO.map(function(x,i){
+    var d=dias(HOY,x.v), hecho=!!x.hecho;
+    var holgura = hecho ? '✔'
+      : (d<0 ? '<span class="tardio">'+(-d)+' d</span>' : (d===0?'HOY':d+' d'));
+    var rojo = !hecho && (x.cero || d<0);
+    return '<tr'+(rojo?' class="cero"':'')+(hecho?' style="opacity:.55"':'')+'>'
+      +'<td>'+(i+1)+'</td>'
+      +'<td data-i>'+x.t+(hecho?' <b>✔ '+corta(x.hecho)+'</b>':'')+'</td>'
+      +'<td data-i>'+x.q+'</td>'
+      +'<td>'+corta(x.v)+(!hecho&&d<0?' <span class="tardio" data-i>· vencida|· overdue</span>':'')+'</td>'
+      +'<td class="holgura">'+holgura+'</td>'
+      +'<td data-i>'+x.si+'</td></tr>';
+  }).join('');
+}
+
+/* ── SPRINTS: el de hoy se marca solo ────────────────────────────────────── */
+function pintaSprints(){
+  var h='<tr><th>Sprint</th><th>Business</th><th>Operations</th><th>Tech</th><th>Readiness</th></tr>';
+  SPRINTS.forEach(function(s){
+    if(s.go){
+      h+='<tr class="go'+(s.go<HOY?' spr-pasado':'')+'"><td class="sN">🎯 '+corta(s.go)+'</td>'
+        +'<td colspan="4"><b>'+s.txt+'</b></td></tr>';
+      return;
+    }
+    var ahora=(HOY>=s.d&&HOY<=s.h), pasado=(s.h<HOY);
+    h+='<tr class="'+(ahora?'spr-hoy':(pasado?'spr-pasado':''))+'">'
+      +'<td class="sN">'+s.n+(ahora?' 📍':'')+'<br>'+corta(s.d)+'-'+corta(s.h).replace(/^\d+ /,'')+'</td>'
+      +'<td>'+s.b+'</td><td>'+s.o+'</td><td>'+s.t+'</td><td>'+s.r+'</td></tr>';
+  });
+  $('sprints').innerHTML=h;
+}
+
+/* ── ESTADO REAL: esto sí sale de la base ────────────────────────────────── */
+function pintaEstado(rels,items){
+  var vivos=items.filter(function(b){return b.estado!=='hecho'&&b.estado!=='descartado';});
+  var enCurso=rels.filter(function(r){return r.estado==='en_construccion'||r.estado==='en_review';});
+  var fuera=rels.filter(function(r){return r.estado==='en_tiendas'||r.estado==='ga';});
+  var comprometidos=vivos.filter(function(b){return b.sprint&&b.sprint!=='backlog';});
+  var sinSitio=vivos.filter(function(b){return !b.release||b.release==='—';});
+  var li=function(ic,t){return '<li><span class="'+ic[0]+'">'+ic[1]+'</span> '+t+'</li>';};
+
+  var build='<div class="est"><b class="t">🛠 Build</b><ul>';
+  build+=li(['ok','✔'], (fuera.length||0)+' <span data-i>release(s) publicadas|release(s) shipped</span>: '
+    +esc(fuera.map(function(r){return r.version;}).join(' · ')||'—'));
+  enCurso.forEach(function(r){
+    var n=vivos.filter(function(b){return b.release===r.version;}).length;
+    build+=li(['pen','◔'],'<b>'+esc(r.version)+'</b> '+esc(r.nombre||'')+' — '+n+' <span data-i>items vivos|open items</span>');
+  });
+  build+=li(['pen','◔'], comprometidos.length+' <span data-i>items comprometidos a un sprint|items committed to a sprint</span>');
+  build+=li([sinSitio.length?'pen':'ok',sinSitio.length?'◔':'✔'],
+    sinSitio.length+' <span data-i>en 💡 Ideation, aún sin release|in 💡 Ideation, no release yet</span>');
+  build+='</ul></div>';
+
+  // Lo externo no vive en nuestra base: son compromisos de personas. Se lee
+  // del camino crítico de arriba, que es la MISMA lista — no una copia.
+  var pend=CRITICO.filter(function(x){return !x.hecho;});
+  var venc=pend.filter(function(x){return dias(HOY,x.v)<0;});
+  var ext='<div class="est"><b class="t">📣 <span data-i>Fuera de nuestras manos|Outside our hands</span></b><ul>';
+  ext+=li(['ok','✔'], CRITICO.length-pend.length+' <span data-i>de '+CRITICO.length+' hitos críticos cerrados|of '+CRITICO.length+' critical items closed</span>');
+  if(venc.length) ext+=li(['blo','✘'],'<b>'+venc.length+' <span data-i>vencidos|overdue</span></b>: '
+    +venc.map(function(x){return '<span data-i>'+x.t.split('|')[0]+'|'+(x.t.split('|')[1]||x.t.split('|')[0])+'</span>';}).join(' · '));
+  pend.filter(function(x){var d=dias(HOY,x.v);return d>=0&&d<=10;}).forEach(function(x){
+    ext+=li(['pen','◔'],'<span data-i>'+x.t+'</span> — <b>'+dias(HOY,x.v)+' d</b> ('+esc(x.q.split('|')[0])+')');
+  });
+  ext+='</ul></div>';
+  $('estado').innerHTML=build+ext;
+}
+
+/* ── Bilingüe (patrón data-i del hub) ────────────────────────────────────── */
+function idioma(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+  return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+function pinta(){var en=idioma()==='en';
+  document.querySelectorAll('[data-i]').forEach(function(n){
+    var src=n.getAttribute('data-i');
+    if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+    var p=src.split('|');
+    n.innerHTML=en?(p[1]||p[0]):p[0];});}
+function heroLang(){var en=idioma()==='en';
+  var u='/hub/docs/NutriSync-Historia-Storyline-2026-08'+(en?'-EN':'')+'.png';
+  var im=$('heroImg'),lk=$('heroLink');
+  if(im)im.src=u; if(lk)lk.href=u;}
+document.addEventListener('ns-lang',function(){pinta();heroLang();});
+
+/* ── Arranque. Lo que NO depende de la base se pinta SIEMPRE (r12-b9): sin
+      sesión admin la página sigue siendo útil, solo pierde el estado del build. */
+pintaRail('—');pintaCritico();pintaSprints();pinta();heroLang();
+sb.auth.getSession().then(function(s){
+  if(!s.data.session){
+    $('estado').innerHTML='<div class="est"><p class="hint" data-i>Inicia sesión admin en el hub para ver el estado del build.|Sign in as admin in the hub to see build status.</p></div>';
+    pinta();return;
+  }
+  return Promise.all([sb.rpc('admin_releases_list'),sb.rpc('admin_backlog_list')]).then(function(rs){
+    if(rs[0].error||rs[1].error) throw (rs[0].error||rs[1].error);
+    var rels=rs[0].data||[], items=(rs[1].data&&rs[1].data.items)||[];
+    var enCurso=rels.filter(function(r){return r.estado==='en_construccion';})
+                    .map(function(r){return r.version;}).join(' · ');
+    pintaRail(enCurso?('en construcción: '+enCurso):'—');
+    pintaEstado(rels,items);pinta();
+  });
+}).catch(function(e){
+  $('err').innerHTML='<div class="est" style="border-color:#F3C8B8;background:#FFF6F2"><b>⚠️ '
+    +'<span data-i>No se pudo leer el estado del build|Could not read build status</span></b> — <i>'
+    +esc(String(e&&e.message||e)).slice(0,160)+'</i></div>';
+  pinta();
+});
+})();
+</script>
+</div><script src="/hub/assets/page-help.js?v=e939f9f3"></script></body></html>

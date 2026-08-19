@@ -1,0 +1,471 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NutriSync ERP · Guía de uso / User guide</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.6}
+.w{max-width:960px;margin:0 auto;padding:26px 20px 90px}
+h1{font-size:24px;margin:0 0 4px}
+p.lead{color:#6E655D;font-size:13.5px;margin:0 0 16px}
+h2{font-size:17px;margin:30px 0 6px;padding-top:10px;border-top:1px solid #EFE3D7}
+.card{background:#fff;border:1px solid #EFE3D7;border-radius:12px;padding:14px 16px;margin:8px 0;font-size:13.2px}
+ul,ol{margin:5px 0 10px;padding-left:20px}li{margin:3px 0}
+.flowbar{display:flex;align-items:stretch;gap:5px;flex-wrap:wrap;margin:14px 0 20px}
+.fstep{flex:1;min-width:128px;background:#fff;border:1px solid #EFE3D7;border-radius:11px;padding:9px 11px}
+.fstep b{font-size:12.3px;display:block}
+.fstep span{font-size:10.8px;color:#8A7F78;line-height:1.4}
+.fem{font-size:17px}
+.farrow{align-self:center;color:#C9BDB2;font-weight:800}
+table{width:100%;border-collapse:collapse;font-size:12.8px;margin:6px 0 12px}
+th{font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:#8A7F78;text-align:left;border-bottom:1px solid #EFE3D7;padding:6px 8px}
+td{border-bottom:1px solid #F4EEE6;padding:6px 8px;vertical-align:top}
+.pr{font-size:10.5px;font-weight:900;border-radius:7px;padding:2px 8px}
+.p0{background:#C73A20;color:#fff}.p1{background:#FFB020;color:#5B3A00}.p2{background:#E7E2DC;color:#5F564F}.p3{background:#F4F0EA;color:#8A7F78}
+.idx{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 18px}
+.idx a{font-size:12px;text-decoration:none;background:#fff;border:1px solid #EFE3D7;border-radius:999px;padding:4px 11px;color:#241D1A}
+.idx a:hover{border-color:#F3C8B8;background:#FFF6F2}
+.tip{background:#FFF8EF;border-left:3px solid #E8B072;border-radius:0 8px 8px 0;padding:9px 13px;font-size:12.7px;margin:8px 0}
+a{color:#C05621}
+/* r16-F17 (lección: la guía salió EN BLANCO con el switch en EN) — el idioma
+   lo decide una CLASE en <html>, no el JS elemento a elemento. Sin JS, o si
+   algo falla, SIEMPRE se ve el español: una página nunca puede quedar vacía
+   (regla r12-b9). El JS solo pone o quita la clase. */
+html:not(.ns-en) .l-en{display:none}
+html.ns-en .l-es{display:none}
+</style></head><body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+/* r16b: la pestaña activa por CLASE con !important — tercera red por si algo
+   pisa el estilo en línea. La pone markActive() y el mini-marcador del final. */
+#ns-hub-navbar .nsnb-tab.on{background:linear-gradient(135deg,#FF7600,#FD400C)!important;color:#fff!important;font-weight:800!important;border-color:#FD400C!important;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)!important}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+.nsnb-tab{cursor:grab}
+.nsnb-tab.nsnb-drag{opacity:.35;cursor:grabbing}
+#nsnb-reset{display:none}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Web de marketing / marketing site"
+     aria-label="Web de marketing" style="text-decoration:none">🏠</a>
+  <a class="nsnb-btn" href="https://admin.nutrisynccollective.com" title="StartUp Admin (contabilidad del build)"
+     aria-label="StartUp Admin" style="text-decoration:none">🛠</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Competitive" href="/hub/competitive.html">🥊 Competencia</a><a class="nsnb-tab nsnb-g1" data-en="Build Roadmap → Go Live" href="/hub/launch-plan.html">🚀 Build Roadmap → Go Live</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync Sprint Planning" href="/hub/backlog-dev.html">🗂 NutriSync Sprint Planning</a><a class="nsnb-tab nsnb-g4" data-en="Release Plan" href="/hub/release-plan.html">🚢 Releases</a><a class="nsnb-tab nsnb-g4" data-en="Compliance" href="/hub/compliance.html">🛡 Compliance</a><a class="nsnb-tab nsnb-g4" data-en="Ideation" href="/hub/roadmap.html">💡 Ideation</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g5" data-en="Documentation" href="/hub/documentation/index.html">📄 Documentación</a><a class="nsnb-tab nsnb-g5" data-en="ERP User Guide" href="/hub/user-guide.html">📖 Guía ERP</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14b (feedback Juanjo): idioma con CONMUTADOR visible y persistente.
+     localStorage ns_lang ('es'|'en') manda; sin él, el navegador decide.
+     Las páginas con data-i leen la misma clave — un idioma, todas las superficies. */
+  function nsLang(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pintaIdioma(){
+    var en=nsLang()==='en';
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      if(!a.getAttribute('data-es'))a.setAttribute('data-es',a.textContent.trim());
+      var em=a.getAttribute('data-es').split(' ')[0];
+      a.textContent=en?(em+' '+a.getAttribute('data-en')):a.getAttribute('data-es');});
+    var b=document.getElementById('nsnb-lang');if(b)b.textContent=en?'ES':'EN';
+  }
+  (function(){
+    var brand=document.querySelector('#ns-hub-navbar .nsnb-btn');
+    if(brand&&!document.getElementById('nsnb-lang')){
+      var b=document.createElement('a');b.id='nsnb-lang';b.className='nsnb-btn';b.href='#';
+      b.title='Cambiar idioma / switch language';
+      b.onclick=function(e){e.preventDefault();
+        try{localStorage.setItem('ns_lang',nsLang()==='en'?'es':'en');}catch(err){}
+        pintaIdioma();
+        document.dispatchEvent(new CustomEvent('ns-lang'));
+        if(typeof relayout==='function')relayout();
+        return false;};
+      brand.parentNode.insertBefore(b,brand);
+    }
+    pintaIdioma();
+    /* r14e: pintor data-i UNIVERSAL — cualquier página del hub con data-i="ES|EN"
+       (o data-i sin valor con "ES|EN" dentro) se vuelve bilingüe gratis. */
+    function pintaDataI(){
+      var en=nsLang()==='en';
+      document.querySelectorAll('[data-i]').forEach(function(n){
+        if(n.closest&&n.closest('#ns-hub-navbar'))return;
+        var src=n.getAttribute('data-i');
+        if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+        var p=src.split('|');
+        n.innerHTML=en?(p[1]||p[0]):p[0];});
+    }
+    document.addEventListener('ns-lang',pintaDataI);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',pintaDataI);
+    else pintaDataI();
+  })();
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  /* r16c (cazado POR JUANJO con el flash del clic): Cloudflare Pages sirve
+     URLs LIMPIAS — /hub/incidents.html se visita como /hub/incidents — así
+     que comparar con ".html" no casaba JAMÁS en carga de página. Se normaliza
+     quitando la extensión en LOS DOS lados. */
+  function nsLimpia(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';}
+  var here=nsLimpia(location.pathname.split('/').pop());
+  var dir=location.pathname.toLowerCase();
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : nsLimpia(f.split('/').pop())===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  /* r16: la marca se queda mientras estés en la página — se repinta al volver
+     del historial (bfcache), al recuperar el foco y al cambiar de pestaña del
+     navegador. Nada la apaga salvo navegar a otra página del hub. */
+  window.addEventListener('pageshow',function(){markActive();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)markActive();});
+  window.addEventListener('focus',function(){markActive();});
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  /* r14e (idea Juanjo): pestañas ARRASTRABLES — cada cual su orden, guardado
+     en este navegador (ns_tab_order). ↺ vuelve al orden de fábrica. */
+  (function(){
+    var KEY='ns_tab_order';
+    function filas(){return [document.getElementById('nsnb-r1'),document.getElementById('nsnb-r2')].filter(Boolean);}
+    function todas(){var t=[];filas().forEach(function(r){t=t.concat([].slice.call(r.querySelectorAll('.nsnb-tab')));});return t;}
+    var ORIG=todas().map(function(a){return a.getAttribute('href');});
+    function guardar(){try{localStorage.setItem(KEY,JSON.stringify(todas().map(function(a){return a.getAttribute('href');})));}catch(e){}
+      var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';}
+    function aplicar(orden){
+      var r1=document.getElementById('nsnb-r1');if(!r1)return;
+      var por={};todas().forEach(function(a){por[a.getAttribute('href')]=a;});
+      orden.forEach(function(h){if(por[h])r1.appendChild(por[h]);});
+      todas().forEach(function(a){if(orden.indexOf(a.getAttribute('href'))<0)r1.appendChild(a);});
+    }
+    try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&sv.length){aplicar(sv);
+      setTimeout(function(){var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';},0);}}catch(e){}
+    var drag=null;
+    todas().forEach(function(a){
+      a.setAttribute('draggable','true');
+      a.title=(a.title?a.title+' · ':'')+'Arrastra para reordenar / drag to reorder';
+      a.addEventListener('dragstart',function(e){drag=a;a.classList.add('nsnb-drag');
+        try{e.dataTransfer.setData('text/plain',a.getAttribute('href'));e.dataTransfer.effectAllowed='move';}catch(err){}});
+      a.addEventListener('dragend',function(){if(drag)drag.classList.remove('nsnb-drag');drag=null;});
+      a.addEventListener('dragover',function(e){e.preventDefault();if(!drag||drag===a)return;
+        var r=a.getBoundingClientRect(),antes=(e.clientX-r.left)<r.width/2;
+        a.parentNode.insertBefore(drag,antes?a:a.nextSibling);});
+      a.addEventListener('drop',function(e){e.preventDefault();guardar();relayout();});
+    });
+    filas().forEach(function(r){r.addEventListener('dragover',function(e){e.preventDefault();});
+      r.addEventListener('drop',function(e){e.preventDefault();if(drag){guardar();relayout();}});});
+    var brand=document.getElementById('nsnb-lang');
+    if(brand&&!document.getElementById('nsnb-reset')){
+      var rb=document.createElement('a');rb.id='nsnb-reset';rb.className='nsnb-btn';rb.href='#';rb.textContent='↺';
+      rb.title='Orden de pestañas original / reset tab order';
+      rb.onclick=function(e){e.preventDefault();try{localStorage.removeItem(KEY);}catch(err){}
+        aplicar(ORIG);rb.style.display='none';relayout();return false;};
+      brand.parentNode.insertBefore(rb,brand);
+    }
+  })();
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+<script>
+/* r16b · MINI-MARCADOR independiente de pestaña activa. Deliberadamente
+   separado y mínimo: si el script grande de la barra muere por lo que sea,
+   ESTE pinta igual. Solo compara el fichero de la URL con el href y pone la
+   clase .on (el CSS !important hace el resto). Se repite unos segundos por si
+   el reordenado o el motor mueven pestañas tarde. */
+(function(){
+  function marca(){
+    try{
+      /* r16c: Pages sirve URLs sin .html — normalizar ambos lados */
+      var lim=function(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';};
+      var here=lim(location.pathname.split('/').pop());
+      var esDoc=location.pathname.toLowerCase().indexOf('/documentation/')>-1;
+      document.querySelectorAll('#ns-hub-navbar .nsnb-tab').forEach(function(a){
+        var f=(a.getAttribute('href')||'').toLowerCase();
+        var on=esDoc ? f.indexOf('/documentation/')>-1 : lim(f.split('/').pop())===here;
+        a.classList.toggle('on',on);
+      });
+    }catch(e){}
+  }
+  marca();
+  var i=0,t=setInterval(function(){marca();if(++i>15)clearInterval(t);},700);
+  window.addEventListener('pageshow',marca);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar --><div class="w">
+
+<h1><span class="l-es">📖 NutriSync ERP · Guía de uso</span><span class="l-en">📖 NutriSync ERP · User guide</span></h1>
+<p class="lead"><span class="l-es">Qué hace cada pestaña del hub, cómo se usa y cómo encaja con las demás. Escrita para founders, sin jerga. Cambia el idioma con el 🌐 de la barra.</span><span class="l-en">What each hub tab does, how to use it and how it all fits together. Written for founders, no jargon. Switch language with 🌐 in the top bar.</span></p>
+
+<div class="idx">
+  <a href="#flujo">🔄</a><a href="#mis">📊 MIS</a><a href="#finanzas">💶</a><a href="#pitch">🎯</a><a href="#plan">🗺</a>
+  <a href="#ops">📋</a><a href="#inc">🎫</a><a href="#fb">💬</a><a href="#dec">🗳</a><a href="#ntf">🔔</a>
+  <a href="#pil">🧪</a><a href="#wl">📬</a><a href="#sp">🗂</a><a href="#rel">🚢</a><a href="#comp">🛡</a><a href="#docs">📚</a><a href="#otros">🧰</a><a href="#entrar">🚪</a>
+</div>
+
+<!-- ═══ EL CIRCUITO ═══ -->
+<h2 id="flujo"><span class="l-es">🔄 El circuito completo</span><span class="l-en">🔄 The full loop</span></h2>
+<p class="lead"><span class="l-es">Todo lo que hace el equipo recorre este camino. Cada pestaña es una etapa, no una isla.</span><span class="l-en">Everything the team does runs through this path. Each tab is a stage, not an island.</span></p>
+<div class="flowbar">
+  <div class="fstep"><span class="fem">📱</span><b><span class="l-es">App del piloto</span><span class="l-en">Pilot app</span></b><span class="l-es">La tester usa la app y encuentra algo</span><span class="l-en">A tester uses the app and hits something</span></div>
+  <div class="farrow">→</div>
+  <div class="fstep"><span class="fem">💬</span><b>Feedback</b><span class="l-es">Llega su mensaje · se clasifica 🐞 🔧 💡</span><span class="l-en">Her message arrives · triaged 🐞 🔧 💡</span></div>
+  <div class="farrow">→</div>
+  <div class="fstep"><span class="fem">🎫</span><b><span class="l-es">Incidencias</span><span class="l-en">Incidents</span></b><span class="l-es">Analizar · priorizar P0-P3 · responderle</span><span class="l-en">Analyse · prioritise P0-P3 · reply</span></div>
+  <div class="farrow">→</div>
+  <div class="fstep"><span class="fem">🗂</span><b>Sprint Planning</b><span class="l-es">Entra sola con su P · le asignas release</span><span class="l-en">Lands automatically · you pick a release</span></div>
+  <div class="farrow">→</div>
+  <div class="fstep"><span class="fem">🚢</span><b><span class="l-es">Releases</span><span class="l-en">Releases</span></b><span class="l-es">Se construye y sale a tiendas u OTA</span><span class="l-en">Built and shipped to stores or OTA</span></div>
+  <div class="farrow">↩</div>
+  <div class="fstep"><span class="fem">✔</span><b><span class="l-es">Cierre</span><span class="l-en">Closure</span></b><span class="l-es">Fix enviado → avisamos → cerrada</span><span class="l-en">Fix sent → we tell her → closed</span></div>
+</div>
+<div class="tip"><span class="l-es"><b>Regla de oro:</b> el dato se toca UNA vez y en un solo sitio. Si algo aparece en dos pestañas, una solo lo enseña — manda la que lo crea.</span><span class="l-en"><b>Golden rule:</b> data is touched ONCE, in one place. If something shows in two tabs, one is only displaying it — the one that creates it wins.</span></div>
+
+<h2><span class="l-es">Prioridades — una sola escala en todo el sistema</span><span class="l-en">Priorities — one scale across the system</span></h2>
+<table>
+  <tr><th>P</th><th><span class="l-es">Qué es</span><span class="l-en">What it means</span></th><th><span class="l-es">Cuándo se arregla</span><span class="l-en">When we fix it</span></th></tr>
+  <tr><td><span class="pr p0">P0</span></td><td><span class="l-es">La app se rompe (crash) o algo básico no funciona</span><span class="l-en">The app crashes or something basic doesn’t work</span></td><td><span class="l-es">Este sprint</span><span class="l-en">This sprint</span></td></tr>
+  <tr><td><span class="pr p1">P1</span></td><td><span class="l-es">Funciona mal o da datos incorrectos, pero se puede seguir usando</span><span class="l-en">Works badly or shows wrong data, but you can carry on</span></td><td><span class="l-es">Siguiente versión</span><span class="l-en">Next version</span></td></tr>
+  <tr><td><span class="pr p2">P2</span></td><td><span class="l-es">Molesta o confunde, no impide usar la app</span><span class="l-en">Annoying or confusing, doesn’t block usage</span></td><td><span class="l-es">Cuando toque</span><span class="l-en">When it fits</span></td></tr>
+  <tr><td><span class="pr p3">P3</span></td><td><span class="l-es">Detalle menor o estético</span><span class="l-en">Minor or cosmetic detail</span></td><td><span class="l-es">Si sobra tiempo</span><span class="l-en">If there’s time</span></td></tr>
+</table>
+
+<!-- ═══ PESTAÑAS ═══ -->
+<h2 id="mis">📊 <span class="l-es">MIS · el cuadro de mando</span><span class="l-en">MIS · the dashboard</span></h2>
+<div class="card">
+  <span class="l-es"><b>Qué es:</b> la foto del negocio — usuarias reales frente al plan, ingresos, gastos y KPIs del piloto.<br><b>Cómo se usa:</b> se mira, no se rellena: todo se calcula solo desde la base de datos y los dos libros.<br><b>Cuándo:</b> el lunes de planning y cuando alguien pregunte «¿cómo vamos?».</span>
+  <span class="l-en"><b>What it is:</b> the business snapshot — real users vs plan, revenue, costs and pilot KPIs.<br><b>How to use it:</b> read-only; everything is computed from the database and the two ledgers.<br><b>When:</b> at Monday planning, and whenever someone asks “how are we doing?”.</span>
+</div>
+
+<h2 id="finanzas">💶 <span class="l-es">Finanzas · el libro de caja</span><span class="l-en">Finance · the cash book</span></h2>
+<div class="card">
+  <span class="l-es"><b>Qué es:</b> entradas y salidas reales de dinero, más la hoja de costes de SaaS con el % que imputamos al proyecto.<br><b>Cómo se usa:</b> cada recibo que llega se asienta (lo hace ingeniería); aquí se consulta y se exporta.<br><b>Ojo:</b> la contabilidad del build (partida doble, IAS 38) vive aparte en <b>StartUp Admin</b> — son dos cosas a propósito.</span>
+  <span class="l-en"><b>What it is:</b> real money in and out, plus the SaaS cost sheet with the % charged to the project.<br><b>How to use it:</b> every receipt gets posted (engineering does that); here you consult and export.<br><b>Note:</b> the double-entry build ledger (IAS 38) lives separately in <b>StartUp Admin</b> — deliberately two things.</span>
+</div>
+
+<h2 id="pitch">🎯 <span class="l-es">Pitch · la sala de inversores</span><span class="l-en">Pitch · the investor room</span></h2>
+<div class="card">
+  <span class="l-es"><b>Qué es:</b> el business case presentable: mercado, modelo, escenarios financieros, equipo y data room.<br><b>Cómo se usa:</b> se enseña. Cada descarga del data room queda registrada.</span>
+  <span class="l-en"><b>What it is:</b> the investor-facing case: market, model, financial scenarios, team and data room.<br><b>How to use it:</b> you show it. Every data-room download is logged.</span>
+</div>
+
+<h2 id="plan">🗺 <span class="l-es">Plan 8-oct · el camino al lanzamiento</span><span class="l-en">Launch plan · the road to 8-Oct</span></h2>
+<div class="card">
+  <span class="l-es"><b>Qué es:</b> los hitos hasta el lanzamiento y las dependencias que bloquean a las demás.<br><b>Cómo se usa:</b> para saber qué es urgente de verdad — lo que está en el camino crítico manda sobre lo que apetece.</span>
+  <span class="l-en"><b>What it is:</b> milestones to launch and the dependencies that block the rest.<br><b>How to use it:</b> to know what’s truly urgent — the critical path beats what merely feels pressing.</span>
+</div>
+
+<h2 id="ops">📋 <span class="l-es">Operación · la salud diaria</span><span class="l-en">Ops · daily health</span></h2>
+<div class="card">
+  <span class="l-es"><b>Qué es:</b> si los automatismos han corrido bien esta noche (cosecha de TestFlight, correos, notificaciones) y qué toca hoy.<br><b>Cómo se usa:</b> un vistazo por la mañana. Si algo sale en rojo, lo mira ingeniería.</span>
+  <span class="l-en"><b>What it is:</b> whether last night’s automations ran (TestFlight harvest, emails, notifications) and what’s due today.<br><b>How to use it:</b> a morning glance. Anything red goes to engineering.</span>
+</div>
+
+<h2 id="inc">🎫 <span class="l-es">Incidencias · el corazón del piloto</span><span class="l-en">Incidents · the heart of the pilot</span></h2>
+<div class="card">
+  <span class="l-es"><b>Qué es:</b> cada problema con su ficha: qué pasó, quién lo lleva, qué prioridad tiene y qué le hemos contado a la usuaria.<br>
+  <b>Cómo se rellena (2 minutos):</b>
+  <ol><li><b>Título breve</b> — cómo la llamamos entre nosotros.</li>
+  <li><b>Categoría</b> — bug · mejora · consulta · datos.</li>
+  <li><b>Prioridad</b> P0-P3. Si es bug, entra sola en 🗂 con esa prioridad.</li>
+  <li><b>Responsable</b> — quién la lleva.</li>
+  <li><b>Acción interna</b> — qué vamos a hacer (no lo ve la usuaria).</li>
+  <li><b>Mensaje a la usuaria</b> — opcional; se envía cuando quieras y no cambia el estado.</li></ol>
+  <b>Estados:</b> <b>nuevo</b> (nadie la ha mirado) → <b>en curso</b> (alguien la lleva) → <b>esperando a la usuaria</b> (solo si le pedimos algo) → <b>resuelto</b> (arreglado y enviado) → <b>cerrado</b> (arreglado y ella informada).<br>
+  <b>Dos cierres:</b> el técnico («fix enviado: sí») y el de la usuaria (le contamos y lo da por bueno). Con fix enviado y sin respuesta en 72 h, sale en ✔ para cerrar del correo diario.</span>
+  <span class="l-en"><b>What it is:</b> one ticket per issue: what happened, who owns it, its priority and what we told the user.<br>
+  <b>Filling it in (2 minutes):</b>
+  <ol><li><b>Short title</b> — what we call it internally.</li>
+  <li><b>Category</b> — bug · improvement · question · data.</li>
+  <li><b>Priority</b> P0-P3. If it’s a bug it lands in 🗂 automatically with that priority.</li>
+  <li><b>Owner</b> — who’s on it.</li>
+  <li><b>Internal action</b> — what we’re going to do (the user never sees it).</li>
+  <li><b>Message to the user</b> — optional; send it whenever, it doesn’t change the status.</li></ol>
+  <b>Statuses:</b> <b>new</b> (nobody looked yet) → <b>in progress</b> (someone owns it) → <b>waiting on user</b> (only if we asked her something) → <b>resolved</b> (fixed and shipped) → <b>closed</b> (fixed and she knows — auto-closes 5 days after resolved or when a release ships).<br>
+  <b>Two closures:</b> technical (“fix sent: yes”) and with the user (we tell her, she’s happy). Fix sent and no reply in 72 h → it shows in ✔ ready to close in the daily email.</span>
+</div>
+
+<h2 id="fb">💬 <span class="l-es">Feedback · la bandeja de entrada</span><span class="l-en">Feedback · the inbox</span></h2>
+<div class="card">
+  <span class="l-es"><b>Qué es:</b> todo lo que dicen las testers, venga de la app o del feedback nativo de TestFlight (🍎), con sus capturas y crash logs.<br><b>Cómo se usa:</b> por defecto ves solo lo <b>sin clasificar</b>. Cada mensaje se clasifica en un clic: 🐞 <b>incidencia</b> (algo falla) · 🔧 <b>mejora</b> (funciona pero podría ser mejor) · 💡 <b>idea</b> (algo nuevo). Al clasificarlo sale de la bandeja y sigue su camino.<br><b>Bandeja a cero = todo revisado.</b></span>
+  <span class="l-en"><b>What it is:</b> everything testers say, from the app or TestFlight’s own feedback (🍎), with screenshots and crash logs.<br><b>How to use it:</b> by default you only see the <b>unclassified</b>. One click each: 🐞 <b>incident</b> (something’s broken) · 🔧 <b>improvement</b> (works, could be better) · 💡 <b>idea</b> (something new). Once triaged it leaves the inbox and moves on.<br><b>Empty inbox = everything reviewed.</b></span>
+</div>
+
+<h2 id="dec">🗳 <span class="l-es">Decisiones · lo que bloquea a ingeniería</span><span class="l-en">Decisions · what blocks engineering</span></h2>
+<div class="card">
+  <span class="l-es"><b>Qué es:</b> preguntas que solo pueden responder las founders (legales, de producto, de dinero), con opciones cerradas en vez de texto libre.<br><b>Cómo se usa:</b> se elige una opción. Mientras siga abierta, algo está parado — el correo diario las recuerda.</span>
+  <span class="l-en"><b>What it is:</b> questions only founders can answer (legal, product, money), with fixed options instead of free text.<br><b>How to use it:</b> pick an option. While it stays open something is stalled — the daily email chases it.</span>
+</div>
+
+<h2 id="ntf">🔔 <span class="l-es">Notificaciones · lo que la app le dice a la usuaria</span><span class="l-en">Notifications · what the app tells her</span></h2>
+<div class="card">
+  <span class="l-es"><b>Qué es:</b> el catálogo de mensajes push, con su texto en español e inglés y si están activos.<br><b>Cómo se usa:</b> se revisa el tono (que suene a nosotras, no a un robot) y se activa o desactiva cada mensaje.</span>
+  <span class="l-en"><b>What it is:</b> the push message catalogue, with Spanish and English copy and whether each is live.<br><b>How to use it:</b> review the tone (sound like us, not a robot) and switch each message on or off.</span>
+</div>
+
+<h2 id="pil">🧪 <span class="l-es">Piloto · las tres pestañas</span><span class="l-en">Pilot · the three tabs</span></h2>
+<div class="card">
+  <span class="l-es"><b>🧪 Piloto</b> — la operación: invitar, aprobar por lotes, casar cuentas, recordatorios.<br><b>🗓 Plan piloto</b> — el objetivo de cada semana y cómo va lo real frente a él.<br><b>📡 Obs. piloto</b> — quién ha instalado, quién usa la app de verdad, embudo y feedback. <i>Instalar no es usar: aquí se ve la diferencia.</i></span>
+  <span class="l-en"><b>🧪 Pilot</b> — operations: invite, approve in batches, match accounts, reminders.<br><b>🗓 Pilot plan</b> — the weekly target and how reality compares.<br><b>📡 Pilot obs</b> — who installed, who actually uses the app, funnel and feedback. <i>Installing isn’t using — here you see the gap.</i></span>
+</div>
+
+<h2 id="wl">📬 <span class="l-es">Waitlist · quién quiere entrar</span><span class="l-en">Waitlist · who wants in</span></h2>
+<div class="card">
+  <span class="l-es"><b>Qué es:</b> las personas que se apuntaron en la web. De aquí salen las invitadas al piloto.<br><b>Ojo:</b> son datos personales — solo tras el candado del hub, nunca a sitios públicos.</span>
+  <span class="l-en"><b>What it is:</b> people who signed up on the website. Pilot invitations come from here.<br><b>Note:</b> personal data — behind the hub gate only, never anywhere public.</span>
+</div>
+
+<h2 id="sp">🗂 <span class="l-es">Sprint Planning · el trabajo de desarrollo</span><span class="l-en">Sprint Planning · the development work</span></h2>
+<div class="card">
+  <span class="l-es"><b>Qué es:</b> todo lo que hay que construir — arreglos, mejoras, features y capacidades — agrupado por sprint.<br><b>Cómo llega aquí:</b> los <b>bugs entran solos</b> desde 🎫 con su prioridad; las mejoras e ideas las añades tú cuando decidís hacerlas.<br><b>Qué se decide aquí:</b> prioridad, sprint y sobre todo la <b>release</b> — en qué build entra cada cosa.</span>
+  <span class="l-en"><b>What it is:</b> everything to be built — fixes, improvements, features and capabilities — grouped by sprint.<br><b>How things arrive:</b> <b>bugs land automatically</b> from 🎫 with their priority; improvements and ideas you add when you decide to do them.<br><b>What you decide here:</b> priority, sprint and above all the <b>release</b> — which build each item ships in.</span>
+</div>
+
+<h2 id="rel">🚢 <span class="l-es">Releases · qué lleva cada versión</span><span class="l-en">Releases · what ships in each version</span></h2>
+<div class="card">
+  <span class="l-es"><b>Qué es:</b> cada versión (0.21.1, 0.22.0, GA) con su contenido en tres carriles: 🐞 arreglos · 🔧 mejoras · 🚀 capacidades.<br><b>Arriba del todo</b> está lo que aún no tiene release asignada — eso espera tu decisión.<br><b>Las notas de tienda</b> (ES/EN) viven aquí y son la única fuente: se copian con 📋 al subir a Apple y Google.</span>
+  <span class="l-en"><b>What it is:</b> each version (0.21.1, 0.22.0, GA) and its content in three lanes: 🐞 fixes · 🔧 improvements · 🚀 capabilities.<br><b>At the top</b> sits everything without a release yet — that’s what awaits your call.<br><b>Store notes</b> (ES/EN) live here as the single source: copy them with 📋 when submitting to Apple and Google.</span>
+</div>
+
+<h2 id="comp">🛡 <span class="l-es">Compliance · protección de datos y financiación</span><span class="l-en">Compliance · data protection and funding</span></h2>
+<div class="card">
+  <span class="l-es"><b>Qué es:</b> los documentos confidenciales del cumplimiento: la propuesta del DPD (Audidat), la lista de la AEPD que dice si necesitamos una EIPD, y los acuerdos de financiación pública (Intelectium).<br><b>Ojo:</b> confidenciales — se sirven solo dentro del hub y no se reenvían.</span>
+  <span class="l-en"><b>What it is:</b> the confidential compliance documents: the DPO proposal (Audidat), the AEPD list that determines whether we need a DPIA, and the public-funding agreements (Intelectium).<br><b>Note:</b> confidential — served inside the hub only, never forwarded.</span>
+</div>
+
+<h2 id="docs">📄 <span class="l-es">Documentación del proyecto</span><span class="l-en">Project documentation</span></h2>
+<div class="card">
+  <span class="l-es"><b>Qué es:</b> toda la documentación del proyecto: propuestas, arquitectura, registro de cada sesión de trabajo, runbooks.<br><b>Cuándo:</b> cuando quieras el porqué de algo — cada decisión importante tiene su documento.</span>
+  <span class="l-en"><b>What it is:</b> all project documentation: proposals, architecture, a log of every working session, runbooks.<br><b>When:</b> whenever you want the why behind something — every major decision has its document.</span>
+</div>
+
+<h2 id="otros">🧰 <span class="l-es">Las de apoyo</span><span class="l-en">The supporting tabs</span></h2>
+<div class="card">
+  <span class="l-es"><b>🌍 Traducciones</b> — los 14 idiomas de la app y qué falta.<br><b>🔎 Review</b> — repaso de calidad antes de publicar.<br><b>🧩 Prototipos</b> — pantallas de diseño para mirar sin tocar producción.<br><b>🔑 Access</b> — quién puede entrar (informativa: la lista real vive en Cloudflare).<br><b>🔐 MFA</b> — quién tiene segundo factor; obligatorio para StartUp Admin.</span>
+  <span class="l-en"><b>🌍 Translations</b> — the app’s 14 languages and what’s missing.<br><b>🔎 Review</b> — a quality pass before publishing.<br><b>🧩 Prototypes</b> — design screens to look at without touching production.<br><b>🔑 Access</b> — who can get in (a snapshot: the live list is in Cloudflare).<br><b>🔐 MFA</b> — who has a second factor; required for StartUp Admin.</span>
+</div>
+
+<h2 id="entrar">🚪 <span class="l-es">Cómo se entra</span><span class="l-en">How to get in</span></h2>
+<div class="card">
+  <span class="l-es">Hay <b>dos puertas</b>, y hacen falta las dos:
+  <ol><li><b>Cloudflare Access</b> — pones tu email y te llega un código de 6 dígitos. Dura 24 h.</li>
+  <li><b>Sesión del hub</b> — email + contraseña en 📊 MIS o 📬 Waitlist. Con eso se abren todas las pestañas.</li></ol>
+  <div class="tip">¿Contraseña olvidada o «no eres admin»? Avisa a ingeniería: casi siempre es un email escrito distinto (los puntos de Gmail crean cuentas diferentes).</div></span>
+  <span class="l-en">There are <b>two gates</b>, and you need both:
+  <ol><li><b>Cloudflare Access</b> — enter your email, get a 6-digit code. Lasts 24 h.</li>
+  <li><b>Hub session</b> — email + password in 📊 MIS or 📬 Waitlist. That opens every tab.</li></ol>
+  <div class="tip">Forgotten password or “you’re not an admin”? Tell engineering: it’s almost always a differently-spelled email (Gmail dots create separate accounts).</div></span>
+</div>
+
+<p class="lead" style="margin-top:26px"><span class="l-es">¿Falta algo o algo no se entiende? Escríbelo en 🎫 Incidencias como <i>consulta</i> — esta guía también se arregla.</span><span class="l-en">Missing something, or something unclear? File it in 🎫 Incidents as a <i>question</i> — this guide gets fixed too.</span></p>
+
+</div>
+<script>
+/* r14e + r16-F17: el idioma lo manda el conmutador 🌐 de la barra (ns_lang +
+   evento ns-lang). Aquí solo se pone/quita UNA clase en <html>; el CSS hace el
+   resto. Si este script no llega a correr, la página se ve en español — nunca
+   vacía. */
+(function(){
+  function pinta(){
+    var en = (localStorage.getItem('ns_lang')||'ES').toUpperCase()==='EN';
+    document.documentElement.classList.toggle('ns-en', en);
+    document.documentElement.lang = en ? 'en' : 'es';
+  }
+  pinta();
+  window.addEventListener('ns-lang', pinta);
+  window.addEventListener('storage', pinta);
+})();
+</script></body></html>

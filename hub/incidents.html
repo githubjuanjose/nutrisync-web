@@ -1,0 +1,881 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incidencias — NutriSync Founders</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.55}
+.w{max-width:1050px;margin:0 auto;padding:26px 20px 90px}
+h1{font-size:23px;margin:0 0 4px}
+p.lead{color:#6E655D;font-size:13.5px;margin:0 0 14px}
+.kpis{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+.kpi{flex:1;min-width:110px;background:#fff;border:1px solid #EFE3D7;border-radius:12px;padding:10px 13px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:2px}
+.kpi .l{font-size:10.5px;color:#8A7F78;text-transform:uppercase;letter-spacing:.5px}
+.kpi .v{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
+.filtros{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px;align-items:center}
+select,input[type=text],textarea{font-family:inherit;font-size:13px;padding:8px 10px;border:1px solid #EFE3D7;border-radius:10px;background:#fff}
+textarea{width:100%;box-sizing:border-box;min-height:64px;resize:vertical}
+button{font-family:inherit;font-weight:700;font-size:12.5px;border-radius:18px;padding:7px 14px;border:1px solid #EFE3D7;background:#fff;color:#241D1A;cursor:pointer}
+button:hover{border-color:#F3C8B8;background:#FFF6F2}
+button.pri{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:none}
+.t{background:#fff;border:1px solid #EFE3D7;border-radius:14px;margin:10px 0;overflow:hidden}
+.th{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:12px 15px;cursor:pointer}
+.th:hover{background:#FFFBF5}
+.no{font-weight:800;font-size:13px;color:#C73A20;background:#FFF1EC;border-radius:7px;padding:2px 9px}
+.pill{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 10px}
+.s-nuevo{background:#FFE4E0;color:#A32D2D}.s-en_curso{background:#FFF3E0;color:#B4700F}
+.s-esperando_usuaria{background:#E6F0FF;color:#1D4ED8}.s-resuelto{background:#E8F5EE;color:#0F6E56}
+.s-cerrado{background:#F1F5F9;color:#475569}
+.s-duplicada{background:#F3E8FF;color:#6B21A8}
+.msg{font-size:13.5px;flex:1;min-width:200px}
+.meta{font-size:11px;color:#8A7F78}
+.body{display:none;border-top:1px solid #F4EADF;padding:14px 15px;background:#FFFEFB}
+.t.open .body{display:block}
+.orig{background:#F8F4EE;border-left:3px solid #D9C8B4;border-radius:0 8px 8px 0;padding:9px 12px;font-size:13px;margin-bottom:12px}
+.orig b{font-size:10.5px;color:#8A7F78;text-transform:uppercase;letter-spacing:.5px;display:block}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+.fld{margin-bottom:10px}
+.fld label{font-size:10.5px;font-weight:800;color:#8A7F78;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:3px}
+.trail{font-size:11.5px;color:#5F564F;border-top:1px dashed #EADFD0;margin-top:12px;padding-top:8px}
+.trail div{margin:2px 0}
+.trail .k{font-weight:800;color:#8A7F78}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;align-items:center}
+.ok-chip{font-size:11px;font-weight:800;color:#0F9B57}
+.err{background:#FFF1EC;border:2px solid #E8472A;border-radius:12px;padding:13px 15px;font-size:13px;color:#8A2A18;margin:14px 0}
+.enviada{font-size:11px;font-weight:800;color:#1D4ED8;background:#E6F0FF;border-radius:999px;padding:2px 10px}
+.edad{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;font-variant-numeric:tabular-nums}
+.edad.ok{background:#F1F5F9;color:#475569}
+.edad.aviso{background:#FFF3E0;color:#B4700F}
+.edad.tarde{background:#FFE4E0;color:#A32D2D}
+.edad.hecha{background:#E8F5EE;color:#0F6E56}
+.escal{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#FDE68A;color:#92400E}
+.tit{font-weight:800;font-size:13px}
+.fb{font-size:10.5px;font-weight:900;border-radius:7px;padding:2px 8px;letter-spacing:.3px}
+.fb1,.p0{background:#C73A20;color:#fff}.fb2,.p1{background:#FFB020;color:#5B3A00}.fb3,.p2{background:#E7E2DC;color:#5F564F}.fb4,.p3{background:#F4F0EA;color:#8A7F78}
+.sopft{margin:34px 0 0;padding:18px 20px;background:#FBF6EF;border:1px solid #EFE3D7;border-radius:14px;font-size:12.8px;line-height:1.62}
+.sopft h3{margin:0 0 12px;font-size:14.5px}
+.sopcols{display:flex;gap:26px;flex-wrap:wrap}
+.sopcols>div{flex:1;min-width:290px}
+.sopft ol,.sopft ul{margin:5px 0 12px;padding-left:19px}
+.sopft li{margin:2px 0}
+.sopft b{display:inline}
+.soptab{width:100%;border-collapse:collapse;margin:5px 0 12px}
+.soptab td{padding:4px 7px 4px 0;vertical-align:top;border-bottom:1px solid #F1E8DD}
+.soptab td:last-child{color:#8A7F78;white-space:nowrap;text-align:right}
+.flowbar{display:flex;align-items:stretch;gap:5px;flex-wrap:wrap;margin:0 0 18px}
+.fstep{flex:1;min-width:132px;background:#fff;border:1px solid #EFE3D7;border-radius:11px;padding:9px 11px;display:flex;flex-direction:column;gap:2px}
+.fstep.on{border-color:#F3C8B8;background:#FFF6F2;box-shadow:0 0 0 2px #FDE7DC}
+.fstep .fem{font-size:17px;line-height:1.1}
+.fstep b{font-size:12.3px}
+.fstep span:last-child{font-size:10.8px;color:#8A7F78;line-height:1.42}
+.fstep i{color:#A79C94}
+.farrow{align-self:center;color:#C9BDB2;font-weight:800;font-size:15px}
+.cat{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#F1EAE2;color:#6E655D}
+.pcerr{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#DCFCE7;color:#166534;border:1px dashed #16A34A}
+.fixchip{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#EDE9FE;color:#5B21B6}
+.leyfb{font-size:11.5px;color:#6E655D;background:#FBF6EF;border:1px solid #EFE3D7;border-radius:10px;padding:8px 12px;margin:0 0 14px}
+.leyfb b{color:#241D1A}
+.sec{display:flex;align-items:center;gap:10px;margin:16px 0 4px;padding:8px 12px;background:#FBF6EF;border:1px solid #EFE3D7;border-radius:10px;cursor:pointer;user-select:none}
+.sec:hover{background:#FFF6F2}
+.sec .n{font-weight:800;font-size:13px}
+.sec .chev{margin-left:auto;color:#8A7F78;font-size:12px}
+
+/* r17 (10-ago): rejilla de incidencias. Columnas fijas = el ojo baja recto por
+   una columna en vez de rebotar. Los chips secundarios (fix enviado, escalada,
+   respondida…) se agrupan en la ultima columna para que no rompan la fila.
+
+   CADA CELDA VA POR NOMBRE, NO POR ORDEN (arreglo 11-ago). La primera version
+   dejaba que el grid colocara los hijos segun aparecian, y TRES de ellos son
+   opcionales: si un ticket no trae criticidad o no trae titulo, todo lo demas
+   se corre una columna y la fila se alinea distinta a la de arriba. Ademas
+   `msg` y `meta`, que en flexbox hacian salto de linea, caian en el primer
+   hueco libre y se montaban encima del resto. Con `grid-area` la presencia y
+   el orden dejan de importar: la celda que falta se queda vacia y ya esta. */
+.t>.th{display:grid;grid-template-columns:96px 46px minmax(0,1fr) 108px 104px auto;
+       grid-template-areas:
+         "no   crit tit  est  asig chips"
+         "msg  msg  msg  msg  msg  msg"
+         "meta meta meta meta meta meta";
+       gap:3px 10px;align-items:center;padding:9px 12px}
+.t>.th>.no{grid-area:no}
+.t>.th>.fb{grid-area:crit;justify-self:start}
+.t>.th>.tit{grid-area:tit}
+.t>.th>.pill{grid-area:est;justify-self:start}   /* `>` : el 🍎 de chips es .pill tambien */
+.t>.th>.asig{grid-area:asig}
+.t>.th>.chips{grid-area:chips}
+.t>.th>.msg{grid-area:msg}
+.t>.th>.meta{grid-area:meta}
+/* Todo lo que puede desbordar se corta con puntos suspensivos. Sin `min-width:0`
+   una celda de grid nunca encoge por debajo de su contenido y empuja al resto. */
+.t>.th>.tit,.t>.th>.asig,.t>.th>.msg,.t>.th>.meta{
+  min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t>.th>.tit{font-weight:600;font-size:13px}
+.t>.th>.asig{font-size:11px;color:#6E655D}
+.t>.th>.msg{font-size:12px;color:#6E655D}
+.t>.th>.meta{font-size:11px;color:#A79C93}
+.t>.th>.cat{display:none}                    /* la categoria vive en el detalle */
+.t>.th>.chips{display:flex;gap:5px;align-items:center;flex-wrap:nowrap;justify-self:end}
+.t>.th>.chips>*{font-size:9.5px;padding:1px 6px}
+.gridhead{display:grid;grid-template-columns:96px 46px minmax(0,1fr) 108px 104px auto;
+          gap:10px;padding:4px 12px 6px;font-size:10px;letter-spacing:.6px;
+          text-transform:uppercase;color:#A79C93;font-weight:800}
+.t{border-radius:10px;margin:3px 0}
+.t.open>.th{background:#FFF6F2;border-radius:10px 10px 0 0}
+@media(max-width:820px){
+  /* En movil sobran columnas, no filas: asignada y chips se van (la persona ya
+     sale en `meta`), y el titulo se queda con todo el ancho que puede. */
+  .t>.th{grid-template-columns:80px 40px minmax(0,1fr) auto;
+         grid-template-areas:
+           "no   crit tit  est"
+           "msg  msg  msg  msg"
+           "meta meta meta meta";
+         gap:3px 7px}
+  .t>.th>.chips,.t>.th>.asig{display:none}
+  .gridhead{display:none}
+}
+
+.t>.th>.chips .escal{max-width:104px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+</style></head><body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+/* r16b: la pestaña activa por CLASE con !important — tercera red por si algo
+   pisa el estilo en línea. La pone markActive() y el mini-marcador del final. */
+#ns-hub-navbar .nsnb-tab.on{background:linear-gradient(135deg,#FF7600,#FD400C)!important;color:#fff!important;font-weight:800!important;border-color:#FD400C!important;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)!important}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+.nsnb-tab{cursor:grab}
+.nsnb-tab.nsnb-drag{opacity:.35;cursor:grabbing}
+#nsnb-reset{display:none}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Web de marketing / marketing site"
+     aria-label="Web de marketing" style="text-decoration:none">🏠</a>
+  <a class="nsnb-btn" href="https://admin.nutrisynccollective.com" title="StartUp Admin (contabilidad del build)"
+     aria-label="StartUp Admin" style="text-decoration:none">🛠</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Competitive" href="/hub/competitive.html">🥊 Competencia</a><a class="nsnb-tab nsnb-g1" data-en="Build Roadmap → Go Live" href="/hub/launch-plan.html">🚀 Build Roadmap → Go Live</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync Sprint Planning" href="/hub/backlog-dev.html">🗂 NutriSync Sprint Planning</a><a class="nsnb-tab nsnb-g4" data-en="Release Plan" href="/hub/release-plan.html">🚢 Releases</a><a class="nsnb-tab nsnb-g4" data-en="Compliance" href="/hub/compliance.html">🛡 Compliance</a><a class="nsnb-tab nsnb-g4" data-en="Ideation" href="/hub/roadmap.html">💡 Ideation</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g5" data-en="Documentation" href="/hub/documentation/index.html">📄 Documentación</a><a class="nsnb-tab nsnb-g5" data-en="ERP User Guide" href="/hub/user-guide.html">📖 Guía ERP</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14b (feedback Juanjo): idioma con CONMUTADOR visible y persistente.
+     localStorage ns_lang ('es'|'en') manda; sin él, el navegador decide.
+     Las páginas con data-i leen la misma clave — un idioma, todas las superficies. */
+  function nsLang(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pintaIdioma(){
+    var en=nsLang()==='en';
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      if(!a.getAttribute('data-es'))a.setAttribute('data-es',a.textContent.trim());
+      var em=a.getAttribute('data-es').split(' ')[0];
+      a.textContent=en?(em+' '+a.getAttribute('data-en')):a.getAttribute('data-es');});
+    var b=document.getElementById('nsnb-lang');if(b)b.textContent=en?'ES':'EN';
+  }
+  (function(){
+    var brand=document.querySelector('#ns-hub-navbar .nsnb-btn');
+    if(brand&&!document.getElementById('nsnb-lang')){
+      var b=document.createElement('a');b.id='nsnb-lang';b.className='nsnb-btn';b.href='#';
+      b.title='Cambiar idioma / switch language';
+      b.onclick=function(e){e.preventDefault();
+        try{localStorage.setItem('ns_lang',nsLang()==='en'?'es':'en');}catch(err){}
+        pintaIdioma();
+        document.dispatchEvent(new CustomEvent('ns-lang'));
+        if(typeof relayout==='function')relayout();
+        return false;};
+      brand.parentNode.insertBefore(b,brand);
+    }
+    pintaIdioma();
+    /* r14e: pintor data-i UNIVERSAL — cualquier página del hub con data-i="ES|EN"
+       (o data-i sin valor con "ES|EN" dentro) se vuelve bilingüe gratis. */
+    function pintaDataI(){
+      var en=nsLang()==='en';
+      document.querySelectorAll('[data-i]').forEach(function(n){
+        if(n.closest&&n.closest('#ns-hub-navbar'))return;
+        var src=n.getAttribute('data-i');
+        if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+        var p=src.split('|');
+        n.innerHTML=en?(p[1]||p[0]):p[0];});
+    }
+    document.addEventListener('ns-lang',pintaDataI);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',pintaDataI);
+    else pintaDataI();
+  })();
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  /* r16c (cazado POR JUANJO con el flash del clic): Cloudflare Pages sirve
+     URLs LIMPIAS — /hub/incidents.html se visita como /hub/incidents — así
+     que comparar con ".html" no casaba JAMÁS en carga de página. Se normaliza
+     quitando la extensión en LOS DOS lados. */
+  function nsLimpia(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';}
+  var here=nsLimpia(location.pathname.split('/').pop());
+  var dir=location.pathname.toLowerCase();
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : nsLimpia(f.split('/').pop())===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  /* r16: la marca se queda mientras estés en la página — se repinta al volver
+     del historial (bfcache), al recuperar el foco y al cambiar de pestaña del
+     navegador. Nada la apaga salvo navegar a otra página del hub. */
+  window.addEventListener('pageshow',function(){markActive();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)markActive();});
+  window.addEventListener('focus',function(){markActive();});
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  /* r14e (idea Juanjo): pestañas ARRASTRABLES — cada cual su orden, guardado
+     en este navegador (ns_tab_order). ↺ vuelve al orden de fábrica. */
+  (function(){
+    var KEY='ns_tab_order';
+    function filas(){return [document.getElementById('nsnb-r1'),document.getElementById('nsnb-r2')].filter(Boolean);}
+    function todas(){var t=[];filas().forEach(function(r){t=t.concat([].slice.call(r.querySelectorAll('.nsnb-tab')));});return t;}
+    var ORIG=todas().map(function(a){return a.getAttribute('href');});
+    function guardar(){try{localStorage.setItem(KEY,JSON.stringify(todas().map(function(a){return a.getAttribute('href');})));}catch(e){}
+      var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';}
+    function aplicar(orden){
+      var r1=document.getElementById('nsnb-r1');if(!r1)return;
+      var por={};todas().forEach(function(a){por[a.getAttribute('href')]=a;});
+      orden.forEach(function(h){if(por[h])r1.appendChild(por[h]);});
+      todas().forEach(function(a){if(orden.indexOf(a.getAttribute('href'))<0)r1.appendChild(a);});
+    }
+    try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&sv.length){aplicar(sv);
+      setTimeout(function(){var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';},0);}}catch(e){}
+    var drag=null;
+    todas().forEach(function(a){
+      a.setAttribute('draggable','true');
+      a.title=(a.title?a.title+' · ':'')+'Arrastra para reordenar / drag to reorder';
+      a.addEventListener('dragstart',function(e){drag=a;a.classList.add('nsnb-drag');
+        try{e.dataTransfer.setData('text/plain',a.getAttribute('href'));e.dataTransfer.effectAllowed='move';}catch(err){}});
+      a.addEventListener('dragend',function(){if(drag)drag.classList.remove('nsnb-drag');drag=null;});
+      a.addEventListener('dragover',function(e){e.preventDefault();if(!drag||drag===a)return;
+        var r=a.getBoundingClientRect(),antes=(e.clientX-r.left)<r.width/2;
+        a.parentNode.insertBefore(drag,antes?a:a.nextSibling);});
+      a.addEventListener('drop',function(e){e.preventDefault();guardar();relayout();});
+    });
+    filas().forEach(function(r){r.addEventListener('dragover',function(e){e.preventDefault();});
+      r.addEventListener('drop',function(e){e.preventDefault();if(drag){guardar();relayout();}});});
+    var brand=document.getElementById('nsnb-lang');
+    if(brand&&!document.getElementById('nsnb-reset')){
+      var rb=document.createElement('a');rb.id='nsnb-reset';rb.className='nsnb-btn';rb.href='#';rb.textContent='↺';
+      rb.title='Orden de pestañas original / reset tab order';
+      rb.onclick=function(e){e.preventDefault();try{localStorage.removeItem(KEY);}catch(err){}
+        aplicar(ORIG);rb.style.display='none';relayout();return false;};
+      brand.parentNode.insertBefore(rb,brand);
+    }
+  })();
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+<script>
+/* r16b · MINI-MARCADOR independiente de pestaña activa. Deliberadamente
+   separado y mínimo: si el script grande de la barra muere por lo que sea,
+   ESTE pinta igual. Solo compara el fichero de la URL con el href y pone la
+   clase .on (el CSS !important hace el resto). Se repite unos segundos por si
+   el reordenado o el motor mueven pestañas tarde. */
+(function(){
+  function marca(){
+    try{
+      /* r16c: Pages sirve URLs sin .html — normalizar ambos lados */
+      var lim=function(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';};
+      var here=lim(location.pathname.split('/').pop());
+      var esDoc=location.pathname.toLowerCase().indexOf('/documentation/')>-1;
+      document.querySelectorAll('#ns-hub-navbar .nsnb-tab').forEach(function(a){
+        var f=(a.getAttribute('href')||'').toLowerCase();
+        var on=esDoc ? f.indexOf('/documentation/')>-1 : lim(f.split('/').pop())===here;
+        a.classList.toggle('on',on);
+      });
+    }catch(e){}
+  }
+  marca();
+  var i=0,t=setInterval(function(){marca();if(++i>15)clearInterval(t);},700);
+  window.addEventListener('pageshow',marca);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar --><div class="w">
+
+<h1 data-i="🎫 Incidencias y resolución de problemas|🎫 Incidents &amp; problem resolution">🎫 Incidencias y resolución de problemas</h1>
+<p class="lead">Cada feedback de la app genera un ticket con número. Aquí se decide qué hacemos,
+quién lo lleva, y se responde a la usuaria — <b>la respuesta le llega dentro de su app</b>.
+Nada se guarda hasta que pulsas un botón de guardar.</p>
+
+<!-- r16-F12: UNA escala (la misma que Sprint Planning) + SOP corto. Plegable:
+     quien ya lo sabe no lo sufre, quien llega nuevo lo tiene a un clic. -->
+<div class="leyfb">
+<b>Prioridad — la misma que en 🗂 Sprint Planning:</b>
+<span class="fb fb1">P0</span> la app se rompe (crash) o algo básico no funciona · <b>este sprint</b> ·
+<span class="fb fb2">P1</span> funciona mal o da datos incorrectos, pero se puede seguir usando · <b>siguiente versión</b> ·
+<span class="fb fb3">P2</span> molesta o confunde, no impide usar la app · <b>cuando toque</b> ·
+<span class="fb fb4">P3</span> detalle menor o estético · <b>si sobra tiempo</b>.
+<a href="#" onclick="var s=document.getElementById('nsSop');s.style.display=s.style.display==='none'?'block':'none';return false;" style="margin-left:6px;font-weight:700">¿cómo se rellena? ▾</a>
+<div id="nsSop" style="display:none;margin-top:10px;padding-top:10px;border-top:1px dashed #EADFD0;line-height:1.7">
+  <b>Cómo se rellena una ficha (2 minutos)</b><br>
+  1 · <b>Título breve</b> — cómo la llamamos entre nosotros («crash al abrir Body Insights»).<br>
+  2 · <b>Categoría</b> — bug (algo falla) · mejora · consulta · datos.<br>
+  3 · <b>Prioridad</b> — P0-P3 según la tabla de arriba. Si es bug, entra sola en 🗂 con esa prioridad.<br>
+  4 · <b>Responsable</b> — quién la lleva.<br>
+  5 · <b>Acción interna</b> — qué vamos a hacer (esto NO lo ve la usuaria).<br>
+  6 · <b>Mensaje a la usuaria</b> — opcional; se envía cuando quieras, no cambia el estado.<br>
+  <br>
+  <b>El ciclo de estados</b><br>
+  <b>nuevo</b> → nadie la ha mirado todavía.<br>
+  <b>en curso</b> → alguien la lleva o está en el sprint. <i>Ponlo tú al empezar.</i><br>
+  <b>esperando a la usuaria</b> → SOLO cuando le hemos pedido algo (más datos, o confirmar que ya funciona). Hablar con ella no cambia el estado.<br>
+  <b>resuelto</b> → arreglado y probado, fix enviado en una versión.<br>
+  <b>cerrado</b> → terminado: técnicamente arreglado <u>y</u> la usuaria informada. <i>Se cierra SOLO: 5 días en resuelto o release nueva en tiendas.</i><br>
+  <br>
+  <b>Dos cierres, no uno</b> — el <i>técnico</i> (arreglado y probado → marca «fix enviado: sí») y el <i>de la usuaria</i> (le contamos y lo da por bueno). Cuando hay fix enviado y no contesta en 72 h, sale en <span class="pcerr">✔ para cerrar</span> del correo diario y se cierra.<br>
+  <br>
+  <b>Y de aquí al desarrollo</b>: bug → 🗂 Sprint Planning (automático, con su P) → le asignas una <b>release</b> → aparece en 🚢 Release Plan → se construye → vuelve aquí como «fix enviado».
+</div></div>
+<div class="kpis" id="kpis"></div>
+<div class="filtros">
+  <input id="fQ" type="search" placeholder="🔍 buscar: nº, título, texto, usuaria…" oninput="window.nsQ()"
+         style="flex:1;min-width:200px;padding:8px 10px;border:1px solid #EADFD0;border-radius:10px;font:inherit">
+  <select id="fSt"><option value="">estado: todos</option>
+    <option value="nuevo">nuevo</option><option value="en_curso">en curso</option>
+    <option value="esperando_usuaria">esperando a la usuaria</option>
+    <option value="resuelto">resuelto</option><option value="cerrado">cerrado</option>
+    <option value="duplicada">duplicada</option></select>
+  <select id="fAs"><option value="">asignado a: todas</option></select>
+  <button onclick="window.nsExport()" title="Exporta lo que ves con los filtros actuales">⬇ CSV</button>
+  <span class="meta" id="count"></span>
+</div>
+<div id="err"></div>
+<div id="lista">Cargando…</div>
+
+<!-- ns-inc-sop · r16-F13: el SOP vive al pie de la propia página, siempre a la
+     vista. Bilingüe ES/EN porque las founders leen en los dos idiomas. Regla:
+     la guía se lee donde se trabaja, no en un documento que nadie abre. -->
+<div class="sopft">
+  <h3>📖 Guía de uso · How to use this page</h3>
+
+  <!-- r16-F13: el circuito entero de un vistazo — de dónde viene cada ficha y
+       a dónde va. Sin esto, cada pestaña parece una isla. -->
+  <div class="flowbar">
+    <div class="fstep"><span class="fem">📱</span><b>App del piloto</b><span>La tester usa la app y encuentra algo<br><i>Pilot app · she hits something</i></span></div>
+    <div class="farrow">→</div>
+    <div class="fstep"><span class="fem">💬</span><b>Feedback</b><span>Llega su mensaje (app o TestFlight) y se clasifica: 🐞 🔧 💡<br><i>Message arrives · triage</i></span></div>
+    <div class="farrow">→</div>
+    <div class="fstep on"><span class="fem">🎫</span><b>Incidencias</b><span>Aquí: analizar, priorizar P0-P3, asignar y responderle<br><i>Analyse · prioritise · reply</i></span></div>
+    <div class="farrow">→</div>
+    <div class="fstep"><span class="fem">🗂</span><b>Sprint Planning</b><span>Entra sola con su P · le asignas la release<br><i>Lands automatically · pick a release</i></span></div>
+    <div class="farrow">→</div>
+    <div class="fstep"><span class="fem">🚢</span><b>Release</b><span>Se construye y sale a las tiendas u OTA<br><i>Built and shipped</i></span></div>
+    <div class="farrow">↩</div>
+    <div class="fstep"><span class="fem">✔</span><b>Cierre</b><span>«Fix enviado» → le avisamos → cerrada<br><i>Fix sent · user told · closed</i></span></div>
+  </div>
+
+  <div class="sopcols">
+    <div>
+      <b>Prioridad — la misma escala que en 🗂 Sprint Planning</b>
+      <table class="soptab">
+        <tr><td><span class="fb p0">P0</span></td><td>La app se rompe (crash) o algo básico no funciona</td><td><i>este sprint</i></td></tr>
+        <tr><td><span class="fb p1">P1</span></td><td>Funciona mal o da datos incorrectos, pero se puede seguir usando</td><td><i>siguiente versión</i></td></tr>
+        <tr><td><span class="fb p2">P2</span></td><td>Molesta o confunde, no impide usar la app</td><td><i>cuando toque</i></td></tr>
+        <tr><td><span class="fb p3">P3</span></td><td>Detalle menor o estético</td><td><i>si sobra tiempo</i></td></tr>
+      </table>
+      <b>Cómo se rellena una ficha (2 minutos)</b>
+      <ol>
+        <li><b>Título breve</b> — cómo la llamamos entre nosotros («crash al abrir Body Insights»).</li>
+        <li><b>Categoría</b> — bug (algo falla) · mejora · consulta · datos.</li>
+        <li><b>Prioridad</b> — P0-P3. Si es bug, entra sola en 🗂 con esa prioridad.</li>
+        <li><b>Responsable</b> — quién la lleva.</li>
+        <li><b>Acción interna</b> — qué vamos a hacer (esto NO lo ve la usuaria).</li>
+        <li><b>Mensaje a la usuaria</b> — opcional; se envía cuando quieras y no cambia el estado.</li>
+      </ol>
+      <b>El ciclo de estados</b>
+      <ul>
+        <li><b>nuevo</b> — nadie la ha mirado todavía.</li>
+        <li><b>en curso</b> — alguien la lleva o está en el sprint (ponlo tú al empezar).</li>
+        <li><b>esperando a la usuaria</b> — SOLO cuando le hemos pedido algo. Hablar con ella no cambia el estado.</li>
+        <li><b>resuelto</b> — arreglado y probado, enviado en una versión.</li>
+        <li><b>cerrado</b> — terminado: arreglado <u>y</u> la usuaria informada. <i>Automático: a los 5 días de resuelto, o cuando una release nueva llega a las tiendas.</i></li>
+      </ul>
+      <b>Dos cierres, no uno</b><br>
+      <b>Técnico</b>: arreglado y probado → marca «fix enviado: sí». <b>Con la usuaria</b>: le contamos y lo da por bueno. Con fix enviado y sin respuesta en 72 h, sale en <span class="pcerr">✔ para cerrar</span> del correo diario.<br><br>
+      <b>Del reporte al código</b><br>
+      bug → 🗂 <a href="/hub/backlog-dev.html">Sprint Planning</a> (automático, con su P) → le asignas una <b>release</b> → 🚢 <a href="/hub/release-plan.html">Release Plan</a> → se construye → vuelve aquí como «fix enviado» → mensaje a la usuaria → cierre.
+    </div>
+    <div>
+      <b>Priority — same scale as 🗂 Sprint Planning</b>
+      <table class="soptab">
+        <tr><td><span class="fb p0">P0</span></td><td>App crashes or something basic doesn't work</td><td><i>this sprint</i></td></tr>
+        <tr><td><span class="fb p1">P1</span></td><td>Works badly or shows wrong data, but you can carry on</td><td><i>next version</i></td></tr>
+        <tr><td><span class="fb p2">P2</span></td><td>Annoying or confusing, doesn't block usage</td><td><i>when it fits</i></td></tr>
+        <tr><td><span class="fb p3">P3</span></td><td>Minor or cosmetic detail</td><td><i>if there's time</i></td></tr>
+      </table>
+      <b>Filling in a ticket (2 minutes)</b>
+      <ol>
+        <li><b>Short title</b> — what we call it internally ("crash opening Body Insights").</li>
+        <li><b>Category</b> — bug · improvement · question · data.</li>
+        <li><b>Priority</b> — P0-P3. If it's a bug, it lands in 🗂 automatically with that priority.</li>
+        <li><b>Owner</b> — who's on it.</li>
+        <li><b>Internal action</b> — what we're going to do (the user never sees this).</li>
+        <li><b>Message to the user</b> — optional; send it whenever, it doesn't change the status.</li>
+      </ol>
+      <b>The status cycle</b>
+      <ul>
+        <li><b>new</b> — nobody has looked at it yet.</li>
+        <li><b>in progress</b> — someone owns it or it's in the sprint (you set this when you start).</li>
+        <li><b>waiting on user</b> — ONLY when we've asked her for something. Talking to her doesn't change the status.</li>
+        <li><b>resolved</b> — fixed and tested, shipped in a version.</li>
+        <li><b>closed</b> — done: fixed <u>and</u> the user informed. <i>Automatic: 5 days after resolved, or when a new release hits the stores.</i></li>
+      </ul>
+      <b>Two closures, not one</b><br>
+      <b>Technical</b>: fixed and tested → mark "fix sent: yes". <b>With the user</b>: we tell her and she's happy. Once a fix is sent and she doesn't reply within 72 h, it appears in <span class="pcerr">✔ ready to close</span> in the daily email.<br><br>
+      <b>From report to code</b><br>
+      bug → 🗂 <a href="/hub/backlog-dev.html">Sprint Planning</a> (automatic, with its P) → you assign a <b>release</b> → 🚢 <a href="/hub/release-plan.html">Release Plan</a> → gets built → comes back here as "fix sent" → message to the user → closed.
+    </div>
+  </div>
+</div>
+
+</div>
+<script src="/assets/vendor/supabase.js"></script>
+<script>
+(function(){
+'use strict';
+var sb=window.supabase.createClient('https://nebkqncvapelrarruyqb.supabase.co',
+  'sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau');
+var $=function(i){return document.getElementById(i);};
+var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+var D=null, ABIERTOS={};
+
+/* Nunca en blanco (regla r12-b9) */
+function fail(e,fn){
+  $('lista').innerHTML='';
+  $('err').innerHTML='<div class="err"><b>⚠️ Falta aplicar SQL en Supabase</b><div style="margin-top:5px">'+
+    'La consulta <code>'+esc(fn)+'</code> no responde: <i>'+esc(String(e&&e.message||e)).slice(0,160)+'</i></div>'+
+    '<div style="margin-top:5px">Ejecuta <b>backend-sql/2026-08-07-incidencias-v2.sql</b> entero y recarga.</div></div>';
+}
+
+var ASIGNABLES=['engineering@nutrisynccollective.com','build@nutrisynccollective.com',
+  'lcebrian@nutrisynccollective.com','pgonzalez@nutrisynccollective.com','mgarzon@nutrisynccollective.com','contact@nutrisynccollective.com'];
+var KINDS={creado:'🎫',comentario:'💬',estado:'🔁',asignacion:'👤',respuesta:'✍️',respuesta_enviada:'📨',escalacion:'🚨'};
+
+function fecha(s){if(!s)return '—';var d=new Date(s);
+  return d.toLocaleDateString('es-ES',{day:'2-digit',month:'short'})+' '+
+         d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});}
+
+/* SLA (Juanjo, 5-ago): la edad se VE. <8 h gris, 8-24 h ámbar, >24 h rojo —
+   el mismo umbral que dispara el correo automático a founders. Cerradas:
+   cuánto se tardó, que es la métrica que importa mirar en retro. */
+function horasEntre(a,b){return (new Date(b)-new Date(a))/36e5;}
+function fmtDur(h){
+  if(!isFinite(h)||h<0)return '—';
+  if(h<1)return Math.round(h*60)+' min';
+  if(h<48)return (h<10?h.toFixed(1):Math.round(h))+' h';
+  return Math.round(h/24)+' d';
+}
+/* NSINC:begin */
+/* KPIs de servicio (Juanjo, 6-ago): puros y testeados en web-tests.
+   Día hábil = L-V; sáb/dom no corren. FCR = resuelta el MISMO día local. */
+window.NSINC={
+  diasHabilesEntre:function(a,b){
+    var ini=new Date(a).getTime(), fin=new Date(b).getTime(), ms=0;
+    if(!(fin>ini))return 0;
+    var d=new Date(ini);
+    while(d.getTime()<fin){
+      var sig=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1).getTime();
+      var dow=d.getDay();
+      if(dow!==0&&dow!==6)ms+=Math.min(fin,sig)-d.getTime();
+      d=new Date(sig);
+    }
+    return ms/864e5;
+  },
+  mismoDiaLocal:function(a,b){var x=new Date(a),y=new Date(b);
+    return x.getFullYear()===y.getFullYear()&&x.getMonth()===y.getMonth()&&x.getDate()===y.getDate();},
+  resumen:function(rows,nowMs){
+    var abiertas=rows.filter(function(t){return t.status!=='resuelto'&&t.status!=='cerrado';});
+    var res=rows.filter(function(t){return t.resolved_at;});
+    var lt24=abiertas.filter(function(t){return (nowMs-new Date(t.created_at).getTime())/36e5<24;}).length;
+    var hab=abiertas.filter(function(t){return window.NSINC.diasHabilesEntre(t.created_at,nowMs)>1;}).length;
+    var media=res.length?res.reduce(function(s,t){return s+(new Date(t.resolved_at)-new Date(t.created_at))/36e5;},0)/res.length:null;
+    var fcr=res.length?Math.round(100*res.filter(function(t){return window.NSINC.mismoDiaLocal(t.created_at,t.resolved_at);}).length/res.length):null;
+    return {total:rows.length,abiertas:abiertas.length,abiertas_lt24:lt24,abiertas_habil:hab,media_h:media,fcr_pct:fcr};
+  }
+};
+/* NSINC:end */
+
+function badgeEdad(t){
+  if(t.resolved_at)
+    return '<span class="edad hecha">⏱ resuelta en '+fmtDur(horasEntre(t.created_at,t.resolved_at))+'</span>';
+  if(t.status==='cerrado'||t.status==='resuelto')
+    return '<span class="edad hecha">⏱ resuelta</span>';
+  var h=horasEntre(t.created_at,Date.now());
+  var cls=h>=24?'tarde':(h>=8?'aviso':'ok');
+  return '<span class="edad '+cls+'">⏱ abierta '+fmtDur(h)+(h>=24?' ⚠':'')+'</span>';
+}
+function paraCerrar(t){return t.status==='esperando_usuaria'&&t.respuesta_enviada_at
+  &&(Date.now()-new Date(t.respuesta_enviada_at).getTime())/36e5>72;}
+function ticket(t){
+  var abierto=ABIERTOS[t.id]?' open':'';
+  var h='<div class="t'+abierto+'" data-id="'+esc(t.id)+'">'
+    +'<div class="th" onclick="window.nsToggle(\''+esc(t.id)+'\')">'
+    +'<span class="no">'+esc(t.ticket_no)+'</span>'
+    +(t.criticidad?'<span class="fb '+esc(t.criticidad).toLowerCase()+'">'+esc(t.criticidad)+'</span>':'')
+    +(t.titulo?'<span class="tit">'+esc(t.titulo)+'</span>':'')
+    +(t.categoria?'<span class="cat">'+esc(t.categoria)+'</span>':'')
+    +'<span class="pill s-'+esc(t.status)+'">'+esc(t.status.replace(/_/g,' '))
+    +(t.status==='duplicada'&&t.duplicado_de?' de '+esc(t.duplicado_de):'')+'</span>'
+    +'<span class="asig">'+esc(t.assigned_to||'—')+'</span>'
+    +'<span class="chips">'
+    +(paraCerrar(t)?'<span class="pcerr">✔ cerrar</span>':'')
+    +(t.fix_enviado_at?'<span class="fixchip" title="fix enviado">🔧</span>':'')
+    +badgeEdad(t)
+    +(t.escalated_at?'<span class="escal" title="escalada a founders">📣 escalada a founders</span>':'')
+    +(t.source==='testflight'?'<span class="pill" title="llegó por TestFlight" style="background:#241D1A;color:#fff">🍎</span>':'')
+    +(t.respuesta_enviada_at?'<span class="enviada" title="respondida en la app">📨</span>':'')
+    +'</span>'
+    +'<span class="msg">'+esc(t.message).slice(0,110)+(t.message.length>110?'…':'')+'</span>'
+    +'<span class="meta">'+esc(t.cohort)+' · '+esc(t.app_version||'?')+' · '+esc(t.platform||'?')
+    +' · '+fecha(t.feedback_at)+(t.assigned_to?' · 👤 '+esc(t.assigned_to.split('@')[0]):'')+'</span></div>';
+
+  h+='<div class="body">'
+    +'<div class="orig"><b>Feedback original · '+esc(t.user_email)+'</b>'+esc(t.message)
+    /* r16-F11: la PRUEBA viaja con el ticket — captura o crash log completo */
+    +(t.screenshot_path?(t.screenshot_path.slice(-4)==='.txt'
+      ?'<div style="margin-top:8px"><a class="nsShotLog" data-shot="'+esc(t.screenshot_path)+'" target="_blank" rel="noopener" style="font-size:12.5px;font-weight:700;color:#C05621">📄 Crash log completo · full crash log</a></div>'
+      :'<div style="margin-top:8px"><img class="nsShot" data-shot="'+esc(t.screenshot_path)+'" alt="captura de la usuaria" style="max-width:190px;border-radius:9px;border:1px solid #EFE3D7;cursor:zoom-in" onclick="window.open(this.src)"></div>'):'')
+    +'</div>'
+    +'<div class="grid"><div>'
+    +'<div class="fld"><label>Estado</label><select class="edSt" onchange="window.nsDupTog(this)">'
+    +['nuevo','en_curso','esperando_usuaria','resuelto','cerrado','duplicada'].map(function(s){
+       return '<option value="'+s+'"'+(s===t.status?' selected':'')+'>'+s.replace(/_/g,' ')+'</option>';}).join('')
+    +'</select></div>'
+    /* r18-c (pedido Juanjo 14-ago): duplicada EXIGE decir de quién. El campo
+       solo aparece con ese estado elegido; el servidor valida que la canónica
+       exista y no sea a su vez duplicada. */
+    +'<div class="fld edDupWrap" style="'+(t.status==='duplicada'?'':'display:none')+'">'
+    +'<label>Duplicada de (nº de incidencia)</label>'
+    +'<input type="text" class="edDup" value="'+esc(t.duplicado_de||'')+'" placeholder="NS-0054"></div>'
+    +'<div class="fld"><label>Título breve (cómo la llamamos nosotros)</label><input type="text" class="edTi" value="'+esc(t.titulo||'')+'" placeholder="p. ej.: sin predicción + períodos fantasma"></div>'
+    +'<div class="fld" style="display:flex;gap:8px"><div style="flex:1"><label>Categoría</label><select class="edCa">'
+    +['','bug','mejora','consulta','datos'].map(function(c){return '<option value="'+c+'"'+(c===(t.categoria||'')?' selected':'')+'>'+(c||'—')+'</option>';}).join('')
+    +'</select></div><div style="flex:1"><label>Prioridad (P0-P3)</label><select class="edCr">'
+    +['','P0','P1','P2','P3'].map(function(c){return '<option value="'+c+'"'+(c===(t.criticidad||'')?' selected':'')+'>'+(c||'—')+'</option>';}).join('')
+    +'</select></div><div style="flex:1"><label>Fix enviado</label><select class="edFx"><option value=""'+(!t.fix_enviado_at?' selected':'')+'>no</option><option value="1"'+(t.fix_enviado_at?' selected':'')+'>sí</option></select></div></div>'
+    +'<div class="fld"><label>Responsable</label><select class="edAs"><option value="">—</option>'
+    +ASIGNABLES.map(function(a2){return '<option value="'+a2+'"'+(a2===(t.assigned_to||'')?' selected':'')+'>'+a2.split('@')[0]+'</option>';}).join('')
+    +'</select></div>'
+    +'<div class="fld"><label>Acción interna (qué vamos a hacer — no lo ve la usuaria)</label>'
+    +'<textarea class="edAc" placeholder="p. ej.: reproducir en 0.19, corregido en 0.21.0, pedir más datos…">'+esc(t.accion||'')+'</textarea></div>'
+    +(t.categoria==='bug'?'<div class="meta" style="margin-top:2px">🗂 Al marcarla <b>bug</b> entra sola en <a href="/hub/backlog-dev.html">Sprint Planning</a> con prioridad según la criticidad (FB1→P0 · FB2→P1 · FB3→P2). La release se asigna allí.</div>':'')
+    +'</div><div>'
+    +'<div class="fld"><label>Mensaje a la usuaria (lo verá en su app, con su ticket '+esc(t.ticket_no)+')</label>'
+    +'<textarea class="edRe" style="min-height:200px" placeholder="Escríbele como le hablarías por WhatsApp: qué pasó, qué hemos hecho, qué puede esperar.">'+esc(t.respuesta||'')+'</textarea></div>'
+    +(t.respuesta_enviada_at?'<div class="meta" style="margin-top:6px">✉️ Último mensaje enviado: '+fecha(t.respuesta_enviada_at)+'</div>':'')
+    +'</div></div>'
+    /* r16-F9 (regla Juanjo): UNA barra de acciones al final — se rellena todo
+       (izquierda + mensaje) y luego se elige qué hacer. Ningún botón pierde lo
+       escrito en el otro lado, y la ficha nunca desaparece de la vista. */
+    +'<div class="acts" style="border-top:1px dashed #EADFD0;margin-top:12px;padding-top:12px">'
+    +'<button class="pri" onclick="window.nsGuardar(\''+esc(t.id)+'\')">💾 Guardar incidencia</button>'
+    +'<button onclick="window.nsVerificado(\''+esc(t.id)+'\')" title="Lo he probado en el movil y funciona. Sella el ticket sin tener que escribirlo a mano.">✅ Verificado en dispositivo</button>'
+    +'<button onclick="window.nsResponder(\''+esc(t.id)+'\',true)">📨 Guardar y enviar mensaje a la usuaria</button>'
+    +(t.status!=='cerrado'?'<button onclick="window.nsCerrar(\''+esc(t.id)+'\',\''+esc(t.ticket_no)+'\')">✔ Cerrar incidencia</button>':'')
+    +'<span class="ok-chip edOk1"></span><span class="ok-chip edOk2"></span></div>';
+
+  h+='<div class="trail">'+(t.events||[]).map(function(e){
+    return '<div>'+(KINDS[e.kind]||'·')+' <span class="k">'+fecha(e.at)+' · '+esc(e.author.split('@')[0])+'</span> '
+      +esc(e.kind.replace(/_/g,' '))+(e.detail?' — '+esc(e.detail):'')+'</div>';}).join('')+'</div>';
+
+  return h+'</div></div>';
+}
+
+var ESTADOS=[['nuevo','🆕 Nuevas'],['en_curso','🔧 En curso'],['esperando_usuaria','⏳ Esperando a la usuaria'],
+  ['resuelto','✅ Resueltas'],['cerrado','🗄 Cerradas'],['duplicada','🔁 Duplicadas']];
+/* r17 (regla Juanjo, 10-ago): la página abre como DASHBOARD compacto — TODAS
+   las secciones plegadas (KPIs + contadores a la vista, cero scroll infinito).
+   Se despliega lo que se toca; buscar o filtrar por estado abre lo que casa. */
+var SEC={nuevo:true,en_curso:true,esperando_usuaria:true,resuelto:true,cerrado:true};
+window.nsSec=function(k){SEC[k]=!SEC[k];render();};
+window.nsQ=function(){render();};
+function hay(t,q){
+  if(!q)return true;
+  var pajar=[t.ticket_no,t.titulo,t.user_email,t.message,t.categoria,t.criticidad,
+    t.assigned_to,t.accion,t.respuesta,t.app_version,t.platform,t.cohort]
+    .map(function(v){return String(v==null?'':v);}).join(' ').toLowerCase();
+  return pajar.indexOf(q)>=0;
+}
+function render(){
+  var st=$('fSt').value, as=$('fAs').value, q=($('fQ').value||'').trim().toLowerCase();
+  var rows=filtrados();
+  /* cascada: un bloque por estado, con contador y plegado */
+  var html='';
+  ESTADOS.forEach(function(e){
+    var g=rows.filter(function(t){return t.status===e[0];});
+    if(!g.length)return;
+    var plegada=SEC[e[0]]&&!st&&!q;
+    html+='<div class="sec" onclick="window.nsSec(\''+e[0]+'\')">'
+      +'<span class="pill s-'+e[0]+'">'+e[1]+'</span><span class="n">'+g.length+'</span>'
+      +'<span class="chev">'+(plegada?'▸ desplegar':'▾')+'</span></div>';
+    if(!plegada) html+='<div class="gridhead"><span>Ticket</span><span>Crit.</span>'
+      +'<span>Título</span><span>Estado</span><span>Asignada</span><span></span></div>'
+      + g.map(ticket).join('');
+  });
+  $('lista').innerHTML=html||'<p class="meta">Nada con esos filtros.</p>';
+  nsPintaPruebas();
+  $('count').textContent=rows.length+' de '+(D.tickets||[]).length;
+  var k=window.NSINC.resumen(D.tickets||[],Date.now());
+  var r=D.resumen||{};
+  var media=(r.media_resolucion_h!=null)?Number(r.media_resolucion_h):k.media_h;
+  $('kpis').innerHTML=[
+    ['Tickets',k.total],['Abiertas',k.abiertas],
+    ['Abiertas <24 h',k.abiertas_lt24],
+    ['Abiertas >1 día hábil ⚠',k.abiertas_habil],
+    ['Para cerrar ✔',(D.tickets||[]).filter(paraCerrar).length],
+    ['Media resolución',media!=null?fmtDur(media):'—'],
+    ['FCR · cierre mismo día',k.fcr_pct!=null?k.fcr_pct+'%':'—']].map(function(x){
+    return '<div class="kpi"><div class="l">'+x[0]+'</div><div class="v">'+(x[1]==null?'—':x[1])+'</div></div>';}).join('');
+  var asigs=[];(D.tickets||[]).forEach(function(t){if(t.assigned_to&&asigs.indexOf(t.assigned_to)<0)asigs.push(t.assigned_to);});
+  $('fAs').innerHTML='<option value="">asignado a: todas</option>'+asigs.map(function(a){
+    return '<option value="'+esc(a)+'"'+(a===as?' selected':'')+'>'+esc(a.split('@')[0])+'</option>';}).join('');
+}
+
+/* Export CSV (Juanjo, 5-ago): lo que ves con los filtros es lo que te llevas.
+   BOM + punto y coma = doble clic y Excel en español lo abre en columnas. */
+function csvCell(v){return '"'+String(v==null?'':v).replace(/"/g,'""').replace(/\r?\n/g,' · ')+'"';}
+function filtrados(){
+  var st=$('fSt').value, as=$('fAs').value, q=($('fQ').value||'').trim().toLowerCase();
+  return (D&&D.tickets||[]).filter(function(t){
+    return (!st||t.status===st)&&(!as||t.assigned_to===as)&&hay(t,q);});
+}
+window.nsExport=function(){
+  var rows=filtrados();
+  if(!rows.length)return alert('Nada que exportar con esos filtros.');
+  var CAB=['ticket','titulo','categoria','criticidad','estado','asignado_a','fecha_feedback','usuaria','cohorte','version','plataforma',
+           'mensaje','accion_interna','respuesta','respuesta_enviada','ultima_actualizacion',
+           'resuelta_el','horas_hasta_resolver','escalada_el'];
+  var cuerpo=rows.map(function(t){return [t.ticket_no,t.titulo||'',t.categoria||'',t.criticidad||'',t.status,t.assigned_to||'',t.feedback_at||'',
+    t.user_email||'',t.cohort||'',t.app_version||'',t.platform||'',t.message||'',t.accion||'',
+    t.respuesta||'',t.respuesta_enviada_at||'',t.updated_at||'',
+    t.resolved_at||'',t.resolved_at?fmtDur(horasEntre(t.created_at,t.resolved_at)):'',
+    t.escalated_at||''].map(csvCell).join(';');});
+  var csv='\ufeff'+CAB.join(';')+'\n'+cuerpo.join('\n');
+  var d=new Date(),pad=function(n){return String(n).padStart(2,'0');};
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download='nutrisync-incidencias-'+pad(d.getDate())+pad(d.getMonth()+1)+'-'+pad(d.getHours())+pad(d.getMinutes())+'.csv';
+  a.click();URL.revokeObjectURL(a.href);
+};
+window.nsToggle=function(id){ABIERTOS[id]=!ABIERTOS[id];
+  var el=document.querySelector('.t[data-id="'+id+'"]');if(el)el.classList.toggle('open');};
+
+function tEl(id,cls){return document.querySelector('.t[data-id="'+id+'"] .'+cls);}
+
+/* r16-F11: el bucket feedback-shots es privado — cada prueba se pinta con una
+   URL firmada de 1 h (mismo patrón que 💬 Feedback). */
+function nsPintaPruebas(){
+  document.querySelectorAll('img.nsShot[data-shot]').forEach(function(img){
+    sb.storage.from('feedback-shots').createSignedUrl(img.dataset.shot,3600).then(function(r){
+      if(r.data&&r.data.signedUrl){img.src=r.data.signedUrl;img.removeAttribute('data-shot');}});
+  });
+  document.querySelectorAll('a.nsShotLog[data-shot]').forEach(function(a){
+    sb.storage.from('feedback-shots').createSignedUrl(a.dataset.shot,3600).then(function(r){
+      if(r.data&&r.data.signedUrl){a.href=r.data.signedUrl;a.removeAttribute('data-shot');}});
+  });
+}
+
+// r16-F6 (regla Juanjo): guardar un lado NUNCA borra el otro — cada botón
+// persiste AMBOS. El seguimiento arrastra el borrador de respuesta si cambió.
+/* r17 (10-ago): una prueba hecha con el telefono en la mano solo existia en
+   el chat hasta que alguien la escribia en el ticket. Ese alguien se olvida.
+   Un toque y queda sellada, con quien la hizo y cuando. */
+window.nsVerificado=function(id){
+  var nota=prompt('¿Algo que añadir? (opcional — se guarda en el timeline)','');
+  if(nota===null) return;                       // cancelar es una respuesta
+  sb.rpc('admin_ticket_verificado',{p_id:id,p_nota:nota||null}).then(function(r){
+    if(r.error){fail(r.error,'admin_ticket_verificado');return;}
+    var d=r.data||{};
+    snack(d.cerrado ? '✅ Verificado y CERRADO — lo reportaste tu, no hay respuesta pendiente'
+                    : '✅ Verificado y RESUELTO — falta escribirle a la usuaria');
+    cargar();
+  });
+};
+
+window.nsDupTog=function(sel){
+  var w=sel.closest('.th')||sel.parentElement.parentElement;
+  var box=w.querySelector('.edDupWrap');
+  if(box)box.style.display=(sel.value==='duplicada')?'':'none';
+};
+function nsLeftSave(id){
+  var st=tEl(id,'edSt').value;
+  var dupEl=tEl(id,'edDup');
+  var dup=(st==='duplicada'&&dupEl)?dupEl.value.trim().toUpperCase():null;
+  if(st==='duplicada'&&!dup){
+    snack('⚠ Para marcar duplicada, di de qué incidencia (NS-####)');
+    return Promise.reject(new Error('duplicada sin referencia'));
+  }
+  return sb.rpc('admin_ticket_update',{p_id:id,
+    p_status:st, p_assigned:tEl(id,'edAs').value||null,
+    p_accion:tEl(id,'edAc').value, p_comentario:null,
+    p_titulo:tEl(id,'edTi').value||null, p_categoria:tEl(id,'edCa').value||null,
+    p_criticidad:tEl(id,'edCr').value||null, p_fix_enviado:tEl(id,'edFx').value==='1',
+    p_duplicado_de:dup
+  });
+}
+/* r16-F9: tras guardar, la ficha SIGUE donde el ojo la dejó — se mantiene
+   abierta, se despliega su nueva sección (el estado puede haber cambiado) y
+   se hace scroll hasta ella. Nada de «ha desaparecido». */
+function nsRecargar(id){
+  ABIERTOS[id]=true;
+  cargar(false);
+  setTimeout(function(){
+    var el=document.querySelector('.t[data-id="'+id+'"]');
+    if(!el){var st=(D.tickets||[]).filter(function(x){return x.id===id;})[0];
+      if(st&&SEC[st.status]){SEC[st.status]=false;render();
+        el=document.querySelector('.t[data-id="'+id+'"]');}}
+    if(el){el.classList.add('open');el.scrollIntoView({block:'center',behavior:'smooth'});}
+  },450);
+}
+window.nsGuardar=function(id){
+  var chip=tEl(id,'edOk1');chip.textContent='guardando…';chip.style.color='#8A7F78';
+  nsLeftSave(id).then(function(r){
+    if(r.error||!(r.data&&r.data.ok)){chip.textContent='⚠ no guardado: '+((r.error&&r.error.message)||(r.data&&r.data.error)||'');chip.style.color='#C73A20';return;}
+    var re=tEl(id,'edRe'), draft=re&&re.value.trim();
+    if(!draft){chip.textContent='✓ guardada (sin enviar mensaje)';chip.style.color='#0F9B57';nsRecargar(id);return;}
+    sb.rpc('admin_ticket_respond',{p_id:id,p_respuesta:re.value.trim(),p_enviar:false}).then(function(r2){
+      if(r2.error||!(r2.data&&r2.data.ok)){chip.textContent='✓ incidencia OK · ⚠ mensaje NO: '+((r2.error&&r2.error.message)||(r2.data&&r2.data.error)||'');chip.style.color='#C73A20';return;}
+      chip.textContent='✓ guardada · mensaje guardado SIN enviar';chip.style.color='#0F9B57';nsRecargar(id);});
+  });
+};
+
+window.nsCerrar=function(id,no){
+  if(!confirm('Cerrar '+no+': se da por terminada. Si la acción interna está vacía, mejor rellénala antes — el porqué del cierre queda en el rastro. ¿Cerrar?'))return;
+  var chip=tEl(id,'edOk1');chip.textContent='cerrando…';chip.style.color='#8A7F78';
+  sb.rpc('admin_ticket_update',{p_id:id,p_status:'cerrado',p_assigned:null,
+    p_accion:tEl(id,'edAc').value||null,p_comentario:'incidencia cerrada'
+  }).then(function(r){
+    if(r.error||!(r.data&&r.data.ok)){chip.textContent='⚠ no cerrada: '+((r.error&&r.error.message)||(r.data&&r.data.error)||'');chip.style.color='#C73A20';return;}
+    chip.textContent='✔ cerrada — baja a la sección «cerrado»';chip.style.color='#475569';nsRecargar(id);});
+};
+window.nsResponder=function(id,enviar){
+  var chip=tEl(id,'edOk2'), txt=tEl(id,'edRe').value.trim();
+  if(!txt){chip.textContent='⚠ la respuesta está vacía';chip.style.color='#C73A20';return;}
+  if(enviar&&!confirm('La usuaria verá esta respuesta en su app, con el número de ticket. ¿Enviar?'))return;
+  chip.textContent=enviar?'enviando…':'guardando…';chip.style.color='#8A7F78';
+  // r16-F6: primero se persiste el lado izquierdo tal cual está en pantalla —
+  // responder jamás tira el seguimiento que tenías a medias.
+  nsLeftSave(id).then(function(ru){
+    if(ru.error||!(ru.data&&ru.data.ok)){chip.textContent='⚠ seguimiento no guardado (respuesta no enviada): '+((ru.error&&ru.error.message)||(ru.data&&ru.data.error)||'');chip.style.color='#C73A20';return;}
+    sb.rpc('admin_ticket_respond',{p_id:id,p_respuesta:txt,p_enviar:enviar}).then(function(r){
+      if(r.error||!(r.data&&r.data.ok)){chip.textContent='⚠ incidencia OK · mensaje NO: '+((r.error&&r.error.message)||(r.data&&r.data.error)||'');chip.style.color='#C73A20';return;}
+      chip.textContent=enviar?'📨 enviado a su app · la ficha pasa a «esperando a la usuaria» (abajo)':'✓ guardado todo (mensaje sin enviar)';chip.style.color=enviar?'#1D4ED8':'#0F9B57';
+      nsRecargar(id);});
+  });
+};
+
+function cargar(primera){
+  sb.auth.getSession().then(function(s){
+    if(!s.data.session){$('lista').innerHTML='<p class="meta">Inicia sesión admin desde el hub y recarga.</p>';return;}
+    sb.rpc('admin_tickets').then(function(r){
+      if(r.error)return fail(r.error,'admin_tickets');
+      D=r.data;render();});
+  });
+}
+var dl=document.createElement('datalist');dl.id='nsAsig';
+dl.innerHTML=ASIGNABLES.map(function(a){return '<option value="'+a+'">';}).join('');
+document.body.appendChild(dl);
+$('fSt').addEventListener('change',render);
+$('fAs').addEventListener('change',render);
+cargar(true);
+})();
+</script><script src="/hub/assets/page-help.js?v=e939f9f3"></script></body></html>

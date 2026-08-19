@@ -1,0 +1,603 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Release Plan — NutriSync Engineering</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.55}
+.w{max-width:1080px;margin:0 auto;padding:26px 20px 90px}
+h1{font-size:23px;margin:0 0 4px}
+p.lead{color:#6E655D;font-size:13.5px;margin:0 0 16px}
+.rel{background:#fff;border:1px solid #EFE3D7;border-radius:16px;margin:14px 0;overflow:hidden}
+.rh{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:14px 16px;cursor:pointer;background:#FFFBF5}
+.rh:hover{background:#FFF6EE}
+.ver{font-size:17px;font-weight:800}
+.nom{font-size:13px;color:#6E655D}
+.est{font-size:10.5px;font-weight:800;border-radius:999px;padding:3px 11px}
+.e-planificada{background:#F1F5F9;color:#475569}.e-en_construccion{background:#FFF3E0;color:#B4700F}
+.e-en_review{background:#E6F0FF;color:#1D4ED8}.e-en_tiendas{background:#E8F5EE;color:#0F6E56}.e-ga{background:#241D1A;color:#fff}
+.fechas{font-size:11.5px;color:#8A7F78;margin-left:auto}
+.rb{display:none;padding:6px 16px 16px;border-top:1px solid #F4EADF}
+.rel.open .rb{display:block}
+.spr{margin-top:12px}
+.sph{font-size:12px;font-weight:800;color:#8A7F78;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px dashed #EADFD0;padding-bottom:4px;margin-bottom:6px}
+.carril{margin:8px 0 2px;font-size:11.5px;font-weight:800;color:#6E655D}
+.it{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:5px 0;font-size:13px}
+.pr{font-size:10px;font-weight:900;border-radius:6px;padding:1px 7px}
+.P0{background:#C73A20;color:#fff}.P1{background:#FFB020;color:#5B3A00}.P2{background:#E7E2DC;color:#5F564F}.P3{background:#F4F0EA;color:#8A7F78}
+.ref{font-size:11px;color:#C73A20;font-weight:700}
+.hecho{color:#0F6E56;font-weight:800;font-size:11px}
+.notas{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+@media(max-width:760px){.notas{grid-template-columns:1fr}}
+.nota{background:#FBF6EF;border:1px solid #EFE3D7;border-radius:12px;padding:11px 13px}
+.nota h4{margin:0 0 6px;font-size:11.5px;color:#8A7F78;text-transform:uppercase;letter-spacing:.5px;display:flex;gap:8px;align-items:center}
+.nota .txt{font-size:12.5px;white-space:pre-wrap}
+.nota textarea{width:100%;box-sizing:border-box;min-height:110px;font-family:inherit;font-size:12.5px;border:1px solid #EFE3D7;border-radius:8px;padding:8px}
+button{font-family:inherit;font-weight:700;font-size:11.5px;border-radius:16px;padding:5px 12px;border:1px solid #EFE3D7;background:#fff;color:#241D1A;cursor:pointer}
+button:hover{border-color:#F3C8B8;background:#FFF6F2}
+select.mini{font-family:inherit;font-size:11px;padding:3px 6px;border:1px solid #EFE3D7;border-radius:8px;background:#fff}
+.err{background:#FFF1EC;border:2px solid #E8472A;border-radius:12px;padding:13px 15px;font-size:13px;color:#8A2A18;margin:14px 0}
+.hint{font-size:11.5px;color:#8A7F78}
+#snack{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#241D1A;color:#fff;
+  font-size:13px;padding:10px 18px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.25);
+  opacity:0;pointer-events:none;transition:opacity .25s;z-index:50;max-width:90vw}
+#snack.on{opacity:1}
+.sinrel{background:#FFF8EF;border:1px dashed #E8B072;border-radius:14px;padding:12px 15px;margin-top:16px}
+.entrega{font-size:11px;padding:2px 8px;border-radius:100px;white-space:nowrap;font-weight:600}
+.d-ota{background:#E8F4EC;color:#2C7A52}
+.d-nat{background:#FDEDE6;color:#B4441F}
+.d-web{background:#EDF0FA;color:#3E4E8C}
+.d-ga {background:#F6EFD9;color:#8A6A16}
+</style><script src="/hub/assets/entrega.js?v=c295c040"></script></head><body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+/* r16b: la pestaña activa por CLASE con !important — tercera red por si algo
+   pisa el estilo en línea. La pone markActive() y el mini-marcador del final. */
+#ns-hub-navbar .nsnb-tab.on{background:linear-gradient(135deg,#FF7600,#FD400C)!important;color:#fff!important;font-weight:800!important;border-color:#FD400C!important;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)!important}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+.nsnb-tab{cursor:grab}
+.nsnb-tab.nsnb-drag{opacity:.35;cursor:grabbing}
+#nsnb-reset{display:none}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Web de marketing / marketing site"
+     aria-label="Web de marketing" style="text-decoration:none">🏠</a>
+  <a class="nsnb-btn" href="https://admin.nutrisynccollective.com" title="StartUp Admin (contabilidad del build)"
+     aria-label="StartUp Admin" style="text-decoration:none">🛠</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Competitive" href="/hub/competitive.html">🥊 Competencia</a><a class="nsnb-tab nsnb-g1" data-en="Build Roadmap → Go Live" href="/hub/launch-plan.html">🚀 Build Roadmap → Go Live</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync Sprint Planning" href="/hub/backlog-dev.html">🗂 NutriSync Sprint Planning</a><a class="nsnb-tab nsnb-g4" data-en="Release Plan" href="/hub/release-plan.html">🚢 Releases</a><a class="nsnb-tab nsnb-g4" data-en="Compliance" href="/hub/compliance.html">🛡 Compliance</a><a class="nsnb-tab nsnb-g4" data-en="Ideation" href="/hub/roadmap.html">💡 Ideation</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g5" data-en="Documentation" href="/hub/documentation/index.html">📄 Documentación</a><a class="nsnb-tab nsnb-g5" data-en="ERP User Guide" href="/hub/user-guide.html">📖 Guía ERP</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14b (feedback Juanjo): idioma con CONMUTADOR visible y persistente.
+     localStorage ns_lang ('es'|'en') manda; sin él, el navegador decide.
+     Las páginas con data-i leen la misma clave — un idioma, todas las superficies. */
+  function nsLang(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pintaIdioma(){
+    var en=nsLang()==='en';
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      if(!a.getAttribute('data-es'))a.setAttribute('data-es',a.textContent.trim());
+      var em=a.getAttribute('data-es').split(' ')[0];
+      a.textContent=en?(em+' '+a.getAttribute('data-en')):a.getAttribute('data-es');});
+    var b=document.getElementById('nsnb-lang');if(b)b.textContent=en?'ES':'EN';
+  }
+  (function(){
+    var brand=document.querySelector('#ns-hub-navbar .nsnb-btn');
+    if(brand&&!document.getElementById('nsnb-lang')){
+      var b=document.createElement('a');b.id='nsnb-lang';b.className='nsnb-btn';b.href='#';
+      b.title='Cambiar idioma / switch language';
+      b.onclick=function(e){e.preventDefault();
+        try{localStorage.setItem('ns_lang',nsLang()==='en'?'es':'en');}catch(err){}
+        pintaIdioma();
+        document.dispatchEvent(new CustomEvent('ns-lang'));
+        if(typeof relayout==='function')relayout();
+        return false;};
+      brand.parentNode.insertBefore(b,brand);
+    }
+    pintaIdioma();
+    /* r14e: pintor data-i UNIVERSAL — cualquier página del hub con data-i="ES|EN"
+       (o data-i sin valor con "ES|EN" dentro) se vuelve bilingüe gratis. */
+    function pintaDataI(){
+      var en=nsLang()==='en';
+      document.querySelectorAll('[data-i]').forEach(function(n){
+        if(n.closest&&n.closest('#ns-hub-navbar'))return;
+        var src=n.getAttribute('data-i');
+        if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+        var p=src.split('|');
+        n.innerHTML=en?(p[1]||p[0]):p[0];});
+    }
+    document.addEventListener('ns-lang',pintaDataI);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',pintaDataI);
+    else pintaDataI();
+  })();
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  /* r16c (cazado POR JUANJO con el flash del clic): Cloudflare Pages sirve
+     URLs LIMPIAS — /hub/incidents.html se visita como /hub/incidents — así
+     que comparar con ".html" no casaba JAMÁS en carga de página. Se normaliza
+     quitando la extensión en LOS DOS lados. */
+  function nsLimpia(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';}
+  var here=nsLimpia(location.pathname.split('/').pop());
+  var dir=location.pathname.toLowerCase();
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : nsLimpia(f.split('/').pop())===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  /* r16: la marca se queda mientras estés en la página — se repinta al volver
+     del historial (bfcache), al recuperar el foco y al cambiar de pestaña del
+     navegador. Nada la apaga salvo navegar a otra página del hub. */
+  window.addEventListener('pageshow',function(){markActive();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)markActive();});
+  window.addEventListener('focus',function(){markActive();});
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  /* r14e (idea Juanjo): pestañas ARRASTRABLES — cada cual su orden, guardado
+     en este navegador (ns_tab_order). ↺ vuelve al orden de fábrica. */
+  (function(){
+    var KEY='ns_tab_order';
+    function filas(){return [document.getElementById('nsnb-r1'),document.getElementById('nsnb-r2')].filter(Boolean);}
+    function todas(){var t=[];filas().forEach(function(r){t=t.concat([].slice.call(r.querySelectorAll('.nsnb-tab')));});return t;}
+    var ORIG=todas().map(function(a){return a.getAttribute('href');});
+    function guardar(){try{localStorage.setItem(KEY,JSON.stringify(todas().map(function(a){return a.getAttribute('href');})));}catch(e){}
+      var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';}
+    function aplicar(orden){
+      var r1=document.getElementById('nsnb-r1');if(!r1)return;
+      var por={};todas().forEach(function(a){por[a.getAttribute('href')]=a;});
+      orden.forEach(function(h){if(por[h])r1.appendChild(por[h]);});
+      todas().forEach(function(a){if(orden.indexOf(a.getAttribute('href'))<0)r1.appendChild(a);});
+    }
+    try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&sv.length){aplicar(sv);
+      setTimeout(function(){var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';},0);}}catch(e){}
+    var drag=null;
+    todas().forEach(function(a){
+      a.setAttribute('draggable','true');
+      a.title=(a.title?a.title+' · ':'')+'Arrastra para reordenar / drag to reorder';
+      a.addEventListener('dragstart',function(e){drag=a;a.classList.add('nsnb-drag');
+        try{e.dataTransfer.setData('text/plain',a.getAttribute('href'));e.dataTransfer.effectAllowed='move';}catch(err){}});
+      a.addEventListener('dragend',function(){if(drag)drag.classList.remove('nsnb-drag');drag=null;});
+      a.addEventListener('dragover',function(e){e.preventDefault();if(!drag||drag===a)return;
+        var r=a.getBoundingClientRect(),antes=(e.clientX-r.left)<r.width/2;
+        a.parentNode.insertBefore(drag,antes?a:a.nextSibling);});
+      a.addEventListener('drop',function(e){e.preventDefault();guardar();relayout();});
+    });
+    filas().forEach(function(r){r.addEventListener('dragover',function(e){e.preventDefault();});
+      r.addEventListener('drop',function(e){e.preventDefault();if(drag){guardar();relayout();}});});
+    var brand=document.getElementById('nsnb-lang');
+    if(brand&&!document.getElementById('nsnb-reset')){
+      var rb=document.createElement('a');rb.id='nsnb-reset';rb.className='nsnb-btn';rb.href='#';rb.textContent='↺';
+      rb.title='Orden de pestañas original / reset tab order';
+      rb.onclick=function(e){e.preventDefault();try{localStorage.removeItem(KEY);}catch(err){}
+        aplicar(ORIG);rb.style.display='none';relayout();return false;};
+      brand.parentNode.insertBefore(rb,brand);
+    }
+  })();
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+<script>
+/* r16b · MINI-MARCADOR independiente de pestaña activa. Deliberadamente
+   separado y mínimo: si el script grande de la barra muere por lo que sea,
+   ESTE pinta igual. Solo compara el fichero de la URL con el href y pone la
+   clase .on (el CSS !important hace el resto). Se repite unos segundos por si
+   el reordenado o el motor mueven pestañas tarde. */
+(function(){
+  function marca(){
+    try{
+      /* r16c: Pages sirve URLs sin .html — normalizar ambos lados */
+      var lim=function(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';};
+      var here=lim(location.pathname.split('/').pop());
+      var esDoc=location.pathname.toLowerCase().indexOf('/documentation/')>-1;
+      document.querySelectorAll('#ns-hub-navbar .nsnb-tab').forEach(function(a){
+        var f=(a.getAttribute('href')||'').toLowerCase();
+        var on=esDoc ? f.indexOf('/documentation/')>-1 : lim(f.split('/').pop())===here;
+        a.classList.toggle('on',on);
+      });
+    }catch(e){}
+  }
+  marca();
+  var i=0,t=setInterval(function(){marca();if(++i>15)clearInterval(t);},700);
+  window.addEventListener('pageshow',marca);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar --><div class="w">
+
+<h1>🚢 Release Plan</h1>
+<p class="lead" data-i="Qué va en cada build: Release → Sprint → carriles (🐞 fixes con su ticket · 🔧 mejoras del feedback · 🚀 nuevas capacidades con su referencia).|What ships in each build: Release → Sprint → lanes (🐞 fixes with their ticket · 🔧 feedback improvements · 🚀 new capabilities with their reference).">Qué va en cada build: Release → Sprint → carriles (🐞 fixes con su ticket · 🔧 mejoras del feedback · 🚀 nuevas capacidades con su referencia).
+Las <b>release notes ES/EN</b> de cada versión viven aquí — las tiendas copian de esta fuente. El detalle diario está en
+<a href="/hub/backlog-dev.html">🗂 Backlog</a>; los tickets en <a href="/hub/incidents.html">🎫 Incidencias</a>.</p>
+
+<div id="err"></div>
+<div class="filtros" style="display:flex;gap:10px;align-items:center;margin:0 0 12px">
+  <input id="rpQ" type="search" placeholder="🔍 buscar: título, nº de ticket, release, prioridad…" oninput="window.rpQbuscar()"
+         style="flex:1;min-width:200px;padding:8px 10px;border:1px solid #EADFD0;border-radius:10px;font:inherit">
+  <button onclick="window.rpTodas(true)" title="Desplegar todas">▾ todas</button>
+  <button onclick="window.rpTodas(false)" title="Plegar todas">▸ ninguna</button>
+</div>
+<div class="filtros" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 16px">
+  <span style="font-size:13px;color:#8A7F76">Crear release:</span>
+  <input id="rpVer" placeholder="0.23.0" size="8"
+         style="padding:8px 10px;border:1px solid #EADFD0;border-radius:10px;font:inherit;width:96px">
+  <input id="rpNom" placeholder="nombre (opcional)" size="18"
+         style="padding:8px 10px;border:1px solid #EADFD0;border-radius:10px;font:inherit;flex:1 1 200px;min-width:150px">
+  <input id="rpFec" type="date" title="fecha objetivo (opcional)"
+         style="padding:7px 9px;border:1px solid #EADFD0;border-radius:10px;font:inherit">
+  <button class="pri" onclick="window.rpNueva()" title="Crear la ficha de esta release">＋ Nueva release</button>
+</div>
+
+<div id="plan">Cargando…</div>
+<div id="snack"></div>
+
+</div>
+<script src="/assets/vendor/supabase.js"></script>
+<script>
+(function(){
+'use strict';
+var sb=window.supabase.createClient('https://nebkqncvapelrarruyqb.supabase.co',
+  'sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau');
+var $=function(i){return document.getElementById(i);};
+var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+var REL=[],ITEMS=[],ABIERTAS={},SNT=null;
+/* r17-g (11-ago): el ORDEN también se deduce. Aquí había una lista de versiones
+   escrita a mano — la TERCERA definición de las releases en esta página — y una
+   release nueva simplemente no se ordenaba: caía al final sin que nadie supiera
+   por qué. Ahora la clave de orden sale del propio número:
+     WEB primero  (el carril continuo, siempre vivo)
+     luego por fecha objetivo, y a igualdad por número de versión
+     GA al final  (es el destino, no una release más)
+   Crear una release vuelve a ser UNA acción, no «editar tres listas». */
+function claveOrden(r){
+  var v=String(r.version||'');
+  if(v==='WEB') return [0,'','' ];
+  if(v==='GA')  return [2,'',''];
+  var m=v.match(/^(\d+)\.(\d+)\.(\d+)$/);
+  var num=m?(+m[1]*1e6 + +m[2]*1e3 + +m[3]):9e8;   // sin numero → al final del grupo
+  return [1, r.fecha_objetivo||'9999-12-31', String(num).padStart(9,'0')];
+}
+function comparaRelease(a,b){
+  var A=claveOrden(a),B=claveOrden(b);
+  for(var i=0;i<A.length;i++){ if(A[i]<B[i])return -1; if(A[i]>B[i])return 1; }
+  return 0;
+}
+/* r17 (petición Juanjo, 10-ago): la página se lee por SECCIONES, no como una
+   lista plana de releases. Tres momentos del ciclo de vida, cada uno plegable
+   con su contador: lo que se está construyendo, lo que espera revisión y lo
+   que ya está fuera. Una release solo puede estar en una. */
+var SECCIONES=[
+  ['trabajo',  '🔨 En construcción',  ['planificada','en_construccion']],
+  ['revision', '🧪 En revisión',      ['en_review']],
+  ['fuera',    '✅ Publicadas',       ['en_tiendas','ga']]
+];
+var SECABIERTA={};   // plegadas por defecto (dashboard)
+window.rpSec=function(k){SECABIERTA[k]=!SECABIERTA[k];render();};
+
+var SINREL_ABIERTO=false;  // r17: la pagina abre como DASHBOARD (todo plegado)
+var Q='';                  // texto de busqueda; si hay, se abre lo que casa
+/* r17 (regla Juanjo, 10-ago): mismo patron que Incidencias — se entra y se ven
+   los titulares (releases, contadores, pendientes), no 200 lineas de items. */
+function rpHay(b){
+  if(!Q)return true;
+  return [b.titulo,b.ticket_no,b.release,b.prioridad,b.tipo,b.sprint,b.estado,b.origen]
+    .map(function(v){return String(v==null?'':v);}).join(' ').toLowerCase().indexOf(Q)>=0;
+}
+window.rpQbuscar=function(){Q=(document.getElementById('rpQ').value||'').trim().toLowerCase();render();};
+window.rpTodas=function(abrir){
+  REL.forEach(function(r){ABIERTAS[r.version]=abrir;});
+  SECCIONES.forEach(function(sec){SECABIERTA[sec[0]]=abrir;});
+  SINREL_ABIERTO=abrir;render();};
+var SPRINTS={S11:'Sprint 11 · 3–7 ago',S12:'Sprint 12 · 10–14 ago',S13:'Sprint 13 · 17–21 ago',
+  S14:'Sprint 14 · 24–28 ago',S15:'Sprint 15 · 31 ago–4 sep',S16:'Sprint 16 · 7–11 sep',GA:'Tramo GA',backlog:'Sin sprint'};
+var ESTADOS=['planificada','en_construccion','en_review','en_tiendas','ga'];
+
+/* Cómo se entrega una release, leído de su propio número (regla Juanjo, 10-ago):
+   la TERCERA cifra lo dice todo. La función VIVÍA AQUÍ y 🗂 Sprint Planning
+   preguntaba lo mismo con un desplegable manual — dos verdades para el mismo
+   dato. Desde el 11-ago vive en /hub/assets/entrega.js y la usan las dos.
+   Aquí una release siempre tiene número, así que «sin release» no se pinta. */
+function comoSeEntrega(v){
+  if(!window.NSEntrega) return null;   // sin el asset, mejor sin insignia que sin página (r12-b9)
+  var d = window.NSEntrega.como(v);
+  return (d.cls==='d-none'||d.cls==='d-raro') ? null : d;
+}
+/* Mover un item de release: MISMO desplegable que en 🗂 Sprint Planning,
+   agrupado por vehículo (sin decidir · 🌐 Web · 🔄 OTA · 📦 Nativa). Antes cada
+   página se armaba su lista a mano y no coincidían. */
+function opcionesRelease(actual){
+  if(!window.NSEntrega)
+    return REL.map(function(r){return '<option'+(r.version===actual?' selected':'')+'>'+esc(r.version)+'</option>';}).join('');
+  return window.NSEntrega.opciones(REL, actual);
+}
+
+function snack(m){var el=$('snack');el.textContent=m;el.classList.add('on');
+  clearTimeout(SNT);SNT=setTimeout(function(){el.classList.remove('on');},3600);}
+function fail(e,fn){$('plan').innerHTML='';
+  $('err').innerHTML='<div class="err"><b>⚠️ Falta SQL</b> — <code>'+esc(fn)+'</code>: <i>'+esc(String(e&&e.message||e)).slice(0,150)
+  +'</i><br>Ejecuta <b>backend-sql/2026-08-07-release-plan.sql</b> y recarga.</div>';}
+
+function carril(items,titulo,filtro){
+  var g=items.filter(filtro).filter(rpHay);
+  if(!g.length)return '';
+  return '<div class="carril">'+titulo+'</div>'+g.map(function(b){
+    return '<div class="it"><span class="pr '+esc(b.prioridad)+'">'+esc(b.prioridad)+'</span>'
+      +(b.estado==='hecho'?'<span class="hecho">✓</span>':'')
+      +'<span'+(b.estado==='hecho'?' style="color:#8A7F78"':'')+'>'+esc(b.titulo)+'</span>'
+      +(b.ticket_no?'<span class="ref">'+esc(b.ticket_no)+'</span>':'')
+      +(b.origen&&!b.ticket_no?'<span class="hint">'+esc(b.origen)+'</span>':'')
+      +'<select class="mini" title="mover de release" onchange="window.rpMove(\''+b.id+'\',this.value)">'
+      +opcionesRelease(b.release)
+      +'</select></div>';}).join('');
+}
+function relCard(r){
+  var items=ITEMS.filter(function(b){return b.release===r.version;});
+  var casan=items.filter(rpHay);
+  if(Q&&!casan.length)return '';                       // buscando: solo lo que casa
+  var abierta=Q?true:(ABIERTAS[r.version]===true);     // r17: plegada por defecto
+  var sprints=[];
+  Object.keys(SPRINTS).forEach(function(sp){
+    var g=items.filter(function(b){return b.sprint===sp;});
+    if(!g.length)return;
+    sprints.push('<div class="spr"><div class="sph">'+SPRINTS[sp]+'</div>'
+      +carril(g,'🐞 Incidencias / fixes',function(b){return b.tipo==='fix';})
+      +carril(g,'🔧 Mejoras (feedback)',function(b){return b.tipo==='mejora';})
+      +carril(g,'🚀 Nuevas capacidades',function(b){return b.tipo==='feature'||b.tipo==='capability';})
+      +'</div>');
+  });
+  return '<div class="rel'+(abierta?' open':'')+'" data-v="'+esc(r.version)+'">'
+    +'<div class="rh" onclick="window.rpTog(\''+esc(r.version)+'\')">'
+    +'<span class="ver">'+esc(r.version)+'</span>'
+    +(function(d){return d?'<span class="entrega '+d.cls+'" title="La tercera cifra manda: 0.N.x = parche por OTA · 0.N.0 = build nativo">'+d.ico+' '+d.txt+'</span>':'';})(comoSeEntrega(r.version))
+    +'<span class="nom">'+esc(r.nombre||'')+'</span>'
+    +'<select class="mini est e-'+esc(r.estado)+'" onclick="event.stopPropagation()" onchange="window.rpEstado(\''+esc(r.version)+'\',this.value)">'
+    +ESTADOS.map(function(x){return '<option value="'+x+'"'+(x===r.estado?' selected':'')+'>'+x.replace(/_/g,' ')+'</option>';}).join('')+'</select>'
+    +'<span class="fechas">'+(r.fecha_objetivo?'obj '+esc(r.fecha_objetivo):'')+(r.fecha_real?' · real '+esc(r.fecha_real):'')+' · '+items.length+' items'+(abierta?'':' · ▸ desplegar')+'</span></div>'
+    +'<div class="rb">'+(sprints.join('')||'<p class="hint">Sin items asignados aún — asígnalos desde 🗂 Backlog o aquí abajo.</p>')
+    +'<div class="notas">'
+    +'<div class="nota"><h4>📝 Notas ES <button onclick="window.rpCopy(\''+esc(r.version)+'\',\'es\')">📋 copiar</button><button onclick="window.rpEdit(\''+esc(r.version)+'\',\'es\')">✏️</button></h4>'
+    +'<div class="txt" id="nes-'+esc(r.version)+'">'+esc(r.notas_es||'— sin notas aún —')+'</div></div>'
+    +'<div class="nota"><h4>📝 Notes EN <button onclick="window.rpCopy(\''+esc(r.version)+'\',\'en\')">📋 copy</button><button onclick="window.rpEdit(\''+esc(r.version)+'\',\'en\')">✏️</button></h4>'
+    +'<div class="txt" id="nen-'+esc(r.version)+'">'+esc(r.notas_en||'— no notes yet —')+'</div></div>'
+    +'</div></div></div>';
+}
+
+function render(){
+  REL.sort(comparaRelease);
+
+  /* Guardarraíl (filosofía nsFail): un item asignado a una version SIN ficha de
+     release no aparece en ninguna tarjeta — se quedaría invisible para siempre.
+     Aquí se ve, con su nombre y su remedio. */
+  var conFicha={}; REL.forEach(function(r){conFicha[r.version]=true;});
+  var huerfanos=ITEMS.filter(function(b){
+    return b.release && b.release!=='—' && !conFicha[b.release];});
+  var avisoH='';
+  if(huerfanos.length){
+    var vers={}; huerfanos.forEach(function(b){vers[b.release]=(vers[b.release]||0)+1;});
+    avisoH='<div class="err" style="margin-bottom:12px"><b>⚠️ '+huerfanos.length
+      +' item(s) asignados a una release que no existe</b> — '
+      +Object.keys(vers).map(function(v){return '<b>'+esc(v)+'</b>: '+vers[v];}).join(' · ')
+      +'.<br>No salen en ninguna tarjeta de abajo. Crea la ficha de esa release '
+      +'(tabla <code>releases</code>) o reasigna los items desde 🗂 Sprint Planning.<br>'
+      +huerfanos.map(function(b){return '· <b>'+esc(b.prioridad||'')+'</b> '+esc(b.titulo)
+        +(b.ticket_no?' <span class="ref">'+esc(b.ticket_no)+'</span>':'');}).join('<br>')
+      +'</div>';
+  }
+
+  var html='';
+  SECCIONES.forEach(function(sec){
+    var grupo=REL.filter(function(r){return sec[2].indexOf(r.estado)>=0;});
+    if(!grupo.length)return;
+    var tarjetas=grupo.map(relCard).join('');
+    if(Q&&!tarjetas)return;                       // buscando: secciones vacías fuera
+    var abierta=Q?true:(SECABIERTA[sec[0]]===true);
+    var nItems=grupo.reduce(function(n,r){
+      return n+ITEMS.filter(function(b){return b.release===r.version;}).length;},0);
+    html+='<div class="sec" style="display:flex;align-items:center;gap:10px;margin:20px 0 8px;'
+      +'padding:10px 14px;background:#FBF6EF;border:1px solid #EFE3D7;border-radius:12px;cursor:pointer" '
+      +'onclick="window.rpSec(\''+sec[0]+'\')">'
+      +'<b style="font-size:14px">'+sec[1]+'</b>'
+      +'<span style="margin-left:auto;color:#8A7F78;font-size:12px">'
+      +grupo.length+' release(s) · '+nItems+' items · '+(abierta?'▾ plegar':'▸ desplegar')+'</span></div>'
+      +(abierta?tarjetas:'');
+  });
+  html=avisoH+html;
+  /* r16-F14 (regla Juanjo): lo que ESPERA decisión va PRIMERO — asignar release
+     es la acción pendiente; las releases ya montadas son consulta. Ordenado por
+     prioridad (P0 arriba) para que la decisión sea obvia. */
+  var sueltos=ITEMS.filter(function(b){return b.release==='—'&&b.estado!=='hecho'&&rpHay(b);})
+    .sort(function(a,b){return String(a.prioridad||'P9').localeCompare(String(b.prioridad||'P9'));});
+  var cab='';
+  if(sueltos.length){
+    var pendAbierto=Q?true:SINREL_ABIERTO;
+    cab='<div class="sinrel'+(pendAbierto?' open':'')+'" id="sinrel">'
+      +'<b style="cursor:pointer" onclick="window.rpSinrel()">📥 Pendientes de asignar release · '+sueltos.length
+      +' <span style="font-weight:400;color:#8A7F78">'+(pendAbierto?'▾ plegar':'▸ desplegar')+'</span></b>'
+      +'<div class="sinrelb" style="display:'+(pendAbierto?'block':'none')+'">'
+      +'<div class="hint" style="margin:2px 0 8px">Elige en qué build entra cada una. Al asignarla, sale de aquí y aparece en su release.</div>'
+      +sueltos.map(function(b){return '<div class="it"><span class="pr '+esc(b.prioridad)+'">'+esc(b.prioridad)+'</span>'
+        +esc(b.titulo)
+        +(b.ticket_no?' <a href="/hub/incidents.html" class="hint" title="Ver la incidencia con su prueba">'+esc(b.ticket_no)+' 📎</a>':'')
+        +'<select class="mini" onchange="window.rpMove(\''+b.id+'\',this.value)">'
+        /* r17-g (11-ago): aquí quedaba `RELS_ASIGNABLES`, la lista de releases
+           escrita a mano en el HTML. Al pasarla a leerse de la BD actualicé el
+           sitio de arriba y me dejé ESTE: la constante ya no existía →
+           ReferenceError dentro de la cadena de promesas → «Cargando…» eterno.
+           Y al arreglarlo lo dejé llamando a una lista PROPIA, distinta de la
+           de 🗂 — que es justo lo que Juanjo vio: «las releases a asignar son
+           diferentes de las del sprint planning». Una sola definición. */
+        +opcionesRelease(b.release)
+        +'</select></div>';}).join('')+'</div></div>';
+  }
+  $('plan').innerHTML=cab+html;
+}
+window.rpSinrel=function(){SINREL_ABIERTO=!SINREL_ABIERTO;render();};
+
+/* r17 (regla Juanjo, 10-ago): las releases se crean AQUÍ, no por SQL. Hasta
+   hoy la página ofrecía asignar 0.23.0 pero nadie había creado su ficha, y los
+   items caían en el limbo (los cazó el aviso de huérfanos). */
+window.rpNueva=async function(){
+  var v=(document.getElementById('rpVer').value||'').trim();
+  if(!/^\d+\.\d+\.\d+$|^GA$/.test(v)){
+    alert('La versión va como 0.23.0 (tres números) o GA.');return;}
+  if(REL.some(function(r){return r.version===v;})){
+    alert('La release '+v+' ya existe.');return;}
+  var nom=(document.getElementById('rpNom').value||'').trim();
+  var fec=document.getElementById('rpFec').value||null;
+  var r=await sb.rpc('admin_release_upsert',{p:{version:v,nombre:nom||null,
+        estado:'planificada',fecha_objetivo:fec}});
+  if(r.error){fail(r.error,'admin_release_upsert');return;}
+  document.getElementById('rpVer').value='';document.getElementById('rpNom').value='';
+  await cargar();                       // recarga el tablero con la ficha nueva
+  ABIERTAS[v]=true;render();
+};
+window.rpTog=function(v){var el=document.querySelector('.rel[data-v="'+v+'"]');
+  ABIERTAS[v]=!el.classList.contains('open');el.classList.toggle('open');};
+window.rpMove=function(id,rel){
+  sb.rpc('admin_backlog_upsert',{p:{id:id,release:rel}}).then(function(r){
+    if(r.error||!(r.data&&r.data.ok))return snack('⚠ No movido: '+((r.error&&r.error.message)||'error'));
+    snack('✓ Item → release '+rel);cargar();});
+};
+window.rpEstado=function(v,est){
+  sb.rpc('admin_release_upsert',{p:{version:v,estado:est}}).then(function(r){
+    if(r.error||!(r.data&&r.data.ok))return snack('⚠ No guardado');
+    snack('✓ '+v+' → '+est.replace(/_/g,' '));cargar();});
+};
+window.rpCopy=function(v,lang){
+  var el=$( (lang==='es'?'nes-':'nen-')+v );
+  navigator.clipboard.writeText(el.textContent).then(function(){snack('📋 Notas '+lang.toUpperCase()+' de '+v+' copiadas — listas para la tienda');});
+};
+window.rpEdit=function(v,lang){
+  var el=$((lang==='es'?'nes-':'nen-')+v);
+  if(el.querySelector('textarea'))return;
+  var cur=el.textContent.indexOf('— sin')===0||el.textContent.indexOf('— no')===0?'':el.textContent;
+  el.innerHTML='<textarea id="ta-'+v+'-'+lang+'">'+esc(cur)+'</textarea><div style="margin-top:6px"><button onclick="window.rpSave(\''+v+'\',\''+lang+'\')">💾 Guardar</button></div>';
+};
+window.rpSave=function(v,lang){
+  var txt=$('ta-'+v+'-'+lang).value;
+  var p={version:v};p[lang==='es'?'notas_es':'notas_en']=txt;
+  sb.rpc('admin_release_upsert',{p:p}).then(function(r){
+    if(r.error||!(r.data&&r.data.ok))return snack('⚠ No guardado');
+    snack('✓ Notas '+lang.toUpperCase()+' de '+v+' guardadas');cargar();});
+};
+function cargar(){
+  return sb.auth.getSession().then(function(s){
+    if(!s.data.session){$('plan').innerHTML='<p class="hint">Inicia sesión admin desde el hub y recarga.</p>';return;}
+    return Promise.all([sb.rpc('admin_releases_list'),sb.rpc('admin_backlog_list')]).then(function(rs){
+      if(rs[0].error)return fail(rs[0].error,'admin_releases_list');
+      if(rs[1].error)return fail(rs[1].error,'admin_backlog_list');
+      REL=rs[0].data||[];ITEMS=(rs[1].data&&rs[1].data.items)||[];render();});
+  });
+}
+/* r17-g (11-ago): NINGUNA página se queda en «Cargando…» sin decir por qué.
+   Un fallo dentro de la cadena de promesas —un ReferenceError al pintar, por
+   ejemplo— rechaza la promesa y ahí acaba todo: sin error en pantalla, sin
+   nada. El usuario ve un tab que «no abre» y no hay forma de saber más sin la
+   consola. Esto convierte el silencio en un banner con el mensaje real.
+   Es la regla r12-b9 (nsFail) aplicada al fallo de JS, no solo al de SQL. */
+cargar().catch(function(e){
+  $('plan').innerHTML='';
+  $('err').innerHTML='<div class="err"><b>⚠️ La página no pudo pintarse</b> — '
+    +'<i>'+esc(String(e&&e.message||e)).slice(0,200)+'</i><br>'
+    +'Esto es un fallo de código, no de datos. Pásale este mensaje a ingeniería '
+    +'con el nombre de la página (<code>release-plan.html</code>).</div>';
+});
+})();
+</script><script src="/hub/assets/page-help.js?v=e939f9f3"></script></body></html>

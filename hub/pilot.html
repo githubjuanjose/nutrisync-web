@@ -50,10 +50,23 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
 #ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
 #ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
 #ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+/* r16b: la pestaña activa por CLASE con !important — tercera red por si algo
+   pisa el estilo en línea. La pone markActive() y el mini-marcador del final. */
+#ns-hub-navbar .nsnb-tab.on{background:linear-gradient(135deg,#FF7600,#FD400C)!important;color:#fff!important;font-weight:800!important;border-color:#FD400C!important;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)!important}
 #ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
 #ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
 @media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
 @media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+.nsnb-tab{cursor:grab}
+.nsnb-tab.nsnb-drag{opacity:.35;cursor:grabbing}
+#nsnb-reset{display:none}
 </style>
 <div class="nsnb-app">
   <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
@@ -65,27 +78,16 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
   <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
   <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
   <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Web de marketing / marketing site"
+     aria-label="Web de marketing" style="text-decoration:none">🏠</a>
+  <a class="nsnb-btn" href="https://admin.nutrisynccollective.com" title="StartUp Admin (contabilidad del build)"
+     aria-label="StartUp Admin" style="text-decoration:none">🛠</a>
 </div>
 <div class="nsnb-strip">
   <nav class="nsnb-tabs" id="nsnb-tabs">
-    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a>
-      <a class="nsnb-tab" href="/hub/daily-ops.html">📋 Operación</a>
-      <a class="nsnb-tab" href="/hub/admin-mis-console.html">📊 MIS</a>
-      <a class="nsnb-tab" href="/hub/finance.html">💶 Finanzas</a>
-      <a class="nsnb-tab" href="/hub/pilot.html">🧪 Piloto</a>
-      <a class="nsnb-tab" href="/hub/pilot-planning.html">🗓 Plan piloto</a>
-      <a class="nsnb-tab" href="/hub/pilot-observability.html">📡 Obs. piloto</a>
-      <a class="nsnb-tab" href="/hub/feedback.html">💬 Feedback</a>
-      <a class="nsnb-tab" href="/hub/waitlist.html">📬 Waitlist</a>
-      <a class="nsnb-tab" href="/hub/documentation/index.html">📚 Docs</a>
-    <a class="nsnb-tab" href="/hub/translations.html">🌍 Traducciones</a>
-      <a class="nsnb-tab" href="/hub/review.html">🔎 Review</a>
-      <a class="nsnb-tab" href="/hub/prototypes.html">🧩 Prototipos</a>
-      <a class="nsnb-tab" href="/hub/development-planning-backlog.html">🗂 Backlog</a>
-      <a class="nsnb-tab" href="/hub/investors-business-case.html">🎯 Pitch</a>
-      <a class="nsnb-tab" href="/hub/access.html">🔑 Access</a>
-      <a class="nsnb-tab" href="/hub/mfa.html">🔐 MFA</a>
-    </div>
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Competitive" href="/hub/competitive.html">🥊 Competencia</a><a class="nsnb-tab nsnb-g1" data-en="Build Roadmap → Go Live" href="/hub/launch-plan.html">🚀 Build Roadmap → Go Live</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync Sprint Planning" href="/hub/backlog-dev.html">🗂 NutriSync Sprint Planning</a><a class="nsnb-tab nsnb-g4" data-en="Release Plan" href="/hub/release-plan.html">🚢 Releases</a><a class="nsnb-tab nsnb-g4" data-en="Compliance" href="/hub/compliance.html">🛡 Compliance</a><a class="nsnb-tab nsnb-g4" data-en="Ideation" href="/hub/roadmap.html">💡 Ideation</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g5" data-en="Documentation" href="/hub/documentation/index.html">📄 Documentación</a><a class="nsnb-tab nsnb-g5" data-en="ERP User Guide" href="/hub/user-guide.html">📖 Guía ERP</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
     <div class="nsnb-row" id="nsnb-r2"></div>
   </nav>
 </div>
@@ -94,6 +96,48 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
   /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
      toda la navegación de la barra toma la ventana superior — adiós bucles */
   document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14b (feedback Juanjo): idioma con CONMUTADOR visible y persistente.
+     localStorage ns_lang ('es'|'en') manda; sin él, el navegador decide.
+     Las páginas con data-i leen la misma clave — un idioma, todas las superficies. */
+  function nsLang(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pintaIdioma(){
+    var en=nsLang()==='en';
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      if(!a.getAttribute('data-es'))a.setAttribute('data-es',a.textContent.trim());
+      var em=a.getAttribute('data-es').split(' ')[0];
+      a.textContent=en?(em+' '+a.getAttribute('data-en')):a.getAttribute('data-es');});
+    var b=document.getElementById('nsnb-lang');if(b)b.textContent=en?'ES':'EN';
+  }
+  (function(){
+    var brand=document.querySelector('#ns-hub-navbar .nsnb-btn');
+    if(brand&&!document.getElementById('nsnb-lang')){
+      var b=document.createElement('a');b.id='nsnb-lang';b.className='nsnb-btn';b.href='#';
+      b.title='Cambiar idioma / switch language';
+      b.onclick=function(e){e.preventDefault();
+        try{localStorage.setItem('ns_lang',nsLang()==='en'?'es':'en');}catch(err){}
+        pintaIdioma();
+        document.dispatchEvent(new CustomEvent('ns-lang'));
+        if(typeof relayout==='function')relayout();
+        return false;};
+      brand.parentNode.insertBefore(b,brand);
+    }
+    pintaIdioma();
+    /* r14e: pintor data-i UNIVERSAL — cualquier página del hub con data-i="ES|EN"
+       (o data-i sin valor con "ES|EN" dentro) se vuelve bilingüe gratis. */
+    function pintaDataI(){
+      var en=nsLang()==='en';
+      document.querySelectorAll('[data-i]').forEach(function(n){
+        if(n.closest&&n.closest('#ns-hub-navbar'))return;
+        var src=n.getAttribute('data-i');
+        if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+        var p=src.split('|');
+        n.innerHTML=en?(p[1]||p[0]):p[0];});
+    }
+    document.addEventListener('ns-lang',pintaDataI);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',pintaDataI);
+    else pintaDataI();
+  })();
   /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
      (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
   function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
@@ -104,12 +148,19 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
      ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
      (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
      al hacer clic, sin esperar a que cargue la página siguiente. */
-  var here=(location.pathname.split('/').pop()||'').toLowerCase();
+  /* r16c (cazado POR JUANJO con el flash del clic): Cloudflare Pages sirve
+     URLs LIMPIAS — /hub/incidents.html se visita como /hub/incidents — así
+     que comparar con ".html" no casaba JAMÁS en carga de página. Se normaliza
+     quitando la extensión en LOS DOS lados. */
+  function nsLimpia(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';}
+  var here=nsLimpia(location.pathname.split('/').pop());
   var dir=location.pathname.toLowerCase();
-  var ON='background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C';
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
   function isHere(a){
     var f=(a.getAttribute('href')||'').toLowerCase();
-    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : f.split('/').pop()===here;
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : nsLimpia(f.split('/').pop())===here;
   }
   function paint(a,on){
     a.classList.toggle('on',!!on);
@@ -134,6 +185,12 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
     mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
   }
   var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  /* r16: la marca se queda mientras estés en la página — se repinta al volver
+     del historial (bfcache), al recuperar el foco y al cambiar de pestaña del
+     navegador. Nada la apaga salvo navegar a otra página del hub. */
+  window.addEventListener('pageshow',function(){markActive();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)markActive();});
+  window.addEventListener('focus',function(){markActive();});
   var d=new Date();
   var el=document.getElementById('nsnb-date');
   if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
@@ -153,8 +210,74 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
     pad();markActive();          // po82: mover pestañas no puede borrar la marca
   }
   function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  /* r14e (idea Juanjo): pestañas ARRASTRABLES — cada cual su orden, guardado
+     en este navegador (ns_tab_order). ↺ vuelve al orden de fábrica. */
+  (function(){
+    var KEY='ns_tab_order';
+    function filas(){return [document.getElementById('nsnb-r1'),document.getElementById('nsnb-r2')].filter(Boolean);}
+    function todas(){var t=[];filas().forEach(function(r){t=t.concat([].slice.call(r.querySelectorAll('.nsnb-tab')));});return t;}
+    var ORIG=todas().map(function(a){return a.getAttribute('href');});
+    function guardar(){try{localStorage.setItem(KEY,JSON.stringify(todas().map(function(a){return a.getAttribute('href');})));}catch(e){}
+      var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';}
+    function aplicar(orden){
+      var r1=document.getElementById('nsnb-r1');if(!r1)return;
+      var por={};todas().forEach(function(a){por[a.getAttribute('href')]=a;});
+      orden.forEach(function(h){if(por[h])r1.appendChild(por[h]);});
+      todas().forEach(function(a){if(orden.indexOf(a.getAttribute('href'))<0)r1.appendChild(a);});
+    }
+    try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&sv.length){aplicar(sv);
+      setTimeout(function(){var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';},0);}}catch(e){}
+    var drag=null;
+    todas().forEach(function(a){
+      a.setAttribute('draggable','true');
+      a.title=(a.title?a.title+' · ':'')+'Arrastra para reordenar / drag to reorder';
+      a.addEventListener('dragstart',function(e){drag=a;a.classList.add('nsnb-drag');
+        try{e.dataTransfer.setData('text/plain',a.getAttribute('href'));e.dataTransfer.effectAllowed='move';}catch(err){}});
+      a.addEventListener('dragend',function(){if(drag)drag.classList.remove('nsnb-drag');drag=null;});
+      a.addEventListener('dragover',function(e){e.preventDefault();if(!drag||drag===a)return;
+        var r=a.getBoundingClientRect(),antes=(e.clientX-r.left)<r.width/2;
+        a.parentNode.insertBefore(drag,antes?a:a.nextSibling);});
+      a.addEventListener('drop',function(e){e.preventDefault();guardar();relayout();});
+    });
+    filas().forEach(function(r){r.addEventListener('dragover',function(e){e.preventDefault();});
+      r.addEventListener('drop',function(e){e.preventDefault();if(drag){guardar();relayout();}});});
+    var brand=document.getElementById('nsnb-lang');
+    if(brand&&!document.getElementById('nsnb-reset')){
+      var rb=document.createElement('a');rb.id='nsnb-reset';rb.className='nsnb-btn';rb.href='#';rb.textContent='↺';
+      rb.title='Orden de pestañas original / reset tab order';
+      rb.onclick=function(e){e.preventDefault();try{localStorage.removeItem(KEY);}catch(err){}
+        aplicar(ORIG);rb.style.display='none';relayout();return false;};
+      brand.parentNode.insertBefore(rb,brand);
+    }
+  })();
   var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
   relayout();
+})();
+</script>
+<script>
+/* r16b · MINI-MARCADOR independiente de pestaña activa. Deliberadamente
+   separado y mínimo: si el script grande de la barra muere por lo que sea,
+   ESTE pinta igual. Solo compara el fichero de la URL con el href y pone la
+   clase .on (el CSS !important hace el resto). Se repite unos segundos por si
+   el reordenado o el motor mueven pestañas tarde. */
+(function(){
+  function marca(){
+    try{
+      /* r16c: Pages sirve URLs sin .html — normalizar ambos lados */
+      var lim=function(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';};
+      var here=lim(location.pathname.split('/').pop());
+      var esDoc=location.pathname.toLowerCase().indexOf('/documentation/')>-1;
+      document.querySelectorAll('#ns-hub-navbar .nsnb-tab').forEach(function(a){
+        var f=(a.getAttribute('href')||'').toLowerCase();
+        var on=esDoc ? f.indexOf('/documentation/')>-1 : lim(f.split('/').pop())===here;
+        a.classList.toggle('on',on);
+      });
+    }catch(e){}
+  }
+  marca();
+  var i=0,t=setInterval(function(){marca();if(++i>15)clearInterval(t);},700);
+  window.addEventListener('pageshow',marca);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
 })();
 </script>
 </div>
@@ -185,7 +308,7 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
       <input type="text" id="cohortNew" placeholder="…o nueva cohorte" style="width:140px">
       <button class="pri" onclick="propose()">Proponer seleccionados →</button>
     </div>
-    <div style="max-height:340px;overflow:auto"><table id="wl"><thead><tr><th></th><th class="sh" onclick="sortWl('email')">Email <span data-aw="email"></span></th><th class="sh" onclick="sortWl('name')">Nombre <span data-aw="name"></span></th><th class="sh" onclick="sortWl('src')">Origen <span data-aw="src"></span></th><th class="sh" onclick="sortWl('at')">Apuntada <span data-aw="at"></span></th><th class="sh" onclick="sortWl('acct')">Cuenta <span data-aw="acct"></span></th><th class="sh" onclick="sortWl('coh')">Cohorte <span data-aw="coh"></span></th></tr></thead><tbody></tbody></table></div>
+    <div style="max-height:340px;overflow:auto"><table id="wl"><thead><tr><th></th><th class="sh" onclick="sortWl('email')">Email <span data-aw="email"></span></th><th class="sh" onclick="sortWl('name')">Nombre <span data-aw="name"></span></th><th class="sh" onclick="sortWl('src')">Origen <span data-aw="src"></span></th><th class="sh" onclick="sortWl('at')">Apuntada <span data-aw="at"></span></th><th class="sh" onclick="sortWl('acct')">Cuenta <span data-aw="acct"></span></th><th class="sh" onclick="sortWl('coh')">Cohorte <span data-aw="coh"></span></th><th></th></tr></thead><tbody></tbody></table></div>
   </div>
 
   <h2>1b · Añadir emails a mano (advisory y externas a la waitlist)</h2>
@@ -196,6 +319,29 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
       <button class="pri" onclick="proposeManual()">Proponer →</button>
     </div>
     <div class="hint">Para el consejo asesor y gente de confianza que no pasó por la waitlist. Entran al mismo flujo: proponer → validar → CSV.</div>
+    <div class="row" style="margin-top:10px;align-items:center">
+      <input type="file" id="csvFile" accept=".csv,text/csv" style="font-size:12.5px">
+      <button onclick="subirCsv()">⬆ Subir CSV / Upload CSV</button>
+      <span class="hint" id="csvMsg"></span>
+    </div>
+    <div class="hint">Formato / format: <code>email;nickname;cohorte;plataforma</code> — cabecera opcional,
+    también vale con comas. Cohorte: <code>wave-1</code>/<code>wave-1b</code>/<code>advisory</code> ·
+    plataforma: <code>ios</code>/<code>android</code>/<code>both</code>. Las que ya existen se ACTUALIZAN
+    (nunca se duplica ni se pisa su estado). / Existing testers are updated, status is never touched.</div>
+  </div>
+
+  <h2>1c · 🧩 Cuentas sin casar — usan la app pero no cuentan / unmatched accounts</h2>
+  <div class="card">
+    <div class="hint">Cuentas reales de la app que NO casan con ninguna invitada — relays de Apple («ocultar mi correo»)
+    o gente sin invite. Mientras no se casen, son <b>invisibles</b> para activas, instaladas y el plan semanal.
+    Casar = elegir a quién pertenece: se guarda como su «correo de tienda» y cuenta al instante.
+    / Real app accounts not matching any invite. Marry each to its tester and it counts instantly.</div>
+    <div class="row" style="margin:8px 0" id="umKpis"></div>
+    <div style="max-height:280px;overflow:auto"><table id="um"><thead><tr>
+      <th>Cuenta / account</th><th>Accesos 7d</th><th>Último acceso</th><th>Tipo</th><th style="min-width:230px">Casar con / marry to</th><th></th>
+    </tr></thead><tbody><tr><td colspan="6" class="hint">Cargando…</td></tr></tbody></table></div>
+    <div class="hint" style="margin-top:6px">Los relays no revelan el correo real (así los diseñó Apple): pregunta a cada tester iOS
+    si activó «ocultar mi correo» y casadla aquí. Las cuentas con 0 accesos y pinta de prueba (test@…, typos) se ignoran sin más.</div>
   </div>
 
   <h2>2 · Validación de founders + export</h2>
@@ -212,10 +358,11 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
       <button onclick="removeFromPilot()" title="Quitar del piloto (solo si aun no se les ha escrito)">🗑 Quitar del piloto</button>
       <button onclick="remindStore()" title="A quien lleva 3+ dias sin darnos su correo de tienda">🔔 Recordatorio · correo de tienda</button>
       <button onclick="remindInstall()" title="A quien tiene el build asignado y no ha instalado">🔔 Recordatorio · instalar</button>
+      <button onclick="remindTerms()" title="A quien aun no ha aceptado las condiciones del piloto (enlace personal)">📜 Recordatorio · aceptar condiciones</button>
     </div>
     <div class="hint" style="background:#FFF8EF;border:1px solid #F0DCC4;border-radius:10px;padding:10px 12px;margin:8px 0">
       <b>Recordatorios — cómo se usan</b><br>
-      · <b>Nombre cercano</b>: escríbelo en su fila y sal del campo (se guarda solo, el borde se pone verde). Es como la llamamos en los correos; si lo dejas vacío usamos su nombre de la waitlist y, si tampoco hay, el saludo va sin nombre.<br>
+      · <b>Nombre cercano</b>: escríbelo en su fila y pulsa Enter o sal del campo — verás <b>✓ guardado</b> al lado. Es como la llamamos en los correos; si lo dejas vacío usamos su nombre de la waitlist y, si tampoco hay, el saludo va sin nombre.<br>
       · <b>🔔 Correo de tienda</b>: para quien lleva 3+ días sin darnos su Apple ID / cuenta de Google (aparecen como “enviado, sin respuesta”). Lleva su enlace personal.<br>
       · <b>🔔 Instalar</b>: para quien ya tiene el build asignado y aún no ha creado cuenta. Lleva los pasos de TestFlight y de Google Play.<br>
       · No hace falta seleccionar filas: cada botón calcula solo a quién le toca hoy y te dice cuántas son antes de enviar.<br>
@@ -229,7 +376,7 @@ th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;le
   <div class="card">
     <div class="row"><select id="fbCohort"><option value="">todas las cohortes</option></select>
     <button onclick="loadFb()">Actualizar</button></div>
-    <div style="max-height:400px;overflow:auto"><table id="fb"><thead><tr><th>Fecha</th><th>Cohorte</th><th>Email</th><th>Mensaje</th><th>v · plat</th></tr></thead><tbody></tbody></table></div>
+    <div style="max-height:400px;overflow:auto"><table id="fb"><thead><tr><th>Fecha</th><th>Cohorte</th><th>Email</th><th>Mensaje</th><th>v · plat</th><th>Ticket</th></tr></thead><tbody></tbody></table></div>
   </div>
 </div>
 <div id="gate">Inicia sesión de founder (Access) y recarga — esta página es solo para admins.</div>
@@ -246,6 +393,7 @@ async function boot(){
   const[wl,ov]=await Promise.all([sb.rpc('admin_waitlist'),sb.rpc('admin_pilot_overview')]);
   if(wl.error||ov.error){$('gate').style.display='block';$('gate').textContent='Sin acceso: '+esc((wl.error||ov.error).message)+' — ¿SQL 2026-07-30-pilot aplicado y sesión admin?';return;}
   WL=wl.data||[];OV=ov.data||OV;$('app').style.display='block';
+  loadUnmatched();   // r14g-fix: el 💍 necesita OV.invites ya cargado
   const srcs=[...new Set(WL.map(r=>r.source).filter(Boolean))];
   $('fSource').innerHTML='<option value="">origen: todos</option>'+srcs.map(s=>`<option>${esc(s)}</option>`).join('');
   renderAll();
@@ -284,7 +432,7 @@ function renderWl(){
   });
   $('wlCount').textContent=rows.length+' de '+WL.length;
   $('wl').tBodies[0].innerHTML=rows.slice(0,400).map(r=>{const e=(r.email||'').toLowerCase(),pi=be[e];
-    return `<tr><td><input type="checkbox" class="ck" data-e="${esc(e)}"></td><td>${esc(r.email)}</td><td>${esc(r.full_name||'')}</td><td>${esc(r.source||'')}</td><td>${esc((r.created_at||'').slice(0,10))}</td><td>${r.converted_at?'✅':'—'}</td><td>${pi?esc(pi.cohort):''}</td></tr>`;}).join('');
+    return `<tr><td><input type="checkbox" class="ck" data-e="${esc(e)}"></td><td>${esc(r.email)}</td><td>${esc(r.full_name||'')}</td><td>${esc(r.source||'')}</td><td>${esc((r.created_at||'').slice(0,10))}</td><td>${r.converted_at?'✅':'—'}</td><td>${pi?esc(pi.cohort):''}</td><td><button class="mini" onclick="wlEdit('${esc(e)}')" title="Editar nombre / edit name">✏️</button> <button class="mini" onclick="wlDel('${esc(e)}')" title="Borrar de la waitlist / delete">🗑</button></td></tr>`;}).join('');
   document.querySelectorAll('#wl th [data-aw]').forEach(el=>{
     el.textContent=(el.dataset.aw===SORTW.k)?(SORTW.dir>0?'▲':'▼'):'';});
 }
@@ -307,10 +455,10 @@ function renderInv(){
     return (a.email||'')<(b.email||'')?-1:1;                 // desempate estable
   });
   $('inv').tBodies[0].innerHTML=rows.map(i=>{const st=i.converted&&i.status==='invited'?'joined':i.status;
-    const plat=i.platform==='ios'?'📱':i.platform==='android'?'🤖':'—';
+    const plat=i.platform==='both'?'📱🤖':i.platform==='ios'?'📱':i.platform==='android'?'🤖':'—';
     const store=i.store_ok?`<b>${esc(i.store_email)}</b> ✔`:(i.contacted_at?'<span class="hint">enviado, sin respuesta</span>':'—');
     const nick=`<input class="nick" data-e="${esc(i.email)}" value="${esc(i.nickname||'')}" placeholder="${esc((i.full_name||'').trim().split(/\s+/)[0]||'sin nombre')}" title="Como la llamamos en los correos. Vacio = nombre de la waitlist." style="width:110px;font:inherit;font-size:12.5px;padding:3px 6px;border:1px solid #EFE3D7;border-radius:7px">`;
-    return `<tr><td><input type="checkbox" class="ik" data-e="${esc(i.email)}"></td><td>${esc(i.email)}</td><td>${nick}</td><td>${esc(i.cohort)}</td><td><span class="pill p-${st}">${st}</span></td><td>${plat}</td><td>${store}</td><td>${i.converted?'✅':'—'}</td><td><button class="mini" onclick="copyLink('${esc(i.confirm_token)}')" title="Copiar enlace personal">🔗</button> <button class="mini" onclick="copyWa('${esc(i.email)}','${esc(i.confirm_token)}')" title="Copiar mensaje WhatsApp">💬</button></td></tr>`;}).join('');
+    return `<tr><td><input type="checkbox" class="ik" data-e="${esc(i.email)}"></td><td>${esc(i.email)}</td><td>${nick}</td><td>${esc(i.cohort)}</td><td><span class="pill p-${st}">${st}</span></td><td>${plat}</td><td>${store}</td><td>${i.converted?'✅':'—'}</td><td><button class="mini" onclick="editRow('${esc(i.email)}')" title="Editar el registro completo (guardar/cancelar)">✏️</button> <button class="mini" onclick="copyLink('${esc(i.confirm_token)}')" title="Copiar enlace personal">🔗</button> <button class="mini" onclick="copyWa('${esc(i.email)}','${esc(i.confirm_token)}')" title="Copiar mensaje WhatsApp">💬</button></td></tr>`;}).join('');
   document.querySelectorAll('#inv th [data-ar]').forEach(el=>{
     el.textContent=(el.dataset.ar===SORT.k)?(SORT.dir>0?'▲':'▼'):'';});
 }
@@ -336,6 +484,57 @@ window.propose=async()=>{
   await refreshOv();alert(emails.length+' propuestas → '+cohort+'. Ahora valida el lote en la sección 2.');
 };
 async function refreshOv(){const ov=await sb.rpc('admin_pilot_overview');if(!ov.error){OV=ov.data;renderAll();}}
+
+/* ── Editor CRUD por registro (regla Juanjo, 5-ago) ─────────────────────────
+   Un ✏️ por fila abre el registro entero con Guardar/Cancelar explícitos.
+   Es además la ÚNICA forma de corregir el correo de tienda desde el hub
+   (antes solo podía la tester por su enlace) — el caso de Pilar. */
+window.editRow=email=>{
+  const i=OV.invites.find(x=>x.email===email);
+  if(!i)return alert('No encuentro ese registro');
+  const cohorts=[...new Set(OV.invites.map(x=>x.cohort))];
+  const old=document.getElementById('rowEd');if(old)old.remove();
+  const d=document.createElement('div');d.id='rowEd';
+  d.style.cssText='position:fixed;inset:0;z-index:400;background:rgba(35,31,32,.45);display:flex;align-items:center;justify-content:center;padding:16px';
+  const F='font:inherit;font-size:13px;width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid #EFE3D7;border-radius:10px;margin:4px 0 10px';
+  const L='font-size:11px;font-weight:700;color:#8A7F78;text-transform:uppercase;letter-spacing:.4px';
+  d.innerHTML=`<div style="background:#fff;border-radius:16px;padding:20px 22px;max-width:420px;width:100%;box-shadow:0 18px 50px rgba(0,0,0,.25)">
+    <div style="font-weight:800;font-size:15px;margin-bottom:2px">✏️ ${esc(email)}</div>
+    <div class="hint" style="margin-bottom:12px">Nada se guarda hasta que pulses Guardar.</div>
+    <label style="${L}">Nombre cercano</label>
+    <input id="edNick" style="${F}" value="${esc(i.nickname||'')}" placeholder="${esc((i.full_name||'').trim().split(/\s+/)[0]||'sin nombre')}">
+    <label style="${L}">Cohorte</label>
+    <select id="edCoh" style="${F}">${cohorts.map(c=>`<option${c===i.cohort?' selected':''}>${esc(c)}</option>`).join('')}</select>
+    <label style="${L}">Estado</label>
+    <select id="edSt" style="${F}">${['proposed','approved','contacted','invited','joined','declined'].map(s=>`<option${s===i.status?' selected':''}>${s}</option>`).join('')}</select>
+    <label style="${L}">Correo de tienda (Apple ID / cuenta Google)</label>
+    <input id="edStore" style="${F}" value="${esc(i.store_email||'')}" placeholder="vacío = sin confirmar">
+    <div class="hint" style="margin:-6px 0 10px">Si lo escribes tú, queda confirmado ✔ — eres la autoridad. El enlace personal sigue siendo el camino normal.</div>
+    <label style="${L}">Plataforma</label>
+    <select id="edPlat" style="${F}"><option value="">—</option><option value="ios"${i.platform==='ios'?' selected':''}>iOS</option><option value="android"${i.platform==='android'?' selected':''}>Android</option><option value="both"${i.platform==='both'?' selected':''}>Ambos</option></select>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:6px">
+      <button onclick="document.getElementById('rowEd').remove()">Cancelar</button>
+      <button class="pri" id="edSave">Guardar</button>
+    </div><div id="edErr" style="color:#C73A20;font-size:12px;min-height:16px;margin-top:6px"></div></div>`;
+  document.body.appendChild(d);
+  d.addEventListener('click',e=>{if(e.target===d)d.remove();});
+  document.getElementById('edSave').onclick=async()=>{
+    const g=id=>document.getElementById(id);
+    const btn=g('edSave');btn.disabled=true;btn.textContent='Guardando…';
+    const nS=g('edStore').value.trim().toLowerCase();
+    const{data,error}=await sb.rpc('admin_pilot_update',{
+      p_email:email,
+      p_nickname:g('edNick').value,
+      p_cohort:g('edCoh').value,
+      p_status:g('edSt').value,
+      p_store_email:(nS!==(i.store_email||''))?(nS||null):null,
+      p_platform:g('edPlat').value||null});
+    if(error||!(data&&data.ok)){btn.disabled=false;btn.textContent='Guardar';
+      g('edErr').textContent='⚠ No guardado: '+esc(error?error.message:(data&&data.error)||'error desconocido');
+      if(error&&/admin_pilot_update/.test(error.message))g('edErr').textContent+=' — ¿SQL 2026-08-05-pilot-row-update.sql aplicado?';
+      return;}
+    d.remove();await refreshOv();};
+};
 function invSel(){const s=invChecked();
   if(s.length)return s;const c=$('rvCohort').value;
   return OV.invites.filter(i=>(!c||i.cohort===c)).map(i=>i.email);}
@@ -360,16 +559,55 @@ window.exportTF=()=>{
 };
 window.copyEmails=async()=>{const so=storeOf();const e=invSel().map(x=>so[x]||x).join('\n');await navigator.clipboard.writeText(e);alert(e.split('\n').length+' emails (correo de tienda si está confirmado) copiados.');};
 window.copyLink=async t=>{await navigator.clipboard.writeText('https://nutrisynccollective.com/tester.html?t='+t);alert('Enlace personal copiado.');};
+/* r14 · CSV masivo: separador ; o , · cabecera opcional · confirmación con recuento */
+window.subirCsv=function(){
+  var f=document.getElementById('csvFile').files[0], msg=document.getElementById('csvMsg');
+  if(!f){msg.textContent='elige un fichero / pick a file';return;}
+  var rd=new FileReader();
+  rd.onload=function(){
+    var sep=(rd.result.indexOf(';')>-1)?';':',';
+    var filas=rd.result.split(/\r?\n/).map(function(l){return l.trim();}).filter(Boolean)
+      .map(function(l){return l.split(sep).map(function(c){return c.trim().replace(/^"|"$/g,'');});});
+    if(filas.length&&!/@/.test(filas[0][0]))filas.shift();   // cabecera fuera
+    var rows=filas.filter(function(c){return /@/.test(c[0]);}).map(function(c){
+      return {email:c[0],nickname:c[1]||null,cohort:c[2]||null,platform:c[3]||null};});
+    if(!rows.length){msg.textContent='ningún email válido / no valid emails';return;}
+    if(!confirm(rows.length+' filas → proponer/actualizar en el piloto. ¿Seguir? / rows to add or update. Continue?'))return;
+    msg.textContent='subiendo… / uploading…';
+    sb.rpc('admin_pilot_bulk_add',{p:rows}).then(function(r){
+      if(r.error||!(r.data&&r.data.ok)){msg.textContent='⚠ '+((r.error&&r.error.message)||'error');return;}
+      msg.textContent='✓ '+r.data.altas+' altas · '+r.data.actualizadas+' actualizadas';
+      load();});
+  };
+  rd.readAsText(f);
+};
 window.copyWa=async(e,t)=>{
-  const msg='¡Hola! 🧡 GRACIAS por apuntarte a la lista de espera y al piloto de NutriSync — ¡estás dentro! La invitación de la app se envía al correo con el que tu MÓVIL instala aplicaciones (tu Apple ID en iPhone o tu cuenta de Google en Android), que muchas veces no es el mismo con el que te registraste. Entra en tu enlace personal: si es el mismo, UN toque y listo; si es otro, lo escribes ahí (30 seg): https://nutrisynccollective.com/tester.html?t='+t+' — Si no lo tienes claro: iPhone → Ajustes → tu nombre arriba = tu Apple ID · Android → Play Store → tu foto arriba a la derecha = tu cuenta Google. ¡Gracias! — El equipo NutriSync';
+  const msg='¡Hola! 🧡 GRACIAS por apuntarte a la lista de espera y al piloto de NutriSync — ¡estás dentro! La invitación de la app se envía al correo con el que tu MÓVIL instala aplicaciones (tu Apple ID en iPhone o tu cuenta de Google en Android), que muchas veces no es el mismo con el que te registraste. Entra en tu enlace personal: si es el mismo, UN toque y listo; si es otro, lo escribes ahí (30 seg): https://nutrisynccollective.com/tester.html?t='+t+' — Si no lo tienes claro: iPhone → Ajustes → tu nombre arriba = tu Apple ID · Android → Play Store → tu foto arriba a la derecha = tu cuenta Google. NOTA IMPORTANTE: NutriSync está en fase de desarrollo — piloto interno cerrado, no comercializado ni abierto al público; participas como colaboradora voluntaria e invitada. En tu enlace personal verás y aceptarás las condiciones antes de continuar. ¡Gracias! — El equipo NutriSync';
   await navigator.clipboard.writeText(msg);alert('Mensaje WhatsApp copiado para '+e);
 };
+/* Confirmación de guardado (Juanjo, 5-ago): el borde verde solo no se lee como
+   «guardado» — falta la palabra. Un chip al lado del campo dice guardando… →
+   ✓ guardado, y Enter también confirma (no solo salir del campo). */
+function nickChip(el,txt,color){
+  let c=el.nextElementSibling;
+  if(!c||!c.classList.contains('nick-st')){
+    c=document.createElement('span');c.className='nick-st';
+    c.style.cssText='font-size:10.5px;font-weight:800;margin-left:6px;white-space:nowrap;transition:opacity .3s';
+    el.after(c);
+  }
+  c.textContent=txt;c.style.color=color;c.style.opacity='1';return c;
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&e.target.classList&&e.target.classList.contains('nick'))e.target.blur();
+});
 document.addEventListener('change',async e=>{
   const el=e.target;if(!el.classList||!el.classList.contains('nick'))return;
-  el.disabled=true;
+  el.disabled=true;const chip=nickChip(el,'guardando…','#8A7F78');
   const{error}=await sb.rpc('admin_pilot_set_nickname',{p_email:el.dataset.e,p_nickname:el.value});
   el.disabled=false;el.style.borderColor=error?'#C73A20':'#0F9B57';
-  if(error)alert('No se pudo guardar: '+error.message);else setTimeout(()=>{el.style.borderColor='#EFE3D7';},900);
+  if(error){nickChip(el,'⚠ no guardado','#C73A20');alert('No se pudo guardar: '+error.message);}
+  else{nickChip(el,'✓ guardado','#0F9B57');
+       setTimeout(()=>{el.style.borderColor='#EFE3D7';chip.style.opacity='0';},2200);}
 });
 /* r12-b7 (Pilar): meter a alguien en la cohorte equivocada tenia que poder
    deshacerse desde aqui. Quitar solo borra a quien AUN no sabe que existe el
@@ -407,6 +645,14 @@ async function remind(kind,label){
 }
 window.remindStore=()=>remind('store','falta correo de tienda');
 window.remindInstall=()=>remind('install','invitada, sin instalar');
+window.remindTerms=async()=>{
+  if(!confirm('Enviar el aviso de ACEPTAR CONDICIONES a todas las pendientes (contactadas que aun no han aceptado)?\n\nEl cron de las 9:00 ya lo manda solo UNA vez por persona; este boton reenvia a todas las que sigan pendientes.'))return;
+  const{data:{session}}=await sb.auth.getSession();if(!session)return alert('Sin sesion.');
+  const r=await fetch(U+'/functions/v1/pilot-outreach',{method:'POST',headers:{'content-type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':K},body:JSON.stringify({kind:'terms'})});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok)return alert('Error: '+(j.error||r.status));
+  alert('Enviados: '+(j.sent||[]).length+((j.failed||[]).length?'\nFallidos: '+j.failed.join(', '):''));
+};
 window.sendOutreach=async()=>{
   const emails=invSel();if(!emails.length)return alert('Nada seleccionado.');
   if(!confirm('Enviar el email de captura (gracias + Apple ID/Google + enlace personal) a '+emails.length+' persona(s)?'))return;
@@ -419,11 +665,81 @@ window.sendOutreach=async()=>{
 };
 window.loadFb=async()=>{
   const c=$('fbCohort').value||null;
-  const{data,error}=await sb.rpc('admin_pilot_feedback',{p_cohort:c});
+  const{data,error}=await sb.rpc('admin_pilot_feedback',{p_cohort:null});   // r14b: el filtro es del cliente, normalizado ('—' también filtra)
   if(error){$('fb').tBodies[0].innerHTML='<tr><td colspan=5>'+esc(error.message)+'</td></tr>';return;}
-  $('fb').tBodies[0].innerHTML=(data||[]).map(r=>`<tr><td>${esc(r.created_at.slice(0,16).replace('T',' '))}</td><td>${esc(r.cohort)}</td><td>${esc(r.email)}</td><td class="msg">${esc(r.message)}</td><td>${esc(r.app_version||'?')} · ${esc(r.platform||'?')}</td></tr>`).join('')||'<tr><td colspan=5 class="hint">Sin mensajes aún.</td></tr>';
+  const ST={nuevo:'#A32D2D',en_curso:'#B4700F',esperando_usuaria:'#1D4ED8',resuelto:'#0F6E56',cerrado:'#475569'};
+  const tk=r=>{if(!r.ticket_no)return '<span class="hint">—</span>';
+    const col=ST[r.ticket_status]||'#475569';
+    let edad='';
+    if(r.resolved_at){const h=(new Date(r.resolved_at)-new Date(r.ticket_created))/36e5;edad=' ✔ '+(h<48?Math.round(h)+'h':Math.round(h/24)+'d');}
+    else if(r.ticket_status!=='cerrado'&&r.ticket_created){const h=(Date.now()-new Date(r.ticket_created))/36e5;edad=' ⏱ '+(h<48?Math.round(h)+'h':Math.round(h/24)+'d')+(h>=24?'⚠':'');}
+    return `<b style="color:#C73A20">${esc(r.ticket_no)}</b> <span style="font-size:10px;font-weight:800;border-radius:999px;padding:1px 7px;background:${col}1a;color:${col}">${esc((r.ticket_status||'').replace(/_/g,' '))}</span><span class="hint">${edad}${r.escalated_at?' 📣':''}</span>`;};
+  const rows=(data||[]).filter(r=>!c||(r.cohort||'—')===c);
+  $('fb').tBodies[0].innerHTML=rows.map(r=>`<tr><td>${esc(r.created_at.slice(0,16).replace('T',' '))}</td><td>${esc(r.cohort||'—')}</td><td>${esc(r.email)}</td><td class="msg">${esc(r.message)}</td><td>${esc(r.app_version||'?')} · ${esc(r.platform||'?')}</td><td>${tk(r)}</td></tr>`).join('')||'<tr><td colspan=6 class="hint">Sin mensajes con ese filtro.</td></tr>';
+};
+/* r14b (punto 11): CRUD por registro en el lote — usa las policies de hub-crud.sql */
+window.wlEdit=async e=>{
+  const r=(WL||[]).find(x=>(x.email||'').toLowerCase()===e); if(!r)return;
+  const v=prompt('Nombre para '+e+' / name:', r.full_name||''); if(v===null)return;
+  const{error}=await sb.from('waitlist').update({full_name:v.trim()||null}).eq('email',r.email);
+  if(error)return alert(error.message+'\n(¿ejecutaste backend-sql/2026-08-06-hub-crud.sql?)');
+  boot();
+};
+window.wlDel=async e=>{
+  const r=(WL||[]).find(x=>(x.email||'').toLowerCase()===e); if(!r)return;
+  if(!confirm('Borrar '+e+' de la waitlist (PII fuera, no afecta al piloto si ya fue propuesta). ¿Seguir? / Delete from waitlist?'))return;
+  const{error}=await sb.from('waitlist').delete().eq('email',r.email);
+  if(error)return alert(error.message+'\n(¿ejecutaste backend-sql/2026-08-06-hub-crud.sql?)');
+  boot();
+};
+/* r14d · cuentas sin casar: enseñar la verdad + casar con un clic */
+async function loadUnmatched(){
+  const r=await sb.rpc('admin_pilot_unmatched');
+  const tb=document.querySelector('#um tbody');
+  if(r.error||!r.data){tb.innerHTML='<tr><td colspan="6" class="hint">Ejecuta backend-sql/2026-08-06-cuentas-sin-casar.sql y recarga.</td></tr>';return;}
+  const d=r.data;
+  $('umKpis').innerHTML=
+    '<div><div class="hint">activas 7d · TODAS las cuentas</div><b style="font-size:20px">'+d.activas_7d_total+'</b></div>'
+   +'<div style="margin-left:18px"><div class="hint">activas 7d · cruzadas con el piloto (lo que ven las gráficas)</div><b style="font-size:20px;color:'+(d.activas_7d_piloto<d.activas_7d_total?'#C73A20':'#0F6E56')+'">'+d.activas_7d_piloto+'</b></div>';
+  const invs=(OV&&OV.invites||[]).map(i=>i.email).sort();
+  const opts='<option value="">— elegir invitada —</option><option value="__nueva__">➕ nueva invitada…</option>'+invs.map(e=>`<option>${esc(e)}</option>`).join('');
+  const filas=(d.huerfanas||[]).slice().sort((a,b)=>(b.accesos_7d||0)-(a.accesos_7d||0)||(b.ultimo?1:0)-(a.ultimo?1:0));   // r14h: TODAS — la basura (0 accesos) queda al fondo, con 🗑
+  tb.innerHTML=filas.map(h=>`<tr>
+    <td>${esc(h.email)}</td>
+    <td class="num">${h.accesos_7d||0}</td>
+    <td>${h.ultimo?esc(String(h.ultimo).slice(0,16).replace('T',' ')):'—'}</td>
+    <td>${h.es_relay?'🍎 relay':'✉️'}</td>
+    <td><select class="umSel" data-e="${esc(h.email)}" style="max-width:230px">${opts}</select></td>
+    <td><button class="mini" onclick="window.umCasar('${esc(h.email)}')">💍 Casar</button>
+        <button class="mini" title="Borrar cuenta que NO aplica (pruebas, typos). Protegida si tiene feedback o casa con el piloto. / Delete non-applicable account" onclick="window.umBorrar('${esc(h.email)}')">🗑</button></td></tr>`).join('')
+   ||'<tr><td colspan="6" class="hint">Ninguna cuenta activa sin casar — todo el uso real está contado. 🎉</td></tr>';
+}
+window.umBorrar=async cuenta=>{
+  if(!confirm('Borrar la cuenta '+cuenta+' de la app (no aplica al piloto: pruebas/typos).\nSi tiene feedback o casa con una invitada, la base se negará.\n¿Borrar? / Delete this account?'))return;
+  const r=await sb.rpc('admin_account_delete',{p_email:cuenta});
+  if(r.error||!(r.data&&r.data.ok))return alert('⚠ '+((r.error&&r.error.message)||(r.data&&r.data.error)||'error')+'\n(¿ejecutaste backend-sql/2026-08-06-account-delete.sql?)');
+  loadUnmatched();
+};
+window.umCasar=async cuenta=>{
+  const sel=document.querySelector('.umSel[data-e="'+cuenta+'"]');
+  let inv=sel&&sel.value;
+  if(!inv)return alert('Elige primero a qué invitada pertenece esta cuenta. / Pick the tester first.');
+  /* r16: ➕ alta al vuelo — crea la invitada aquí mismo y sigue el casorio */
+  if(inv==='__nueva__'){
+    const email=(prompt('Correo PRINCIPAL de la nueva invitada (el suyo de contacto, no el relay):')||'').trim().toLowerCase();
+    if(!email||!email.includes('@'))return;
+    const apodo=(prompt('Apodo (opcional):')||'').trim();
+    const alta=await sb.rpc('admin_pilot_bulk_add',{p:[{email:email,nickname:apodo||null,cohort:'wave-1',platform:'ios'}]});
+    if(alta.error)return alert('⚠ No se pudo dar de alta: '+alta.error.message);
+    inv=email;
+    alert('✓ '+email+' dada de alta en wave-1 (iOS). Ahora se casa con la cuenta.');
+  }
+  if(!confirm('Casar '+cuenta+' con '+inv+': se guardará como su correo de tienda y contará en todas las métricas. ¿Seguir?'))return;
+  const r=await sb.rpc('admin_pilot_update',{p_email:inv,p_nickname:null,p_cohort:null,p_status:null,p_store_email:cuenta,p_platform:null});
+  if(r.error||!(r.data&&r.data.ok))return alert('⚠ '+((r.error&&r.error.message)||(r.data&&r.data.error)||'error'));
+  loadUnmatched();load();
 };
 ['q','fSource','fConv','fAssigned'].forEach(i=>$(i).addEventListener('input',renderWl));
 $('rvCohort').addEventListener('change',renderInv);
 boot();
-</script></body></html>
+</script><script src="/hub/assets/page-help.js?v=e939f9f3"></script></body></html>

@@ -1,0 +1,653 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Proposal 33 · Wearables — NutriSync Docs</title><link rel="preload" href="/assets/fonts/files/ns-eb4c6b37.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/fonts/files/ns-e00fe7ec.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/fonts/files/ns-4078e99d.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/fonts/files/ns-7d471a86.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/assets/fonts/fonts.css?v=dc16b895"><style id="ns-type-system">html,body,button,input,select,textarea{font-family:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}h1,h2,h3{font-family:'Bricolage Grotesque','Poppins',sans-serif}</style><style>
+:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--code:#FBEDE6;}
+*{box-sizing:border-box;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.65;}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
+.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;}
+.topbar .brand b{font-weight:800;}
+.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
+.navbtns{display:flex;gap:16px;align-items:center;}
+.navbtns a:first-child{padding:5px 12px;border:1px solid var(--line);border-radius:20px;}
+.navbtns a:first-child:hover{border-color:var(--coral);background:var(--cream);}
+.wrap{max-width:860px;margin:0 auto;padding:40px 24px 80px;}
+h1{font-size:34px;font-weight:900;letter-spacing:-.5px;line-height:1.15;margin:0 0 8px;}
+h2{font-size:25px;font-weight:800;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+h3{font-size:19px;font-weight:800;margin:28px 0 8px;}
+h4{font-size:16px;font-weight:800;margin:20px 0 6px;}
+p{margin:10px 0;}
+a{color:var(--coral-deep);}
+strong{font-weight:700;}
+code{background:var(--code);color:#9a3a25;padding:2px 6px;border-radius:6px;font-size:.9em;font-family:'SF Mono',Menlo,Consolas,monospace;}
+pre{background:#241D1A;color:#f4e9e2;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:13px;line-height:1.55;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:14px 0;padding:12px 18px;background:var(--cream);border-left:4px solid var(--coral);border-radius:0 10px 10px 0;color:#5d524b;}
+blockquote p{margin:4px 0;}
+ul,ol{margin:10px 0;padding-left:24px;}
+li{margin:5px 0;}
+hr{border:none;border-top:1px solid var(--line);margin:34px 0;}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;display:block;overflow-x:auto;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+th{background:var(--coral);color:#fff;font-weight:700;}
+tbody tr:nth-child(even){background:var(--cream);}
+.pill{display:inline-block;background:#FDE6DD;color:var(--coral-deep);font-weight:800;font-size:11px;padding:3px 9px;border-radius:20px;}
+.card{display:block;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:10px 0;text-decoration:none;color:var(--ink);transition:.15s;}
+.card:hover{border-color:var(--coral);background:var(--cream);}
+.card .t{font-weight:800;font-size:16px;color:var(--coral-deep);}
+.card .d{font-size:13.5px;color:var(--muted);margin-top:3px;}
+.sec{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin:26px 0 8px;}
+</style><script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head><body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+/* r16b: la pestaña activa por CLASE con !important — tercera red por si algo
+   pisa el estilo en línea. La pone markActive() y el mini-marcador del final. */
+#ns-hub-navbar .nsnb-tab.on{background:linear-gradient(135deg,#FF7600,#FD400C)!important;color:#fff!important;font-weight:800!important;border-color:#FD400C!important;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)!important}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+.nsnb-tab{cursor:grab}
+.nsnb-tab.nsnb-drag{opacity:.35;cursor:grabbing}
+#nsnb-reset{display:none}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Web de marketing / marketing site"
+     aria-label="Web de marketing" style="text-decoration:none">🏠</a>
+  <a class="nsnb-btn" href="https://admin.nutrisynccollective.com" title="StartUp Admin (contabilidad del build)"
+     aria-label="StartUp Admin" style="text-decoration:none">🛠</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Competitive" href="/hub/competitive.html">🥊 Competencia</a><a class="nsnb-tab nsnb-g1" data-en="Build Roadmap → Go Live" href="/hub/launch-plan.html">🚀 Build Roadmap → Go Live</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync Sprint Planning" href="/hub/backlog-dev.html">🗂 NutriSync Sprint Planning</a><a class="nsnb-tab nsnb-g4" data-en="Release Plan" href="/hub/release-plan.html">🚢 Releases</a><a class="nsnb-tab nsnb-g4" data-en="Compliance" href="/hub/compliance.html">🛡 Compliance</a><a class="nsnb-tab nsnb-g4" data-en="Ideation" href="/hub/roadmap.html">💡 Ideation</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g5" data-en="Documentation" href="/hub/documentation/index.html">📄 Documentación</a><a class="nsnb-tab nsnb-g5" data-en="ERP User Guide" href="/hub/user-guide.html">📖 Guía ERP</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14b (feedback Juanjo): idioma con CONMUTADOR visible y persistente.
+     localStorage ns_lang ('es'|'en') manda; sin él, el navegador decide.
+     Las páginas con data-i leen la misma clave — un idioma, todas las superficies. */
+  function nsLang(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pintaIdioma(){
+    var en=nsLang()==='en';
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      if(!a.getAttribute('data-es'))a.setAttribute('data-es',a.textContent.trim());
+      var em=a.getAttribute('data-es').split(' ')[0];
+      a.textContent=en?(em+' '+a.getAttribute('data-en')):a.getAttribute('data-es');});
+    var b=document.getElementById('nsnb-lang');if(b)b.textContent=en?'ES':'EN';
+  }
+  (function(){
+    var brand=document.querySelector('#ns-hub-navbar .nsnb-btn');
+    if(brand&&!document.getElementById('nsnb-lang')){
+      var b=document.createElement('a');b.id='nsnb-lang';b.className='nsnb-btn';b.href='#';
+      b.title='Cambiar idioma / switch language';
+      b.onclick=function(e){e.preventDefault();
+        try{localStorage.setItem('ns_lang',nsLang()==='en'?'es':'en');}catch(err){}
+        pintaIdioma();
+        document.dispatchEvent(new CustomEvent('ns-lang'));
+        if(typeof relayout==='function')relayout();
+        return false;};
+      brand.parentNode.insertBefore(b,brand);
+    }
+    pintaIdioma();
+    /* r14e: pintor data-i UNIVERSAL — cualquier página del hub con data-i="ES|EN"
+       (o data-i sin valor con "ES|EN" dentro) se vuelve bilingüe gratis. */
+    function pintaDataI(){
+      var en=nsLang()==='en';
+      document.querySelectorAll('[data-i]').forEach(function(n){
+        if(n.closest&&n.closest('#ns-hub-navbar'))return;
+        var src=n.getAttribute('data-i');
+        if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+        var p=src.split('|');
+        n.innerHTML=en?(p[1]||p[0]):p[0];});
+    }
+    document.addEventListener('ns-lang',pintaDataI);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',pintaDataI);
+    else pintaDataI();
+  })();
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  /* r16c (cazado POR JUANJO con el flash del clic): Cloudflare Pages sirve
+     URLs LIMPIAS — /hub/incidents.html se visita como /hub/incidents — así
+     que comparar con ".html" no casaba JAMÁS en carga de página. Se normaliza
+     quitando la extensión en LOS DOS lados. */
+  function nsLimpia(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';}
+  var here=nsLimpia(location.pathname.split('/').pop());
+  var dir=location.pathname.toLowerCase();
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : nsLimpia(f.split('/').pop())===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  /* r16: la marca se queda mientras estés en la página — se repinta al volver
+     del historial (bfcache), al recuperar el foco y al cambiar de pestaña del
+     navegador. Nada la apaga salvo navegar a otra página del hub. */
+  window.addEventListener('pageshow',function(){markActive();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)markActive();});
+  window.addEventListener('focus',function(){markActive();});
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  /* r14e (idea Juanjo): pestañas ARRASTRABLES — cada cual su orden, guardado
+     en este navegador (ns_tab_order). ↺ vuelve al orden de fábrica. */
+  (function(){
+    var KEY='ns_tab_order';
+    function filas(){return [document.getElementById('nsnb-r1'),document.getElementById('nsnb-r2')].filter(Boolean);}
+    function todas(){var t=[];filas().forEach(function(r){t=t.concat([].slice.call(r.querySelectorAll('.nsnb-tab')));});return t;}
+    var ORIG=todas().map(function(a){return a.getAttribute('href');});
+    function guardar(){try{localStorage.setItem(KEY,JSON.stringify(todas().map(function(a){return a.getAttribute('href');})));}catch(e){}
+      var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';}
+    function aplicar(orden){
+      var r1=document.getElementById('nsnb-r1');if(!r1)return;
+      var por={};todas().forEach(function(a){por[a.getAttribute('href')]=a;});
+      orden.forEach(function(h){if(por[h])r1.appendChild(por[h]);});
+      todas().forEach(function(a){if(orden.indexOf(a.getAttribute('href'))<0)r1.appendChild(a);});
+    }
+    try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&sv.length){aplicar(sv);
+      setTimeout(function(){var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';},0);}}catch(e){}
+    var drag=null;
+    todas().forEach(function(a){
+      a.setAttribute('draggable','true');
+      a.title=(a.title?a.title+' · ':'')+'Arrastra para reordenar / drag to reorder';
+      a.addEventListener('dragstart',function(e){drag=a;a.classList.add('nsnb-drag');
+        try{e.dataTransfer.setData('text/plain',a.getAttribute('href'));e.dataTransfer.effectAllowed='move';}catch(err){}});
+      a.addEventListener('dragend',function(){if(drag)drag.classList.remove('nsnb-drag');drag=null;});
+      a.addEventListener('dragover',function(e){e.preventDefault();if(!drag||drag===a)return;
+        var r=a.getBoundingClientRect(),antes=(e.clientX-r.left)<r.width/2;
+        a.parentNode.insertBefore(drag,antes?a:a.nextSibling);});
+      a.addEventListener('drop',function(e){e.preventDefault();guardar();relayout();});
+    });
+    filas().forEach(function(r){r.addEventListener('dragover',function(e){e.preventDefault();});
+      r.addEventListener('drop',function(e){e.preventDefault();if(drag){guardar();relayout();}});});
+    var brand=document.getElementById('nsnb-lang');
+    if(brand&&!document.getElementById('nsnb-reset')){
+      var rb=document.createElement('a');rb.id='nsnb-reset';rb.className='nsnb-btn';rb.href='#';rb.textContent='↺';
+      rb.title='Orden de pestañas original / reset tab order';
+      rb.onclick=function(e){e.preventDefault();try{localStorage.removeItem(KEY);}catch(err){}
+        aplicar(ORIG);rb.style.display='none';relayout();return false;};
+      brand.parentNode.insertBefore(rb,brand);
+    }
+  })();
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+<script>
+/* r16b · MINI-MARCADOR independiente de pestaña activa. Deliberadamente
+   separado y mínimo: si el script grande de la barra muere por lo que sea,
+   ESTE pinta igual. Solo compara el fichero de la URL con el href y pone la
+   clase .on (el CSS !important hace el resto). Se repite unos segundos por si
+   el reordenado o el motor mueven pestañas tarde. */
+(function(){
+  function marca(){
+    try{
+      /* r16c: Pages sirve URLs sin .html — normalizar ambos lados */
+      var lim=function(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';};
+      var here=lim(location.pathname.split('/').pop());
+      var esDoc=location.pathname.toLowerCase().indexOf('/documentation/')>-1;
+      document.querySelectorAll('#ns-hub-navbar .nsnb-tab').forEach(function(a){
+        var f=(a.getAttribute('href')||'').toLowerCase();
+        var on=esDoc ? f.indexOf('/documentation/')>-1 : lim(f.split('/').pop())===here;
+        a.classList.toggle('on',on);
+      });
+    }catch(e){}
+  }
+  marca();
+  var i=0,t=setInterval(function(){marca();if(++i>15)clearInterval(t);},700);
+  window.addEventListener('pageshow',marca);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar --><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><style>
+.lsw{position:fixed;top:64px;right:22px;z-index:50;background:var(--coral);color:#fff;border:none;
+     border-radius:20px;padding:7px 15px;font-weight:800;font-size:12.5px;cursor:pointer;font-family:inherit;
+     box-shadow:0 6px 18px -8px rgba(0,0,0,.4)}
+.lsw:hover{background:var(--coral-deep)}
+.reco{background:#e9f7ee;border:2px solid #bfe5cc;border-radius:12px;padding:12px 16px;margin:12px 0}
+.risk{background:#fee2e2;border:1.5px solid #f5b5b5;border-radius:10px;padding:10px 14px;font-size:13.5px;margin:8px 0}
+.ojo{background:#fdf0e7;border:2px solid #f0c9b2;border-radius:12px;padding:12px 16px;margin:12px 0}
+.fase{background:#fff;border:2px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0}
+.kpi{display:inline-block;background:#fdf7f1;border-radius:10px;padding:5px 11px;margin:4px 4px 0 0;font-size:12px}
+.card{border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin:12px 0;background:#fff}
+.sub{font-size:16px;color:var(--muted);margin:0 0 6px}
+.pie{color:var(--muted);font-size:12.5px;margin-top:30px;text-align:center}
+[data-ns-lang]{display:none}
+[data-ns-lang].on{display:block}
+</style>
+<button class="lsw" id="lsw" onclick="nsSwap()">EN</button>
+<div data-ns-lang="es"><h1>⌚ Propuesta 33 · Wearables</h1>
+<div class="sub">Epic O — conectar NutriSync con las plataformas de salud del teléfono: qué leemos, qué alimenta, qué NO debemos hacer y en qué orden · para decisión de founders · 5-ago-2026</div>
+
+<h2>1 · Resumen ejecutivo</h2>
+<div class="card">
+<p>NutriSync le pide hoy a la usuaria que teclee cada día lo que su teléfono ya sabe: si durmió, si se movió, si tuvo el periodo. Conectar con <b>Apple Health</b> y <b>Health Connect</b> elimina ese trabajo y, sobre todo, mejora lo que de verdad importa: <b>saber en qué fase del ciclo está</b>. La temperatura de muñeca que mide un reloj de noche confirma la ovulación mejor que cualquier calendario.</p>
+<div class="reco"><b>Recomendación:</b> hacer <b>solo las dos plataformas de teléfono antes del 8-oct</b> — Apple Health primero, Health Connect después. <b>Descartar Fitbit y Strava</b> por ahora (razones en §3). Las apps de reloj, <b>después del lanzamiento</b> y solo si el piloto muestra demanda.</div>
+</div>
+
+<h2>2 · Lo que ya está construido</h2>
+<div class="card">
+<p>Esto no se empieza de cero. De una sesión anterior (Epic E) ya existe:</p>
+<ul>
+<li><b>Tabla <code>health_signal</code></b> con clave única por (usuaria, proveedor, tipo, instante): la misma muestra no puede entrar dos veces aunque se sincronice cien veces.</li>
+<li><b>Tabla <code>connected_providers</code></b> con registro del consentimiento y de su retirada, con fecha. Auditable.</li>
+<li><b>Pantalla «Dispositivos conectados»</b> en Ajustes, con consentimiento explícito.</li>
+<li><b>Registro de 9 proveedores</b> con sus permisos declarados.</li>
+</ul>
+<p>Y de esta sesión, el <b>contrato de datos</b>: la traducción de lo que dan las plataformas a nuestro modelo, en funciones puras con 21 casos de prueba. Falta el conector nativo, no el andamiaje.</p>
+</div>
+
+<h2>3 · Dos hallazgos que cambian el plan</h2>
+
+<h3>3.1 · Fitbit se apaga en septiembre</h3>
+<div class="risk"><b>Google cierra la Web API de Fitbit en septiembre de 2026</b> — semanas antes de nuestro lanzamiento. La sustituta es la Google Health API, cuyos permisos son todos <i>Restricted</i>: exigen una revisión de privacidad y seguridad de Google, con entidad legal y política de privacidad detrás. Sin la SL constituida no se pasa esa revisión.</div>
+<p><b>Consecuencia:</b> integrar Fitbit hoy sería construir algo que muere solo. Y hay una razón mejor para no hacerlo: <b>quien tiene un Fitbit puede volcar sus datos en Health Connect</b>, así que la integración con Android ya lo cubre indirectamente.</p>
+
+<h3>3.2 · El contrato de Strava pelea contra el producto</h3>
+<div class="risk">El acuerdo de API de Strava de 2026 <b>prohíbe usar sus datos para entrenar modelos de IA o aprendizaje automático</b> — que es exactamente la Propuesta 32 — y <b>prohíbe mostrar los datos de Strava de una usuaria a nadie que no sea ella misma</b>, lo que impide cualquier función de comunidad, coach o comparación. Además exige suscripción de pago para el tier estándar.</div>
+<p><b>Consecuencia:</b> para una app cuyo valor está en inferir sobre los datos, ese contrato es un muro. Strava es una red social de deporte; nosotros no lo somos. Además, quien registra en Strava suele volcar también en Apple Health o Health Connect: la vía indirecta funciona sin firmar nada.</p>
+
+<h3>3.3 · Y una distinción que conviene hacer explícita</h3>
+<div class="card">
+<p>«App de Apple Watch» y «Apple Health» suenan a lo mismo y son dos proyectos distintos:</p>
+<table>
+<tr><th></th><th>Apple Health (HealthKit)</th><th>App de Apple Watch</th></tr>
+<tr><td><b>Qué es</b></td><td>Dependencia nativa en la app iOS que ya tenemos</td><td>Aplicación aparte, con su propia interfaz</td></tr>
+<tr><td><b>Stack</b></td><td>El mismo: Expo + EAS build</td><td><b>Swift + SwiftUI</b>, código nuevo que no comparte nada</td></tr>
+<tr><td><b>Su equivalente Android</b></td><td>Health Connect, también nativo</td><td><b>Kotlin + Compose</b> para Wear OS: un tercer código</td></tr>
+<tr><td><b>Qué aporta</b></td><td>Los datos, sin que nadie los teclee</td><td>Comodidad de registrar desde la muñeca</td></tr>
+</table>
+<p>Los datos vienen de la plataforma de salud del teléfono, <b>no de la app del reloj</b>. Un reloj Apple ya escribe en Apple Health sin que nosotros hagamos nada. Por eso las apps de reloj son un proyecto de comodidad, no de datos — y llegan después.</p>
+</div>
+
+<h2>4 · Qué leemos y para qué</h2>
+<div class="card">
+<p>Regla: <b>cada señal que pedimos tiene que tener un uso concreto en la app</b>. El texto de la derecha es literalmente lo que verá la usuaria en el diálogo de permisos. Si no sabemos escribirlo, no lo pedimos: pedir «por si acaso» es lo que hace que la gente diga que no a todo.</p>
+<table>
+<tr><th>Señal</th><th>Para qué le sirve a ella</th><th></th></tr>
+<tr><td><b>Sueño</b></td><td>Rellena tu descanso del día sin que lo teclees</td><td>esencial</td></tr>
+<tr><td><b>Entrenamientos</b></td><td>Marca el movimiento que ya has hecho en tu anillo del día</td><td>esencial</td></tr>
+<tr><td><b>Flujo menstrual</b></td><td>Si ya registras tu periodo en Salud, no lo repites aquí</td><td>esencial</td></tr>
+<tr><td><b>Temperatura de muñeca</b></td><td>La subida tras la ovulación confirma en qué fase estás</td><td>opcional</td></tr>
+<tr><td><b>Energía activa</b></td><td>Ajusta las recomendaciones de nutrición a lo que gastas de verdad</td><td>opcional</td></tr>
+<tr><td><b>Pasos</b></td><td>Distingue un día activo de uno sedentario</td><td>opcional</td></tr>
+<tr><td><b>Frecuencia en reposo</b></td><td>Señal de recuperación: sube cuando el cuerpo pide descanso</td><td>opcional</td></tr>
+<tr><td><b>Variabilidad cardiaca</b></td><td>Acompaña a la fase del ciclo y ayuda a decidir intensidad</td><td>opcional</td></tr>
+</table>
+<p>Solo tres son esenciales. Con esas tres la integración ya aporta; el resto se puede denegar sin romper nada.</p>
+</div>
+
+<h2>5 · La regla que gobierna todo: lo objetivo se rellena, lo subjetivo se correlaciona</h2>
+<div class="ojo">
+<p><b>El reloj mide hechos, no sentimientos.</b> Puede saber cuántos minutos dormiste; no puede saber si descansaste. Puede medir tu variabilidad cardiaca; no puede saber cómo estás.</p>
+<p>Técnicamente <i>podríamos</i> rellenar el ánimo a partir de la frecuencia en reposo y la HRV. <b>No debemos.</b> El día que una mujer se sienta perfectamente y la app le diga que está de mal humor, hemos perdido su confianza para siempre. Y el riesgo de fondo es peor: <b>ánimo + ciclo</b> es exactamente el terreno donde un producto como el nuestro puede acabar reforzando el estereotipo de «estás así porque te va a venir la regla». Con un número detrás, suena a ciencia. No lo es.</p>
+</div>
+<table>
+<tr><th>Señal medida</th><th>Alimenta</th><th>Cómo</th></tr>
+<tr><td>Sueño</td><td><code>sleep_quality</code></td><td>Sugerencia que ella puede cambiar</td></tr>
+<tr><td>Entrenamiento</td><td>Anillo de movimiento</td><td>Directo</td></tr>
+<tr><td>Flujo</td><td><code>flow_level</code></td><td>Directo</td></tr>
+<tr><td>Energía activa, pasos</td><td>Recomendación de nutrición</td><td>Calibra la ración a lo que gasta</td></tr>
+<tr><td>Temperatura</td><td>Confirmación de fase (Epic M)</td><td>La señal de más valor</td></tr>
+<tr><td>HRV, frecuencia en reposo</td><td>Intensidad recomendada</td><td>«Hoy tu cuerpo pide menos», nunca «estás triste»</td></tr>
+<tr><td><b>Ánimo, energía percibida</b></td><td><b>Nada. Los escribe ella</b></td><td>Se usan como eje para explicar patrones</td></tr>
+</table>
+<div class="reco"><b>Dónde está el valor real:</b> el ánimo que ella registra, cruzado con los datos del reloj, permite decirle algo que no puede ver sola — <i>«en tus últimos tres ciclos, los días que dormiste menos de seis horas registraste menos energía»</i>. Eso es un patrón de sus propios datos, no una máquina diciéndole cómo se siente. Es la diferencia entre un espejo y un juez.</div>
+
+<h2>6 · La señal que más mueve la aguja: temperatura y fase</h2>
+<div class="card">
+<p>El núcleo de NutriSync es sincronizar nutrición y movimiento con la fase del ciclo. Hoy la fase se estima por calendario, con la incertidumbre que eso arrastra en ciclos irregulares. Los relojes con sensor de temperatura (Apple Watch Series 8 y posteriores, y varios Wear OS) miden la temperatura de muñeca durante el sueño; la <b>subida sostenida tras la ovulación</b> es una señal fisiológica real.</p>
+<div class="risk"><b>Aviso que hay que grabar antes de construirlo:</b> la temperatura <b>confirma</b> que hubo ovulación — <b>no la predice</b>. Es retrospectiva. Cualquier redacción que insinúe que sirve para evitar un embarazo es un problema legal y humano. Nuestros documentos legales ya tocan este punto y hay que mantener la coherencia.</div>
+<p>Bien usada, mejora la precisión de la fase sin prometer nada que no podamos cumplir: «tu ciclo se comportó como esperábamos» o «esta vez ovulaste más tarde de lo previsto, ajustamos».</p>
+</div>
+
+<h2>7 · Lo que la ley y las tiendas exigen</h2>
+<div class="card">
+<ul>
+<li><b>RGPD artículo 9.</b> Datos de salud = categoría especial. Requieren consentimiento explícito, separado y revocable. Ya está resuelto en el modelo: <code>connected_providers</code> guarda cuándo se dio y cuándo se retiró.</li>
+<li><b>Regla de Apple (App Store 5.1.3).</b> Los datos de HealthKit <b>no pueden usarse para publicidad, marketing ni minería de datos</b>, ni compartirse con terceros con ese fin. Solo para mejorar la gestión de salud de la usuaria o investigación con permiso. Esto <b>afecta al modelo de negocio</b>: cierra la puerta a monetizar datos de salud, hoy y siempre.</li>
+<li><b>Consecuencia para la IA (Propuesta 32).</b> Si en algún momento se envía contexto a un modelo, no puede ir con datos identificables. Ya está declarado en la Propuesta 32 §2 y sigue valiendo.</li>
+<li><b>Minimización.</b> Leemos ventanas cortas y agregados, no el historial completo de su vida. Menos datos = menos riesgo y menos que explicar.</li>
+</ul>
+</div>
+
+<h2>8 · Fases y esfuerzo</h2>
+<div class="fase"><b>O1 · Apple Health, lectura</b> — permisos, primera sincronización, sugerencias en el registro diario y el anillo. <span class="kpi">≈1 sprint</span> <span class="kpi">exige build nativo</span> <span class="kpi">EN CURSO</span></div>
+<div class="fase"><b>O2 · Apple Health, escritura</b> — devolver a Salud el periodo que ella registra aquí. Reciprocidad: la app no solo toma. <span class="kpi">≈2 días</span></div>
+<div class="fase"><b>O3 · Health Connect (Android)</b> — misma lógica, otro conector. Cubre Samsung Health, y de rebote Fitbit y Garmin, porque vuelcan ahí. <span class="kpi">≈1 sprint</span></div>
+<div class="fase"><b>O4 · Temperatura → fase</b> — confirmación de ovulación dentro de Epic M. <span class="kpi">≈1 sprint</span> <span class="kpi">depende de O1</span></div>
+<div class="fase"><b>O5 · Patrones personales</b> — correlaciones entre lo que ella registra y lo que mide el reloj. Encaja con Epic N. <span class="kpi">después del lanzamiento</span></div>
+<div class="fase" style="opacity:.75"><b>O6 · Apps de reloj (watchOS y Wear OS)</b> — dos bases de código nativas nuevas, dos revisiones de tienda, dos ciclos de release. <span class="kpi">después del lanzamiento</span> <span class="kpi">solo si el piloto lo pide</span></div>
+
+<h2>9 · Riesgos</h2>
+<table>
+<tr><th>Riesgo</th><th>Mitigación</th></tr>
+<tr><td>La usuaria deniega los permisos y la app parece rota</td><td>Las tres señales esenciales se piden con su porqué; todo lo demás es opcional y la app funciona igual sin nada</td></tr>
+<tr><td>Datos contradictorios (ella dice una cosa, el reloj otra)</td><td>Gana ella, siempre. El reloj rellena huecos, no corrige</td></tr>
+<tr><td>Los relojes baratos dan datos malos</td><td>Guardamos el proveedor de cada muestra: si una fuente es ruidosa, se puede desactivar sin tocar el resto</td></tr>
+<tr><td>Sincronizar consume batería</td><td>Sin lectura en segundo plano en la fase 1: se sincroniza al abrir la app</td></tr>
+<tr><td>Apple rechaza la app por los textos de permiso</td><td>Escritos explicando para qué, no qué. Se revisan antes de enviar</td></tr>
+</table>
+
+<h2>10 · Qué esperamos de vosotras</h2>
+<p>Tres cosas distintas, y conviene no mezclarlas: <b>decisiones</b> (dirección), <b>diseño</b> (cómo se ve y se siente) y <b>lógica</b> (qué hace el sistema cuando nadie mira). Sin las tres, O1 se queda a medias.</p>
+
+<h3>10.1 · Decisiones — founders</h3>
+<div class="card">
+<table>
+<tr><th>#</th><th>Decisión</th><th>Recomendación</th><th>Bloquea</th></tr>
+<tr><td><b>D15</b></td><td>¿Wearables antes o después del 8-oct?</td><td><b>Antes solo O1–O3</b> (las dos plataformas de teléfono). Aprovecha el piloto, que ya tiene iPhone en la mano</td><td>Todo Epic O</td></tr>
+<tr><td><b>D16</b></td><td>¿Se rellena el ánimo con datos del reloj?</td><td><b>No.</b> Lo objetivo se rellena, lo subjetivo se correlaciona (§5)</td><td>O1 y O5</td></tr>
+<tr><td><b>D17</b></td><td>¿Fitbit y Strava?</td><td><b>No por ahora.</b> Fitbit muere en septiembre; Strava prohíbe lo que hacemos. Ambos llegan de rebote vía Health Connect</td><td>Alcance de O3</td></tr>
+<tr><td><b>D18</b></td><td>¿Temperatura para confirmar fase?</td><td><b>Sí</b>, con la redacción de §6: confirma, no predice, y jamás como anticonceptivo</td><td>O4</td></tr>
+<tr><td><b>D19</b></td><td>¿Apps de reloj?</td><td><b>Después del lanzamiento</b>, y solo si el piloto lo pide. Son dos códigos nativos nuevos</td><td>O6</td></tr>
+</table>
+</div>
+
+<h3>10.2 · Diseño — cuatro pantallas nuevas</h3>
+<div class="card">
+<p>Cuatro piezas visuales, en orden de necesidad. Las tres primeras bloquean O1.</p>
+<table>
+<tr><th>Pieza</th><th>Qué tiene que resolver</th><th>Cuidado con</th></tr>
+<tr><td><b>Antesala del permiso</b></td><td>Explicar POR QUÉ pedimos cada cosa <i>antes</i> de que salte el diálogo de iOS. Una sola oportunidad: si dice que no, iOS no vuelve a preguntar</td><td>Que no parezca un trámite. Es el momento en que se gana o se pierde la confianza</td></tr>
+<tr><td><b>Estado de conexión</b></td><td>En «Dispositivos conectados»: conectado / sin permiso / no disponible en este teléfono, y la última sincronización</td><td>«No disponible» no es un error — un iPhone sin reloj sigue dando sueño y pasos</td></tr>
+<tr><td><b>Tarjeta de sugerencia</b></td><td>«Tu reloj dice que dormiste 7 h 20. ¿Lo anotamos?» con aceptar o descartar</td><td>Tiene que verse claramente como una <b>propuesta</b>, no como un dato ya guardado</td></tr>
+<tr><td><b>Tarjeta de patrón</b> (O5)</td><td>Contar una correlación de sus propios datos en una frase</td><td>Nunca en tono de diagnóstico ni de juicio. Un espejo, no un juez</td></tr>
+</table>
+<p style="font-size:13.5px">Formato: como siempre, pack del builder. Todo lo nuestro se inyecta después como bloque registrado.</p>
+</div>
+
+<h3>10.3 · Lógica — seis reglas que hay que fijar</h3>
+<div class="card">
+<p>Son decisiones de producto disfrazadas de detalles técnicos. Si no las fijamos nosotras, las fija el código por accidente.</p>
+<table>
+<tr><th>#</th><th>Regla</th><th>Propuesta</th></tr>
+<tr><td><b>L1</b></td><td>¿La sugerencia se aplica sola o requiere un toque?</td><td><b>Un toque.</b> Que aparezca algo en su diario sin que ella lo apruebe rompe la regla de §5</td></tr>
+<tr><td><b>L2</b></td><td>Umbrales de sueño → etiqueta</td><td>&lt;4 h muy pobre · 4–5,5 inquieto · 5,5–7 normal · 7–8,5 reparador · &gt;8,5 profundo. <b>Revisar con criterio nutricional</b></td></tr>
+<tr><td><b>L3</b></td><td>Si dos fuentes dan el mismo dato distinto</td><td>Gana la plataforma del teléfono; guardamos ambas con su origen</td></tr>
+<tr><td><b>L4</b></td><td>Cuánto histórico leemos la primera vez</td><td><b>30 días.</b> Suficiente para ver un ciclo completo, poco para ser invasivo</td></tr>
+<tr><td><b>L5</b></td><td>Qué pasa si retira el permiso</td><td>Se deja de leer y se marca la fecha. <b>¿Se borra lo ya leído?</b> — decisión vuestra, tiene coste y tiene lectura legal</td></tr>
+<tr><td><b>L6</b></td><td>¿Contamos su actividad real en la racha?</td><td><b>Sí</b>, si aceptó la sugerencia. Una racha que ignora lo que hizo de verdad desmotiva</td></tr>
+</table>
+<div class="risk"><b>L5 es la que más pesa.</b> Borrar lo ya leído al revocar es lo más respetuoso y lo que menos explicaciones exige ante el RGPD; conservarlo mantiene sus gráficas históricas intactas. No hay respuesta obvia y no debería decidirla yo.</div>
+</div>
+
+<div class="pie">NutriSync Collective · Propuesta 33 · Epic O — Wearables · 5 de agosto de 2026<br>
+Las cifras de esfuerzo son estimaciones de sprint, no compromisos. Las citas de las reglas de Apple, Google y Strava se comprobaron en sus fuentes el 5-ago-2026 y conviene revalidarlas antes de construir.</div>
+</div>
+<div data-ns-lang="en"><h1>⌚ Proposal 33 · Wearables</h1>
+<div class="sub">Epic O — connecting NutriSync to the phone's health platforms: what we read, what it feeds, what we must NOT do, and in what order · for founder decision · 5 Aug 2026</div>
+
+<h2>1 · Executive summary</h2>
+<div class="card">
+<p>Today NutriSync asks each woman to type in what her phone already knows: whether she slept, whether she moved, whether her period started. Connecting to <b>Apple Health</b> and <b>Health Connect</b> removes that chore and, more importantly, improves the thing that matters most: <b>knowing which phase of her cycle she's in</b>. The wrist temperature a watch measures overnight confirms ovulation better than any calendar can.</p>
+<div class="reco"><b>Recommendation:</b> ship <b>only the two phone platforms before 8 Oct</b> — Apple Health first, Health Connect next. <b>Drop Fitbit and Strava</b> for now (reasons in §3). Watch apps come <b>after launch</b>, and only if the pilot asks for them.</div>
+</div>
+
+<h2>2 · What already exists</h2>
+<div class="card">
+<p>This doesn't start from zero. From an earlier session (Epic E) we already have:</p>
+<ul>
+<li><b><code>health_signal</code> table</b> with a unique key on (user, provider, type, timestamp): the same sample cannot land twice, however many times we sync.</li>
+<li><b><code>connected_providers</code> table</b> recording consent and its withdrawal, with timestamps. Auditable.</li>
+<li><b>"Connected devices" screen</b> in Settings, behind explicit consent.</li>
+<li><b>A registry of 9 providers</b> with their declared scopes.</li>
+</ul>
+<p>And from this session, the <b>data contract</b>: the translation from what the platforms hand us into our model, written as pure functions with 21 unit tests. What's missing is the native connector, not the scaffolding.</p>
+</div>
+
+<h2>3 · Two findings that change the plan</h2>
+
+<h3>3.1 · Fitbit shuts down in September</h3>
+<div class="risk"><b>Google is closing the Fitbit Web API in September 2026</b> — weeks before our launch. Its replacement, the Google Health API, classifies every scope as <i>Restricted</i>: they require a Google privacy and security review, which in turn requires a legal entity and a published privacy policy. Without the company incorporated, that review can't be passed.</div>
+<p><b>Consequence:</b> building Fitbit today means building something that dies on its own. And there's a better reason not to: <b>anyone with a Fitbit can push their data into Health Connect</b>, so the Android integration already covers it indirectly.</p>
+
+<h3>3.2 · Strava's contract fights our product</h3>
+<div class="risk">Strava's 2026 API agreement <b>forbids using their data to train AI or machine-learning models</b> — which is precisely Proposal 32 — and <b>forbids showing a user's Strava data to anyone but herself</b>, which rules out any community, coaching or comparison feature. It also now requires a paid subscription for the standard developer tier.</div>
+<p><b>Consequence:</b> for an app whose value lies in reasoning over data, that contract is a wall. Strava is a social network for sport; we are not. And people who log in Strava usually also push to Apple Health or Health Connect: the indirect route works without signing anything.</p>
+
+<h3>3.3 · A distinction worth making explicit</h3>
+<div class="card">
+<p>"Apple Watch app" and "Apple Health" sound like the same thing. They are two different projects:</p>
+<table>
+<tr><th></th><th>Apple Health (HealthKit)</th><th>Apple Watch app</th></tr>
+<tr><td><b>What it is</b></td><td>A native dependency in the iOS app we already have</td><td>A separate application with its own interface</td></tr>
+<tr><td><b>Stack</b></td><td>The same one: Expo + EAS build</td><td><b>Swift + SwiftUI</b>, new code sharing nothing</td></tr>
+<tr><td><b>Android equivalent</b></td><td>Health Connect, also native</td><td><b>Kotlin + Compose</b> for Wear OS: a third codebase</td></tr>
+<tr><td><b>What it buys</b></td><td>The data, without anyone typing it</td><td>The convenience of logging from the wrist</td></tr>
+</table>
+<p>The data comes from the phone's health platform, <b>not from the watch app</b>. An Apple Watch already writes into Apple Health without us doing anything. That's why watch apps are a convenience project, not a data project — and why they come later.</p>
+</div>
+
+<h2>4 · What we read, and why</h2>
+<div class="card">
+<p>The rule: <b>every signal we request must have a concrete use in the app</b>. The text on the right is literally what she will read in the permission dialog. If we can't write it, we don't ask for it — asking "just in case" is what makes people decline everything.</p>
+<table>
+<tr><th>Signal</th><th>What it does for her</th><th></th></tr>
+<tr><td><b>Sleep</b></td><td>Fills in your rest for the day without you typing it</td><td>essential</td></tr>
+<tr><td><b>Workouts</b></td><td>Marks the movement you've already done on your daily ring</td><td>essential</td></tr>
+<tr><td><b>Menstrual flow</b></td><td>If you already log your period in Health, you don't repeat it here</td><td>essential</td></tr>
+<tr><td><b>Wrist temperature</b></td><td>The post-ovulation rise confirms which phase you're in</td><td>optional</td></tr>
+<tr><td><b>Active energy</b></td><td>Tunes nutrition guidance to what you actually burn</td><td>optional</td></tr>
+<tr><td><b>Steps</b></td><td>Tells an active day from a sedentary one</td><td>optional</td></tr>
+<tr><td><b>Resting heart rate</b></td><td>A recovery signal: it rises when the body is asking for rest</td><td>optional</td></tr>
+<tr><td><b>Heart rate variability</b></td><td>Tracks with cycle phase and helps decide intensity</td><td>optional</td></tr>
+</table>
+<p>Only three are essential. With those three the integration already earns its place; everything else can be declined without breaking anything.</p>
+</div>
+
+<h2>5 · The rule that governs everything: objective fills, subjective correlates</h2>
+<div class="ojo">
+<p><b>A watch measures facts, not feelings.</b> It can know how many minutes you slept; it cannot know whether you rested. It can measure your heart rate variability; it cannot know how you are.</p>
+<p>We <i>could</i> technically fill in mood from resting heart rate and HRV. <b>We must not.</b> The day a woman feels perfectly fine and the app tells her she's in a bad mood, we have lost her trust for good. And the deeper risk is worse: <b>mood plus cycle</b> is exactly the terrain where a product like ours can end up reinforcing the stereotype that "you're like this because your period is coming". With a number behind it, that sounds like science. It isn't.</p>
+</div>
+<table>
+<tr><th>Measured signal</th><th>Feeds</th><th>How</th></tr>
+<tr><td>Sleep</td><td><code>sleep_quality</code></td><td>A suggestion she can change</td></tr>
+<tr><td>Workout</td><td>Movement ring</td><td>Direct</td></tr>
+<tr><td>Flow</td><td><code>flow_level</code></td><td>Direct</td></tr>
+<tr><td>Active energy, steps</td><td>Nutrition guidance</td><td>Calibrates portions to what she burns</td></tr>
+<tr><td>Temperature</td><td>Phase confirmation (Epic M)</td><td>The highest-value signal</td></tr>
+<tr><td>HRV, resting heart rate</td><td>Recommended intensity</td><td>"Your body is asking for less today", never "you're sad"</td></tr>
+<tr><td><b>Mood, perceived energy</b></td><td><b>Nothing. She writes them</b></td><td>Used as the axis that explains patterns</td></tr>
+</table>
+<div class="reco"><b>Where the real value sits:</b> the mood she logs, crossed with what the watch measures, lets us tell her something she can't see on her own — <i>"across your last three cycles, on the days you slept under six hours you logged lower energy"</i>. That's a pattern from her own data, not a machine telling her how she feels. It's the difference between a mirror and a judge.</div>
+
+<h2>6 · The signal that moves the needle: temperature and phase</h2>
+<div class="card">
+<p>The core of NutriSync is syncing nutrition and movement to cycle phase. Today phase is estimated from the calendar, with all the uncertainty that carries in irregular cycles. Watches with a temperature sensor (Apple Watch Series 8 and later, and several Wear OS models) measure wrist temperature during sleep; the <b>sustained rise after ovulation</b> is a real physiological signal.</p>
+<div class="risk"><b>A warning to lock in before building it:</b> temperature <b>confirms</b> that ovulation happened — it <b>does not predict</b> it. It is retrospective. Any wording that hints it can be used to avoid pregnancy is both a legal and a human problem. Our legal documents already address this and the wording must stay consistent.</div>
+<p>Used well, it improves phase accuracy without promising anything we can't deliver: "your cycle behaved as expected", or "you ovulated later than predicted this time, so we've adjusted".</p>
+</div>
+
+<h2>7 · What the law and the stores require</h2>
+<div class="card">
+<ul>
+<li><b>GDPR Article 9.</b> Health data is a special category. It requires explicit, separate, revocable consent. Already solved in the model: <code>connected_providers</code> records when consent was given and when it was withdrawn.</li>
+<li><b>Apple's rule (App Store 5.1.3).</b> HealthKit data <b>may not be used for advertising, marketing or data mining</b>, nor shared with third parties for those purposes. Only to improve the user's health management, or for health research with permission. This <b>constrains the business model</b>: it closes the door on monetising health data, now and permanently.</li>
+<li><b>Consequence for AI (Proposal 32).</b> If context is ever sent to a model, it cannot carry identifiable data. Already declared in Proposal 32 §2 and it still holds.</li>
+<li><b>Minimisation.</b> We read short windows and aggregates, not her entire life history. Less data means less risk and less to explain.</li>
+</ul>
+</div>
+
+<h2>8 · Phases and effort</h2>
+<div class="fase"><b>O1 · Apple Health, read</b> — permissions, first sync, suggestions in the daily log and the ring. <span class="kpi">≈1 sprint</span> <span class="kpi">requires a native build</span> <span class="kpi">IN PROGRESS</span></div>
+<div class="fase"><b>O2 · Apple Health, write</b> — push the period she logs here back into Health. Reciprocity: the app doesn't only take. <span class="kpi">≈2 days</span></div>
+<div class="fase"><b>O3 · Health Connect (Android)</b> — same logic, different connector. Covers Samsung Health, and indirectly Fitbit and Garmin, because they write there. <span class="kpi">≈1 sprint</span></div>
+<div class="fase"><b>O4 · Temperature → phase</b> — ovulation confirmation inside Epic M. <span class="kpi">≈1 sprint</span> <span class="kpi">depends on O1</span></div>
+<div class="fase"><b>O5 · Personal patterns</b> — correlations between what she logs and what the watch measures. Fits with Epic N. <span class="kpi">after launch</span></div>
+<div class="fase" style="opacity:.75"><b>O6 · Watch apps (watchOS and Wear OS)</b> — two new native codebases, two store reviews, two release cycles. <span class="kpi">after launch</span> <span class="kpi">only if the pilot asks</span></div>
+
+<h2>9 · Risks</h2>
+<table>
+<tr><th>Risk</th><th>Mitigation</th></tr>
+<tr><td>She declines permissions and the app looks broken</td><td>The three essential signals are asked for with their reason; everything else is optional and the app works without any of it</td></tr>
+<tr><td>Contradictory data (she says one thing, the watch another)</td><td>She wins, always. The watch fills gaps, it doesn't correct anyone</td></tr>
+<tr><td>Cheap watches produce poor data</td><td>We store the provider of every sample: a noisy source can be switched off without touching the rest</td></tr>
+<tr><td>Syncing drains battery</td><td>No background reads in phase 1: we sync when the app opens</td></tr>
+<tr><td>Apple rejects the app over permission wording</td><td>Written to explain <i>what for</i>, not <i>what</i>. Reviewed before submission</td></tr>
+</table>
+
+<h2>10 · What we need from you</h2>
+<p>Three different things, and they shouldn't be blurred: <b>decisions</b> (direction), <b>design</b> (how it looks and feels) and <b>logic</b> (what the system does when nobody is watching). Without all three, O1 ships half-built.</p>
+
+<h3>10.1 · Decisions — founders</h3>
+<div class="card">
+<table>
+<tr><th>#</th><th>Decision</th><th>Recommendation</th><th>Blocks</th></tr>
+<tr><td><b>D15</b></td><td>Wearables before or after 8 Oct?</td><td><b>Only O1–O3 before</b> (the two phone platforms). It capitalises on the pilot, which already has iPhones in hand</td><td>All of Epic O</td></tr>
+<tr><td><b>D16</b></td><td>Should mood be filled from watch data?</td><td><b>No.</b> Objective fills, subjective correlates (§5)</td><td>O1 and O5</td></tr>
+<tr><td><b>D17</b></td><td>Fitbit and Strava?</td><td><b>Not for now.</b> Fitbit dies in September; Strava forbids what we do. Both arrive indirectly via Health Connect</td><td>Scope of O3</td></tr>
+<tr><td><b>D18</b></td><td>Temperature for phase confirmation?</td><td><b>Yes</b>, with the wording in §6: it confirms, it doesn't predict, and never as contraception</td><td>O4</td></tr>
+<tr><td><b>D19</b></td><td>Watch apps?</td><td><b>After launch</b>, and only if the pilot asks. They are two new native codebases</td><td>O6</td></tr>
+</table>
+</div>
+
+<h3>10.2 · Design — four new screens</h3>
+<div class="card">
+<p>Four visual pieces, in order of need. The first three block O1.</p>
+<table>
+<tr><th>Piece</th><th>What it must solve</th><th>Watch out for</th></tr>
+<tr><td><b>Permission pre-screen</b></td><td>Explain WHY we ask for each thing <i>before</i> the iOS dialog appears. One shot only: if she declines, iOS never asks again</td><td>It must not feel like paperwork. This is the moment trust is won or lost</td></tr>
+<tr><td><b>Connection state</b></td><td>In "Connected devices": connected / permission denied / not available on this phone, plus last sync</td><td>"Not available" is not an error — an iPhone without a watch still gives sleep and steps</td></tr>
+<tr><td><b>Suggestion card</b></td><td>"Your watch says you slept 7h20. Shall we log it?" with accept or dismiss</td><td>It must read clearly as a <b>proposal</b>, not as something already saved</td></tr>
+<tr><td><b>Pattern card</b> (O5)</td><td>Tell one correlation from her own data in a single sentence</td><td>Never in a diagnostic or judgemental tone. A mirror, not a judge</td></tr>
+</table>
+<p style="font-size:13.5px">Format: builder pack as always. Everything of ours is injected afterwards as a registered block.</p>
+</div>
+
+<h3>10.3 · Logic — six rules to lock down</h3>
+<div class="card">
+<p>These are product decisions dressed as technical details. If we don't settle them, the code settles them by accident.</p>
+<table>
+<tr><th>#</th><th>Rule</th><th>Proposal</th></tr>
+<tr><td><b>L1</b></td><td>Does a suggestion apply itself or need a tap?</td><td><b>A tap.</b> Anything appearing in her diary without her approval breaks the rule in §5</td></tr>
+<tr><td><b>L2</b></td><td>Sleep thresholds → label</td><td>&lt;4h very poor · 4–5.5 restless · 5.5–7 okay · 7–8.5 restful · &gt;8.5 deep. <b>To be reviewed against nutrition criteria</b></td></tr>
+<tr><td><b>L3</b></td><td>When two sources disagree on the same figure</td><td>The phone platform wins; we keep both with their origin</td></tr>
+<tr><td><b>L4</b></td><td>How much history do we read on first connect?</td><td><b>30 days.</b> Enough to see a full cycle, little enough not to feel invasive</td></tr>
+<tr><td><b>L5</b></td><td>What happens when she revokes permission</td><td>We stop reading and record the date. <b>Do we delete what was already read?</b> — your call; it has a cost and a legal reading</td></tr>
+<tr><td><b>L6</b></td><td>Does real activity count towards her streak?</td><td><b>Yes</b>, if she accepted the suggestion. A streak that ignores what she actually did is demotivating</td></tr>
+</table>
+<div class="risk"><b>L5 carries the most weight.</b> Deleting what was already read on revocation is the most respectful option and the easiest to defend under GDPR; keeping it preserves her historical charts intact. There is no obvious answer and it shouldn't be mine to make.</div>
+</div>
+
+<div class="pie">NutriSync Collective · Proposal 33 · Epic O — Wearables · 5 August 2026<br>
+Effort figures are sprint estimates, not commitments. The Apple, Google and Strava rules cited here were checked against their sources on 5 Aug 2026 and should be re-validated before building.</div>
+</div>
+</div>
+<script>
+/* ns-lang-switch · un solo documento, dos idiomas.
+   Bloques completos en vez de atributos por frase: el texto lleva tablas y
+   etiquetas dentro, y meterlas escapadas en un data-* es una fuente de errores
+   silenciosos. El idioma elegido se recuerda. */
+(function(){
+  var guardado = null;
+  try { guardado = localStorage.getItem('ns.doc.lang'); } catch(e) {}
+  var NSL = guardado || ((navigator.language||'en').toLowerCase().indexOf('es')===0 ? 'es' : 'en');
+  window.nsApply = function(){
+    document.querySelectorAll('[data-ns-lang]').forEach(function(n){
+      n.classList.toggle('on', n.getAttribute('data-ns-lang') === NSL);
+    });
+    var b = document.getElementById('lsw');
+    if (b) b.textContent = (NSL === 'es' ? 'EN' : 'ES');
+    document.documentElement.lang = NSL;
+  };
+  window.nsSwap = function(){
+    NSL = (NSL === 'es' ? 'en' : 'es');
+    try { localStorage.setItem('ns.doc.lang', NSL); } catch(e) {}
+    window.nsApply();
+  };
+  window.nsApply();
+})();
+</script>
+</body></html>

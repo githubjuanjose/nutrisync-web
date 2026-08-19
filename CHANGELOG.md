@@ -1,5 +1,99 @@
 # NutriSync — Release Notes / Change Log
 
+## 2026-08-06 — Home performance: bundled export retired (v11.56)
+
+**Root cause.** The 3,99 MB `index.html` and its multi-second «Unpacking…» were not a payload problem, they were a *packaging* problem: the export inlined every asset as a base64 manifest that the page had to re-parse and rebuild into the DOM on **every** visit. But the pack already ships the real `assets/` tree next to the HTML — the manifest was 3,4 MB of pure duplication. So neither option A nor B was needed: the fix is to stop bundling and let the browser do what it already does well.
+
+**What changed**
+- `index.html` **3,99 MB → 0,37 MB** (−90%) · `app.html` **0,85 MB → 0,21 MB**. No manifest, no unpack step, no «Unpacking…» splash. The template is plain markup the parser handles directly.
+- Assets now load as normal files from `assets/` — fetched in parallel, cached individually, and **reused across navigations**. Returning to the home is an HTTP-cache hit with zero unpack.
+- **New required file in the pack: `publish/support.js`** (69 KB, the runtime that was previously inlined). It must sit next to `index.html` / `app.html`. Your `rm -rf publish && unzip -o …` flow picks it up automatically.
+- **React is now loaded by explicit `<script>` tags in `<head>`** instead of from inside the runtime — same two unpkg URLs, with SRI. Two wins: the download starts during HTML parse rather than after the runtime evaluates, and the URLs stay literal in the HTML so **anchors 2 and 3 of the contract keep matching**.
+- Added `preconnect` to `unpkg.com` and `fonts.gstatic.com`; the three founder photos are now `loading="lazy" decoding="async"` (below the fold).
+- **New `publish/_headers`** (Cloudflare Pages): HTML `must-revalidate`, `/assets/*` 30 days + `stale-while-revalidate`, `support.js` 7 days, `/i18n/*` 1 day.
+- **Bonus fix**: the 6 long-standing «asset not found: {{ … }}» export warnings are gone. Those were dynamic Figma paths the bundler could not inline; unbundled they resolve normally from `assets/figma/`.
+
+**Contract check (doc §2).** All 13 anchors verified present after the change — including the two React URLs, which briefly broke mid-work and were deliberately restored (see above). `#science`, `>Builders<` and the mailto anchors are unchanged; the 4 MIS-console anchors were not touched.
+
+**⚠ One thing to check on your side.** The React tags now carry `integrity` (SRI). If your layer rewrites those CDN URLs to `/assets`, the self-hosted copy must be **byte-identical** to unpkg's or the browser will block it — otherwise strip the `integrity` and `crossorigin` attributes as part of the rewrite.
+
+## 2026-08-05 — Wearables v2 review fixes (v11.55)
+- **«What we read» heading now renders** — the neutral label replacing the «essentials» framing (brief point 1) was authored in EN/ES but never referenced by the template, so the three needed signals sat under no heading. Added above the signal list in both languages.
+- **ES catalogue fixes on the Health Flows gallery**: the `wearstatus` card subtitle still carried the stale v1 key (`Connected · off · partial · N/A`) and fell through to English — now «Conectado · solicitado · sin conectar · N/D»; and the new privacy-centre card was untranslated — now «Tus datos de salud / Centro de privacidad · pausar, desconectar, borrar».
+- Removed dead `wsActionStyle` left over from the v1 status card.
+
+## 2026-08-05 — Wearables **v2**: changes from the legal review (v11.54)
+
+Implements the brief «Wearables v2 — cambios tras la revisión legal» (5-ago-2026), which **supersedes** the v1 brief shipped in v11.52/53. Still **mobile-app** screens, so they live in the phone prototype (Health Flows → Mobile app prototype); the web payload is unchanged and **no pack sentinel** applies.
+
+### 1 · Permission antechamber — now the critical piece
+iOS shows **one app-level usage string**, not one per signal, so all granular explanation had to move into our own screen. Rebuilt accordingly:
+- **«Essentials» framing dropped** (it implied the app is useless without them, which undermines free consent). The three needed signals now sit under a neutral **«What we read»**, each still with its why.
+- The intro states plainly that it is **optional and NutriSync works fully without it**.
+- **Optional signals are now per-signal switches, all off by default**, each with its own why: Steps, Resting heart rate, Heart-rate variability, **Active energy** (new) and **Temperature**. **Body weight removed.**
+- The two **verbatim legal sentences** are shipped unaltered, in their own highlighted band: «It is an estimate from your device, not an exact measurement.» (Active energy) and «It does not detect ovulation and is not a contraceptive method.» (Temperature). Temperature also carries a **«Later phase»** tag and no longer claims to confirm ovulation or phase.
+- New disclosure block: **who holds the data** (NutriSync Collective, Madrid + contact address), **how long we keep it** (while the account is open; 30 days from backups), the right to **disconnect and delete at any time**, and a link to the **full privacy policy**.
+- Trust line rewritten to lead with **«Read-only»** — reciprocity with Apple Health is gone.
+- **18+**: a single quiet line, «Health connection is available from 18.» Per the brief there is **no rejection screen** — under 18 the option simply never appears in Settings, and nothing is explained.
+- Consent is now framed as being asked **when a specific feature is switched on**, not in onboarding.
+
+### 2 · Connection status — states corrected for what we can actually know
+Apple does not expose per-type read permission, so the old «Partly connected / reading sleep ✓» states were claims we cannot verify. Replaced with the four honest states:
+- **Connected** — «We have asked for access and data is coming through.»
+- **Requested, no data yet** — may not have been allowed, or there may be no data yet; says outright that **we can't see which signals were allowed**.
+- **Not connected** — not switched on; everything works the same.
+- **Not available** — the phone has no health platform.
+- **Always visible, without hunting**: last sync, **what we ask for**, and **Disconnect** + **Delete what we have read**.
+- Iconography updated to the app's stroke set: ✓ connected · **clock** requested · **watch** not connected · **slash** not available (the old warning/half-circle marks are retired).
+
+### 3 · Suggestion card — unchanged (proposal → accepted → dismissed).
+
+### 4 · Pattern card — unchanged; still one correlation sentence from her own data, never about ovulation, fertility or pregnancy.
+
+### 5 · New: privacy centre (`wearprivacy`)
+Requested by the legal report; new gallery card «Your health data». Shows **which signals are connected and since when**, **when we last read and from which source**, **what we keep and for how long**, and the three controls: **Pause reading** (stateful) · **Disconnect** · **Delete everything we have read**, with the reassurance that her own entries stay.
+
+**Copy**: full EN + ES for all five screens (~45 new keys `wp*`, `ws*`, `wv*`). Other languages are translated by the product team.
+
+**For development — native strings, do not miss:** the iOS permission text in build 0.20.0 **must change in 0.21.0** — remove the write description, adjust the read one. Those live in `app.json` (HealthKit plugin), are **native and do not travel over-the-air**, so the build has to be redone.
+
+**Hub decisions touched:** J2 (18+), S4/S5 (corrected copy), D18 (temperature reinterpreted), L7 (read-only), L8 (consent per feature), L10 (age check).
+
+## 2026-08-05 — Wearables iconography on the app's icon set (v11.53)
+- The four wearables screens now use the app's own stroke-icon system (`icon()`, `currentColor`) instead of emoji/text characters, so they match the sidebar and the Connected-apps rows: **watch** replaces ⌚ (suggestion card, pattern card, no-watch note), **shield-with-check** replaces 🔒 (trust line), a new **clock** replaces 🕑 (last-sync line).
+- Connection-state marks: **Connected** keeps `✓` (established across the app); **Permission off** → new `warn` triangle, **Partly connected** → new `half` circle, **Not available** → new `slash` circle — the grey em-dash that read as a missing glyph is gone. All four inherit the state colour inside the existing gradient ring.
+- `icon(name, size)` gained an optional size argument (thicker stroke under 18px) for these inline uses; existing 26px calls unchanged.
+
+## 2026-08-05 — Wearables (Epic O): the four screens (v11.52)
+
+Answers the Design brief «Wearables (Epic O) — cuatro pantallas» (doc 12, added 5-ago-2026). These are **mobile-app screens**, so they ship in the **phone prototype** inside the marketing site (Flujos de salud → App móvil · prototipo) as the design reference for the mobile build. The web app is untouched: it has no access to the phone's health platform, so **the engine payload does not change** and no pack sentinel was added.
+
+Both design rules from the brief are honoured throughout: **objective data is proposed, subjective data is always hers** (nothing from the watch is ever presented as already saved, and mood is never inferred), and **the permission has a single chance** — hence the weight given to screen 1.
+
+**1 · Permission antechamber** — `connect` screen rebuilt (was a generic 4-item permission list; the old flat «NutriSync will read the following» copy is retired).
+- The **three essential signals each carry their why**, verbatim from the brief: Sleep → «Fills in your rest for the day without you typing it»; Workouts → «Ticks off the movement you have already done in today's ring»; Menstrual flow → «If you already log your period in Health, you don't repeat it here».
+- The **five optional signals** (Steps, Resting heart rate, HRV, Skin temperature, Body weight) sit behind a disclosure — «Five more, all optional» / «Cinco más, todas opcionales» — with the note that skipping any of them breaks nothing.
+- **Trust line** (green, lock icon): can disconnect whenever she likes, what we read stays in her account, never sold, and **we never write back to Health**.
+- **Never-guess line**: «Your mood is always yours to write. We never guess how you feel from a watch.»
+- Tone kept in the app's voice, not a contract; primary CTA is «Continue» (the system dialog follows), secondary «Not now».
+
+**2 · Connection status** — new screen `wearstatus` (gallery card «Connection status · Connected · off · partial · N/A»), reachable from Connected apps. **Four states, none styled as an error**, each with its own iconography and palette:
+- **Connected** ✓ green — last-sync line + Disconnect.
+- **Permission off** ! coral — explains her phone won't ask again and how to switch it back on in Settings, closing with «nothing else changes in NutriSync».
+- **Partly connected** ◐ amber — names what arrives and what doesn't, and says logging her period by hand «works fine».
+- **Not available** — neutral grey, deliberately not coral: «Everything in NutriSync still works — you just type what it would have filled in.»
+- Footer note on every state: **«No watch needed — your phone alone tracks sleep and steps»**, per the brief's warning not to imply a watch is required.
+
+**3 · Suggestion card** — in the phone NutriLog, above Nutri Basics. Deliberately **not** styled like a filled field: dashed violet border, tinted background, a «Suggestion» tag and the watch glyph, so it reads as pending. Copy: «Your watch says you slept 7 h 20 min. Shall we log it as restorative?» with **Yes, log it** / **Not now**. Three states: *proposal* → *accepted* (collapses into an ordinary logged row, green tick, «Change» to undo) → *dismissed* (disappears for the day).
+
+**4 · Pattern card** — in the phone Progress screen, below the baseline block. One sentence from her own data: «Across your last three cycles, on the days you slept under six hours you logged less energy» — correlation, never causation — plus «See what's behind this» and the framing note «Your own data — a mirror, not a diagnosis.»
+
+**Copy** — full EN + ES for all four screens in the built-in prototype strings (~30 new keys: `wp*`, `ws*`, `sug*`, `pat*`), ready for the mobile team to carry into the 14 language packs. Gallery labels translated too.
+
+**Note for the mobile team:** the brief's own internal note applies — the permission copy also lives in the native build (`app.json` → HealthKit plugin). If this wording is adopted, it must be updated there **and the build redone**; those are native strings and don't travel over-the-air.
+
+**Priority as requested:** screens 1–3 unblock O1 and are complete; screen 4 shipped alongside them.
+
 ## 2026-08-02 — Web app metrics: native selects + metric/imperial toggle (v11.51 · DELTA 2)
 Onboarding body-metrics step, follow-up to v11.50. Valid-by-construction native `<select>` controls (iOS renders the system wheel; desktop a dropdown); `type="date"` kept for dates.
 - **Numeric inputs → native selects**: Height (90–230), Weight (30.0–250.0 by 0.5), Cycle length (15–90, keeps the 21–45 soft-band confirm), Period duration (1–14). The numeric value is saved (not the label); current values stay preselected when editing.

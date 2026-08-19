@@ -1,0 +1,402 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compliance · Cumplimiento normativo — NutriSync</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.55}
+.w{max-width:1080px;margin:0 auto;padding:26px 20px 90px}
+h1{font-size:23px;margin:0 0 4px}
+h2{font-size:16px;margin:26px 0 4px;display:flex;align-items:center;gap:8px}
+p.lead{color:#6E655D;font-size:13.5px;margin:0 0 14px}
+.kpis{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+.kpi{flex:1;min-width:150px;background:#fff;border:1px solid #EFE3D7;border-radius:12px;padding:10px 13px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:2px}
+.kpi .l{font-size:10.5px;color:#8A7F78;text-transform:uppercase;letter-spacing:.5px}
+.kpi .v{font-size:17px;font-weight:800}
+.kpi .s{font-size:11px;color:#8A7F78}
+.card{background:#fff;border:1px solid #EFE3D7;border-radius:12px;padding:14px 16px;margin:10px 0}
+.docs{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+.doc{flex:1;min-width:230px;background:#fff;border:1px solid #EFE3D7;border-radius:12px;padding:12px 14px;text-decoration:none;color:#241D1A;display:flex;gap:10px;align-items:center}
+.doc:hover{border-color:#F3C8B8;background:#FFF6F2}
+.doc .ic{font-size:22px}
+.doc .t{font-weight:700;font-size:12.8px;line-height:1.35}
+.doc .m{font-size:11px;color:#8A7F78}
+.estado{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 2px}
+.paso{font-size:11.5px;border-radius:999px;padding:3px 11px;border:1px solid #EFE3D7;background:#fff;color:#8A7F78}
+.paso.done{background:#E8F5EE;color:#0F6E56;border-color:#BFE3D2;font-weight:700}
+.paso.now{background:#FFF1EC;color:#C73A20;border-color:#F3C8B8;font-weight:800}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin:8px 0}
+th{font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:#8A7F78;text-align:left;border-bottom:1px solid #EFE3D7;padding:7px 8px}
+td{border-bottom:1px solid #F4EEE6;padding:7px 8px;vertical-align:top}
+.si{font-weight:800;color:#C73A20;white-space:nowrap}
+.fut{font-weight:700;color:#B7791F;white-space:nowrap}
+.no{color:#8A7F78;white-space:nowrap}
+.ver{background:#FFF1EC;border:2px solid #E8472A;border-radius:12px;padding:13px 15px;font-size:13.2px;color:#8A2A18;margin:12px 0;font-weight:600}
+.avisos li{margin:6px 0;font-size:12.8px}
+.pill{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#EDE9FE;color:#5B21B6;vertical-align:middle}
+.mut{color:#8A7F78;font-size:11.5px}
+.next li{margin:5px 0;font-size:13px}
+a{color:#C05621}
+</style></head><body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+/* r16b: la pestaña activa por CLASE con !important — tercera red por si algo
+   pisa el estilo en línea. La pone markActive() y el mini-marcador del final. */
+#ns-hub-navbar .nsnb-tab.on{background:linear-gradient(135deg,#FF7600,#FD400C)!important;color:#fff!important;font-weight:800!important;border-color:#FD400C!important;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)!important}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+.nsnb-tab{cursor:grab}
+.nsnb-tab.nsnb-drag{opacity:.35;cursor:grabbing}
+#nsnb-reset{display:none}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Web de marketing / marketing site"
+     aria-label="Web de marketing" style="text-decoration:none">🏠</a>
+  <a class="nsnb-btn" href="https://admin.nutrisynccollective.com" title="StartUp Admin (contabilidad del build)"
+     aria-label="StartUp Admin" style="text-decoration:none">🛠</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Competitive" href="/hub/competitive.html">🥊 Competencia</a><a class="nsnb-tab nsnb-g1" data-en="Build Roadmap → Go Live" href="/hub/launch-plan.html">🚀 Build Roadmap → Go Live</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync Sprint Planning" href="/hub/backlog-dev.html">🗂 NutriSync Sprint Planning</a><a class="nsnb-tab nsnb-g4" data-en="Release Plan" href="/hub/release-plan.html">🚢 Releases</a><a class="nsnb-tab nsnb-g4" data-en="Compliance" href="/hub/compliance.html">🛡 Compliance</a><a class="nsnb-tab nsnb-g4" data-en="Ideation" href="/hub/roadmap.html">💡 Ideation</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g5" data-en="Documentation" href="/hub/documentation/index.html">📄 Documentación</a><a class="nsnb-tab nsnb-g5" data-en="ERP User Guide" href="/hub/user-guide.html">📖 Guía ERP</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14b (feedback Juanjo): idioma con CONMUTADOR visible y persistente.
+     localStorage ns_lang ('es'|'en') manda; sin él, el navegador decide.
+     Las páginas con data-i leen la misma clave — un idioma, todas las superficies. */
+  function nsLang(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pintaIdioma(){
+    var en=nsLang()==='en';
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      if(!a.getAttribute('data-es'))a.setAttribute('data-es',a.textContent.trim());
+      var em=a.getAttribute('data-es').split(' ')[0];
+      a.textContent=en?(em+' '+a.getAttribute('data-en')):a.getAttribute('data-es');});
+    var b=document.getElementById('nsnb-lang');if(b)b.textContent=en?'ES':'EN';
+  }
+  (function(){
+    var brand=document.querySelector('#ns-hub-navbar .nsnb-btn');
+    if(brand&&!document.getElementById('nsnb-lang')){
+      var b=document.createElement('a');b.id='nsnb-lang';b.className='nsnb-btn';b.href='#';
+      b.title='Cambiar idioma / switch language';
+      b.onclick=function(e){e.preventDefault();
+        try{localStorage.setItem('ns_lang',nsLang()==='en'?'es':'en');}catch(err){}
+        pintaIdioma();
+        document.dispatchEvent(new CustomEvent('ns-lang'));
+        if(typeof relayout==='function')relayout();
+        return false;};
+      brand.parentNode.insertBefore(b,brand);
+    }
+    pintaIdioma();
+    /* r14e: pintor data-i UNIVERSAL — cualquier página del hub con data-i="ES|EN"
+       (o data-i sin valor con "ES|EN" dentro) se vuelve bilingüe gratis. */
+    function pintaDataI(){
+      var en=nsLang()==='en';
+      document.querySelectorAll('[data-i]').forEach(function(n){
+        if(n.closest&&n.closest('#ns-hub-navbar'))return;
+        var src=n.getAttribute('data-i');
+        if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+        var p=src.split('|');
+        n.innerHTML=en?(p[1]||p[0]):p[0];});
+    }
+    document.addEventListener('ns-lang',pintaDataI);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',pintaDataI);
+    else pintaDataI();
+  })();
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  /* r16c (cazado POR JUANJO con el flash del clic): Cloudflare Pages sirve
+     URLs LIMPIAS — /hub/incidents.html se visita como /hub/incidents — así
+     que comparar con ".html" no casaba JAMÁS en carga de página. Se normaliza
+     quitando la extensión en LOS DOS lados. */
+  function nsLimpia(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';}
+  var here=nsLimpia(location.pathname.split('/').pop());
+  var dir=location.pathname.toLowerCase();
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : nsLimpia(f.split('/').pop())===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  /* r16: la marca se queda mientras estés en la página — se repinta al volver
+     del historial (bfcache), al recuperar el foco y al cambiar de pestaña del
+     navegador. Nada la apaga salvo navegar a otra página del hub. */
+  window.addEventListener('pageshow',function(){markActive();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)markActive();});
+  window.addEventListener('focus',function(){markActive();});
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  /* r14e (idea Juanjo): pestañas ARRASTRABLES — cada cual su orden, guardado
+     en este navegador (ns_tab_order). ↺ vuelve al orden de fábrica. */
+  (function(){
+    var KEY='ns_tab_order';
+    function filas(){return [document.getElementById('nsnb-r1'),document.getElementById('nsnb-r2')].filter(Boolean);}
+    function todas(){var t=[];filas().forEach(function(r){t=t.concat([].slice.call(r.querySelectorAll('.nsnb-tab')));});return t;}
+    var ORIG=todas().map(function(a){return a.getAttribute('href');});
+    function guardar(){try{localStorage.setItem(KEY,JSON.stringify(todas().map(function(a){return a.getAttribute('href');})));}catch(e){}
+      var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';}
+    function aplicar(orden){
+      var r1=document.getElementById('nsnb-r1');if(!r1)return;
+      var por={};todas().forEach(function(a){por[a.getAttribute('href')]=a;});
+      orden.forEach(function(h){if(por[h])r1.appendChild(por[h]);});
+      todas().forEach(function(a){if(orden.indexOf(a.getAttribute('href'))<0)r1.appendChild(a);});
+    }
+    try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&sv.length){aplicar(sv);
+      setTimeout(function(){var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';},0);}}catch(e){}
+    var drag=null;
+    todas().forEach(function(a){
+      a.setAttribute('draggable','true');
+      a.title=(a.title?a.title+' · ':'')+'Arrastra para reordenar / drag to reorder';
+      a.addEventListener('dragstart',function(e){drag=a;a.classList.add('nsnb-drag');
+        try{e.dataTransfer.setData('text/plain',a.getAttribute('href'));e.dataTransfer.effectAllowed='move';}catch(err){}});
+      a.addEventListener('dragend',function(){if(drag)drag.classList.remove('nsnb-drag');drag=null;});
+      a.addEventListener('dragover',function(e){e.preventDefault();if(!drag||drag===a)return;
+        var r=a.getBoundingClientRect(),antes=(e.clientX-r.left)<r.width/2;
+        a.parentNode.insertBefore(drag,antes?a:a.nextSibling);});
+      a.addEventListener('drop',function(e){e.preventDefault();guardar();relayout();});
+    });
+    filas().forEach(function(r){r.addEventListener('dragover',function(e){e.preventDefault();});
+      r.addEventListener('drop',function(e){e.preventDefault();if(drag){guardar();relayout();}});});
+    var brand=document.getElementById('nsnb-lang');
+    if(brand&&!document.getElementById('nsnb-reset')){
+      var rb=document.createElement('a');rb.id='nsnb-reset';rb.className='nsnb-btn';rb.href='#';rb.textContent='↺';
+      rb.title='Orden de pestañas original / reset tab order';
+      rb.onclick=function(e){e.preventDefault();try{localStorage.removeItem(KEY);}catch(err){}
+        aplicar(ORIG);rb.style.display='none';relayout();return false;};
+      brand.parentNode.insertBefore(rb,brand);
+    }
+  })();
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+<script>
+/* r16b · MINI-MARCADOR independiente de pestaña activa. Deliberadamente
+   separado y mínimo: si el script grande de la barra muere por lo que sea,
+   ESTE pinta igual. Solo compara el fichero de la URL con el href y pone la
+   clase .on (el CSS !important hace el resto). Se repite unos segundos por si
+   el reordenado o el motor mueven pestañas tarde. */
+(function(){
+  function marca(){
+    try{
+      /* r16c: Pages sirve URLs sin .html — normalizar ambos lados */
+      var lim=function(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';};
+      var here=lim(location.pathname.split('/').pop());
+      var esDoc=location.pathname.toLowerCase().indexOf('/documentation/')>-1;
+      document.querySelectorAll('#ns-hub-navbar .nsnb-tab').forEach(function(a){
+        var f=(a.getAttribute('href')||'').toLowerCase();
+        var on=esDoc ? f.indexOf('/documentation/')>-1 : lim(f.split('/').pop())===here;
+        a.classList.toggle('on',on);
+      });
+    }catch(e){}
+  }
+  marca();
+  var i=0,t=setInterval(function(){marca();if(++i>15)clearInterval(t);},700);
+  window.addEventListener('pageshow',marca);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar --><div class="w">
+
+<h1 data-i="🛡 Compliance · Cumplimiento normativo|🛡 Compliance">🛡 Compliance · Cumplimiento normativo</h1>
+<p class="lead" data-i="Protección de datos (RGPD/LOPDGDD) y financiación pública. Los documentos viven aquí, detrás del candado del hub — son confidenciales.|Data protection (GDPR) and public funding. Documents live here, behind the hub lock — they are confidential.">Protección de datos (RGPD/LOPDGDD) y financiación pública. Los documentos viven aquí, detrás del candado del hub — son confidenciales.</p>
+
+<div class="kpis">
+  <div class="kpi"><span class="l">DPD + consultoría RGPD</span><span class="v">1.500 €/año</span><span class="s">Audidat · pendiente decisión J5</span></div>
+  <div class="kpi"><span class="l">EIPD (art. 35 RGPD)</span><span class="v">REQUERIDA</span><span class="s">preliminar: 3 de 11 criterios YA (≥2 la exige)</span></div>
+  <div class="kpi"><span class="l">Financiación pública</span><span class="v">Pendiente SL</span><span class="s">Intelectium · solo honorarios de éxito</span></div>
+</div>
+
+<!-- ═══════════════ 1 · PROTECCIÓN DE DATOS ═══════════════ -->
+<h2 data-i="🛡 Protección de datos — propuesta Audidat (7-ago-2026)|🛡 Data protection — Audidat proposal (Aug 7, 2026)">🛡 Protección de datos — propuesta Audidat (7-ago-2026)</h2>
+
+<div class="estado">
+  <span class="paso done">✔ J1/J3: «esperar al gabinete» (5-ago)</span>
+  <span class="paso done">✔ Propuesta recibida (7-ago)</span>
+  <span class="paso now">→ Decisión J5 de las founders</span>
+  <span class="paso">Firma + designación DPD ante AEPD</span>
+  <span class="paso">Presupuesto EIPD (aparte) + EIPD</span>
+  <span class="paso">RAT · políticas · formación</span>
+</div>
+
+<div class="card">
+  <b>Qué incluye por 1.500,00 € anuales</b> (forma de pago: a determinar):
+  DPD externo certificado ante la AEPD (designación formal incluida), sistema de protección de datos completo (RAT, políticas, cláusulas, contratos con encargados), revisión web/LSSI-CE (privacidad, cookies), formación del personal, auditoría anual, atención de derechos de las interesadas, interlocución con la AEPD y <b>participación en la elaboración y validación de la EIPD</b>.
+  <div class="mut" style="margin-top:6px">⚠ La EIPD en sí lleva <b>presupuesto APARTE, pendiente de confirmación</b> — pedirlo en la firma. · Contacto: Pilar Rubalcaba · prubalcaba@audidat.com · 625 296 136 · Audidat 3.0 S.L. (CIF B02482545).</div>
+</div>
+
+<div class="docs">
+  <a class="doc" href="compliance-docs/audidat-propuesta-dpd-2026-08-07.pdf" target="_blank"><span class="ic">📄</span><span><span class="t">Propuesta técnica y económica — Consultoría PD + DPO/DPD</span><br><span class="m">Audidat · 7-ago-2026 · PDF · 317 KB</span></span></a>
+  <a class="doc" href="compliance-docs/aepd-lista-dpia-art-35-4.pdf" target="_blank"><span class="ic">📋</span><span><span class="t">Lista AEPD: tratamientos que requieren EIPD (art. 35.4)</span><br><span class="m">AEPD · 11 criterios · PDF · 75 KB</span></span></a>
+</div>
+
+<div class="card">
+  <b data-i="Checklist EIPD — los 11 criterios de la AEPD contra NutriSync (evaluación PRELIMINAR de ingeniería; la formal la hace el DPD)|DPIA checklist — the 11 AEPD criteria vs NutriSync (engineering PRELIMINARY assessment; the DPO does the formal one)">Checklist EIPD — los 11 criterios de la AEPD contra NutriSync (evaluación PRELIMINAR de ingeniería; la formal la hace el DPD)</b>
+  <table>
+    <tr><th style="width:28px">#</th><th>Criterio (resumen)</th><th style="width:90px">¿NutriSync?</th><th>Por qué</th></tr>
+    <tr><td>1</td><td>Perfilado o valoración de sujetos (hábitos, comportamiento)</td><td class="si">SÍ</td><td>Registro de hábitos alimentarios, ciclo, ánimo, movimiento — recomendaciones personalizadas por fase.</td></tr>
+    <tr><td>2</td><td>Decisiones automatizadas con efectos jurídicos o similares</td><td class="no">No</td><td>Las recomendaciones no impiden derechos, servicios ni contratos.</td></tr>
+    <tr><td>3</td><td>Observación / monitorización sistemática y exhaustiva</td><td class="si">SÍ</td><td>Registro diario continuo vía app con identificadores únicos de usuaria.</td></tr>
+    <tr><td>4</td><td>Categorías especiales (art. 9): datos de salud</td><td class="si">SÍ</td><td>El corazón del producto: ciclo menstrual, síntomas, peso, sueño.</td></tr>
+    <tr><td>5</td><td>Biométricos para identificación única</td><td class="no">No</td><td>Face ID valida EN el dispositivo (Apple); nosotros no tratamos la biometría.</td></tr>
+    <tr><td>6</td><td>Datos genéticos</td><td class="no">No</td><td>No se recogen.</td></tr>
+    <tr><td>7</td><td>Gran escala (criterios WP243)</td><td class="no">Hoy no</td><td>Piloto ~30 testers; revisar al crecer tras GA.</td></tr>
+    <tr><td>8</td><td>Asociación de bases de datos de tratamientos distintos</td><td class="fut">FUTURO</td><td>Se activará con wearables O1-O3 (HealthKit/Health Connect, S13).</td></tr>
+    <tr><td>9</td><td>Sujetos vulnerables (incl. menores de 14)</td><td class="no">No</td><td>Alta con DOB ≥16 años (decisión J2) — por encima del umbral de 14 de la lista.</td></tr>
+    <tr><td>10</td><td>Uso innovador / nuevas tecnologías</td><td class="fut">FUTURO</td><td>Con la IA de Epic N (Propuesta 32) cuenta como uso innovador sobre datos de salud.</td></tr>
+    <tr><td>11</td><td>Tratamientos que impidan ejercer derechos o usar un servicio</td><td class="no">No</td><td>Nada condiciona derechos; consentimiento y borrado ya operativos.</td></tr>
+  </table>
+  <div class="ver">Veredicto preliminar: 3 criterios cumplidos HOY (1 · 3 · 4) y 2 más en el roadmap (8 · 10). Con ≥2 la EIPD es <u>obligatoria y previa</u> a la puesta en producción del tratamiento → tiene que estar antes del lanzamiento del 8-oct. Encaja con lo que J3 ya apuntaba.</div>
+</div>
+
+<div class="card next">
+  <b data-i="Próximos pasos|Next steps">Próximos pasos</b>
+  <ol>
+    <li>Founders: resolver <a href="decisions.html">J5 en Decisiones</a> (recomendación: aceptar; el reloj de la EIPD corre hacia el 8-oct).</li>
+    <li>Al firmar: pedir <b>presupuesto de la EIPD</b> (va aparte) y fijar forma de pago (1.500 €/año).</li>
+    <li>Designación del DPD ante la AEPD (la gestiona Audidat) — resuelve J1 (responsable del tratamiento) en la práctica.</li>
+    <li>Contabilidad: 125 €/mes ya reflejados como compromiso en la hoja de costes; a los libros cuando llegue la primera factura (cuenta 5300 Legal y asesoría).</li>
+  </ol>
+</div>
+
+<!-- ═══════════════ 2 · FINANCIACIÓN PÚBLICA ═══════════════ -->
+<h2 data-i="🏛 Financiación pública — Intelectium (7-ago-2026) · pendiente de constitución de la SL|🏛 Public funding — Intelectium (Aug 7, 2026) · pending company incorporation">🏛 Financiación pública — Intelectium (7-ago-2026) · pendiente de constitución de la SL</h2>
+
+<div class="estado">
+  <span class="paso done">✔ Carta Acuerdo + roadmap recibidos (7-ago)</span>
+  <span class="paso now">→ Constitución de la SL (bloqueante)</span>
+  <span class="paso">Revisión y firma de la Carta Acuerdo</span>
+  <span class="paso">ENISA Emprendedoras Digitales (hasta 300 k€)</span>
+  <span class="paso">Cert. Empresa Emergente → CAM → CDTI</span>
+</div>
+
+<div class="card">
+  Es parte del <b>roadmap de lanzamiento/comercialización</b>: la financiación pública amplía runway sin diluir a las founders. Intelectium trabaja <b>solo a éxito</b> (sin setup fees ni retainers — excepción concedida a NutriSync). La línea estrella es <b>ENISA Emprendedoras Digitales</b> (préstamo participativo sin avales, hasta 300 k€ en etapa inicial), que encaja porque las founders lideran accionariado y dirección. <span class="pill">requiere SL constituida</span>
+</div>
+
+<div class="docs">
+  <a class="doc" href="compliance-docs/intelectium-carta-acuerdo-2026-08-07.pdf" target="_blank"><span class="ic">📄</span><span><span class="t">Carta Acuerdo — asesoramiento y consecución de financiación pública</span><br><span class="m">Intelectium · 7-ago-2026 · Estrictamente confidencial · PDF · 215 KB</span></span></a>
+  <a class="doc" href="compliance-docs/intelectium-roadmap-financiacion-2026-08.pdf" target="_blank"><span class="ic">🗺</span><span><span class="t">Roadmap de financiación pública NutriSync</span><br><span class="m">Intelectium · agosto 2026 · PDF · 4,4 MB</span></span></a>
+</div>
+
+<div class="card">
+  <b>Honorarios de éxito (resumen)</b>
+  <table>
+    <tr><th>Línea</th><th>Honorario</th><th>Cuándo</th></tr>
+    <tr><td>ENISA (coinversión)</td><td>5,5% hasta 300 k€ · 5,0% · 4,5% por tramos</td><td>Al primer desembolso</td></tr>
+    <tr><td>CDTI / CPP / RedIA / CAM / Torres Quevedo / Doct. Ind.</td><td>6,5%→6,0% (reembolsable sin garantías) · 9,0%→8,5% (subvención)</td><td>Al primer desembolso</td></tr>
+    <tr><td>Certificado Empresa Emergente</td><td>950 € fijos</td><td>Al obtenerlo (IS al 15%, stock options 50 k€…)</td></tr>
+    <tr><td>Sello Pyme Innovadora</td><td>300 € fijos</td><td>Tras CDTI PID</td></tr>
+    <tr><td>Bonif. personal investigador</td><td>1.250 € (≤2 personas) · 2.500 € (3-4) · 5.000 € (5-9)</td><td>Dos pagos/año</td></tr>
+    <tr><td>Deducciones fiscales I+D+i</td><td>10% del Informe Motivado (−50% si IMV ex-ante)</td><td>Al obtener el IM</td></tr>
+  </table>
+  <div class="mut">Calendario sugerido por Intelectium: ENISA en cuanto haya SL + capitalización · Cert. Emergente con la aceptación de ENISA (más simple) · Ayudas CAM línea 1/2 próxima convocatoria · CDTI Neotec 2027 (la de 2026 ya cerró; alternativa PID cuando haya un ejercicio contable) · RedIA Salud/CPP para la fase IA con hospitales (enero 2027).</div>
+</div>
+
+<div class="card avisos">
+  <b>⚠ Revisar ANTES de firmar</b>
+  <ul>
+    <li><b>Errata de otro cliente:</b> el Alcance dice «el asesoramiento a <i>Oryon technology</i>» — pedir que lo corrijan a NutriSync antes de la firma.</li>
+    <li><b>Exclusividad total</b> sobre todas las líneas del alcance mientras el contrato viva.</li>
+    <li><b>Clawback:</b> si nos retiramos tras presentar una solicitud → 80% de los honorarios; tras la aprobación → 100%. Si el organismo la rechaza → 0 €.</li>
+    <li><b>Vigencia indefinida:</b> rescindible desde el mes 12 con 60 días de preaviso; lo ya presentado devenga honorarios aunque se apruebe después de cancelar.</li>
+    <li>Facturas +IVA · pago a 15 días del primer desembolso de cada ayuda · mora automática (2%/mes).</li>
+  </ul>
+</div>
+
+<p class="mut" data-i="Los PDF se sirven solo dentro del hub (Cloudflare Access + sesión admin). No compartir fuera: ambos documentos son confidenciales.|PDFs are served only inside the hub (Cloudflare Access + admin session). Do not share externally: both documents are confidential.">Los PDF se sirven solo dentro del hub (Cloudflare Access + sesión admin). No compartir fuera: ambos documentos son confidenciales.</p>
+
+</div><script src="/hub/assets/page-help.js?v=e939f9f3"></script></body></html>

@@ -50,10 +50,23 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
 #ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
 #ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
 #ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+/* r16b: la pestaña activa por CLASE con !important — tercera red por si algo
+   pisa el estilo en línea. La pone markActive() y el mini-marcador del final. */
+#ns-hub-navbar .nsnb-tab.on{background:linear-gradient(135deg,#FF7600,#FD400C)!important;color:#fff!important;font-weight:800!important;border-color:#FD400C!important;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)!important}
 #ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
 #ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
 @media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
 @media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+.nsnb-tab{cursor:grab}
+.nsnb-tab.nsnb-drag{opacity:.35;cursor:grabbing}
+#nsnb-reset{display:none}
 </style>
 <div class="nsnb-app">
   <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
@@ -65,27 +78,16 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
   <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
   <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
   <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Web de marketing / marketing site"
+     aria-label="Web de marketing" style="text-decoration:none">🏠</a>
+  <a class="nsnb-btn" href="https://admin.nutrisynccollective.com" title="StartUp Admin (contabilidad del build)"
+     aria-label="StartUp Admin" style="text-decoration:none">🛠</a>
 </div>
 <div class="nsnb-strip">
   <nav class="nsnb-tabs" id="nsnb-tabs">
-    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a>
-      <a class="nsnb-tab" href="/hub/daily-ops.html">📋 Operación</a>
-      <a class="nsnb-tab" href="/hub/admin-mis-console.html">📊 MIS</a>
-      <a class="nsnb-tab" href="/hub/finance.html">💶 Finanzas</a>
-      <a class="nsnb-tab" href="/hub/pilot.html">🧪 Piloto</a>
-      <a class="nsnb-tab" href="/hub/pilot-planning.html">🗓 Plan piloto</a>
-      <a class="nsnb-tab" href="/hub/pilot-observability.html">📡 Obs. piloto</a>
-      <a class="nsnb-tab" href="/hub/feedback.html">💬 Feedback</a>
-      <a class="nsnb-tab" href="/hub/waitlist.html">📬 Waitlist</a>
-      <a class="nsnb-tab" href="/hub/documentation/index.html">📚 Docs</a>
-    <a class="nsnb-tab" href="/hub/translations.html">🌍 Traducciones</a>
-      <a class="nsnb-tab" href="/hub/review.html">🔎 Review</a>
-      <a class="nsnb-tab" href="/hub/prototypes.html">🧩 Prototipos</a>
-      <a class="nsnb-tab" href="/hub/development-planning-backlog.html">🗂 Backlog</a>
-      <a class="nsnb-tab" href="/hub/investors-business-case.html">🎯 Pitch</a>
-      <a class="nsnb-tab" href="/hub/access.html">🔑 Access</a>
-      <a class="nsnb-tab" href="/hub/mfa.html">🔐 MFA</a>
-    </div>
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Competitive" href="/hub/competitive.html">🥊 Competencia</a><a class="nsnb-tab nsnb-g1" data-en="Build Roadmap → Go Live" href="/hub/launch-plan.html">🚀 Build Roadmap → Go Live</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync Sprint Planning" href="/hub/backlog-dev.html">🗂 NutriSync Sprint Planning</a><a class="nsnb-tab nsnb-g4" data-en="Release Plan" href="/hub/release-plan.html">🚢 Releases</a><a class="nsnb-tab nsnb-g4" data-en="Compliance" href="/hub/compliance.html">🛡 Compliance</a><a class="nsnb-tab nsnb-g4" data-en="Ideation" href="/hub/roadmap.html">💡 Ideation</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g5" data-en="Documentation" href="/hub/documentation/index.html">📄 Documentación</a><a class="nsnb-tab nsnb-g5" data-en="ERP User Guide" href="/hub/user-guide.html">📖 Guía ERP</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
     <div class="nsnb-row" id="nsnb-r2"></div>
   </nav>
 </div>
@@ -94,6 +96,48 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
   /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
      toda la navegación de la barra toma la ventana superior — adiós bucles */
   document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14b (feedback Juanjo): idioma con CONMUTADOR visible y persistente.
+     localStorage ns_lang ('es'|'en') manda; sin él, el navegador decide.
+     Las páginas con data-i leen la misma clave — un idioma, todas las superficies. */
+  function nsLang(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pintaIdioma(){
+    var en=nsLang()==='en';
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      if(!a.getAttribute('data-es'))a.setAttribute('data-es',a.textContent.trim());
+      var em=a.getAttribute('data-es').split(' ')[0];
+      a.textContent=en?(em+' '+a.getAttribute('data-en')):a.getAttribute('data-es');});
+    var b=document.getElementById('nsnb-lang');if(b)b.textContent=en?'ES':'EN';
+  }
+  (function(){
+    var brand=document.querySelector('#ns-hub-navbar .nsnb-btn');
+    if(brand&&!document.getElementById('nsnb-lang')){
+      var b=document.createElement('a');b.id='nsnb-lang';b.className='nsnb-btn';b.href='#';
+      b.title='Cambiar idioma / switch language';
+      b.onclick=function(e){e.preventDefault();
+        try{localStorage.setItem('ns_lang',nsLang()==='en'?'es':'en');}catch(err){}
+        pintaIdioma();
+        document.dispatchEvent(new CustomEvent('ns-lang'));
+        if(typeof relayout==='function')relayout();
+        return false;};
+      brand.parentNode.insertBefore(b,brand);
+    }
+    pintaIdioma();
+    /* r14e: pintor data-i UNIVERSAL — cualquier página del hub con data-i="ES|EN"
+       (o data-i sin valor con "ES|EN" dentro) se vuelve bilingüe gratis. */
+    function pintaDataI(){
+      var en=nsLang()==='en';
+      document.querySelectorAll('[data-i]').forEach(function(n){
+        if(n.closest&&n.closest('#ns-hub-navbar'))return;
+        var src=n.getAttribute('data-i');
+        if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+        var p=src.split('|');
+        n.innerHTML=en?(p[1]||p[0]):p[0];});
+    }
+    document.addEventListener('ns-lang',pintaDataI);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',pintaDataI);
+    else pintaDataI();
+  })();
   /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
      (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
   function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
@@ -104,12 +148,19 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
      ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
      (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
      al hacer clic, sin esperar a que cargue la página siguiente. */
-  var here=(location.pathname.split('/').pop()||'').toLowerCase();
+  /* r16c (cazado POR JUANJO con el flash del clic): Cloudflare Pages sirve
+     URLs LIMPIAS — /hub/incidents.html se visita como /hub/incidents — así
+     que comparar con ".html" no casaba JAMÁS en carga de página. Se normaliza
+     quitando la extensión en LOS DOS lados. */
+  function nsLimpia(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';}
+  var here=nsLimpia(location.pathname.split('/').pop());
   var dir=location.pathname.toLowerCase();
-  var ON='background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C';
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
   function isHere(a){
     var f=(a.getAttribute('href')||'').toLowerCase();
-    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : f.split('/').pop()===here;
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : nsLimpia(f.split('/').pop())===here;
   }
   function paint(a,on){
     a.classList.toggle('on',!!on);
@@ -134,6 +185,12 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
     mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
   }
   var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  /* r16: la marca se queda mientras estés en la página — se repinta al volver
+     del historial (bfcache), al recuperar el foco y al cambiar de pestaña del
+     navegador. Nada la apaga salvo navegar a otra página del hub. */
+  window.addEventListener('pageshow',function(){markActive();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)markActive();});
+  window.addEventListener('focus',function(){markActive();});
   var d=new Date();
   var el=document.getElementById('nsnb-date');
   if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
@@ -153,8 +210,74 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
     pad();markActive();          // po82: mover pestañas no puede borrar la marca
   }
   function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  /* r14e (idea Juanjo): pestañas ARRASTRABLES — cada cual su orden, guardado
+     en este navegador (ns_tab_order). ↺ vuelve al orden de fábrica. */
+  (function(){
+    var KEY='ns_tab_order';
+    function filas(){return [document.getElementById('nsnb-r1'),document.getElementById('nsnb-r2')].filter(Boolean);}
+    function todas(){var t=[];filas().forEach(function(r){t=t.concat([].slice.call(r.querySelectorAll('.nsnb-tab')));});return t;}
+    var ORIG=todas().map(function(a){return a.getAttribute('href');});
+    function guardar(){try{localStorage.setItem(KEY,JSON.stringify(todas().map(function(a){return a.getAttribute('href');})));}catch(e){}
+      var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';}
+    function aplicar(orden){
+      var r1=document.getElementById('nsnb-r1');if(!r1)return;
+      var por={};todas().forEach(function(a){por[a.getAttribute('href')]=a;});
+      orden.forEach(function(h){if(por[h])r1.appendChild(por[h]);});
+      todas().forEach(function(a){if(orden.indexOf(a.getAttribute('href'))<0)r1.appendChild(a);});
+    }
+    try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&sv.length){aplicar(sv);
+      setTimeout(function(){var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';},0);}}catch(e){}
+    var drag=null;
+    todas().forEach(function(a){
+      a.setAttribute('draggable','true');
+      a.title=(a.title?a.title+' · ':'')+'Arrastra para reordenar / drag to reorder';
+      a.addEventListener('dragstart',function(e){drag=a;a.classList.add('nsnb-drag');
+        try{e.dataTransfer.setData('text/plain',a.getAttribute('href'));e.dataTransfer.effectAllowed='move';}catch(err){}});
+      a.addEventListener('dragend',function(){if(drag)drag.classList.remove('nsnb-drag');drag=null;});
+      a.addEventListener('dragover',function(e){e.preventDefault();if(!drag||drag===a)return;
+        var r=a.getBoundingClientRect(),antes=(e.clientX-r.left)<r.width/2;
+        a.parentNode.insertBefore(drag,antes?a:a.nextSibling);});
+      a.addEventListener('drop',function(e){e.preventDefault();guardar();relayout();});
+    });
+    filas().forEach(function(r){r.addEventListener('dragover',function(e){e.preventDefault();});
+      r.addEventListener('drop',function(e){e.preventDefault();if(drag){guardar();relayout();}});});
+    var brand=document.getElementById('nsnb-lang');
+    if(brand&&!document.getElementById('nsnb-reset')){
+      var rb=document.createElement('a');rb.id='nsnb-reset';rb.className='nsnb-btn';rb.href='#';rb.textContent='↺';
+      rb.title='Orden de pestañas original / reset tab order';
+      rb.onclick=function(e){e.preventDefault();try{localStorage.removeItem(KEY);}catch(err){}
+        aplicar(ORIG);rb.style.display='none';relayout();return false;};
+      brand.parentNode.insertBefore(rb,brand);
+    }
+  })();
   var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
   relayout();
+})();
+</script>
+<script>
+/* r16b · MINI-MARCADOR independiente de pestaña activa. Deliberadamente
+   separado y mínimo: si el script grande de la barra muere por lo que sea,
+   ESTE pinta igual. Solo compara el fichero de la URL con el href y pone la
+   clase .on (el CSS !important hace el resto). Se repite unos segundos por si
+   el reordenado o el motor mueven pestañas tarde. */
+(function(){
+  function marca(){
+    try{
+      /* r16c: Pages sirve URLs sin .html — normalizar ambos lados */
+      var lim=function(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';};
+      var here=lim(location.pathname.split('/').pop());
+      var esDoc=location.pathname.toLowerCase().indexOf('/documentation/')>-1;
+      document.querySelectorAll('#ns-hub-navbar .nsnb-tab').forEach(function(a){
+        var f=(a.getAttribute('href')||'').toLowerCase();
+        var on=esDoc ? f.indexOf('/documentation/')>-1 : lim(f.split('/').pop())===here;
+        a.classList.toggle('on',on);
+      });
+    }catch(e){}
+  }
+  marca();
+  var i=0,t=setInterval(function(){marca();if(++i>15)clearInterval(t);},700);
+  window.addEventListener('pageshow',marca);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
 })();
 </script>
 </div>
@@ -163,6 +286,19 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
   <a class="back" href="full-hub-gated-site.html#/builders">‹ Back</a>
   <h1>💶 Finanzas</h1>
   <div class="sub">Libro diario de caja (debe/haber) mantenido por founders + asientos automáticos de altas/suscripciones · cierres con candado · P&amp;L. Moneda: EUR. Cuando exista la SL, el asesor hereda el export limpio.</div>
+
+  <div class="card" id="costes-saas-card" style="border-left:3px solid #0F6E56">
+    <b style="font-size:14px">📄 Costes SaaS y esfuerzo founders — agosto 2026</b>
+    <div class="hint" style="margin-top:4px">Hoja con todas las suscripciones (Claude, ChatGPT, Supabase, Canva, iCloud, Google One, IONOS…),
+    el % imputado a NutriSync decidido el 5-ago y el bottom line (≈ 315 €/mes imputable · ≈ 3.800 €/año), más la hoja de esfuerzo
+    en horas por founder. Faltan: factura IONOS (Pilar), recibo Google One (Juanjo) y horas de julio de Lucía, Pilar y María Paula.</div>
+    <div class="row" style="margin-top:8px">
+      <a href="/hub/docs/NutriSync-Costes-SaaS-y-Esfuerzo-Founders-2026-08.xlsx" style="font-weight:700;font-size:13px">⬇ Descargar la hoja (Excel)</a>
+    </div>
+    <div class="hint" style="margin-top:6px">Con la hoja delante, los gastos se registran aquí mismo en <b>«1 · Nuevo asiento»</b> (DEBE, en euros,
+    un asiento por cargo con su nº de factura). Los indicadores, el P&amp;L y el MIS se recalculan solos al guardar cada asiento —
+    no hay nada más que actualizar a mano.</div>
+  </div>
 
   <div class="kpis" id="kpis"></div>
 
@@ -180,7 +316,18 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
       <input type="number" id="nCredit" placeholder="HABER € (ingreso)" step="0.01" min="0" style="width:160px">
       <button class="pri" onclick="add()">Añadir →</button>
     </div>
-    <div class="hint">Un asiento es gasto (DEBE) o ingreso (HABER), no ambos. "otros" existe para reclasificar después con calma.</div>
+    <div class="hint">Un asiento es gasto (DEBE) o ingreso (HABER), no ambos. "otros" existe para reclasificar después con calma. En el libro: ✏️ edita y ✕ borra cualquier asiento de un mes sin candado. / In the ledger: ✏️ edits and ✕ deletes any entry of an unlocked month.</div>
+  </div>
+
+  <h2>1b · Diario del build (StartUp Admin) — solo lectura / read-only</h2>
+  <div class="card" id="buildCard">
+    <div class="hint">Los costes del BUILD (SaaS, IA, esfuerzo founders) viven en la contabilidad de partida doble de
+    <a href="https://admin.nutrisynccollective.com" style="font-weight:700">StartUp Admin</a> — aquí solo se miran, allí se editan.
+    / Build costs live in StartUp Admin's double-entry books — mirrored here, edited there.</div>
+    <div class="row" style="gap:18px;margin:8px 0" id="buildKpis"></div>
+    <div style="max-height:220px;overflow:auto"><table id="buildTbl"><thead><tr>
+      <th>Asiento</th><th>Fecha</th><th>Descripción</th><th class="num">EUR</th>
+    </tr></thead><tbody><tr><td colspan="4" class="hint">Cargando…</td></tr></tbody></table></div>
   </div>
 
   <h2>2 · Libro diario</h2>
@@ -217,7 +364,7 @@ td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
     <!-- r12: baseline del BUSINESS CASE, editable aquí; el MIS lo compara con los actuals -->
     <b style="display:block;margin-top:22px">📈 Business case · baseline mensual</b>
     <p style="font-size:12.5px;color:#6E655D;margin:4px 0 10px">
-      Plan del caso de negocio (escenario conservador Y1: 755 usuarias · 28.068 €). Edita cualquier celda y
+      Plan del caso de negocio (escenario realista ago-2026 · Y1: 2.634 usuarias · 74.772 €). Edita cualquier celda y
       guarda: el MIS y el Overview compararán estos números con los ingresos y costes reales del libro diario.
     </p>
     <table id="bc"><thead><tr><th>Mes</th><th class="num">Usuarias (acum.)</th><th class="num">Suscripciones</th>
@@ -265,11 +412,18 @@ async function loadSummary(){
   SUM=data;CLOSES=data.closes||[];
   const m=data.month||{},y=data.ytd||{};
   const kpi=(l,v,cls)=>`<div class="kpi"><div class="l">${l}</div><div class="v ${cls||''}">${v}</div></div>`;
-  $('kpis').innerHTML=
-    kpi('Caja acumulada',eur(data.cash),data.cash>=0?'pos':'neg')+
-    kpi('Ingresos mes',eur(m.in))+kpi('Gastos mes',eur(m.out))+
-    kpi('Resultado mes',eur((m.in||0)-(m.out||0)),((m.in||0)-(m.out||0))>=0?'pos':'neg')+
-    kpi('Resultado YTD',eur((y.in||0)-(y.out||0)),((y.in||0)-(y.out||0))>=0?'pos':'neg');
+  window.NS_FIN={cash:data.cash,mi:m.in||0,mo:m.out||0,yi:y.in||0,yo:y.out||0};
+  window.pintaKpis=function(){
+    const B=window.NS_BUILD||{gasto:0,rev:0};
+    const F=window.NS_FIN;
+    $('kpis').innerHTML=
+      kpi('Caja acumulada',eur(F.cash),F.cash>=0?'pos':'neg')+
+      kpi('Ingresos mes',eur(F.mi))+kpi('Gastos mes (caja)',eur(F.mo))+
+      kpi('Gasto build acumulado',eur(B.gasto),'neg')+
+      kpi('En revisión IAS 38',eur(B.rev))+
+      kpi('Resultado YTD (caja + build)',eur((F.yi-F.yo)-B.gasto),((F.yi-F.yo)-B.gasto)>=0?'pos':'neg');
+  };
+  pintaKpis();
   $('daily').tBodies[0].innerHTML=(data.daily||[]).map(d=>{const net=(d.ingresos||0)-(d.gastos||0);
     return `<tr><td>${esc(d.dia)}</td><td class="num">${eur(d.ingresos)}</td><td class="num">${eur(d.gastos)}</td><td class="num ${net>=0?'pos':'neg'}">${eur(net)}</td><td class="num">${d.asientos}</td></tr>`;}).join('')||'<tr><td colspan=5 class="hint">Sin movimientos aún.</td></tr>';
   const closed=Object.fromEntries(CLOSES.map(c=>[c.period,c]));
@@ -279,6 +433,23 @@ async function loadSummary(){
     `<tr><td>${esc(CONCEPTS[r.concept]||r.concept)}</td><td class="num">${eur(r.haber)}</td><td class="num">${eur(r.debe)}</td><td class="num ${r.neto>=0?'pos':'neg'}">${eur(r.neto)}</td><td class="num">${r.n}</td></tr>`).join('')||'<tr><td colspan=5 class="hint">Sin datos.</td></tr>';
   return true;
 }
+/* r14 · espejo del diario build (admin_build_ledger, solo lectura) */
+async function loadBuild(){
+  const{data,error}=await sb.rpc('admin_build_ledger',{p_limit:40});
+  const tb=document.querySelector('#buildTbl tbody');
+  if(error||!data){tb.innerHTML='<tr><td colspan="4" class="hint">Ejecuta backend-sql/2026-08-06-mis-costes-y-obs.sql y recarga. / Run the SQL and reload.</td></tr>';return;}
+  /* r14b (3.2/3.3): la cabecera suma los DOS libros — caja + build — para que
+     el estado real nunca salga a cero mientras el build gasta de verdad. */
+  window.NS_BUILD={gasto:Number(data.total_gasto_eur)||0,rev:Number(data.en_revision_eur)||0};
+  if(typeof pintaKpis==='function')pintaKpis();
+  $('buildKpis').innerHTML=
+    '<div><div class="hint">Gasto build acumulado / total build spend</div><b style="font-size:20px">'+eur(data.total_gasto_eur)+'</b></div>'+
+    '<div><div class="hint">En revisión de capitalización (IAS 38)</div><b style="font-size:20px">'+eur(data.en_revision_eur)+'</b></div>';
+  tb.innerHTML=(data.entries||[]).map(e=>
+    '<tr><td>'+esc(e.entry_no)+'</td><td>'+esc(e.entry_date)+'</td><td>'+esc(e.description)+'</td><td class="num">'+(e.eur!=null?eur(e.eur):'')+'</td></tr>').join('')
+    ||'<tr><td colspan="4" class="hint">Sin asientos todavía.</td></tr>';
+}
+loadBuild();
 window.loadLedger=async()=>{
   const m=$('fMonth').value,from=m+'-01',to=new Date(+m.slice(0,4),+m.slice(5,7),0).toISOString().slice(0,10);
   const{data,error}=await sb.rpc('admin_ledger_list',{p_from:from,p_to:to,p_concept:$('fConcept').value||null});
@@ -289,7 +460,7 @@ window.loadLedger=async()=>{
     `<tr><td>${esc(r.entry_date)}</td><td>${esc(CONCEPTS[r.concept]||r.concept)}${r.source!=='manual'?' <span class="pill auto">auto</span>':''}</td>
     <td>${esc(r.description)}</td><td>${esc(r.invoice_no||'')}</td><td>${esc(r.counterparty||'')}</td>
     <td class="num">${r.debit>0?eur(r.debit):''}</td><td class="num">${r.credit>0?eur(r.credit):''}</td>
-    <td>${closed?'🔒':`<button class="mini" onclick="del(${r.id})">✕</button>`}</td></tr>`).join('')||'<tr><td colspan=8 class="hint">Sin asientos ese mes.</td></tr>';
+    <td>${closed?'🔒':`<button class="mini" onclick="edit(${r.id})" title="Editar / Edit">✏️</button> <button class="mini" onclick="del(${r.id})">✕</button>`}</td></tr>`).join('')||'<tr><td colspan=8 class="hint">Sin asientos ese mes.</td></tr>';
 };
 window.add=async()=>{
   const debit=parseFloat($('nDebit').value)||0,credit=parseFloat($('nCredit').value)||0;
@@ -305,6 +476,32 @@ window.add=async()=>{
 window.del=async id=>{
   if(!confirm('¿Eliminar el asiento '+id+'?'))return;
   const{error}=await sb.rpc('admin_ledger_delete',{p_id:id});
+  if(error)return alert(error.message);
+  await loadSummary();await loadLedger();
+};
+/* r14 · edición en línea de asientos (meses sin candado; el trigger de cierres vigila) */
+window.edit=id=>{
+  const r=ROWS.find(x=>x.id===id); if(!r)return;
+  const btn=document.querySelector(`#ledger button[onclick="edit(${id})"]`); if(!btn)return;
+  const tr=btn.closest('tr');
+  const opt=Object.keys(CONCEPTS).map(k=>`<option value="${k}"${k===r.concept?' selected':''}>${CONCEPTS[k]}</option>`).join('');
+  tr.innerHTML=`<td><input type="date" id="eD" value="${r.entry_date}" style="width:132px"></td>
+    <td><select id="eC">${opt}</select></td>
+    <td><input id="eDs" value="${esc(r.description)}" style="width:95%"></td>
+    <td><input id="eI" value="${esc(r.invoice_no||'')}" style="width:92px"></td>
+    <td><input id="eP" value="${esc(r.counterparty||'')}" style="width:118px"></td>
+    <td class="num"><input id="eDb" type="number" step="0.01" min="0" value="${r.debit>0?r.debit:''}" style="width:92px;text-align:right"></td>
+    <td class="num"><input id="eCr" type="number" step="0.01" min="0" value="${r.credit>0?r.credit:''}" style="width:92px;text-align:right"></td>
+    <td><button class="mini" onclick="saveEdit(${id})" title="Guardar / Save">💾</button>
+        <button class="mini" onclick="loadLedger()" title="Cancelar / Cancel">↩</button></td>`;
+};
+window.saveEdit=async id=>{
+  const debit=parseFloat($('eDb').value)||0,credit=parseFloat($('eCr').value)||0;
+  if((debit>0)===(credit>0))return alert('DEBE o HABER, solo uno. / Debit OR credit, only one.');
+  if(!$('eDs').value.trim())return alert('La descripción no puede quedar vacía. / Description required.');
+  const{error}=await sb.rpc('admin_ledger_update',{p_id:id,p_date:$('eD').value,p_concept:$('eC').value,
+    p_description:$('eDs').value.trim(),p_invoice:$('eI').value,p_counterparty:$('eP').value,
+    p_debit:debit,p_credit:credit});
   if(error)return alert(error.message);
   await loadSummary();await loadLedger();
 };
@@ -354,17 +551,20 @@ async function loadBC(){
 }
 /* ── r12-b3 · objetivo SEMANAL del piloto (13 semanas) ───────────────────── */
 async function loadPP(){
-  const{data,error}=await sb.rpc('admin_pilot_weekly');
+  const{data,error}=await sb.rpc('admin_pilot_weekly',{p_cohort:null});
   const tb=document.querySelector('#pp tbody'); if(!tb)return;
   if(error||!data){tb.innerHTML='<tr><td colspan="6">No disponible: '+esc(error?.message||'')+'</td></tr>';return;}
+  /* r14c: semana en curso = enseña reales YA (is_current derivado en cliente, día local) */
+  function esActual(w){var d=new Date(w.week+'T00:00:00');var hoy=new Date();hoy.setHours(0,0,0,0);
+    return d<=hoy && hoy<new Date(d.getTime()+7*864e5);}
   tb.innerHTML=(data.weeks||[]).map(w=>{
     const inp=(k,v)=>'<input data-w="'+w.week+'" data-k="'+k+'" value="'+v+'" '+
       'style="width:84px;text-align:right;font-family:inherit;font-size:13px;padding:5px 7px;border:1px solid #EFE3D7;border-radius:8px">';
     return '<tr><td><b>'+w.label+'</b> <span style="color:#8A7F78;font-size:11.5px">'+w.week+'</span></td>'+
       '<td class="num">'+inp('testers',w.testers_plan)+'</td>'+
       '<td class="num">'+inp('active',w.active_plan)+'</td>'+
-      '<td class="num">'+(w.is_past?w.joined:'—')+'</td>'+
-      '<td class="num">'+(w.is_past?w.active:'—')+'</td>'+
+      '<td class="num">'+((w.is_past||esActual(w))?w.joined:'—')+'</td>'+
+      '<td class="num">'+((w.is_past||esActual(w))?w.active:'—')+'</td>'+
       '<td><button data-savew="'+w.week+'" style="font-size:12px;padding:6px 12px">Guardar</button></td></tr>';
   }).join('')||'<tr><td colspan="6">Sin semanas de piloto.</td></tr>';
   tb.querySelectorAll('button[data-savew]').forEach(b=>{
@@ -385,4 +585,4 @@ async function loadPP(){
   fillSelects();
   if(await loadSummary()){$('app').style.display='block';loadLedger();loadBC();}
 })();
-</script></body></html>
+</script><script src="/hub/assets/page-help.js?v=e939f9f3"></script></body></html>

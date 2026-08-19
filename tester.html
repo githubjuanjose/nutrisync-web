@@ -28,10 +28,33 @@ button.go:disabled{opacity:.5}
 .brand{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-weight:800;letter-spacing:2px;font-size:13px}
 .foot{margin-top:14px;font-size:11.5px;color:var(--muted);text-align:center;line-height:1.5}
 #alt{display:none}
+#gate .avisot{font-weight:800;font-size:12.5px;color:#A32D2D;background:#FFE4E0;border-radius:10px;padding:9px 12px;margin:10px 0}
+#gate .avisos{font-size:12.5px;line-height:1.6;color:#4A4340;max-height:290px;overflow:auto;border:1px solid #EFE3D7;border-radius:12px;padding:12px 14px;background:#FFFDFB;margin-bottom:12px}
+#gate .chk{display:flex;gap:9px;align-items:flex-start;font-size:12px;line-height:1.55;background:#FFF8EF;border:1px solid #F0DCC4;border-radius:10px;padding:10px 12px;cursor:pointer}
+#gate .chk input{margin-top:3px;accent-color:#EA5740;flex:none}
+#gate .gbtns{display:flex;gap:10px;margin-top:12px}
+#gate .gout{background:#fff;border:1px solid #EFE3D7;color:#4A4340;border-radius:22px;padding:10px 16px;font-weight:700;font-size:13px;cursor:pointer}
+#gate .go[disabled]{opacity:.45;cursor:not-allowed}
 </style><script src="/assets/vendor/supabase.js"></script></head><body>
 <div class="card">
   <div class="brand">🧡 NUTRISYNC <span class="langsw" onclick="swap()" id="lsw">EN</span></div>
-  <div id="form">
+  <div id="gate" style="display:none">
+    <h1 data-es="Piloto interno en fase de desarrollo" data-en="Internal development pilot">Piloto interno en fase de desarrollo</h1>
+    <div class="avisot" data-es="IMPORTANTE: NUTRISYNC NO ESTÁ EN PRODUCCIÓN, NO ESTÁ ABIERTA AL PÚBLICO Y NO HA SIDO COMERCIALIZADA" data-en="IMPORTANT: NUTRISYNC IS NOT IN PRODUCTION, IS NOT OPEN TO THE PUBLIC AND HAS NOT BEEN COMMERCIALLY RELEASED">IMPORTANTE: NUTRISYNC NO ESTÁ EN PRODUCCIÓN, NO ESTÁ ABIERTA AL PÚBLICO Y NO HA SIDO COMERCIALIZADA</div>
+    <div class="avisos" data-es="Estás accediendo a una versión preliminar de NutriSync exclusivamente como participante invitada en un piloto interno, cerrado y limitado.<br><br>No accedes como usuaria del público general ni como cliente de un servicio comercial o en producción. Tu participación consiste en colaborar voluntariamente con el equipo del proyecto durante la fase de diseño, desarrollo, validación y pruebas internas de la aplicación.<br><br>NutriSync todavía no ha sido lanzada, comercializada, puesta a disposición del público ni declarada lista para producción. Por este motivo, la aplicación puede contener errores, interrupciones, datos o estimaciones inexactos, funciones incompletas o cambios realizados sin previo aviso.<br><br>La participación en el piloto es <b>voluntaria</b>, <b>interna al proyecto</b>, <b>limitada a personas expresamente invitadas</b>, <b>temporal y revocable</b>, y destinada exclusivamente a pruebas, validación y recogida de comentarios durante el desarrollo.<br><br>Puedes dejar de participar en cualquier momento. Tu participación no garantiza que la aplicación, sus funciones o los datos introducidos continúen estando disponibles ni que NutriSync llegue finalmente a comercializarse.<br><br><b>NutriSync no proporciona atención médica ni servicios de emergencia.</b> La información o las estimaciones experimentales no deben utilizarse como diagnóstico, tratamiento, método anticonceptivo, predicción de fertilidad ni como única base para tomar decisiones relacionadas con la salud.<br><br>Antes de continuar, revisa las <a href='/legal/beta-agreement.html' target='_blank'>Condiciones Provisionales del Piloto</a> y el <a href='/legal/privacy.html' target='_blank'>Aviso de Privacidad</a>.<br><br>Para cualquier pregunta: <b>contact@nutrisynccollective.com</b> · NutriSync Collective.<br><br>Nada de este aviso limita derechos irrenunciables ni excluye responsabilidades que no puedan limitarse conforme a la legislación aplicable." data-en="You are accessing a preliminary version of NutriSync solely as an invited participant in a closed, limited internal pilot.<br><br>You are not accessing NutriSync as a member of the general public or as a customer of a commercial or production service. Your participation consists of voluntarily collaborating with the project team during the application's design, development, validation and internal-testing phase.<br><br>NutriSync has not yet been launched, commercialised, made publicly available or declared production-ready. The application may therefore contain errors, interruptions, inaccurate data or estimates, incomplete features or changes made without prior notice.<br><br>Participation in the pilot is <b>voluntary</b>, <b>internal to the project</b>, <b>limited to expressly invited participants</b>, <b>temporary and revocable</b>, and intended exclusively for testing, validation and the collection of feedback during development.<br><br>You may stop participating at any time. Participation does not guarantee that the application, its features or submitted data will remain available, or that NutriSync will ultimately be commercially released.<br><br><b>NutriSync does not provide medical care or emergency services.</b> Experimental information or estimates must not be used as a diagnosis, treatment, contraceptive method, fertility prediction or the sole basis for making health-related decisions.<br><br>Before continuing, review the <a href='/legal/beta-agreement.html' target='_blank'>Interim Pilot Conditions</a> and the <a href='/legal/privacy.html' target='_blank'>Pilot Privacy Notice</a>.<br><br>For any questions: <b>contact@nutrisynccollective.com</b> · NutriSync Collective.<br><br>Nothing in this notice limits any non-waivable rights or excludes any responsibility that cannot lawfully be limited.">…</div>
+    <label class="chk"><input type="checkbox" id="acepto">
+      <span data-es="Confirmo que entiendo y acepto que NutriSync no está en producción, no está abierta al público y no ha sido comercializada. Participo exclusivamente como persona invitada y colaboradora voluntaria en un piloto interno, cerrado y temporal, desarrollado para probar, validar y mejorar una aplicación que todavía se encuentra en fase de desarrollo. Entiendo que puedo dejar de participar en cualquier momento y que mi participación no me garantiza la continuidad, disponibilidad futura o comercialización de NutriSync ni de ninguna de sus funciones." data-en="I confirm that I understand and accept that NutriSync is not in production, is not open to the public and has not been commercially released. I am participating solely as an invited voluntary collaborator in a closed, temporary internal pilot intended to test, validate and improve an application that remains under development. I understand that I may stop participating at any time and that my participation does not guarantee the continued or future availability or commercial release of NutriSync or any of its features.">…</span></label>
+    <div class="gbtns">
+      <button class="gout" id="gOut" data-es="No aceptar y salir" data-en="Decline and exit">No aceptar y salir</button>
+      <button class="go" id="gGo" disabled data-es="Aceptar y continuar" data-en="Accept and continue">Aceptar y continuar</button>
+    </div>
+    <div class="err" id="gerr"></div>
+  </div>
+  <div id="adios" style="display:none">
+    <h1 data-es="Sin problema" data-en="No problem">Sin problema</h1>
+    <div class="sub" data-es="No se ha guardado nada y tu invitación sigue siendo válida si cambias de opinión — este mismo enlace. Para cualquier duda: contact@nutrisynccollective.com" data-en="Nothing was saved and your invitation remains valid if you change your mind — same link. Questions: contact@nutrisynccollective.com">…</div>
+  </div>
+  <div id="form" style="display:none">
     <h1 data-es="¡Gracias por unirte al piloto!" data-en="Thanks for joining the pilot!">¡Gracias por unirte al piloto!</h1>
     <div class="sub" data-es="Estás en la lista de espera de NutriSync y dentro del piloto. Solo falta saber a qué correo enviarte la invitación de la app." data-en="You're on the NutriSync waiting list and in the pilot. We just need to know where to send your app invite.">Estás en la lista de espera de NutriSync y dentro del piloto. Solo falta saber a qué correo enviarte la invitación de la app.</div>
     <div class="q"><span data-es="¿Tu móvil instala aplicaciones con" data-en="Does your phone install apps with">¿Tu móvil instala aplicaciones con</span> <span class="masked" id="who">…</span>?</div>
@@ -46,6 +69,7 @@ button.go:disabled{opacity:.5}
       <div class="plats">
         <div class="plat" id="pIos" onclick="pick('ios')">📱 iPhone</div>
         <div class="plat" id="pAnd" onclick="pick('android')">🤖 Android</div>
+        <div class="plat" id="pBoth" onclick="pick('both')" data-es="📱🤖 Los dos" data-en="📱🤖 Both">📱🤖 Los dos</div>
       </div>
       <div class="help" id="helpIos" style="display:none" data-es="<b>Dónde encontrarlo:</b> Ajustes → toca tu nombre (arriba del todo) → el correo bajo tu nombre es tu Apple ID." data-en="<b>Where to find it:</b> Settings → tap your name (at the very top) → the email under your name is your Apple ID."><b>Dónde encontrarlo:</b> Ajustes → toca tu nombre (arriba del todo) → el correo bajo tu nombre es tu Apple ID.</div>
       <div class="help" id="helpAnd" style="display:none" data-es="<b>Dónde encontrarlo:</b> abre Play Store → toca tu foto (arriba a la derecha) → el correo que aparece es tu cuenta de Google." data-en="<b>Where to find it:</b> open Play Store → tap your photo (top right) → the email shown is your Google account."><b>Dónde encontrarlo:</b> abre Play Store → toca tu foto (arriba a la derecha) → el correo que aparece es tu cuenta de Google.</div>
@@ -82,10 +106,13 @@ function apply(){
 window.swap=()=>{LANG=LANG==='es'?'en':'es';apply();};
 window.showAlt=()=>{$('alt').style.display='block';};
 window.pick=p=>{PLAT=p;$('pIos').classList.toggle('on',p==='ios');$('pAnd').classList.toggle('on',p==='android');
-  $('helpIos').style.display=p==='ios'?'block':'none';$('helpAnd').style.display=p==='android'?'block':'none';};
+  $('pBoth').classList.toggle('on',p==='both');
+  $('helpIos').style.display=(p==='ios'||p==='both')?'block':'none';$('helpAnd').style.display=(p==='android'||p==='both')?'block':'none';};
 function done(mailShown,plat){
   $('form').style.display='none';$('ok').style.display='block';
-  $('next').innerHTML=plat==='ios'
+  $('next').innerHTML=plat==='both'
+    ?(LANG==='es'?'Te llegarán <b>las dos invitaciones</b> a <b>'+mailShown+'</b>: la de <b>TestFlight</b> (instala antes la app TestFlight del App Store) y la de <b>Google Play</b> con su enlace.':'You will get <b>both invites</b> at <b>'+mailShown+'</b>: <b>TestFlight</b> (install the TestFlight app first) and <b>Google Play</b> with its link.')
+    :plat==='ios'
     ?(LANG==='es'?'Te llegará la invitación de <b>TestFlight</b> a <b>'+mailShown+'</b>. Mientras tanto: instala la app <b>TestFlight</b> del App Store — la invitación se abre con ella.':'Your <b>TestFlight</b> invite will arrive at <b>'+mailShown+'</b>. Meanwhile: install the <b>TestFlight</b> app from the App Store — the invite opens with it.')
     :(LANG==='es'?'Te llegará la invitación de <b>Google Play</b> a <b>'+mailShown+'</b> con el enlace para instalar NutriSync.':'Your <b>Google Play</b> invite will arrive at <b>'+mailShown+'</b> with the link to install NutriSync.');
 }
@@ -112,6 +139,28 @@ window.send=async()=>{
   if(error){$('err').textContent=friendly(error);return;}
   done(m,PLAT);
 };
+/* Consentimiento del piloto (r13c). La versión identifica el TEXTO exacto
+   aceptado: si el texto cambia, se sube la versión y se vuelve a pedir. */
+const TXTV='pilot-notice-v1-2026-08-05';
+function huella(){
+  return {ua:navigator.userAgent, lang:navigator.language,
+    tz:(Intl.DateTimeFormat().resolvedOptions().timeZone)||'',
+    screen:(screen&&screen.width)?screen.width+'x'+screen.height:'',
+    page_lang:LANG, text_version:TXTV};
+}
+$('acepto').addEventListener('change',()=>{$('gGo').disabled=!$('acepto').checked;});
+$('gOut').addEventListener('click',()=>{$('gate').style.display='none';$('adios').style.display='block';});
+$('gGo').addEventListener('click',async()=>{
+  if(!$('acepto').checked)return;
+  $('gGo').disabled=true;$('gerr').textContent='';
+  const{data,error}=await sb.rpc('pilot_accept_terms',{p_token:TOKEN,p_version:TXTV,p_meta:huella()});
+  if(error||!data||!data.ok){
+    $('gGo').disabled=false;
+    $('gerr').textContent=(LANG==='es'?'No se pudo registrar la aceptación: ':'Could not record acceptance: ')
+      +((error&&error.message)||'')+((error&&/pilot_accept_terms/.test(error.message))?' — ¿SQL 2026-08-05-pilot-consent.sql aplicado?':'');
+    return;}
+  $('gate').style.display='none';$('form').style.display='block';
+});
 (async()=>{
   apply();
   if(!TOKEN){showBad();return;}
@@ -120,5 +169,9 @@ window.send=async()=>{
   MASKED=data.masked;apply();
   if(data.platform){pick(data.platform);}
   if(data.store_email){showAlt();$('mail').value=data.store_email;}
+  // La puerta manda: sin aceptación registrada no se ve el formulario.
+  // (terms_accepted ausente = SQL viejo → se enseña la puerta igualmente.)
+  if(data.terms_accepted===true){$('form').style.display='block';}
+  else{$('gate').style.display='block';}
 })();
 </script></body></html>

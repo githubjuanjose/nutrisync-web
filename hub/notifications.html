@@ -1,0 +1,533 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notificaciones — NutriSync Founders</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.6}
+.w{max-width:960px;margin:0 auto;padding:26px 20px 90px}
+h1{font-size:23px;margin:0 0 4px}
+p.lead{color:#6E655D;font-size:13.5px;margin:0 0 6px}
+.kpis{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 4px}
+.kpi{flex:1;min-width:120px;background:#fff;border:1px solid #EFE3D7;border-radius:12px;padding:10px 13px}
+.kpi .l{font-size:10.5px;color:#8A7F78;text-transform:uppercase;letter-spacing:.5px}
+.kpi .v{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
+.gh{margin:26px 0 4px;padding:11px 15px;border-radius:12px;background:#fff;border:1px solid #EFE3D7}
+.gh b{font-size:15.5px}
+.gh span{font-size:12px;color:#8A7F78}
+.n{background:#fff;border:1px solid #EFE3D7;border-radius:12px;padding:11px 14px;margin:8px 0}
+.n.borrador{background:#FFFCF7;border-style:dashed}
+.n.descartada{background:#FBF7F6;opacity:.72}
+.nh{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.code{font-size:10.5px;font-weight:800;color:#C73A20;background:#FFF1EC;border-radius:6px;padding:2px 7px}
+.pill{font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px}
+.pill.activa{background:#E8F5EE;color:#0F6E56}
+.pill.borrador{background:#FFF3E0;color:#B4700F}
+.pill.descartada{background:#FFF1EC;color:#C73A20}
+.txt{font-size:14px}
+.es{font-size:13px;color:#5F564F;margin-top:3px}
+.es:before{content:'ES · ';color:#8A7F78;font-size:11px;font-weight:700}
+.obs{background:#FFF8EF;border-left:3px solid #E8B072;padding:7px 11px;border-radius:0 8px 8px 0;
+     margin-top:8px;font-size:12.5px;color:#7A5A33}
+.obs b{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#B4700F}
+.meta{font-size:11px;color:#8A7F78;margin-top:5px}
+.acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+button{font-family:inherit;font-weight:700;font-size:12px;border-radius:18px;padding:6px 13px;
+  border:1px solid #EFE3D7;background:#fff;color:#241D1A;cursor:pointer}
+button:hover{border-color:#F3C8B8;background:#FFF6F2}
+button.on{background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;border:none}
+input,textarea{font-family:inherit;font-size:13.5px;width:100%;box-sizing:border-box;padding:8px 11px;
+  border:1px solid #EFE3D7;border-radius:10px;margin-top:6px;background:#fff}
+.filtros{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0}
+.err{background:#FFF1EC;border:2px solid #E8472A;border-radius:12px;padding:13px 15px;font-size:13px;color:#8A2A18;margin:14px 0}
+.aviso{background:#E9F7EE;border:1.5px solid #BFE5CC;border-radius:12px;padding:11px 15px;font-size:13px;margin:12px 0}
+.sev{font-size:10px;font-weight:800;border-radius:999px;padding:2px 8px}
+.sev.critica{background:#FFE4E0;color:#A32D2D}
+.sev.alta{background:#FFF3E0;color:#B4700F}
+.sev.media{background:#F1F5F9;color:#475569}
+.sev.baja{background:#E8F5EE;color:#0F6E56}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+@media(max-width:660px){.vs{grid-template-columns:1fr}}
+.col{border:1px solid #EFE3D7;border-radius:10px;padding:10px 12px;background:#FFFDFB}
+.col.prop{border-color:#BFE5CC;background:#F7FCF9}
+.col h4{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#8A7F78}
+.col.prop h4{color:#0F6E56}
+.lock{font-size:11.5px;color:#5F564F;background:#F4F0EA;border-radius:7px;padding:5px 9px;margin-bottom:6px}
+.lock:before{content:'🔒 pantalla bloqueada · ';color:#8A7F78}
+.tt{font-size:13.5px;font-weight:700}
+.cta{display:inline-block;font-size:11px;font-weight:800;background:#241D1A;color:#fff;border-radius:14px;padding:3px 10px;margin-top:6px}
+.hall{background:#FFF8EF;border-left:3px solid #E8B072;padding:7px 11px;border-radius:0 8px 8px 0;margin-top:9px;font-size:12.5px;color:#7A5A33}
+.hall b{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#B4700F}
+.elegido{font-size:11px;font-weight:800;border-radius:999px;padding:2px 9px;background:#E8F5EE;color:#0F6E56}
+</style></head><body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+/* r16b: la pestaña activa por CLASE con !important — tercera red por si algo
+   pisa el estilo en línea. La pone markActive() y el mini-marcador del final. */
+#ns-hub-navbar .nsnb-tab.on{background:linear-gradient(135deg,#FF7600,#FD400C)!important;color:#fff!important;font-weight:800!important;border-color:#FD400C!important;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)!important}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+.nsnb-tab{cursor:grab}
+.nsnb-tab.nsnb-drag{opacity:.35;cursor:grabbing}
+#nsnb-reset{display:none}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Web de marketing / marketing site"
+     aria-label="Web de marketing" style="text-decoration:none">🏠</a>
+  <a class="nsnb-btn" href="https://admin.nutrisynccollective.com" title="StartUp Admin (contabilidad del build)"
+     aria-label="StartUp Admin" style="text-decoration:none">🛠</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Competitive" href="/hub/competitive.html">🥊 Competencia</a><a class="nsnb-tab nsnb-g1" data-en="Build Roadmap → Go Live" href="/hub/launch-plan.html">🚀 Build Roadmap → Go Live</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync Sprint Planning" href="/hub/backlog-dev.html">🗂 NutriSync Sprint Planning</a><a class="nsnb-tab nsnb-g4" data-en="Release Plan" href="/hub/release-plan.html">🚢 Releases</a><a class="nsnb-tab nsnb-g4" data-en="Compliance" href="/hub/compliance.html">🛡 Compliance</a><a class="nsnb-tab nsnb-g4" data-en="Ideation" href="/hub/roadmap.html">💡 Ideation</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g5" data-en="Documentation" href="/hub/documentation/index.html">📄 Documentación</a><a class="nsnb-tab nsnb-g5" data-en="ERP User Guide" href="/hub/user-guide.html">📖 Guía ERP</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14b (feedback Juanjo): idioma con CONMUTADOR visible y persistente.
+     localStorage ns_lang ('es'|'en') manda; sin él, el navegador decide.
+     Las páginas con data-i leen la misma clave — un idioma, todas las superficies. */
+  function nsLang(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pintaIdioma(){
+    var en=nsLang()==='en';
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      if(!a.getAttribute('data-es'))a.setAttribute('data-es',a.textContent.trim());
+      var em=a.getAttribute('data-es').split(' ')[0];
+      a.textContent=en?(em+' '+a.getAttribute('data-en')):a.getAttribute('data-es');});
+    var b=document.getElementById('nsnb-lang');if(b)b.textContent=en?'ES':'EN';
+  }
+  (function(){
+    var brand=document.querySelector('#ns-hub-navbar .nsnb-btn');
+    if(brand&&!document.getElementById('nsnb-lang')){
+      var b=document.createElement('a');b.id='nsnb-lang';b.className='nsnb-btn';b.href='#';
+      b.title='Cambiar idioma / switch language';
+      b.onclick=function(e){e.preventDefault();
+        try{localStorage.setItem('ns_lang',nsLang()==='en'?'es':'en');}catch(err){}
+        pintaIdioma();
+        document.dispatchEvent(new CustomEvent('ns-lang'));
+        if(typeof relayout==='function')relayout();
+        return false;};
+      brand.parentNode.insertBefore(b,brand);
+    }
+    pintaIdioma();
+    /* r14e: pintor data-i UNIVERSAL — cualquier página del hub con data-i="ES|EN"
+       (o data-i sin valor con "ES|EN" dentro) se vuelve bilingüe gratis. */
+    function pintaDataI(){
+      var en=nsLang()==='en';
+      document.querySelectorAll('[data-i]').forEach(function(n){
+        if(n.closest&&n.closest('#ns-hub-navbar'))return;
+        var src=n.getAttribute('data-i');
+        if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+        var p=src.split('|');
+        n.innerHTML=en?(p[1]||p[0]):p[0];});
+    }
+    document.addEventListener('ns-lang',pintaDataI);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',pintaDataI);
+    else pintaDataI();
+  })();
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  /* r16c (cazado POR JUANJO con el flash del clic): Cloudflare Pages sirve
+     URLs LIMPIAS — /hub/incidents.html se visita como /hub/incidents — así
+     que comparar con ".html" no casaba JAMÁS en carga de página. Se normaliza
+     quitando la extensión en LOS DOS lados. */
+  function nsLimpia(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';}
+  var here=nsLimpia(location.pathname.split('/').pop());
+  var dir=location.pathname.toLowerCase();
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : nsLimpia(f.split('/').pop())===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  /* r16: la marca se queda mientras estés en la página — se repinta al volver
+     del historial (bfcache), al recuperar el foco y al cambiar de pestaña del
+     navegador. Nada la apaga salvo navegar a otra página del hub. */
+  window.addEventListener('pageshow',function(){markActive();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)markActive();});
+  window.addEventListener('focus',function(){markActive();});
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  /* r14e (idea Juanjo): pestañas ARRASTRABLES — cada cual su orden, guardado
+     en este navegador (ns_tab_order). ↺ vuelve al orden de fábrica. */
+  (function(){
+    var KEY='ns_tab_order';
+    function filas(){return [document.getElementById('nsnb-r1'),document.getElementById('nsnb-r2')].filter(Boolean);}
+    function todas(){var t=[];filas().forEach(function(r){t=t.concat([].slice.call(r.querySelectorAll('.nsnb-tab')));});return t;}
+    var ORIG=todas().map(function(a){return a.getAttribute('href');});
+    function guardar(){try{localStorage.setItem(KEY,JSON.stringify(todas().map(function(a){return a.getAttribute('href');})));}catch(e){}
+      var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';}
+    function aplicar(orden){
+      var r1=document.getElementById('nsnb-r1');if(!r1)return;
+      var por={};todas().forEach(function(a){por[a.getAttribute('href')]=a;});
+      orden.forEach(function(h){if(por[h])r1.appendChild(por[h]);});
+      todas().forEach(function(a){if(orden.indexOf(a.getAttribute('href'))<0)r1.appendChild(a);});
+    }
+    try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&sv.length){aplicar(sv);
+      setTimeout(function(){var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';},0);}}catch(e){}
+    var drag=null;
+    todas().forEach(function(a){
+      a.setAttribute('draggable','true');
+      a.title=(a.title?a.title+' · ':'')+'Arrastra para reordenar / drag to reorder';
+      a.addEventListener('dragstart',function(e){drag=a;a.classList.add('nsnb-drag');
+        try{e.dataTransfer.setData('text/plain',a.getAttribute('href'));e.dataTransfer.effectAllowed='move';}catch(err){}});
+      a.addEventListener('dragend',function(){if(drag)drag.classList.remove('nsnb-drag');drag=null;});
+      a.addEventListener('dragover',function(e){e.preventDefault();if(!drag||drag===a)return;
+        var r=a.getBoundingClientRect(),antes=(e.clientX-r.left)<r.width/2;
+        a.parentNode.insertBefore(drag,antes?a:a.nextSibling);});
+      a.addEventListener('drop',function(e){e.preventDefault();guardar();relayout();});
+    });
+    filas().forEach(function(r){r.addEventListener('dragover',function(e){e.preventDefault();});
+      r.addEventListener('drop',function(e){e.preventDefault();if(drag){guardar();relayout();}});});
+    var brand=document.getElementById('nsnb-lang');
+    if(brand&&!document.getElementById('nsnb-reset')){
+      var rb=document.createElement('a');rb.id='nsnb-reset';rb.className='nsnb-btn';rb.href='#';rb.textContent='↺';
+      rb.title='Orden de pestañas original / reset tab order';
+      rb.onclick=function(e){e.preventDefault();try{localStorage.removeItem(KEY);}catch(err){}
+        aplicar(ORIG);rb.style.display='none';relayout();return false;};
+      brand.parentNode.insertBefore(rb,brand);
+    }
+  })();
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+<script>
+/* r16b · MINI-MARCADOR independiente de pestaña activa. Deliberadamente
+   separado y mínimo: si el script grande de la barra muere por lo que sea,
+   ESTE pinta igual. Solo compara el fichero de la URL con el href y pone la
+   clase .on (el CSS !important hace el resto). Se repite unos segundos por si
+   el reordenado o el motor mueven pestañas tarde. */
+(function(){
+  function marca(){
+    try{
+      /* r16c: Pages sirve URLs sin .html — normalizar ambos lados */
+      var lim=function(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';};
+      var here=lim(location.pathname.split('/').pop());
+      var esDoc=location.pathname.toLowerCase().indexOf('/documentation/')>-1;
+      document.querySelectorAll('#ns-hub-navbar .nsnb-tab').forEach(function(a){
+        var f=(a.getAttribute('href')||'').toLowerCase();
+        var on=esDoc ? f.indexOf('/documentation/')>-1 : lim(f.split('/').pop())===here;
+        a.classList.toggle('on',on);
+      });
+    }catch(e){}
+  }
+  marca();
+  var i=0,t=setInterval(function(){marca();if(++i>15)clearInterval(t);},700);
+  window.addEventListener('pageshow',marca);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar --><div class="w">
+
+<h1>🔔 Notificaciones</h1>
+<p class="lead">El catálogo de mensajes de la app. Cada uno tiene su clave; la app los pide por clave en tiempo de ejecución.</p>
+<div class="aviso" style="background:#FFF4F1;border-color:#F0A99C;color:#8A2A18">
+<b>Revisión inclusiva recibida.</b> De los 80 mensajes: <b>11 críticos</b>, 34 de riesgo alto y <b>12 duplicados</b>.
+Quedan 68 únicos. Cada uno lleva ahora su <b>propuesta revisada</b> al lado — un clic para quedaros con la
+original o adoptar la nueva. Varias marcadas como «Accepted» siguen necesitando cambios.
+<br><br><b>El cambio de fondo:</b> la pantalla bloqueada no muestra datos de salud. Ahí va un aviso genérico
+y el detalle solo aparece tras desbloquear el teléfono.</div>
+<div class="aviso"><b>Editar aquí se ve en el siguiente aviso.</b> No hace falta desplegar la app, ni siquiera una actualización OTA — el texto vive en la base de datos. Solo la lógica de <i>cuándo</i> se envía está en el código.</div>
+
+<div class="kpis" id="kpis"></div>
+<div class="filtros" id="filtros"></div>
+<div id="err"></div>
+<div id="lista">Cargando…</div>
+
+</div>
+<script src="/assets/vendor/supabase.js"></script>
+<script>
+(function(){
+'use strict';
+var sb=window.supabase.createClient('https://nebkqncvapelrarruyqb.supabase.co',
+  'sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau');
+var $=function(i){return document.getElementById(i);};
+var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+var D=null, filtro='todas';
+
+/* Nunca en blanco (regla r12-b9) */
+function fail(e,fn){
+  $('lista').innerHTML='';
+  $('err').innerHTML='<div class="err"><b>⚠️ Falta aplicar SQL en Supabase</b><div style="margin-top:5px">'+
+    'La consulta <code>'+esc(fn)+'</code> no responde: <i>'+esc(String(e&&e.message||e)).slice(0,160)+'</i></div>'+
+    '<div style="margin-top:5px">Ejecuta <b>backend-sql/2026-08-05-notificaciones.sql</b> entero y recarga.</div></div>';
+}
+
+var NOMBRES={
+  new_cycle:'Nuevo ciclo · pedir Día 1', end_period:'Fin del periodo',
+  morning_log:'Registro de la mañana', evening_log:'Registro de la noche',
+  streak_hit:'Racha conseguida', reengage:'Reenganche · lleva días sin registrar',
+  phase_menstrual:'Fase menstrual', phase_follicular:'Fase folicular',
+  phase_ovulatory:'Fase ovulatoria', phase_luteal:'Fase lútea'
+};
+var CUANDO={
+  reminder:'Recordatorio', phase_change:'Al cambiar de fase',
+  streak_hit:'Al conseguir racha', streak_missed:'Al perder la racha'
+};
+
+function tarjeta(t){
+  var sinElegir = !t.eleccion && t.estado!=='descartada';
+  var h='<div class="n '+esc(t.estado)+'" data-code="'+esc(t.code)+'">'
+    + '<div class="nh"><span class="code">'+esc(t.code)+'</span>'
+    + (t.severidad ? '<span class="sev '+esc(t.severidad)+'">'+esc(t.severidad)+'</span>' : '')
+    + '<span class="pill '+esc(t.estado)+'">'+esc(t.estado)+'</span>'
+    + (t.eleccion ? '<span class="elegido">'+(t.eleccion==='propuesta'?'✓ propuesta adoptada':'✓ se mantiene la original')+'</span>' : '')
+    + ((t.eleccion==='original' && t.severidad==='critica' && t.estado==='borrador')
+        ? '<span class="sev critica" title="Tu elección está guardada. Al ser un mensaje CRÍTICO (pasada de lenguaje inclusivo), quedarse la original no lo activa sola: púlsale «activa» o adopta la propuesta. / Choice saved; CRITICAL messages need explicit activation.">⚠ elegido · falta activar</span>' : '')
+    + (t.duplicada_de ? '<span class="pill descartada">'+esc(t.duplicada_de)+'</span>' : '')
+    + (t.veces_enviada ? '<span class="meta">enviada '+t.veces_enviada+'×</span>' : '')
+    + '</div>';
+
+  if (t.duplicada_de) {
+    h += '<div class="txt" style="opacity:.6">'+esc(t.texto)+'</div>'
+      +  '<div class="meta">Duplicado: no hace falta decidir nada.</div>';
+    return h+'</div>';
+  }
+
+  // original a la izquierda, propuesta a la derecha
+  h += '<div class="vs">'
+    +  '<div class="col"><h4>Original</h4><div class="txt">'+esc(t.texto)+'</div>'
+    +  (t.texto_es ? '<div class="es">'+esc(t.texto_es)+'</div>' : '')+'</div>';
+  if (t.prop_cuerpo_en) {
+    h += '<div class="col prop"><h4>Propuesta revisada</h4>'
+      +  (t.prop_preview_en ? '<div class="lock">'+esc(t.prop_preview_en)+'</div>' : '')
+      +  '<div class="tt">'+esc(t.prop_titulo_en||'')+'</div>'
+      +  '<div class="txt">'+esc(t.prop_cuerpo_en)+'</div>'
+      +  (t.prop_cta_en ? '<span class="cta">'+esc(t.prop_cta_en)+'</span>' : '')
+      +  (t.prop_cuerpo_es ? '<div class="es" style="margin-top:8px">'+esc(t.prop_titulo_es||'')+' — '+esc(t.prop_cuerpo_es)+'</div>' : '')
+      +  '</div>';
+  }
+  h += '</div>';
+
+  if (t.hallazgo) h += '<div class="hall"><b>Hallazgo de la revisión'+(t.categorias?' · '+esc(t.categorias):'')+'</b>'+esc(t.hallazgo)+'</div>';
+  if (t.observacion) h += '<div class="obs"><b>Observación de ingeniería</b>'+esc(t.observacion)+'</div>';
+  if (t.nota) h += '<div class="meta">Anotasteis: «'+esc(t.nota)+'»</div>';
+
+  h += '<div class="acts">';
+  if (t.prop_cuerpo_en) h += '<button class="'+(sinElegir?'on':'')+'" data-elige="'+esc(t.code)+'|propuesta">Adoptar la propuesta</button>';
+  h += '<button data-elige="'+esc(t.code)+'|original">Mantener la original</button>'
+    +  '<button data-edit="'+esc(t.code)+'">Editar a mano</button>'
+    +  (t.estado!=='descartada' ? '<button data-est="'+esc(t.code)+'|descartada">Descartar</button>' : '')
+    +  '</div><div data-form="'+esc(t.code)+'"></div>';
+  return h+'</div>';
+}
+
+function pinta(){
+  var d=D, r=d.resumen||{}, items=d.items||[];
+  $('kpis').innerHTML =
+    kpi('Sin decidir', r.sin_elegir||0) + kpi('Críticas', r.criticas||0) +
+    kpi('Riesgo alto', r.altas||0) + kpi('Activas', r.activas||0) +
+    kpi('Descartadas', r.descartadas||0);
+
+  var FL=[['todas','Todas'],['sin_elegir','Sin decidir'],['critica','Críticas'],
+          ['alta','Riesgo alto'],['activa','Activas'],['descartada','Descartadas']];
+  $('filtros').innerHTML = FL.map(function(f){
+    return '<button class="'+(filtro===f[0]?'on':'')+'" data-f="'+f[0]+'">'+f[1]+'</button>';}).join('');
+  [].forEach.call($('filtros').querySelectorAll('button'),function(b){
+    b.onclick=function(){filtro=b.getAttribute('data-f');pinta();};});
+
+  var porGrupo={};
+  items.forEach(function(t){ (porGrupo[t.grupo]=porGrupo[t.grupo]||[]).push(t); });
+  var html='';
+  Object.keys(porGrupo).forEach(function(g){
+    var suyos=porGrupo[g].filter(function(t){
+      if(filtro==='todas') return true;
+      if(filtro==='sin_elegir') return !t.eleccion && t.estado!=='descartada';
+      if(filtro==='critica'||filtro==='alta') return t.severidad===filtro;
+      return t.estado===filtro;});
+    if(!suyos.length) return;
+    var act=porGrupo[g].filter(function(t){return t.estado==='activa';}).length;
+    html += '<div class="gh"><b>'+esc(NOMBRES[g]||g)+'</b> '
+         +  '<span>· '+esc(CUANDO[porGrupo[g][0].disparador]||'')+' · '
+         +  act+' de '+porGrupo[g].length+' activas</span>'
+         +  (act===0 ? '<div class="meta" style="color:#C73A20">Sin ninguna activa: este aviso no se enviará nunca.</div>':'')
+         +  '<div class="acts"><button data-add="'+esc(g)+'">+ Añadir mensaje</button></div>'
+         +  '<div data-new="'+esc(g)+'"></div></div>';
+    suyos.forEach(function(t){ html += tarjeta(t); });
+  });
+  $('lista').innerHTML = html || '<p class="lead">Nada con ese filtro.</p>';
+  enlaza();
+}
+function kpi(l,v){return '<div class="kpi"><div class="l">'+l+'</div><div class="v">'+v+'</div></div>';}
+
+function enlaza(){
+  var byCode={}; (D.items||[]).forEach(function(t){byCode[t.code]=t;});
+
+  $('lista').querySelectorAll('button[data-edit]').forEach(function(b){
+    b.onclick=function(){
+      var c=b.getAttribute('data-edit'), t=byCode[c];
+      var box=$('lista').querySelector('[data-form="'+c+'"]');
+      box.innerHTML='<input data-en value="'+esc(t.texto)+'" placeholder="Texto en inglés">'
+        +'<input data-es value="'+esc(t.texto_es||'')+'" placeholder="Texto en español (opcional)">'
+        +'<div class="acts"><button class="on" data-save>Guardar</button>'
+        +'<button data-cancel>Cancelar</button></div>';
+      box.querySelector('[data-save]').onclick=function(){
+        var en=box.querySelector('[data-en]').value.trim();
+        var es=box.querySelector('[data-es]').value.trim();
+        if(!en){box.querySelector('[data-en]').style.borderColor='#E8472A';return;}
+        guarda('admin_notification_set',{p_code:c,p_texto:en,p_texto_es:es||null});
+      };
+      box.querySelector('[data-cancel]').onclick=function(){box.innerHTML='';};
+    };
+  });
+
+  $('lista').querySelectorAll('button[data-elige]').forEach(function(b){
+    b.onclick=function(){
+      var v=b.getAttribute('data-elige').split('|');
+      var t=byCode[v[0]];
+      // quedarse con una crítica no se hace por descuido: se avisa
+      if (v[1]==='original' && t && t.severidad==='critica' &&
+          !confirm('Esta está marcada como CRÍTICA por la revisión.\n\n«'+t.hallazgo+'»\n\nSi la mantienes, se queda en borrador y no se enviará hasta que alguien la reescriba. ¿Seguro?')) return;
+      guarda('admin_notification_choose',{p_code:v[0],p_eleccion:v[1]},function(){
+        if(v[1]==='original' && t && t.severidad==='critica'){
+          alert('✓ Elección guardada.\n\nEste mensaje es CRÍTICO (pasada de lenguaje inclusivo): quedarse la original NO lo activa automáticamente.\nPara encenderlo: botón «activa» en su fila — o adopta la propuesta.\n\n(Regla deliberada; tus elecciones nunca se pierden.)');
+        }
+      });
+    };
+  });
+
+  $('lista').querySelectorAll('button[data-est]').forEach(function(b){
+    b.onclick=function(){
+      var v=b.getAttribute('data-est').split('|');
+      guarda('admin_notification_set',{p_code:v[0],p_estado:v[1]});
+    };
+  });
+
+  $('lista').querySelectorAll('button[data-add]').forEach(function(b){
+    b.onclick=function(){
+      var g=b.getAttribute('data-add');
+      var box=$('lista').querySelector('[data-new="'+g+'"]');
+      box.innerHTML='<input data-en placeholder="Texto en inglés">'
+        +'<input data-es placeholder="Texto en español (opcional)">'
+        +'<div class="acts"><button class="on" data-save>Crear</button>'
+        +'<button data-cancel>Cancelar</button></div>'
+        +'<div class="meta">Nace en borrador. Se activa cuando la reviséis.</div>';
+      box.querySelector('[data-save]').onclick=function(){
+        var en=box.querySelector('[data-en]').value.trim();
+        if(!en){box.querySelector('[data-en]').style.borderColor='#E8472A';return;}
+        guarda('admin_notification_add',{p_grupo:g,p_texto:en,
+          p_texto_es:box.querySelector('[data-es]').value.trim()||null});
+      };
+      box.querySelector('[data-cancel]').onclick=function(){box.innerHTML='';};
+    };
+  });
+}
+
+function guarda(fn,args,despues){
+  sb.rpc(fn,args).then(function(r){
+    if(r.error){alert('No se pudo guardar: '+r.error.message);return;}
+    carga().then(function(){ if(despues) despues(); });
+  });
+}
+
+function carga(){
+  return sb.rpc('admin_notification_catalog').then(function(r){
+    if(r.error){fail(r.error,'admin_notification_catalog');return;}
+    D=r.data; $('err').innerHTML=''; pinta();
+  });
+}
+
+sb.auth.getSession().then(function(r){
+  if(!r.data.session){
+    $('lista').innerHTML='<p class="lead">Inicia sesión en cualquier herramienta del hub y vuelve.</p>';
+    return;
+  }
+  carga();
+});
+})();
+</script><script src="/hub/assets/page-help.js?v=e939f9f3"></script></body></html>

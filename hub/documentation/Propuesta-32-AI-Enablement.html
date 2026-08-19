@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Propuesta 32 · AI Enablement — stack, casos de uso, journeys y plan (Epic N)</title>
+<style>
+  :root{--coral:#E4572E;--naranja:#F07E3C;--verde:#2E7D4F;--crema:#FFF4E8;--tinta:#2B2B2B;--suave:#8A8078;--line:#f3d9c8;--lila:#7C6BAE;}
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--crema);color:var(--tinta);margin:0;padding:24px;line-height:1.55}
+  .wrap{max-width:980px;margin:0 auto}
+  h1{color:var(--coral);font-size:25px;margin:0 0 4px}
+  h2{color:var(--coral);font-size:19px;margin:34px 0 10px;border-bottom:2px solid var(--line);padding-bottom:6px}
+  h3{font-size:15.5px;margin:18px 0 6px}
+  .sub{color:var(--suave);font-size:14px;margin-bottom:20px}
+  .card{background:#fff;border-radius:14px;padding:16px 20px;margin:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0}
+  th{background:var(--coral);color:#fff;text-align:left;padding:8px 10px;font-size:12.5px}
+  td{padding:8px 10px;border-bottom:1px solid #f2e6da;vertical-align:top}
+  tr:nth-child(even) td{background:#fdf8f3}
+  code{background:#f6ece2;border-radius:5px;padding:1px 6px;font-size:12.5px}
+  .reco{background:#e9f7ee;border:2px solid #bfe5cc;border-radius:12px;padding:12px 16px;margin:12px 0}
+  .ojo{background:#fdf0e7;border:2px solid #f0c9b2;border-radius:12px;padding:12px 16px;margin:12px 0}
+  .risk{background:#fee2e2;border:1.5px solid #f5b5b5;border-radius:10px;padding:10px 14px;font-size:13px;margin:8px 0}
+  .fase{background:#fff;border:2px solid var(--line);border-radius:12px;padding:12px 16px;margin:10px 0}
+  .fase b:first-child{color:var(--coral)}
+  .arch{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:12px;font-weight:700;margin:10px 0}
+  .box{background:#FFF1EC;border:1.5px solid var(--coral);border-radius:10px;padding:8px 11px;text-align:center}
+  .box small{display:block;font-weight:400;color:#7a5a48;margin-top:2px}
+  .box.g{background:#E9F7EE;border-color:var(--verde)}
+  .box.p{background:#F1EEFA;border-color:var(--lila)}
+  .bocadillo{background:#fdf7f1;border-left:3px solid var(--naranja);border-radius:0 10px 10px 0;padding:8px 12px;font-size:13px;color:#6a5344;font-style:italic;margin:8px 0}
+  .jstep{background:#fff;border-radius:14px;padding:12px 16px;margin:10px 0;border-left:5px solid var(--naranja);box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  .pie{color:var(--suave);font-size:12.5px;margin-top:30px;text-align:center}
+  .kpi{display:inline-block;background:#fdf7f1;border-radius:10px;padding:6px 12px;margin:4px 4px 0 0;font-size:12.5px}
+</style>
+<script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head>
+<body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+/* r16b: la pestaña activa por CLASE con !important — tercera red por si algo
+   pisa el estilo en línea. La pone markActive() y el mini-marcador del final. */
+#ns-hub-navbar .nsnb-tab.on{background:linear-gradient(135deg,#FF7600,#FD400C)!important;color:#fff!important;font-weight:800!important;border-color:#FD400C!important;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)!important}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+.nsnb-tab{cursor:grab}
+.nsnb-tab.nsnb-drag{opacity:.35;cursor:grabbing}
+#nsnb-reset{display:none}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Web de marketing / marketing site"
+     aria-label="Web de marketing" style="text-decoration:none">🏠</a>
+  <a class="nsnb-btn" href="https://admin.nutrisynccollective.com" title="StartUp Admin (contabilidad del build)"
+     aria-label="StartUp Admin" style="text-decoration:none">🛠</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Competitive" href="/hub/competitive.html">🥊 Competencia</a><a class="nsnb-tab nsnb-g1" data-en="Build Roadmap → Go Live" href="/hub/launch-plan.html">🚀 Build Roadmap → Go Live</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync Sprint Planning" href="/hub/backlog-dev.html">🗂 NutriSync Sprint Planning</a><a class="nsnb-tab nsnb-g4" data-en="Release Plan" href="/hub/release-plan.html">🚢 Releases</a><a class="nsnb-tab nsnb-g4" data-en="Compliance" href="/hub/compliance.html">🛡 Compliance</a><a class="nsnb-tab nsnb-g4" data-en="Ideation" href="/hub/roadmap.html">💡 Ideation</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g5" data-en="Documentation" href="/hub/documentation/index.html">📄 Documentación</a><a class="nsnb-tab nsnb-g5" data-en="ERP User Guide" href="/hub/user-guide.html">📖 Guía ERP</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14b (feedback Juanjo): idioma con CONMUTADOR visible y persistente.
+     localStorage ns_lang ('es'|'en') manda; sin él, el navegador decide.
+     Las páginas con data-i leen la misma clave — un idioma, todas las superficies. */
+  function nsLang(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pintaIdioma(){
+    var en=nsLang()==='en';
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      if(!a.getAttribute('data-es'))a.setAttribute('data-es',a.textContent.trim());
+      var em=a.getAttribute('data-es').split(' ')[0];
+      a.textContent=en?(em+' '+a.getAttribute('data-en')):a.getAttribute('data-es');});
+    var b=document.getElementById('nsnb-lang');if(b)b.textContent=en?'ES':'EN';
+  }
+  (function(){
+    var brand=document.querySelector('#ns-hub-navbar .nsnb-btn');
+    if(brand&&!document.getElementById('nsnb-lang')){
+      var b=document.createElement('a');b.id='nsnb-lang';b.className='nsnb-btn';b.href='#';
+      b.title='Cambiar idioma / switch language';
+      b.onclick=function(e){e.preventDefault();
+        try{localStorage.setItem('ns_lang',nsLang()==='en'?'es':'en');}catch(err){}
+        pintaIdioma();
+        document.dispatchEvent(new CustomEvent('ns-lang'));
+        if(typeof relayout==='function')relayout();
+        return false;};
+      brand.parentNode.insertBefore(b,brand);
+    }
+    pintaIdioma();
+    /* r14e: pintor data-i UNIVERSAL — cualquier página del hub con data-i="ES|EN"
+       (o data-i sin valor con "ES|EN" dentro) se vuelve bilingüe gratis. */
+    function pintaDataI(){
+      var en=nsLang()==='en';
+      document.querySelectorAll('[data-i]').forEach(function(n){
+        if(n.closest&&n.closest('#ns-hub-navbar'))return;
+        var src=n.getAttribute('data-i');
+        if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+        var p=src.split('|');
+        n.innerHTML=en?(p[1]||p[0]):p[0];});
+    }
+    document.addEventListener('ns-lang',pintaDataI);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',pintaDataI);
+    else pintaDataI();
+  })();
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  /* r16c (cazado POR JUANJO con el flash del clic): Cloudflare Pages sirve
+     URLs LIMPIAS — /hub/incidents.html se visita como /hub/incidents — así
+     que comparar con ".html" no casaba JAMÁS en carga de página. Se normaliza
+     quitando la extensión en LOS DOS lados. */
+  function nsLimpia(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';}
+  var here=nsLimpia(location.pathname.split('/').pop());
+  var dir=location.pathname.toLowerCase();
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : nsLimpia(f.split('/').pop())===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  /* r16: la marca se queda mientras estés en la página — se repinta al volver
+     del historial (bfcache), al recuperar el foco y al cambiar de pestaña del
+     navegador. Nada la apaga salvo navegar a otra página del hub. */
+  window.addEventListener('pageshow',function(){markActive();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)markActive();});
+  window.addEventListener('focus',function(){markActive();});
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  /* r14e (idea Juanjo): pestañas ARRASTRABLES — cada cual su orden, guardado
+     en este navegador (ns_tab_order). ↺ vuelve al orden de fábrica. */
+  (function(){
+    var KEY='ns_tab_order';
+    function filas(){return [document.getElementById('nsnb-r1'),document.getElementById('nsnb-r2')].filter(Boolean);}
+    function todas(){var t=[];filas().forEach(function(r){t=t.concat([].slice.call(r.querySelectorAll('.nsnb-tab')));});return t;}
+    var ORIG=todas().map(function(a){return a.getAttribute('href');});
+    function guardar(){try{localStorage.setItem(KEY,JSON.stringify(todas().map(function(a){return a.getAttribute('href');})));}catch(e){}
+      var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';}
+    function aplicar(orden){
+      var r1=document.getElementById('nsnb-r1');if(!r1)return;
+      var por={};todas().forEach(function(a){por[a.getAttribute('href')]=a;});
+      orden.forEach(function(h){if(por[h])r1.appendChild(por[h]);});
+      todas().forEach(function(a){if(orden.indexOf(a.getAttribute('href'))<0)r1.appendChild(a);});
+    }
+    try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&sv.length){aplicar(sv);
+      setTimeout(function(){var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';},0);}}catch(e){}
+    var drag=null;
+    todas().forEach(function(a){
+      a.setAttribute('draggable','true');
+      a.title=(a.title?a.title+' · ':'')+'Arrastra para reordenar / drag to reorder';
+      a.addEventListener('dragstart',function(e){drag=a;a.classList.add('nsnb-drag');
+        try{e.dataTransfer.setData('text/plain',a.getAttribute('href'));e.dataTransfer.effectAllowed='move';}catch(err){}});
+      a.addEventListener('dragend',function(){if(drag)drag.classList.remove('nsnb-drag');drag=null;});
+      a.addEventListener('dragover',function(e){e.preventDefault();if(!drag||drag===a)return;
+        var r=a.getBoundingClientRect(),antes=(e.clientX-r.left)<r.width/2;
+        a.parentNode.insertBefore(drag,antes?a:a.nextSibling);});
+      a.addEventListener('drop',function(e){e.preventDefault();guardar();relayout();});
+    });
+    filas().forEach(function(r){r.addEventListener('dragover',function(e){e.preventDefault();});
+      r.addEventListener('drop',function(e){e.preventDefault();if(drag){guardar();relayout();}});});
+    var brand=document.getElementById('nsnb-lang');
+    if(brand&&!document.getElementById('nsnb-reset')){
+      var rb=document.createElement('a');rb.id='nsnb-reset';rb.className='nsnb-btn';rb.href='#';rb.textContent='↺';
+      rb.title='Orden de pestañas original / reset tab order';
+      rb.onclick=function(e){e.preventDefault();try{localStorage.removeItem(KEY);}catch(err){}
+        aplicar(ORIG);rb.style.display='none';relayout();return false;};
+      brand.parentNode.insertBefore(rb,brand);
+    }
+  })();
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+<script>
+/* r16b · MINI-MARCADOR independiente de pestaña activa. Deliberadamente
+   separado y mínimo: si el script grande de la barra muere por lo que sea,
+   ESTE pinta igual. Solo compara el fichero de la URL con el href y pone la
+   clase .on (el CSS !important hace el resto). Se repite unos segundos por si
+   el reordenado o el motor mueven pestañas tarde. */
+(function(){
+  function marca(){
+    try{
+      /* r16c: Pages sirve URLs sin .html — normalizar ambos lados */
+      var lim=function(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';};
+      var here=lim(location.pathname.split('/').pop());
+      var esDoc=location.pathname.toLowerCase().indexOf('/documentation/')>-1;
+      document.querySelectorAll('#ns-hub-navbar .nsnb-tab').forEach(function(a){
+        var f=(a.getAttribute('href')||'').toLowerCase();
+        var on=esDoc ? f.indexOf('/documentation/')>-1 : lim(f.split('/').pop())===here;
+        a.classList.toggle('on',on);
+      });
+    }catch(e){}
+  }
+  marca();
+  var i=0,t=setInterval(function(){marca();if(++i>15)clearInterval(t);},700);
+  window.addEventListener('pageshow',marca);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar --><div class="wrap">
+
+<h1>🤖 Propuesta 32 · AI Enablement</h1>
+<div class="sub">Epic N — dónde la IA da valor en NutriSync, con qué stack (coste mínimo, muy escalable) y en qué orden · para el roadmap de negocio y tecnológico · nada de esto toca el camino crítico del 8-oct (<b>Plan-Lanzamiento-8Oct.html</b>) · 1-ago-2026 · <b>v2 (9-ago): + capacidades de VISIÓN para el Epic P · vision capabilities added (ES/EN addendum, §3b)</b></div>
+
+<h2>1 · Resumen ejecutivo</h2>
+<div class="card">
+<p>NutriSync ya tiene la materia prima que hace útil a la IA: un <b>motor de contenido estructurado</b> (content-i18n, 14 idiomas), <b>datos longitudinales por usuaria</b> (ciclos, síntomas, comidas, movimiento, CAS/CSS) y una <b>arquitectura serverless</b> donde enchufar inferencia sin servidores nuevos. La propuesta: usar IA en cuatro frentes — <b>diálogo</b> (recoger inputs conversando, no rellenando formularios), <b>análisis</b> (patrones personales narrados en lenguaje humano), <b>recomendación</b> (catálogo + preferencias vía búsqueda semántica) y <b>operaciones</b> (triage de feedback y contenido para founders) — con una arquitectura de tres niveles de coste que mantiene el gasto marginal cercano a cero para el 90% del valor.</p>
+<p><b>La tesis de negocio:</b> la capa personal de IA es el argumento natural del tier premium (conecta con Epic L / <b>Doc 29</b>): gratis = inteligencia compartida por segmento; premium = tu analista personal. Y la capa de operaciones devuelve horas de founders desde la semana uno.</p>
+</div>
+
+<h2>2 · Principios (los no negociables)</h2>
+<div class="card">
+<p><b>1 · Coste marginal ≈ 0 por diseño.</b> Todo lo que pueda generarse UNA vez y servirse a muchas (insights por fase×objetivo×idioma) se pre-genera y cachea en Supabase — igual que hoy servimos el catálogo. La inferencia por usuaria queda para donde de verdad personaliza, con presupuesto por usuaria y caché diaria.</p>
+<p><b>2 · Privacidad primero.</b> Los prompts nunca llevan PII (ni nombre, ni email, ni ciudad): viajan datos pseudonimizados (fase, día, agregados de logs). Procesamiento en región UE con DPA firmado. Consentimiento explícito y separado para funciones de IA (encaja con nuestra capa de consentimiento existente) — datos de salud = Art. 9 RGPD, el abogado revisa el addendum (mismo flujo que G4 del plan).</p>
+<p><b>3 · Nunca diagnóstico.</b> La IA narra patrones y sugiere hábitos del catálogo aprobado; jamás diagnostica ni prescribe. Guardrails de temas + disclaimer de salud + escalada a "consulta a un profesional" (coherente con el Aviso de Salud y con la Propuesta 31: tono de cuidado).</p>
+<p><b>4 · Con las manos en el catálogo.</b> Las recomendaciones se anclan (RAG) en NUESTRO contenido validado por Pilar — la IA elige y explica, no inventa consejos de salud. Human-in-the-loop para todo contenido nuevo.</p>
+<p><b>5 · Proveedor intercambiable.</b> Un router propio con registro de modelos en base de datos: cambiar de proveedor o modelo = 1 fila, 0 deploys. Cero lock-in.</p>
+</div>
+
+<h2>3 · Stack tecnológico — coste mínimo, muy escalable</h2>
+<div class="card">
+<h3>Arquitectura (sobre lo que ya tenemos — 0 infraestructura nueva)</h3>
+<div class="arch">
+  <span class="box">App / PWA / Web<small>UI + streaming</small></span><span>→</span>
+  <span class="box g">Edge Function <code>ai-router</code><small>Deno · auth + límites + logging</small></span><span>→</span>
+  <span class="box p">API LLM (región UE)<small>modelo pequeño por defecto</small></span>
+</div>
+<div class="arch">
+  <span class="box g">Supabase Postgres<small>caché de insights · presupuestos · consentimiento</small></span>
+  <span class="box g">pgvector (ya incluido)<small>embeddings del catálogo + FAQ</small></span>
+  <span class="box g">pg_cron / Edge scheduled<small>batch nocturno de insights</small></span>
+</div>
+<p>La clave: <b>toda inferencia pasa por Edge Functions</b> (las claves API viven en secrets, jamás en el cliente — misma regla que ya cumplimos con service_role), y <b>toda respuesta cacheable se guarda en Postgres</b>. El streaming al móvil va por SSE desde la función. No hay servidores, colas ni vector-DBs externos que operar: pgvector y pg_cron ya vienen con Supabase.</p>
+
+<h3>Los tres niveles de coste (así escala sin sustos)</h3>
+<table>
+<tr><th>Nivel</th><th>Qué</th><th>Coste marginal por usuaria</th><th>Quién lo recibe</th></tr>
+<tr><td><b>N1 · Batch compartido</b></td><td>Insights por segmento (4 fases × objetivos × 14 idiomas) pre-generados cada noche y cacheados — como el motor diario actual</td><td><b>≈ 0 €</b> (coste fijo total &lt;1 €/día)</td><td>Todas (free)</td></tr>
+<tr><td><b>N2 · Personal cacheado</b></td><td>1 análisis personal/día máx. (patrones de SUS logs), modelo pequeño, se guarda y sirve</td><td>~0,001-0,003 €/día</td><td>Premium (y piloto)</td></tr>
+<tr><td><b>N3 · Interactivo</b></td><td>Chat/check-in conversacional con presupuesto mensual de tokens por usuaria</td><td>~0,05-0,15 €/mes con tope</td><td>Premium</td></tr>
+</table>
+<p class="sub" style="margin:4px 0 0">Con 10.000 usuarias y mezcla realista: <b>&lt;100 €/mes</b> de inferencia. El tope por usuaria hace el coste lineal y predecible — entra en el ARPU del Doc 29 con margen de sobra.</p>
+
+<h3>Elección de modelo/proveedor</h3>
+<p>Criterios: endpoint en UE + DPA · calidad multilingüe real (14 idiomas incl. co-oficiales) · coste clase "small" (0,1-1 €/millón tokens entrada) · políticas que permitan contenido de salud/bienestar · salida estructurada fiable (JSON) para extraer logs del diálogo. Los modelos pequeños de los tres grandes (Anthropic Haiku, OpenAI mini, Google Flash) cumplen; los open-weights vía proveedor UE son el plan B de coste. <b>Recomendación operativa: empezar con UNO (el que mejor DPA/UE nos firme) y decidirlo en D12 — el router hace que la elección sea reversible en minutos.</b> Evaluación con un golden-set propio (50 casos × idioma clave) antes de encender nada de cara a usuarias.</p>
+</div>
+
+<h3>Los tres candidatos LLM, en detalle (adenda 2-ago)</h3>
+<div class="card">
+<table>
+<tr><th></th><th>Claude Haiku (Anthropic)</th><th>GPT mini (OpenAI)</th><th>Gemini Flash (Google)</th></tr>
+<tr><td><b>Carácter</b></td><td>Fiel a instrucciones, tono muy controlable, JSON fiable</td><td>El barato ubicuo del ecosistema; function-calling maduro</td><td>Precio/velocidad agresivos, contexto 1M, multimodal</td></tr>
+<tr><td><b>Fortaleza para NutriSync</b></td><td>Tono de salud con voz de marca + extracción precisa (caso A)</td><td>Coste mínimo por token; Azure UE muy rodado</td><td>Batch masivo baratísimo (insights N1); Vertex UE nativo</td></tr>
+<tr><td><b>Debilidad para NutriSync</b></td><td>Algo más caro en gama pequeña</td><td>Verborrea/tono genérico — más prompt-work</td><td>Filtros que históricamente se disparan con contenido menstrual/salud</td></tr>
+<tr><td><b>UE/DPA</b></td><td>Bedrock/Vertex región UE + DPA</td><td>Azure OpenAI UE</td><td>Vertex AI UE</td></tr>
+<tr><td><b>14 idiomas (incl. cooficiales)</b></td><td>Bueno, correcto en cooficiales</td><td>Bueno en grandes, flojo en minoritarios</td><td>Bueno en grandes, irregular en minoritarios</td></tr>
+</table>
+<p class="sub" style="margin:6px 0 0">Sesgo declarado: este análisis lo escribe un modelo de Anthropic — por eso D12 se decide con DPA/UE + golden-set en nuestros idiomas y contenido, no con opiniones.</p>
+
+<h2>3b · Adenda v2 (9-ago) — Visión · Vision (Epic P · Meal Photo AI)</h2>
+<div class="box" style="background:#FFF8EF;border-left:3px solid #E8B072;border-radius:0 8px 8px 0;padding:12px 15px;font-size:13.5px;line-height:1.65">
+<b>ES</b> — El Epic P (doc 39: foto de la comida → borrador → dato estructurado) añade la segunda modalidad al stack: <b>visión</b>. Mismo régimen que el texto, sin excepciones:
+<ul>
+<li><b>Todo pasa por el ai-router</b>: el proveedor de visión es una fila en el registro de modelos, reversible en minutos. Puede ser DISTINTO del proveedor de texto.</li>
+<li><b>Propuesta operativa</b>: <code>gpt-5.6-luna</code> (visión, Responses API, salida <b>JSON estricta</b> por json_schema) para el volumen; <code>gpt-5.6-terra</code> como reintento cuando la confianza baja de 0,65 o el plato es mixto; si sigue dudoso, UNA pregunta simple a la usuaria. Alternativas evaluables con el mismo golden-set: visión de Claude y Gemini.</li>
+<li><b>La IA identifica, la base calcula</b>: la visión devuelve alimentos + gramos estimados + confianza; los macros salen SIEMPRE de canonical_foods (USDA sembrado · EuroFIR pendiente) de forma determinista. Jamás calorías inventadas por el modelo.</li>
+<li><b>Cero PII, versión visión</b>: al proveedor viaja SOLO la imagen (1024px, sin EXIF ni localización) — nunca identidad, ciclo ni historial. Región UE/DPA igual que el texto (D12).</li>
+<li><b>Golden-set de fotos</b>: las correcciones reales de las usuarias (meal_edits) son los casos de evaluación etiquetados — el mejor banco de pruebas posible, gratis.</li>
+<li><b>Coste</b>: N2/N3 con presupuesto por usuaria en BD y degradación (reintento Terra solo bajo umbral). El tope hace el coste lineal, como todo el epic.</li>
+</ul>
+<b>EN</b> — Epic P (doc 39: meal photo → draft → structured data) adds the second modality to the stack: <b>vision</b>. Same regime as text, no exceptions:
+<ul>
+<li><b>Everything goes through the ai-router</b>: the vision provider is one row in the model registry, reversible in minutes — and it may DIFFER from the text provider.</li>
+<li><b>Operating proposal</b>: <code>gpt-5.6-luna</code> (vision, Responses API, <b>strict JSON</b> via json_schema) for volume; <code>gpt-5.6-terra</code> retry when confidence drops below 0.65 or the dish is mixed; if still uncertain, ONE simple question to the user. Claude and Gemini vision remain evaluable with the same golden-set.</li>
+<li><b>The AI identifies, the database calculates</b>: vision returns foods + estimated grams + confidence; macros ALWAYS come deterministically from canonical_foods (USDA seeded · EuroFIR pending). Never model-invented calories.</li>
+<li><b>Zero PII, vision edition</b>: only the image travels to the provider (1024px, EXIF and location stripped) — never identity, cycle or history. EU region/DPA same as text (D12).</li>
+<li><b>Photo golden-set</b>: real user corrections (meal_edits) are the labelled evaluation cases — the best possible test bench, for free.</li>
+<li><b>Cost</b>: N2/N3 with per-user budget in the database and graceful degradation (Terra retry only below threshold). The cap keeps cost linear, like the rest of the epic.</li>
+</ul>
+</div>
+</div>
+
+<h3>Lo que NO metemos (y cuándo sí) — Neo4j, orquestadores y familia</h3>
+<div class="card">
+<p><b>Neo4j / grafos:</b> hoy no — nuestros datos son relacionales/temporales con saltos de 1-2 relaciones (Postgres + pgvector los cubren). <b>Disparador para reabrir:</b> features sociales/comunidad con grafo de relaciones, o un grafo de conocimiento nutricional donde las preguntas dominantes sean multi-salto (&gt;3). Primer paso lean incluso entonces: tabla de aristas en Postgres. Horizonte: 2027 o nunca.</p>
+<p><b>ContextForge / LangChain / orquestadores de contexto:</b> hoy no — el router propio + pgvector + caché ES la orquestación para AI-0/1/2, y la memoria de la usuaria son sus datos estructurados (mejores que cualquier vector de conversación). <b>Disparador:</b> AI-3 (copiloto multi-turno con &gt;3 herramientas y estado largo) o multi-proveedor simultáneo con políticas complejas; incluso entonces, primero tabla <code>conversations</code> + registro de tools propio.</p>
+<p><b>La excepción probable:</b> <b>Langfuse auto-alojado</b> (observabilidad/evals de LLM) en AI-2, si el volumen de evaluación supera la tabla de telemetría. Es la única pieza del ecosistema AI con papeletas de ganarse el sitio pronto.</p>
+<p class="sub" style="margin:6px 0 0">Regla de la casa (CLAUDE.md): cada pieza entra con un dolor real que resuelve — el stack son 4 proveedores y 0 servidores, y eso es un feature.</p>
+</div>
+
+<h2>4 · Mapa de casos de uso — dónde da valor</h2>
+<div class="card">
+<table>
+<tr><th>#</th><th>Caso de uso</th><th>Valor</th><th>Nivel coste</th><th>Fase</th></tr>
+<tr><td>A</td><td><b>Check-in conversacional</b> — "¿cómo estás hoy?" en lenguaje libre; la IA extrae síntomas/ánimo/energía/comidas a datos estructurados (salida JSON → mismas tablas de logs de hoy). El formulario queda como alternativa, no como peaje.</td><td>Más datos y mejores (el activo nº1 del producto) + usabilidad radical</td><td>N3</td><td>AI-2</td></tr>
+<tr><td>B</td><td><b>Insight diario narrado</b> — el motor actual elige QUÉ decir (recs por segmento); la IA lo convierte en UN párrafo cálido y contextual por fase×objetivo×idioma, pre-generado</td><td>El "para mí" que diferencia de un listado; retención diaria</td><td>N1</td><td>AI-1</td></tr>
+<tr><td>C</td><td><b>Análisis de patrones personal</b> — SQL calcula (correlaciones logs↔ciclo sobre <code>cycle_records</code> de la Propuesta 31); la IA narra: <i>"tus migrañas aparecen los días 24-26 en 3 de tus últimos 4 ciclos"</i>. Alimenta la pantalla Trends (sinergia directa con Epic M)</td><td>El momento "wow" — nadie más se lo dice; driver premium nº1</td><td>N2</td><td>AI-2</td></tr>
+<tr><td>D</td><td><b>Recomendación semántica</b> — embeddings del catálogo (pgvector): "algo vegetal, rápido y rico en hierro" → platos del catálogo filtrados por alérgenos/dieta/fase</td><td>Recomendaciones que respetan el diseño de Pilar, explicadas</td><td>N2</td><td>AI-2</td></tr>
+<tr><td>E</td><td><b>Guía de uso in-app</b> — "¿cómo registro mi período?" respondido sobre NUESTRA documentación (RAG de la guía/FAQ), con deep-link a la pantalla</td><td>Menos fricción, menos tickets a contact@</td><td>N1/N3</td><td>AI-1</td></tr>
+<tr><td>F</td><td><b>Mensajes de estado inteligentes</b> — los copys de gracia/deriva/rebaseline (Prop. 31) con matiz de contexto, dentro del registro de notificaciones</td><td>Comunicación que no suena a plantilla</td><td>N1</td><td>AI-1/M-3</td></tr>
+<tr><td>G</td><td><b>OPS · Triage de feedback</b> — en el hub: clustering y etiquetado automático del feedback del piloto (tema, severidad, screen), resumen semanal para founders</td><td><b>Horas de founders devueltas desde la semana 1</b>; cero exposición a usuarias</td><td>interno</td><td><b>AI-0</b></td></tr>
+<tr><td>H</td><td><b>OPS · Contenido y traducciones</b> — asistente en el hub Translations: primera pasada de los 12 idiomas + QA de coherencia (hoy lo hacemos a mano fuera)</td><td>La pasada de revisores ×12 idiomas deja de ser cuello de botella</td><td>interno</td><td><b>AI-0</b></td></tr>
+<tr><td>I</td><td><b>Señales de cuidado</b> — detección de valores fuera de patrón sostenidos (ya definidos en Prop. 31) con mensaje empático y derivación a profesional. IA solo REDACTA; la regla la decide SQL</td><td>Confianza y responsabilidad — nunca diagnóstico</td><td>N1</td><td>AI-2</td></tr>
+</table>
+</div>
+
+<h2>5 · Cuatro journeys concretos</h2>
+<div class="jstep"><b>J1 · El check-in de María (caso A, premium)</b> — Notificación de la tarde → abre chat: <i>"¿Cómo ha ido el día?"</i> → María: <i>"agotada, me ha dolido la cabeza toda la tarde y he picoteado fatal"</i> → la IA extrae {energía: baja, síntoma: cefalea, nutrición: picoteo} → confirma en un tap → se guardan como logs normales (mismas tablas, mismo CAS).<div class="bocadillo">"Anotado: energía baja, dolor de cabeza y picoteo 💾 Vas por el día 24 — la fase lútea tardía suele pedir más magnesio; ¿te dejo dos cenas del catálogo que ayudan?"</div></div>
+<div class="jstep"><b>J2 · "¿Por qué estoy tan cansada?" (caso C, premium)</b> — María lo pregunta en Trends → SQL trae sus 4 ciclos + logs de energía → la IA narra el patrón real y enlaza 2 recomendaciones del catálogo.<div class="bocadillo">"En tus últimos 3 ciclos, tu energía baja de forma consistente los días 22-26 (ahora vas por el 24). No es casualidad: es tu patrón lúteo. Te va mejor cuando cenas antes de las 21h (lo hiciste 6 de los 9 días buenos)."</div></div>
+<div class="jstep"><b>J3 · Pilar y el feedback del piloto (caso G, interno)</b> — Lunes, hub → Feedback: 47 mensajes de la semana ya vienen agrupados: "12 · onboarding-idioma · P2", "8 · calendario-visual · P1"… con resumen de 5 líneas y los 3 quotes más representativos por cluster. Pilar valida etiquetas en 10 minutos en vez de leer 47 mensajes.</div>
+<div class="jstep"><b>J4 · La usuaria perdida (caso E, free)</b> — "¿dónde cambio mi duración de ciclo?" → respuesta anclada en la guía + botón que abre Cycle &amp; Health directamente. Un ticket menos; una usuaria que no abandona.</div>
+
+<h2>6 · Plan de implementación (fases AI-0 → AI-3)</h2>
+<div class="fase"><b>AI-0 · Ops interno (sprints 12-13, agosto — SIN tocar el camino crítico)</b> — <code>ai-router</code> Edge Function + registro de modelos + tabla de presupuestos/telemetría · triage de feedback en hub (caso G) · asistente de traducciones (caso H) · golden-set de evaluación v1. Riesgo cero (nada de cara a usuarias), valor inmediato para el piloto de septiembre.</div>
+<div class="fase"><b>AI-1 · Inteligencia compartida (post-lanzamiento, oct-nov)</b> — insights diarios narrados por segmento ×14 idiomas (batch nocturno, caso B) · guía de uso RAG (caso E) · copys de estado (caso F) · addendum de consentimiento IA publicado (abogado). KPI gate: coste fijo &lt;30 €/mes y CTR del insight &gt;25%.</div>
+<div class="fase"><b>AI-2 · Personal premium (nov-dic, con Epic L en producción)</b> — análisis de patrones narrado en Trends (caso C) · check-in conversacional (caso A) · recomendación semántica (caso D) · señales de cuidado (caso I). Es EL contenido del tier premium: se lanza junto a la oferta de pago.</div>
+<div class="fase"><b>AI-3 · Copiloto (2027)</b> — Nutri proactivo multi-turno, predicciones con banda de confianza, integración con wearables (health_signal ya existe). Se decide con datos de AI-1/2.</div>
+<div class="ojo"><b>Dependencias:</b> AI-0 no depende de nadie (arranca ya) · AI-1 depende del addendum legal de consentimiento · AI-2 depende de Epic L (pagos) y de <code>cycle_records</code> (Epic M-1) · Todo depende de D12 (proveedor).</div>
+
+<h2>7 · Riesgos y guardrails</h2>
+<div class="card">
+<div class="risk"><b>⚠ Datos de salud a un tercero</b> → pseudonimización estricta en el router (allowlist de campos: fase, día, agregados — nunca identidad), región UE, DPA, consentimiento separado y revocable, y modo degradado sin IA para quien no consienta.</div>
+<div class="risk"><b>⚠ Alucinaciones en consejos</b> → recomendaciones SOLO del catálogo (RAG con cita interna); si no hay match, la IA lo dice y ofrece el genérico de fase. Temperatura baja + salida estructurada + tests del golden-set en CI.</div>
+<div class="risk"><b>⚠ Coste desbocado</b> → presupuesto por usuaria en BD (el router corta y degrada a caché), telemetría de coste por función en la Consola Admin, alertas.</div>
+<div class="risk"><b>⚠ Tono fuera de marca</b> → guía de voz NutriSync en el system prompt (la voz de Lucía/Pilar), evaluada por founders en el golden-set — mismo circuito que los copys de la Propuesta 31.</div>
+</div>
+
+<h2>8 · Decisiones para founders</h2>
+<div class="card">
+<table>
+<tr><th></th><th>Pregunta</th><th>Opciones</th></tr>
+<tr><td><b>D12</b></td><td>Proveedor LLM primario de TEXTO + proveedor de VISIÓN (Epic P) — pueden ser distintos; ambos reversibles vía router · Primary TEXT provider + VISION provider — may differ; both reversible via the router</td><td><b>A · El grande con mejor DPA/endpoint UE que firmemos primero (recomendada)</b> · B · Open-weights vía proveedor UE (más barato, más QA nuestro) · C · Dual desde el día 1 (más coste de eval)</td></tr>
+<tr><td><b>D13</b></td><td>Consentimiento de IA</td><td><b>A · Opt-in explícito con pantalla propia (recomendada — salud manda)</b> · B · Incluido en el consentimiento general con toggle en Settings</td></tr>
+<tr><td><b>D14</b></td><td>Papel comercial de la IA</td><td><b>A · Free = compartido (N1), Premium = personal (N2/N3) (recomendada — driver claro del Doc 29)</b> · B · Todo premium · C · Todo free durante 2027 (coste asumido como marketing)</td></tr>
+</table>
+<p style="font-size:13.5px;color:var(--suave)">Como siempre: "D12-A, D13-A, D14-A" por WhatsApp vale. D12 conviene decidirla en agosto para que AI-0 arranque con el proveedor definitivo.</p>
+</div>
+
+<h2>9 · KPIs del epic</h2>
+<div class="card">
+<span class="kpi">💶 Coste IA / usuaria activa / mes (objetivo &lt;0,05 € free · &lt;0,20 € premium)</span>
+<span class="kpi">📈 CTR del insight diario</span>
+<span class="kpi">🗣 % de check-ins por chat vs formulario</span>
+<span class="kpi">📊 Logs por usuaria/semana (antes vs después del caso A)</span>
+<span class="kpi">🎯 Conversión free→premium atribuida a IA (D14)</span>
+<span class="kpi">🎧 % consultas de soporte desviadas (caso E)</span>
+<span class="kpi">⏱ Horas de founders/semana en triage (caso G, antes vs después)</span>
+</div>
+
+<div class="reco"><b>✅ Resumen en una frase</b> — La IA de NutriSync no es un chatbot pegado encima: es (1) recoger datos conversando, (2) contarle a cada usuaria SU patrón con su voz, (3) recomendar solo desde el catálogo de Pilar, y (4) devolverle horas al equipo — sobre la arquitectura serverless que ya tenemos, con coste marginal cercano a cero por diseño, proveedor intercambiable y la salud siempre por delante. AI-0 puede arrancar el sprint 12 sin rozar el 8-oct.</div>
+
+<h2>10 · Referencias</h2>
+<div class="card" style="font-size:12.5px;line-height:2;color:var(--suave)">
+<b>Plan-Lanzamiento-8Oct.html</b> — camino crítico que este epic NO toca · <b>Doc 29 / decisiones-pagos</b> — tier premium donde encaja AI-2 · <b>Propuesta-31</b> — cycle_records y estados que alimentan el análisis (caso C) y los copys (caso F) · <b>content-i18n</b> (motor diario 14 idiomas) — la base del batch N1 · <b>NutriSync-Architecture-Deployment.html</b> — arquitectura serverless de partida · <b>NutriSync-Backlog.html</b> — se registra como <b>Epic N</b> en el próximo pase de docs
+</div>
+
+<div class="pie">NutriSync · Propuesta 32 · AI Enablement (Epic N) · 1 de agosto de 2026 · para leer con calma y decidir D12-D14</div>
+</div></body>
+</html>
