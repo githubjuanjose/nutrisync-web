@@ -349,7 +349,7 @@ $$;</code></pre>
 <h2>6 · Cuatro errores, cuatro guardarraíles</h2>
 
 <h3>6.1 · El href con prefijo pegado</h3>
-<p>Asumí que las barras del atributo <code>href</code> iban escapadas como <code>\u002F</code> — lo están en las etiquetas de cierre <code>&lt;\u002Fa&gt;</code>, pero dentro del valor de un atributo son barras normales. Mi primer reemplazo no encajó, encajó el segundo, y quedó <code>href="hub/https://admin..."</code>.</p>
+<p>Asumí que las barras del atributo <code>href</code> iban escapadas como <code>\u002F</code> — lo están en las etiquetas de cierre <code>&lt;\u002Fa&gt;</code>, pero dentro del valor de un atributo son barras normales. Mi primer reemplazo no encajó, encajó el segundo, y quedó <code>href=&quot;hub/https://admin...&quot;</code>. <!-- comillas escapadas a propósito (19-ago): el linkcheck parsea el HTML crudo y este EJEMPLO le parecía un enlace de verdad — la lección r17-g de los detectores que leen prosa --></p>
 <p>Lo grave es cómo se manifestó: Cloudflare Pages devuelve <b>200 con la home</b> para cualquier ruta desconocida. El enlace roto no daba 404 — te dejaba en la portada. Síntoma indistinguible de «los tres enlaces están rotos».</p>
 <p><b>Y mi test daba verde sobre el bug</b>, porque lo escribí buscando el escapado que yo había supuesto. Ahora comprueba el <i>valor</i> del href y que ninguno lleve un esquema anidado.</p>
 
