@@ -310,6 +310,25 @@ La app de reloj propia (watchOS/Wear OS) sigue siendo O6: otra base de código, 
 piloto la pide.</p>
 </div>
 
+<h2>El listón: qué hacen las apps de referencia, y qué es esencial</h2>
+<div class="card">
+<p>Instrucción de Juanjo: mirar Strava, Runna, Nike Run Club y las apps de pasos como
+ejemplos — <b>lo nuestro sería mucho más simple</b>, pero las features esenciales tienen que
+estar.</p>
+<ul>
+<li><b>Strava</b>: registro con mapa, feed social, segmentos y rankings, clubs, mapas de
+calor. Su corazón es la comparación pública.</li>
+<li><b>Runna</b>: planes de entrenamiento personalizados con coaching — su corazón es el plan.</li>
+<li><b>Nike Run Club / apps de pasos</b> (Pacer, StepsApp): carreras guiadas, retos,
+objetivos diarios y rachas — su corazón es el hábito.</li>
+</ul>
+<p style="margin-top:8px">De ahí, las <b>esenciales que sí van</b>: registro en vivo con
+<b>mapa</b> · <b>agregación</b> de actividades (historial, semana/mes, totales, rachas) ·
+<b>objetivos</b> personales · y <b>actividades en compañía</b> (quedar con otra usuaria para
+salir juntas). Lo que NO va: segmentos, rankings públicos, feed abierto, mapas de calor,
+planes de coaching — ni comparación pública ni rendimiento contra nadie.</p>
+</div>
+
 <h2>Qué existe ya (por qué esto no parte de cero)</h2>
 <ul>
 <li>El <b>anillo de movimiento</b> y el checklist con intensidad — el destino del dato ya está pintado.</li>
@@ -334,6 +353,15 @@ NATIVA → build posterior</b> (pantallas y lógica, OTA).</div>
 <div class="rol"><span class="quien">O7c · Devolverlo a Salud</span><br>El entrenamiento
 guardado aquí se escribe en HealthKit / Health Connect con su ruta — la misma reciprocidad
 que el write-back del período (F2 de la UST-06). Quien mire Salud ve el paseo de NutriSync.</div>
+<div class="rol"><span class="quien">O7d · Agregación y objetivos</span><br>El historial de
+actividades con su semana/mes, totales, rachas — y objetivos personales (pasos/día, salidas
+o minutos/semana) que la app propone <b>conscientes de la fase</b> y ella ajusta. Todo JS +
+SQL sobre <code>health_signal</code>: <b>vehículo OTA</b>, sin build.</div>
+<div class="rol"><span class="quien">O7e · Actividades en compañía</span><br>Invitar a otra
+usuaria (o a un grupo privado) a salir juntas: proponer día y hora, confirmar, y que la
+actividad quede en el día de ambas. Social <b>íntimo y por invitación</b> — no un feed. Es
+la puerta natural de la capa comunidad (item P5 en 💡) y hereda su puerta: la política de
+moderación (doc 20) antes de encenderse.</div>
 </div>
 
 <h2>El stack abierto (la respuesta a «¿hay open source para esto?»)</h2>
@@ -372,8 +400,9 @@ app puede guardar, y aquí se trata como tal desde el diseño:</p>
 fecha, tipo, duración, distancia, pasos, fuente. Subir la traza completa sería opt-in
 explícito y cifrado como el resto — y no hace falta para nada de lo que el producto promete.</li>
 <li>Las rutas <b>jamás entran a un LLM</b> (P32 §2, la misma regla que los datos de salud).</li>
-<li><b>Nada social</b>: ni mapas públicos, ni heatmaps, ni comparativas. Si algún día se
-compartiera una ruta, nacería con recorte automático de inicio y fin (zonas de privacidad).</li>
+<li><b>Nada social PÚBLICO</b>: ni mapas públicos, ni heatmaps, ni rankings. Lo social de
+O7e es <b>íntimo y por invitación</b>: si una ruta se comparte con la compañera, nace con
+recorte automático de inicio y fin (zonas de privacidad) y sin ubicación en vivo por defecto.</li>
 <li>D16 intacto: los pasos y el GPS son datos <b>objetivos</b> — rellenan lo objetivo y
 correlacionan con lo subjetivo. El ánimo sigue siendo suyo.</li>
 </ul>
@@ -411,7 +440,11 @@ cerrar wearables. Nacería con su UST.</li>
 <li><b>O7b + O7c (GPS, mapa, write-back)</b>: v2, tras el lanzamiento. MapLibre NO se mete
 en la 0.23.0 — añadir una dependencia nativa a días del freeze es exactamente el tipo de
 riesgo que la regla «no tenemos espacio para regresiones» prohíbe.</li>
-<li><b>Decisión founders</b>: validar O7 como tramo del Epic O y su orden (¿O7a en
+<li><b>O7d (agregación + objetivos)</b>: puede acompañar a O7a por OTA — es JS + SQL, sin
+dependencia nueva. Los objetivos nacen fase-aware desde el primer día.</li>
+<li><b>O7e (en compañía)</b>: el último tramo, detrás de la política de moderación (doc 20)
+— compartir personas es más delicado que compartir kilómetros.</li>
+<li><b>Decisión founders</b>: validar O7 como tramo del Epic O y su orden (¿O7a+O7d en
 septiembre u O7 entero a v2?). El item vive en 💡 Ideation hasta esa decisión.</li>
 </ul>
 </div>
