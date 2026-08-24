@@ -601,6 +601,43 @@ async function loadHealth(){
     +'<div><b style="font-size:12px">'+(es?'SIN PESO DEL SEGMENTO · ':'NO SEGMENT WEIGHT · ')+(tot.sin_peso??0)+'</b>'+tabla(d.sin_peso,true)+'</div></div>'
     +'<div class="hint" style="margin-top:8px">'+(es?'Últimos 7 días: ':'Last 7 days: ')+(p.pct_items_sin_casar??'—')+'% '
     +(es?'de alimentos sin casar en ':'unmatched items across ')+(p.comidas??0)+(es?' comidas por foto':' photo meals')+'</div>';
+
+  /* E2 (UST-05 F5): el pipeline de FICHA OFICIAL, medible — y la mesa de
+     staging para decidir con firma. Aprobar = nace la ficha (composición
+     factual USDA); el tier clínico vive en otra mesa y aquí ni se toca. */
+  const pf=await sb.rpc('admin_pipeline_ficha');
+  if(!pf.error&&pf.data){
+    const d2=pf.data;
+    const pct=d2.items_7d?Math.round(100*d2.casados_7d/d2.items_7d):null;
+    $('gaps').insertAdjacentHTML('beforeend',
+      '<div class="hint" style="margin-top:4px">'+(es?'Ficha oficial (7d): ':'Official record (7d): ')
+      +(pct==null?(es?'sin escaneos aún':'no scans yet'):(d2.casados_7d+'/'+d2.items_7d+' ('+pct+'%)'))
+      +' · '+(es?'fichas con composición: ':'records with composition: ')+d2.fichas_con_macros+'/'+d2.fichas_totales+'</div>');
+  }
+  const st=await sb.rpc('admin_staging_list');
+  if(!st.error&&Array.isArray(st.data)){
+    const pend=st.data.filter(x=>x.estado==='propuesta');
+    let html='<div style="margin-top:12px"><b style="font-size:12px">'
+      +(es?'🍽 SUGERENCIAS DE FICHA (staging) · ':'🍽 RECORD SUGGESTIONS (staging) · ')+pend.length+'</b>';
+    if(!pend.length){html+='<div class="hint">'+(es?'nada pendiente — el cron del lunes 06:50 trae los huecos ≥3':'nothing pending — Monday 06:50 cron brings gaps ≥3')+'</div>';}
+    else{
+      html+='<table style="width:100%;font-size:12px;border-collapse:collapse">'+pend.map(x=>
+        '<tr><td><b>'+esc(x.nombre)+'</b><div class="hint">'+esc(x.nombre_fdc||(es?'sin candidato FDC':'no FDC match'))
+        +(x.kcal_100g?' · '+x.kcal_100g+' kcal/100g':'')+'</div></td>'
+        +'<td style="text-align:right;white-space:nowrap">×'+(x.veces_visto??0)
+        +' <button class="mini" onclick="nsStagingDecide(\''+x.id+'\',\'aprobada\')">✓ '+(es?'aprobar':'approve')+'</button>'
+        +' <button class="mini" onclick="nsStagingDecide(\''+x.id+'\',\'rechazada\')">✕</button></td></tr>').join('')+'</table>';
+    }
+    html+='</div>';
+    $('gaps').insertAdjacentHTML('beforeend',html);
+  }
 })().catch(e=>{nsFail(e,'gaps r21 (JS)');$('gaps').textContent='—';});
+
+window.nsStagingDecide=async function(id,dec){
+  if(!confirm((dec==='aprobada'?'¿Aprobar y crear la ficha oficial?':'¿Rechazar la sugerencia?')+'\n\nLa decisión queda firmada con tu email.'))return;
+  const r=await sb.rpc('admin_staging_decide',{p_id:id,p_decision:dec});
+  if(r.error||!(r.data&&r.data.ok)){nsFail(r.error||new Error((r.data&&r.data.error)||'sin ok'),'admin_staging_decide');return;}
+  location.reload();
+};
 </script>
 <script src="/hub/assets/page-help.js?v=e939f9f3"></script></body></html>
