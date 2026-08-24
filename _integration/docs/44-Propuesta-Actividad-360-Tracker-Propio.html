@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>44 · Actividad 360 — el tracker propio (Epic O · O7)</title>
+<style>
+:root{--coral:#FD400C;--deep:#6C3732;--cream:#FFF6EC;--line:#EADFD0;--muted:#8A7F78;
+  --ok:#1F6B57;--warn:#B26A00;--bad:#B3261E}
+*{box-sizing:border-box;margin:0}
+body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--cream);
+  color:var(--deep);line-height:1.6;padding:28px clamp(16px,4vw,48px) 80px}
+.wrap{max-width:1080px;margin:0 auto}
+h1{font-size:clamp(23px,3.4vw,32px);line-height:1.2;color:var(--coral);margin-bottom:6px}
+h2{font-size:19px;margin:34px 0 10px;padding-top:16px;border-top:2px solid var(--line)}
+p,li,td,th{font-size:14.5px}
+ul{margin:6px 0 6px 20px}
+.lede{color:var(--muted);font-size:15px;margin-bottom:4px}
+code{background:#FBF6EF;padding:1px 5px;border-radius:5px;font-size:12.5px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;
+  box-shadow:0 2px 10px rgba(108,55,50,.06)}
+.verde{border-left:4px solid var(--ok);background:#F4FAF7}
+.rojo{border-left:4px solid var(--bad);background:#FDF5F4}
+.ambar{border-left:4px solid var(--warn);background:#FFFBF2}
+.tres{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:12px 0}
+.rol{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.rol .quien{font-weight:800;color:var(--coral)}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);
+  border-radius:12px;overflow:hidden;margin:12px 0}
+th{background:#FBF1E4;text-align:left;padding:9px 12px;font-size:13px}
+td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}
+.muted{color:var(--muted)}
+.pill{display:inline-block;background:#FBF1E4;border:1px solid var(--line);border-radius:999px;
+  padding:1px 10px;font-size:12px;font-weight:700;margin-right:6px}
+</style>
+</head>
+<body><div class="wrap">
+
+<h1>44 · Actividad 360 — el tracker propio</h1>
+<p class="lede">Idea de Juanjo (24-ago): que ella pueda registrar sus paseos, carreras y pasos
+<b>dentro de NutriSync</b> — como haría en Strava o Runna, pero sin salir de aquí. Epic O,
+tramo nuevo <b>O7</b>. Este doc responde a las dos preguntas: qué construiríamos y con qué
+piezas open-source se puede hacer sin añadir un solo vendor de pago.</p>
+
+<h2>La idea, y por qué encaja</h2>
+<div class="card">
+<p>NutriSync ya entiende su ciclo, su comida y su descanso. Le falta el movimiento
+<i>capturado</i>, no tecleado: hoy el checklist pregunta «¿qué entrenaste?», y la respuesta
+honesta muchas veces es «déjame mirar el otro app». Una aplicación 360 cierra ese hueco:
+<b>el teléfono es el sensor</b> (GPS + podómetro), el paseo alimenta el anillo del día y la
+usuaria no necesita otra app si no quiere.</p>
+<p style="margin-top:8px"><b>El reloj ya está cubierto — y no por este tramo.</b> Lo que ella
+grabe con su Apple Watch o Garmin entra en Salud, y O1 (firmado hoy en la UST-06) lo lee de
+ahí. O7 es para quien <i>no</i> tiene reloj, o quiere el mapa y el directo en nuestra app.
+La app de reloj propia (watchOS/Wear OS) sigue siendo O6: otra base de código, solo si el
+piloto la pide.</p>
+</div>
+
+<h2>Qué existe ya (por qué esto no parte de cero)</h2>
+<ul>
+<li>El <b>anillo de movimiento</b> y el checklist con intensidad — el destino del dato ya está pintado.</li>
+<li><code>health_signal</code> con clave única y procedencia obligatoria — un paseo propio es una señal más, fuente <code>nutrisync</code>.</li>
+<li><b>Decisión G1c de la UST-06 (24-ago)</b>: <code>expo-sensors</code> y <code>expo-location</code>
+viajan como librerías en la 0.23.0 — sin modos background, permiso «mientras se usa». Si los
+textos de permiso (ubicación + motion) van compilados en ese build, <b>las pantallas de O7
+pueden llegar después por OTA</b> sin esperar a otro build nativo.</li>
+</ul>
+
+<h2>Qué se construiría — tres tramos, cada uno con su vehículo</h2>
+<div class="tres">
+<div class="rol"><span class="quien">O7a · Pasos</span><br>El podómetro del teléfono
+(<code>Pedometer</code>). Sin GPS, sin mapa, sin permiso de ubicación. Los pasos calibran la
+recomendación de movimiento y suman al anillo. <b>Vehículo: OTA tras la 0.23.0</b> (la
+librería ya viaja).</div>
+<div class="rol"><span class="quien">O7b · Tracker GPS</span><br>Caminar/correr con pantalla
+en vivo — tiempo, distancia, ritmo — y la ruta en un mapa. Al guardar: entrenamiento del día
++ anillo + señal propia. Fase 1 <b>foreground</b> (con la app abierta); el seguimiento con
+pantalla bloqueada exige permiso «Always» y es fase 2. <b>Vehículo: el mapa es dependencia
+NATIVA → build posterior</b> (pantallas y lógica, OTA).</div>
+<div class="rol"><span class="quien">O7c · Devolverlo a Salud</span><br>El entrenamiento
+guardado aquí se escribe en HealthKit / Health Connect con su ruta — la misma reciprocidad
+que el write-back del período (F2 de la UST-06). Quien mire Salud ve el paseo de NutriSync.</div>
+</div>
+
+<h2>El stack abierto (la respuesta a «¿hay open source para esto?»)</h2>
+<table>
+<tr><th>Pieza</th><th>Qué resuelve</th><th>Licencia / coste</th></tr>
+<tr><td><code>expo-location</code></td><td>GPS: posición, rutas, precisión, tipo de actividad
+<i>fitness</i> (ahorra batería). Primera parte de Expo — cero vendor nuevo.</td>
+<td>MIT · <b>ya embarcada</b> (G1c)</td></tr>
+<tr><td><code>expo-sensors</code> (Pedometer)</td><td>Pasos del teléfono, iOS y Android, sin
+ubicación.</td><td>MIT · <b>ya embarcada</b> (G1c)</td></tr>
+<tr><td><b>MapLibre React Native</b></td><td>El mapa nativo dentro de la app. Fork comunitario
+de Mapbox GL anterior a su cambio de licencia (dic-2020): mismo motor, gobernanza abierta,
+compatible con Expo vía config plugin.</td><td>BSD · gratis · dependencia nativa (build)</td></tr>
+<tr><td><b>OpenFreeMap</b> (teselas)</td><td>Los datos del mapa (OpenStreetMap) servidos
+gratis: sin API key, sin registro, sin límite de vistas declarado. Para el piloto, listo tal
+cual.</td><td>Datos ODbL · servicio gratuito · self-hosteable</td></tr>
+<tr><td><b>Protomaps</b> (GA)</td><td>El plan de madurez: el planeta en un solo fichero
+<code>.pmtiles</code> servido desde nuestro R2/Cloudflare — mapas sin depender de nadie,
+coste ≈ almacenamiento. Encaja con el principio del stack lean.</td>
+<td>Open source · coste R2</td></tr>
+<tr><td><code>turf.js</code></td><td>Distancia y geodesia sobre la traza (JS puro, funciones
+puras → unitarios).</td><td>MIT</td></tr>
+<tr><td class="muted">Descartado: react-native-background-geolocation (Transistorsoft)</td>
+<td class="muted">El estándar comercial del tracking en background. No hace falta en fase 1
+(foreground) y su licencia Android es de pago.</td><td class="muted">De pago</td></tr>
+</table>
+<p class="muted">Plan B de teselas si OpenFreeMap flojea durante el piloto: MapTiler free
+tier (con API key y límites). El destino final es Protomaps en nuestro R2 igualmente.</p>
+
+<h2>Privacidad — la línea dura antes de escribir una línea de código</h2>
+<div class="card rojo">
+<p><b>Una ruta GPS dibuja tu casa, tu portal y tu rutina.</b> Es de lo más sensible que una
+app puede guardar, y aquí se trata como tal desde el diseño:</p>
+<ul>
+<li>La <b>ruta se queda en el dispositivo</b> por defecto. A la base suben <b>agregados</b>:
+fecha, tipo, duración, distancia, pasos, fuente. Subir la traza completa sería opt-in
+explícito y cifrado como el resto — y no hace falta para nada de lo que el producto promete.</li>
+<li>Las rutas <b>jamás entran a un LLM</b> (P32 §2, la misma regla que los datos de salud).</li>
+<li><b>Nada social</b>: ni mapas públicos, ni heatmaps, ni comparativas. Si algún día se
+compartiera una ruta, nacería con recorte automático de inicio y fin (zonas de privacidad).</li>
+<li>D16 intacto: los pasos y el GPS son datos <b>objetivos</b> — rellenan lo objetivo y
+correlacionan con lo subjetivo. El ánimo sigue siendo suyo.</li>
+</ul>
+</div>
+
+<h2>El diferenciador — esto no es otro Strava</h2>
+<div class="card verde">
+<p>Strava mide el rendimiento contra los demás. Aquí el paseo se lee <b>contra su fase</b>:
+«hoy tu cuerpo pide suave» antes de salir, y al volver el esfuerzo cuenta en el anillo del
+día que ya conoce su ciclo. La evaluación por fase sigue siendo la consulta determinista
+contra el scoring de Constanza — el tracker aporta el dato, no el juicio.</p>
+</div>
+
+<h2>Riesgos, con su antídoto</h2>
+<ul>
+<li><b>Batería</b>: tipo de actividad <i>fitness</i> + entregas diferidas de posición. Fase 1
+foreground = el riesgo casi desaparece.</li>
+<li><b>App Review</b> (fase 2): pedir ubicación en background exige una feature visible que lo
+justifique. Por eso la fase 1 no lo pide — y por eso las librerías embarcadas en la 0.23.0
+van SIN modos background.</li>
+<li><b>Play Console</b> (fase 2): la ubicación en background lleva declaración propia y vídeo.
+Conocido, documentado, para cuando toque.</li>
+<li><b>Coste de mapas a escala</b>: el camino OpenFreeMap → Protomaps en R2 lo deja en
+céntimos.</li>
+</ul>
+
+<h2>Calendario propuesto y decisión pedida</h2>
+<div class="card ambar">
+<p><b>O7 no toca el camino al 8-oct.</b> La recomendación de ingeniería:</p>
+<ul>
+<li><b>Ya decidido (G1c)</b>: las librerías viajan en la 0.23.0 con sus textos de permiso
+compilados. Coste marginal cero para el build de wearables.</li>
+<li><b>O7a (pasos)</b>: candidata a OTA en septiembre si el piloto la pide — no antes de
+cerrar wearables. Nacería con su UST.</li>
+<li><b>O7b + O7c (GPS, mapa, write-back)</b>: v2, tras el lanzamiento. MapLibre NO se mete
+en la 0.23.0 — añadir una dependencia nativa a días del freeze es exactamente el tipo de
+riesgo que la regla «no tenemos espacio para regresiones» prohíbe.</li>
+<li><b>Decisión founders</b>: validar O7 como tramo del Epic O y su orden (¿O7a en
+septiembre u O7 entero a v2?). El item vive en 💡 Ideation hasta esa decisión.</li>
+</ul>
+</div>
+
+<h2>Fuentes</h2>
+<ul class="muted">
+<li>MapLibre React Native — github.com/maplibre/maplibre-react-native · maplibre.org</li>
+<li>OpenFreeMap — openfreemap.org (teselas OSM sin clave ni límites) · Protomaps — protomaps.com</li>
+<li>Expo — docs.expo.dev/versions/latest/sdk/location · /sdk/pedometer · blog «How to build a resilient activity tracker with Expo»</li>
+<li>Apple — developer.apple.com HKWorkoutBuilder · HKWorkoutRouteBuilder (escribir entrenos con ruta)</li>
+<li>turf.js — turfjs.org · Transistorsoft (descartada) — github.com/transistorsoft/react-native-background-geolocation</li>
+</ul>
+
+<p class="muted" style="margin-top:26px">Doc 44 · 24-ago-2026 · origen: idea de Juanjo (chat de
+ingeniería) · relacionado: Propuesta 33 (wearables), UST-2026-08-24-06 (firmada), doc 42
+(decisiones D15-D17). El item O7 vive en 💡 Ideation del hub.</p>
+
+</div></body>
+</html>
