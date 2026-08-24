@@ -367,6 +367,8 @@ Antes había un desplegable para esto y podía contradecir a la release; ahora h
   <select id="fTipo"><option value="">tipo: todos</option><option>fix</option><option>mejora</option><option>feature</option><option>capability</option></select>
   <select id="fEst"><option value="">estado: activos</option><option value="propuesto">propuesto</option><option value="aceptado">aceptado</option><option value="en_curso">en curso</option><option value="hecho">hecho</option><option value="todos">todos (incl. hechos)</option></select>
   <button onclick="window.bkCsv()">⬇ CSV</button>
+  <button onclick="window.bkExcel()">⬇ Excel</button>
+  <button onclick="window.bkWord()">⬇ Word</button>
   <span class="hint" id="count"></span>
 </div>
 <p class="hint">Esto es lo <b>comprometido a un sprint</b>. Lo aceptado pero sin comprometer vive en <a href="/hub/roadmap.html">💡 Ideation</a>.</p>
@@ -515,6 +517,57 @@ window.bkCsv=function(){
   a.download='nutrisync-backlog-'+pad(d.getDate())+pad(d.getMonth()+1)+'.csv';
   a.click();URL.revokeObjectURL(a.href);
 };
+
+/* r21 (24-ago, pedido Juanjo): exportar el planning a Excel y Word SIN vendors
+   (po74: cero CDNs). Truco veterano y honesto: Excel y Word abren HTML nativo
+   — .xls = tabla HTML con mime de Excel · .doc = HTML con namespace de Word.
+   Agrupado por sprint, mismo dataset que el CSV. */
+function bkEsc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function bkFecha(){var d=new Date(),p=function(n){return String(n).padStart(2,'0');};return p(d.getDate())+p(d.getMonth()+1);}
+function bkPorSprint(rows){
+  var orden=['S12','S13','S14','S15','S16','GA','backlog'];
+  var g={};rows.forEach(function(b){var s=b.sprint||'backlog';(g[s]=g[s]||[]).push(b);});
+  Object.keys(g).forEach(function(s){g[s].sort(function(a,b){
+    return String(a.prioridad).localeCompare(String(b.prioridad))||String(a.titulo).localeCompare(String(b.titulo));});});
+  return orden.filter(function(s){return g[s];}).map(function(s){return [s,g[s]];});
+}
+function bkDescarga(html,mime,nombre){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob(['﻿'+html],{type:mime}));
+  a.download=nombre;a.click();URL.revokeObjectURL(a.href);
+}
+window.bkExcel=function(){
+  var rows=(D&&D.items)||[];if(!rows.length)return alert('Nada que exportar.');
+  var h='<html xmlns:x="urn:schemas-microsoft-com:office:excel"><head><meta charset="utf-8"></head><body>';
+  h+='<table border="1"><tr style="background:#FFF1E6;font-weight:bold"><td>Sprint</td><td>Prioridad</td><td>Tipo</td><td>Título</td><td>Estado</td><td>Release</td><td>Ticket</td><td>Origen</td><td>Notas</td></tr>';
+  bkPorSprint(rows).forEach(function(par){par[1].forEach(function(b){
+    h+='<tr><td>'+bkEsc(par[0])+'</td><td>'+bkEsc(b.prioridad)+'</td><td>'+bkEsc(b.tipo)+'</td><td>'+bkEsc(b.titulo)
+      +'</td><td>'+bkEsc(b.estado)+'</td><td>'+bkEsc(b.release||'—')+'</td><td>'+bkEsc(b.ticket_no||'')
+      +'</td><td>'+bkEsc(b.origen||'')+'</td><td>'+bkEsc(b.notas||'')+'</td></tr>';});});
+  h+='</table><script src="/hub/assets/page-help.js?v=e939f9f3"></script></body></html>';
+  bkDescarga(h,'application/vnd.ms-excel','nutrisync-sprint-planning-'+bkFecha()+'.xls');
+};
+window.bkWord=function(){
+  var rows=(D&&D.items)||[];if(!rows.length)return alert('Nada que exportar.');
+  var hoy=new Date().toISOString().slice(0,10);
+  var h='<html xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8">'
+    +'<style>body{font-family:Calibri,sans-serif;color:#3D1E25}h1{color:#FF5D00}h2{border-bottom:2px solid #FF5D00;padding-bottom:4px}'
+    +'table{border-collapse:collapse;width:100%;font-size:10pt}td,th{border:1px solid #E8D9D3;padding:4px 8px;vertical-align:top}'
+    +'th{background:#FFF1E6;text-align:left}.p0{color:#C73A20;font-weight:bold}</style></head><body>';
+  h+='<h1>NutriSync · Sprint Planning</h1><p>Foto del tablero comprometido · '+bkEsc(hoy)
+    +' · '+rows.length+' items · fuente: hub 📚 (dev_backlog)</p>';
+  bkPorSprint(rows).forEach(function(par){
+    var abiertos=par[1].filter(function(b){return b.estado!=='hecho'&&b.estado!=='descartado';}).length;
+    h+='<h2>'+bkEsc(par[0])+' <small>('+par[1].length+' items · '+abiertos+' abiertos)</small></h2>';
+    h+='<table><tr><th>Prio</th><th>Tipo</th><th>Título</th><th>Estado</th><th>Release</th><th>Ticket</th></tr>';
+    par[1].forEach(function(b){
+      h+='<tr><td class="'+(b.prioridad==='P0'?'p0':'')+'">'+bkEsc(b.prioridad)+'</td><td>'+bkEsc(b.tipo)
+        +'</td><td>'+bkEsc(b.titulo)+'</td><td>'+bkEsc(b.estado)+'</td><td>'+bkEsc(b.release||'—')
+        +'</td><td>'+bkEsc(b.ticket_no||'')+'</td></tr>';});
+    h+='</table>';});
+  h+='</body></html>';
+  bkDescarga(h,'application/msword','nutrisync-sprint-planning-'+bkFecha()+'.doc');
+};
 /* Las releases se leen de la TABLA, no de una lista escrita a mano.
    Habia TRES listas duplicadas en el HTML (dos en 🚢, una aqui) y el 10-ago,
    al crear la 0.21.2, me deje dos sin tocar: el desplegable de 🗂 no la
@@ -548,4 +601,4 @@ function cargar(){
 $('nTit').addEventListener('keydown',function(e){if(e.key==='Enter')window.bkAdd();});
 cargar();
 })();
-</script><script src="/hub/assets/page-help.js?v=e939f9f3"></script></body></html>
+</script></body></html>
