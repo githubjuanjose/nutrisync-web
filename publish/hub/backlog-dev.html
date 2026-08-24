@@ -544,7 +544,7 @@ window.bkExcel=function(){
     h+='<tr><td>'+bkEsc(par[0])+'</td><td>'+bkEsc(b.prioridad)+'</td><td>'+bkEsc(b.tipo)+'</td><td>'+bkEsc(b.titulo)
       +'</td><td>'+bkEsc(b.estado)+'</td><td>'+bkEsc(b.release||'—')+'</td><td>'+bkEsc(b.ticket_no||'')
       +'</td><td>'+bkEsc(b.origen||'')+'</td><td>'+bkEsc(b.notas||'')+'</td></tr>';});});
-  h+='</table><script src="/hub/assets/page-help.js?v=e939f9f3"></script></body></html>';
+  h+='</table>'+'</bo'+'dy></ht'+'ml>';
   bkDescarga(h,'application/vnd.ms-excel','nutrisync-sprint-planning-'+bkFecha()+'.xls');
 };
 window.bkWord=function(){
@@ -565,7 +565,7 @@ window.bkWord=function(){
         +'</td><td>'+bkEsc(b.titulo)+'</td><td>'+bkEsc(b.estado)+'</td><td>'+bkEsc(b.release||'—')
         +'</td><td>'+bkEsc(b.ticket_no||'')+'</td></tr>';});
     h+='</table>';});
-  h+='</body></html>';
+  h+='</bo'+'dy></ht'+'ml>';
   bkDescarga(h,'application/msword','nutrisync-sprint-planning-'+bkFecha()+'.doc');
 };
 /* Las releases se leen de la TABLA, no de una lista escrita a mano.
@@ -601,4 +601,4 @@ function cargar(){
 $('nTit').addEventListener('keydown',function(e){if(e.key==='Enter')window.bkAdd();});
 cargar();
 })();
-</script></body></html>
+</script><script src="/hub/assets/page-help.js?v=e939f9f3"></script></body></html>
