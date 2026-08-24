@@ -56,6 +56,15 @@ td.msg{max-width:520px;white-space:pre-wrap}
   <h2>3 · <span data-t="h3"></span></h2>
   <div class="card" id="funnel"></div>
 
+  <!-- r21 (S14-b, UST-04 F3): los huecos del matcher, visibles y continuos.
+       Los alimenta meal_alignment sola desde la 0.22.6; consumidoras:
+       Pilar/Constanza (hoja) y Lucía (naming). -->
+  <div class="card" id="gapsCard">
+    <h2 id="gapsTit"></h2>
+    <div class="hint" id="gapsHint"></div>
+    <div id="gaps" style="margin-top:8px">Cargando…</div>
+  </div>
+
   <h2>4 · <span data-t="h4"></span></h2>
   <div class="card">
     <div class="hint" data-t="fbHint"></div>
@@ -315,5 +324,29 @@ async function loadHealth(){
     '<td class="msg">'+esc(r.message||'')+'</td><td>'+esc(r.app_version||'?')+' · '+esc(r.platform||'?')+'</td>'+'<td>'+tk(r)+'</td></tr>').join(''))
     ||'<tr><td colspan="5" class="hint">'+T.noFb+'</td></tr>';
 })();
+
+/* r21 (S14-b): huecos del matcher — dos capas, alimentadas solas por
+   meal_alignment (0.22.6). r12-b9: si la RPC falta, banner, jamás vacío. */
+(async()=>{
+  const es=(localStorage.getItem('ns_lang')||'ES').toUpperCase()!=='EN';
+  $('gapsTit').textContent=es?'🥗 Huecos del matcher':'🥗 Matcher gaps';
+  $('gapsHint').textContent=es
+    ?'Lo que la visión detecta y la hoja no puntúa. «Sin casar» = falta el alimento · «Sin peso» = al alimento le falta la fila de ese segmento. Se alimenta solo con cada escaneo; lo consumen Pilar/Constanza (hoja) y Lucía (naming). El correo del lunes trae el top-10.'
+    :'What vision detects and the sheet cannot score. "Unmatched" = food missing · "No weight" = food lacks that segment row. Feeds itself on every scan; consumed by Pilar/Constanza (sheet) and Lucía (naming). Monday digest carries the top-10.';
+  const r=await sb.rpc('admin_alignment_gaps');
+  if(r.error){nsFail(r.error,'admin_alignment_gaps — ¿2026-08-21-ota-0-22-6-escaner.sql aplicado?');$('gaps').textContent='—';return;}
+  const d=r.data||{},tot=d.totales||{},p=d.pct_7d||{};
+  const fila=(g,conSeg)=>'<tr><td>'+esc(g.nombre||'')+'</td>'+(conSeg?'<td class="hint">'+esc(g.segmento||'—')+'</td>':'')
+    +'<td style="text-align:right;font-weight:700">'+ (g.veces??0) +'</td><td class="hint">'+esc(g.ultima||'')+'</td></tr>';
+  const tabla=(arr,conSeg)=>(arr&&arr.length)
+    ?'<table style="width:100%;font-size:12px;border-collapse:collapse"><tbody>'+arr.map(x=>fila(x,conSeg)).join('')+'</tbody></table>'
+    :'<div class="hint">'+(es?'sin huecos aún — buena señal':'no gaps yet — good sign')+'</div>';
+  $('gaps').innerHTML=
+    '<div class="grid2" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">'
+    +'<div><b style="font-size:12px">'+(es?'SIN CASAR · ':'UNMATCHED · ')+(tot.sin_casar??0)+'</b>'+tabla(d.sin_casar,false)+'</div>'
+    +'<div><b style="font-size:12px">'+(es?'SIN PESO DEL SEGMENTO · ':'NO SEGMENT WEIGHT · ')+(tot.sin_peso??0)+'</b>'+tabla(d.sin_peso,true)+'</div></div>'
+    +'<div class="hint" style="margin-top:8px">'+(es?'Últimos 7 días: ':'Last 7 days: ')+(p.pct_items_sin_casar??'—')+'% '
+    +(es?'de alimentos sin casar en ':'unmatched items across ')+(p.comidas??0)+(es?' comidas por foto':' photo meals')+'</div>';
+})().catch(e=>{nsFail(e,'gaps r21 (JS)');$('gaps').textContent='—';});
 </script>
 </body></html>
