@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>45 · BORRADOR — La app de reloj NutriSync (O6)</title>
+<style>
+:root{--coral:#FD400C;--deep:#6C3732;--cream:#FFF6EC;--line:#EADFD0;--muted:#8A7F78;
+  --ok:#1F6B57;--warn:#B26A00;--bad:#B3261E}
+*{box-sizing:border-box;margin:0}
+body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;background:var(--cream);
+  color:var(--deep);line-height:1.6;padding:28px clamp(16px,4vw,48px) 80px}
+.wrap{max-width:1080px;margin:0 auto}
+h1{font-size:clamp(23px,3.4vw,32px);line-height:1.2;color:var(--coral);margin-bottom:6px}
+h2{font-size:19px;margin:34px 0 10px;padding-top:16px;border-top:2px solid var(--line)}
+p,li,td,th{font-size:14.5px}
+ul{margin:6px 0 6px 20px}
+.lede{color:var(--muted);font-size:15px;margin-bottom:4px}
+code{background:#FBF6EF;padding:1px 5px;border-radius:5px;font-size:12.5px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;
+  box-shadow:0 2px 10px rgba(108,55,50,.06)}
+.verde{border-left:4px solid var(--ok);background:#F4FAF7}
+.ambar{border-left:4px solid var(--warn);background:#FFFBF2}
+.tres{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin:12px 0}
+.rol{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.rol .quien{font-weight:800;color:var(--coral)}
+.muted{color:var(--muted)}
+.borrador{display:inline-block;background:#FFF3E0;border:1.5px dashed var(--warn);
+  color:var(--warn);border-radius:8px;padding:2px 12px;font-weight:800;font-size:13px}
+</style>
+</head>
+<body><div class="wrap">
+
+<h1>45 · La app de reloj NutriSync (O6)</h1>
+<p class="lede"><span class="borrador">BORRADOR para iniciar la conversación</span> —
+decisión de Juanjo (24-ago): <b>habrá apps de reloj</b> (Apple Watch y Wear OS), centradas
+en alertas, capturas simples y registro de actividad. El diseño está por definir: este doc
+existe para que Lucía, Pilar y Constanza reaccionen, no para cerrarse solo.</p>
+
+<h2>El principio: la superficie de los 2 segundos</h2>
+<div class="card">
+<p>El teléfono es la superficie de los 2 minutos; el reloj, la de los <b>2 segundos</b>:
+mirar y tocar. Todo lo que exija pensar, leer o escribir se queda en el teléfono. Y una
+regla que protege D16: el reloj entra como <b>teclado de lo subjetivo, no como sensor que
+lo infiere</b> — el ánimo lo pulsa ELLA en la esfera; ningún sensor lo deduce jamás.
+Todo lo capturado viaja al MISMO modelo de datos que la app (registro diario,
+<code>health_signal</code>): cero segunda verdad.</p>
+</div>
+
+<h2>El MVP en cuatro bloques</h2>
+<div class="tres">
+<div class="rol"><span class="quien">1 · Esfera y complicación</span><br>El anillo del día
++ la fase actual de un vistazo. OJO privacidad: la esfera la ve cualquiera que mire su
+muñeca — la fase visible sería <b>opt-in</b> (modo discreto por defecto: solo el anillo).</div>
+<div class="rol"><span class="quien">2 · Captura en 2 toques</span><br>Ánimo (5 caras),
+«he bebido agua», y un síntoma rápido configurable. Tocar → confirmar → hecho. Lo que ella
+marca aquí aparece al instante en su día del teléfono.</div>
+<div class="rol"><span class="quien">3 · Alertas accionables</span><br>Las notificaciones
+que ya existen (57, con hora local y rotación) llegan a la muñeca con respuesta de un toque
+(«hecho», «ahora no»). Se mantiene la revisión inclusiva: aviso genérico si la pantalla
+puede verla otra persona.</div>
+<div class="rol"><span class="quien">4 · Entreno desde la muñeca</span><br>Correr, caminar,
+gimnasio: sesión con FC en vivo, zonas Z1-Z5 y duración — como las apps de referencia, en
+simple. Al guardar escribe en Salud, y la ingesta O1 (UST-06) lo trae al día y al anillo:
+<b>el pipeline ya existe</b>, el reloj solo lo alimenta.</div>
+</div>
+
+<h2>Y la recomendación en la muñeca</h2>
+<div class="card verde">
+<p>La sugerencia del doc 44 —qué actividad toca hoy según <b>fase + alimentación</b>— tiene
+en el reloj su mejor escaparate: antes de salir, una línea: «hoy tu cuerpo pide suave». Regla
+determinista con firma de Constanza; jamás diagnóstico.</p>
+</div>
+
+<h2>La técnica, honesta</h2>
+<ul>
+<li>Expo/React Native <b>no llega al reloj</b>: son dos apps nativas pequeñas —
+<b>SwiftUI + HealthKit workout session</b> (watchOS) y <b>Compose + Health Services</b>
+(Wear OS). Es la razón por la que O6 siempre se describió como «dos bases de código nuevas».</li>
+<li>La lógica de negocio NO se duplica: contratos y scoring viven en el servidor y en las
+funciones puras ya testeadas; el reloj pinta y captura.</li>
+<li>El entreno del reloj entra por Salud → O1: cero API nueva. Las capturas (ánimo, agua)
+sí necesitan su camino ligero al backend (mismo endpoint que la app).</li>
+<li>Alcance deliberadamente mínimo: bloques 1-3 primero; el 4 (entreno) puede ser la
+segunda entrega si el diseño lo pide.</li>
+</ul>
+
+<h2>Calendario y qué NO es esto</h2>
+<div class="card ambar">
+<p><b>Sin fecha</b>: post-8-oct salvo decisión expresa — no compite con wearables 0.23.0 ni
+con el camino al lanzamiento. Esto NO es una UST: es el papel que abre el diseño. El circuito
+sería: conversación founders → Figmas de Lucía → UST con su DoR → build.</p>
+</div>
+
+<h2>Las cinco preguntas que abren la conversación</h2>
+<ul>
+<li>1 · ¿Qué TRES capturas se ganan la muñeca? (propuesta: ánimo, agua, un síntoma configurable)</li>
+<li>2 · ¿Fase visible en la esfera por defecto, o modo discreto? (propuesta: discreto, opt-in)</li>
+<li>3 · ¿Qué alertas merecen el toque en la muñeca y cuáles serían ruido?</li>
+<li>4 · ¿Entreno en la v1 del reloj, o v1 = captura+alertas y el entreno después?</li>
+<li>5 · ¿Apple Watch primero y Wear OS después, o las dos a la vez? (la regla «siempre las
+dos plataformas» nació para la app; decidir si aplica al reloj)</li>
+</ul>
+
+<p class="muted" style="margin-top:26px">Doc 45 · 24-ago-2026 · BORRADOR · origen: decisión
+de Juanjo en el chat de ingeniería · relacionado: doc 44 (Actividad 360), UST-2026-08-24-06
+(wearables O1-O3), doc 33 §O6. El item O6 vive en 💡 Ideation del hub.</p>
+
+</div></body>
+</html>

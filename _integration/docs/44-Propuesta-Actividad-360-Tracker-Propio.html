@@ -52,8 +52,9 @@ usuaria no necesita otra app si no quiere.</p>
 <p style="margin-top:8px"><b>El reloj ya está cubierto — y no por este tramo.</b> Lo que ella
 grabe con su Apple Watch o Garmin entra en Salud, y O1 (firmado hoy en la UST-06) lo lee de
 ahí. O7 es para quien <i>no</i> tiene reloj, o quiere el mapa y el directo en nuestra app.
-La app de reloj propia (watchOS/Wear OS) sigue siendo O6: otra base de código, solo si el
-piloto la pide.</p>
+Y la app de reloj propia es <b>O6, ya decidida</b> (Juanjo, 24-ago): habrá apps de
+watchOS/Wear OS con alertas, capturas simples y entreno desde la muñeca — su diseño está por
+definir y el <b>doc 45</b> abre esa conversación.</p>
 </div>
 
 <h2>El listón: qué hacen las apps de referencia, y qué es esencial</h2>
@@ -110,6 +111,36 @@ la puerta natural de la capa comunidad (item P5 en 💡) y hereda su puerta: la 
 moderación (doc 20) antes de encenderse.</div>
 </div>
 
+<h2>El esfuerzo: latidos, calorías y límites (estándares)</h2>
+<div class="card">
+<p>Petición de Juanjo (24-ago): que el esfuerzo se mida con estándares, no a ojo.</p>
+<ul>
+<li><b>Zonas de frecuencia cardíaca</b> (Z1-Z5 sobre la FC máxima): FC máx estimada con
+<b>Tanaka</b> (208 − 0,7 × edad; más fiable que el clásico 220 − edad) y, si el reloj aporta
+FC en reposo, afinada con <b>Karvonen</b> (% de la reserva cardíaca). La FC en vivo viene del
+RELOJ (doc 45 / señales O1); el teléfono solo no la tiene.</li>
+<li><b>Calorías activas</b>: si hay sensor, las del reloj (vía Salud, con procedencia D32);
+si no, estimación por <b>MET</b> (Compendio de Actividades Físicas) a partir de tipo, ritmo
+y duración — siempre marcada como estimación.</li>
+<li><b>Límites</b>: umbral personal configurable (p. ej. sostener Z4+ demasiado tiempo →
+aviso suave). Los umbrales <b>por fase los firma Constanza</b> — son juicio clínico, no
+ingeniería — y rigen los no negociables de Pilar: informativo, jamás diagnóstico; ante
+señales de alarma, silencio prescriptivo y sugerencia de consultar.</li>
+</ul>
+</div>
+
+<h2>La recomendación: qué actividad toca hoy (ciclo + alimentación)</h2>
+<div class="card verde">
+<p>Adición de Juanjo (24-ago): el recomendador cruza <b>dos fuentes que ya tenemos</b> —
+la fase del ciclo (scoring de Constanza, determinista) y <b>lo que ha comido hoy</b> (los
+macros reales del pipeline nutricional UST-05). Ejemplos del tono: «fase lútea + comida
+ligera hoy → paseo suave o movilidad, mejor que series»; «folicular + buen desayuno →
+día para apretar, si te apetece». Reglas deterministas con firma de Constanza (energía
+disponible + fase → intensidad sugerida), cero LLM, y siempre en sugerencia — ella decide,
+el anillo cuenta lo que haga. Es el cierre del círculo 360: la comida informa el movimiento
+y el movimiento vuelve al día.</p>
+</div>
+
 <h2>El stack abierto (la respuesta a «¿hay open source para esto?»)</h2>
 <table>
 <tr><th>Pieza</th><th>Qué resuelve</th><th>Licencia / coste</th></tr>
@@ -121,21 +152,24 @@ ubicación.</td><td>MIT · <b>ya embarcada</b> (G1c)</td></tr>
 <tr><td><b>MapLibre React Native</b></td><td>El mapa nativo dentro de la app. Fork comunitario
 de Mapbox GL anterior a su cambio de licencia (dic-2020): mismo motor, gobernanza abierta,
 compatible con Expo vía config plugin.</td><td>BSD · gratis · dependencia nativa (build)</td></tr>
-<tr><td><b>OpenFreeMap</b> (teselas)</td><td>Los datos del mapa (OpenStreetMap) servidos
-gratis: sin API key, sin registro, sin límite de vistas declarado. Para el piloto, listo tal
-cual.</td><td>Datos ODbL · servicio gratuito · self-hosteable</td></tr>
-<tr><td><b>Protomaps</b> (GA)</td><td>El plan de madurez: el planeta en un solo fichero
-<code>.pmtiles</code> servido desde nuestro R2/Cloudflare — mapas sin depender de nadie,
-coste ≈ almacenamiento. Encaja con el principio del stack lean.</td>
+<tr><td><b>Protomaps</b> (teselas, DIRECTO)</td><td>Decisión Juanjo (24-ago): sin escala
+intermedia — el mapa en un fichero <code>.pmtiles</code> (extracto España/Iberia, unos pocos
+GB) servido desde <b>nuestro R2/Cloudflare</b>. Tres razones: cero dependencia externa desde
+el día 1, coste ≈ céntimos de almacenamiento, y <b>privacidad</b> — cada tesela que el móvil
+pide revela por dónde anda la usuaria, y así esa petición llega a NUESTRO dominio, no a un
+tercero. Mantenimiento: refrescar el extracto (mensual/trimestral, un cron).</td>
 <td>Open source · coste R2</td></tr>
+<tr><td class="muted"><b>OpenFreeMap</b> (plan B)</td><td class="muted">Teselas OSM públicas
+sin clave ni límites — la red de seguridad si el pmtiles se retrasa o R2 diera guerra. No es
+el camino: es el paracaídas.</td><td class="muted">Gratuito</td></tr>
 <tr><td><code>turf.js</code></td><td>Distancia y geodesia sobre la traza (JS puro, funciones
 puras → unitarios).</td><td>MIT</td></tr>
 <tr><td class="muted">Descartado: react-native-background-geolocation (Transistorsoft)</td>
 <td class="muted">El estándar comercial del tracking en background. No hace falta en fase 1
 (foreground) y su licencia Android es de pago.</td><td class="muted">De pago</td></tr>
 </table>
-<p class="muted">Plan B de teselas si OpenFreeMap flojea durante el piloto: MapTiler free
-tier (con API key y límites). El destino final es Protomaps en nuestro R2 igualmente.</p>
+<p class="muted">MapTiler queda descartado: con Protomaps directo no hace falta ningún
+vendor con API key.</p>
 
 <h2>Privacidad — la línea dura antes de escribir una línea de código</h2>
 <div class="card rojo">
