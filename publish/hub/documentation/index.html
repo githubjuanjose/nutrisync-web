@@ -288,8 +288,42 @@ tbody tr:nth-child(even){background:var(--cream);}
   document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
 })();
 </script>
+<script>
+/* ns-idle-logout (0.23.0 · UST-06 G1): 30 min sin actividad en el hub → fuera.
+   Central en el navbar = vale para TODAS las páginas /hub sin tocarlas una a
+   una. La sesión vive en localStorage (sb-*-auth-token): borrarla y recargar
+   deja la página en su candado. Solo actúa si HAY sesión — jamás bucles. */
+(function(){
+  try{
+    var LIMITE=30*60*1000, K='ns_idle_ts';
+    var haySesion=function(){
+      for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
+        if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)return true;}
+      return false;};
+    if(!haySesion())return;
+    var toca=function(){try{localStorage.setItem(K,String(Date.now()));}catch(e){}};
+    ['click','keydown','mousemove','scroll','touchstart'].forEach(function(ev){
+      window.addEventListener(ev,toca,{passive:true});});
+    toca();
+    setInterval(function(){
+      try{
+        var t=parseInt(localStorage.getItem(K)||'0',10);
+        if(!t||Date.now()-t<LIMITE)return;
+        if(!haySesion())return;
+        var fuera=[];
+        for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
+          if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)fuera.push(k);}
+        fuera.forEach(function(k){localStorage.removeItem(k);});
+        localStorage.removeItem(K);
+        location.reload();
+      }catch(e){}
+    },60000);
+  }catch(e){}
+})();
+</script>
 </div>
-<!-- /ns-hub-navbar --><div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>📄 Documentación · Documentation</h1><p>Current as of <strong>August 2026</strong>. New here? Start with the <a href="13-Release-Notes.html">Current Release &amp; Backlog</a> or <a href="00-Project-Status.html">Project Status</a>.</p><a href="13-Release-Notes.html" style="display:flex;align-items:center;gap:14px;text-decoration:none;background:linear-gradient(135deg,#1D4ED8,#3B82F6);color:#fff;border-radius:16px;padding:18px 20px;margin:0 0 22px;box-shadow:0 16px 34px -18px rgba(29,78,216,.6);"><span style="font-size:26px">🚀</span><span><span style="font-weight:800;font-size:16px;display:block">Current Release &amp; Backlog · <b>v11.3</b></span><span style="font-size:13px;opacity:.92">What&#39;s built and testable now vs what&#39;s pending — versioned to the app. Open to read or download.</span></span><span style="margin-left:auto;font-weight:800;font-size:18px">→</span></a><input id="nsDocSearch" type="search" placeholder="🔎 Buscar en la documentación / search docs…"
+<!-- /ns-hub-navbar -->
+<div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>📄 Documentación · Documentation</h1><p>Current as of <strong>August 2026</strong>. New here? Start with the <a href="13-Release-Notes.html">Current Release &amp; Backlog</a> or <a href="00-Project-Status.html">Project Status</a>.</p><a href="13-Release-Notes.html" style="display:flex;align-items:center;gap:14px;text-decoration:none;background:linear-gradient(135deg,#1D4ED8,#3B82F6);color:#fff;border-radius:16px;padding:18px 20px;margin:0 0 22px;box-shadow:0 16px 34px -18px rgba(29,78,216,.6);"><span style="font-size:26px">🚀</span><span><span style="font-weight:800;font-size:16px;display:block">Current Release &amp; Backlog · <b>v11.3</b></span><span style="font-size:13px;opacity:.92">What&#39;s built and testable now vs what&#39;s pending — versioned to the app. Open to read or download.</span></span><span style="margin-left:auto;font-weight:800;font-size:18px">→</span></a><input id="nsDocSearch" type="search" placeholder="🔎 Buscar en la documentación / search docs…"
   style="width:100%;box-sizing:border-box;font:inherit;font-size:14px;padding:12px 16px;border:1px solid #EFE3D7;border-radius:12px;margin:14px 0 6px;background:#fff">
 <script>document.addEventListener('DOMContentLoaded',function(){
   var q=document.getElementById('nsDocSearch');

@@ -293,8 +293,42 @@ select,input[type=text]{font-family:inherit;font-size:13px;padding:8px 10px;bord
   document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
 })();
 </script>
+<script>
+/* ns-idle-logout (0.23.0 · UST-06 G1): 30 min sin actividad en el hub → fuera.
+   Central en el navbar = vale para TODAS las páginas /hub sin tocarlas una a
+   una. La sesión vive en localStorage (sb-*-auth-token): borrarla y recargar
+   deja la página en su candado. Solo actúa si HAY sesión — jamás bucles. */
+(function(){
+  try{
+    var LIMITE=30*60*1000, K='ns_idle_ts';
+    var haySesion=function(){
+      for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
+        if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)return true;}
+      return false;};
+    if(!haySesion())return;
+    var toca=function(){try{localStorage.setItem(K,String(Date.now()));}catch(e){}};
+    ['click','keydown','mousemove','scroll','touchstart'].forEach(function(ev){
+      window.addEventListener(ev,toca,{passive:true});});
+    toca();
+    setInterval(function(){
+      try{
+        var t=parseInt(localStorage.getItem(K)||'0',10);
+        if(!t||Date.now()-t<LIMITE)return;
+        if(!haySesion())return;
+        var fuera=[];
+        for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
+          if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)fuera.push(k);}
+        fuera.forEach(function(k){localStorage.removeItem(k);});
+        localStorage.removeItem(K);
+        location.reload();
+      }catch(e){}
+    },60000);
+  }catch(e){}
+})();
+</script>
 </div>
 <!-- /ns-hub-navbar -->
+
 <div class="wrap" id="app" style="display:none">
   <a class="back" href="full-hub-gated-site.html#/builders">‹ Back</a>
   <h1>💬 App Feedback</h1>
