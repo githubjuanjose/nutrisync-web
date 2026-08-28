@@ -333,6 +333,64 @@ tbody tr:nth-child(even){background:var(--cream);}
   }catch(e){}
 })();
 </script>
+<script>
+/* ns-pase-directo (r23 · 28-ago): SSO founders hub↔StartUp Admin.
+   EMISOR: al pinchar un enlace hacia la otra superficie con sesión viva,
+   pide un pase de UN uso a la Edge pase-directo (solo admins) y lo manda en
+   el FRAGMENTO. RECEPTOR: consume el pase en /auth/v1/verify, guarda la
+   sesión nueva y recarga — sin re-teclear contraseña. El MFA de StartUp
+   Admin se pide igual. Cualquier fallo = navegación normal de siempre. */
+(function(){
+  try{
+    var SB='https://nebkqncvapelrarruyqb.supabase.co';
+    var ANON='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+    var SBKEY='sb-nebkqncvapelrarruyqb-auth-token';
+    var FN=SB+'/functions/v1/pase-directo';
+    var sesion=function(){try{var s=JSON.parse(localStorage.getItem(SBKEY)||'null');
+      return (s&&s.access_token)?s:null;}catch(e){return null;}};
+    var esOtra=function(h){try{var u=new URL(h, location.href);return u.hostname==='admin.nutrisynccollective.com';}catch(e){return false;}};
+
+    /* — receptor — */
+    var m=(location.hash||'').match(/[#&]nspase=([^&]+)/);
+    if(m){
+      history.replaceState(null,'',location.pathname+location.search);
+      if(!sesion()){
+        fetch(SB+'/auth/v1/verify',{method:'POST',
+          headers:{apikey:ANON,'content-type':'application/json'},
+          body:JSON.stringify({type:'magiclink',token_hash:decodeURIComponent(m[1])})})
+        .then(function(r){return r.json();})
+        .then(function(j){
+          if(j&&j.access_token){
+            if(!j.expires_at&&j.expires_in)j.expires_at=Math.floor(Date.now()/1000)+j.expires_in;
+            localStorage.setItem(SBKEY,JSON.stringify(j));
+            location.reload();
+          }
+        }).catch(function(){});
+      }
+    }
+
+    /* — emisor — */
+    document.addEventListener('click',function(ev){
+      try{
+        if(ev.defaultPrevented||ev.button!==0||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.altKey)return;
+        var a=ev.target&&ev.target.closest?ev.target.closest('a[href]'):null;
+        if(!a||a.target==='_blank'||!esOtra(a.href))return;
+        var s=sesion(); if(!s)return;
+        ev.preventDefault();
+        var destino=a.href, ac=new AbortController();
+        var t=setTimeout(function(){ac.abort();},2500);
+        fetch(FN,{method:'POST',signal:ac.signal,
+          headers:{apikey:ANON,authorization:'Bearer '+s.access_token,'content-type':'application/json'},
+          body:'{}'})
+        .then(function(r){return r.json();})
+        .then(function(j){clearTimeout(t);
+          location.href=(j&&j.pase)?destino+'#nspase='+encodeURIComponent(j.pase):destino;})
+        .catch(function(){clearTimeout(t);location.href=destino;});
+      }catch(e){}
+    },true);
+  }catch(e){}
+})();
+</script>
 </div>
 <!-- /ns-hub-navbar -->
 <div class="topbar"><div class="brand"><b>NUTRISYNC</b> · Docs</div><div class="navbtns"><a href="#" onclick="if(history.length>1){history.back();return false;}return true;" title="Previous page">‹ Back</a><a href="index.html">All documents</a></div></div><div class="wrap"><h1>NutriSync — Developer Spec → Implementation Plan &amp; Coverage</h1>

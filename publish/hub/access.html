@@ -296,6 +296,64 @@
   }catch(e){}
 })();
 </script>
+<script>
+/* ns-pase-directo (r23 · 28-ago): SSO founders hub↔StartUp Admin.
+   EMISOR: al pinchar un enlace hacia la otra superficie con sesión viva,
+   pide un pase de UN uso a la Edge pase-directo (solo admins) y lo manda en
+   el FRAGMENTO. RECEPTOR: consume el pase en /auth/v1/verify, guarda la
+   sesión nueva y recarga — sin re-teclear contraseña. El MFA de StartUp
+   Admin se pide igual. Cualquier fallo = navegación normal de siempre. */
+(function(){
+  try{
+    var SB='https://nebkqncvapelrarruyqb.supabase.co';
+    var ANON='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+    var SBKEY='sb-nebkqncvapelrarruyqb-auth-token';
+    var FN=SB+'/functions/v1/pase-directo';
+    var sesion=function(){try{var s=JSON.parse(localStorage.getItem(SBKEY)||'null');
+      return (s&&s.access_token)?s:null;}catch(e){return null;}};
+    var esOtra=function(h){try{var u=new URL(h, location.href);return u.hostname==='admin.nutrisynccollective.com';}catch(e){return false;}};
+
+    /* — receptor — */
+    var m=(location.hash||'').match(/[#&]nspase=([^&]+)/);
+    if(m){
+      history.replaceState(null,'',location.pathname+location.search);
+      if(!sesion()){
+        fetch(SB+'/auth/v1/verify',{method:'POST',
+          headers:{apikey:ANON,'content-type':'application/json'},
+          body:JSON.stringify({type:'magiclink',token_hash:decodeURIComponent(m[1])})})
+        .then(function(r){return r.json();})
+        .then(function(j){
+          if(j&&j.access_token){
+            if(!j.expires_at&&j.expires_in)j.expires_at=Math.floor(Date.now()/1000)+j.expires_in;
+            localStorage.setItem(SBKEY,JSON.stringify(j));
+            location.reload();
+          }
+        }).catch(function(){});
+      }
+    }
+
+    /* — emisor — */
+    document.addEventListener('click',function(ev){
+      try{
+        if(ev.defaultPrevented||ev.button!==0||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.altKey)return;
+        var a=ev.target&&ev.target.closest?ev.target.closest('a[href]'):null;
+        if(!a||a.target==='_blank'||!esOtra(a.href))return;
+        var s=sesion(); if(!s)return;
+        ev.preventDefault();
+        var destino=a.href, ac=new AbortController();
+        var t=setTimeout(function(){ac.abort();},2500);
+        fetch(FN,{method:'POST',signal:ac.signal,
+          headers:{apikey:ANON,authorization:'Bearer '+s.access_token,'content-type':'application/json'},
+          body:'{}'})
+        .then(function(r){return r.json();})
+        .then(function(j){clearTimeout(t);
+          location.href=(j&&j.pase)?destino+'#nspase='+encodeURIComponent(j.pase):destino;})
+        .catch(function(){clearTimeout(t);location.href=destino;});
+      }catch(e){}
+    },true);
+  }catch(e){}
+})();
+</script>
 </div>
 <!-- /ns-hub-navbar -->
 <div class="wrap"><p class="top"><a href="full-hub-gated-site.html#/builders">‹ Back to Builders</a></p><h1>Who can access Builders &amp; Pitch</h1><p>These addresses pass the Cloudflare Access gate (email + one-time PIN) on <code>/hub/*</code>. Sessions last 24h. This page is a snapshot — the live list is the Access policy.</p><table><tr><th>Email</th><th>Who</th></tr><tr><td><code>juanjose.cebrian@gmail.com</code></td><td>Juanjo — Engineering</td></tr><tr><td><code>juanjosecebrian@icloud.com</code></td><td>Juanjo — Apple ID (admin, 4-ago)</td></tr><tr><td><code>lcebrian@nutrisynccollective.com</code></td><td>Lucía — COO (domain)</td></tr><tr><td><code>pgonzalez@nutrisynccollective.com</code></td><td>Pilar — CEO (domain)</td></tr><tr><td><code>mgarzon@nutrisynccollective.com</code></td><td>María Paula — CMO (domain)</td></tr><tr><td><code>pilargonz05@gmail.com</code></td><td>Pilar — personal</td></tr><tr><td><code>cebrianlucia281@gmail.com</code></td><td>Lucía — personal</td></tr><tr><td><code>mapigarzon2204@gmail.com</code></td><td>María Paula — personal</td></tr></table><h2 style="font-size:19px;margin:26px 0 4px">Buzones IONOS · IONOS mailboxes</h2><p style="font-size:13px">Foto informativa r14 · la fuente de verdad es el panel de IONOS (Pilar). / Informational snapshot · source of truth is the IONOS panel (Pilar).</p><table><tr><th>Buzón / Mailbox</th><th>Uso / Purpose</th><th>Estado / Status</th></tr><tr><td><code>feedback@nutrisynccollective.com</code></td><td>Remitente de TODOS los envíos automáticos (SMTP) / sender of all automated mail</td><td>✅ activo</td></tr><tr><td><code>contact@nutrisynccollective.com</code></td><td>Reply-to · digest diario founders / daily founder digest</td><td>✅ activo</td></tr><tr><td><code>engineering@nutrisynccollective.com</code></td><td>Asignable en Incidencias / assignable in Incidents</td><td>✅ creado 5-ago</td></tr><tr><td><code>review@nutrisynccollective.com</code></td><td>Digest diario founders / daily founder digest</td><td>✅ activo (creado 6-ago)</td></tr><tr><td><code>build@nutrisynccollective.com</code></td><td>Asignable en Incidencias</td><td>por confirmar / to confirm</td></tr><tr><td><code>hello@nutrisynccollective.com</code></td><td>Asignable en Incidencias</td><td>por confirmar / to confirm</td></tr><tr><td><code>lcebrian@ · pgonzalez@ · mgarzon@</code></td><td>Identidades de dominio (Cloudflare Access)</td><td>¿buzón o solo identidad? → Pilar</td></tr><tr><td><code>lucia@ · mariapaula@</code></td><td>Usados como asignables en Incidencias</td><td>⚠ confirmar si existen o son alias</td></tr></table><div class="card"><b>How login works</b>Open any Builders/Pitch link → enter your email → a 6-digit code arrives by email → you are in for 24h. Only listed addresses receive codes.</div><div class="card"><b>Add / remove someone</b>Cloudflare dashboard → Zero Trust → Access → Applications → <i>NutriSync Builders Hub</i> → policy <i>Founders</i> → Include → Emails. Changes apply immediately — no deploy needed. Keep this page in sync (ask Engineering).</div><div class="card"><b>Related but separate</b>Reading app feedback / admin KPIs uses the <code>public.admins</code> allowlist in Supabase (SQL editor) — being on this page does not grant that automatically.</div></div><script src="/hub/assets/page-help.js?v=e939f9f3"></script></body></html>
