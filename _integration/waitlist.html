@@ -159,6 +159,14 @@ const U="__NS_URL__", K="__NS_KEY__";
 const sb = createClient(U, K);
 const $ = i => document.getElementById(i);
 let ALL = [], sortK = 'joined_at', sortDir = -1, CAN_WRITE = true, editId = null;
+// Vista agrupada por estado del piloto (31-ago, petición Juanjo: «consolidada
+// o abierta para ver el detalle»). Grupos cerrados = resumen; clic = detalle.
+// Persistencia por navegador, patrón del hub (r14e).
+let OPEN = new Set(JSON.parse(localStorage.getItem('ns_wl_open')||'[]'));
+const G_ORDER = ['contacted','invited','joined','approved','proposed','declined','—'];
+const G_LABEL = {contacted:'Contacted — terms email sent', invited:'Invited to store',
+  joined:'Joined the pilot', approved:'Approved — queued to contact',
+  proposed:'Proposed', declined:'Declined', '—':'Not in pilot'};
 
 function fmtDate(s){ if(!s) return '—'; const d=new Date(s); return isNaN(d)?'—':d.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'}); }
 function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
@@ -189,7 +197,10 @@ function view(){
     else { x=(x||'').toString().toLowerCase(); y=(y||'').toString().toLowerCase(); }
     return x<y?-1*sortDir : x>y?1*sortDir : 0;
   });
-  $('rows').innerHTML = rows.map(r=>`<tr>
+  // Con búsqueda o filtro activos, los grupos se abren solos: un resultado
+  // escondido tras un grupo cerrado es un resultado que no existe.
+  const forceOpen = !!(q || src);
+  const rowHtml = r=>`<tr>
     <td>${esc(r.email)}</td>
     <td>${esc(r.full_name)||'<span class="muted">—</span>'}</td>
     <td>${fmtDate(r.joined_at||r.created_at)}</td>
@@ -199,9 +210,27 @@ function view(){
     <td>${CAN_WRITE && r.id ? `<span class="act">
         <button class="iconbtn edit" data-id="${esc(r.id)}" title="Edit">✎</button>
         <button class="iconbtn del" data-id="${esc(r.id)}" title="Delete">🗑</button></span>` : '<span class="muted">—</span>'}</td>
-  </tr>`).join('') || `<tr><td colspan="7" class="muted" style="text-align:center;padding:26px">No matches.</td></tr>`;
+  </tr>`;
+  const groups = new Map();
+  rows.forEach(r=>{ const g=r.estado_piloto||'—'; if(!groups.has(g)) groups.set(g,[]); groups.get(g).push(r); });
+  const keys=[...groups.keys()].sort((a,b)=>{
+    const ia=G_ORDER.indexOf(a), ib=G_ORDER.indexOf(b);
+    return (ia<0?99:ia)-(ib<0?99:ib) || String(a).localeCompare(String(b));
+  });
+  $('rows').innerHTML = keys.map(g=>{
+    const rs=groups.get(g), open=forceOpen||OPEN.has(g);
+    const users=rs.filter(r=>r.converted_at).length;
+    return `<tr class="grp" data-g="${esc(g)}" style="cursor:pointer;user-select:none;background:rgba(0,0,0,.045)">
+      <td colspan="7" style="font-weight:600;padding:10px 12px">${open?'▾':'▸'} ${esc(G_LABEL[g]||g)} <span class="muted" style="font-weight:400">· ${rs.length}${users?` · ${users} in app`:''}</span></td>
+    </tr>` + (open ? rs.map(rowHtml).join('') : '');
+  }).join('') || `<tr><td colspan="7" class="muted" style="text-align:center;padding:26px">No matches.</td></tr>`;
   $('count').textContent = `Showing ${rows.length} of ${ALL.length}`;
-  // wire row actions
+  // wire group toggles + row actions
+  document.querySelectorAll('tr.grp').forEach(t=>t.onclick=()=>{
+    const g=t.dataset.g; OPEN.has(g)?OPEN.delete(g):OPEN.add(g);
+    try{ localStorage.setItem('ns_wl_open', JSON.stringify([...OPEN])); }catch(_){}
+    view();
+  });
   document.querySelectorAll('.iconbtn.edit').forEach(b=>b.onclick=()=>openEdit(b.dataset.id));
   document.querySelectorAll('.iconbtn.del').forEach(b=>b.onclick=()=>del(b.dataset.id));
   return rows;
