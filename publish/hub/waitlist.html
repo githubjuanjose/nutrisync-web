@@ -58,7 +58,7 @@ tbody tr:nth-child(even){background:var(--cream);}
 .muted{color:var(--muted);font-size:12.5px;}
 .banner{background:#FFF6E9;border:1px solid #F3D9A6;color:#8A6A1F;border-radius:12px;padding:12px 14px;font-size:13px;margin:0 0 16px;}
 /* — vista agrupada po224: secciones con afordancia, estados con color — */
-tr.grp td{background:var(--cream);border-top:2px solid var(--line);font-weight:800;font-size:13px;padding:11px 12px;cursor:pointer;user-select:none;position:sticky;top:95px;z-index:5;}
+tr.grp td{background:var(--cream);border-top:2px solid var(--line);font-weight:800;font-size:13px;padding:11px 12px;cursor:pointer;user-select:none;}
 tr.grp:hover td{background:#F6EBE2;}
 .gdot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;}
 .gd-contacted{background:#2563EB}.gd-invited{background:#7C3AED}.gd-joined{background:#0FA968}
@@ -535,7 +535,7 @@ let ALL = [], sortK = 'joined_at', sortDir = -1, CAN_WRITE = true, editId = null
 // Vista agrupada por estado del piloto (31-ago, petición Juanjo: «consolidada
 // o abierta para ver el detalle»). Grupos cerrados = resumen; clic = detalle.
 // Persistencia por navegador, patrón del hub (r14e).
-let CERRADOS = new Set(JSON.parse(localStorage.getItem('ns_wl_closed')||'[]'));
+let ABIERTOS = new Set(JSON.parse(localStorage.getItem('ns_wl_open2')||'[]'));
 const G_ORDER = ['contacted','invited','joined','approved','proposed','declined','—'];
 const G_LABEL = {contacted:'Contacted — terms email sent', invited:'Invited to store',
   joined:'Joined the pilot', approved:'Approved — queued to contact',
@@ -600,7 +600,7 @@ function view(){
     return (ia<0?99:ia)-(ib<0?99:ib) || String(a).localeCompare(String(b));
   });
   $('rows').innerHTML = keys.map(g=>{
-    const rs=groups.get(g), open=forceOpen || !CERRADOS.has(g);
+    const rs=groups.get(g), open=forceOpen || ABIERTOS.has(g);
     const users=rs.filter(r=>r.converted_at).length;
     return `<tr class="grp" data-g="${esc(g)}">
       <td colspan="7"><span class="gdot ${G_DOT[g]||'gd-none'}"></span>${esc(G_LABEL[g]||g)}<span class="gcount">${rs.length}${users?` · ${users} in app`:''}</span><span class="ghint">${open?'▾ hide':'▸ show'}</span></td>
@@ -608,8 +608,8 @@ function view(){
   }).join('') || `<tr><td colspan="7" class="muted" style="text-align:center;padding:26px">No matches.</td></tr>`;
   $('count').textContent = `Showing ${rows.length} of ${ALL.length}`;
   document.querySelectorAll('tr.grp').forEach(t=>t.onclick=()=>{
-    const g=t.dataset.g; CERRADOS.has(g)?CERRADOS.delete(g):CERRADOS.add(g);
-    try{ localStorage.setItem('ns_wl_closed', JSON.stringify([...CERRADOS])); }catch(_){}
+    const g=t.dataset.g; ABIERTOS.has(g)?ABIERTOS.delete(g):ABIERTOS.add(g);
+    try{ localStorage.setItem('ns_wl_open2', JSON.stringify([...ABIERTOS])); }catch(_){}
     view();
   });
   document.querySelectorAll('.iconbtn.edit').forEach(b=>b.onclick=()=>openEdit(b.dataset.id));
@@ -751,9 +751,9 @@ async function load(){
     window.NS_KPIS = kk.data;
   } catch(e) { console.warn('KPIs sin datos:', e && e.message ? e.message : e); }
   const _exp=$('expAll'), _col=$('colAll');
-  if(_exp) _exp.onclick=()=>{ CERRADOS.clear(); try{localStorage.setItem('ns_wl_closed','[]');}catch(_){} view(); };
-  if(_col) _col.onclick=()=>{ ALL.forEach(r=>CERRADOS.add(r.estado_piloto||'—'));
-    try{localStorage.setItem('ns_wl_closed', JSON.stringify([...CERRADOS]));}catch(_){} view(); };
+  if(_exp) _exp.onclick=()=>{ ALL.forEach(r=>ABIERTOS.add(r.estado_piloto||'—'));
+    try{localStorage.setItem('ns_wl_open2', JSON.stringify([...ABIERTOS]));}catch(_){} view(); };
+  if(_col) _col.onclick=()=>{ ABIERTOS.clear(); try{localStorage.setItem('ns_wl_open2','[]');}catch(_){} view(); };
   $('gate').style.display='none'; $('app').style.display='block';
   $('roBanner').style.display = CAN_WRITE ? 'none' : 'block';
   $('add').style.display = CAN_WRITE ? '' : 'none';
