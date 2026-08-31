@@ -57,6 +57,19 @@ tbody tr:nth-child(even){background:var(--cream);}
 .err{color:var(--coral-deep);font-size:12.5px;min-height:16px;margin-top:6px;}
 .muted{color:var(--muted);font-size:12.5px;}
 .banner{background:#FFF6E9;border:1px solid #F3D9A6;color:#8A6A1F;border-radius:12px;padding:12px 14px;font-size:13px;margin:0 0 16px;}
+/* — vista agrupada po224: secciones con afordancia, estados con color — */
+tr.grp td{background:var(--cream);border-top:2px solid var(--line);font-weight:800;font-size:13px;padding:11px 12px;cursor:pointer;user-select:none;position:sticky;top:95px;z-index:5;}
+tr.grp:hover td{background:#F6EBE2;}
+.gdot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;}
+.gd-contacted{background:#2563EB}.gd-invited{background:#7C3AED}.gd-joined{background:#0FA968}
+.gd-approved{background:#D97706}.gd-proposed{background:#9CA3AF}.gd-declined{background:#D8452F}.gd-none{background:#CBBFB5}
+.ghint{float:right;font-weight:600;font-size:11.5px;color:var(--muted);}
+.gcount{font-weight:700;color:var(--muted);font-size:12px;margin-left:8px;}
+.tag.p-contacted{background:#E4F0FF;color:#2563EB}.tag.p-invited{background:#F1E8FF;color:#7C3AED}
+.tag.p-joined{background:#E7F6EE;color:#0B7A4B}.tag.p-approved{background:#FDF0DC;color:#B45309}
+.tag.p-proposed{background:#EFEAE4;color:#6f655e}.tag.p-declined{background:#FDECE8;color:#D8452F}
+.btn-mini{background:#F3EBE4;color:var(--ink);border:none;border-radius:10px;padding:10px 12px;font-weight:700;font-size:12.5px;cursor:pointer;font-family:inherit;}
+.btn-mini:hover{background:#EADFD4;}
 /* modal */
 .modal{position:fixed;inset:0;z-index:200;background:rgba(28,23,21,.5);display:none;align-items:center;justify-content:center;padding:18px;}
 .modal.on{display:flex;}
@@ -464,6 +477,8 @@ tbody tr:nth-child(even){background:var(--cream);}
         <option value="newsletter">Newsletter</option>
         <option value="manual">Manual</option>
       </select>
+      <button id="expAll" class="btn-mini" title="Open every group">Expand all</button>
+      <button id="colAll" class="btn-mini" title="Show only the group summaries">Collapse all</button>
       <button class="btn btn-add" id="add">＋ Add signup</button>
       <button class="btn btn-exp" id="exp">⤓ Export CSV</button>
     </div>
@@ -520,11 +535,13 @@ let ALL = [], sortK = 'joined_at', sortDir = -1, CAN_WRITE = true, editId = null
 // Vista agrupada por estado del piloto (31-ago, petición Juanjo: «consolidada
 // o abierta para ver el detalle»). Grupos cerrados = resumen; clic = detalle.
 // Persistencia por navegador, patrón del hub (r14e).
-let OPEN = new Set(JSON.parse(localStorage.getItem('ns_wl_open')||'[]'));
+let CERRADOS = new Set(JSON.parse(localStorage.getItem('ns_wl_closed')||'[]'));
 const G_ORDER = ['contacted','invited','joined','approved','proposed','declined','—'];
 const G_LABEL = {contacted:'Contacted — terms email sent', invited:'Invited to store',
   joined:'Joined the pilot', approved:'Approved — queued to contact',
   proposed:'Proposed', declined:'Declined', '—':'Not in pilot'};
+const G_DOT = {contacted:'gd-contacted',invited:'gd-invited',joined:'gd-joined',
+  approved:'gd-approved',proposed:'gd-proposed',declined:'gd-declined','—':'gd-none'};
 
 function fmtDate(s){ if(!s) return '—'; const d=new Date(s); return isNaN(d)?'—':d.toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'}); }
 function esc(s){ return (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
@@ -535,7 +552,15 @@ function stats(){
   ALL.forEach(r => { const s=r.source||'other'; by[s]=(by[s]||0)+1; });
   const conv = ALL.filter(r=>r.converted_at).length;
   const enPiloto = ALL.filter(r=>r.estado_piloto).length;
-  const cards = [`<div class="stat total"><div class="n">${ALL.length}</div><div class="l">Total signups</div></div>`,`<div class="stat conv"><div class="n">${conv}</div><div class="l">Now app users</div></div>`,`<div class="stat"><div class="n">${enPiloto}</div><div class="l">In pilot</div></div>`];
+  const K = window.NS_KPIS || null;
+  const cards = [
+    `<div class="stat total"><div class="n">${ALL.length}</div><div class="l">Total signups</div></div>`,
+    `<div class="stat conv"><div class="n">${conv}</div><div class="l">From waitlist in app</div></div>`,
+    `<div class="stat"><div class="n">${enPiloto}</div><div class="l">In pilot</div></div>`];
+  if (K) {
+    cards.push(`<div class="stat"><div class="n">${K.app_users}</div><div class="l">App users (total)</div></div>`);
+    cards.push(`<div class="stat"><div class="n">${K.pct_identidad}%</div><div class="l">Same identity as waitlist</div></div>`);
+  }
   [['legacy_import','Legacy'],['marketing_site','Marketing site'],['newsletter','Newsletter'],['manual','Manual']].forEach(([k,lab])=>{
     if(by[k]) cards.push(`<div class="stat"><div class="n">${by[k]}</div><div class="l">${lab}</div></div>`);
   });
@@ -555,8 +580,7 @@ function view(){
     else { x=(x||'').toString().toLowerCase(); y=(y||'').toString().toLowerCase(); }
     return x<y?-1*sortDir : x>y?1*sortDir : 0;
   });
-  // Con búsqueda o filtro activos, los grupos se abren solos: un resultado
-  // escondido tras un grupo cerrado es un resultado que no existe.
+  // Con búsqueda o filtro activos los grupos se abren solos.
   const forceOpen = !!(q || src);
   const rowHtml = r=>`<tr>
     <td>${esc(r.email)}</td>
@@ -564,7 +588,7 @@ function view(){
     <td>${fmtDate(r.joined_at||r.created_at)}</td>
     <td><span class="tag ${srcClass(r.source)}">${esc((r.source||'other').replace('_',' '))}</span></td>
     <td>${r.converted_at?`<span class="tag conv" title="Registered ${fmtDate(r.converted_at)}">\u2713 user</span>`:'<span class="muted">\u2014</span>'}</td>
-    <td>${r.estado_piloto?`<span class="tag" title="${esc(r.cohorte_piloto)}">${esc(r.cohorte_piloto)} \u00b7 ${esc(r.estado_piloto)}</span>`:'<span class="muted">\u2014</span>'}</td>
+    <td>${r.estado_piloto?`<span class="tag p-${esc(r.estado_piloto)}" title="${esc(r.cohorte_piloto)}">${esc(r.cohorte_piloto)} \u00b7 ${esc(r.estado_piloto)}</span>`:'<span class="muted">\u2014</span>'}</td>
     <td>${CAN_WRITE && r.id ? `<span class="act">
         <button class="iconbtn edit" data-id="${esc(r.id)}" title="Edit">✎</button>
         <button class="iconbtn del" data-id="${esc(r.id)}" title="Delete">🗑</button></span>` : '<span class="muted">—</span>'}</td>
@@ -576,17 +600,16 @@ function view(){
     return (ia<0?99:ia)-(ib<0?99:ib) || String(a).localeCompare(String(b));
   });
   $('rows').innerHTML = keys.map(g=>{
-    const rs=groups.get(g), open=forceOpen||OPEN.has(g);
+    const rs=groups.get(g), open=forceOpen || !CERRADOS.has(g);
     const users=rs.filter(r=>r.converted_at).length;
-    return `<tr class="grp" data-g="${esc(g)}" style="cursor:pointer;user-select:none;background:rgba(0,0,0,.045)">
-      <td colspan="7" style="font-weight:600;padding:10px 12px">${open?'▾':'▸'} ${esc(G_LABEL[g]||g)} <span class="muted" style="font-weight:400">· ${rs.length}${users?` · ${users} in app`:''}</span></td>
+    return `<tr class="grp" data-g="${esc(g)}">
+      <td colspan="7"><span class="gdot ${G_DOT[g]||'gd-none'}"></span>${esc(G_LABEL[g]||g)}<span class="gcount">${rs.length}${users?` · ${users} in app`:''}</span><span class="ghint">${open?'▾ hide':'▸ show'}</span></td>
     </tr>` + (open ? rs.map(rowHtml).join('') : '');
   }).join('') || `<tr><td colspan="7" class="muted" style="text-align:center;padding:26px">No matches.</td></tr>`;
   $('count').textContent = `Showing ${rows.length} of ${ALL.length}`;
-  // wire group toggles + row actions
   document.querySelectorAll('tr.grp').forEach(t=>t.onclick=()=>{
-    const g=t.dataset.g; OPEN.has(g)?OPEN.delete(g):OPEN.add(g);
-    try{ localStorage.setItem('ns_wl_open', JSON.stringify([...OPEN])); }catch(_){}
+    const g=t.dataset.g; CERRADOS.has(g)?CERRADOS.delete(g):CERRADOS.add(g);
+    try{ localStorage.setItem('ns_wl_closed', JSON.stringify([...CERRADOS])); }catch(_){}
     view();
   });
   document.querySelectorAll('.iconbtn.edit').forEach(b=>b.onclick=()=>openEdit(b.dataset.id));
@@ -720,6 +743,17 @@ async function load(){
     if (window.nsFail) nsFail(e, 'admin_waitlist_piloto');
     else console.warn('Pilot column sin datos:', e && e.message ? e.message : e);
   }
+  // Tarjetas de identidad (31-ago): total app users y % con la misma identidad
+  // que la waitlist — de la base via RPC, jamás a mano (regla de oro).
+  try {
+    const kk = await sb.rpc('admin_waitlist_kpis');
+    if (kk.error) throw kk.error;
+    window.NS_KPIS = kk.data;
+  } catch(e) { console.warn('KPIs sin datos:', e && e.message ? e.message : e); }
+  const _exp=$('expAll'), _col=$('colAll');
+  if(_exp) _exp.onclick=()=>{ CERRADOS.clear(); try{localStorage.setItem('ns_wl_closed','[]');}catch(_){} view(); };
+  if(_col) _col.onclick=()=>{ ALL.forEach(r=>CERRADOS.add(r.estado_piloto||'—'));
+    try{localStorage.setItem('ns_wl_closed', JSON.stringify([...CERRADOS]));}catch(_){} view(); };
   $('gate').style.display='none'; $('app').style.display='block';
   $('roBanner').style.display = CAN_WRITE ? 'none' : 'block';
   $('add').style.display = CAN_WRITE ? '' : 'none';
