@@ -410,6 +410,9 @@ $('go').addEventListener('click', async ()=>{
   $('gerr').textContent='';
   const { error } = await sb.auth.signInWithPassword({ email:$('em').value.trim(), password:$('pw').value });
   if(error){ $('gerr').textContent=error.message; return; }
+  // r24-r: signInWithPassword acuña aal1; si hay TOTP verificado, retar ANTES
+  // de cargar (si no, las RPC admin mueren con 400). El gate vive en el navbar.
+  try{ if(window.nsMfaReforzar) await window.nsMfaReforzar(); }catch(_){}
   load();
 });
 $('pw').addEventListener('keydown', e=>{ if(e.key==='Enter') $('go').click(); });

@@ -332,6 +332,63 @@
       }
     }
 
+    /* — reto TOTP: de aal1 a aal2 (r24-r · S15) ————————————————————————————
+       El login del hub (signInWithPassword) y el receptor del pase acuñan
+       sesión aal1 SIN reto. Para un admin con TOTP verificado, is_admin_mfa()
+       exige aal2 → todas las RPC admin mueren con 400. Este gate, sobre el
+       MISMO estilo raw del navbar (sin vendor, sin CDN — po74), detecta la
+       sesión aal1 con factor verificado y refuerza con un teclado barajado.
+       Devuelve una promesa; auto-corre al cargar cualquier página del hub. */
+    var jwtAal=function(tok){try{return JSON.parse(atob(tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).aal;}catch(e){return null;}};
+    window.nsMfaReforzar=function(){
+      return new Promise(function(resolve){
+        var s=sesion();
+        if(!s||!s.access_token||jwtAal(s.access_token)==='aal2'){resolve(true);return;}
+        var H={apikey:ANON,authorization:'Bearer '+s.access_token,'content-type':'application/json'};
+        fetch(SB+'/auth/v1/user',{headers:H}).then(function(r){return r.json();}).then(function(u){
+          var fac=((u&&u.factors)||[]).filter(function(f){return f.factor_type==='totp'&&f.status==='verified';})[0];
+          if(!fac){resolve(false);return;}            // aal1 sin factor: is_admin_mfa perdona
+          var EN=(function(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+            return (v||((navigator.language||'en').toLowerCase().indexOf('es')===0?'es':'en'))==='en';})();
+          var T=function(es,en){return EN?en:es;};
+          var pin='',teclas=[0,1,2,3,4,5,6,7,8,9];
+          for(var i=teclas.length-1;i>0;i--){var k=Math.floor(Math.random()*(i+1));var tmp=teclas[i];teclas[i]=teclas[k];teclas[k]=tmp;}
+          var ov=document.createElement('div');ov.id='ns-mfa-ov';
+          ov.setAttribute('style','position:fixed;inset:0;z-index:99999;background:rgba(20,14,10,.55);display:flex;align-items:center;justify-content:center;font-family:Poppins,system-ui,sans-serif');
+          ov.innerHTML='<div style="background:#FFFDF8;border-radius:18px;max-width:380px;width:92%;padding:22px 20px;box-shadow:0 18px 50px rgba(0,0,0,.3)">'
+            +'<div style="font-weight:800;font-size:16px;color:#241D1A;margin-bottom:4px">🔐 '+T('Refuerza tu sesión','Reinforce your session')+'</div>'
+            +'<div style="font-size:13px;color:#5f564f;margin-bottom:14px">'+T('Introduce el código de tu app de autenticación para usar las herramientas de administradora.','Enter the code from your authenticator app to use the admin tools.')+'</div>'
+            +'<div id="nsmd" style="display:flex;gap:11px;justify-content:center;margin:8px 0 16px"></div>'
+            +'<div id="nsmp" style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:#EFE3D7;border:1px solid #EFE3D7;border-radius:14px;overflow:hidden"></div>'
+            +'<button id="nsmc" style="margin-top:12px;background:none;border:0;font:600 12.5px Poppins,system-ui,sans-serif;color:#8A7F78;cursor:pointer;text-decoration:underline">'+T('Borrar','Clear')+'</button>'
+            +'<div id="nsme" style="color:#D93030;font-size:12.5px;min-height:16px"></div></div>';
+          document.body.appendChild(ov);
+          var dots=ov.querySelector('#nsmd'),pad=ov.querySelector('#nsmp'),err=ov.querySelector('#nsme');
+          var pinta=function(){var h='';for(var d=0;d<6;d++){h+='<div style="width:22px;height:22px;border-radius:50%;border:2px solid '+(d<pin.length?'#0F6E56':'#E8B072')+';background:'+(d<pin.length?'#0F6E56':'#fff')+'"></div>';}dots.innerHTML=h;};
+          pad.innerHTML=teclas.map(function(d){return '<button type="button" data-d="'+d+'" style="background:#fffdfa;border:0;font:800 24px/1 Poppins,system-ui,sans-serif;color:#241D1A;padding:18px 0;cursor:pointer">'+d+'</button>';}).join('');
+          var verifica=function(){
+            err.textContent=T('Comprobando…','Checking…');
+            fetch(SB+'/auth/v1/factors/'+fac.id+'/challenge',{method:'POST',headers:H,body:'{}'})
+            .then(function(r){return r.json();}).then(function(ch){
+              if(!ch||!ch.id){throw new Error(ch&&ch.error_description||'challenge');}
+              return fetch(SB+'/auth/v1/factors/'+fac.id+'/verify',{method:'POST',headers:H,
+                body:JSON.stringify({challenge_id:ch.id,code:pin})}).then(function(r){return r.json();});
+            }).then(function(v){
+              if(v&&v.access_token){
+                if(!v.expires_at&&v.expires_in)v.expires_at=Math.floor(Date.now()/1000)+v.expires_in;
+                localStorage.setItem(SBKEY,JSON.stringify(v));
+                ov.remove(); resolve(true); location.reload();
+              }else{err.textContent=T('Código no válido','Invalid code');pin='';pinta();}
+            }).catch(function(){err.textContent=T('Código no válido','Invalid code');pin='';pinta();});
+          };
+          pad.onclick=function(ev){var b=ev.target.closest('button[data-d]');if(!b||pin.length>=6)return;pin+=b.getAttribute('data-d');pinta();if(pin.length===6)verifica();};
+          ov.querySelector('#nsmc').onclick=function(){pin='';err.textContent='';pinta();};
+          pinta();
+        }).catch(function(){resolve(false);});
+      });
+    };
+    if(sesion()) window.nsMfaReforzar();   // auto: refuerza tras pase o carga con sesión aal1
+
     /* — emisor — */
     document.addEventListener('click',function(ev){
       try{
