@@ -829,6 +829,13 @@ print("- W1 reset.html page")
 
 print("- _headers cache policy (revalidate HTML + i18n)")
 
+# r25-g (4-sep): _redirects NUESTRO (el pack no lo trae). /app = enlace estable de
+# descarga compartido por todas las webs; el destino vive en _integration/_redirects.
+_red_src = os.path.join(ROOT, "_integration", "_redirects")
+if os.path.exists(_red_src):
+    open(os.path.join(PUB, "_redirects"), "w", encoding="utf-8").write(open(_red_src, encoding="utf-8").read())
+    print("- ns-redirects: /app → destino estable de descarga (_integration/_redirects)")
+
 
 # ---------------------------------------------------------------------------
 # G3 phase 1 (Wave 1): Growth panel with REAL actuals (admin_growth RPC) +

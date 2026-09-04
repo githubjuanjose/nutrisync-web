@@ -1,0 +1,6 @@
+# NutriSync · redirecciones de Cloudflare Pages (fuente: _integration/_redirects; integrate.py la copia a publish/)
+# r25-g (4-sep): /app = enlace ESTABLE de descarga para TODAS las webs (la nuestra y la de Lucía).
+# Hoy (piloto privado, sin tiendas) lleva a la waitlist de la home. El día de las tiendas
+# se cambia AQUÍ el destino a la página de tiendas — ningún botón de ninguna web cambia.
+/app     /#ns-live-waitlist   302
+/app/    /#ns-live-waitlist   302
