@@ -269,6 +269,13 @@ if os.path.exists(rv):
     print("- Founders' review checklist page")
 
 # Founders' waitlist dashboard (admin-gated read via admin_waitlist RPC).
+# r26 (5-sep, Web V2 · UST-07 G7): leads de los formularios de Community — página propia del hub, misma puerta que Waitlist.
+_cl = os.path.join(ASSETS, "community-leads.html")
+if os.path.exists(_cl):
+    _c = open(_cl, encoding="utf-8").read().replace("__NS_URL__", URL).replace("__NS_KEY__", KEY)
+    open(os.path.join(PUB, "hub", "community-leads.html"), "w", encoding="utf-8").write(_c)
+    print("- hub/community-leads.html (Web V2 · leads de Community)")
+
 wl = os.path.join(ASSETS, "waitlist.html")
 if os.path.exists(wl):
     w = open(wl, encoding="utf-8").read().replace("__NS_URL__", URL).replace("__NS_KEY__", KEY)
