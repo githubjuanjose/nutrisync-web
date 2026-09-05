@@ -431,7 +431,7 @@ th{color:#8A7F78;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
 <div class="w">
 
 <h1>🌐 Web V2 — la candidata corregida en una tarde (5-sep)</h1>
-<div class="meta">5 de septiembre de 2026 · <a href="https://nutrisync-web2.pages.dev">nutrisync-web2.pages.dev</a> (candidata, noindex) · cuatro despliegues (último sello <code>0509-203521</code>) · <code>repos/web2</code> · UST-07 firmada por la mañana; por la tarde Juanjo la revisó en escritorio y en el móvil y salieron tres rondas de correcciones. Este documento es el resumen para Notion y para el hub; el detalle técnico vive en <code>repos/web2/README.md</code>.</div>
+<div class="meta">5 de septiembre de 2026 · <a href="https://nutrisync-web2.pages.dev">nutrisync-web2.pages.dev</a> (candidata, noindex) · seis despliegues (ronda 4 + G3/H el 6-sep) · <code>repos/web2</code> · UST-07 firmada por la mañana; por la tarde Juanjo la revisó en escritorio y en el móvil y salieron tres rondas de correcciones. Este documento es el resumen para Notion y para el hub; el detalle técnico vive en <code>repos/web2/README.md</code>.</div>
 
 <div class="box"><b>Para Pilar, Lucía y Mapi — qué mirar.</b> La web nueva se construye directamente desde el Figma de Lucía (Design ya no interviene). Todo lo que veáis distinto del Figma es una de estas tres cosas: (a) una decisión firmada en la UST-07 (aviso de precios, pie completo, navbar único, ES), (b) una pantalla que el Figma no tiene y se ha derivado (menú móvil, Our Story móvil, hoja «Muy pronto»), o (c) un error nuestro — y eso es lo que os pedimos que cacéis. Cómo avisar: WhatsApp con página + captura.</div>
 
@@ -470,6 +470,21 @@ th{color:#8A7F78;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
 <li>Escritorio: sin márgenes a los lados, sin fondos negros, pie completo; Community y Our Story con el mismo pie.</li>
 <li>Formularios de Community: enviar uno de prueba (llega al hub 🤝 Leads).</li>
 </ol>
+
+<h2>5 · Ronda 4 — el feedback de Pilar, punto a punto (noche del 5-sep → madrugada del 6)</h2>
+<p>Pilar revisó la candidata en el móvil y mandó capturas por WhatsApp; Juanjo las fue pasando una a una («no ejecutes hasta que diga listo»). Todo desplegado en la candidata; la evidencia por punto (capturas antes/después) está en la carpeta <code>Ronda4-capturas-2026-09-06</code> del proyecto.</p>
+<table><tr><th>Punto</th><th>Qué se pidió</th><th>Qué se hizo</th></tr>
+<tr><td>A</td><td>Precios móvil: otro fondo, tarjetas más pequeñas, oferta «primeros meses gratis» con lenguaje adecuado e inclusivo</td><td>Fondo pomelo con velo, tarjetas −12 %, pastilla en Premium «Tus dos primeros ciclos, sin coste alguno*» — <b>propuesta de redacción a firmar por Pilar y Lucía</b>; diccionario de lenguaje inclusivo anotado como tarea de founders</td></tr>
+<tr><td>B / F</td><td>Los reels no abrían nada; falta cabecera de sociales</td><td>Cada tarjeta enlaza a su reel de Instagram; cabecera «Síguenos en los reels» con @nutrisync.collective y @nutrisyncc (TikTok), escritorio y móvil. Falta la URL de LinkedIn</td></tr>
+<tr><td>C</td><td>El montaje de Our Story debería ser el vídeo de Lucía</td><td>Pendiente del fichero (MP4/WebM); el hueco con póster está preparado</td></tr>
+<tr><td>D</td><td>La flecha de «4 fases» no hacía nada</td><td>Lleva a «La Experiencia» (aterriza bajo la barra)</td></tr>
+<tr><td>E</td><td>La cinta del móvil no se movía</td><td>Cinta deslizante con las frases del escritorio (CSS, 48 s por vuelta)</td></tr>
+<tr><td>G1 / G2</td><td>«En español los enlaces llevan a la Home»; hamburguesa como desplegable</td><td>No era el idioma: en móvil las anclas <code>/#sección</code> saltaban al elemento del árbol de ESCRITORIO (oculto) y el navegador se quedaba arriba. Ahora toda ancla se resuelve al árbol visible y descuenta la barra. Menú desplegable bajo la barra</td></tr>
+<tr><td>G3</td><td>Revisar todos los enlaces en EN y ES</td><td>621 enlaces en las 13 páginas (los <code>href</code> no dependen del idioma: comparados EN/ES, idénticos): 0 fallos. Puerta E2 nueva en el semáforo (anclas con destino + hosts previstos). Informe: <code>G3-informe-enlaces.md</code></td></tr>
+<tr><td>H</td><td>Que los textos quepan en los dos idiomas, también los de los campos</td><td>Medido en el DOM (no a ojo) en ES/EN × 390/1440, 13 páginas y 80 campos: el botón de la hoja «Muy pronto» (captura de Pilar, anterior al deploy de la ronda 4) y tres cortes más en español que nadie había visto — tarjetas del hub Community (última línea), textos largos de Expertos y Equipo — más la cabecera de sociales pisando «Conócenos…». Todos corregidos; y <code>tools/textfit.sh</code> queda como puerta del deploy (hoy: 0 hallazgos)</td></tr>
+<tr><td>I</td><td>Design System v1/v2 y mapeo</td><td>Aparcado por Juanjo</td></tr>
+</table>
+<div class="box"><b>Lección de la noche.</b> El layout que sale del Figma es el del inglés: cajas de texto con alto fijo y frames que recortan. En español faltaban líneas y nadie lo veía porque cada página parecía bien «a ojo». «Que quepa» ahora se mide: cada hoja de texto contra su caja, sus recortes y sus vecinas, y cada campo contra su texto de ejemplo — en cada deploy.</div>
 
 <div class="box rojo"><b>Sigue pendiente</b>: firma de Pilar y Lucía (precios, pie, privacidad) → cambio de dominio (conserva hub, legales, tester, reset y /app) · Lighthouse PWA · instalación real en iPhone/Android.</div>
 </div></body></html>
