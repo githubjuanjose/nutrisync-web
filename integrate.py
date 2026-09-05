@@ -2102,3 +2102,22 @@ if os.path.exists(_w2_src):
     except Exception:
         _n2 = "?"
     print("- ns-i18n-web2: catalogo de la WV2 en i18n/web2.json (%s textos)" % _n2)
+
+# ── ns-webapp-alias (r26-c, 5-sep): el prototipo web-app vuelve a ser alcanzable ──
+# Desde r25-g «/app» es el enlace estable de DESCARGA (redirect en _redirects). Cloudflare
+# Pages sirve app.html como /app (URL limpia, 308), así que app.html cayó en el redirect y
+# el prototipo (17 enlaces desde hub/prototypes.html, «Open app» del marketing) llevaba a
+# la portada. Cura: app.html sigue siendo el fichero que vigilan los packs (semáforo C2,
+# pre-deploy, centinelas) y se publica ADEMÁS como webapp.html → /webapp, que es lo que
+# enlazan el marketing y los prototipos; /app.html → /webapp.html (301) en _redirects.
+_wa_src, _wa_dst = os.path.join(PUB, "app.html"), os.path.join(PUB, "webapp.html")
+if os.path.exists(_wa_src):
+    import shutil as _sh2
+    _sh2.copyfile(_wa_src, _wa_dst)
+    _ip = os.path.join(PUB, "index.html")
+    _is0 = open(_ip, encoding="utf-8").read()
+    _is = _is0.replace("'app.html'", "'webapp.html'")
+    _nwa = _is0.count("'app.html'")
+    if _is != _is0:
+        open(_ip, "w", encoding="utf-8").write(_is)
+    print("- ns-webapp-alias: app.html publicado como webapp.html (/webapp) · %d enlaces del marketing recableados" % _nwa)

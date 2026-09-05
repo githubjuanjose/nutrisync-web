@@ -4,3 +4,5 @@
 # se cambia AQUÍ el destino a la página de tiendas — ningún botón de ninguna web cambia.
 /app     /#ns-live-waitlist   302
 /app/    /#ns-live-waitlist   302
+# r26-c (5-sep): app.html cae en el redirect de /app por la URL limpia de Pages; el prototipo web-app vive en /webapp
+/app.html  /webapp.html  301

@@ -89,7 +89,7 @@ SECTIONS = [
         d_en="The same experience in a desktop browser, for people who prefer keyboard and big screen, and for "
              "demos. It opens in <b>prototype mode</b> with sample data: full navigation, no account, nothing "
              "written to the real database.",
-        cta="/app.html#demo", cta_es="Abrir el prototipo web", cta_en="Open the web prototype",
+        cta="/webapp.html#demo", cta_es="Abrir el prototipo web", cta_en="Open the web prototype",
         journey_es=["Alta y acceso", "Onboarding guiado", "Uso diario", "Seguimiento y ajustes"],
         journey_en=["Sign-up and access", "Guided onboarding", "Daily use", "Tracking and settings"],
         groups=[("Alta y acceso", "Sign-up & access",
@@ -196,7 +196,7 @@ def section_html(s):
         for g_es, g_en, items in s['groups']:
             h.append('<div class="gt">%s</div><div class="pgrid">' % bi(g_es, g_en))
             for route, l_es, l_en in items:
-                h.append('<a class="pcard" href="/app.html#demo-%s" target="_top"><span class="pdot"></span>'
+                h.append('<a class="pcard" href="/webapp.html#demo-%s" target="_top"><span class="pdot"></span>'
                          '<span class="plabel">%s</span><span class="parrow">→</span></a>' % (route, bi(l_es, l_en)))
             h.append('</div>')
     else:
