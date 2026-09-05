@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>46 · Web V2 — la candidata corregida (5-sep, tarde)</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.65}
+.w{max-width:860px;margin:0 auto;padding:30px 22px 90px}
+h1{font-size:24px;margin:0 0 6px}h2{font-size:17px;margin:28px 0 8px;color:#C73A20}
+p,li{font-size:14px}.meta{color:#8A7F78;font-size:12.5px;margin-bottom:18px}
+code{background:#F4F0EA;border-radius:5px;padding:1px 6px;font-size:12.5px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+th,td{padding:7px 9px;border-bottom:1px solid #EFE3D7;text-align:left;vertical-align:top}
+th{color:#8A7F78;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.tag{display:inline-block;font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#E8F5EE;color:#0F6E56;margin-right:5px}
+.box{background:#FFF8EF;border-left:3px solid #E8B072;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;margin:12px 0}
+.rojo{background:#FFF1EC;border-left:3px solid #E8472A}
+</style></head><body><div class="w">
+
+<h1>🌐 Web V2 — la candidata corregida en una tarde (5-sep)</h1>
+<div class="meta">5 de septiembre de 2026 · <a href="https://nutrisync-web2.pages.dev">nutrisync-web2.pages.dev</a> (candidata, noindex) · cuatro despliegues (último sello <code>0509-203521</code>) · <code>repos/web2</code> · UST-07 firmada por la mañana; por la tarde Juanjo la revisó en escritorio y en el móvil y salieron tres rondas de correcciones. Este documento es el resumen para Notion y para el hub; el detalle técnico vive en <code>repos/web2/README.md</code>.</div>
+
+<div class="box"><b>Para Pilar, Lucía y Mapi — qué mirar.</b> La web nueva se construye directamente desde el Figma de Lucía (Design ya no interviene). Todo lo que veáis distinto del Figma es una de estas tres cosas: (a) una decisión firmada en la UST-07 (aviso de precios, pie completo, navbar único, ES), (b) una pantalla que el Figma no tiene y se ha derivado (menú móvil, Our Story móvil, hoja «Muy pronto»), o (c) un error nuestro — y eso es lo que os pedimos que cacéis. Cómo avisar: WhatsApp con página + captura.</div>
+
+<h2>1 · Lo que Juanjo vio y lo que había debajo</h2>
+<table><tr><th>Lo que se veía</th><th>Causa real (medida, no supuesta)</th><th>Arreglo</th></tr>
+<tr><td>Márgenes blancos a los lados en escritorio; fotos que no llegan al borde</td><td>El escalado tenía un tope de 10 px: a 1920 la página era una columna de 1440 centrada</td><td>Escala sin tope (<code>1rem = 100vw/144</code>): llena 1920, 2560, lo que sea, con las proporciones del Figma</td></tr>
+<tr><td>Imágenes con fondo negro (teléfonos, iconos, siluetas, soles, logos)</td><td>Máscaras de <i>luminancia</i> de Figma: el exportador las convierte en máscaras alfa → caja negra en Chrome y Safari. 15 grupos</td><td>Cada grupo se pre-renderiza desde la API REST de Figma (PNG 2× con transparencia, caja exacta) y el semáforo (puerta K) prohíbe cualquier máscara viva</td></tr>
+<tr><td>Pie «perdido»</td><td>El Figma solo trae Producto + Legal (3 enlaces); la V2 del 10-ago y la web viva tenían hub, tiendas, QR, legal completo</td><td>Pie completo en las 13 páginas: NutriSync Hub (Pitch · Builders · StartUp Admin), Legal ×5, App Store / Google Play, QR de la PWA, línea de salud de Pilar, © NutriSync Collective</td></tr>
+<tr><td>Mezcla de idiomas</td><td>32 textos de la Home no estaban marcados como traducibles → con el navegador en español, mitad y mitad</td><td>El build marca TODO texto visible automáticamente; el semáforo no despliega con deuda (0 hoy, 330 claves). <code>?lang=es</code> / <code>?lang=en</code> fuerza el idioma</td></tr>
+<tr><td>Lista móvil «1. 1. 1.», borde rojo de 3 px, consentimiento cortado, sol pequeño y desplazado, silueta estirada un 22 %</td><td>Cuatro bugs del transpilador (start de la lista, preflight de Tailwind, listas con margen, cajas en % contra un frame intermedio) y un export REST recortado</td><td>Corregidos en el transpilador y en el pipeline (<code>use_absolute_bounds</code>, <code>tools/figma-bounds.mjs</code>)</td></tr>
+<tr><td>Doodle azul que faltaba junto al sol (Physiology)</td><td>Dentro de un grupo con caja, las coordenadas en px eran del frame, no del grupo: el queso caía a 2.330 px, fuera de la sección</td><td>Regla de geometría corregida; el queso vuelve</td></tr>
+</table>
+
+<h2>2 · Cambios de producto pedidos por Juanjo (todos desplegados)</h2>
+<ul>
+<li><b>Móvil pantalla a pantalla</b>: cada sección de la Home llena una pantalla (héroe · El problema · 4 fases en dos pantallas · La Experiencia · Puntuación · Precios (con su aviso al pie) · Fisiología · La sincro semanal · pie), con desplazamiento suave por sección.</li>
+<li><b>«How it Works» → «The Experience» / «La Experiencia»</b> en navbar, menú y pie.</li>
+<li><b>La Experiencia (móvil)</b>: cada punto lleva una miniatura sacada de las tres pantallas de la app que usa el escritorio (anillo del ciclo · plato analizado · gráfica de las hormonas), para que móvil y escritorio cuenten lo mismo.</li>
+<li><b>Descargar / Get App / «I want it!»</b> → llevan al campo de la lista de espera y le ponen el foco. <b>Fichas de tiendas</b> → aviso «Muy pronto en App Store y Google Play» con dos salidas: unirse a la lista de espera o abrir la previsualización web (m.nutrisynccollective.com).</li>
+<li><b>Avisos por contexto</b>: la barra inferior lleva la franja del piloto («NutriSync está en fase de desarrollo · piloto interno cerrado…») y la de precios; y el aviso de precios aparece además dentro de la sección de precios (escritorio y móvil).</li>
+<li><b>Escritorio</b>: las tres secciones de teléfonos (Daily · Phase · Score) un 20 % más compactas.</li>
+<li><b>Our Story</b>: teaser y historia completa en una sola página, consecutivas (<code>/our-story/full/</code> redirige); el botón azul «our story» desaparece.</li>
+<li><b>Todo en español o todo en inglés</b>: «La sincro semanal», «Colaboradores», «Correo electrónico»… sin etiquetas sueltas en inglés.</li>
+</ul>
+
+<h2>3 · Lo que las founders tienen que decidir o validar (ya en el tablero, origen UST-07)</h2>
+<ul>
+<li>Pilar y Lucía: precios y reclamos con (*) — firma antes del dominio · pie legal (HIPAA/Resources retirados) · formularios de Community: línea de privacidad y retención · texto de consentimiento de la waitlist · cargos de las founders.</li>
+<li>Lucía: validar las pantallas derivadas (menú móvil, Our Story móvil, hoja «Muy pronto», miniaturas, pantalla a pantalla) y corregir en Figma las erratas ya corregidas en la web.</li>
+</ul>
+
+<h2>4 · Cómo verificarla (para el mensaje de WhatsApp)</h2>
+<ol>
+<li>Móvil: abrir <a href="https://nutrisync-web2.pages.dev">nutrisync-web2.pages.dev</a>, recorrer la Home pantalla a pantalla, pulsar «Descargar» (debe bajar al correo de la lista de espera) y una ficha de tienda (aviso «Muy pronto»).</li>
+<li>Cambiar de idioma con el botón ES/EN (o <code>?lang=es</code>): todo debe cambiar, nada a medias.</li>
+<li>Escritorio: sin márgenes a los lados, sin fondos negros, pie completo; Community y Our Story con el mismo pie.</li>
+<li>Formularios de Community: enviar uno de prueba (llega al hub 🤝 Leads).</li>
+</ol>
+
+<div class="box rojo"><b>Sigue pendiente</b>: firma de Pilar y Lucía (precios, pie, privacidad) → cambio de dominio (conserva hub, legales, tester, reset y /app) · Lighthouse PWA · instalación real en iPhone/Android.</div>
+</div></body></html>
