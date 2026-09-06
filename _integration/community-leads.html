@@ -1,146 +1,243 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Community leads — NutriSync Founders</title>
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leads de Community — NutriSync Founders</title>
 <style>
-:root{--coral:#EA5740;--coral-deep:#D8452F;--cream:#FBF4EE;--ink:#241D1A;--muted:#6f655e;--line:#EADED5;--emerald:#0FA968;}
-*{box-sizing:border-box;}
-body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--ink);background:#fff;margin:0;line-height:1.55;}
-.topbar{position:sticky;top:0;z-index:10;background:rgba(251,244,238,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 22px;display:flex;align-items:center;justify-content:space-between;}
-.topbar .brand{font-weight:300;letter-spacing:4px;font-size:15px;} .topbar .brand b{font-weight:800;}
-.topbar a{color:var(--coral-deep);font-weight:700;font-size:13px;text-decoration:none;}
-.wrap{max-width:1100px;margin:0 auto;padding:26px 22px 90px;}
-h1{font-size:27px;font-weight:900;letter-spacing:-.4px;margin:0 0 4px;} .sub{color:var(--muted);font-size:14px;margin:0 0 22px;}
-.stats{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 20px;}
-.stat{flex:1;min-width:130px;background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:14px 16px;cursor:pointer;}
-.stat.on{outline:2px solid var(--coral);} .stat .n{font-size:28px;font-weight:900;line-height:1;} .stat .l{font-size:11.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin-top:6px;}
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 14px;}
-.toolbar input[type=search]{flex:1;min-width:200px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;font-size:14px;font-family:inherit;outline:none;}
-.toolbar select{padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:13.5px;font-family:inherit;background:#fff;}
-.btn{border:none;border-radius:10px;padding:10px 16px;font-weight:700;font-size:13.5px;cursor:pointer;font-family:inherit;} .btn-exp{background:var(--ink);color:#fff;}
-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px;}
-th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
-th{background:var(--coral);color:#fff;font-weight:700;font-size:12px;letter-spacing:.4px;}
-tbody tr:nth-child(even){background:var(--cream);}
-.tag{display:inline-block;font-size:11px;font-weight:800;padding:3px 9px;border-radius:20px;text-transform:capitalize;}
-.t-experts{background:#E4F0FF;color:#2563EB}.t-team{background:#F1E8FF;color:#7C3AED}.t-partners{background:#FDF0DC;color:#B45309}.t-community{background:#E7F6EE;color:#0B7A4B}.t-workplace{background:#FDE6DD;color:var(--coral-deep)}
-.est{padding:5px 8px;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:12px;background:#fff;}
-.desc{max-width:340px;white-space:pre-wrap;color:var(--muted);font-size:12.5px;}
-.cv{color:var(--coral-deep);font-weight:700;cursor:pointer;text-decoration:underline;}
-.empty,.gate{max-width:380px;margin:60px auto;text-align:center;color:var(--muted);}
-.gate .box{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px 24px;box-shadow:0 18px 44px -26px rgba(0,0,0,.4);text-align:left;}
-.gate h3{margin:0 0 4px;font-size:18px;color:var(--ink);} .gate p{font-size:13px;margin:0 0 14px;}
-.gate input{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:10px;margin-bottom:9px;font-size:14px;font-family:inherit;}
-.gate button{width:100%;background:var(--coral);color:#fff;border:none;border-radius:10px;padding:12px;font-weight:800;font-size:15px;cursor:pointer;}
-.err{color:var(--coral-deep);font-size:12.5px;min-height:16px;margin-top:6px;} .muted{color:var(--muted);font-size:12.5px;}
-.note{background:#FFF7ED;border:1px solid #FED7AA;border-radius:12px;padding:10px 14px;font-size:12.5px;color:#9A3412;margin:0 0 16px;}
-</style>
-</head>
-<body>
-<div class="topbar">
-  <div class="brand"><b>NUTRISYNC</b> · Community leads</div>
-  <a href="/hub/waitlist.html">📬 Waitlist ›</a>
-</div>
-<div class="wrap">
-  <div id="gate" class="gate" style="display:none">
-    <div class="box">
-      <h3>Founders sign-in</h3>
-      <p class="muted">Leads hold personal data (names, emails, CVs), so this page is admin-only.</p>
-      <input id="em" type="email" placeholder="founder email" autocomplete="username"/>
-      <input id="pw" type="password" placeholder="password" autocomplete="current-password"/>
-      <button id="go">Sign in</button>
-      <div class="err" id="gerr"></div>
-    </div>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.55}
+.w{max-width:1180px;margin:0 auto;padding:26px 20px 90px}
+h1{font-size:23px;margin:0 0 4px}
+p.lead{color:#6E655D;font-size:13.5px;margin:0 0 14px}
+.note{background:#FFF7ED;border:1px solid #FED7AA;border-radius:12px;padding:10px 14px;font-size:12.5px;color:#9A3412;margin:0 0 14px}
+.kpis{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px}
+.kpi{flex:1;min-width:110px;background:#fff;border:1px solid #EFE3D7;border-radius:12px;padding:10px 13px;text-align:center;cursor:pointer}
+.kpi.on{outline:2px solid #E8472A}
+.kpi .l{font-size:10.5px;color:#8A7F78;text-transform:uppercase;letter-spacing:.5px}
+.kpi .v{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
+.kpi .s{font-size:11px;color:#8A7F78}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 12px}
+.bar input[type=search]{flex:1;min-width:200px;padding:9px 12px;border:1px solid #EFE3D7;border-radius:9px;font:inherit;font-size:13px}
+.bar select,.bar button{padding:9px 11px;border:1px solid #EFE3D7;border-radius:9px;font:inherit;font-size:12.5px;background:#fff;cursor:pointer}
+.bar button.pri{background:#241D1A;color:#fff;border-color:#241D1A;font-weight:700}
+.grid{display:grid;grid-template-columns:1fr;gap:10px}
+.card{background:#fff;border:1px solid #EFE3D7;border-radius:14px;padding:12px 14px;display:grid;grid-template-columns:150px 1fr 300px;gap:14px;grid-template-areas:"quien que gestion" "hist hist hist"}
+.card.n-nuevo{border-left:4px solid #E8472A}.card.n-convertido{border-left:4px solid #0FA968}.card.n-descartado,.card.n-cerrado{opacity:.72}
+.quien{grid-area:quien;font-size:12.5px}.que{grid-area:que;font-size:12.5px;color:#4E453F;white-space:pre-wrap}.gestion{grid-area:gestion;font-size:12px}
+.hist{grid-area:hist;font-size:11.5px;color:#8A7F78;border-top:1px dashed #EFE3D7;padding-top:6px;display:none}.card.open .hist{display:block}
+.tag{display:inline-block;font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:20px;margin-bottom:4px}
+.t-experts{background:#E4F0FF;color:#2563EB}.t-team{background:#F1E8FF;color:#7C3AED}.t-partners{background:#FDF0DC;color:#B45309}.t-community{background:#E7F6EE;color:#0B7A4B}.t-workplace{background:#FDE6DD;color:#D8452F}
+.chip{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:9px;background:#F4F0EA;color:#6E655D;margin:2px 3px 0 0}
+.chip.ok{background:#E7F6EE;color:#0B7A4B}.chip.warn{background:#FFF1EC;color:#C73A20}
+.gestion label{display:block;font-size:10.5px;color:#8A7F78;text-transform:uppercase;letter-spacing:.4px;margin:4px 0 2px}
+.gestion select,.gestion input{width:100%;padding:6px 8px;border:1px solid #EFE3D7;border-radius:8px;font:inherit;font-size:12px;background:#fff}
+.gestion .row{display:flex;gap:6px}.gestion .row input[type=date]{width:130px}
+.acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.acts button{padding:6px 9px;border:1px solid #EFE3D7;border-radius:8px;font:inherit;font-size:11.5px;background:#fff;cursor:pointer}
+.acts button.go{background:#E8472A;color:#fff;border-color:#E8472A;font-weight:700}
+.acts button.cv{border-color:#2563EB;color:#2563EB;font-weight:700}
+.empty{color:#8A7F78;text-align:center;padding:40px 0}
+.gate{max-width:380px;margin:60px auto}.gate .box{background:#fff;border:1px solid #EFE3D7;border-radius:18px;padding:26px 24px}
+.gate h3{margin:0 0 4px;font-size:18px}.gate p{font-size:13px;margin:0 0 14px;color:#6E655D}
+.gate input{width:100%;padding:11px 13px;border:1px solid #EFE3D7;border-radius:10px;margin-bottom:9px;font:inherit;font-size:14px}
+.gate button{width:100%;background:#E8472A;color:#fff;border:none;border-radius:10px;padding:12px;font-weight:800;font-size:15px;cursor:pointer;font-family:inherit}
+.err{color:#C73A20;font-size:12.5px;min-height:16px;margin-top:6px}
+.errbox{background:#FFF1EC;border:1px solid #FFC9B8;border-radius:12px;padding:10px 14px;font-size:12.5px;color:#7A2E1F;margin:0 0 12px}
+@media (max-width:820px){.card{grid-template-columns:1fr;grid-template-areas:"quien" "que" "gestion" "hist"}}
+</style></head><body>
+<div class="w">
+<div id="gate" class="gate" style="display:none"><div class="box">
+  <h3 data-i="Acceso founders|Founders sign-in">Acceso founders</h3>
+  <p data-i="Los leads llevan datos personales (nombres, correos, CV): solo admins.|Leads hold personal data (names, emails, CVs): admin-only.">Los leads llevan datos personales (nombres, correos, CV): solo admins.</p>
+  <input id="em" type="email" placeholder="correo de founder" autocomplete="username"/>
+  <input id="pw" type="password" placeholder="contraseña" autocomplete="current-password"/>
+  <button id="go" data-i="Entrar|Sign in">Entrar</button>
+  <div class="err" id="gerr"></div>
+</div></div>
+<div id="app" style="display:none">
+  <h1 data-i="🤝 Leads de Community — de la web al piloto, la waitlist o el equipo|🤝 Community leads — from the web to the pilot, the waitlist or the team">🤝 Leads de Community — de la web al piloto, la waitlist o el equipo</h1>
+  <p class="lead" data-i="Lo que llega por los formularios de la Web V2 (Expertas · Equipo · Colaboradores · Comunidad · Empresas). Cada lead recibe un acuse automático; aquí se le pone dueña, siguiente paso y etapa, y se convierte en lo que toca. Los nuevos sin atender salen en el digest diario de las 07:15; a las 72 h sin contacto, con aviso.|What arrives through the Web V2 forms (Experts · Team · Partners · Community · Workplace). Every lead gets an automatic acknowledgement; here it gets an owner, a next step and a stage, and is converted into what it should become. New unattended leads show up in the 07:15 daily digest; after 72 h without contact, flagged.">Lo que llega por los formularios de la Web V2 (Expertas · Equipo · Colaboradores · Comunidad · Empresas). Cada lead recibe un acuse automático; aquí se le pone dueña, siguiente paso y etapa, y se convierte en lo que toca. Los nuevos sin atender salen en el digest diario de las 07:15; a las 72 h sin contacto, con aviso.</p>
+  <div class="note" data-i="Retención: propuesta de 12 meses y purga de cerrados/descartados — pendiente de la firma de Pilar y Lucía (tarea en el Task tracker de Notion). Hasta entonces no se borra nada. El texto del acuse automático también es provisional hasta esa firma.|Retention: 12-month proposal, then purge of closed/discarded — pending Pilar &amp; Lucía’s signature (task in the Notion Task tracker). Nothing is purged until then. The automatic acknowledgement text is also provisional until that signature.">Retención: propuesta de 12 meses y purga de cerrados/descartados — pendiente de la firma de Pilar y Lucía (tarea en el Task tracker de Notion). Hasta entonces no se borra nada. El texto del acuse automático también es provisional hasta esa firma.</div>
+  <div id="err"></div>
+  <div class="kpis" id="kpis"></div>
+  <div class="bar">
+    <input id="q" type="search" placeholder="buscar nombre, correo, empresa…"/>
+    <select id="fest"><option value="">todas las etapas</option><option value="nuevo">nuevo</option><option value="contactado">contactado</option><option value="en_conversacion">en conversación</option><option value="convertido">convertido</option><option value="cerrado">cerrado</option><option value="descartado">descartado</option></select>
+    <select id="fdue"><option value="">todas las dueñas</option><option value="__sin__">sin dueña</option></select>
+    <button id="exp" class="pri" data-i="Exportar CSV|Export CSV">Exportar CSV</button>
   </div>
-  <div id="app" style="display:none">
-    <h1>Community leads</h1>
-    <p class="sub">What people send through the Web V2 forms (Experts · Team · Partners · Community · Workplace). Written only by the Edge Function <code>community-lead</code>; read here via <code>admin_community_leads</code>.</p>
-    <div class="note">Retention proposal: 12 months, then purge of closed/discarded leads — pending Pilar &amp; Lucía’s signature (UST-07 G7). Until then nothing is purged.</div>
-    <div class="stats" id="stats"></div>
-    <div class="toolbar">
-      <input id="q" type="search" placeholder="search name, email, company…"/>
-      <select id="est"><option value="">all states</option><option value="nuevo">nuevo</option><option value="contactado">contactado</option><option value="cerrado">cerrado</option><option value="descartado">descartado</option></select>
-      <button class="btn btn-exp" id="exp">Export CSV</button>
-    </div>
-    <div id="list"></div>
-  </div>
+  <div class="grid" id="lista"></div>
 </div>
-<script type="module">
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-const U="__NS_URL__", K="__NS_KEY__";
-const sb = createClient(U, K);
-const $ = i => document.getElementById(i);
-let ALL = [], TIPO = '';
-const TIPOS = ['experts','team','partners','community','workplace'];
-const esc = s => (s==null?'':String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const fmt = s => { const d=new Date(s); return isNaN(d)?'—':d.toLocaleString(undefined,{year:'2-digit',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}); };
+</div>
+<script src="/assets/vendor/supabase.js"></script>
+<script>
+(function(){
+'use strict';
+var sb=window.supabase.createClient('__NS_URL__','__NS_KEY__');
+var $=function(i){return document.getElementById(i);};
+var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
+var EN=(function(){try{return localStorage.getItem('ns_lang')==='en';}catch(e){return false;}})();
+var T=function(es,en){return EN?en:es;};
+var ALL=[], TIPO='', ADMINS=[], EVENTOS={};
+var TIPOS=['experts','team','partners','community','workplace'];
+var ETAPAS=['nuevo','contactado','en_conversacion','convertido','cerrado','descartado'];
+/* Una sola definición de etapas en la base; aquí la ETIQUETA por tipo (lo que significa «en conversación» y «convertido» para cada uno). */
+var ETIQ={
+  experts:   {en_conversacion:['entrevista / llamada','interview / call'], convertido:['asesora del piloto','pilot advisor']},
+  team:      {en_conversacion:['entrevista','interview'],                 convertido:['incorporada','hired']},
+  partners:  {en_conversacion:['propuesta enviada','proposal sent'],      convertido:['acuerdo','agreement']},
+  community: {en_conversacion:['en contacto','in touch'],                 convertido:['en la waitlist','on the waitlist']},
+  workplace: {en_conversacion:['propuesta enviada','proposal sent'],      convertido:['acuerdo','agreement']}
+};
+var BASE={nuevo:['nuevo','new'],contactado:['contactado','contacted'],en_conversacion:['en conversación','in conversation'],convertido:['convertido','converted'],cerrado:['cerrado','closed'],descartado:['descartado','discarded']};
+function etiqueta(tipo,estado){var e=(ETIQ[tipo]||{})[estado]||BASE[estado]||[estado,estado];return EN?e[1]:e[0];}
+/* Todo acceso por clave de datos externos lleva respaldo (r12-b4): un tipo que no conocemos se pinta con su nombre, no tumba la página. */
+function nombreTipo(t){var n=TIPO_N[t]||[t,t];return EN?n[1]:n[0];}
+/* Destino de «convertir» por tipo: a qué tabla va cada uno (o fuera del sistema). */
+var DESTINO={experts:['advisory','→ asesora del piloto (cohorte advisory)','→ pilot advisor (advisory cohort)'],
+  community:['waitlist','→ a la waitlist','→ to the waitlist'],
+  team:['hiring','→ incorporada (seguimiento en Notion)','→ hired (follow-up in Notion)'],
+  partners:['partner','→ acuerdo (seguimiento en Notion)','→ agreement (follow-up in Notion)'],
+  workplace:['partner','→ acuerdo (seguimiento en Notion)','→ agreement (follow-up in Notion)']};
+var TIPO_N={experts:['Expertas','Experts'],team:['Equipo','Team'],partners:['Colaboradores','Partners'],community:['Comunidad','Community'],workplace:['Empresas','Workplace']};
 
-function stats(){
-  const by = {}; ALL.forEach(r=>{ by[r.lead_type]=(by[r.lead_type]||0)+1; });
-  const nuevos = ALL.filter(r=>r.estado==='nuevo').length;
-  $('stats').innerHTML = `<div class="stat ${TIPO===''?'on':''}" data-t=""><div class="n">${ALL.length}</div><div class="l">total · ${nuevos} new</div></div>` +
-    TIPOS.map(t=>`<div class="stat ${TIPO===t?'on':''}" data-t="${t}"><div class="n">${by[t]||0}</div><div class="l">${t}</div></div>`).join('');
-  document.querySelectorAll('.stat').forEach(s=>s.onclick=()=>{ TIPO=s.dataset.t; stats(); view(); });
+function fail(e,fn){
+  $('err').innerHTML='<div class="errbox"><b>⚠️ '+T('Falta aplicar SQL en Supabase','SQL missing in Supabase')+'</b><div>'+T('La consulta','The query')+' <code>'+esc(fn)+'</code> '+T('no responde','failed')+': <i>'+esc(String(e&&e.message||e)).slice(0,160)+'</i></div><div>'+T('Ejecuta','Run')+' <b>backend-sql/2026-09-06-community-leads-v2.sql</b> '+T('entero y recarga.','and reload.')+'</div></div>';
+  if(window.nsFail) try{nsFail(e,fn);}catch(_){ }
 }
-function rows(){
-  const q=($('q').value||'').toLowerCase(), e=$('est').value;
-  return ALL.filter(r => (!TIPO || r.lead_type===TIPO) && (!e || r.estado===e) &&
-    (!q || [r.name,r.email,r.company,r.job_title,r.specialty,r.interest,r.description].join(' ').toLowerCase().includes(q)));
+function fecha(s){if(!s)return '—';var d=new Date(s);if(isNaN(d))return '—';return d.toLocaleDateString('es-ES',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});}
+function dia(s){if(!s)return '';var d=new Date(s);return isNaN(d)?'':d.toLocaleDateString('es-ES',{day:'2-digit',month:'short'});}
+function hoy(){return new Date().toISOString().slice(0,10);}
+
+function kpis(){
+  var by={};ALL.forEach(function(r){by[r.lead_type]=(by[r.lead_type]||0)+1;});
+  var nuevos=ALL.filter(function(r){return r.estado==='nuevo';}).length;
+  var tarde=ALL.filter(function(r){return r.estado==='nuevo'&&r.edad_h>=72;}).length;
+  var venc=ALL.filter(function(r){return r.next_action_at&&r.next_action_at<hoy()&&['contactado','en_conversacion'].indexOf(r.estado)>=0;}).length;
+  var conv=ALL.filter(function(r){return r.estado==='convertido';}).length;
+  var h='<div class="kpi '+(TIPO===''?'on':'')+'" data-t=""><div class="l">'+T('total','total')+'</div><div class="v">'+ALL.length+'</div><div class="s">'+nuevos+' '+T('nuevos','new')+(tarde?' · <b style="color:#C73A20">'+tarde+' +72h</b>':'')+(venc?' · '+venc+' '+T('vencidas','overdue'):'')+' · '+conv+' '+T('convertidos','converted')+'</div></div>';
+  TIPOS.forEach(function(t){var n=ALL.filter(function(r){return r.lead_type===t&&r.estado==='nuevo';}).length;
+    h+='<div class="kpi '+(TIPO===t?'on':'')+'" data-t="'+t+'"><div class="l">'+esc(nombreTipo(t))+'</div><div class="v">'+(by[t]||0)+'</div><div class="s">'+n+' '+T('nuevos','new')+'</div></div>';});
+  $('kpis').innerHTML=h;
+  Array.prototype.forEach.call(document.querySelectorAll('.kpi'),function(k){k.onclick=function(){TIPO=k.dataset.t||'';kpis();pinta();};});
+  var sel=$('fdue'),cur=sel.value;var opts='<option value="">'+T('todas las dueñas','all owners')+'</option><option value="__sin__">'+T('sin dueña','no owner')+'</option>';
+  ADMINS.forEach(function(a){opts+='<option value="'+esc(a)+'">'+esc(a)+'</option>';});sel.innerHTML=opts;sel.value=cur;
 }
-function view(){
-  const R = rows();
-  if(!R.length){ $('list').innerHTML='<div class="empty">No leads yet for this filter.</div>'; return; }
-  $('list').innerHTML = `<table><thead><tr><th>When</th><th>Type</th><th>Who</th><th>Details</th><th>Lang</th><th>State</th><th>Notes</th></tr></thead><tbody>` +
-    R.map(r=>`<tr data-id="${r.id}">
-      <td>${fmt(r.created_at)}</td>
-      <td><span class="tag t-${esc(r.lead_type)}">${esc(r.lead_type)}</span></td>
-      <td><b>${esc(r.name)}</b><br><a href="mailto:${esc(r.email)}">${esc(r.email)}</a>${r.company?`<br><span class="muted">${esc(r.company)}</span>`:''}</td>
-      <td class="desc">${[r.job_title&&('Job: '+esc(r.job_title)), r.specialty&&('Specialty: '+esc(r.specialty)), r.interest&&('Interest: '+esc(r.interest)), r.description&&esc(r.description)].filter(Boolean).join('\n')}${r.has_cv?`<br><span class="cv" data-cv="${r.id}">⬇ CV</span>`:''}</td>
-      <td>${esc(r.lang)}</td>
-      <td><select class="est" data-id="${r.id}">${['nuevo','contactado','cerrado','descartado'].map(s=>`<option ${s===r.estado?'selected':''}>${s}</option>`).join('')}</select></td>
-      <td><input class="est" style="width:160px" data-notas="${r.id}" value="${esc(r.notas||'')}" placeholder="notes"/></td>
-    </tr>`).join('') + '</tbody></table>';
-  document.querySelectorAll('select.est').forEach(s=>s.onchange=()=>update(s.dataset.id, s.value, null));
-  document.querySelectorAll('input[data-notas]').forEach(i=>i.onchange=()=>update(i.dataset.notas, null, i.value));
-  document.querySelectorAll('.cv').forEach(c=>c.onclick=()=>cv(c.dataset.cv));
+function filas(){
+  var q=($('q').value||'').toLowerCase(),e=$('fest').value,d=$('fdue').value;
+  return ALL.filter(function(r){return (!TIPO||r.lead_type===TIPO)&&(!e||r.estado===e)&&(!d||(d==='__sin__'?!r.owner_email:r.owner_email===d))&&
+    (!q||[r.name,r.email,r.company,r.job_title,r.specialty,r.interest,r.description,r.notas].join(' ').toLowerCase().indexOf(q)>=0);});
 }
-async function update(id, estado, notas){
-  const r = ALL.find(x=>String(x.id)===String(id)); if(!r) return;
-  const { error } = await sb.rpc('admin_community_lead_update', { p_id:+id, p_estado: estado||r.estado, p_notas: notas });
-  if(error){ if(window.nsFail) nsFail(error,'admin_community_lead_update'); else alert(error.message); return; }
-  if(estado) r.estado=estado; if(notas!=null) r.notas=notas; stats();
+function chips(r){
+  var c='';
+  c+=r.ack_sent_at?'<span class="chip ok">✉ '+T('acuse enviado','ack sent')+'</span>':(r.ack_error?'<span class="chip warn">✉ '+T('acuse falló','ack failed')+': '+esc(r.ack_error).slice(0,50)+'</span>':'<span class="chip">✉ '+T('sin acuse','no ack')+'</span>');
+  if(r.en_waitlist)c+='<span class="chip ok">📬 '+T('en la waitlist','on the waitlist')+'</span>';
+  if(r.piloto_status)c+='<span class="chip ok">🧪 '+T('piloto','pilot')+': '+esc(r.piloto_status)+'</span>';
+  if(r.estado==='nuevo'&&r.edad_h>=72)c+='<span class="chip warn">⚠ +72h '+T('sin contacto','no contact')+(r.escalated_at?' · '+T('avisado','flagged'):'')+'</span>';
+  if(r.next_action_at&&r.next_action_at<hoy()&&['contactado','en_conversacion'].indexOf(r.estado)>=0)c+='<span class="chip warn">⏰ '+T('acción vencida','overdue')+'</span>';
+  if(r.converted_to)c+='<span class="chip ok">✔ '+esc(r.converted_to)+(r.converted_ref&&r.converted_to!=='advisory'?' · '+esc(r.converted_ref):'')+'</span>';
+  return c;
 }
-async function cv(id){
-  const { data:path, error } = await sb.rpc('admin_community_lead_cv', { p_id:+id });
-  if(error||!path){ alert('No CV path: '+(error&&error.message||'')); return; }
-  const { data, error:e2 } = await sb.storage.from('community-cv').createSignedUrl(path, 300);
-  if(e2||!data){ alert('Could not sign the CV URL: '+(e2&&e2.message||'')); return; }
-  window.open(data.signedUrl, '_blank');
+function pinta(){
+  var R=filas();
+  if(!R.length){$('lista').innerHTML='<div class="empty">'+T('Ningún lead con este filtro.','No leads for this filter.')+'</div>';return;}
+  $('lista').innerHTML=R.map(function(r){
+    var det=[r.job_title&&(T('Cargo','Job')+': '+esc(r.job_title)),r.specialty&&(T('Especialidad','Specialty')+': '+esc(r.specialty)),r.interest&&(T('Interés','Interest')+': '+esc(r.interest)),r.description&&esc(r.description)].filter(Boolean).join('\n');
+    var dest=DESTINO[r.lead_type]||DESTINO.community;
+    return '<div class="card n-'+esc(r.estado)+'" data-id="'+r.id+'">'+
+      '<div class="quien"><span class="tag t-'+esc(r.lead_type)+'">'+esc(nombreTipo(r.lead_type))+'</span><br><b>'+esc(r.name)+'</b><br><a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>'+(r.company?'<br><span style="color:#8A7F78">'+esc(r.company)+'</span>':'')+
+        '<br><span style="color:#8A7F78;font-size:11px">#'+r.id+' · '+fecha(r.created_at)+' · '+esc(r.lang)+' · '+r.edad_h+'h</span></div>'+
+      '<div class="que">'+det+(r.has_cv?'\n<button class="cv" data-cv="'+r.id+'" style="margin-top:6px;padding:5px 9px;border:1px solid #2563EB;color:#2563EB;background:#fff;border-radius:8px;font:inherit;font-size:11.5px;cursor:pointer">⬇ CV'+(r.cv_name?' · '+esc(r.cv_name):'')+'</button>':'')+'<div style="margin-top:6px">'+chips(r)+'</div></div>'+
+      '<div class="gestion">'+
+        '<label>'+T('Etapa','Stage')+'</label><select data-est="'+r.id+'">'+ETAPAS.map(function(s){return '<option value="'+s+'" '+(s===r.estado?'selected':'')+'>'+esc(etiqueta(r.lead_type,s))+'</option>';}).join('')+'</select>'+
+        '<label>'+T('Dueña','Owner')+'</label><select data-own="'+r.id+'"><option value="">— '+T('sin dueña','no owner')+' —</option>'+ADMINS.map(function(a){return '<option value="'+esc(a)+'" '+(a===r.owner_email?'selected':'')+'>'+esc(a)+'</option>';}).join('')+(r.owner_email&&ADMINS.indexOf(r.owner_email)<0?'<option value="'+esc(r.owner_email)+'" selected>'+esc(r.owner_email)+'</option>':'')+'</select>'+
+        '<label>'+T('Próxima acción','Next action')+'</label><div class="row"><input data-act="'+r.id+'" value="'+esc(r.next_action||'')+'" placeholder="'+T('p. ej. llamar, enviar propuesta','e.g. call, send proposal')+'"/><input type="date" data-actd="'+r.id+'" value="'+esc(r.next_action_at||'')+'"/></div>'+
+        '<label>'+T('Notas','Notes')+'</label><input data-notas="'+r.id+'" value="'+esc(r.notas||'')+'" placeholder="'+T('notas internas','internal notes')+'"/>'+
+        '<div class="acts">'+(r.estado!=='convertido'&&r.estado!=='descartado'?'<button class="go" data-conv="'+r.id+'" data-dest="'+dest[0]+'">'+T('Convertir','Convert')+' '+esc(EN?dest[2]:dest[1])+'</button>':'')+
+        '<button data-hist="'+r.id+'">'+T('Historial','History')+'</button></div>'+
+      '</div><div class="hist" id="hist-'+r.id+'"></div></div>';
+  }).join('');
+  var on=function(sel,ev,fn){Array.prototype.forEach.call(document.querySelectorAll(sel),function(el){el[ev]=function(){fn(el);};});};
+  on('select[data-est]','onchange',function(el){update(el.dataset.est,{p_estado:el.value});});
+  on('select[data-own]','onchange',function(el){update(el.dataset.own,{p_owner:el.value});});
+  on('input[data-act]','onchange',function(el){update(el.dataset.act,{p_next_action:el.value});});
+  on('input[data-actd]','onchange',function(el){update(el.dataset.actd,{p_next_action_at:el.value||null});});
+  on('input[data-notas]','onchange',function(el){update(el.dataset.notas,{p_notas:el.value});});
+  on('button[data-cv]','onclick',function(el){cv(el.dataset.cv);});
+  on('button[data-conv]','onclick',function(el){convertir(el.dataset.conv,el.dataset.dest);});
+  on('button[data-hist]','onclick',function(el){historial(el.dataset.hist);});
+}
+function update(id,cambios){
+  var r=null;ALL.forEach(function(x){if(String(x.id)===String(id))r=x;});if(!r)return;
+  var args={p_id:+id,p_estado:null,p_notas:null,p_owner:null,p_next_action:null,p_next_action_at:null};
+  Object.keys(cambios).forEach(function(k){args[k]=cambios[k];});
+  sb.rpc('admin_community_lead_update',args).then(function(res){
+    if(res.error){fail(res.error,'admin_community_lead_update');return;}
+    if(cambios.p_estado!=null){r.estado=cambios.p_estado;if(cambios.p_estado==='contactado'||cambios.p_estado==='en_conversacion')r.contacted_at=r.contacted_at||new Date().toISOString();}
+    if(cambios.p_owner!=null)r.owner_email=cambios.p_owner||null;
+    if(cambios.p_next_action!=null)r.next_action=cambios.p_next_action||null;
+    if(cambios.p_next_action_at!==undefined&&cambios.p_next_action_at!==null)r.next_action_at=cambios.p_next_action_at;
+    if(cambios.p_notas!=null)r.notas=cambios.p_notas||null;
+    delete EVENTOS[id];kpis();pinta();
+  });
+}
+function convertir(id,dest){
+  var r=null;ALL.forEach(function(x){if(String(x.id)===String(id))r=x;});if(!r)return;
+  var txt=T('¿Convertir a '+r.name+' '+(DESTINO[r.lead_type]||DESTINO.community)[1]+'?','Convert '+r.name+' '+(DESTINO[r.lead_type]||DESTINO.community)[2]+'?');
+  if(!confirm(txt))return;
+  sb.rpc('admin_community_lead_convert',{p_id:+id,p_destino:dest}).then(function(res){
+    if(res.error){fail(res.error,'admin_community_lead_convert');return;}
+    var d=res.data||{};if(d.ok===false){alert(T('No se pudo convertir: ','Could not convert: ')+(d.motivo||''));return;}
+    r.estado='convertido';r.converted_to=dest;r.converted_ref=d.ref||null;r.converted_at=new Date().toISOString();
+    if(dest==='waitlist')r.en_waitlist=true;if(dest==='advisory')r.piloto_status=r.piloto_status||'proposed';
+    delete EVENTOS[id];kpis();pinta();
+  });
+}
+function historial(id){
+  var box=$('hist-'+id),card=box&&box.parentNode;if(!box)return;
+  if(card.classList.contains('open')){card.classList.remove('open');return;}
+  card.classList.add('open');
+  if(EVENTOS[id]){box.innerHTML=EVENTOS[id];return;}
+  box.innerHTML=T('Cargando…','Loading…');
+  var ICO={creado:'🆕',acuse:'✉️',estado:'🔁',duena:'👤',accion:'📌',nota:'📝',convertido:'✔',recordatorio:'⏰'};
+  sb.rpc('admin_community_lead_events',{p_id:+id}).then(function(res){
+    if(res.error){box.innerHTML='<span style="color:#C73A20">'+esc(res.error.message)+'</span>';return;}
+    var ev=res.data||[];EVENTOS[id]=ev.length?ev.map(function(e){return (ICO[e.kind]||'·')+' '+fecha(e.at)+' · '+esc(e.detail||e.kind)+(e.by_email?' · <i>'+esc(e.by_email)+'</i>':'');}).join('<br>'):T('Sin eventos.','No events.');
+    box.innerHTML=EVENTOS[id];
+  });
+}
+function cv(id){
+  sb.rpc('admin_community_lead_cv',{p_id:+id}).then(function(res){
+    if(res.error||!res.data){alert(T('Sin ruta de CV','No CV path')+': '+(res.error&&res.error.message||''));return;}
+    return sb.storage.from('community-cv').createSignedUrl(res.data,300).then(function(s){
+      if(s.error||!s.data){alert(T('No se pudo firmar la URL del CV','Could not sign the CV URL')+': '+(s.error&&s.error.message||''));return;}
+      window.open(s.data.signedUrl,'_blank');
+    });
+  });
 }
 function exportCSV(){
-  const cols=['created_at','lead_type','name','email','company','job_title','specialty','interest','description','lang','source','estado','notas'];
-  const csv=[cols.join(',')].concat(rows().map(r=>cols.map(c=>`"${String(r[c]??'').replace(/"/g,'""')}"`).join(','))).join('\n');
-  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download=`nutrisync-community-leads-${new Date().toISOString().slice(0,10)}.csv`; a.click();
+  var cols=['id','created_at','lead_type','name','email','company','job_title','specialty','interest','description','lang','source','estado','owner_email','next_action','next_action_at','contacted_at','converted_at','converted_to','converted_ref','ack_sent_at','en_waitlist','piloto_status','cv_name','notas'];
+  var csv=[cols.join(',')].concat(filas().map(function(r){return cols.map(function(c){return '"'+String(r[c]==null?'':r[c]).replace(/"/g,'""')+'"';}).join(',');})).join('\n');
+  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='nutrisync-community-leads-'+hoy()+'.csv';a.click();
 }
-async function load(){
-  const { data, error } = await sb.rpc('admin_community_leads', { p_tipo:null, p_limite:1000 });
-  if(error){ $('app').style.display='none'; $('gate').style.display='block';
-    $('gerr').textContent = /not authorized|permission/i.test(error.message||'') ? 'That account is not a NutriSync admin (or MFA not reinforced — open 🔐 MFA).' : error.message;
-    if(window.nsFail) nsFail(error,'admin_community_leads'); return; }
-  ALL = data||[]; $('gate').style.display='none'; $('app').style.display='block'; stats(); view();
+function load(){
+  return sb.rpc('admin_community_leads',{p_tipo:null,p_limite:1000}).then(function(res){
+    if(res.error){$('app').style.display='none';$('gate').style.display='block';
+      $('gerr').textContent=/not authorized|permission/i.test(res.error.message||'')?T('Esa cuenta no es admin (o la sesión no está reforzada: abre 🔐 MFA).','That account is not an admin (or MFA not reinforced — open 🔐 MFA).'):res.error.message;
+      fail(res.error,'admin_community_leads');return;}
+    ALL=res.data||[];$('gate').style.display='none';$('app').style.display='block';
+    return sb.rpc('admin_mfa_readiness').then(function(a){ADMINS=(a.data||[]).map(function(x){return x.email;}).filter(Boolean).sort();kpis();pinta();});
+  });
 }
-$('go').addEventListener('click', async ()=>{
+$('go').addEventListener('click',function(){
   $('gerr').textContent='';
-  const { error } = await sb.auth.signInWithPassword({ email:$('em').value.trim(), password:$('pw').value });
-  if(error){ $('gerr').textContent=error.message; return; }
-  try{ if(window.nsMfaReforzar) await window.nsMfaReforzar(); }catch(_){}
-  load();
+  sb.auth.signInWithPassword({email:$('em').value.trim(),password:$('pw').value}).then(function(res){
+    if(res.error){$('gerr').textContent=res.error.message;return;}
+    var p=window.nsMfaReforzar?Promise.resolve().then(function(){return window.nsMfaReforzar();}).catch(function(){}):Promise.resolve();
+    p.then(load);
+  });
 });
-$('pw').addEventListener('keydown', e=>{ if(e.key==='Enter') $('go').click(); });
-$('q').addEventListener('input', view); $('est').addEventListener('change', view); $('exp').addEventListener('click', exportCSV);
-(async ()=>{ const { data:{ session } } = await sb.auth.getSession(); if(session) load(); else $('gate').style.display='block'; })();
+$('pw').addEventListener('keydown',function(e){if(e.key==='Enter')$('go').click();});
+$('q').addEventListener('input',pinta);$('fest').addEventListener('change',pinta);$('fdue').addEventListener('change',pinta);$('exp').addEventListener('click',exportCSV);
+window.addEventListener('ns-lang',function(){location.reload();});
+sb.auth.getSession().then(function(s){if(s.data&&s.data.session)load();else $('gate').style.display='block';});
+})();
 </script>
-</body>
-</html>
+</body></html>
