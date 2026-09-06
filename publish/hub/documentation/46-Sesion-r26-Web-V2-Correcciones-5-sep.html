@@ -486,5 +486,42 @@ th{color:#8A7F78;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
 </table>
 <div class="box"><b>Lección de la noche.</b> El layout que sale del Figma es el del inglés: cajas de texto con alto fijo y frames que recortan. En español faltaban líneas y nadie lo veía porque cada página parecía bien «a ojo». «Que quepa» ahora se mide: cada hoja de texto contra su caja, sus recortes y sus vecinas, y cada campo contra su texto de ejemplo — en cada deploy.</div>
 
-<div class="box rojo"><b>Sigue pendiente</b>: firma de Pilar y Lucía (precios, pie, privacidad) → cambio de dominio (conserva hub, legales, tester, reset y /app) · Lighthouse PWA · instalación real en iPhone/Android.</div>
+
+<h2>6 · Ronda 5 — el feedback de Pilar y Lucía, y la salida a dominio propio (noche del 6-sep)</h2>
+<p>Pilar y Lucía entregaron su revisión en PDF, una por superficie. Diecisiete correcciones, todas desplegadas y verificadas en vivo (sellos <code>0609-230855</code> y <code>0609-231313</code>). Al cerrar, la candidata salió de <code>*.pages.dev</code> a un dominio propio: <b>v2.nutrisynccollective.com</b>, con certificado, <code>noindex</code> y los formularios probados desde el origen nuevo.</p>
+
+<div class="box"><b>Los dos fallos de Pilar eran el mismo fallo.</b> «En el pie no puedo ni escribir mi email» y «enviar el CV no funciona» parecían cosas distintas y venían del mismo sitio: la página es una pila de cajas absolutas a las coordenadas del Figma, y una caja decorativa —sin una sola letra dentro— pintada encima se come el clic de lo que tiene debajo. Se midió preguntándole al navegador qué elemento hay en un punto (<code>elementFromPoint</code>, la técnica de r24-b), no leyendo CSS. La cura vive en el <b>build</b>, no en la sección: todo <code>&lt;div&gt;</code> cuyo subárbol no tiene texto ni nada interactivo nace con <code>ns-deco</code> (<code>pointer-events:none</code>) — 131 solo en la Home. Verificado después: cero elementos pulsables tapados en toda la página.</div>
+
+<h3>6.1 · El CV: un desplegable que no parecía un desplegable</h3>
+<p>El campo «Field of Interest» era <code>required</code>, pero el Figma lo dibujó con <code>appearance:none</code> y sin flecha, así que se lee como una caja de texto: nadie lo abre, se queda vacío y el navegador <b>bloquea el envío entero antes de que el evento llegue a nuestro código</b>. Botón muerto y ni un mensaje. Tres cambios: el interés pasa a opcional (la Edge solo exige nombre y correo), el desplegable lleva su flecha, y todo formulario escribe en su línea de mensajes el motivo por el que el navegador rechaza un campo. Nada vuelve a fallar en silencio (r12-b9 aplicado a la validación nativa). El backend estaba sano: se comprobó subiendo un PDF real <i>antes</i> de tocar una línea de código.</p>
+
+<h3>6.2 · Lo demás, punto a punto</h3>
+<table><tr><th>Quién</th><th>Qué se pidió</th><th>Qué se hizo</th></tr>
+<tr><td>Pilar</td><td>El enlace de TikTok no funciona</td><td>La cuenta es <code>@nutrisyncco</code>, no <code>@nutrisyncc</code>; corregido enlace y handle</td></tr>
+<tr><td>Pilar</td><td>Un reel lleva a otro distinto</td><td>La cuarta tarjeta apunta ya al reel correcto (identificado abriendo las cuatro imágenes, no suponiendo)</td></tr>
+<tr><td>Pilar</td><td>Añadir LinkedIn</td><td>Tercera píldora en la fila de redes, escritorio y móvil, con icono propio autoalojado</td></tr>
+<tr><td>Pilar</td><td>«100+ on the Waitlist» → 150+</td><td>Hecho en la fuente (parche), no a mano en el HTML. <b>Deuda declarada</b>: el elemento ya lleva <code>data-count</code> para que el día de mañana lo pinte una RPC con el recuento real</td></tr>
+<tr><td>Pilar</td><td>En español, la parte de La Experiencia se ve mal</td><td>Párrafo acortado sin perder sentido: 139 caracteres frente a 127 del inglés, así cabe en la misma caja</td></tr>
+<tr><td>Pilar</td><td>Móvil: solo sale una de las tres tarjetas del problema, y en caja</td><td>Las tres, con la forma de bocadillo y el doodle del diseño</td></tr>
+<tr><td>Pilar</td><td>Móvil: el «nutri» tapa texto en inglés</td><td>Movido 16 px: lo tapado no era el título sino el rótulo «THE APP THAT KNOWS YOUR CYCLE», que en español es más corto y por eso no se veía</td></tr>
+<tr><td>Pilar</td><td>Móvil: el icono del email sale como un cuadrado</td><td>No era un glifo que faltara: el export del Figma era un rectángulo relleno. Sobre propio, autoalojado, compartido con el escritorio</td></tr>
+<tr><td>Pilar</td><td>Móvil: los nombres deben ir sobre la foto</td><td>Mapi · Lucía · Pilar como etiquetas dentro de la imagen, cada una sobre su persona</td></tr>
+<tr><td>Lucía</td><td>El vídeo del montaje en Our Story, con velo negro al 70 %, solo escritorio</td><td>Bucle silencioso con botón de sonido; se engancha después de la carga (ni retrasa la página ni cuelga la auditoría de textos)</td></tr>
+<tr><td>Lucía</td><td>Barra en Poppins 10 px y «mucho más pequeña»</td><td>Barra entera a escala. Salió tan fina (52 px) que Juanjo la subió a 76 px con enlaces de 13,5: sigue siendo poco más de la mitad que la original</td></tr>
+<tr><td>Lucía</td><td>El logo renderiza mal</td><td>Se servía el relleno <i>sin</i> enmascarar del grupo del Figma; recompuesto desde su propia máscara, mismo tamaño y posición</td></tr>
+<tr><td>Lucía</td><td>La cinta no debe tener bordes ni espacios rosas</td><td>El parche descartaba el <code>border-width:0</code> que emite el transpilador y, sin el preflight de Tailwind, los otros tres lados heredaban 3 px. Cinta a sangre</td></tr>
+<tr><td>Lucía</td><td>Más margen sobre «The Physiology is proven»</td><td>90 px de aire por arriba</td></tr>
+<tr><td>Lucía</td><td>Quitar la flecha de «4 phases. 1 body.»</td><td>Fuera esa noche. <b>Ojo</b>: Pilar pedía lo contrario (que llevara al recorrido por las cuatro fases). Decisión de Juanjo: quitarla ya y llevar al escritorio el carrusel que ya funciona en móvil, con su UST</td></tr>
+</table>
+
+<h3>6.3 · La puerta que se coló y la que aprendió</h3>
+<p>El primer despliegue abortó en <code>textfit</code> con «la auditoría no terminó» en las cuatro combinaciones. No eran textos: <b>Chrome headless mide con reloj virtual y ese reloj no avanza mientras hay media cargando</b>, así que el vídeo dejaba la auditoría esperando para siempre. Curado por partida triple: el vídeo se engancha tras la carga, con <code>?audit=1</code> ni se pide, y el arnés corta cada página a los 15 s y <b>dice qué página falla</b> en vez de callarse.</p>
+
+<h3>6.4 · Y la lección de proceso, que es la más cara</h3>
+<div class="box rojo"><b>La tanda se abrió sin correr <code>backup-estado.mjs</code>.</b> Salió bien porque el árbol estaba limpio y todo quedó en un commit revertible — suerte de estado, no proceso. Además se entregó el comando de despliegue con una ruta que no existía, así que el rollback se ejecutó y el deploy no: la ronda quedó revertida y sin poder volver a salir hasta rehacerla. De ahí sale el protocolo de seis pasos que ahora encabeza la sección de copias en la memoria del proyecto: backup antes de la primera edición, árbol limpio como punto de retorno, un commit por tanda, y <b>al entregar van juntos el comando de desplegar y el de volver atrás, con la ruta comprobada</b>.</div>
+
+<h3>6.5 · Dónde está ahora</h3>
+<p><b>v2.nutrisynccollective.com</b> — dominio propio, certificado, <code>noindex</code> a propósito. El dominio principal sigue sirviendo la v1 con el hub, los legales, <code>tester</code>, <code>reset</code> y <code>/app</code>: el cambio espera la firma. Cuando llegue, la v1 se queda donde está y pasa a <code>v1.nutrisynccollective.com</code>; no se borra.</p>
+
+<div class="box rojo"><b>Sigue pendiente</b>: firma de Pilar y Lucía (precios y reclamos con (*), pie legal, privacidad y retención de los formularios, consentimiento de la lista de espera) → cambio de dominio, que conserva hub, legales, tester, reset y /app, quita el noindex y manda la v1 a su propio subdominio · el carrusel de fases en escritorio · la cifra de la waitlist desde la base · Lighthouse PWA · instalación real en iPhone/Android.</div>
 </div></body></html>
