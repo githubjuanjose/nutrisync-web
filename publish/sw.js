@@ -1,6 +1,6 @@
 /* NutriSync Web V2 · service worker (UST-07 G6): shell + fuentes precacheados, páginas network-first con respaldo,
    imágenes cache-first al vuelo, /offline/ cuando no hay red. La versión = sello del build: cada deploy limpia lo viejo. */
-const V = 'ns-web2-0709-200629';
+const V = 'ns-web2-0709-210030';
 const SHELL = ['/', '/offline/', '/manifest.webmanifest', '/assets/css/site.b5b4ab4e.css', '/assets/js/site.9c26f34f.js',
   '/assets/fonts/files/poppins-400-latin.woff2', '/assets/fonts/files/poppins-600-latin.woff2', '/assets/fonts/files/poppins-700-latin.woff2',
   '/assets/fonts/files/instrument-sans-latin.woff2', '/assets/img/logo-swirl.webp', '/assets/icons/icon-192.png'];
