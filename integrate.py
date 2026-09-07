@@ -43,6 +43,25 @@ ASSETS = os.path.join(ROOT, "_integration")
 if not os.path.isdir(PUB):
     sys.exit("No ./publish next to this script. Run from the web repo root.")
 
+# ══ GUARDARRAÍL (Juanjo, 7-sep: «sin 2 y 3 no hay 4 o 5, no atajos») ═══════════════════════════════════════════
+# Corre ANTES de tocar publish/: un árbol a medias es peor que ninguno. El build de la V2 que va a entrar en
+# producción tiene que ser EL MISMO que (2) está vivo en la candidata —repos/web2/CANDIDATA.json, lo escribe
+# Deploy Web2 tras verificar en vivo— y (3) alguien verificó —repos/web2/VERIFICADAS.txt, tools/web2-verificada.sh—.
+# Sin las dos evidencias, integrate.py PARA sin modificar nada. No hay variable de entorno que lo salte.
+_W2G = os.path.normpath(os.path.join(ROOT, "..", "web2"))
+if os.path.exists(os.path.join(_W2G, "publish", "index.html")):
+    _g_sello = (re.search(r'<meta name="ns-web2-build" content="([^"]+)"', open(os.path.join(_W2G, "publish", "index.html"), encoding="utf-8").read()) or [None, "?"])[1]
+    _g_cand_p, _g_ver_p = os.path.join(_W2G, "CANDIDATA.json"), os.path.join(_W2G, "VERIFICADAS.txt")
+    _g_cand = json.load(open(_g_cand_p, encoding="utf-8")).get("sello") if os.path.exists(_g_cand_p) else None
+    _g_vers = [l.split(" · ")[0].strip() for l in open(_g_ver_p, encoding="utf-8") if l.strip()] if os.path.exists(_g_ver_p) else []
+    if _g_cand != _g_sello:
+        sys.exit("⛔ GUARDARRAÍL: el build de repos/web2/publish (%s) NO es el que está vivo en la candidata (%s). "
+                 "Paso 2 pendiente: Deploy NutriSync Web2.command. Sin candidata no hay producción. publish/ intacto." % (_g_sello, _g_cand))
+    if _g_sello not in _g_vers:
+        sys.exit("⛔ GUARDARRAÍL: la candidata %s no está VERIFICADA (repos/web2/VERIFICADAS.txt). "
+                 "Paso 3 pendiente: tools/web2-verificada.sh %s \"quién · cómo\". Sin verificación no hay producción. publish/ intacto." % (_g_sello, _g_sello))
+    print("- guardarraíl 2+3: candidata %s viva y verificada (%s)" % (_g_sello, [l for l in open(_g_ver_p, encoding="utf-8") if l.startswith(_g_sello)][-1].strip().split(" · ", 2)[-1][:60]))
+
 # ── ns-v1-restaura (UST-2026-09-07-10, firmada 7-sep): desde el estreno de la V2 la RAÍZ del sitio es la
 # Web V2 (repos/web2/publish) y la v1 de Design vive archivada en /v1/. Los 20 pasos ns-* de este script
 # trabajan in situ sobre publish/index.html y esperan la v1: si la raíz ya es la V2 (lleva ns-web2-build),
