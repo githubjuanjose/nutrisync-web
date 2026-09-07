@@ -1,1 +1,1 @@
-{ "version": 1, "include": ["/hub", "/hub/*"], "exclude": [] }
+{ "version": 1, "include": ["/", "/hub", "/hub/*"], "exclude": [] }

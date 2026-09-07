@@ -1,0 +1,640 @@
+{
+ "_meta": {
+  "web": "NutriSync Web V2",
+  "fuente": "Figma dbH7OVIHahd6EniYfcyGEq · frame 108:768",
+  "idiomas": [
+   "en",
+   "es"
+  ],
+  "pendientes": [
+   "ca",
+   "val",
+   "gl",
+   "eu",
+   "oc",
+   "fr",
+   "it",
+   "ja",
+   "de",
+   "nl",
+   "el",
+   "zh"
+  ],
+  "como": "Añadir un idioma = añadir su clave (p.ej. \"fr\") a cada entrada y su código a _meta.idiomas; luego python3 build-i18n.py",
+  "regla": "El texto va con marcado incluido (innerHTML). Nada de comillas dobles sin escapar."
+ },
+ "textos": [
+  {
+   "id": "nav.how-it-works",
+   "anchor": "<a href=\"#how-it-works\">How it works?</a>",
+   "en": "How it works?",
+   "es": "¿Cómo funciona?"
+  },
+  {
+   "id": "nav.community",
+   "anchor": "<a href=\"#community\">Community</a>",
+   "en": "Community",
+   "es": "Comunidad"
+  },
+  {
+   "id": "nav.our-story",
+   "anchor": "<a href=\"#our-story\">Our Story</a>",
+   "en": "Our Story",
+   "es": "Nuestra historia"
+  },
+  {
+   "id": "nav.want-to-work-with",
+   "anchor": "<a href=\"https://nutrisynccollective.com\">Want to work with us?</a>",
+   "en": "Want to work with us?",
+   "es": "¿Trabajamos juntas?"
+  },
+  {
+   "id": "nav.menu",
+   "anchor": "<span class=\"sr-only\">Menu</span>",
+   "en": "Menu",
+   "es": "Menú"
+  },
+  {
+   "id": "nav.download-app",
+   "anchor": "<a class=\"btn-primary\" href=\"https://nutrisynccollective.com\">Download App</a>",
+   "en": "Download App",
+   "es": "Descargar la app"
+  },
+  {
+   "id": "hero.nutrition-that-moooves-with",
+   "anchor": "<h1 class=\"hero__title\">Nutrition that <span class=\"grad\">moooves</span> with your Cycle</h1>",
+   "en": "Nutrition that <span class=\"grad\">moooves</span> with your Cycle",
+   "es": "Nutrición que <span class=\"grad\">fluuuye</span> con tu ciclo"
+  },
+  {
+   "id": "hero.ditch-the-cycle-trackers",
+   "anchor": "<p class=\"hero__lede\">Ditch the cycle trackers, get your money’s worth. NutriSync isn't just another generic tracker, it's your cycle-smart nutrition guide, built for women who want more than logged data.<br> Join a growing community of women taking their nutrition seriously. </p>",
+   "en": "Ditch the cycle trackers, get your money’s worth. NutriSync isn't just another generic tracker, it's your cycle-smart nutrition guide, built for women who want more than logged data.<br> Join a growing community of women taking their nutrition seriously. ",
+   "es": "Deja los calendarios del ciclo: mereces algo mejor. NutriSync no es otro registro genérico, es tu guía de nutrición que entiende tu ciclo, hecha para mujeres que quieren algo más que datos apuntados.<br> Únete a una comunidad que se toma en serio lo que come. "
+  },
+  {
+   "id": "hero.join-the-club",
+   "anchor": "<a class=\"btn-secondary\" href=\"https://nutrisynccollective.com\">Join the club</a>",
+   "en": "Join the club",
+   "es": "Únete al club"
+  },
+  {
+   "id": "banner.5-events",
+   "anchor": "<p>5+ Events</p>",
+   "en": "5+ Events",
+   "es": "+5 eventos"
+  },
+  {
+   "id": "banner.employee-wellbeing-program",
+   "anchor": "<p>Employee Wellbeing Program</p>",
+   "en": "Employee Wellbeing Program",
+   "es": "Programa de bienestar para empresas"
+  },
+  {
+   "id": "banner.500-on-the-waitlist",
+   "anchor": "<p>500+ on the Waitlist</p>",
+   "en": "500+ on the Waitlist",
+   "es": "+500 en lista de espera"
+  },
+  {
+   "id": "banner.award-backed",
+   "anchor": "<p>Award Backed</p>",
+   "en": "Award Backed",
+   "es": "Premiada"
+  },
+  {
+   "id": "problema.the-missing-half",
+   "anchor": "<span class=\"l1\">The missing half</span>",
+   "en": "The missing half",
+   "es": "La mitad que falta"
+  },
+  {
+   "id": "problema.onesizefitsall",
+   "anchor": "<span class=\"l2\">one-size-fits-all</span>",
+   "en": "one-size-fits-all",
+   "es": "de la talla única"
+  },
+  {
+   "id": "problema.men-run-on-a",
+   "anchor": "<p class=\"missing__p\"><b>Men run on a 24 hour hormonal cycle</b>; <i>women on ~28 days across four distinct phases.</i> Generic nutrition and training ignore that difference entirely, and our bodies quietly pay the cost of an unfair system.</p>",
+   "en": "<b>Men run on a 24 hour hormonal cycle</b>; <i>women on ~28 days across four distinct phases.</i> Generic nutrition and training ignore that difference entirely, and our bodies quietly pay the cost of an unfair system.",
+   "es": "<b>Los hombres funcionan con un ciclo hormonal de 24 horas</b>; <i>las mujeres, con uno de unos 28 días y cuatro fases distintas.</i> La nutrición y el entrenamiento genéricos ignoran esa diferencia por completo, y nuestros cuerpos pagan en silencio el precio de un sistema injusto."
+  },
+  {
+   "id": "problema.the-problem",
+   "anchor": "<span class=\"badge missing__badge\">THE PROBLEM</span>",
+   "en": "THE PROBLEM",
+   "es": "EL PROBLEMA"
+  },
+  {
+   "id": "problema.male",
+   "anchor": "<p class=\"stat__n\">Male</p>",
+   "en": "Male",
+   "es": "Masculino"
+  },
+  {
+   "id": "problema.nutrition-standards-were-never",
+   "anchor": "<p class=\"stat__t\">Nutrition standards were never designed for a female body.</p>",
+   "en": "Nutrition standards were never designed for a female body.",
+   "es": "Los estándares de nutrición nunca se diseñaron para un cuerpo femenino."
+  },
+  {
+   "id": "problema.4-years",
+   "anchor": "<p class=\"stat__n\">4 years</p>",
+   "en": "4 years",
+   "es": "4 años"
+  },
+  {
+   "id": "problema.later-diagonsis-than-men",
+   "anchor": "<p class=\"stat__t\">Later diagnosis than men.</p>",
+   "en": "Later diagnosis than men.",
+   "es": "Más tarde que ellos en recibir un diagnóstico."
+  },
+  {
+   "id": "problema.alone",
+   "anchor": "<p class=\"stat__n\">Alone</p>",
+   "en": "Alone",
+   "es": "Solas"
+  },
+  {
+   "id": "problema.left-to-guess-what",
+   "anchor": "<p class=\"stat__t\">Left to guess what works.</p>",
+   "en": "Left to guess what works.",
+   "es": "A adivinar qué nos funciona."
+  },
+  {
+   "id": "ticker.medical-reaserch-skews-male",
+   "anchor": "<p>Medical research skews  male,  raising risk for women across common medications</p>",
+   "en": "Medical research skews  male,  raising risk for women across common medications",
+   "es": "La investigación médica se inclina hacia el cuerpo masculino: más riesgo para las mujeres en medicamentos de uso común"
+  },
+  {
+   "id": "ticker.diagnosed-4-years-later",
+   "anchor": "<p>Diagnosed ~4 years later than men on average — 4.5y later for metabolic conditions, 2.5y for cancer, 5–6y for conditions like ADHD</p>",
+   "en": "Diagnosed ~4 years later than men on average — 4.5y later for metabolic conditions, 2.5y for cancer, 5–6y for conditions like ADHD",
+   "es": "Diagnosticadas unos 4 años más tarde que ellos de media: 4,5 años en enfermedades metabólicas, 2,5 en cáncer y 5-6 en cuadros como el TDAH"
+  },
+  {
+   "id": "ticker.no-trusted-personalised-guidance",
+   "anchor": "<p>No trusted, personalised guidance on food and movement across the cycle</p>",
+   "en": "No trusted, personalised guidance on food and movement across the cycle",
+   "es": "Sin una guía fiable y personalizada de alimentación y movimiento a lo largo del ciclo"
+  },
+  {
+   "id": "fases.we-deserve-better-than",
+   "anchor": "<span class=\"badge\">WE DESERVE BETTER THAN GUESSWORK</span>",
+   "en": "WE DESERVE BETTER THAN GUESSWORK",
+   "es": "MERECEMOS ALGO MEJOR QUE ADIVINAR"
+  },
+  {
+   "id": "fases.4-phases-1-body",
+   "anchor": "<h2>4 phases. 1 body.</h2>",
+   "en": "4 phases. 1 body.",
+   "es": "4 fases. 1 cuerpo."
+  },
+  {
+   "id": "fases.your-body-cycles-through",
+   "anchor": "<p class=\"phases-intro__p\">Your body cycles through different <b>hormonal</b> needs everyday.<br>NutriSync reads where you are across your cycle and adapts food and movement to match, automatically.</p>",
+   "en": "Your body cycles through different <b>hormonal</b> needs everyday.<br>NutriSync reads where you are across your cycle and adapts food and movement to match, automatically.",
+   "es": "Tu cuerpo atraviesa necesidades <b>hormonales</b> distintas cada día.<br>NutriSync lee en qué punto del ciclo estás y adapta la comida y el movimiento a ese momento, automáticamente."
+  },
+  {
+   "id": "fases.menstrual",
+   "anchor": "<button role=\"tab\" id=\"tab-menstrual\"  aria-controls=\"panel-menstrual\"  aria-selected=\"true\">Menstrual</button>",
+   "en": "Menstrual",
+   "es": "Menstrual"
+  },
+  {
+   "id": "fases.follicular",
+   "anchor": "<button role=\"tab\" id=\"tab-follicular\" aria-controls=\"panel-follicular\" aria-selected=\"false\" tabindex=\"-1\">Follicular</button>",
+   "en": "Follicular",
+   "es": "Folicular"
+  },
+  {
+   "id": "fases.ovulatory",
+   "anchor": "<button role=\"tab\" id=\"tab-ovulatory\"  aria-controls=\"panel-ovulatory\"  aria-selected=\"false\" tabindex=\"-1\">Ovulatory</button>",
+   "en": "Ovulatory",
+   "es": "Ovulatoria"
+  },
+  {
+   "id": "fases.luteal",
+   "anchor": "<button role=\"tab\" id=\"tab-luteal\"     aria-controls=\"panel-luteal\"     aria-selected=\"false\" tabindex=\"-1\">Luteal</button>",
+   "en": "Luteal",
+   "es": "Lútea"
+  },
+  {
+   "id": "fases.menstrual-2",
+   "anchor": "<h3>Menstrual</h3>",
+   "en": "Menstrual",
+   "es": "Menstrual"
+  },
+  {
+   "id": "fases.follicular-2",
+   "anchor": "<h3>Follicular</h3>",
+   "en": "Follicular",
+   "es": "Folicular"
+  },
+  {
+   "id": "fases.ovulatory-2",
+   "anchor": "<h3>Ovulatory</h3>",
+   "en": "Ovulatory",
+   "es": "Ovulatoria"
+  },
+  {
+   "id": "fases.luteal-2",
+   "anchor": "<h3>Luteal</h3>",
+   "en": "Luteal",
+   "es": "Lútea"
+  },
+  {
+   "id": "fases.estrogen-and-progesterone-drop",
+   "anchor": "<p>Estrogen and progesterone drop. Your body is resting, healing, and reflecting. <br>Slow down and clear the mental slate.</p>",
+   "en": "Estrogen and progesterone drop. Your body is resting, healing, and reflecting. <br>Slow down and clear the mental slate.",
+   "es": "Los estrógenos y la progesterona caen. Tu cuerpo descansa, se repara y toma perspectiva. <br>Baja el ritmo y haz limpieza mental."
+  },
+  {
+   "id": "fases.estrogen-levels-climb-sparking",
+   "anchor": "<p>Estrogen levels climb, sparking high mental clarity, creative focus, and physical stamina. Time to build and launch.</p>",
+   "en": "Estrogen levels climb, sparking high mental clarity, creative focus, and physical stamina. Time to build and launch.",
+   "es": "Los estrógenos suben y traen claridad mental, chispa creativa y resistencia física. Momento de construir y lanzar."
+  },
+  {
+   "id": "fases.estrogen-peaks-alongside-testoster",
+   "anchor": "<p>Estrogen peaks alongside testosterone. You feel highly social, confident, magnetic, and physically resilient.</p>",
+   "en": "Estrogen peaks alongside testosterone. You feel highly social, confident, magnetic, and physically resilient.",
+   "es": "Los estrógenos llegan a su pico junto a la testosterona. Te sientes sociable, segura, magnética y físicamente resistente."
+  },
+  {
+   "id": "fases.progesterone-dominates-before-drop",
+   "anchor": "<p>Progesterone dominates before dropping. Your energy winds downward. <br>Prioritize cozy self-comfort and boundary setting.</p>",
+   "en": "Progesterone dominates before dropping. Your energy winds downward. <br>Prioritize cozy self-comfort and boundary setting.",
+   "es": "La progesterona manda antes de caer y tu energía va bajando. <br>Prioriza el cuidado, la calma y poner límites."
+  },
+  {
+   "id": "app.everything-in-one-place",
+   "anchor": "<span class=\"badge knows__badge\">everything in one place</span>",
+   "en": "everything in one place",
+   "es": "todo en un mismo sitio"
+  },
+  {
+   "id": "app.the-app-that-knows",
+   "anchor": "<h2 class=\"knows__h\">The App that <em>knows</em> your cycle.</h2>",
+   "en": "The App that <em>knows</em> your cycle.",
+   "es": "La app que <em>conoce</em> tu ciclo."
+  },
+  {
+   "id": "app.no-guessing-no-onesizefitsall",
+   "anchor": "<p class=\"knows__p\">No guessing, no one-size-fits-all. NutriSync brings food, movement and wellbeing into a single daily experience. Tuned to your cycle.</p>",
+   "en": "No guessing, no one-size-fits-all. NutriSync brings food, movement and wellbeing into a single daily experience. Tuned to your cycle.",
+   "es": "Sin adivinar y sin talla única. NutriSync reúne comida, movimiento y bienestar en una sola experiencia diaria. Afinada a tu ciclo."
+  },
+  {
+   "id": "app.daily-guided-experience",
+   "anchor": "<h2 class=\"feature__h\"><span>Daily </span><span>Guided </span><span>Experience</span></h2>",
+   "en": "<span>Daily </span><span>Guided </span><span>Experience</span>",
+   "es": "<span>Experiencia </span><span>guiada </span><span>cada día</span>"
+  },
+  {
+   "id": "features.phasesyncednutrition",
+   "anchor": "<h2 class=\"feature__h\"><span>Phase</span><span>Synced</span><span>Nutrition</span></h2>",
+   "en": "<span>Phase</span><span>Synced</span><span>Nutrition</span>",
+   "es": "<span>Nutrición</span><span>sincronizada</span><span>con tu fase</span>"
+  },
+  {
+   "id": "features.cycle-alignment-score",
+   "anchor": "<h2 class=\"feature__h\"><span>Cycle </span><span>Alignment </span><span>Score</span></h2>",
+   "en": "<span>Cycle </span><span>Alignment </span><span>Score</span>",
+   "es": "<span>Puntuación </span><span>de alineación </span><span>del ciclo</span>"
+  },
+  {
+   "id": "features.nutrilog-nutri-basics-nutri",
+   "anchor": "<p class=\"feature__p\">NutriLog, Nutri Basics, Nutri Movement and recipes that adapt to your cycle in real time.</p>",
+   "en": "NutriLog, Nutri Basics, Nutri Movement and recipes that adapt to your cycle in real time.",
+   "es": "NutriLog, Nutri Basics, Nutri Movement y recetas que se adaptan a tu ciclo en tiempo real."
+  },
+  {
+   "id": "features.nutrition-alignment",
+   "anchor": "<span class=\"lbl\">Nutrition alignment</span>",
+   "en": "Nutrition alignment",
+   "es": "Alineación nutricional"
+  },
+  {
+   "id": "score.biomarker-signals",
+   "anchor": "<span class=\"lbl\">Biomarker signals</span>",
+   "en": "Biomarker signals",
+   "es": "Señales de biomarcadores"
+  },
+  {
+   "id": "score.fitness-amp-recovery",
+   "anchor": "<span class=\"lbl\">Fitness &amp; recovery</span>",
+   "en": "Fitness &amp; recovery",
+   "es": "Ejercicio y recuperación"
+  },
+  {
+   "id": "score.phase-detection",
+   "anchor": "<span class=\"lbl\">Phase detection</span>",
+   "en": "Phase detection",
+   "es": "Detección de fase"
+  },
+  {
+   "id": "score.logging-consistency",
+   "anchor": "<span class=\"lbl\">Logging consistency</span>",
+   "en": "Logging consistency",
+   "es": "Constancia al registrar"
+  },
+  {
+   "id": "score.cycle-aligmnent-score",
+   "anchor": "<span class=\"badge\">CYCLE ALIGNMENT SCORE</span>",
+   "en": "CYCLE ALIGNMENT SCORE",
+   "es": "PUNTUACIÓN DE ALINEACIÓN DEL CICLO"
+  },
+  {
+   "id": "score.one-score-that-gets",
+   "anchor": "<h2>One Score that <br>Gets You.</h2>",
+   "en": "One Score that <br>Gets You.",
+   "es": "Una puntuación que <br>te entiende."
+  },
+  {
+   "id": "score.a-live-0100-number",
+   "anchor": "<p>A live 0–100 number that reads your biology, nutrition, movement and logging, then shows exactly how to nudge it higher, in real time, and tracks how your alignment improves over time, so you can see the progress you’re actually making.</p>",
+   "en": "A live 0–100 number that reads your biology, nutrition, movement and logging, then shows exactly how to nudge it higher, in real time, and tracks how your alignment improves over time, so you can see the progress you’re actually making.",
+   "es": "Un número vivo de 0 a 100 que lee tu biología, tu alimentación, tu movimiento y tus registros, y te enseña exactamente cómo subirlo, en tiempo real. Además guarda tu evolución, para que veas el progreso que estás haciendo de verdad."
+  },
+  {
+   "id": "score.0100-daily-aligment",
+   "anchor": "<li><img src=\"assets/img/circle-check.svg\" alt=\"\" aria-hidden=\"true\">0-100 daily alignment</li>",
+   "en": "<img src=\"assets/img/circle-check.svg\" alt=\"\" aria-hidden=\"true\">0-100 daily alignment",
+   "es": "<img src=\"assets/img/circle-check.svg\" alt=\"\" aria-hidden=\"true\">Alineación diaria de 0 a 100"
+  },
+  {
+   "id": "score.realtime-adapts-as-you",
+   "anchor": "<li><img src=\"assets/img/circle-check.svg\" alt=\"\" aria-hidden=\"true\">Real-Time, adapts as you log</li>",
+   "en": "<img src=\"assets/img/circle-check.svg\" alt=\"\" aria-hidden=\"true\">Real-Time, adapts as you log",
+   "es": "<img src=\"assets/img/circle-check.svg\" alt=\"\" aria-hidden=\"true\">En tiempo real: se ajusta según registras"
+  },
+  {
+   "id": "score.private-your-data-stays",
+   "anchor": "<li><img src=\"assets/img/circle-check.svg\" alt=\"\" aria-hidden=\"true\">Private, your data stays yours</li>",
+   "en": "<img src=\"assets/img/circle-check.svg\" alt=\"\" aria-hidden=\"true\">Private, your data stays yours",
+   "es": "<img src=\"assets/img/circle-check.svg\" alt=\"\" aria-hidden=\"true\">Privado: tus datos siguen siendo tuyos"
+  },
+  {
+   "id": "score.pricing",
+   "anchor": "<span class=\"badge\">pricing</span>",
+   "en": "pricing",
+   "es": "precios"
+  },
+  {
+   "id": "score.simple-fair-honest",
+   "anchor": "<h2>SIMPLE, FAIR, HONEST</h2>",
+   "en": "SIMPLE, FAIR, HONEST",
+   "es": "SIMPLE, JUSTO, HONESTO"
+  },
+  {
+   "id": "precios.mo",
+   "anchor": "<span class=\"per\">/mo</span>",
+   "en": "/mo",
+   "es": "/mes"
+  },
+  {
+   "id": "precios.billed-monthly",
+   "anchor": "<p class=\"plan__note\">billed monthly</p>",
+   "en": "billed monthly",
+   "es": "facturación mensual"
+  },
+  {
+   "id": "precios.full-analytics-amp-scores",
+   "anchor": "<li>Full analytics &amp; scores</li>",
+   "en": "Full analytics &amp; scores",
+   "es": "Analíticas y puntuaciones completas"
+  },
+  {
+   "id": "precios.phasesynced-nutrition-amp-movement",
+   "anchor": "<li>Phase-synced nutrition &amp; movement guidance</li>",
+   "en": "Phase-synced nutrition &amp; movement guidance",
+   "es": "Guía de nutrición y movimiento sincronizada con tu fase"
+  },
+  {
+   "id": "precios.wearable-integration",
+   "anchor": "<li>Wearable integration</li>",
+   "en": "Wearable integration",
+   "es": "Integración con wearables"
+  },
+  {
+   "id": "precios.boyfriend-expasion",
+   "anchor": "<li>*Boyfriend Expansion</li>",
+   "en": "*Boyfriend Expansion",
+   "es": "*Expansión novio"
+  },
+  {
+   "id": "precios.community-page",
+   "anchor": "<li>*Community Page</li>",
+   "en": "*Community Page",
+   "es": "*Página de comunidad"
+  },
+  {
+   "id": "precios.popular",
+   "anchor": "<span>popular</span>",
+   "en": "popular",
+   "es": "popular"
+  },
+  {
+   "id": "precios.for-employers",
+   "anchor": "<h3>For employers</h3>",
+   "en": "For employers",
+   "es": "Para empresas"
+  },
+  {
+   "id": "precios.per-employee-yr",
+   "anchor": "<p class=\"plan__note\">per employee / yr</p>",
+   "en": "per employee / yr",
+   "es": "por persona / año"
+  },
+  {
+   "id": "precios.wellbeing-programs",
+   "anchor": "<li>Wellbeing programs</li>",
+   "en": "Wellbeing programs",
+   "es": "Programas de bienestar"
+  },
+  {
+   "id": "precios.private-aggregates",
+   "anchor": "<li>Private aggregates</li>",
+   "en": "Private aggregates",
+   "es": "Datos agregados y anónimos"
+  },
+  {
+   "id": "precios.dedicated-support",
+   "anchor": "<li>Dedicated support</li>",
+   "en": "Dedicated support",
+   "es": "Soporte dedicado"
+  },
+  {
+   "id": "precios.the-physiology-is-proven",
+   "anchor": "<h2>The Physiology is proven. <br>Your own data proves if it’s working for you. </h2>",
+   "en": "The Physiology is proven. <br>Your own data proves if it’s working for you. ",
+   "es": "La fisiología está probada. <br>Tus datos prueban si a ti te funciona. "
+  },
+  {
+   "id": "precios.cycle-syncing-is-a",
+   "anchor": "<p class=\"physio__p\">Cycle syncing is a recent approach to nutrition and movement that adjusts to your hormonal cycle instead of treating every day the same.</p>",
+   "en": "Cycle syncing is a recent approach to nutrition and movement that adjusts to your hormonal cycle instead of treating every day the same.",
+   "es": "Sincronizar con el ciclo es un enfoque reciente de nutrición y movimiento que se ajusta a tu ciclo hormonal en vez de tratar todos los días igual."
+  },
+  {
+   "id": "ciencia.get-to-know-us",
+   "anchor": "<h2>Get to know us...</h2>",
+   "en": "Get to know us...",
+   "es": "Conócenos..."
+  },
+  {
+   "id": "ciencia.the-best-for-your",
+   "anchor": "<p class=\"sub__title\">The best for your body, delivered weekly</p>",
+   "en": "The best for your body, delivered weekly",
+   "es": "Lo mejor para tu cuerpo, cada semana en tu correo"
+  },
+  {
+   "id": "comunidad.join-the-communitybe-the",
+   "anchor": "<p class=\"sub__lede\">Join the community!<br>Be the first to know when NutriSync launches — plus early access, cycle science, and real talk from women who get it</p>",
+   "en": "Join the community!<br>Be the first to know when NutriSync launches — plus early access, cycle science, and real talk from women who get it",
+   "es": "¡Únete a la comunidad!<br>Entérate la primera del lanzamiento de NutriSync, con acceso anticipado, ciencia del ciclo y conversaciones de verdad entre mujeres que te entienden"
+  },
+  {
+   "id": "pie.email-address",
+   "anchor": "<label class=\"sr-only\" for=\"sub-email\">Email address</label>",
+   "en": "Email address",
+   "es": "Correo electrónico"
+  },
+  {
+   "id": "pie.submit",
+   "anchor": "<button type=\"submit\">SUBMIT !</button>",
+   "en": "SUBMIT !",
+   "es": "¡ENVIAR!"
+  },
+  {
+   "id": "pie.zero-spam-unsubscribe-anytime",
+   "anchor": "<p class=\"sub__fine\">Zero spam. Unsubscribe anytime in one click.</p>",
+   "en": "Zero spam. Unsubscribe anytime in one click.",
+   "es": "Cero spam. Te das de baja cuando quieras, en un clic."
+  },
+  {
+   "id": "pie.product",
+   "anchor": "<h4>Product</h4>",
+   "en": "Product",
+   "es": "Producto"
+  },
+  {
+   "id": "pie.how-it-works",
+   "anchor": "<a href=\"#how-it-works\">How it Works</a>",
+   "en": "How it Works",
+   "es": "Cómo funciona"
+  },
+  {
+   "id": "pie.the-4-phases",
+   "anchor": "<a href=\"#how-it-works\">The 4 Phases</a>",
+   "en": "The 4 Phases",
+   "es": "Las 4 fases"
+  },
+  {
+   "id": "pie.pricing",
+   "anchor": "<a href=\"#pricing\">Pricing</a>",
+   "en": "Pricing",
+   "es": "Precios"
+  },
+  {
+   "id": "pie.clinical-science",
+   "anchor": "<a href=\"https://nutrisynccollective.com\">Clinical Science</a>",
+   "en": "Clinical Science",
+   "es": "Ciencia clínica"
+  },
+  {
+   "id": "pie.resources",
+   "anchor": "<h4>Resources</h4>",
+   "en": "Resources",
+   "es": "Recursos"
+  },
+  {
+   "id": "pie.hormonal-journal",
+   "anchor": "<a href=\"https://nutrisynccollective.com\">Hormonal Journal</a>",
+   "en": "Hormonal Journal",
+   "es": "Diario hormonal"
+  },
+  {
+   "id": "pie.recipes",
+   "anchor": "<a href=\"https://nutrisynccollective.com\">Recipes</a>",
+   "en": "Recipes",
+   "es": "Recetas"
+  },
+  {
+   "id": "pie.community-forums",
+   "anchor": "<a href=\"#community\">Community Forums</a>",
+   "en": "Community Forums",
+   "es": "Foros de la comunidad"
+  },
+  {
+   "id": "pie.faq",
+   "anchor": "<a href=\"https://nutrisynccollective.com\">FAQ</a>",
+   "en": "FAQ",
+   "es": "Preguntas frecuentes"
+  },
+  {
+   "id": "pie.legal",
+   "anchor": "<h4>Legal</h4>",
+   "en": "Legal",
+   "es": "Legal"
+  },
+  {
+   "id": "pie.privacy-policy",
+   "anchor": "<a href=\"https://nutrisynccollective.com\">Privacy Policy</a>",
+   "en": "Privacy Policy",
+   "es": "Política de privacidad"
+  },
+  {
+   "id": "pie.terms-of-use",
+   "anchor": "<a href=\"https://nutrisynccollective.com\">Terms of Use</a>",
+   "en": "Terms of Use",
+   "es": "Términos de uso"
+  },
+  {
+   "id": "pie.gdpr",
+   "anchor": "<a href=\"https://nutrisynccollective.com\">GDPR</a>",
+   "en": "GDPR",
+   "es": "RGPD"
+  },
+  {
+   "id": "pie.hipaa-compliance",
+   "anchor": "<a href=\"https://nutrisynccollective.com\">HIPAA Compliance</a>",
+   "en": "HIPAA Compliance",
+   "es": "Cumplimiento HIPAA"
+  },
+  {
+   "id": "pie.2026-nutrisync-wellness-inc",
+   "anchor": "<p>© 2026 NutriSync Wellness Inc. All rights reserved.</p>",
+   "en": "© 2026 NutriSync Wellness Inc. All rights reserved.",
+   "es": "© 2026 NutriSync Wellness Inc. Todos los derechos reservados."
+  },
+  {
+   "id": "pie.sciencebacked-studies",
+   "anchor": "<div><img src=\"assets/img/icon-check-circle.svg\" alt=\"\" aria-hidden=\"true\">Science-backed studies</div>",
+   "en": "<img src=\"assets/img/icon-check-circle.svg\" alt=\"\" aria-hidden=\"true\">Science-backed studies",
+   "es": "<img src=\"assets/img/icon-check-circle.svg\" alt=\"\" aria-hidden=\"true\">Estudios con respaldo científico"
+  },
+  {
+   "id": "pie.100-secure-amp-private",
+   "anchor": "<div><img src=\"assets/img/icon-shield.svg\" alt=\"\" aria-hidden=\"true\">100% Secure &amp; Private</div>",
+   "en": "<img src=\"assets/img/icon-shield.svg\" alt=\"\" aria-hidden=\"true\">100% Secure &amp; Private",
+   "es": "<img src=\"assets/img/icon-shield.svg\" alt=\"\" aria-hidden=\"true\">100 % seguro y privado"
+  },
+  {
+   "id": "pie.actionable-weekly-prompts",
+   "anchor": "<div><img src=\"assets/img/icon-sparkles.svg\" alt=\"\" aria-hidden=\"true\">Actionable weekly prompts</div>",
+   "en": "<img src=\"assets/img/icon-sparkles.svg\" alt=\"\" aria-hidden=\"true\">Actionable weekly prompts",
+   "es": "<img src=\"assets/img/icon-sparkles.svg\" alt=\"\" aria-hidden=\"true\">Ideas prácticas cada semana"
+  },
+  {
+   "id": "pie.qr-pwa",
+   "anchor": "<span class=\"sub__qrtxt\">Scan to open NutriSync on your phone</span>",
+   "en": "Scan to open NutriSync on your phone",
+   "es": "Escanea para abrir NutriSync en tu móvil"
+  }
+ ]
+}

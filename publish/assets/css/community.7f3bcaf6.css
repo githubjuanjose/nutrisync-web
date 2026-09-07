@@ -1,0 +1,134 @@
+.sec-community-hub-backdrop{width:100%;background-color:#ff3a00;position:relative}
+.sec-community-hub-badge{width:100%;border-width:1px;border-style:solid;border-color:#fff;display:flex;align-items:center;justify-content:center;padding-left:1.4rem;padding-right:1.4rem;padding-top:0.6rem;padding-bottom:0.6rem;position:relative;border-radius:10rem}
+.sec-community-hub-badge .f1{word-break:break-word;font-family:'Instrument Sans',sans-serif;font-weight:600;line-height:normal;position:relative;flex-shrink:0;font-size:1.2rem;color:#fff;text-transform:uppercase;white-space:nowrap}
+.sec-community-hub-title{width:100%;position:relative}
+.sec-community-hub-title .f1{word-break:break-word;position:absolute;font-family:'Poppins',sans-serif;font-weight:400;min-height:9.8rem;line-height:8rem;left:0;font-style:normal;font-size:6rem;color:#fff;top:0;width:87.2rem}
+.sec-community-card-experts{width:100%;position:relative}
+.sec-community-card-experts .f1{display:contents}
+.sec-community-card-experts .f2{position:absolute;height:27.1rem;left:4.803rem;top:4.303rem;width:27rem}
+.sec-community-card-experts .f3{position:absolute;display:block;inset:0;max-width:none;width:100%;height:100%}
+.sec-community-card-experts .f4{position:absolute;height:23.7298rem;left:13.503rem;top:6.003rem;width:9.5154rem}
+.sec-community-card-experts .f5{position:absolute;inset:0;max-width:none;object-fit:cover;pointer-events:none;width:100%;height:100%}
+.sec-community-desc-experts{width:100%;min-height:15.3rem;display:flex;flex-direction:column;align-items:center;overflow:visible;padding:2.4rem;position:relative;border-radius:1.2rem}
+.sec-community-desc-experts .f1{word-break:break-word;font-family:'Poppins',sans-serif;font-weight:400;line-height:0;font-style:normal;position:relative;flex-shrink:0;font-size:1.5rem;color:#fff;width:100%;white-space:pre-wrap}
+.sec-community-desc-experts .f2{line-height:1;margin-bottom:0}
+.sec-community-desc-experts .f3{line-height:1}
+.sec-community-card-team{width:100%;position:relative}
+.sec-community-card-team .f1{display:contents}
+.sec-community-card-team .f2{position:absolute;height:26.9rem;left:4.305rem;top:4.705rem;width:27rem}
+.sec-community-card-team .f3{position:absolute;display:block;inset:0;max-width:none;width:100%;height:100%}
+.sec-community-card-team .f4{position:absolute;height:23.4rem;left:12.205rem;top:6.505rem;width:11.1rem}
+.sec-community-card-team .f5{position:absolute;inset:0;max-width:none;object-fit:cover;pointer-events:none;width:100%;height:100%}
+.sec-community-desc-team{width:100%;min-height:15.3rem;display:flex;flex-direction:column;align-items:center;overflow:visible;padding:2.4rem;position:relative;border-radius:1.2rem}
+.sec-community-desc-team .f1{word-break:break-word;font-family:'Poppins',sans-serif;font-weight:400;line-height:0;font-style:normal;position:relative;flex-shrink:0;font-size:1.5rem;color:#fff;width:100%;white-space:pre-wrap}
+.sec-community-desc-team .f2{line-height:1;margin-bottom:0}
+.sec-community-desc-team .f3{line-height:1}
+.sec-community-card-community{width:100%;position:relative}
+.sec-community-card-community .f1{display:contents}
+.sec-community-card-community .f2{position:absolute;height:26.9rem;left:4.131rem;top:4.53rem;width:27rem}
+.sec-community-card-community .f3{position:absolute;display:block;inset:0;max-width:none;width:100%;height:100%}
+.sec-community-card-community .f4{position:absolute;height:21.1rem;left:13.431rem;top:7.43rem;width:8.4rem}
+.sec-community-card-community .f5{position:absolute;inset:0;max-width:none;object-fit:cover;pointer-events:none;width:100%;height:100%}
+.sec-community-desc-community{width:100%;min-height:15.3rem;display:flex;flex-direction:column;align-items:center;overflow:visible;padding:2.4rem;position:relative;border-radius:1.2rem}
+.sec-community-desc-community .f1{word-break:break-word;font-family:'Poppins',sans-serif;font-weight:400;line-height:0;font-style:normal;position:relative;flex-shrink:0;font-size:1.5rem;color:#fff;width:100%;white-space:pre-wrap}
+.sec-community-desc-community .f2{line-height:1;margin-bottom:0}
+.sec-community-desc-community .f3{line-height:1}
+.sec-community-card-partners{width:100%;position:relative}
+.sec-community-card-partners .f1{display:contents}
+.sec-community-card-partners .f2{position:absolute;height:26.9rem;left:4.305rem;top:4.405rem;width:27rem}
+.sec-community-card-partners .f3{position:absolute;display:block;inset:0;max-width:none;width:100%;height:100%}
+.sec-community-card-partners .f4{position:absolute;height:23.4rem;left:13.005rem;top:6.205rem;width:9.5rem}
+.sec-community-card-partners .f5{position:absolute;inset:0;max-width:none;object-fit:cover;pointer-events:none;width:100%;height:100%}
+.sec-community-desc-partners{width:100%;min-height:15.3rem;display:flex;flex-direction:column;align-items:center;overflow:visible;padding:2.4rem;position:relative;border-radius:1.2rem}
+.sec-community-desc-partners .f1{word-break:break-word;font-family:'Poppins',sans-serif;font-weight:400;line-height:0;font-style:normal;position:relative;flex-shrink:0;font-size:1.5rem;color:#fff;width:100%;white-space:pre-wrap}
+.sec-community-desc-partners .f2{line-height:1;margin-bottom:0}
+.sec-community-desc-partners .f3{line-height:1}
+.sec-m-community-hub{width:100%;min-height:85.9rem;background-color:#ff3a00;display:flex;flex-direction:column;gap:2.4rem;align-items:flex-start;padding-bottom:4.8rem;position:relative}
+.sec-m-community-hub .f1{display:flex;align-items:center;justify-content:space-between;padding-left:2.4rem;padding-right:2.4rem;padding-top:1.6rem;padding-bottom:1.6rem;position:relative;flex-shrink:0;width:100%}
+.sec-m-community-hub .f2{display:flex;gap:0.8rem;align-items:center;position:relative;flex-shrink:0}
+.sec-m-community-hub .f3{position:relative;flex-shrink:0;width:2.4rem;height:2.4rem}
+.sec-m-community-hub .f4{position:absolute;display:block;inset:0;max-width:none;width:100%;height:100%}
+.sec-m-community-hub .f5{word-break:break-word;font-family:'Poppins',sans-serif;font-weight:700;line-height:normal;font-style:normal;position:relative;flex-shrink:0;font-size:1.8rem;color:#fff;white-space:nowrap}
+.sec-m-community-hub .f6{display:flex;align-items:center;justify-content:center;padding:0.8rem;position:relative;flex-shrink:0}
+.sec-m-community-hub .f7{display:flex;flex-direction:column;gap:1.6rem;align-items:flex-start;padding-left:2.4rem;padding-right:2.4rem;position:relative;flex-shrink:0;width:100%}
+.sec-m-community-hub .f8{background-color:#4885ff;border-width:1px;border-color:rgba(255,255,255,0.8);border-style:solid;display:flex;align-items:center;justify-content:center;padding-left:1.6rem;padding-right:1.6rem;padding-top:0.8rem;padding-bottom:0.8rem;position:relative;border-radius:10rem;flex-shrink:0}
+.sec-m-community-hub .f9{word-break:break-word;font-family:'Instrument Sans',sans-serif;font-weight:700;line-height:normal;position:relative;flex-shrink:0;font-size:1.2rem;color:#fff;text-transform:uppercase;white-space:nowrap}
+.sec-m-community-hub .f10{word-break:break-word;font-family:'Poppins',sans-serif;font-weight:700;line-height:1.2;min-width:100%;font-style:normal;position:relative;flex-shrink:0;font-size:3.2rem;color:#fff;width:min-content}
+.sec-m-community-hub .f11{display:flex;flex-direction:column;gap:2.4rem;align-items:flex-start;padding-left:2.4rem;padding-right:2.4rem;position:relative;flex-shrink:0;width:100%}
+.sec-m-community-hub .f12{background-color:rgba(255,255,255,0.13);display:flex;gap:1.6rem;align-items:center;padding:1.2rem;position:relative;border-radius:1.6rem;flex-shrink:0;width:100%}
+.sec-m-community-hub .f13{background-color:#fff;display:flex;align-items:center;justify-content:center;position:relative;border-radius:5rem;flex-shrink:0;width:10rem;height:10rem}
+.sec-m-community-hub .f14{height:8rem;position:relative;flex-shrink:0;width:3.2rem}
+.sec-m-community-hub .f15{position:absolute;inset:0;max-width:none;object-fit:cover;pointer-events:none;width:100%;height:100%}
+.sec-m-community-hub .f16{word-break:break-word;display:flex;flex:1 0 0;flex-direction:column;gap:0.4rem;align-items:flex-start;line-height:normal;min-width:1px;font-style:normal;position:relative}
+.sec-m-community-hub .f17{font-family:'Poppins',sans-serif;font-weight:700;position:relative;flex-shrink:0;font-size:2rem;color:#fff;width:100%}
+.sec-m-community-hub .f18{font-family:'Poppins',sans-serif;font-weight:400;position:relative;flex-shrink:0;font-size:1.4rem;color:rgba(255,255,255,0.8);width:100%}
+.sec-m-community-hub .f19{height:8.4rem;position:relative;flex-shrink:0;width:3.4rem}
+.sec-m-community-hub .f20{height:8rem;position:relative;flex-shrink:0;width:3.6rem}
+.sec-m-community-hub .f21{height:7rem;position:relative;flex-shrink:0;width:2.6rem}
+.sec-m-community-hub .ns-nav-gap{height:7.95rem;flex-shrink:0;width:100%}
+
+.pg-community-hub .frame-d{position:relative;width:149.5rem;height:90.8rem;margin:0 auto;max-width:100%}
+.pg-community-hub .frame-d .sec-community-hub-backdrop{position:absolute;left:0rem;top:0rem;width:149.5rem;height:90.8rem;min-height:0}
+.pg-community-hub .frame-d .sec-community-hub-badge{position:absolute;left:66.2rem;top:9.9rem;width:19rem;height:2.7rem;min-height:0}
+.pg-community-hub .frame-d .sec-community-hub-title{position:absolute;left:6.8rem;top:17.5rem;width:87.2rem;height:9.8rem;min-height:0}
+.pg-community-hub .frame-d .sec-community-card-wrap-experts{position:absolute;left:6.3rem;top:29.7rem;width:35.61rem;height:49.2rem;min-height:0}
+.pg-community-hub .frame-d .sec-community-card-experts{position:absolute;left:0rem;top:0rem;width:35.61rem;height:36.31rem;min-height:0}
+.pg-community-hub .frame-d .sec-community-desc-experts{position:absolute;left:4rem;top:33.9rem;width:28rem;height:15.3rem;min-height:0}
+.pg-community-hub .frame-d .sec-community-card-wrap-team{position:absolute;left:39.09rem;top:29.7rem;width:35.61rem;height:49.2rem;min-height:0}
+.pg-community-hub .frame-d .sec-community-card-team{position:absolute;left:0rem;top:0rem;width:35.61rem;height:36.31rem;min-height:0}
+.pg-community-hub .frame-d .sec-community-desc-team{position:absolute;left:5.31rem;top:33.9rem;width:28rem;height:15.3rem;min-height:0}
+.pg-community-hub .frame-d .sec-community-card-wrap-community{position:absolute;left:73.47rem;top:29.87rem;width:35.26rem;height:49.03rem;min-height:0}
+.pg-community-hub .frame-d .sec-community-card-community{position:absolute;left:0rem;top:0rem;width:35.26rem;height:35.96rem;min-height:0}
+.pg-community-hub .frame-d .sec-community-desc-community{position:absolute;left:5.03rem;top:33.73rem;width:28rem;height:15.3rem;min-height:0}
+.pg-community-hub .frame-d .sec-community-card-wrap-partners{position:absolute;left:107.39rem;top:29.7rem;width:35.61rem;height:49.2rem;min-height:0}
+.pg-community-hub .frame-d .sec-community-card-partners{position:absolute;left:0rem;top:0rem;width:35.61rem;height:36.31rem;min-height:0}
+.pg-community-hub .frame-d .sec-community-desc-partners{position:absolute;left:5.21rem;top:33.9rem;width:28rem;height:15.3rem;min-height:0}
+.pg-community-hub .frame-d .sec-community-hub-swirl{position:absolute;left:137.1rem;top:78.9rem;width:8.25rem;height:8.25rem;min-height:0}
+/* NutriSync Web V2 · Community (hub · 4 formularios · 5 confirmaciones) — propio de página, UST-07.
+   Todo lo que NO sale del Figma vive aquí: enlaces del hub, controles reales de los formularios (el CSS de las cajas
+   sigue siendo el del gen), hover/focus y el aviso de estado del JS (.ns-msg). Medidas en rem (1 rem = 10 px a 1495). */
+
+/* Navbar sobre coral: el navbar global de Lucía para las páginas de 1495 (798:1600) es transparente; el degradado del hero
+   (ns-nav-bg) pintaba una banda visible sobre el fondo coral de Community. Se oculta solo en estas páginas. */
+body:has(.pg-community) .ns-nav-bg { display: none; }
+body:has(.pg-community) .ns-nav-d .ns-btn-coral { background: #fff; color: var(--coral); }   /* coral sobre coral sería invisible: el CTA va en blanco, como «Get App» del móvil */
+
+/* ── hub: cada tarjeta (frame 741:14x + título curvo + descripción suelta) es UN enlace ── */
+.ns-card { display: block; color: inherit; transition: transform .25s ease-out; }
+.ns-card:hover { transform: translateY(-.6rem); }
+.ns-card .ns-card-title { position: absolute; left: 0; top: 0; width: 35.7rem; height: 36.4rem; pointer-events: none; }
+.pg-community-hub .sec-community-card-wrap-community .ns-card-title { width: 35.3rem; height: 36rem; }
+.pg-community-hub .sec-community-hub-swirl { display: block; }
+.vp-m .ns-card:hover { transform: none; background-color: rgba(255,255,255,.2); }
+
+/* ── formularios (contrato ns-lead) ── */
+.ns-lead-wrap { display: contents; }                       /* el <form> envuelve hijos ya maquetados sin alterar el flex del frame */
+.ns-lead .ns-field input, .ns-lead .ns-field textarea, .ns-lead .ns-field select { color: var(--dark); }
+.ns-lead .ns-field select { appearance: none; -webkit-appearance: none; width: 100%; background: transparent; border: 0; outline: none; padding: 0 3rem 0 0; cursor: pointer; }
+.ns-lead .ns-field select:invalid { color: #9ca3af; }       /* opción vacía = placeholder del diseño */
+.ns-lead .ns-field select option { color: var(--dark); }
+.ns-lead .ns-field textarea { align-self: center; resize: none; padding: 0; line-height: 1.4; max-height: 100%; field-sizing: content; }   /* placeholder centrado como en el diseño; crece con el texto (field-sizing) hasta llenar la caja */
+/* Un desplegable tiene que PARECER un desplegable (r26-g): el Figma lo dibujó con appearance:none
+   y sin flecha, así que se leía como una caja de texto y nadie lo abría. */
+.ns-select { cursor: pointer; padding-right: 1.4em;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%239CA3AF' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right .1em center; background-size: .7em auto; }
+
+.ns-upload { cursor: pointer; }
+.ns-upload .ns-file { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; margin: 0; }  /* transparente encima: arrastrar y soltar nativo */
+.ns-upload.is-over { outline: 2px solid var(--coral); outline-offset: 2px; }
+.ns-lead button[type="submit"] { transition: transform .2s ease-out, opacity .2s ease-out; }
+.ns-lead button[type="submit"]:hover { transform: translateY(-1px); opacity: .95; }
+.ns-lead button[type="submit"]:focus-visible, .ns-tabs button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.ns-tabs button { cursor: pointer; }
+.ns-tab-panel[hidden] { display: none !important; }   /* el gen pone display:flex en los paneles: sin esto, hidden no ocultaría */
+.ns-line { display: block; }                                /* títulos de dos líneas: <span> de bloque dentro del <h1> */
+/* aviso de estado en escritorio: los botones de Experts/Team/Partners son absolutos → el aviso va bajo ellos, a la derecha */
+.vp-d .ns-lead-wrap .ns-msg { position: absolute; right: 13.5rem; bottom: 2rem; width: 36.6rem; margin: 0; text-align: right; color: #fff; }
+.vp-d .ns-lead-wrap .ns-msg.is-error { color: #ffe1d6; }
+.vp-m .ns-lead .ns-msg { width: 100%; color: #fff; }
+
+/* ── confirmaciones ── */
+.vp-d a[data-i="community.thanks.home"]:hover { text-decoration: underline; }
+.vp-m a[data-name="home-btn"] { transition: background-color .2s ease-out; }
+.vp-m a[data-name="home-btn"]:hover { background-color: rgba(255,255,255,.12); }

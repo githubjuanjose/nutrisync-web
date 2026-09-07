@@ -1,0 +1,22 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="126" height="10" viewBox="0 0 126 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Vector 15" filter="url(#filter0_g_826_150)">
+<path d="M4 5H122" stroke="url(#paint0_linear_826_150)" stroke-width="2"/>
+</g>
+<defs>
+<filter id="filter0_g_826_150" x="0" y="0" width="126" height="10" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feTurbulence type="fractalNoise" baseFrequency="0.25 0.25" numOctaves="3" seed="1186" />
+<feDisplacementMap in="shape" scale="8" xChannelSelector="R" yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+<feMerge result="effect1_texture_826_150">
+<feMergeNode in="displacedImage"/>
+</feMerge>
+</filter>
+<linearGradient id="paint0_linear_826_150" x1="4" y1="5.5" x2="122" y2="5.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FCF9F5"/>
+<stop offset="0.278846"/>
+<stop offset="0.769231"/>
+<stop offset="0.980769" stop-color="#FCF9F5"/>
+</linearGradient>
+</defs>
+</svg>

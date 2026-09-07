@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /hub/
+Disallow: /v1/
+Disallow: /webapp
+Disallow: /app.html
+Disallow: /tester
+Disallow: /reset
+Allow: /
+
+Sitemap: https://nutrisynccollective.com/sitemap.xml

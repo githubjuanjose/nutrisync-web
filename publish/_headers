@@ -12,3 +12,34 @@
 
 /i18n/*
   Cache-Control: public, max-age=86400
+
+# ── ns-web2-root (UST-10): la V2 en la raíz · sin noindex global (se indexa) · seguridad SOLO en rutas de la V2 (D5)
+/sw.js
+  Cache-Control: no-cache
+/manifest.webmanifest
+  Content-Type: application/manifest+json
+/sitemap.xml
+  Content-Type: application/xml
+/v1/*
+  X-Robots-Tag: noindex, nofollow
+/webapp.html
+  X-Robots-Tag: noindex
+/
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+/community/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+/our-story/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+/offline/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin

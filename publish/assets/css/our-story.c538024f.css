@@ -1,0 +1,173 @@
+.sec-story-teaser-backdrop{width:100%;position:relative}
+.sec-story-teaser-backdrop .f1{position:absolute;inset:0;max-width:none;object-fit:cover;pointer-events:none;width:100%;height:100%}
+.sec-story-teaser-mapi{width:100%;word-break:break-word;font-family:'Reenie Beanie',cursive;font-weight:400;line-height:1;font-style:normal;position:relative;font-size:9rem;color:#fff}
+.sec-story-teaser-lucia{width:100%;word-break:break-word;font-family:'Reenie Beanie',cursive;font-weight:400;line-height:1;font-style:normal;position:relative;font-size:9rem;color:#fff}
+.sec-story-teaser-pilar{width:100%;word-break:break-word;font-family:'Reenie Beanie',cursive;font-weight:400;line-height:1;font-style:normal;position:relative;font-size:9rem;color:#fff}
+.sec-story-full-montage{width:100%;height:91.9rem;position:relative}
+.sec-story-full-montage .f1{position:absolute;inset:0;overflow:hidden}
+.sec-story-full-montage{background:#1a1818}
+.sec-story-full-montage .ns-montage-v{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.sec-story-full-montage .ns-montage-veil{position:absolute;inset:0;background:rgba(0,0,0,.7);pointer-events:none}
+.sec-story-full-montage .ns-montage-snd{position:absolute;right:4rem;bottom:4rem;z-index:2;width:4.8rem;height:4.8rem;border-radius:50%;border:1px solid rgba(255,255,255,.55);background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s ease,transform .2s ease;backdrop-filter:blur(2px)}
+.sec-story-full-montage .ns-montage-snd:hover{background:rgba(0,0,0,.55);transform:translateY(-1px)}
+.sec-story-full-montage .ns-montage-snd:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.sec-story-full-montage .ns-montage-snd-ic{width:2.2rem;height:2.2rem;background:#fff;-webkit-mask:url(/assets/img/icon-sound-off.svg) center/contain no-repeat;mask:url(/assets/img/icon-sound-off.svg) center/contain no-repeat}
+.sec-story-full-montage .ns-montage-snd[aria-pressed="true"] .ns-montage-snd-ic{-webkit-mask-image:url(/assets/img/icon-sound-on.svg);mask-image:url(/assets/img/icon-sound-on.svg)}
+@media (max-width:767px){.sec-story-full-montage .ns-montage-v,.sec-story-full-montage .ns-montage-snd{display:none}}
+.sec-story-full-group{width:100%;position:relative}
+.sec-story-full-group .f1{word-break:break-word;position:absolute;font-family:'Poppins',sans-serif;font-weight:400;line-height:0;font-style:normal;font-size:2.3rem;color:#fff;width:121.5rem;white-space:pre-wrap;left:0rem;top:0rem}
+.sec-story-full-group .f2{line-height:3rem;margin-bottom:0}
+.sec-story-full-group .f3{line-height:3rem}
+.sec-story-full-group .f4{word-break:break-word;position:absolute;font-family:'Poppins',sans-serif;font-weight:400;line-height:3rem;font-style:normal;font-size:2.3rem;text-align:right;color:#fff;width:62.4rem;transform:translate(-100%,0);left:119.8rem;top:46.328rem}
+.sec-story-full-group .f5{position:absolute;display:flex;height:7.7455rem;align-items:center;justify-content:center;width:6.813rem;left:85.236rem;top:51.405rem}
+.sec-story-full-group .f6{flex:none;transform:rotate(-27.53deg)}
+.sec-story-full-group .f7{height:6.4942rem;position:relative;width:4.2982rem}
+.sec-story-full-group .f8{position:absolute;inset:-0.21% -2.31% -5.82% -2.33%}
+.sec-story-full-group .f9{display:block;max-width:none;width:100%;height:100%}
+.sec-story-full-group .ns-p1{margin-bottom:3rem}
+
+.sec-story-principle-1{width:100%;background-color:#fff;position:relative}
+.sec-story-principle-1 .f1{position:absolute;height:17.6rem;left:78.4rem;top:11.2rem;width:55.4rem}
+.sec-story-principle-1 .f2{word-break:break-word;position:absolute;display:flex;flex-direction:column;font-family:'Poppins',sans-serif;font-weight:400;height:15.9rem;justify-content:center;line-height:0;left:53.5rem;font-style:normal;color:#ff3a00;font-size:9rem;text-align:right;top:7.95rem;letter-spacing:-0.27rem;width:61.8rem;transform:translate(-100%,-50%)}
+.sec-story-principle-1 .f3{line-height:1}
+.sec-story-principle-2{width:100%;background-color:#fff;position:relative}
+.sec-story-principle-2 .f1{word-break:break-word;position:absolute;display:flex;flex-direction:column;font-family:'Poppins',sans-serif;font-weight:400;height:15.9rem;justify-content:center;line-height:0;left:21.2rem;font-style:normal;color:#ff3a00;font-size:9rem;top:21.25rem;letter-spacing:-0.27rem;width:60.5rem;transform:translate(0,-50%)}
+.sec-story-principle-2 .f2{line-height:1}
+.sec-story-principle-2 .f3{position:absolute;left:104.3rem;width:22.4rem;height:22.4rem;top:8.8rem}
+.sec-story-principle-2 .f4{position:absolute;display:block;inset:0;max-width:none;width:100%;height:100%}
+.sec-story-principle-2 .f5{position:absolute;inset:25.75% 10.32% 19.07% 64.93%;overflow:hidden}
+.sec-story-principle-2 .f6{position:absolute;left:-79.056rem;top:-0.03rem;width:119.3904rem;height:158.25rem}
+.sec-story-principle-2 .f7{position:absolute;left:0px;top:0px;width:119.3904rem;height:158.25rem}
+.sec-story-principle-2 .f8{position:absolute;mask-position:82.0205rem 0.0117rem,0 0;-webkit-mask-position:82.0205rem 0.0117rem,0 0;mask-size:36.9893rem 22.0725rem,123.8798rem 63.3004rem;-webkit-mask-size:36.9893rem 22.0725rem,123.8798rem 63.3004rem;-webkit-mask-image:url("/assets/img/story-principle-2--rectangle.svg"), url("/assets/img/story-principle-2--rectangle1.svg");mask-image:url("/assets/img/story-principle-2--rectangle.svg"), url("/assets/img/story-principle-2--rectangle1.svg");left:0px;top:0px;width:119.3904rem;height:158.25rem}
+.sec-story-principle-2 .f9{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.sec-story-principle-2 .f10{position:absolute;left:0;max-width:none;width:100%;height:100%;top:0}
+.sec-story-principle-2 .ns-ill{overflow:visible}
+.sec-story-principle-2 .ns-ill img{display:block;width:100%;height:100%}
+
+.sec-story-principle-3{width:100%;background-color:#fff;position:relative}
+.sec-story-principle-3 .f1{position:absolute;height:17.6rem;left:78.4rem;top:13.3rem;width:55.4rem}
+.sec-story-principle-3 .f2{word-break:break-word;position:absolute;display:flex;flex-direction:column;font-family:'Poppins',sans-serif;font-weight:400;height:15.9rem;justify-content:center;line-height:0;left:53.5rem;font-style:normal;color:#ff3a00;font-size:9rem;text-align:right;top:7.95rem;letter-spacing:-0.27rem;width:53.5rem;transform:translate(-100%,-50%)}
+.sec-story-principle-3 .f3{line-height:1;margin-bottom:0}
+.sec-story-principle-3 .f4{line-height:1}
+.sec-story-principle-3 .f5{position:absolute;left:23.7rem;width:22.4rem;height:22.4rem;top:8.5rem}
+.sec-story-principle-3 .f6{position:absolute;display:block;inset:0;max-width:none;width:100%;height:100%}
+.sec-story-principle-4{width:100%;background-color:#fff;position:relative}
+.sec-story-principle-4 .f1{position:absolute;height:17.6rem;left:21.2rem;top:10rem;width:55.4rem}
+.sec-story-principle-4 .f2{word-break:break-word;position:absolute;display:flex;flex-direction:column;font-family:'Poppins',sans-serif;font-weight:400;height:15.9rem;justify-content:center;line-height:0;left:21.2rem;font-style:normal;color:#ff3a00;font-size:9rem;top:19.65rem;letter-spacing:-0.27rem;width:53.5rem;transform:translate(0,-50%)}
+.sec-story-principle-4 .f3{line-height:1}
+.sec-story-principle-4 .f4{position:absolute;left:97.9rem;width:22.4rem;height:22.4rem;top:8.8rem}
+.sec-story-principle-4 .f5{position:absolute;display:block;inset:0;max-width:none;width:100%;height:100%}
+.sec-story-principle-4 .f6{position:absolute;inset:17.25% 13.19% 17.02% 65.53%;overflow:hidden}
+.sec-story-principle-4 .f7{position:absolute;left:-19.368rem;top:-110.94rem;width:157.6224rem;height:204.71rem}
+.sec-story-principle-4 .f8{position:absolute;left:0px;top:-0.01rem;width:157.6224rem;height:204.72rem}
+.sec-story-principle-4 .f9{position:absolute;left:0px;top:0px;width:157.6224rem;height:204.72rem}
+.sec-story-principle-4 .f10{position:absolute;mask-position:20.0891rem 44.3779rem,0 0;-webkit-mask-position:20.0891rem 44.3779rem,0 0;mask-size:31.8rem 26.2924rem,163.525rem 81.8874rem;-webkit-mask-size:31.8rem 26.2924rem,163.525rem 81.8874rem;-webkit-mask-image:url("/assets/img/story-principle-4--rectangle.svg"), url("/assets/img/story-principle-4--rectangle1.svg");mask-image:url("/assets/img/story-principle-4--rectangle.svg"), url("/assets/img/story-principle-4--rectangle1.svg");left:0px;top:0px;width:157.6224rem;height:204.72rem}
+.sec-story-principle-4 .f11{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.sec-story-principle-4 .f12{position:absolute;left:0;max-width:none;width:100%;height:100%;top:0}
+.sec-story-principle-4 .ns-ill{overflow:visible}
+.sec-story-principle-4 .ns-ill img{display:block;width:100%;height:100%}
+
+.sec-story-principle-5{width:100%;background-color:#fff;position:relative}
+.sec-story-principle-5 .f1{position:absolute;left:24.7rem;width:22.4rem;height:22.4rem;top:7.6rem}
+.sec-story-principle-5 .f2{position:absolute;display:block;inset:0;max-width:none;width:100%;height:100%}
+.sec-story-principle-5 .f3{position:absolute;height:17.6rem;left:76.6rem;top:11.2rem;width:55.4rem}
+.sec-story-principle-5 .f4{word-break:break-word;position:absolute;display:flex;flex-direction:column;font-family:'Poppins',sans-serif;font-weight:400;height:15.9rem;justify-content:center;line-height:0;left:55.3rem;font-style:normal;color:#ff3a00;font-size:9rem;text-align:right;top:7.95rem;letter-spacing:-0.27rem;width:53.5rem;transform:translate(-100%,-50%)}
+.sec-story-principle-5 .f5{line-height:1;margin-bottom:0}
+.sec-story-principle-5 .f6{line-height:1}
+.sec-m-values{width:100%;min-height:75.4rem;word-break:break-word;background-color:#fcf9f5;display:flex;flex-direction:column;gap:2.4rem;align-items:flex-start;padding-left:2rem;padding-right:2rem;padding-top:4.8rem;padding-bottom:4.8rem;position:relative}
+.sec-m-values .f1{display:flex;flex-direction:column;font-family:'Poppins',sans-serif;font-weight:700;gap:1.2rem;align-items:flex-start;font-style:normal;position:relative;flex-shrink:0;width:100%;white-space:nowrap}
+.sec-m-values .f2{line-height:normal;position:relative;flex-shrink:0;color:#ff3a00;font-size:1.2rem;text-transform:uppercase}
+.sec-m-values .f3{line-height:1.2;position:relative;flex-shrink:0;color:#1a1818;font-size:3rem}
+.sec-m-values .f4{display:flex;flex-direction:column;gap:1.2rem;align-items:flex-start;position:relative;flex-shrink:0;width:100%}
+.sec-m-values .f5{background-color:#fff;border-width:1px;border-color:#e5e7eb;border-style:solid;display:flex;flex-direction:column;gap:0.8rem;align-items:flex-start;padding:1.6rem;position:relative;border-radius:1.2rem;flex-shrink:0;width:100%}
+.sec-m-values .f6{font-family:'Poppins',sans-serif;font-weight:700;line-height:normal;font-style:normal;position:relative;flex-shrink:0;color:#ff3a00;font-size:1.6rem;white-space:nowrap}
+.sec-m-values .f7{font-family:'Instrument Sans',sans-serif;font-weight:400;line-height:1.4;min-width:100%;position:relative;flex-shrink:0;color:#808080;font-size:1.4rem;width:min-content}
+.sec-m-founders{width:100%;min-height:68rem;background-color:#fcf9f5;display:flex;flex-direction:column;gap:2.4rem;align-items:flex-start;padding-left:2rem;padding-right:2rem;padding-top:4.8rem;padding-bottom:4.8rem;position:relative}
+.sec-m-founders .f1{word-break:break-word;font-family:'Poppins',sans-serif;font-weight:700;line-height:normal;font-style:normal;position:relative;flex-shrink:0;color:#1a1818;font-size:2.8rem;white-space:nowrap}
+.sec-m-founders .f2{height:26rem;position:relative;border-radius:2rem;flex-shrink:0;width:100%}
+.sec-m-founders .f3{position:absolute;inset:0;max-width:none;object-fit:cover;pointer-events:none;border-radius:2rem;width:100%;height:100%}
+.sec-m-founders .f4{display:flex;flex-direction:column;gap:1.2rem;align-items:flex-start;position:relative;flex-shrink:0;width:100%}
+.sec-m-founders .f5{display:flex;gap:0.8rem;align-items:center;position:relative;flex-shrink:0}
+.sec-m-founders .f6{position:relative;flex-shrink:0;width:0.8rem;height:0.8rem}
+.sec-m-founders .f7{position:absolute;display:block;inset:0;max-width:none;width:100%;height:100%}
+.sec-m-founders .f8{word-break:break-word;font-family:'Poppins',sans-serif;font-weight:600;line-height:normal;font-style:normal;position:relative;flex-shrink:0;color:#1a1818;font-size:1.8rem;white-space:nowrap}
+.sec-m-founders .f9{word-break:break-word;font-family:'Instrument Sans',sans-serif;font-weight:400;line-height:normal;position:relative;flex-shrink:0;color:#808080;font-size:1.4rem;white-space:nowrap}
+.sec-m-founders .f10{word-break:break-word;font-family:'Instrument Sans',sans-serif;font-weight:400;line-height:1.5;min-width:100%;position:relative;flex-shrink:0;color:#1a1818;font-size:1.4rem;width:min-content}
+.frame-d.pg-story-teaser{position:relative;width:149.5rem;height:105.7rem;margin:0 auto;max-width:100%}
+.frame-d.pg-story-teaser .sec-story-teaser-backdrop{position:absolute;left:0rem;top:0rem;width:149.5rem;height:105.7rem;min-height:0}
+.frame-d.pg-story-teaser .sec-story-teaser-mapi{position:absolute;left:42.962rem;top:21.482rem;width:17.424rem;height:9rem;min-height:0}
+.frame-d.pg-story-teaser .sec-story-teaser-lucia{position:absolute;left:71.466rem;top:22.506rem;width:18.62rem;height:9rem;min-height:0}
+.frame-d.pg-story-teaser .sec-story-teaser-pilar{position:absolute;left:99.308rem;top:28.949rem;width:16.219rem;height:9rem;min-height:0}
+.frame-d.pg-story-full{position:relative;width:149.5rem;height:291.9rem;margin:0 auto;max-width:100%}
+.frame-d.pg-story-full .sec-story-full-montage{position:absolute;left:0rem;top:0rem;width:149.5rem;height:91.9rem;min-height:0}
+.frame-d.pg-story-full .sec-story-full-group{position:absolute;left:14rem;top:30.37rem;width:121.5rem;height:59.15rem;min-height:0}
+.frame-d.pg-story-full .sec-story-principle-1{position:absolute;left:0rem;top:91.9rem;width:149.5rem;height:40rem;min-height:0}
+.frame-d.pg-story-full .sec-story-principle-2{position:absolute;left:0rem;top:131.9rem;width:149.5rem;height:40rem;min-height:0}
+.frame-d.pg-story-full .sec-story-principle-3{position:absolute;left:0rem;top:171.9rem;width:149.5rem;height:40rem;min-height:0}
+.frame-d.pg-story-full .sec-story-principle-4{position:absolute;left:0rem;top:211.9rem;width:149.5rem;height:40rem;min-height:0}
+.frame-d.pg-story-full .sec-story-principle-5{position:absolute;left:0rem;top:251.9rem;width:149.5rem;height:40rem;min-height:0}
+.frame-d.pg-story-full .sec-story-ellipse-520{position:absolute;left:23rem;top:101.4rem;width:22.4rem;height:22.4rem;min-height:0}
+.frame-d.pg-story-full .sec-story-ill-preventative{position:absolute;left:17.3rem;top:97.8rem;width:52.8rem;height:29.5rem;min-height:0}
+.frame-d.pg-story-full .sec-story-ill-privacy{position:absolute;left:23rem;top:173.6rem;width:27.5rem;height:29.2rem;min-height:0}
+.frame-d.pg-story-full .sec-story-ill-community{position:absolute;left:21.5rem;top:255rem;width:31.01rem;height:25.7rem;min-height:0}
+/* NutriSync Web V2 · Our Story (teaser + full) — CSS propio de página (lo generado vive en src/gen/story-*.css)
+   Medidas del tablero web (base 1495) en rem; móviles DERIVADAS (no hay frame en Figma; UST-07) con las medidas del tablero móvil (390, márgenes 20). */
+
+/* ── Nombres manuscritos (479:27 Mapi · 479:21 Lucía · 479:29 Pilar): Reenie Beanie 90 / línea 90, relleno blanco + trazo
+   de 8 px EXTERIOR (API REST: strokeAlign OUTSIDE) y ROTADOS — la API da la rotación en RADIANES (0,396 rad = 22,7°;
+   0,173 rad = 9,9°; el MCP la pierde en el nodo raíz). El layout coloca la caja SIN rotar (w0×90, deducida del AABB) centrada
+   en el AABB del tablero y aquí se gira sobre su centro. En CSS el trazo es centrado → doble grosor (16 px) pintado DEBAJO
+   del relleno (paint-order) = 8 px por fuera. El trazo sale de la caja: overflow visible. */
+.pg-story-teaser .sec-story-teaser-mapi, .pg-story-teaser .sec-story-teaser-lucia, .pg-story-teaser .sec-story-teaser-pilar, .ns-name {
+  overflow: visible; color: #fff; paint-order: stroke fill; -webkit-text-stroke-width: 1.6rem; white-space: nowrap; transform-origin: 50% 50%; }
+.pg-story-teaser .sec-story-teaser-mapi, .ns-name-mapi { -webkit-text-stroke-color: #f52463; transform: rotate(22.685deg); }
+.pg-story-teaser .sec-story-teaser-lucia, .ns-name-lucia { -webkit-text-stroke-color: #fd7e47; transform: rotate(9.915deg); }
+.pg-story-teaser .sec-story-teaser-pilar, .ns-name-pilar { -webkit-text-stroke-color: #fd540a; transform: rotate(22.685deg); }
+
+/* el badge «our story» (430:603) es el enlace a la historia completa; queda dentro de la banda del navbar fijo (y 99-130),
+   así que el navbar deja pasar el clic por sus zonas vacías SOLO en estas páginas (story.css no se carga en las demás) */
+.pg-story-teaser .sec-story-teaser-badge { z-index: 2; }
+.pg-story-teaser .sec-story-teaser-frame { pointer-events: none; }
+.ns-nav-d { pointer-events: none; }
+.ns-nav-d a, .ns-nav-d button { pointer-events: auto; }
+
+/* ── Full: nodos sueltos del tablero (ilustraciones = render REST 2× del nodo, tamaño = caja del nodo) */
+.pg-story-full .sec-story-ellipse-520, .pg-story-full [class*="sec-story-ill-"] { overflow: visible; pointer-events: none; }
+.pg-story-full .sec-story-ellipse-520 img, .pg-story-full [class*="sec-story-ill-"] img { width: 100%; height: 100%; display: block; }
+.pg-story-full .sec-story-full-group { overflow: visible; }
+
+/* ── Móvil (derivado): hueco del navbar fijo (387:5 = 79,5) ── */
+.ns-nav-gap-m { height: 7.95rem; width: 100%; }
+
+/* teaser móvil: foto a sangre con los nombres ENCIMA, como etiquetas (Pilar 6-sep) + botón a ancho completo (azul 4885ff del badge).
+   La foto ya no es un `object-fit: cover` suelto: el recorte lo hace .ns-story-m-shot, una caja del ALTO del hueco y la
+   proporción exacta de la imagen (1932×1446), centrada y con lo que sobra recortado por el padre. Así los nombres se
+   posicionan en % de la FOTO y siguen cayendo sobre su cara en cualquier ancho (con el tope de 12 px del rem, el hueco
+   deja de ser proporcional al ancho y un % del hueco se desalinearía).
+   Los centros salen del tablero de escritorio (story-teaser-d.json, frame 1495×1057 con la misma foto en cover):
+     Mapi (516,74 · 259,82) → imagen (667,9 · 375,8) = 34,57% · 25,99%
+     Lucía (807,76 · 270,06) → (1043,9 · 389,1) = 54,03% · 26,91%
+     Pilar (1074,18 · 334,49) → (1388,2 · 472,3) = 71,85% · 32,66%
+   Tamaño 5 rem (antes 5,6 en la banda): a 5,6 la caja girada de «Pilar» llegaba a 387 px de los 390 y rozaba a «Lucía»;
+   a 5 quedan 8,5 px al borde y 10-20 px entre nombres. El trazo baja a 0,9 rem para mantener la proporción del tablero. */
+.ns-story-m-teaser { display: flex; flex-direction: column; gap: 2rem; padding-bottom: 4.8rem; background: #fff; }
+.ns-story-m-photo { position: relative; width: 100%; height: 47rem; overflow: hidden; }
+.ns-story-m-shot { position: absolute; top: 0; left: 50%; transform: translateX(-50%); height: 47rem; width: 62.797rem; }   /* 47 × 1932/1446 */
+.ns-story-m-shot img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; display: block; }
+.ns-story-m-shot .ns-name { position: absolute; font-family: var(--f-reenie); font-weight: 400; font-size: 5rem; line-height: 1;
+  -webkit-text-stroke-width: .9rem; }
+.ns-story-m-shot .ns-name-mapi { left: 34.57%; top: 25.99%; transform: translate(-50%, -50%) rotate(22.685deg); }
+.ns-story-m-shot .ns-name-lucia { left: 54.03%; top: 26.91%; transform: translate(-50%, -50%) rotate(9.915deg); }
+.ns-story-m-shot .ns-name-pilar { left: 71.85%; top: 32.66%; transform: translate(-50%, -50%) rotate(22.685deg); }
+.ns-story-m-btn { display: flex; align-items: center; justify-content: center; margin: 0 2rem; height: 4.8rem; border-radius: 10rem;
+  background: #4885ff; border: 1px solid rgba(255,255,255,.8); color: #fff; font-family: var(--f-instrument); font-weight: 700;
+  font-size: 1.4rem; text-transform: uppercase; white-space: nowrap; transition: transform .2s ease-out, opacity .2s ease-out; }
+.ns-story-m-btn:hover { transform: translateY(-1px); opacity: .95; }
+
+/* full móvil: la historia sobre el montaje oscuro (518:126 con su capa negra), Poppins como en escritorio; luego values/founders/pie tal cual */
+.ns-story-m-intro { position: relative; background: #1a1818; color: #fff; overflow: hidden; }
+.ns-story-m-montage { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; pointer-events: none; }
+.ns-story-m-intro-txt { position: relative; display: flex; flex-direction: column; gap: 1.6rem; padding: 4rem 2rem 4.8rem;
+  font-family: var(--f-poppins); font-weight: 400; font-size: 1.6rem; line-height: 1.5; }
+.ns-story-m-principles { margin-top: 2.4rem; text-align: right; font-size: 1.6rem; line-height: 1.4; }
+.ns-story-m-arrow { width: 3.2rem; height: 4.8rem; align-self: flex-end; margin-right: 6rem; transform: rotate(-27.53deg); }

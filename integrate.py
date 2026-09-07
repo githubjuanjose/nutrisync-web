@@ -43,6 +43,17 @@ ASSETS = os.path.join(ROOT, "_integration")
 if not os.path.isdir(PUB):
     sys.exit("No ./publish next to this script. Run from the web repo root.")
 
+# ── ns-v1-restaura (UST-2026-09-07-10, firmada 7-sep): desde el estreno de la V2 la RAÍZ del sitio es la
+# Web V2 (repos/web2/publish) y la v1 de Design vive archivada en /v1/. Los 20 pasos ns-* de este script
+# trabajan in situ sobre publish/index.html y esperan la v1: si la raíz ya es la V2 (lleva ns-web2-build),
+# la copia de trabajo vuelve a ser la v1 archivada, y al FINAL (ns-v1-archivo + ns-web2-root) se re-archiva
+# y la V2 vuelve a la raíz. Idempotente: integrar dos veces deja el mismo árbol.
+_ri, _v1i = os.path.join(PUB, "index.html"), os.path.join(PUB, "v1", "index.html")
+if os.path.exists(_v1i) and os.path.exists(_ri) and 'name="ns-web2-build"' in open(_ri, encoding="utf-8").read():
+    import shutil as _sh0
+    _sh0.copyfile(_v1i, _ri)
+    print("- ns-v1-restaura: la raíz era la V2 → index de trabajo = v1 archivada")
+
 ERRHIDE = '<style id="ns-err-hide">#__bundler_err{display:none!important}</style>'
 CONSENT = r'''<style id="ns-consent-css">
 #ns-consent{position:fixed;left:16px;right:16px;bottom:16px;z-index:99998;background:#fff;border:1px solid #EADFD5;border-radius:16px;box-shadow:0 20px 50px -20px rgba(0,0,0,.35);padding:18px 20px;max-width:640px;margin:0 auto;font-family:'Inter',system-ui,sans-serif;color:#241D1A}
@@ -2121,3 +2132,132 @@ if os.path.exists(_wa_src):
     if _is != _is0:
         open(_ip, "w", encoding="utf-8").write(_is)
     print("- ns-webapp-alias: app.html publicado como webapp.html (/webapp) · %d enlaces del marketing recableados" % _nwa)
+
+# ── ns-hub-dataroom (7-sep, cazado al apuntar web-linkcheck a publish/): las páginas del hub (business case,
+# gated, prototipos) enlazan al dataroom de inversores —modelo financiero, benchmarks, deck— que vivía SOLO en
+# hub/assets/ de la raíz del repo (el espejo parado en po213) y nunca llegó a publish/: en producción eran 404 desde
+# que Pages sirve publish/. Fuente = hub/assets/ (git); destino = publish/hub/assets/. Solo copia lo que falta o cambió.
+_dr_src, _dr_dst = os.path.join(ROOT, "hub", "assets"), os.path.join(PUB, "hub", "assets")
+_dr_n = 0
+if os.path.isdir(_dr_src):
+    for _base, _dirs, _files in os.walk(_dr_src):
+        for _f in _files:
+            if not (_f.endswith((".pdf", ".xlsx", ".docx", ".pptx")) ): continue   # solo los adjuntos del dataroom
+            _s = os.path.join(_base, _f); _d = os.path.join(_dr_dst, os.path.relpath(_s, _dr_src))
+            if os.path.exists(_d) and os.path.getsize(_d) == os.path.getsize(_s): continue
+            os.makedirs(os.path.dirname(_d), exist_ok=True); shutil.copyfile(_s, _d); _dr_n += 1
+    print("- ns-hub-dataroom: %d adjunto(s) del dataroom copiados a /hub/assets/ (fuente hub/assets/ en git)" % _dr_n)
+
+# ══ UST-2026-09-07-10 (firmada por Juanjo 7-sep 16:04 UTC) · la Web V2 en la raíz, la v1 archivada en /v1/ ══════════
+# Cambio de CONTENIDO, no de infraestructura: DNS, dominio, Access, hub, legal, tester, reset, /app y /webapp no se
+# tocan; la marcha atrás es el Rollback de Cloudflare Pages. Corre el ÚLTIMO, después de todos los pasos ns-* (que ya
+# han dejado en publish/index.html la v1 completa). Idempotente (ver ns-v1-restaura al principio).
+#   ns-v1-archivo · publish/index.html (v1) → publish/v1/index.html (+ meta noindex) + copias de lo que la v1 referencia
+#                   en RELATIVO: support.js, i18n/ y los assets de Design (los del pack, no los de la V2).
+#   ns-web2-root  · repos/web2/publish → raíz (sin _headers/_redirects/robots/_audit/_m); ns-build re-sellado;
+#                   _headers y _redirects fusionados; robots.txt de producción; sitemap.xml de la V2.
+import shutil as _shw
+_W2 = os.path.normpath(os.path.join(ROOT, "..", "web2", "publish"))
+_ri = os.path.join(PUB, "index.html")
+if os.path.isdir(_W2) and os.path.exists(os.path.join(_W2, "index.html")) and os.path.exists(_ri):
+    _v1_html = open(_ri, encoding="utf-8").read()
+    if 'name="ns-web2-build"' in _v1_html:
+        sys.exit("✗ ns-v1-archivo: publish/index.html ya es la V2 y no hay v1 archivada que restaurar — revisa publish/v1/")
+    _sello_v1 = (re.search(r'<meta name="ns-build" content="([^"]+)"', _v1_html) or [None, "?"])[1]
+    # 1 · la v1, archivada byte a byte + noindex (no compite con la V2 en los buscadores)
+    _v1dir = os.path.join(PUB, "v1"); os.makedirs(_v1dir, exist_ok=True)
+    _arch = re.sub(r'<meta name="robots" content="noindex">\n?', '', _v1_html)
+    _arch = _arch.replace("<head>", '<head><meta name="robots" content="noindex">', 1)
+    open(os.path.join(_v1dir, "index.html"), "w", encoding="utf-8").write(_arch)
+    for _f in ("support.js",):
+        if os.path.exists(os.path.join(PUB, _f)): _shw.copyfile(os.path.join(PUB, _f), os.path.join(_v1dir, _f))
+    if os.path.isdir(os.path.join(PUB, "i18n")):
+        _shw.copytree(os.path.join(PUB, "i18n"), os.path.join(_v1dir, "i18n"), dirs_exist_ok=True)
+    # assets de Design = todo lo de publish/assets que NO viene de la V2 (fonts se comparte: se copia entera)
+    _w2_assets = set(os.listdir(os.path.join(_W2, "assets")))
+    _v1_assets = [e for e in os.listdir(os.path.join(PUB, "assets")) if e not in _w2_assets or e == "fonts"]
+    for _e in _v1_assets:
+        _s, _d = os.path.join(PUB, "assets", _e), os.path.join(_v1dir, "assets", _e)
+        if os.path.isdir(_s): _shw.copytree(_s, _d, dirs_exist_ok=True)
+        else: os.makedirs(os.path.dirname(_d), exist_ok=True); _shw.copyfile(_s, _d)
+    print("- ns-v1-archivo: v1 (sello %s) → /v1/ con support.js, i18n/ y %d assets de Design (noindex)" % (_sello_v1, len(_v1_assets)))
+    # 2 · la V2 a la raíz: primero se vacían sus carpetas propias (css/js con hash cambian de nombre en cada build)
+    _NO = {"_headers", "_redirects", "robots.txt", "_audit.html", "_m.html"}
+    for _e in ("css", "js", "img", "icons", "video"):
+        _p = os.path.join(PUB, "assets", _e)
+        if _e in _w2_assets and os.path.isdir(_p): _shw.rmtree(_p)
+    for _e in ("community", "our-story", "offline"):
+        _p = os.path.join(PUB, _e)
+        if os.path.isdir(_p): _shw.rmtree(_p)
+    _n = 0
+    for _e in sorted(os.listdir(_W2)):
+        if _e in _NO: continue
+        _s, _d = os.path.join(_W2, _e), os.path.join(PUB, _e)
+        if os.path.isdir(_s): _shw.copytree(_s, _d, dirs_exist_ok=True)
+        else: _shw.copyfile(_s, _d)
+        _n += 1
+    # 3 · sello: la raíz lleva el ns-build de ESTA integración (el Deploy lo compara con producción) y conserva
+    #     ns-web2-build (qué build de la V2 es) en todas sus páginas.
+    _w2_sello = "?"
+    for _p in _glob.glob(os.path.join(PUB, "**", "index.html"), recursive=True):
+        _h = open(_p, encoding="utf-8").read()
+        if 'name="ns-web2-build"' not in _h: continue
+        _w2_sello = (re.search(r'<meta name="ns-web2-build" content="([^"]+)"', _h) or [None, "?"])[1]
+        _h = re.sub(r'<meta name="ns-build" content="[^"]*">', '<meta name="ns-build" content="%s">' % _sello_v1, _h, count=1)
+        open(_p, "w", encoding="utf-8").write(_h)
+    # 4 · _headers: base = la que trae el pack (caché) + bloque nuestro (idempotente por marcador)
+    _hp = os.path.join(PUB, "_headers"); _hb = open(_hp, encoding="utf-8").read() if os.path.exists(_hp) else ""
+    _hb = re.sub(r'\n?# ── ns-web2-root[\s\S]*$', '', _hb).rstrip() + "\n"
+    _hb += """
+# ── ns-web2-root (UST-10): la V2 en la raíz · sin noindex global (se indexa) · seguridad SOLO en rutas de la V2 (D5)
+/sw.js
+  Cache-Control: no-cache
+/manifest.webmanifest
+  Content-Type: application/manifest+json
+/sitemap.xml
+  Content-Type: application/xml
+/v1/*
+  X-Robots-Tag: noindex, nofollow
+/webapp.html
+  X-Robots-Tag: noindex
+/
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+/community/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+/our-story/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+/offline/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+"""
+    open(_hp, "w", encoding="utf-8").write(_hb)
+    # 5 · _redirects: las de webdeploy (/app, /app.html — ns-redirects) + las de la V2 que SÍ valen en la raíz + /v1/hub
+    _rp = os.path.join(PUB, "_redirects"); _rb = open(_rp, encoding="utf-8").read() if os.path.exists(_rp) else ""
+    _rb = re.sub(r'\n?# ── ns-web2-root[\s\S]*$', '', _rb).rstrip() + "\n"
+    _rb += """
+# ── ns-web2-root (UST-10): la v1 archivada enlaza al hub en RELATIVO (hub/…): desde /v1/ vuelve al hub real
+/v1/hub/*  /hub/:splat  301
+/v1/hub    /hub/        301
+# our-story/full es la historia completa: misma página que /our-story/ (V2)
+/our-story/full/  /our-story/  301
+/our-story/full   /our-story/  301
+"""
+    open(_rp, "w", encoding="utf-8").write(_rb)
+    # 6 · robots de producción (la candidata v2. conserva Disallow: /) + sitemap de la V2 (ya con el dominio)
+    open(os.path.join(PUB, "robots.txt"), "w", encoding="utf-8").write(
+        "User-agent: *\nDisallow: /hub/\nDisallow: /v1/\nDisallow: /webapp\nDisallow: /app.html\nDisallow: /tester\nDisallow: /reset\n"
+        "Allow: /\n\nSitemap: https://nutrisynccollective.com/sitemap.xml\n")
+    print("- ns-web2-root: V2 build %s en la raíz (%d entradas) · ns-build re-sellado %s · _headers/_redirects fusionados · robots + sitemap de producción"
+          % (_w2_sello, _n, _sello_v1))
+else:
+    print("· ns-web2-root: sin repos/web2/publish (o sin index): la raíz sigue siendo la v1")
