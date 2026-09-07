@@ -1,0 +1,232 @@
+/* NutriSync Web V2 · tokens + escala raíz (UST-07 G1/G2, firmada 5-sep)
+   REGLA: toda medida del Figma va en rem. 1 rem = 10 px cuando el viewport mide la anchura del frame:
+   · móvil (≤767): frames de 390 (393 la Home) → html = 100vw/39 (39.3), tope 12 px (un móvil ancho no lo agiganta)
+   · escritorio (≥768): Home 1440 → 100vw/144; Community/confirmaciones 1495 → 100vw/149.5; SIN tope (escala pura)
+   Tablet 768-1023 = escritorio escalado (no hay frames). */
+:root {
+  --coral: #ff3a00; --coral-2: #eb6246; --coral-3: #ff5532; --pink: #f52463; --blue: #4885ff; --blue-2: #508afe;
+  --cream: #fcf9f5; --cream-2: #f7f2e8; --cream-3: #fff9f8; --ink: #524e4b; --dark: #1a1818; --grey: #808080;
+  --f-poppins: 'Poppins', sans-serif; --f-instrument: 'Instrument Sans', sans-serif; --f-inter: 'Inter', sans-serif;
+  --f-glacial: 'Glacial Indifference', sans-serif; --f-reenie: 'Reenie Beanie', cursive;
+  --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+html { font-size: 10px; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+@media (max-width: 767px) {
+  html { font-size: min(calc(100vw / 39), 12px); }
+  html[data-wm="393"] { font-size: min(calc(100vw / 39.3), 12px); }
+}
+@media (min-width: 768px) {
+  /* SIN tope (Juanjo 5-sep): la web llena cualquier escritorio a escala — ni márgenes ni fotos cortas a 1920/2560.
+     Un tope de 10px dejaba la página como una columna de 1440 centrada con blancos a los lados. */
+  html { font-size: calc(100vw / 144); }
+  html[data-w="1495"] { font-size: calc(100vw / 149.5); }
+}
+/* NutriSync Web V2 · fuentes AUTO-ALOJADAS (po74: cero CDN). Familias EXACTAS a las que pide el HTML (lección r14i):
+   Poppins · Instrument Sans · Glacial Indifference · Inter · Reenie Beanie */
+@font-face{font-family:'Poppins';font-style:normal;font-weight:300;font-display:swap;src:url(/assets/fonts/files/poppins-300-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:300;font-display:swap;src:url(/assets/fonts/files/poppins-300-latinext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/files/poppins-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/files/poppins-400-latinext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:500;font-display:swap;src:url(/assets/fonts/files/poppins-500-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:500;font-display:swap;src:url(/assets/fonts/files/poppins-500-latinext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:600;font-display:swap;src:url(/assets/fonts/files/poppins-600-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:600;font-display:swap;src:url(/assets/fonts/files/poppins-600-latinext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/files/poppins-700-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Poppins';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/files/poppins-700-latinext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Instrument Sans';font-style:normal;font-weight:400 700;font-stretch:100%;font-display:swap;src:url(/assets/fonts/files/instrument-sans-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Instrument Sans';font-style:normal;font-weight:400 700;font-stretch:100%;font-display:swap;src:url(/assets/fonts/files/instrument-sans-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Glacial Indifference';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/files/glacial-regular.woff) format('woff');}
+@font-face{font-family:'Glacial Indifference';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/files/glacial-bold.woff) format('woff');}
+
+@font-face{font-family:'Inter';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/files/inter-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Inter';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/files/inter-400-latinext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Inter';font-style:normal;font-weight:600;font-display:swap;src:url(/assets/fonts/files/inter-600-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Inter';font-style:normal;font-weight:600;font-display:swap;src:url(/assets/fonts/files/inter-600-latinext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Inter';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/files/inter-700-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+@font-face{font-family:'Inter';font-style:normal;font-weight:700;font-display:swap;src:url(/assets/fonts/files/inter-700-latinext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;}
+@font-face{font-family:'Reenie Beanie';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/files/reenie-beanie-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
+/* NutriSync Web V2 · base */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { background: #fff; color: var(--dark); font-family: var(--f-instrument); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+p, h1, h2, h3, h4 { margin: 0; font-weight: inherit; font-size: inherit; }
+/* El exportador de Figma presupone el preflight de Tailwind: listas sin margen ni sangría (la sangría la pone cada <li> con ms-*) */
+ol, ul { margin: 0; padding: 0; }
+li { margin: 0; }
+a { color: inherit; text-decoration: none; }
+img, svg { display: block; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+input, textarea, select { font: inherit; color: inherit; }
+
+/* Dos árboles, una URL (UST-07 G2): el que no toca no se pinta ni se lee. */
+.vp-m { display: none; }
+.vp-d { display: block; }
+@media (max-width: 767px) { .vp-m { display: block; } .vp-d { display: none; } }
+
+/* Página = pila de frames: cada sección exacta a la anchura del frame, centrada; los fondos sangran. */
+.page { width: 100%; }
+.frame { width: 144rem; max-width: 100%; margin: 0 auto; position: relative; }
+html[data-w="1495"] .frame { width: 149.5rem; }
+.frame-m { width: 100%; margin: 0 auto; position: relative; }
+/* Un adorno no se come un clic (r26-g). ns-deco lo pone el build a los grupos sin texto ni nada
+   interactivo dentro; los formularios, además, por encima de la decoración de su sección. */
+.ns-deco { pointer-events: none; }
+img[alt=""]:not(a img):not(button img) { pointer-events: none; }
+form.ns-wait, form.ns-lead { position: relative; z-index: 20; }
+
+.sec { overflow: hidden; }
+.sec.sec-open { overflow: visible; }
+.bleed { position: relative; }
+.bleed::before { content: ""; position: absolute; inset: 0 -100vw; background: inherit; z-index: -1; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+}
+/* ── Navbar unificado (medidas del hero 586:73 a 1440 y del móvil 387:5 a 393) ─────────────
+   Ronda 5 (Lucía, 6-sep): «change navbar font to poppins 10 px» sobre los enlaces y «make it much
+   smaller» sobre la zona derecha. Decisión Juanjo: encoge la barra ENTERA a escala. El factor lo fija
+   el enlace —2,5 rem → 1 rem, que son 10 px a 1440— así que k = 0,4, y con él bajan alto, márgenes,
+   logo y huecos (la proporción alto/enlace sigue siendo 5,2, la del Figma). TODO en rem: la barra
+   sigue escalando con la ventana (1 rem = 100vw/144), 10 px es su tamaño a 1440.
+   Excepción DECLARADA: los tipos de la derecha no se multiplican por k — 18 px × 0,4 = 7,2 y 13 px ×
+   0,4 = 5,2 son ilegibles y dejarían el CTA apretado. CTA y píldora comparten el tamaño del enlace
+   (1 rem) y su caja crece con el texto, nunca ancho fijo (ES «Descargar la app» es más largo que EN).
+   Lo escalado va SCOPED a .ns-nav-d: .ns-btn-coral lo usa también la hoja «Muy pronto» y .ns-lang el
+   menú móvil, y ahí no se toca nada. */
+.ns-nav { position: fixed; top: 0; left: 50%; transform: translateX(-50%); z-index: 50; box-sizing: border-box; }
+.ns-nav-d { width: 144rem; max-width: 100%; height: 8.8rem; display: flex; align-items: center; justify-content: space-between;
+  padding: 2.6rem 2.2rem 1.4rem 4.6rem; color: #fff; }   /* 7-sep, Lucía: «demasiado pegado al margen de arriba» */
+html[data-w="1495"] .ns-nav-d { width: 149.5rem; }
+/* El degradado de la barra (1024×93, VERTICAL: coral opaco arriba → transparente abajo) se comprime en
+   el alto nuevo. Con object-fit:cover, 5,2 rem recortaban la franja central y se perdían las dos puntas
+   (banda plana con corte duro arriba); es horizontalmente uniforme, así que estirarlo no deforma nada. */
+/* Barra SIEMPRE transparente (Lucía + Juanjo, 7-sep: «el fondo ensucia mucho»). Ni degradado ni panel
+   al bajar. Como la barra es fija y pasa por encima de secciones blancas, lo único que queda para que
+   los enlaces blancos no desaparezcan es una sombra mínima: invisible sobre las fotos oscuras, y lo
+   justo para leerlos sobre blanco. Si tampoco la queréis, se borra esta línea y ya. */
+.ns-nav { text-shadow: 0 1px 2px rgba(0, 0, 0, .35); }
+.ns-nav .ns-btn-coral { text-shadow: none; }   /* el botón tiene su propio fondo: no la necesita */
+.ns-nav-logo img { width: 6.4rem; height: 6.4rem; }   /* 7-sep 19:2x, Juanjo: «el logo se debería ver más grande» (era 4,8) */
+.ns-nav-links { display: flex; gap: 3.2rem; align-items: center; font-family: var(--f-poppins); font-weight: 600; font-size: 1.6rem; white-space: nowrap; }   /* 7-sep 19:2x, Juanjo: «la fuente un poco más grande» (era 1,35) */
+.ns-nav-links a { position: relative; padding: .1rem 0; transition: opacity .2s ease-out; }
+.ns-nav-links a:hover { opacity: .85; }
+.ns-nav-links a[aria-current="page"]::after { content: ""; position: absolute; left: 0; right: 0; bottom: -.4rem; height: .15rem; background: #fff; border-radius: .1rem; }
+.ns-nav-right { display: flex; align-items: center; gap: 1.2rem; }
+.ns-btn { display: inline-flex; align-items: center; justify-content: center; font-family: var(--f-instrument); font-weight: 600; white-space: nowrap; transition: transform .2s ease-out, opacity .2s ease-out; }
+.ns-btn:hover { transform: translateY(-1px); opacity: .95; }
+.ns-btn-coral { background: var(--coral); color: #fff; width: 16.3rem; height: 4.6rem; border-radius: 3rem; font-size: 1.8rem; }
+.ns-btn-white { background: #fff; color: var(--coral); padding: 1rem 1.6rem; border-radius: 2rem; font-size: 1.3rem; }
+.ns-btn-big { font-size: 1.8rem; padding: 1.4rem 2.8rem; border-radius: 3rem; }
+.ns-lang { font-family: var(--f-instrument); font-weight: 700; font-size: 1.3rem; color: #fff; border: 1px solid rgba(255,255,255,.7); border-radius: 2rem; padding: .5rem 1rem; opacity: .9; }
+.ns-lang:hover { opacity: 1; }
+/* CTA y píldora de idioma DE LA BARRA de escritorio (ronda 5): mismo tipo que los enlaces, caja al 0,4
+   del Figma y ancho por contenido para que ningún idioma se recorte. */
+.ns-nav-d .ns-btn-coral { width: auto; height: 4rem; padding: 0 2.4rem; border-radius: 2rem; font-size: 1.45rem; }
+.ns-nav-d .ns-lang { font-size: 1.45rem; border-radius: 1.5rem; padding: .45rem 1.2rem; }
+/* móvil */
+.ns-nav-m { width: 100%; min-height: 8.9rem; display: flex; align-items: center; justify-content: space-between; padding: 2.6rem 2rem 1.6rem;
+  color: #fff; }   /* 7-sep, Lucía: sin degradado y con aire arriba, igual que el escritorio */
+/* 7-sep 19:2x, Juanjo: «la barra se superpone con la zona del iPhone (hora, batería): no se puede ni pinchar en la
+   hamburguesa». El viewport es cover (la página se mete bajo la zona del sistema): el aire de arriba es el MAYOR entre el
+   de diseño y el safe area + 1 rem. En Android/escritorio env() vale 0 y no cambia nada. */
+.ns-nav-m { padding-top: max(2.6rem, calc(env(safe-area-inset-top, 0px) + 1rem)); }
+.ns-nav-m-logo img { width: 4.75rem; height: 4.75rem; }
+.ns-nav-m-brand { font-family: var(--f-instrument); font-weight: 700; font-size: 1.8rem; color: #fff; white-space: nowrap; }
+.ns-nav-m-right { display: flex; align-items: center; gap: 1.2rem; }
+.ns-burger { width: 4.4rem; height: 4.4rem; display: flex; align-items: center; justify-content: center; margin-right: -1rem; }
+.ns-burger img { width: 2.4rem; height: 2.4rem; }
+/* hoja del menú móvil (derivada, UST-07 G4 ASK 3) */
+.ns-sheet { position: fixed; left: 0; right: 0; top: var(--ns-nav-h, 7.95rem); z-index: 60; background: var(--coral); color: #fff; display: flex; flex-direction: column;
+  padding: 1.2rem 2rem calc(2rem + var(--safe-bottom)); border-radius: 0 0 2.4rem 2.4rem; box-shadow: 0 1.6rem 4rem rgba(26,24,24,.25);
+  max-height: calc(100vh - var(--ns-nav-h, 7.95rem)); max-height: calc(100svh - var(--ns-nav-h, 7.95rem)); overflow: auto; animation: ns-sheet-in .18s ease-out; }
+.ns-sheet[hidden] { display: none; }
+@keyframes ns-sheet-in { from { opacity: 0; transform: translateY(-.8rem); } to { opacity: 1; transform: none; } }
+.ns-sheet-links { display: flex; flex-direction: column; font-family: var(--f-poppins); font-weight: 500; font-size: 2.2rem; line-height: 1.2; }
+.ns-sheet-links a { padding: 1.3rem 0; border-bottom: 1px solid rgba(255,255,255,.22); }
+.ns-sheet-links a[aria-current="page"] { text-decoration: underline; text-underline-offset: .5rem; text-decoration-thickness: .2rem; }
+.ns-sheet-bottom { margin-top: 1.6rem; display: flex; align-items: center; justify-content: space-between; gap: 1.6rem; }
+.ns-sheet-bottom .ns-btn-big { flex: 1; }
+body.ns-sheet-open .ns-burger { opacity: .85; }
+@media (max-width: 767px) { .ns-nav-d { display: none; } }
+@media (min-width: 768px) { .ns-nav-m, .ns-sheet { display: none !important; } }
+
+/* ── Barra de aviso: precios y reclamos ilustrativos (UST-07 G11, decisión Juanjo) ───────── */
+.ns-disclaimer { position: relative; z-index: 2; width: 100%; background: #1a1818; color: rgba(255,255,255,.85); font-family: var(--f-instrument); font-size: 1.2rem; line-height: 1.4; text-align: center; padding: .8rem 2rem; }
+.ns-disclaimer a { text-decoration: underline; color: #ffb48a; }
+.ns-disclaimer span { display: block; }
+.ns-disclaimer .ns-disclaimer-pilot { font-weight: 600; color: #f5efe7; margin-bottom: .3rem; }
+.ns-ast { color: inherit; font-weight: 700; text-decoration: none; }
+
+/* ── Barra de instalación PWA (derivada, UST-07 G6) ───────────────────────────────────────── */
+.ns-install { position: fixed; left: 1.2rem; right: 1.2rem; bottom: calc(1.2rem + var(--safe-bottom)); z-index: 55; background: #fff; color: var(--dark);
+  border-radius: 1.6rem; box-shadow: 0 .8rem 2.4rem rgba(108,55,50,.18); padding: 1.2rem 1.4rem; display: none; align-items: center; gap: 1.2rem; font-family: var(--f-instrument); font-size: 1.4rem; }
+.ns-install.is-on { display: flex; }
+.ns-install img { width: 3.6rem; height: 3.6rem; border-radius: .9rem; }
+.ns-install .ns-install-txt { flex: 1; }
+.ns-install .ns-install-txt strong { display: block; font-weight: 700; }
+.ns-install button { font-weight: 700; color: var(--coral); padding: .6rem .8rem; }
+.ns-install .ns-install-x { color: var(--grey); font-size: 2rem; line-height: 1; }
+
+/* ── Estados de formulario y waitlist ─────────────────────────────────────────────────────── */
+.ns-field input, .ns-field textarea, .ns-field select { width: 100%; background: transparent; border: 0; outline: none; padding: 0; }
+.ns-field input::placeholder, .ns-field textarea::placeholder { color: #9ca3af; opacity: 1; }
+.ns-field:focus-within { outline: 2px solid rgba(255,255,255,.7); outline-offset: 2px; }
+.ns-field.is-error { outline: 2px solid #ffc164; }
+.ns-msg { font-family: var(--f-instrument); font-size: 1.4rem; margin-top: .8rem; }
+.ns-msg.is-error { color: #ffe1d6; }
+.is-busy { opacity: .6; pointer-events: none; }
+.ns-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ── offline ── */
+.ns-offline { min-height: 100vh; background: var(--coral); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4rem 2.4rem; gap: 2rem; font-family: var(--f-instrument); }
+.ns-offline img { width: 9.6rem; height: 9.6rem; }
+.ns-offline h1 { font-family: var(--f-poppins); font-weight: 700; font-size: 3.6rem; }
+.ns-offline p { font-size: 1.8rem; line-height: 1.5; max-width: 52rem; opacity: .9; }
+.ns-install .ns-install-hint { display: none; }
+.ns-install.is-hint .ns-install-hint { display: block; }
+.ns-install.is-ios [data-install] { display: none; }
+.ns-install.is-ios .ns-install-hint { display: block; }
+
+/* «Muy pronto» (Juanjo 5-sep) */
+.ns-soon { position: fixed; inset: 0; z-index: 70; background: rgba(26,24,24,.55); display: flex; align-items: center; justify-content: center; padding: 2rem; }
+.ns-soon[hidden] { display: none; }
+.ns-soon-card { position: relative; width: min(44rem, 100%); background: var(--cream); color: var(--dark); border-radius: 2.4rem; padding: 3.2rem 2.8rem 2.4rem; text-align: center; box-shadow: 0 2.4rem 6rem rgba(108,55,50,.25); animation: ns-sheet-in .2s ease-out; }
+.ns-soon-stores { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.6rem; }
+.ns-soon-stores img { width: 4rem; height: 4rem; padding: .8rem; border-radius: 1.2rem; background: #6c3732; }
+.ns-soon h2 { font-family: var(--f-poppins); font-weight: 600; font-size: 2.2rem; line-height: 1.2; color: var(--coral-2); margin: 0 0 1rem; }
+.ns-soon p { font-family: var(--f-instrument); font-size: 1.5rem; line-height: 1.45; color: var(--ink); margin: 0 0 2rem; }
+.ns-soon-actions { display: flex; flex-direction: column; gap: 1rem; align-items: stretch; }
+.ns-soon-go, .ns-soon-preview { display: flex; width: 100%; align-items: center; justify-content: center; min-height: 4.4rem; padding: 1rem 2rem; border-radius: 10rem; font-family: var(--f-instrument); font-weight: 700; font-size: 1.5rem; line-height: 1.2; text-align: center; white-space: normal; }
+.ns-soon a:focus-visible, .ns-soon button:focus-visible { outline: .3rem solid var(--coral-2); outline-offset: .3rem; }
+.ns-soon-preview { border: 1px solid var(--coral-2); color: var(--coral-2); background: #fff; }
+.ns-soon-later { display: block; margin: 1.2rem auto 0; font-family: var(--f-instrument); font-size: 1.3rem; color: var(--grey); text-decoration: underline; text-underline-offset: .2rem; }
+.ns-soon-x { position: absolute; top: .8rem; right: 1.2rem; font-size: 2.8rem; line-height: 1; color: var(--grey); width: 3.6rem; height: 3.6rem; }
+@media (max-width: 767px) { .ns-soon { align-items: flex-end; padding: 0; } .ns-soon-card { width: 100%; border-radius: 2.4rem 2.4rem 0 0; padding-bottom: calc(2.4rem + var(--safe-bottom)); } }
+
+/* Pie de escritorio en páginas que no son la Home (5-sep, D): mismo bloque 586:348 (1440) — en páginas de 1495 se amplía 1495/1440 */
+.ns-foot-d { position: relative; width: 144rem; height: 82.5rem; margin: 0 auto; max-width: 100%; }
+.ns-foot-d .sec-home-subscribe { position: absolute; left: 0; top: 0; width: 144rem; height: 82.5rem; }
+html[data-w="1495"] .ns-foot-d { zoom: 1.0382; }
+
+/* Franja legal de escritorio (Lucía 7-sep): en Community y Our Story el pie grande estorba, pero los
+   enlaces legales y el aviso de salud tienen que seguir alcanzables desde cualquier página. Una línea. */
+.ns-foot-legal { display: flex; flex-wrap: wrap; align-items: center; gap: 1.2rem 2.4rem;
+  padding: 2.4rem 8rem 3.2rem; font-family: var(--f-instrument); font-size: 1.2rem; color: #6b6b6b;
+  border-top: 1px solid rgba(0,0,0,.08); }
+.ns-foot-legal a { color: inherit; text-decoration: none; transition: color .2s ease-out; }
+.ns-foot-legal a:hover { color: var(--coral); text-decoration: underline; }
+.ns-foot-legal .ns-foot-legal-c { color: #8a8a8a; }
+.ns-foot-legal .ns-foot-legal-m { flex-basis: 100%; color: #8a8a8a; }
+@media (max-width: 767px) { .ns-foot-legal { padding: 2.4rem 2rem 3.2rem; gap: 1rem 1.8rem; font-size: 1.3rem; } }
+
+/* ── Tono de la barra (7-sep 19:2x, Juanjo, móvil y escritorio): «el color de las letras de la barra se debería cambiar para
+   que se vea mejor cuando hay fondos claros». La barra sigue SIN fondo (decisión de la mañana): 10-nav.js mide la luminancia
+   de la sección que queda bajo la barra y, si es clara, pone html.ns-nav-ink → todo a tinta (logo y hamburguesa por filtro:
+   son blancos sobre transparente). Sobre fotos y secciones de color se queda en blanco con su sombra, como hasta ahora. */
+html.ns-nav-ink .ns-nav { color: #1a1818; text-shadow: none; }
+html.ns-nav-ink .ns-nav-m-brand { color: #1a1818; }
+html.ns-nav-ink .ns-nav-logo img, html.ns-nav-ink .ns-nav-m-logo img, html.ns-nav-ink .ns-burger img { filter: brightness(0); }
+html.ns-nav-ink .ns-nav-links a[aria-current="page"]::after { background: #1a1818; }
+html.ns-nav-ink .ns-nav .ns-lang { color: #1a1818; border-color: rgba(26,24,24,.5); }
+html.ns-nav-ink .ns-nav-m .ns-btn-white { box-shadow: 0 0 0 1px rgba(26,24,24,.18); }
+html.ns-nav-ink .ns-nav .ns-btn-coral { color: #fff; }
