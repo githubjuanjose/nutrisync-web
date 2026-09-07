@@ -1,7 +1,7 @@
 /* NutriSync Web V2 · service worker (UST-07 G6): shell + fuentes precacheados, páginas network-first con respaldo,
    imágenes cache-first al vuelo, /offline/ cuando no hay red. La versión = sello del build: cada deploy limpia lo viejo. */
-const V = 'ns-web2-0709-215822';
-const SHELL = ['/', '/offline/', '/manifest.webmanifest', '/assets/css/site.b5b4ab4e.css', '/assets/js/site.8fe5b8ce.js',
+const V = 'ns-web2-0709-222725';
+const SHELL = ['/', '/offline/', '/manifest.webmanifest', '/assets/css/site.57e8d30c.css', '/assets/js/site.e555a65a.js',
   '/assets/fonts/files/poppins-400-latin.woff2', '/assets/fonts/files/poppins-600-latin.woff2', '/assets/fonts/files/poppins-700-latin.woff2',
   '/assets/fonts/files/instrument-sans-latin.woff2', '/assets/img/logo-swirl.webp', '/assets/icons/icon-192.png'];
 self.addEventListener('install', (e) => { e.waitUntil(caches.open(V).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting())); });
