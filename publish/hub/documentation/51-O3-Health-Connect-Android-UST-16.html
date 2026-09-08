@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>51 · O3 Health Connect en Android — UST-16 (propuesta)</title>
+<style>
+body{font-family:Inter,system-ui,-apple-system,sans-serif;color:#241D1A;background:#FFF9F5;margin:0;padding:24px 18px 60px;max-width:1180px;margin:auto;line-height:1.45;font-size:14px}
+h1{font-size:24px;margin:8px 0 4px} h2{font-size:18px;color:#E4572E;margin:28px 0 8px;border-bottom:1px solid #F0E3DA;padding-bottom:4px}
+.meta{color:#7A6E67;font-size:12px;margin-bottom:14px} .q{background:#fff;border-left:4px solid #E4572E;padding:10px 14px;border-radius:0 10px 10px 0;font-style:italic}
+.t{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;font-size:12.5px;margin:8px 0 14px}
+.t th{background:#F7F1EC;text-align:left;padding:7px 9px;font-weight:700;vertical-align:top} .t td{padding:7px 9px;border-top:1px solid #F0E3DA;vertical-align:top;color:#4E4540}
+.t td:first-child{font-weight:700;color:#241D1A} .hc td:nth-child(2),.hc td:nth-child(3){font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px}
+.btn{display:inline-block;background:#E4572E;color:#fff;border-radius:22px;padding:8px 14px;text-decoration:none;font-weight:700;margin:4px 6px 4px 0;font-size:13px}
+.nota{color:#7A6E67;font-size:12.5px} ol li{margin:4px 0} .av{background:#FFF6E5;border-left:4px solid #E8A33D;padding:10px 14px;border-radius:0 10px 10px 0;font-size:13px}
+</style><script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head><body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+/* r16b: la pestaña activa por CLASE con !important — tercera red por si algo
+   pisa el estilo en línea. La pone markActive() y el mini-marcador del final. */
+#ns-hub-navbar .nsnb-tab.on{background:linear-gradient(135deg,#FF7600,#FD400C)!important;color:#fff!important;font-weight:800!important;border-color:#FD400C!important;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)!important}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+.nsnb-tab{cursor:grab}
+.nsnb-tab.nsnb-drag{opacity:.35;cursor:grabbing}
+#nsnb-reset{display:none}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Web de marketing / marketing site"
+     aria-label="Web de marketing" style="text-decoration:none">🏠</a>
+  <a class="nsnb-btn" href="https://admin.nutrisynccollective.com" title="StartUp Admin (contabilidad del build)"
+     aria-label="StartUp Admin" style="text-decoration:none">🛠</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Competitive" href="/hub/competitive.html">🥊 Competencia</a><a class="nsnb-tab nsnb-g1" data-en="Build Roadmap → Go Live" href="/hub/launch-plan.html">🚀 Build Roadmap → Go Live</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g3" data-en="Leads" href="/hub/community-leads.html">🤝 Leads</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync Sprint Planning" href="/hub/backlog-dev.html">🗂 NutriSync Sprint Planning</a><a class="nsnb-tab nsnb-g4" data-en="Release Plan" href="/hub/release-plan.html">🚢 Releases</a><a class="nsnb-tab nsnb-g4" data-en="Compliance" href="/hub/compliance.html">🛡 Compliance</a><a class="nsnb-tab nsnb-g4" data-en="Ideation" href="/hub/roadmap.html">💡 Ideation</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g4" data-en="Design System" href="/hub/design-system.html">🎨 Design System</a><a class="nsnb-tab nsnb-g5" data-en="Documentation" href="/hub/documentation/index.html">📄 Documentación</a><a class="nsnb-tab nsnb-g5" data-en="ERP User Guide" href="/hub/user-guide.html">📖 Guía ERP</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14b (feedback Juanjo): idioma con CONMUTADOR visible y persistente.
+     localStorage ns_lang ('es'|'en') manda; sin él, el navegador decide.
+     Las páginas con data-i leen la misma clave — un idioma, todas las superficies. */
+  function nsLang(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pintaIdioma(){
+    var en=nsLang()==='en';
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      if(!a.getAttribute('data-es'))a.setAttribute('data-es',a.textContent.trim());
+      var em=a.getAttribute('data-es').split(' ')[0];
+      a.textContent=en?(em+' '+a.getAttribute('data-en')):a.getAttribute('data-es');});
+    var b=document.getElementById('nsnb-lang');if(b)b.textContent=en?'ES':'EN';
+  }
+  (function(){
+    var brand=document.querySelector('#ns-hub-navbar .nsnb-btn');
+    if(brand&&!document.getElementById('nsnb-lang')){
+      var b=document.createElement('a');b.id='nsnb-lang';b.className='nsnb-btn';b.href='#';
+      b.title='Cambiar idioma / switch language';
+      b.onclick=function(e){e.preventDefault();
+        try{localStorage.setItem('ns_lang',nsLang()==='en'?'es':'en');}catch(err){}
+        pintaIdioma();
+        document.dispatchEvent(new CustomEvent('ns-lang'));
+        if(typeof relayout==='function')relayout();
+        return false;};
+      brand.parentNode.insertBefore(b,brand);
+    }
+    pintaIdioma();
+    /* r14e: pintor data-i UNIVERSAL — cualquier página del hub con data-i="ES|EN"
+       (o data-i sin valor con "ES|EN" dentro) se vuelve bilingüe gratis. */
+    function pintaDataI(){
+      var en=nsLang()==='en';
+      document.querySelectorAll('[data-i]').forEach(function(n){
+        if(n.closest&&n.closest('#ns-hub-navbar'))return;
+        var src=n.getAttribute('data-i');
+        if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+        var p=src.split('|');
+        n.innerHTML=en?(p[1]||p[0]):p[0];});
+    }
+    document.addEventListener('ns-lang',pintaDataI);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',pintaDataI);
+    else pintaDataI();
+  })();
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  /* r16c (cazado POR JUANJO con el flash del clic): Cloudflare Pages sirve
+     URLs LIMPIAS — /hub/incidents.html se visita como /hub/incidents — así
+     que comparar con ".html" no casaba JAMÁS en carga de página. Se normaliza
+     quitando la extensión en LOS DOS lados. */
+  function nsLimpia(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';}
+  var here=nsLimpia(location.pathname.split('/').pop());
+  var dir=location.pathname.toLowerCase();
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : nsLimpia(f.split('/').pop())===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  /* r16: la marca se queda mientras estés en la página — se repinta al volver
+     del historial (bfcache), al recuperar el foco y al cambiar de pestaña del
+     navegador. Nada la apaga salvo navegar a otra página del hub. */
+  window.addEventListener('pageshow',function(){markActive();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)markActive();});
+  window.addEventListener('focus',function(){markActive();});
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  /* r14e (idea Juanjo): pestañas ARRASTRABLES — cada cual su orden, guardado
+     en este navegador (ns_tab_order). ↺ vuelve al orden de fábrica. */
+  (function(){
+    var KEY='ns_tab_order';
+    function filas(){return [document.getElementById('nsnb-r1'),document.getElementById('nsnb-r2')].filter(Boolean);}
+    function todas(){var t=[];filas().forEach(function(r){t=t.concat([].slice.call(r.querySelectorAll('.nsnb-tab')));});return t;}
+    var ORIG=todas().map(function(a){return a.getAttribute('href');});
+    function guardar(){try{localStorage.setItem(KEY,JSON.stringify(todas().map(function(a){return a.getAttribute('href');})));}catch(e){}
+      var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';}
+    function aplicar(orden){
+      var r1=document.getElementById('nsnb-r1');if(!r1)return;
+      var por={};todas().forEach(function(a){por[a.getAttribute('href')]=a;});
+      orden.forEach(function(h){if(por[h])r1.appendChild(por[h]);});
+      todas().forEach(function(a){if(orden.indexOf(a.getAttribute('href'))<0)r1.appendChild(a);});
+    }
+    try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&sv.length){aplicar(sv);
+      setTimeout(function(){var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';},0);}}catch(e){}
+    var drag=null;
+    todas().forEach(function(a){
+      a.setAttribute('draggable','true');
+      a.title=(a.title?a.title+' · ':'')+'Arrastra para reordenar / drag to reorder';
+      a.addEventListener('dragstart',function(e){drag=a;a.classList.add('nsnb-drag');
+        try{e.dataTransfer.setData('text/plain',a.getAttribute('href'));e.dataTransfer.effectAllowed='move';}catch(err){}});
+      a.addEventListener('dragend',function(){if(drag)drag.classList.remove('nsnb-drag');drag=null;});
+      a.addEventListener('dragover',function(e){e.preventDefault();if(!drag||drag===a)return;
+        var r=a.getBoundingClientRect(),antes=(e.clientX-r.left)<r.width/2;
+        a.parentNode.insertBefore(drag,antes?a:a.nextSibling);});
+      a.addEventListener('drop',function(e){e.preventDefault();guardar();relayout();});
+    });
+    filas().forEach(function(r){r.addEventListener('dragover',function(e){e.preventDefault();});
+      r.addEventListener('drop',function(e){e.preventDefault();if(drag){guardar();relayout();}});});
+    var brand=document.getElementById('nsnb-lang');
+    if(brand&&!document.getElementById('nsnb-reset')){
+      var rb=document.createElement('a');rb.id='nsnb-reset';rb.className='nsnb-btn';rb.href='#';rb.textContent='↺';
+      rb.title='Orden de pestañas original / reset tab order';
+      rb.onclick=function(e){e.preventDefault();try{localStorage.removeItem(KEY);}catch(err){}
+        aplicar(ORIG);rb.style.display='none';relayout();return false;};
+      brand.parentNode.insertBefore(rb,brand);
+    }
+  })();
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+<script>
+/* r16b · MINI-MARCADOR independiente de pestaña activa. Deliberadamente
+   separado y mínimo: si el script grande de la barra muere por lo que sea,
+   ESTE pinta igual. Solo compara el fichero de la URL con el href y pone la
+   clase .on (el CSS !important hace el resto). Se repite unos segundos por si
+   el reordenado o el motor mueven pestañas tarde. */
+(function(){
+  function marca(){
+    try{
+      /* r16c: Pages sirve URLs sin .html — normalizar ambos lados */
+      var lim=function(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';};
+      var here=lim(location.pathname.split('/').pop());
+      var esDoc=location.pathname.toLowerCase().indexOf('/documentation/')>-1;
+      document.querySelectorAll('#ns-hub-navbar .nsnb-tab').forEach(function(a){
+        var f=(a.getAttribute('href')||'').toLowerCase();
+        var on=esDoc ? f.indexOf('/documentation/')>-1 : lim(f.split('/').pop())===here;
+        a.classList.toggle('on',on);
+      });
+    }catch(e){}
+  }
+  marca();
+  var i=0,t=setInterval(function(){marca();if(++i>15)clearInterval(t);},700);
+  window.addEventListener('pageshow',marca);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
+})();
+</script>
+<script>
+/* ns-idle-logout (0.23.0 · UST-06 G1): 30 min sin actividad en el hub → fuera.
+   Central en el navbar = vale para TODAS las páginas /hub sin tocarlas una a
+   una. La sesión vive en localStorage (sb-*-auth-token): borrarla y recargar
+   deja la página en su candado. Solo actúa si HAY sesión — jamás bucles. */
+(function(){
+  try{
+    /* El cierre mudo parecía avería (Pilar, 25-ago): al volver se explica. */
+    if(localStorage.getItem('ns_idle_aviso')==='1'){
+      localStorage.removeItem('ns_idle_aviso');
+      var av=document.createElement('div');
+      av.setAttribute('data-i','');
+      av.style.cssText='position:sticky;top:0;z-index:9999;background:#FFF3E0;color:#7A4A00;'+
+        'border-bottom:1.5px solid #E8B36A;padding:9px 16px;font:600 13px system-ui;text-align:center';
+      av.textContent='🔒 Tu sesión se cerró tras 30 minutos sin actividad (seguridad de datos del piloto). Entra de nuevo en 📬 Waitlist o 📊 MIS y todo vuelve. | Your session closed after 30 idle minutes — log in again at 📬 Waitlist or 📊 MIS.';
+      document.body.insertBefore(av, document.body.firstChild);
+      setTimeout(function(){try{av.remove();}catch(e){}}, 25000);
+    }
+    var LIMITE=30*60*1000, K='ns_idle_ts';
+    var haySesion=function(){
+      for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
+        if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)return true;}
+      return false;};
+    if(!haySesion())return;
+    var toca=function(){try{localStorage.setItem(K,String(Date.now()));}catch(e){}};
+    ['click','keydown','mousemove','scroll','touchstart'].forEach(function(ev){
+      window.addEventListener(ev,toca,{passive:true});});
+    toca();
+    setInterval(function(){
+      try{
+        var t=parseInt(localStorage.getItem(K)||'0',10);
+        if(!t||Date.now()-t<LIMITE)return;
+        if(!haySesion())return;
+        var fuera=[];
+        for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
+          if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)fuera.push(k);}
+        fuera.forEach(function(k){localStorage.removeItem(k);});
+        localStorage.removeItem(K);
+        try{localStorage.setItem('ns_idle_aviso','1');}catch(e){}
+        location.reload();
+      }catch(e){}
+    },60000);
+  }catch(e){}
+})();
+</script>
+<script>
+/* ns-pase-directo (r23 · 28-ago): SSO founders hub↔StartUp Admin.
+   EMISOR: al pinchar un enlace hacia la otra superficie con sesión viva,
+   pide un pase de UN uso a la Edge pase-directo (solo admins) y lo manda en
+   el FRAGMENTO. RECEPTOR: consume el pase en /auth/v1/verify, guarda la
+   sesión nueva y recarga — sin re-teclear contraseña. El MFA de StartUp
+   Admin se pide igual. Cualquier fallo = navegación normal de siempre. */
+(function(){
+  try{
+    var SB='https://nebkqncvapelrarruyqb.supabase.co';
+    var ANON='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+    var SBKEY='sb-nebkqncvapelrarruyqb-auth-token';
+    var FN=SB+'/functions/v1/pase-directo';
+    var sesion=function(){try{var s=JSON.parse(localStorage.getItem(SBKEY)||'null');
+      return (s&&s.access_token)?s:null;}catch(e){return null;}};
+    var esOtra=function(h){try{var u=new URL(h, location.href);return u.hostname==='admin.nutrisynccollective.com';}catch(e){return false;}};
+
+    /* — receptor — */
+    var m=(location.hash||'').match(/[#&]nspase=([^&]+)/);
+    if(m){
+      history.replaceState(null,'',location.pathname+location.search);
+      if(!sesion()){
+        fetch(SB+'/auth/v1/verify',{method:'POST',
+          headers:{apikey:ANON,'content-type':'application/json'},
+          body:JSON.stringify({type:'magiclink',token_hash:decodeURIComponent(m[1])})})
+        .then(function(r){return r.json();})
+        .then(function(j){
+          if(j&&j.access_token){
+            if(!j.expires_at&&j.expires_in)j.expires_at=Math.floor(Date.now()/1000)+j.expires_in;
+            localStorage.setItem(SBKEY,JSON.stringify(j));
+            location.reload();
+          }
+        }).catch(function(){});
+      }
+    }
+
+    /* — reto TOTP: de aal1 a aal2 (r24-r · S15) ————————————————————————————
+       El login del hub (signInWithPassword) y el receptor del pase acuñan
+       sesión aal1 SIN reto. Para un admin con TOTP verificado, is_admin_mfa()
+       exige aal2 → todas las RPC admin mueren con 400. Este gate, sobre el
+       MISMO estilo raw del navbar (sin vendor, sin CDN — po74), detecta la
+       sesión aal1 con factor verificado y refuerza con un teclado barajado.
+       Devuelve una promesa; auto-corre al cargar cualquier página del hub. */
+    var jwtAal=function(tok){try{return JSON.parse(atob(tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).aal;}catch(e){return null;}};
+    window.nsMfaReforzar=function(){
+      return new Promise(function(resolve){
+        var s=sesion();
+        if(!s||!s.access_token||jwtAal(s.access_token)==='aal2'){resolve(true);return;}
+        var H={apikey:ANON,authorization:'Bearer '+s.access_token,'content-type':'application/json'};
+        fetch(SB+'/auth/v1/user',{headers:H}).then(function(r){return r.json();}).then(function(u){
+          var fac=((u&&u.factors)||[]).filter(function(f){return f.factor_type==='totp'&&f.status==='verified';})[0];
+          if(!fac){resolve(false);return;}            // aal1 sin factor: is_admin_mfa perdona
+          var EN=(function(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+            return (v||((navigator.language||'en').toLowerCase().indexOf('es')===0?'es':'en'))==='en';})();
+          var T=function(es,en){return EN?en:es;};
+          var pin='',teclas=[0,1,2,3,4,5,6,7,8,9];
+          for(var i=teclas.length-1;i>0;i--){var k=Math.floor(Math.random()*(i+1));var tmp=teclas[i];teclas[i]=teclas[k];teclas[k]=tmp;}
+          var ov=document.createElement('div');ov.id='ns-mfa-ov';
+          ov.setAttribute('style','position:fixed;inset:0;z-index:99999;background:rgba(20,14,10,.55);display:flex;align-items:center;justify-content:center;font-family:Poppins,system-ui,sans-serif');
+          ov.innerHTML='<div style="background:#FFFDF8;border-radius:18px;max-width:380px;width:92%;padding:22px 20px;box-shadow:0 18px 50px rgba(0,0,0,.3)">'
+            +'<div style="font-weight:800;font-size:16px;color:#241D1A;margin-bottom:4px">🔐 '+T('Refuerza tu sesión','Reinforce your session')+'</div>'
+            +'<div style="font-size:13px;color:#5f564f;margin-bottom:14px">'+T('Introduce el código de tu app de autenticación para usar las herramientas de administradora.','Enter the code from your authenticator app to use the admin tools.')+'</div>'
+            +'<div id="nsmd" style="display:flex;gap:11px;justify-content:center;margin:8px 0 16px"></div>'
+            +'<div id="nsmp" style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:#EFE3D7;border:1px solid #EFE3D7;border-radius:14px;overflow:hidden"></div>'
+            +'<button id="nsmc" style="margin-top:12px;background:none;border:0;font:600 12.5px Poppins,system-ui,sans-serif;color:#8A7F78;cursor:pointer;text-decoration:underline">'+T('Borrar','Clear')+'</button>'
+            +'<div id="nsme" style="color:#D93030;font-size:12.5px;min-height:16px"></div></div>';
+          document.body.appendChild(ov);
+          var dots=ov.querySelector('#nsmd'),pad=ov.querySelector('#nsmp'),err=ov.querySelector('#nsme');
+          var pinta=function(){var h='';for(var d=0;d<6;d++){h+='<div style="width:22px;height:22px;border-radius:50%;border:2px solid '+(d<pin.length?'#0F6E56':'#E8B072')+';background:'+(d<pin.length?'#0F6E56':'#fff')+'"></div>';}dots.innerHTML=h;};
+          pad.innerHTML=teclas.map(function(d){return '<button type="button" data-d="'+d+'" style="background:#fffdfa;border:0;font:800 24px/1 Poppins,system-ui,sans-serif;color:#241D1A;padding:18px 0;cursor:pointer">'+d+'</button>';}).join('');
+          var verifica=function(){
+            err.textContent=T('Comprobando…','Checking…');
+            fetch(SB+'/auth/v1/factors/'+fac.id+'/challenge',{method:'POST',headers:H,body:'{}'})
+            .then(function(r){return r.json();}).then(function(ch){
+              if(!ch||!ch.id){throw new Error(ch&&ch.error_description||'challenge');}
+              return fetch(SB+'/auth/v1/factors/'+fac.id+'/verify',{method:'POST',headers:H,
+                body:JSON.stringify({challenge_id:ch.id,code:pin})}).then(function(r){return r.json();});
+            }).then(function(v){
+              if(v&&v.access_token){
+                if(!v.expires_at&&v.expires_in)v.expires_at=Math.floor(Date.now()/1000)+v.expires_in;
+                localStorage.setItem(SBKEY,JSON.stringify(v));
+                ov.remove(); resolve(true); location.reload();
+              }else{err.textContent=T('Código no válido','Invalid code');pin='';pinta();}
+            }).catch(function(){err.textContent=T('Código no válido','Invalid code');pin='';pinta();});
+          };
+          pad.onclick=function(ev){var b=ev.target.closest('button[data-d]');if(!b||pin.length>=6)return;pin+=b.getAttribute('data-d');pinta();if(pin.length===6)verifica();};
+          ov.querySelector('#nsmc').onclick=function(){pin='';err.textContent='';pinta();};
+          pinta();
+        }).catch(function(){resolve(false);});
+      });
+    };
+    if(sesion()) window.nsMfaReforzar();   // auto: refuerza tras pase o carga con sesión aal1
+
+    /* — emisor — */
+    document.addEventListener('click',function(ev){
+      try{
+        if(ev.defaultPrevented||ev.button!==0||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.altKey)return;
+        var a=ev.target&&ev.target.closest?ev.target.closest('a[href]'):null;
+        if(!a||a.target==='_blank'||!esOtra(a.href))return;
+        var s=sesion(); if(!s)return;
+        ev.preventDefault();
+        var destino=a.href, ac=new AbortController();
+        var t=setTimeout(function(){ac.abort();},2500);
+        fetch(FN,{method:'POST',signal:ac.signal,
+          headers:{apikey:ANON,authorization:'Bearer '+s.access_token,'content-type':'application/json'},
+          body:'{}'})
+        .then(function(r){return r.json();})
+        .then(function(j){clearTimeout(t);
+          location.href=(j&&j.pase)?destino+'#nspase='+encodeURIComponent(j.pase):destino;})
+        .catch(function(){clearTimeout(t);location.href=destino;});
+      }catch(e){}
+    },true);
+  }catch(e){}
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar -->
+
+<h1>🤖 51 — O3 · Health Connect: la salud de Android existe de verdad (UST-16, propuesta)</h1>
+<div class="meta">INTERNO · PROPUESTA pendiente de validación fila a fila (D1–D8). Nada construido. Lo que se afirma está leído del <code>.d.ts</code> de react-native-health-connect 4.1.3 instalado, del código de appdev o medido en la base.</div>
+<p><a class="btn" href="/hub/documentation/ust/UST-2026-09-08-16-app-o3-health-connect-android.pdf">UST-16 · PDF</a><a class="btn" href="/hub/documentation/ust/UST-2026-09-08-16-app-o3-health-connect-android.docx">Word</a></p>
+
+<h2>1 · El pedido, literal</h2>
+<p>Juanjo, 8-sep 2026, ~19:00 EEST, con la OTA 0.23.5 ya en su Android:</p>
+<div class="q">«the Android app, the switch for the health is not there, the signals screens are not there, the movement dashboard is not there»</div>
+<p>Las tres ausencias son correctas y firmadas — y precisamente por eso hay que llenarlas. UST-09 C2 (OTA 0.23.4, 7-sep) escondió el switch y el cockpit en Android porque no había fuente de pasos; UST-15 C2 (D2, hoy) cerró la pantalla de señales porque escribía una conexión que nada leía. Cerramos los callejones sin poner nada en su lugar: hoy Android no tiene salud, ni honesta ni deshonesta. Esta UST la construye.</p>
+
+<h2>2 · Lo que hay hoy (medido, no de memoria)</h2>
+<table class="t "><thead><tr><th>Qué</th><th>Hecho</th></tr></thead><tbody><tr><td>El módulo nativo YA está compilado</td><td>react-native-health-connect 4.1.3 entró en package.json y en app.json el 25-ago (commit a74cc6c, UST-06) y viajó en los builds 0.23.0 (2-sep) y 0.23.1 (4-sep). El paquete trae su carpeta android/ (autolinking) y su plugin añade al manifest el intent-filter obligatorio androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE, el alias ViewPermissionUsageActivity y el &lt;queries&gt; de com.google.android.apps.healthdata. CONSECUENCIA: O3 es JS puro para los runtimes 0.23.x → sale por OTA, sin build nuevo ni revisión de tiendas.</td></tr><tr><td>Los 9 permisos ya están declarados</td><td>app.json → android.permissions: READ_SLEEP · READ_EXERCISE · READ_MENSTRUATION · READ_STEPS · READ_ACTIVE_CALORIES_BURNED · READ_RESTING_HEART_RATE · READ_HEART_RATE_VARIABILITY · READ_SKIN_TEMPERATURE · WRITE_MENSTRUATION. Cubren EXACTAMENTE las 8 señales de mapping.SIGNALS y el write-back del período: no falta ninguno y no sobra ninguno.</td></tr><tr><td>Lo único que falta es el JS</td><td>Cero imports de react-native-health-connect en src/ (medido con grep el 8-sep). sync.ts busca solo la conexión apple_health (l.119/131) y healthkit.ts devuelve null fuera de iOS (l.66): la ruta de Android termina en NO_CORRIO. Es un endpoint declarado en el manifest sin controlador detrás — la ruta existe, el handler no.</td></tr><tr><td>Qué ve hoy una mujer con Android (OTA 0.23.5)</td><td>Movimiento: tarjeta STEPS «Tus pasos llegarán con Health Connect, en una próxima versión», sin switch y sin cockpit. Dispositivos conectados: sin Apple Health; Health Connect y Samsung en «Pronto», sin botón. Registro diario: sin invitación. Todo honesto, todo vacío.</td></tr><tr><td>Quién lo va a ver</td><td>Dos humanas han abierto la app en Android alguna vez: merydubois95 (runtime 0.23.1, 6-sep) y Juanjo (runtime 0.22.0, última apertura 18-ago). Cinco correos en la lista de internal testing de Play. AVISO IMPORTANTE: el binario 0.22.0 es ANTERIOR al 25-ago, así que NO lleva el módulo — el Android de Juanjo tiene que actualizarse desde Play a 0.23.1 para ver O3 (r17: una dependencia en package.json no es una dependencia en el binario).</td></tr><tr><td>Lo que iOS ya tiene y sirve de plantilla</td><td>healthkit.ts (adaptador con guardas y fallbacks de firma), sync.ts (ventana, dedupe, subida por lotes, sugerencia solo de campos vacíos), HealthConsentScreen (consent señal a señal + modo edición), el switch de Movimiento, el cockpit de pasos, health_signal + health_connections en la base y la RPC pasos_por_dia v3. O3 NO inventa arquitectura: rellena el segundo proveedor de una que ya funciona.</td></tr></tbody></table>
+<div class="av"><b>Aviso que cambia el plan:</b> el módulo nativo viaja en los binarios <b>0.23.0 y 0.23.1</b>, así que O3 sale por OTA — pero el Android de Juanjo corre el runtime <b>0.22.0</b>, anterior al módulo: tiene que actualizar desde Play para verlo. merydubois95 ya está en 0.23.1.</div>
+
+<h2>3 · Qué da Health Connect, señal a señal</h2>
+<table class="t hc"><thead><tr><th>Nuestra señal</th><th>En Health Connect</th><th>En Apple Salud (ya construido)</th><th>Diferencia y qué implica</th></tr></thead><tbody><tr><td>sleep_minutes</td><td>SleepSession (readRecords) — con stages opcionales</td><td>HKCategoryTypeIdentifierSleepAnalysis</td><td>Equivalente. Se suman los tramos como en iOS; los stages, si vienen, permiten afinar «dormida» sin inventar nada.</td></tr><tr><td>workout</td><td>ExerciseSession (readRecords)</td><td>HKWorkoutType</td><td>Equivalente: duración de la sesión.</td></tr><tr><td>menstrual_flow</td><td>MenstruationFlow (readRecords) · flow: 0 UNKNOWN · 1 LIGHT · 2 MEDIUM · 3 HEAVY</td><td>HKCategoryValueMenstrualFlow: 1 unspecified · 2 light · 3 medium · 4 heavy · 5 none</td><td>DISTINTA: Health Connect NO tiene «ninguno» y numera del 0 al 3. Conversión propia (pura, con unitarios); 0 = UNKNOWN se queda en null, como el «unspecified» de Apple (regla vigente: no se inventa un nivel).</td></tr><tr><td>steps</td><td>aggregateGroupByDuration({recordType:"Steps", timeRangeSlicer:{duration:"HOURS"}}) → COUNT_TOTAL por hora, YA fusionado por la plataforma entre apps</td><td>queryStatisticsCollectionForQuantity (cumulativeSum) — lo construido hoy en UST-09 C3</td><td>Equivalente EXACTO y la misma cura: la agregación de Health Connect deduplica solapes entre fuentes igual que la estadística de HealthKit. Una hora = una fila con fuente hc_merged, y la RPC pasos_por_dia v3 (8-sep) ya prefiere la hora fusionada. Simetría gratis.</td></tr><tr><td>active_energy</td><td>ActiveCaloriesBurned</td><td>HKQuantityTypeIdentifierActiveEnergyBurned</td><td>Equivalente.</td></tr><tr><td>resting_hr</td><td>RestingHeartRate</td><td>HKQuantityTypeIdentifierRestingHeartRate</td><td>Equivalente.</td></tr><tr><td>hrv</td><td>HeartRateVariabilityRmssd</td><td>HKQuantityTypeIdentifierHeartRateVariabilitySDNN</td><td>PARECIDA, no idéntica: RMSSD y SDNN son dos medidas distintas de la misma variabilidad. Se guarda con su unidad y su origen; comparar entre plataformas es cosa de Constanza, no del adaptador.</td></tr><tr><td>wrist_temperature</td><td>SkinTemperature (+ BasalBodyTemperature)</td><td>HKQuantityTypeIdentifierAppleSleepingWristTemperature</td><td>PARECIDA: temperatura de la piel, no de la muñeca dormida. Misma familia, sensor distinto → decisión D3.</td></tr><tr><td>write-back del período</td><td>insertRecords([{recordType:"MenstruationFlow", flow}])</td><td>saveCategorySample (O2, ya construido)</td><td>Equivalente, con el hueco de arriba: nuestro nivel 0 («ninguno») no tiene destino en Health Connect → decisión D2.</td></tr></tbody></table>
+
+<h2>4 · Cambios, fila a fila</h2>
+<table class="t "><thead><tr><th>Qué</th><th>Qué se construirá</th><th>Cómo se verificará</th></tr></thead><tbody><tr><td>C1 · Adaptador healthconnect.native.ts</td><td>Espejo de healthkit.ts con la misma FORMA (disponible / pedirPermisos / leer / escribirFlujo) para que sync.ts no sepa de plataformas: getSdkStatus + initialize (guardas), requestPermission con los 8 tipos de lectura (+ WRITE_MENSTRUATION si procede), readRecords por señal y aggregateGroupByDuration para pasos. Fichero .native.ts + pareja .ts que devuelve null (patrón crash/hkNativo, r22): el literal del módulo nativo NUNCA entra en el bundle web.</td><td>jest: conversión de flujo numérico, mapeo de RecordType→SignalType y forma de RawSample con dobles del módulo. Dispositivo: un Android con Health Connect y datos reales.</td></tr><tr><td>C2 · Disponibilidad honesta (SDK status)</td><td>Health Connect es parte del sistema en Android 14+ y una app de Play en Android 13-. getSdkStatus devuelve SDK_UNAVAILABLE / PROVIDER_UPDATE_REQUIRED / AVAILABLE y cada caso tiene su pantalla: instalar (enlace a Play), actualizar, o adelante. Nunca un botón que no hace nada (la lección P0 de UST-15).</td><td>Tres estados forzados con el estado simulado; en dispositivo, un Android 13 sin Health Connect enseña «instalar» y el enlace abre Play.</td></tr><tr><td>C3 · Consentimiento de Android, señal a señal</td><td>HealthConsentScreen deja de estar cerrada en Android: mismo diseño y mismos textos de UST-06 (ya firmados), con los nombres de Health Connect. Al aceptar: requestPermission → el sistema abre SU pantalla de permisos (Android decide, no nosotros) → se guarda en health_connections lo que el usuario CONCEDIÓ (getGrantedPermissions), no lo que pedimos. Si concede menos, la fila lo refleja: nada de conexiones optimistas.</td><td>La fila de health_connections lista exactamente los scopes concedidos; denegar todo NO crea conexión.</td></tr><tr><td>C4 · Sync con dos proveedores</td><td>sync.ts deja de buscar «la conexión apple_health» y busca «la conexión de ESTA plataforma» (una función pura proveedorDePlataforma). El resto —ventana, dedupe, lotes, upsert, sugerencia de campos vacíos— no se toca: es el mismo camino. Los pasos entran por la vía fusionada (fuente hc_merged) con la misma forma que hk_merged.</td><td>jest sobre la elección de proveedor y sobre resumenDeHoy con filas hc_merged; en la base, filas con provider=health_connect y su fuente.</td></tr><tr><td>C5 · Switch y cockpit en Android</td><td>Se retira el gate Platform.OS === "ios" de Movimiento: el switch dice «Health Connect» y el cockpit pinta los pasos reales. La tarjeta STEPS recupera «Hoy, desde Health Connect». En iPhone, ni una línea cambia.</td><td>Android: switch conecta y los pasos aparecen; cockpit con hoy/ciclo/fase/mes/trimestre/año. iPhone: captura antes/después idéntica.</td></tr><tr><td>C6 · Write-back del período (O2 en Android)</td><td>El mismo toggle separado y apagado por defecto de iOS: al registrar el período, insertRecords en Health Connect si ella lo activó. Idempotente (no duplica el mismo día) y jamás bloquea el guardado.</td><td>Registrar período con el toggle ON → aparece en Health Connect; con el toggle OFF → no aparece; dos veces el mismo día → una sola entrada.</td></tr><tr><td>C7 · Pantalla de justificación (rationale) — la exige Google</td><td>Android puede abrir la app directamente en androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE (desde los ajustes de Health Connect). El intent-filter ya está en el manifest desde el 25-ago, pero HOY nadie lo atiende: la app abriría en la Home. Se añade una ruta que explica para qué usamos cada señal y enlaza la política de privacidad. Sin esto, Play puede rechazar la declaración de salud.</td><td>adb: lanzar el intent → la app abre la pantalla de justificación, no la Home.</td></tr><tr><td>C8 · Textos y catálogos</td><td>Las claves nuevas (nombre del proveedor, estados del SDK, justificación) en los 14 catálogos; en Android «Health Connect» donde iOS dice «Apple Salud» — la misma pieza, el nombre de cada plataforma.</td><td>Test de catálogos: paridad en el bloque cerrado mob.wear.</td></tr><tr><td>C9 · Observabilidad</td><td>La sonda de retención Android (2026-09-04) y el cockpit ya existen; se añade a la sonda una columna «señales sincronizadas» para ver, sin preguntar, si Health Connect entrega de verdad en los móviles de las testers.</td><td>Sonda re-ejecutable en el SQL Editor tras la OTA.</td></tr><tr><td>Lo que NO cambia</td><td>iOS: healthkit.ts, el switch, el cockpit, el consent y el write-back se quedan como están (C5 solo retira un gate de plataforma). Nada de la base cambia de forma: health_signal y health_connections ya tienen columna provider; la RPC pasos_por_dia v3 ya prefiere la hora fusionada, venga de donde venga. Cero SQL nuevo salvo la sonda.</td><td>jest completo verde, tsc 0, pwa-tests (ningún import nativo en el bundle web) y captura iPhone antes/después idéntica.</td></tr></tbody></table>
+
+<h2>5 · Análisis de impacto</h2>
+<table class="t "><thead><tr><th>Dónde</th><th>Qué toca</th><th>Qué NO toca</th></tr></thead><tbody><tr><td>repos/appdev · lógica pura</td><td>src/lib/health/hcMapping.ts (nuevo): flujoHCaNivel, tipoHCaSignal, nivelAFlujoHC — con unitarios. src/lib/health/proveedor.ts (nuevo): proveedorDePlataforma(so) y nombreProveedor(so).</td><td>mapping.ts (SIGNALS y suggestDailyLog no se tocan), cas, cycleStats, progress, recs.</td></tr><tr><td>repos/appdev · IO</td><td>healthconnect.native.ts + healthconnect.ts (pareja web) NUEVOS. sync.ts: el proveedor deja de estar cableado a apple_health (≈15 líneas). healthkit.ts: sin cambios.</td><td>La subida por lotes, el upsert y la ventana de sync.</td></tr><tr><td>repos/appdev · pantallas</td><td>HealthConsentScreen (deja de cerrarse en Android + estados del SDK), MovementLogScreen (se retira el gate de plataforma en switch y cockpit; texto de la tarjeta), ConnectedDevicesScreen (Health Connect pasa de «Pronto» a conectable), WearInvite (vuelve en Android), AppStack (ruta de justificación).</td><td>NutriLog, Calendario, Progreso, foto de comida, ciclo, notificaciones.</td></tr><tr><td>Backend</td><td>Ninguno obligatorio: health_signal.provider y health_connections.provider ya existen y pasos_por_dia v3 ya trata la hora fusionada por su metadata. Solo la sonda de observabilidad (solo lectura).</td><td>Tablas, RLS, crons, Edge Functions.</td></tr><tr><td>i18n</td><td>≈8 claves nuevas × 14 catálogos, dentro del bloque cerrado mob.wear (el test exige paridad).</td><td>El resto de los catálogos.</td></tr><tr><td>A quién llega y a quién NO</td><td>OTA a los 7 runtimes, pero O3 solo FUNCIONA en 0.23.0 y 0.23.1 (los binarios que llevan el módulo). En 0.18–0.22 la app se comporta exactamente como hoy: el adaptador devuelve «no disponible» y la pantalla enseña el mensaje de siempre. El Android de Juanjo (0.22.0) tiene que actualizar desde Play para verlo; merydubois95 (0.23.1) lo verá al abrir dos veces.</td><td>—</td></tr><tr><td>Qué puede romper y cómo se sabrá</td><td>Permisos concedidos a medias: se guardan los concedidos, no los pedidos (C3), así que la app nunca promete lo que no tiene. Android sin Health Connect: pantalla de instalación, no error. Pasos duplicados: la vía fusionada es la única que sube pasos en Android (misma regla que iOS). El write-back es opt-in y jamás bloquea el guardado. Y el interruptor de emergencia sigue siendo el de siempre: EXPO_PUBLIC_FLAG_CONNECTORS=false + OTA apaga toda la capa de salud sin pasar por tiendas (y la Propuesta 50 lo convertirá en un interruptor desde el hub).</td><td>—</td></tr></tbody></table>
+
+<h2>6 · Decisiones (fila a fila, para Juanjo)</h2>
+<table class="t "><thead><tr><th>#</th><th>Propuesta</th><th>Alternativa</th><th>Decisión</th></tr></thead><tbody><tr><td>D1</td><td>Alcance del primer incremento: LAS 8 SEÑALES de golpe (los 9 permisos ya están declarados y el adaptador es el mismo trabajo para una que para ocho).</td><td>Solo las esenciales (sueño, entreno, flujo) + pasos en el primer incremento; energía, FC en reposo, VFC y temperatura en un segundo.</td><td></td></tr><tr><td>D2</td><td>Flujo menstrual: Health Connect numera 0-3 y NO tiene «ninguno». Al LEER, 0 (UNKNOWN) → null (lo confirma ella, como el «unspecified» de Apple). Al ESCRIBIR, nuestro nivel 0 no se escribe (se omite el día); 1-3 se escriben tal cual.</td><td>Al escribir, el nivel 0 se manda como UNKNOWN (0) para dejar constancia del día sin flujo.</td><td></td></tr><tr><td>D3</td><td>Temperatura: SkinTemperature de Health Connect entra como la MISMA señal wrist_temperature, con su origen anotado en metadata (no es la muñeca dormida de Apple).</td><td>Señal propia skin_temperature separada, para no mezclar dos sensores en la misma serie — decide Constanza si entra en algún cálculo.</td><td></td></tr><tr><td>D4</td><td>Sin Health Connect en el móvil (Android 13-): pantalla propia con «Instalar Health Connect» y enlace a Play; la conexión espera.</td><td>Ocultar la sección entera en esos móviles y no mencionarlo.</td><td></td></tr><tr><td>D5</td><td>Justificación (rationale): pantalla PROPIA en la app, con las señales y su para qué, y un enlace a la política de privacidad de la web.</td><td>Abrir directamente la política de privacidad en el navegador (menos trabajo, peor experiencia y menos control del texto).</td><td></td></tr><tr><td>D6</td><td>Vehículo: OTA 0.23.7 (después de la 0.23.6 = UST-14), a los 7 runtimes; funciona en 0.23.0/0.23.1 y no altera nada en los anteriores. Nada de esperar al build nativo.</td><td>Esperar a la 0.24.0 (icono + permisos + App Links) y entregarlo todo junto — retrasa Android varias semanas.</td><td></td></tr><tr><td>D7</td><td>Carril: TÉCNICO (Juanjo decide y ejecuta; Pilar y Lucía informadas y corroboran). Son las MISMAS señales y los MISMOS textos de consentimiento que UST-06 ya firmó para iOS, en otra plataforma.</td><td>Carril PRODUCTO: firma previa de Pilar y Lucía por ser datos de salud en una plataforma nueva.</td><td></td></tr><tr><td>D8</td><td>Play Console: Pilar (cumplimiento) revisa y envía la declaración del formulario de salud + la política de privacidad ANTES de que O3 llegue a la pista cerrada. Va como tarea suya, no como parte del código.</td><td>Lo envía Juanjo con el texto que ya existe y Pilar lo corrobora después.</td><td></td></tr></tbody></table>
+
+<h2>7 · Baseline, verificación y marcha atrás</h2>
+<table class="t "><thead><tr><th>Momento</th><th>Qué se comprueba</th></tr></thead><tbody><tr><td>PASO 0 · Baseline (Juanjo, en el Mac, ANTES de tocar)</td><td>"/Users/juanjo/SKG_AI_Tribe_Projects/NutriSync/tools/ota-baseline.sh" → los 14 update-id vigentes por runtime (hoy los de la 0.23.5, log ota-baseline-20260908-181847.txt). appdev en su sha limpio. Sin baseline escrita no hay marcha atrás, hay adivinanza (regla 7-sep).</td></tr><tr><td>Antes de empezar · el móvil de pruebas</td><td>El Android de Juanjo tiene que estar en 0.23.1 (Play → actualizar) y con Health Connect instalado y con datos: sin eso no hay nada que verificar. Alternativa: pedirle a merydubois95 (ya en 0.23.1) que lo pruebe con el What to Test.</td></tr><tr><td>Local (sandbox)</td><td>jest (unitarios nuevos: conversión de flujo HC, mapeo de tipos, elección de proveedor, resumen con filas hc_merged) + catálogos ×14 + tsc 0 + pwa-tests (el literal react-native-health-connect NO aparece en el código que va al navegador).</td></tr><tr><td>Android de Juanjo, ANTES de publicar al resto</td><td>Publicar la OTA SOLO al runtime 0.23.1·android (app.json a 0.23.1 + eas update --platform android), abrir dos veces y recorrer el What to Test: instalar/permisos, conexión, pasos de hoy = los de Health Connect, cockpit, sueño y entreno del día, período escrito de vuelta, y el intent de justificación.</td></tr><tr><td>iPhone, ANTES de publicar al resto</td><td>Captura de Movimiento y Ajustes antes/después: idénticas. Apple Salud conectada, cockpit con los pasos fusionados de la 0.23.5, «Choose what to track» donde estaba.</td></tr><tr><td>Publicar</td><td>OTA NutriSync App.command "UST-16 · Health Connect en Android (0.23.7)" → 7 runtimes → curl u.expo.dev con las runtime-version reales → cerrar dos veces. Después, sonda de observabilidad en el SQL Editor.</td></tr><tr><td>Marcha atrás</td><td>tools/Rollback OTA NutriSync.command "0.23.6" (o "0.23.5" si UST-14 aún no ha salido): republica el estado anterior en los 7 runtimes; puntero, no compila. Nada que revertir en la base. Interruptor de emergencia intermedio: EXPO_PUBLIC_FLAG_CONNECTORS=false + OTA apaga la capa de salud entera en las dos plataformas.</td></tr></tbody></table>
+
+<h2>8 · What to Test (Android) — para las testers</h2>
+<ol><li>Ajustes → Dispositivos conectados: Health Connect ya no dice «Pronto» — tiene botón de conectar.</li><li>Al conectar: se abre la pantalla de permisos de Android (la del sistema); acepta unas cuantas y rechaza otras.</li><li>Vuelve a NutriSync: en «Elige qué seguir» aparecen marcadas SOLO las que aceptaste.</li><li>Movimiento: la tarjeta PASOS enseña los pasos de hoy y coinciden con los de Health Connect.</li><li>Movimiento: debajo aparece el resumen de pasos (hoy, ciclo, fase, mes, trimestre, año).</li><li>Registro diario: el sueño y el entrenamiento de hoy se rellenan solos si Health Connect los tiene; lo que escribas tú manda siempre.</li><li>Si activas «escribir mi período en Health Connect» y registras el período, aparece en Health Connect (y solo una vez).</li><li>Si tu móvil no tiene Health Connect: la app te ofrece instalarlo con un enlace, no un botón muerto.</li><li>Desconectar: la sincronización se detiene al instante.</li></ol>
+
+<h2>9 · La cadena</h2>
+<table class="t "><thead><tr><th>Paso</th><th>Estado</th></tr></thead><tbody><tr><td>UST</td><td>Este documento (propuesta). Nada construido.</td></tr><tr><td>Sign-off</td><td>Juanjo, D1–D8 fila a fila. D8 lleva encargo a Pilar (declaración de salud en Play Console).</td></tr><tr><td>Dev</td><td>hcMapping + proveedor (puros, con unitarios) → healthconnect.native.ts → sync de dos proveedores → pantallas (consent, Movimiento, Dispositivos, invitación) → ruta de justificación → catálogos ×14. ≈1 día. Un commit en appdev.</td></tr><tr><td>Test</td><td>jest + catálogos + tsc + pwa-tests; y un Android REAL con Health Connect y datos antes de publicar al resto (regla 7-sep: validar antes de sobrescribir lo que funciona).</td></tr><tr><td>Deployment</td><td>OTA 0.23.7 primero al runtime 0.23.1·android, luego a los 7 → curl u.expo.dev.</td></tr><tr><td>Verification</td><td>What to Test en el Android de Juanjo (y de merydubois95) + captura iPhone idéntica + sonda de señales sincronizadas en la base.</td></tr><tr><td>hub + Notion</td><td>UST-16 en documentation/ust + doc 51 + tablero (release 0.23.7 con items C1–C9) + Notion cuando el workspace vuelva a escribir (hoy sin bloques).</td></tr></tbody></table>
+<p class="nota">NutriSync Engineering · UST-2026-09-08-16 · Propuesta sin firma.</p>
+</body></html>
