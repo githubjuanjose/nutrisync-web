@@ -2019,6 +2019,12 @@ if os.path.exists(_ibc):
       '<a href="/hub/docs/NutriSync-Financial-Model-2026-08.xlsx" '
       'style="display:inline-block;background:#fff;color:#241D1A;font-weight:800;font-size:13px;'
       'border-radius:22px;padding:10px 20px;text-decoration:none">📊 Financial model (Excel · Aug 2026)</a>'
+      '<a href="/hub/docs/NutriSync_Value_and_Business_Proposal_EN_v1_0.pdf" '
+      'style="display:inline-block;background:#fff;color:#241D1A;font-weight:800;font-size:13px;'
+      'border-radius:22px;padding:10px 20px;text-decoration:none">💼 Value & Business Proposal v1.0 (Sep 2026)</a>'
+      '<a href="/hub/docs/NutriSync_Capital_and_GTM_Planning_EN_v1_0.xlsx" '
+      'style="display:inline-block;background:#fff;color:#241D1A;font-weight:800;font-size:13px;'
+      'border-radius:22px;padding:10px 20px;text-decoration:none">📈 Capital & GTM workbook (Excel · Sep 2026)</a>'
       '<span style="font-size:11px;color:#B8AAA0">Deck PDF/PPTX archived internally (28 MB) · ask contact@nutrisynccollective.com</span>'
       '</div></div></div><!-- /ns-pitch-deck -->')
     _bh = re.sub(r'<div id="ns-historia"[\s\S]*?</div><!-- /ns-historia -->', '', _bh)
