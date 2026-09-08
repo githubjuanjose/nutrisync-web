@@ -1,0 +1,754 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>47 · Meals como bowl — ficha-recetario por fase y «¿Sin ideas?» (prototipo)</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.6}
+.w{max-width:1180px;margin:0 auto;padding:30px 22px 90px}
+h1{font-size:24px;margin:0 0 6px}h2{font-size:17px;margin:34px 0 10px;color:#C73A20}h3{font-size:14px;margin:18px 0 6px}
+p,li{font-size:14px}.meta{color:#8A7F78;font-size:12.5px;margin-bottom:18px}
+code{background:#F4F0EA;border-radius:5px;padding:1px 6px;font-size:12.5px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+th,td{padding:7px 9px;border-bottom:1px solid #EFE3D7;text-align:left;vertical-align:top}
+th{color:#8A7F78;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.tag{display:inline-block;font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#E8F5EE;color:#0F6E56;margin-right:5px}
+.box{background:#FFF8EF;border-left:3px solid #E8B072;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;margin:12px 0}
+.rojo{background:#FFF1EC;border-left:3px solid #E8472A}
+/* ── prototipo ── */
+.flow{display:flex;gap:26px;overflow-x:auto;padding:16px 4px 22px;scroll-snap-type:x proximity}
+.step{flex:0 0 300px;scroll-snap-align:start}
+.step .cap{font-size:12px;color:#5C534E;margin-top:10px;line-height:1.5}
+.step .cap b{color:#241D1A}.step .num{display:inline-block;background:#241D1A;color:#fff;font-size:10.5px;font-weight:800;border-radius:999px;padding:1px 8px;margin-right:6px}
+.phone{width:300px;height:640px;border-radius:38px;border:6px solid #241D1A;background:linear-gradient(#FCF1EC,#F5F2EB 30%);overflow:hidden;position:relative;box-shadow:0 14px 34px rgba(36,29,26,.16);font-size:12px}
+.phone .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:110px;height:22px;background:#241D1A;border-radius:0 0 16px 16px;z-index:2}
+.scr{position:absolute;inset:0;padding:38px 14px 14px;overflow-y:auto;overflow-x:hidden}
+.scr::-webkit-scrollbar{width:0}
+.bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.bar .t{font-weight:700;font-size:14px}.bar .back{font-size:20px;line-height:1;color:#241D1A}.bar .ic{font-size:14px;color:#8A7F78;min-width:14px}
+.pill{display:inline-block;border-radius:999px;padding:4px 10px;font-size:10.5px;font-weight:700;background:#fff;color:#241D1A;border:1px solid #F0E2D8}
+.pill.on{background:#E8472A;color:#fff;border-color:#E8472A}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border-radius:999px;padding:4px 9px;font-size:10.5px;background:#fff;border:1px solid #F0E2D8;cursor:pointer;user-select:none}
+.chip.on{background:#FBE0D9;border-color:#E8472A;color:#C73A20;font-weight:700}
+.card{background:#fff;border-radius:16px;padding:12px;box-shadow:0 6px 18px rgba(36,29,26,.06);margin-top:10px}
+.card h4{margin:0 0 4px;font-size:13px}.muted{color:#8A7F78;font-size:10.5px}
+.badge{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.4px;border-radius:999px;padding:2px 8px;background:#FBE0D9;color:#C73A20}
+.badge.ok{background:#E8F5EE;color:#0F6E56}.badge.ai{background:#F1EEF9;color:#5B4A9E}.badge.warn{background:#FFF3D6;color:#8A5A00}
+.cta{display:block;text-align:center;border-radius:999px;padding:10px;font-weight:700;font-size:12.5px;background:#E8472A;color:#fff;margin-top:10px;cursor:pointer}
+.cta.sec{background:#fff;color:#E8472A;border:1px solid #F3D9C9}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.plate{display:block;margin:6px auto}
+.sector{cursor:pointer}.sector:hover path{filter:brightness(.95)}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:22px 22px 0 0;padding:14px 14px 18px;box-shadow:0 -10px 30px rgba(0,0,0,.12)}
+.sheet .h{width:40px;height:4px;border-radius:2px;background:#E7DCD3;margin:0 auto 10px}
+.opt{display:flex;align-items:center;gap:8px;padding:7px 6px;border-bottom:1px solid #F4EBE3;cursor:pointer}
+.opt .e{font-size:18px;width:26px;text-align:center}.opt .n{font-weight:700;font-size:12px}.opt .wy{font-size:10.5px;color:#8A7F78}
+.opt.on{background:#FFF6F2;border-radius:10px}
+.ing{display:flex;justify-content:space-between;font-size:11.5px;padding:4px 0;border-bottom:1px dashed #F0E2D8}
+.coach{position:absolute;background:#241D1A;color:#fff;font-size:10.5px;padding:7px 10px;border-radius:12px;max-width:170px;line-height:1.35;z-index:3}
+.coach:after{content:'';position:absolute;width:10px;height:10px;background:#241D1A;transform:rotate(45deg)}
+.coach.up:after{top:-5px;left:20px}.coach.down:after{bottom:-5px;left:20px}
+.legend{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:12px 0}
+.legend div{border-radius:12px;padding:8px;font-size:11.5px;background:#fff;border:1px solid #F0E2D8;border-top-width:4px}
+.legend b{display:block;font-size:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.thumb{background:#fff;border-radius:14px;padding:8px;border:1px solid #F0E2D8}
+.thumb .n{font-weight:700;font-size:11px;line-height:1.3;margin-top:4px}
+@media (max-width:700px){.legend{grid-template-columns:1fr 1fr}}
+@media print{.flow{overflow:visible;flex-wrap:wrap}}
+</style><script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head><body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+/* r16b: la pestaña activa por CLASE con !important — tercera red por si algo
+   pisa el estilo en línea. La pone markActive() y el mini-marcador del final. */
+#ns-hub-navbar .nsnb-tab.on{background:linear-gradient(135deg,#FF7600,#FD400C)!important;color:#fff!important;font-weight:800!important;border-color:#FD400C!important;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)!important}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+.nsnb-tab{cursor:grab}
+.nsnb-tab.nsnb-drag{opacity:.35;cursor:grabbing}
+#nsnb-reset{display:none}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Web de marketing / marketing site"
+     aria-label="Web de marketing" style="text-decoration:none">🏠</a>
+  <a class="nsnb-btn" href="https://admin.nutrisynccollective.com" title="StartUp Admin (contabilidad del build)"
+     aria-label="StartUp Admin" style="text-decoration:none">🛠</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Competitive" href="/hub/competitive.html">🥊 Competencia</a><a class="nsnb-tab nsnb-g1" data-en="Build Roadmap → Go Live" href="/hub/launch-plan.html">🚀 Build Roadmap → Go Live</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g3" data-en="Leads" href="/hub/community-leads.html">🤝 Leads</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync Sprint Planning" href="/hub/backlog-dev.html">🗂 NutriSync Sprint Planning</a><a class="nsnb-tab nsnb-g4" data-en="Release Plan" href="/hub/release-plan.html">🚢 Releases</a><a class="nsnb-tab nsnb-g4" data-en="Compliance" href="/hub/compliance.html">🛡 Compliance</a><a class="nsnb-tab nsnb-g4" data-en="Ideation" href="/hub/roadmap.html">💡 Ideation</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g4" data-en="Design System" href="/hub/design-system.html">🎨 Design System</a><a class="nsnb-tab nsnb-g5" data-en="Documentation" href="/hub/documentation/index.html">📄 Documentación</a><a class="nsnb-tab nsnb-g5" data-en="ERP User Guide" href="/hub/user-guide.html">📖 Guía ERP</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14b (feedback Juanjo): idioma con CONMUTADOR visible y persistente.
+     localStorage ns_lang ('es'|'en') manda; sin él, el navegador decide.
+     Las páginas con data-i leen la misma clave — un idioma, todas las superficies. */
+  function nsLang(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pintaIdioma(){
+    var en=nsLang()==='en';
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      if(!a.getAttribute('data-es'))a.setAttribute('data-es',a.textContent.trim());
+      var em=a.getAttribute('data-es').split(' ')[0];
+      a.textContent=en?(em+' '+a.getAttribute('data-en')):a.getAttribute('data-es');});
+    var b=document.getElementById('nsnb-lang');if(b)b.textContent=en?'ES':'EN';
+  }
+  (function(){
+    var brand=document.querySelector('#ns-hub-navbar .nsnb-btn');
+    if(brand&&!document.getElementById('nsnb-lang')){
+      var b=document.createElement('a');b.id='nsnb-lang';b.className='nsnb-btn';b.href='#';
+      b.title='Cambiar idioma / switch language';
+      b.onclick=function(e){e.preventDefault();
+        try{localStorage.setItem('ns_lang',nsLang()==='en'?'es':'en');}catch(err){}
+        pintaIdioma();
+        document.dispatchEvent(new CustomEvent('ns-lang'));
+        if(typeof relayout==='function')relayout();
+        return false;};
+      brand.parentNode.insertBefore(b,brand);
+    }
+    pintaIdioma();
+    /* r14e: pintor data-i UNIVERSAL — cualquier página del hub con data-i="ES|EN"
+       (o data-i sin valor con "ES|EN" dentro) se vuelve bilingüe gratis. */
+    function pintaDataI(){
+      var en=nsLang()==='en';
+      document.querySelectorAll('[data-i]').forEach(function(n){
+        if(n.closest&&n.closest('#ns-hub-navbar'))return;
+        var src=n.getAttribute('data-i');
+        if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+        var p=src.split('|');
+        n.innerHTML=en?(p[1]||p[0]):p[0];});
+    }
+    document.addEventListener('ns-lang',pintaDataI);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',pintaDataI);
+    else pintaDataI();
+  })();
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  /* r16c (cazado POR JUANJO con el flash del clic): Cloudflare Pages sirve
+     URLs LIMPIAS — /hub/incidents.html se visita como /hub/incidents — así
+     que comparar con ".html" no casaba JAMÁS en carga de página. Se normaliza
+     quitando la extensión en LOS DOS lados. */
+  function nsLimpia(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';}
+  var here=nsLimpia(location.pathname.split('/').pop());
+  var dir=location.pathname.toLowerCase();
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : nsLimpia(f.split('/').pop())===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  /* r16: la marca se queda mientras estés en la página — se repinta al volver
+     del historial (bfcache), al recuperar el foco y al cambiar de pestaña del
+     navegador. Nada la apaga salvo navegar a otra página del hub. */
+  window.addEventListener('pageshow',function(){markActive();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)markActive();});
+  window.addEventListener('focus',function(){markActive();});
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  /* r14e (idea Juanjo): pestañas ARRASTRABLES — cada cual su orden, guardado
+     en este navegador (ns_tab_order). ↺ vuelve al orden de fábrica. */
+  (function(){
+    var KEY='ns_tab_order';
+    function filas(){return [document.getElementById('nsnb-r1'),document.getElementById('nsnb-r2')].filter(Boolean);}
+    function todas(){var t=[];filas().forEach(function(r){t=t.concat([].slice.call(r.querySelectorAll('.nsnb-tab')));});return t;}
+    var ORIG=todas().map(function(a){return a.getAttribute('href');});
+    function guardar(){try{localStorage.setItem(KEY,JSON.stringify(todas().map(function(a){return a.getAttribute('href');})));}catch(e){}
+      var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';}
+    function aplicar(orden){
+      var r1=document.getElementById('nsnb-r1');if(!r1)return;
+      var por={};todas().forEach(function(a){por[a.getAttribute('href')]=a;});
+      orden.forEach(function(h){if(por[h])r1.appendChild(por[h]);});
+      todas().forEach(function(a){if(orden.indexOf(a.getAttribute('href'))<0)r1.appendChild(a);});
+    }
+    try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&sv.length){aplicar(sv);
+      setTimeout(function(){var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';},0);}}catch(e){}
+    var drag=null;
+    todas().forEach(function(a){
+      a.setAttribute('draggable','true');
+      a.title=(a.title?a.title+' · ':'')+'Arrastra para reordenar / drag to reorder';
+      a.addEventListener('dragstart',function(e){drag=a;a.classList.add('nsnb-drag');
+        try{e.dataTransfer.setData('text/plain',a.getAttribute('href'));e.dataTransfer.effectAllowed='move';}catch(err){}});
+      a.addEventListener('dragend',function(){if(drag)drag.classList.remove('nsnb-drag');drag=null;});
+      a.addEventListener('dragover',function(e){e.preventDefault();if(!drag||drag===a)return;
+        var r=a.getBoundingClientRect(),antes=(e.clientX-r.left)<r.width/2;
+        a.parentNode.insertBefore(drag,antes?a:a.nextSibling);});
+      a.addEventListener('drop',function(e){e.preventDefault();guardar();relayout();});
+    });
+    filas().forEach(function(r){r.addEventListener('dragover',function(e){e.preventDefault();});
+      r.addEventListener('drop',function(e){e.preventDefault();if(drag){guardar();relayout();}});});
+    var brand=document.getElementById('nsnb-lang');
+    if(brand&&!document.getElementById('nsnb-reset')){
+      var rb=document.createElement('a');rb.id='nsnb-reset';rb.className='nsnb-btn';rb.href='#';rb.textContent='↺';
+      rb.title='Orden de pestañas original / reset tab order';
+      rb.onclick=function(e){e.preventDefault();try{localStorage.removeItem(KEY);}catch(err){}
+        aplicar(ORIG);rb.style.display='none';relayout();return false;};
+      brand.parentNode.insertBefore(rb,brand);
+    }
+  })();
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+<script>
+/* r16b · MINI-MARCADOR independiente de pestaña activa. Deliberadamente
+   separado y mínimo: si el script grande de la barra muere por lo que sea,
+   ESTE pinta igual. Solo compara el fichero de la URL con el href y pone la
+   clase .on (el CSS !important hace el resto). Se repite unos segundos por si
+   el reordenado o el motor mueven pestañas tarde. */
+(function(){
+  function marca(){
+    try{
+      /* r16c: Pages sirve URLs sin .html — normalizar ambos lados */
+      var lim=function(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';};
+      var here=lim(location.pathname.split('/').pop());
+      var esDoc=location.pathname.toLowerCase().indexOf('/documentation/')>-1;
+      document.querySelectorAll('#ns-hub-navbar .nsnb-tab').forEach(function(a){
+        var f=(a.getAttribute('href')||'').toLowerCase();
+        var on=esDoc ? f.indexOf('/documentation/')>-1 : lim(f.split('/').pop())===here;
+        a.classList.toggle('on',on);
+      });
+    }catch(e){}
+  }
+  marca();
+  var i=0,t=setInterval(function(){marca();if(++i>15)clearInterval(t);},700);
+  window.addEventListener('pageshow',marca);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
+})();
+</script>
+<script>
+/* ns-idle-logout (0.23.0 · UST-06 G1): 30 min sin actividad en el hub → fuera.
+   Central en el navbar = vale para TODAS las páginas /hub sin tocarlas una a
+   una. La sesión vive en localStorage (sb-*-auth-token): borrarla y recargar
+   deja la página en su candado. Solo actúa si HAY sesión — jamás bucles. */
+(function(){
+  try{
+    /* El cierre mudo parecía avería (Pilar, 25-ago): al volver se explica. */
+    if(localStorage.getItem('ns_idle_aviso')==='1'){
+      localStorage.removeItem('ns_idle_aviso');
+      var av=document.createElement('div');
+      av.setAttribute('data-i','');
+      av.style.cssText='position:sticky;top:0;z-index:9999;background:#FFF3E0;color:#7A4A00;'+
+        'border-bottom:1.5px solid #E8B36A;padding:9px 16px;font:600 13px system-ui;text-align:center';
+      av.textContent='🔒 Tu sesión se cerró tras 30 minutos sin actividad (seguridad de datos del piloto). Entra de nuevo en 📬 Waitlist o 📊 MIS y todo vuelve. | Your session closed after 30 idle minutes — log in again at 📬 Waitlist or 📊 MIS.';
+      document.body.insertBefore(av, document.body.firstChild);
+      setTimeout(function(){try{av.remove();}catch(e){}}, 25000);
+    }
+    var LIMITE=30*60*1000, K='ns_idle_ts';
+    var haySesion=function(){
+      for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
+        if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)return true;}
+      return false;};
+    if(!haySesion())return;
+    var toca=function(){try{localStorage.setItem(K,String(Date.now()));}catch(e){}};
+    ['click','keydown','mousemove','scroll','touchstart'].forEach(function(ev){
+      window.addEventListener(ev,toca,{passive:true});});
+    toca();
+    setInterval(function(){
+      try{
+        var t=parseInt(localStorage.getItem(K)||'0',10);
+        if(!t||Date.now()-t<LIMITE)return;
+        if(!haySesion())return;
+        var fuera=[];
+        for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
+          if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)fuera.push(k);}
+        fuera.forEach(function(k){localStorage.removeItem(k);});
+        localStorage.removeItem(K);
+        try{localStorage.setItem('ns_idle_aviso','1');}catch(e){}
+        location.reload();
+      }catch(e){}
+    },60000);
+  }catch(e){}
+})();
+</script>
+<script>
+/* ns-pase-directo (r23 · 28-ago): SSO founders hub↔StartUp Admin.
+   EMISOR: al pinchar un enlace hacia la otra superficie con sesión viva,
+   pide un pase de UN uso a la Edge pase-directo (solo admins) y lo manda en
+   el FRAGMENTO. RECEPTOR: consume el pase en /auth/v1/verify, guarda la
+   sesión nueva y recarga — sin re-teclear contraseña. El MFA de StartUp
+   Admin se pide igual. Cualquier fallo = navegación normal de siempre. */
+(function(){
+  try{
+    var SB='https://nebkqncvapelrarruyqb.supabase.co';
+    var ANON='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+    var SBKEY='sb-nebkqncvapelrarruyqb-auth-token';
+    var FN=SB+'/functions/v1/pase-directo';
+    var sesion=function(){try{var s=JSON.parse(localStorage.getItem(SBKEY)||'null');
+      return (s&&s.access_token)?s:null;}catch(e){return null;}};
+    var esOtra=function(h){try{var u=new URL(h, location.href);return u.hostname==='admin.nutrisynccollective.com';}catch(e){return false;}};
+
+    /* — receptor — */
+    var m=(location.hash||'').match(/[#&]nspase=([^&]+)/);
+    if(m){
+      history.replaceState(null,'',location.pathname+location.search);
+      if(!sesion()){
+        fetch(SB+'/auth/v1/verify',{method:'POST',
+          headers:{apikey:ANON,'content-type':'application/json'},
+          body:JSON.stringify({type:'magiclink',token_hash:decodeURIComponent(m[1])})})
+        .then(function(r){return r.json();})
+        .then(function(j){
+          if(j&&j.access_token){
+            if(!j.expires_at&&j.expires_in)j.expires_at=Math.floor(Date.now()/1000)+j.expires_in;
+            localStorage.setItem(SBKEY,JSON.stringify(j));
+            location.reload();
+          }
+        }).catch(function(){});
+      }
+    }
+
+    /* — reto TOTP: de aal1 a aal2 (r24-r · S15) ————————————————————————————
+       El login del hub (signInWithPassword) y el receptor del pase acuñan
+       sesión aal1 SIN reto. Para un admin con TOTP verificado, is_admin_mfa()
+       exige aal2 → todas las RPC admin mueren con 400. Este gate, sobre el
+       MISMO estilo raw del navbar (sin vendor, sin CDN — po74), detecta la
+       sesión aal1 con factor verificado y refuerza con un teclado barajado.
+       Devuelve una promesa; auto-corre al cargar cualquier página del hub. */
+    var jwtAal=function(tok){try{return JSON.parse(atob(tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).aal;}catch(e){return null;}};
+    window.nsMfaReforzar=function(){
+      return new Promise(function(resolve){
+        var s=sesion();
+        if(!s||!s.access_token||jwtAal(s.access_token)==='aal2'){resolve(true);return;}
+        var H={apikey:ANON,authorization:'Bearer '+s.access_token,'content-type':'application/json'};
+        fetch(SB+'/auth/v1/user',{headers:H}).then(function(r){return r.json();}).then(function(u){
+          var fac=((u&&u.factors)||[]).filter(function(f){return f.factor_type==='totp'&&f.status==='verified';})[0];
+          if(!fac){resolve(false);return;}            // aal1 sin factor: is_admin_mfa perdona
+          var EN=(function(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+            return (v||((navigator.language||'en').toLowerCase().indexOf('es')===0?'es':'en'))==='en';})();
+          var T=function(es,en){return EN?en:es;};
+          var pin='',teclas=[0,1,2,3,4,5,6,7,8,9];
+          for(var i=teclas.length-1;i>0;i--){var k=Math.floor(Math.random()*(i+1));var tmp=teclas[i];teclas[i]=teclas[k];teclas[k]=tmp;}
+          var ov=document.createElement('div');ov.id='ns-mfa-ov';
+          ov.setAttribute('style','position:fixed;inset:0;z-index:99999;background:rgba(20,14,10,.55);display:flex;align-items:center;justify-content:center;font-family:Poppins,system-ui,sans-serif');
+          ov.innerHTML='<div style="background:#FFFDF8;border-radius:18px;max-width:380px;width:92%;padding:22px 20px;box-shadow:0 18px 50px rgba(0,0,0,.3)">'
+            +'<div style="font-weight:800;font-size:16px;color:#241D1A;margin-bottom:4px">🔐 '+T('Refuerza tu sesión','Reinforce your session')+'</div>'
+            +'<div style="font-size:13px;color:#5f564f;margin-bottom:14px">'+T('Introduce el código de tu app de autenticación para usar las herramientas de administradora.','Enter the code from your authenticator app to use the admin tools.')+'</div>'
+            +'<div id="nsmd" style="display:flex;gap:11px;justify-content:center;margin:8px 0 16px"></div>'
+            +'<div id="nsmp" style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:#EFE3D7;border:1px solid #EFE3D7;border-radius:14px;overflow:hidden"></div>'
+            +'<button id="nsmc" style="margin-top:12px;background:none;border:0;font:600 12.5px Poppins,system-ui,sans-serif;color:#8A7F78;cursor:pointer;text-decoration:underline">'+T('Borrar','Clear')+'</button>'
+            +'<div id="nsme" style="color:#D93030;font-size:12.5px;min-height:16px"></div></div>';
+          document.body.appendChild(ov);
+          var dots=ov.querySelector('#nsmd'),pad=ov.querySelector('#nsmp'),err=ov.querySelector('#nsme');
+          var pinta=function(){var h='';for(var d=0;d<6;d++){h+='<div style="width:22px;height:22px;border-radius:50%;border:2px solid '+(d<pin.length?'#0F6E56':'#E8B072')+';background:'+(d<pin.length?'#0F6E56':'#fff')+'"></div>';}dots.innerHTML=h;};
+          pad.innerHTML=teclas.map(function(d){return '<button type="button" data-d="'+d+'" style="background:#fffdfa;border:0;font:800 24px/1 Poppins,system-ui,sans-serif;color:#241D1A;padding:18px 0;cursor:pointer">'+d+'</button>';}).join('');
+          var verifica=function(){
+            err.textContent=T('Comprobando…','Checking…');
+            fetch(SB+'/auth/v1/factors/'+fac.id+'/challenge',{method:'POST',headers:H,body:'{}'})
+            .then(function(r){return r.json();}).then(function(ch){
+              if(!ch||!ch.id){throw new Error(ch&&ch.error_description||'challenge');}
+              return fetch(SB+'/auth/v1/factors/'+fac.id+'/verify',{method:'POST',headers:H,
+                body:JSON.stringify({challenge_id:ch.id,code:pin})}).then(function(r){return r.json();});
+            }).then(function(v){
+              if(v&&v.access_token){
+                if(!v.expires_at&&v.expires_in)v.expires_at=Math.floor(Date.now()/1000)+v.expires_in;
+                localStorage.setItem(SBKEY,JSON.stringify(v));
+                ov.remove(); resolve(true); location.reload();
+              }else{err.textContent=T('Código no válido','Invalid code');pin='';pinta();}
+            }).catch(function(){err.textContent=T('Código no válido','Invalid code');pin='';pinta();});
+          };
+          pad.onclick=function(ev){var b=ev.target.closest('button[data-d]');if(!b||pin.length>=6)return;pin+=b.getAttribute('data-d');pinta();if(pin.length===6)verifica();};
+          ov.querySelector('#nsmc').onclick=function(){pin='';err.textContent='';pinta();};
+          pinta();
+        }).catch(function(){resolve(false);});
+      });
+    };
+    if(sesion()) window.nsMfaReforzar();   // auto: refuerza tras pase o carga con sesión aal1
+
+    /* — emisor — */
+    document.addEventListener('click',function(ev){
+      try{
+        if(ev.defaultPrevented||ev.button!==0||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.altKey)return;
+        var a=ev.target&&ev.target.closest?ev.target.closest('a[href]'):null;
+        if(!a||a.target==='_blank'||!esOtra(a.href))return;
+        var s=sesion(); if(!s)return;
+        ev.preventDefault();
+        var destino=a.href, ac=new AbortController();
+        var t=setTimeout(function(){ac.abort();},2500);
+        fetch(FN,{method:'POST',signal:ac.signal,
+          headers:{apikey:ANON,authorization:'Bearer '+s.access_token,'content-type':'application/json'},
+          body:'{}'})
+        .then(function(r){return r.json();})
+        .then(function(j){clearTimeout(t);
+          location.href=(j&&j.pase)?destino+'#nspase='+encodeURIComponent(j.pase):destino;})
+        .catch(function(){clearTimeout(t);location.href=destino;});
+      }catch(e){}
+    },true);
+  }catch(e){}
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar -->
+<div class="w">
+
+<h1>🥗 47 — Meals como <i>bowl</i>: la ficha-recetario por fase y el «¿Sin ideas?»</h1>
+<div class="meta">7 de septiembre de 2026 · PROPUESTA con prototipo pantalla a pantalla (nada construido) · origen: Juanjo (7-sep, noche) sobre el diagrama del bowl de Lucía («Every bowl combines protein, veggies, complex carbs and healthy fats… without the hassle of counting calories») · módulo Meals de la app (NutriLog → Meal Log) · Epic P</div>
+
+<div class="box"><b>Para Pilar, Lucía y Constanza — qué mirar.</b> Hoy el registro de comidas es una lista: escribes lo que comiste, o lo buscas, o le haces una foto. La idea de Juanjo es darle la vuelta: <b>el consejo de nutrición se presenta como un plato</b> (el bowl de cinco sectores de Lucía) que ya viene relleno con lo que tu fase pide, y cada sector se puede girar entre las opciones que Constanza ha marcado para ese momento del ciclo. De ahí sale una receta con cantidades, y de la receta, el registro. Y para el día sin ideas: foto de la nevera (o lo escribes) → la app cruza lo que tienes con lo que tu fase pide y te propone un plato. Abajo, el prototipo se puede tocar (los sectores giran, los chips se marcan, la fase se cambia) y después va lo que hace falta para que funcione de verdad, con lo que ya existe y lo que no.</div>
+
+<h2>1 · El diagrama de Lucía, traducido a nuestros datos</h2>
+<p>Los cinco sectores del bowl son un <b>mapa de grupos</b>, no una lista de alimentos. En la app ya existen los grupos (las <i>Phase picks</i> de hoy salen del motor de Constanza por categorías: proteins · greens · vegetables · fruits · grains · seeds &amp; nuts · dairy · fats · hydration) y ya existe una <b>Meal Library de 210 comidas</b> con ingredientes en gramos, fase, objetivos, dietas y alérgenos (ingerida el 24-ago, aún sin usar en la app). El bowl junta las dos cosas: los sectores se rellenan desde los grupos de la fase y la receta sale de la biblioteca.</p>
+<div class="legend">
+  <div style="border-color:#F6D2C5"><b>Protein</b>recovery, satiety<br><span class="muted">← proteins (+ dairy proteico)</span></div>
+  <div style="border-color:#D9EBD3"><b>Veggies &amp; Greens</b>fiber, vitamins<br><span class="muted">← greens + vegetables (+ fruits)</span></div>
+  <div style="border-color:#F5E3B8"><b>Complex Carbs</b>crash-free energy<br><span class="muted">← grains + tubérculos + legumbres</span></div>
+  <div style="border-color:#DFF0D1"><b>Healthy Fats</b>balance, fullness<br><span class="muted">← fats + seeds &amp; nuts</span></div>
+  <div style="border-color:#EEE7F6"><b>Sauces &amp; Spices</b>flavor, consistency<br><span class="muted">← herbs &amp; spices + yogur/tahini (no existe hoy como grupo: D1)</span></div>
+</div>
+<p class="muted" style="font-size:12px">Analogía: el bowl es la <i>vista</i>; los grupos de Constanza son el <i>modelo</i>; la Meal Library es la <i>base de datos</i>. Hoy tenemos modelo y base y nos falta la vista — y una tabla pequeña que diga qué grupo cae en qué sector.</p>
+
+<h2>2 · Prototipo pantalla a pantalla (se puede tocar)</h2>
+<p class="muted" style="font-size:12px">Textos de pantalla en inglés (el idioma base de la app; los 14 catálogos van en el mismo cambio). Los alimentos son EJEMPLOS con la lógica de fase que ya sigue la app; la lista real la manda la hoja de Constanza. Cambia la fase aquí y todo el prototipo la sigue: <span id="phaseBar" class="chips" style="display:inline-flex;vertical-align:middle"></span></p>
+
+<div class="flow">
+
+<!-- P0 -->
+<div class="step"><div class="phone"><div class="notch"></div><div class="scr">
+  <div class="bar"><span class="back">‹</span><span class="t">Meal Log</span><span class="ic">🕘</span></div>
+  <div class="chips" style="margin-bottom:8px"><span class="pill on">Lunch</span><span class="pill">Breakfast</span><span class="pill">Dinner</span><span class="pill">Snack</span></div>
+  <div class="card" style="background:#FFF6F2;border:1px solid #F3D9C9">
+    <div class="row"><div><h4 style="margin:0">✦ Build today's bowl</h4><div class="muted" id="p0phase">Luteal · day 22 · picks ready</div></div><span style="font-size:26px">🥗</span></div>
+    <span class="cta" style="margin-top:8px">Start my bowl →</span>
+  </div>
+  <div class="grid2" style="margin-top:10px">
+    <div class="card" style="margin:0"><h4>📖 Recipe book</h4><div class="muted">210 recipes · by phase</div></div>
+    <div class="card" style="margin:0"><h4>🤔 No ideas?</h4><div class="muted">Photo of your fridge</div></div>
+  </div>
+  <div class="card"><h4>✦ Phase picks</h4><div class="chips"><span class="chip">🐟 salmon</span><span class="chip">🥬 spinach</span><span class="chip">🌾 quinoa</span><span class="chip">🥑 avocado</span><span class="chip">🫐 berries</span></div></div>
+  <div class="card"><h4>Log your meal</h4><div class="muted">Write down what you ate…</div><div style="height:46px;border:1px solid #F0E2D8;border-radius:10px;margin-top:6px"></div><span class="cta sec">📷 Photo</span></div>
+</div></div>
+<div class="cap"><span class="num">0</span><b>Meal Log, hoy + la puerta nueva.</b> Nada de lo actual se quita (tipo de comida, texto, búsqueda, foto, Phase picks). Se añade la tarjeta <i>Build today's bowl</i> con la fase del día y dos accesos: <i>Recipe book</i> y <i>No ideas?</i>. Datos: los que ya llegan por <code>fetchDailyRecs</code>.</div></div>
+
+<!-- P1 -->
+<div class="step"><div class="phone"><div class="notch"></div><div class="scr">
+  <div class="bar"><span class="back">‹</span><span class="t">Today's bowl</span><span class="ic">📖</span></div>
+  <div class="row"><span class="badge" id="p1badge">LUTEAL · DAY 22</span><span class="muted">Lunch</span></div>
+  <div id="plate1"></div>
+  <div class="muted" style="text-align:center;margin-top:-2px">Tap a sector to swap it</div>
+  <div class="card" id="why1" style="background:#FFF8EF"></div>
+  <span class="cta">Make it a recipe →</span>
+  <span class="cta sec">Log this bowl as eaten</span>
+  <div class="coach up" style="top:98px;right:16px">Each sector is pre-filled with today's phase picks. Tap to change.</div>
+</div></div>
+<div class="cap"><span class="num">1</span><b>Tu bowl de hoy.</b> Cinco sectores ya rellenos con la primera opción de cada grupo para la fase (score más alto del motor). Tocar un sector lo gira aquí mismo y abre el selector (2). Debajo, el «por qué hoy» del tip de nutrición. Guía flotante la primera vez (misma pieza que la batería). <b>Sin calorías a la vista</b> (D5).</div></div>
+
+<!-- P2 -->
+<div class="step"><div class="phone"><div class="notch"></div><div class="scr" style="background:rgba(36,29,26,.35)">
+  <div class="bar" style="opacity:.4"><span class="back">‹</span><span class="t">Today's bowl</span><span class="ic">📖</span></div>
+  <div style="opacity:.4" id="plate2"></div>
+  <div class="sheet"><div class="h"></div>
+    <div class="row"><b id="p2title">Protein</b><span class="muted" id="p2sub">for luteal · recovery, satiety</span></div>
+    <div id="p2list"></div>
+    <div class="muted" style="margin-top:8px">✦ = phase pick (Constanza's sheet) · filtered by your diet &amp; allergies</div>
+  </div>
+</div></div>
+<div class="cap"><span class="num">2</span><b>Selector de un sector.</b> Las opciones de ese grupo para la fase, con su tier (✦ pick, ○ neutral; nunca lo que la hoja marca como «evitar» en esa fase) y el «para qué» corto. Filtra por dieta y alergias del perfil (<code>users.diet_types</code> / <code>allergies</code>). Elegir vuelve al bowl con el sector cambiado.</div></div>
+
+<!-- P3 -->
+<div class="step"><div class="phone"><div class="notch"></div><div class="scr">
+  <div class="bar"><span class="back">‹</span><span class="t">Recipe</span><span class="ic">♡</span></div>
+  <div id="plate3"></div>
+  <h4 id="p3title" style="margin:6px 0 2px;font-size:14px"></h4>
+  <div style="margin-bottom:6px"><span class="badge ok" id="p3phase">✦ LUTEAL PICK</span> <span class="badge">GLUTEN-FREE</span> <span class="badge">CONTAINS DAIRY</span> <span class="badge">20 MIN</span></div>
+  <div class="card" style="margin-top:6px"><h4>Ingredients · 1 bowl</h4><div id="p3ings"></div></div>
+  <div class="card"><h4>Steps</h4><ol style="margin:0;padding-left:16px;font-size:11.5px;line-height:1.5"><li>Cook the grain; season with lemon and salt.</li><li>Sear the protein 3–4 min per side; rest and slice.</li><li>Toss greens with olive oil.</li><li>Assemble by sector; finish with the sauce.</li></ol></div>
+  <div class="card" style="background:#FFF8EF"><h4>Why this phase</h4><div style="font-size:11.5px" id="p3why"></div><div class="muted" style="margin-top:4px">Source: Constanza's phase sheet · Meal Library MEAL117</div></div>
+  <span class="cta">Log as eaten ✓</span>
+  <div class="row" style="margin-top:8px"><span class="cta sec" style="flex:1;margin:0">♡ Save</span><span class="cta sec" style="flex:1;margin:0">🛒 Shopping list</span></div>
+</div></div>
+<div class="cap"><span class="num">3</span><b>La ficha-receta.</b> El bowl se convierte en receta: ingredientes con gramos (los de <code>meal_library_ingredients</code>), pasos cortos, «por qué esta fase» (los <code>goals</code> de la biblioteca + el tip del motor), etiquetas de dieta y alérgenos. Primero se busca la receta de la biblioteca que más se parece al bowl; si no hay ninguna cercana, la compone la IA y lo dice (etiqueta «AI-composed», D6).</div></div>
+
+<!-- P4 -->
+<div class="step"><div class="phone"><div class="notch"></div><div class="scr">
+  <div class="bar"><span class="back">‹</span><span class="t">Recipe book</span><span class="ic">🔍</span></div>
+  <div class="chips" id="p4phases" style="margin-bottom:6px"></div>
+  <div class="chips" style="margin-bottom:8px"><span class="chip on">Lunch</span><span class="chip">Breakfast</span><span class="chip">Dinner</span><span class="chip">Vegetarian</span><span class="chip">Gluten-free</span><span class="chip">≤ 20 min</span></div>
+  <div class="muted" style="margin-bottom:4px">For today · <span id="p4n">12</span> recipes match your phase and diet</div>
+  <div class="grid2" id="p4grid"></div>
+</div></div>
+<div class="cap"><span class="num">4</span><b>Recetario por fase.</b> Las 210 comidas de la biblioteca, ordenadas por «para hoy» (fase + tipo de comida + dieta), con la miniatura del bowl dibujada desde sus ingredientes (no hacen falta fotos). Abrir una lleva a la ficha (3). Guardadas con ♡ en «My recipes».</div></div>
+
+<!-- P5 -->
+<div class="step"><div class="phone"><div class="notch"></div><div class="scr">
+  <div class="bar"><span class="back">‹</span><span class="t">No ideas?</span><span class="ic"></span></div>
+  <div class="card" style="text-align:center;padding:16px"><div style="font-size:34px">📷</div><h4>Photo of your fridge or pantry</h4><div class="muted">We recognise the food and delete the photo. No labels, no notes.</div><span class="cta" style="margin-top:8px">Take a photo</span></div>
+  <div class="muted" style="text-align:center;margin:8px 0">— or —</div>
+  <div class="card"><h4>Tell us what you have</h4><div class="chips" id="p5chips"></div><div style="height:30px;border:1px solid #F0E2D8;border-radius:10px;margin-top:8px;padding:6px 8px;color:#B8ADA6;font-size:11px">+ add something else…</div></div>
+  <span class="cta" id="p5go">Match with my phase →</span>
+  <div class="coach down" style="bottom:150px;right:14px">Tick what you have — we do the rest.</div>
+</div></div>
+<div class="cap"><span class="num">5</span><b>¿Sin ideas?</b> Dos caminos: foto de la nevera/despensa (misma tubería que la foto de comida: se limpia en el móvil, carpeta privada, visión con JSON estricto; la foto se borra tras reconocer) o marcar a mano lo que hay (chips frecuentes + texto). Marca chips aquí y pulsa <i>Match</i>: la pantalla 6 se calcula con lo marcado.</div></div>
+
+<!-- P6 -->
+<div class="step"><div class="phone"><div class="notch"></div><div class="scr">
+  <div class="bar"><span class="back">‹</span><span class="t">What you have</span><span class="ic"></span></div>
+  <div id="plate6"></div>
+  <div class="card" style="margin-top:4px"><h4>Recognised <span class="muted" id="p6n"></span></h4><div class="chips" id="p6found"></div></div>
+  <div class="card" id="p6missing" style="background:#FFF8EF"></div>
+  <span class="cta" id="p6cta">Make a recipe with what I have →</span>
+  <span class="cta sec">See 3 recipes from the book</span>
+</div></div>
+<div class="cap"><span class="num">6</span><b>El cruce.</b> Cada alimento reconocido cae en su sector (con su confianza si viene de la foto) y se contrasta con los picks de la fase: ✦ = pick, sin marca = vale, y lo que la hoja marca «evitar» hoy se dice con suavidad (regla de lenguaje de Pilar). Los sectores vacíos se señalan con dos o tres sugerencias de la fase. «Make a recipe» busca primero en la biblioteca (coincidencia de ingredientes); si no llega al umbral, compone.</div></div>
+
+<!-- P7 -->
+<div class="step"><div class="phone"><div class="notch"></div><div class="scr" style="display:flex;flex-direction:column;justify-content:center;text-align:center">
+  <div style="font-size:44px">✓</div>
+  <h4 style="font-size:18px;margin:8px 0 4px">Logged &amp; Syncing</h4>
+  <div class="muted" style="padding:0 14px">Yay! That's in the books. We're syncing it to your cycle score.</div>
+  <div class="card" style="text-align:left"><div class="row"><b style="font-size:12px" id="p7title">Salmon &amp; quinoa bowl</b><span class="badge ok">ALIGNED</span></div><div class="muted">Lunch · logged from a bowl · 5/5 sectors</div></div>
+  <span class="cta">Back to Home →</span><span class="cta sec">Log more</span>
+</div></div>
+<div class="cap"><span class="num">7</span><b>Registrado.</b> La confirmación que ya existe, con el tier de alineación de la comida (<code>meal_alignment</code>, 0.22.6) calculado sobre los ingredientes del bowl — que llegan estructurados, sin adivinar nada de un texto libre. Origen <code>bowl</code> en <code>meal_logs</code> para medirlo.</div></div>
+
+</div>
+
+<h2>3 · Qué hace falta para hacerlo operativo</h2>
+<table><tr><th style="width:14%">Capa</th><th style="width:30%">Ya existe (medido en el código y la base)</th><th style="width:38%">Falta</th><th style="width:18%">Esfuerzo · vehículo</th></tr>
+<tr><td><b>Datos</b></td><td><code>meal_library</code> (210) + <code>meal_library_ingredients</code> (gramos, nombre ES) con fase, objetivos, dietas, alérgenos, condiciones — <b>sin políticas ni RPC</b>: hoy nadie las lee. Grupos por fase del motor (<code>nutri_basics</code>). <code>canonical_foods</code> (363 USDA) + matcher v2 por nombre (0.22.6). <code>users.diet_types/allergies</code>.</td><td><code>bowl_sector_map</code> (grupo → sector, 1 tabla pequeña que bendice Constanza) · RPC <code>bowl_options(segmento, sector, dietas, alérgenos)</code> (tiers de la hoja: nunca «evitar») · RPC <code>meal_library_for_phase(...)</code> y <code>meal_library_match(ingredientes[])</code> (coincidencia de ingredientes vía <code>canonical_match</code>) · <code>user_recipes</code> (guardadas) · <code>meal_logs.origin='bowl'</code> + <code>bowl_json</code> · alta de la biblioteca en el hub (ver/corregir una receta).</td><td>2 días · SQL con título + autoprueba (r17-d) + sonda REST como <i>authenticated</i> (r21)</td></tr>
+<tr><td><b>App</b></td><td>Meal Log, Phase picks, foto de comida (manipulador → base64 → Storage privado → Edge), historial, confirmación, alineación por comida, 14 catálogos, pantalla de preferencias.</td><td><code>lib/bowl.ts</code> (puro: relleno por fase, giro de sector, cruce despensa→sectores, sectores vacíos, coincidencia) con unitarios · <code>ui/BowlPlate</code> (SVG, 5 sectores, tamaños S/M/L) · pantallas 1–6 + tarjeta en Meal Log · guía flotante compartida · ≈60 claves × 14 idiomas.</td><td>3,5 días · <b>OTA</b> (cámara y manipulador ya están en el binario desde 0.22.0; nada nativo)</td></tr>
+<tr><td><b>IA</b></td><td>Edge <code>analyse-meal</code> (visión, JSON estricto con confianza, respaldo por umbral, cero PII, presupuesto por usuaria en <code>ai_budgets</code>, registro en <code>ai_usage</code>), router de modelos por fila.</td><td><code>pantry-scan</code>: la misma Edge con un esquema «despensa» (lista de alimentos + confianza, sin porciones; la imagen se borra al responder) · <code>compose-recipe</code>: LLM con JSON estricto (título, sectores, ingredientes con gramos, ≤6 pasos, «por qué» SOLO con los hechos que le pasamos de la hoja), limitado a los ingredientes dados + picks de la fase, etiqueta <code>ai_composed</code> · 2 filas en el registro de modelos · golden set de 30 casos (Propuesta 32).</td><td>2 días · Edge desde tu Terminal + curl de estreno (r16/r20)</td></tr>
+<tr><td><b>Deontología y firmas</b></td><td>Guía de Pilar (foto): reglas de lenguaje, 5 líneas rojas, umbral de confianza, silencio ante señales de alarma. Hoja de Constanza (tiers por segmento). Nada de PII a la IA.</td><td>Constanza: el mapa grupo→sector, qué opciones giran por fase, y la política de recetas compuestas (D6). Pilar: aplicar la guía a la foto de la nevera (puede contener etiquetas, notas, medicinas → se borra, no se guarda nada que no sea alimento), sin calorías en la ficha (D5), lenguaje de «evitar». Lucía: pantallas 1–6 en Figma sobre su diagrama.</td><td>Carril PRODUCTO: firma previa de Pilar y Lucía (datos de usuarias + qué es NutriSync); Constanza en D1, D2 y D6</td></tr>
+<tr><td><b>Tests y verificación</b></td><td>jest (432), arnés de Edge (transpilar + evaluar), sonda REST, pruebas en dispositivo físico antes del What to Test (r18-b).</td><td>Unitarios de <code>lib/bowl.ts</code> (relleno, giro, cruce, vacíos, coincidencia) · contrato de catálogos · golden set de compose/pantry · foto real de una nevera desde un iPhone antes de publicar.</td><td>Incluido en cada incremento</td></tr>
+<tr><td><b>Medir</b></td><td>Obs. piloto, <code>ai_usage</code>, embudo por comida.</td><td>Bowls construidos/registrados por día · giros por sector (qué opciones no gustan) · recetario abierto · embudo despensa → receta → registrada · % biblioteca vs compuesta · coste IA por usuaria.</td><td>0,5 día · SQL + tarjeta 🥗</td></tr>
+</table>
+
+<h2>4 · Incrementos (cada uno entrega algo usable y se puede parar ahí)</h2>
+<table><tr><th>#</th><th>Qué entrega</th><th>Necesita</th><th>Estimación</th></tr>
+<tr><td><b>B1</b></td><td>Recetario por fase + ficha-receta desde la Meal Library (pantallas 3 y 4, sin IA). Es la fase 2 de la biblioteca que quedó pendiente en UST-05.</td><td>RPCs de la biblioteca + mapa grupo→sector (Constanza) + diseño (Lucía)</td><td>2 días · OTA</td></tr>
+<tr><td><b>B2</b></td><td>Bowl de hoy con sectores que giran + «Log this bowl» con alineación (pantallas 1, 2 y 7).</td><td>B1 + RPC <code>bowl_options</code> + <code>origin='bowl'</code></td><td>1,5 días · OTA</td></tr>
+<tr><td><b>B3</b></td><td>¿Sin ideas? a mano (chips + texto) → cruce con la fase → receta de la biblioteca (pantallas 5 y 6 sin foto).</td><td>B2 + <code>meal_library_match</code></td><td>1 día · OTA</td></tr>
+<tr><td><b>B4</b></td><td>Foto de la nevera → reconocimiento → cruce (pantalla 5 con cámara).</td><td>Edge <code>pantry-scan</code> + guía de Pilar aplicada + prueba en dispositivo</td><td>1 día · OTA + Edge</td></tr>
+<tr><td><b>B5</b></td><td>Recetas compuestas por IA cuando la biblioteca no llega (etiquetadas), con revisión de Constanza en el hub.</td><td>Edge <code>compose-recipe</code> + golden set + política D6</td><td>2 días · OTA + Edge</td></tr>
+</table>
+<p class="muted" style="font-size:12px">Total ≈ 7,5–8 días de desarrollo repartidos en cinco OTAs, más las firmas. B1+B2 ya cambian la experiencia; B3 no necesita IA y cubre el «sin ideas» para la mayoría; B4 y B5 son los únicos que gastan IA.</p>
+
+<h2>5 · Decisiones para founders</h2>
+<table><tr><th>#</th><th>Propuesta</th><th>Alternativa</th><th>Quién</th></tr>
+<tr><td>D1</td><td>Cinco sectores exactos del diagrama de Lucía, con «Sauces &amp; spices» como sector propio (hoy no existe como grupo en la hoja: se crea, o se rellena con yogur/tahini/aceites de fats).</td><td>Cuatro sectores (sin salsas) para no inventar un grupo que Constanza no ha puntuado.</td><td>Constanza · Lucía</td></tr>
+<tr><td>D2</td><td>Lo que gira en cada sector = solo tiers «pick» y «neutral» de la fase; «evitar» nunca aparece como opción.</td><td>Aparece todo, con el aviso suave; ella decide.</td><td>Constanza · Pilar</td></tr>
+<tr><td>D3</td><td>La receta sale primero de la biblioteca (coincidencia ≥ 60 % de ingredientes); la IA solo compone cuando no hay ninguna.</td><td>Siempre compuesta a medida (más flexible, más coste, sin revisión clínica).</td><td>Juanjo · Constanza</td></tr>
+<tr><td>D4</td><td>Foto de la nevera: se reconoce y se borra; solo se guardan nombres de alimentos con confianza.</td><td>Guardarla 30 días como la foto de comida (para corregir errores del reconocimiento).</td><td>Pilar</td></tr>
+<tr><td>D5</td><td>Sin calorías ni macros en la ficha («without the hassle of counting calories»); la base los tiene y el hub los ve.</td><td>Rangos (no cifras) cuando llegue la fase P2-macros de UST-05.</td><td>Pilar · Constanza</td></tr>
+<tr><td>D6</td><td>Toda receta compuesta por IA lleva etiqueta visible y entra en una cola del hub para que Constanza la apruebe; las aprobadas pasan a la biblioteca.</td><td>Sin cola: etiqueta y ya.</td><td>Constanza</td></tr>
+<tr><td>D7</td><td>Guías flotantes solo hasta el primer bowl (una vez por instalación).</td><td>Hasta que la usuaria las cierre.</td><td>Lucía</td></tr>
+<tr><td>D8</td><td>Orden B1 → B5 tal cual; B1+B2 antes del 8-oct si Constanza entrega el mapa esta semana.</td><td>Empezar por B3 (sin ideas a mano): lo más diferencial con lo que ya hay.</td><td>Juanjo</td></tr>
+</table>
+
+<h2>6 · Riesgos y líneas rojas (para que no sorprendan)</h2>
+<ul>
+<li><b>La foto de la nevera no es una foto de comida</b>: puede llevar etiquetas con nombres, notas, medicinas, fotos de familia en la puerta. Se trata como dato sensible: se reconoce y se borra; el prompt pide SOLO alimentos y nada más; nada de PII a la IA (Propuesta 32 §2).</li>
+<li><b>Una receta «para tu fase» es una afirmación de salud</b>: el «por qué» solo puede decir lo que la hoja de Constanza dice (los <code>goals</code> de la biblioteca), nunca lo que el modelo crea. Sin diagnóstico, sin promesas.</li>
+<li><b>El giro de sectores puede vaciar el sentido del plato</b> (cinco picks sueltos no son una comida): la biblioteca da la coherencia; la IA compone solo con límites (ingredientes dados + picks).</li>
+<li><b>Coste</b>: B4/B5 gastan visión y LLM; presupuesto por usuaria en <code>ai_budgets</code> (ya existe) y el interruptor de emergencia por flag (como <code>mealPhoto</code>).</li>
+<li><b>Dietas y alergias mandan</b>: ningún sector propone algo que el perfil excluye; un alérgeno de la biblioteca es un filtro duro, no una etiqueta.</li>
+</ul>
+
+<h2>7 · Siguiente paso</h2>
+<p>Si os gusta la dirección, esto se convierte en <b>UST-15</b> (pedido literal + impacto + baseline, como siempre) con B1+B2 como primer alcance, y Lucía dibuja las pantallas 1–6 sobre su diagrama mientras Constanza rellena el mapa grupo→sector y las opciones por fase. Sin esas dos cosas no se construye: la vista sin el modelo es decorado.</p>
+<p class="muted" style="font-size:12px">NutriSync Engineering · 7 de septiembre de 2026 · Propuesta 47 · prototipo HTML autocontenido (sin datos reales de usuarias).</p>
+
+<script>
+(function(){
+  var PH = ['Menstrual','Follicular','Ovulatory','Luteal'];
+  var SEC = [
+    {k:'protein', n:'Protein',          w:'recovery, satiety',   c:'#F6D2C5'},
+    {k:'veg',     n:'Veggies & Greens', w:'fiber, vitamins',     c:'#D9EBD3'},
+    {k:'carb',    n:'Complex Carbs',    w:'crash-free energy',   c:'#F5E3B8'},
+    {k:'fat',     n:'Healthy Fats',     w:'balance, fullness',   c:'#DFF0D1'},
+    {k:'sauce',   n:'Sauces & Spices',  w:'flavor, consistency', c:'#EEE7F6'}
+  ];
+  // opciones por fase y sector — EJEMPLOS (la hoja de Constanza manda). [emoji, nombre, 1 = pick / 0 = neutral, para qué]
+  var OPT = {
+    Menstrual:  {protein:[['🥩','lean beef',1,'iron'],['🫘','lentils',1,'iron, fibre'],['🥚','eggs',0,'protein'],['🐟','sardines',1,'omega-3, iron']],
+                 veg:[['🥬','spinach',1,'iron'],['🫚','beetroot',1,'folate'],['🥦','broccoli',0,'vitamin C'],['🥕','carrots',0,'beta-carotene']],
+                 carb:[['🌾','buckwheat',1,'magnesium'],['🍠','sweet potato',1,'slow energy'],['🍚','brown rice',0,'fibre'],['🌾','oats',0,'beta-glucan']],
+                 fat:[['🫒','olive oil',1,'anti-inflammatory'],['🌰','flaxseed',1,'omega-3'],['🥑','avocado',0,'potassium'],['🌰','almonds',0,'magnesium']],
+                 sauce:[['🥣','turmeric yogurt',1,'gentle'],['🍋','ginger & lime',1,'warming'],['🌿','pesto',0,'flavour'],['🫙','tahini',0,'calcium']]},
+    Follicular: {protein:[['🍗','chicken',1,'lean protein'],['🐟','white fish',1,'light'],['🫘','chickpeas',1,'fibre'],['🧀','cottage cheese',0,'protein']],
+                 veg:[['🥗','salad greens',1,'freshness'],['🥒','zucchini',1,'light'],['🍅','tomatoes',0,'lycopene'],['🥦','asparagus',1,'folate']],
+                 carb:[['🌾','quinoa',1,'complete protein'],['🍚','brown rice',0,'fibre'],['🍞','sourdough',0,'gut-friendly'],['🌽','corn',0,'fibre']],
+                 fat:[['🥑','avocado',1,'balance'],['🎃','pumpkin seeds',1,'zinc'],['🫒','olive oil',0,'daily'],['🥜','peanuts',0,'protein']],
+                 sauce:[['🍋','lemon & herbs',1,'fresh'],['🥣','tzatziki',0,'cooling'],['🌶️','salsa',0,'zesty'],['🫙','hummus',1,'fibre']]},
+    Ovulatory:  {protein:[['🐟','salmon',1,'omega-3'],['🍤','shrimp',1,'light'],['🧆','tempeh',1,'plant protein'],['🍗','turkey',0,'lean']],
+                 veg:[['🥒','cucumber',1,'raw & fresh'],['🍅','cherry tomatoes',1,'antioxidants'],['🥗','arugula',1,'bitter greens'],['🌶️','peppers',0,'vitamin C']],
+                 carb:[['🌾','quinoa',1,'light'],['🌾','millet',0,'gluten-free'],['🍠','sweet potato',0,'slow energy'],['🍚','wild rice',0,'fibre']],
+                 fat:[['🫒','olive oil',1,'daily'],['🌻','sunflower seeds',1,'vitamin E'],['🥑','avocado',0,'balance'],['🌰','walnuts',0,'omega-3']],
+                 sauce:[['🌿','cilantro salsa',1,'fresh'],['🍋','lemon vinaigrette',1,'light'],['🥣','yogurt & mint',0,'cooling'],['🫙','tahini',0,'calcium']]},
+    Luteal:     {protein:[['🐟','salmon',1,'omega-3, mood'],['🍗','turkey',1,'tryptophan'],['🫘','lentils',1,'B6, fibre'],['🧆','tofu',0,'calcium']],
+                 veg:[['🥬','spinach',1,'magnesium'],['🥦','broccoli',1,'fibre'],['🥬','kale',0,'calcium'],['🍅','tomatoes',0,'lycopene']],
+                 carb:[['🌾','quinoa',1,'steady energy'],['🍚','brown rice',1,'B vitamins'],['🍠','sweet potato',1,'complex carbs'],['🌾','oats',0,'beta-glucan']],
+                 fat:[['🥑','avocado',1,'fullness'],['🌰','walnuts',1,'omega-3'],['🎃','pumpkin seeds',1,'magnesium'],['🫒','olive oil',0,'daily']],
+                 sauce:[['🥣','yogurt & dill',1,'calcium'],['🫙','tahini & lemon',1,'calcium'],['🌿','pesto',0,'flavour'],['🌶️','salsa',0,'zesty']]}
+  };
+  var WHY = {Menstrual:'Iron and magnesium first: warm, easy-to-digest bowls with leafy greens, legumes and slow carbs help energy while you bleed.',
+             Follicular:'Rising oestrogen, rising energy: lighter proteins, fresh vegetables and fibre support the build-up phase.',
+             Ovulatory:'Peak energy and appetite dips: raw, fresh and light — antioxidants and omega-3 around ovulation.',
+             Luteal:'Progesterone rises and cravings arrive: complex carbs, magnesium, B6 and tryptophan help mood and steady energy.'};
+  var DAY = {Menstrual:'DAY 3', Follicular:'DAY 9', Ovulatory:'DAY 14', Luteal:'DAY 22'};
+  var state = {phase:'Luteal', sel:{protein:0,veg:0,carb:0,fat:0,sauce:0}, pick:'protein', have:{}};
+
+  // ── plato SVG · 5 sectores (Lucía): 0-90 protein · 90-180 veg · 180-270 carb · 270-315 fat · 315-360 sauce
+  function arc(cx,cy,r,a0,a1){var p=function(a){var t=(a-90)*Math.PI/180;return [cx+r*Math.cos(t),cy+r*Math.sin(t)];};var s=p(a0),e=p(a1);var big=(a1-a0)>180?1:0;return 'M'+cx+' '+cy+' L'+s[0].toFixed(1)+' '+s[1].toFixed(1)+' A'+r+' '+r+' 0 '+big+' 1 '+e[0].toFixed(1)+' '+e[1].toFixed(1)+' Z';}
+  var ANG = {protein:[0,90],veg:[90,180],carb:[180,270],fat:[270,315],sauce:[315,360]};
+  function plate(size, items, opts){
+    opts=opts||{}; var c=size/2, r=size/2-4, h='<svg class="plate" width="'+size+'" height="'+size+'" viewBox="0 0 '+size+' '+size+'">';
+    h+='<circle cx="'+c+'" cy="'+c+'" r="'+(r+2)+'" fill="#fff" stroke="#EADFD6" stroke-width="2"/>';
+    SEC.forEach(function(s){var a=ANG[s.k], it=items[s.k]; var fill = it? s.c : '#F7F4F0'; var dash = it? '' : ' stroke-dasharray="4 3"';
+      h+='<g class="sector" data-k="'+s.k+'"><path d="'+arc(c,c,r,a[0],a[1])+'" fill="'+fill+'" stroke="#fff" stroke-width="2"'+dash+'/>';
+      var mid=(a[0]+a[1])/2*Math.PI/180, rr = (s.k==='fat'||s.k==='sauce')? r*0.66 : r*0.55; var x=c+rr*Math.sin(mid), y=c-rr*Math.cos(mid);
+      var fs = size>=200? 22 : 14, ts = size>=200? 9 : 0;
+      h+='<text x="'+x.toFixed(1)+'" y="'+(y+(size>=200?4:5)).toFixed(1)+'" font-size="'+fs+'" text-anchor="middle">'+(it? it[0] : (opts.q? '?' : ''))+'</text>';
+      if(ts && it) h+='<text x="'+x.toFixed(1)+'" y="'+(y+18).toFixed(1)+'" font-size="'+ts+'" text-anchor="middle" fill="#3F3833" font-weight="700">'+it[1]+'</text>';
+      if(ts && !it) h+='<text x="'+x.toFixed(1)+'" y="'+(y+16).toFixed(1)+'" font-size="8" text-anchor="middle" fill="#B8ADA6">'+s.n+'</text>';
+      h+='</g>';});
+    return h+'</svg>';
+  }
+  function cur(){var o={};SEC.forEach(function(s){o[s.k]=OPT[state.phase][s.k][state.sel[s.k]];});return o;}
+  function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+  function title(){var c=cur();return cap(c.protein[1])+' & '+c.carb[1]+' bowl';}
+
+  function render(){
+    var c=cur(), ph=state.phase;
+    document.getElementById('p0phase').textContent = ph+' · '+DAY[ph].toLowerCase()+' · picks ready';
+    document.getElementById('p1badge').textContent = ph.toUpperCase()+' · '+DAY[ph];
+    document.getElementById('plate1').innerHTML = plate(236, c);
+    document.getElementById('why1').innerHTML = '<h4>Why today</h4><div style="font-size:11.5px">'+WHY[ph]+'</div><div class="muted" style="margin-top:3px">From your nutrition tip · '+ph.toLowerCase()+' phase</div>';
+    document.getElementById('plate2').innerHTML = plate(200, c);
+    var s = SEC.filter(function(x){return x.k===state.pick;})[0];
+    document.getElementById('p2title').textContent = s.n; document.getElementById('p2sub').textContent = 'for '+ph.toLowerCase()+' · '+s.w;
+    document.getElementById('p2list').innerHTML = OPT[ph][state.pick].map(function(o,i){return '<div class="opt'+(i===state.sel[state.pick]?' on':'')+'" data-i="'+i+'"><span class="e">'+o[0]+'</span><div><div class="n">'+cap(o[1])+' '+(o[2]?'<span class="badge ok">✦ PICK</span>':'<span class="muted">○ ok</span>')+'</div><div class="wy">'+o[3]+'</div></div></div>';}).join('');
+    document.getElementById('plate3').innerHTML = plate(150, c);
+    document.getElementById('p3title').textContent = title()+' with '+c.veg[1]+', '+c.fat[1]+' and '+c.sauce[1];
+    document.getElementById('p3phase').textContent = '✦ '+ph.toUpperCase()+' PICK';
+    var g={protein:140,veg:90,carb:70,fat:40,sauce:40};
+    document.getElementById('p3ings').innerHTML = SEC.map(function(s){return '<div class="ing"><span>'+c[s.k][0]+' '+cap(c[s.k][1])+' <span class="muted">· '+s.n.toLowerCase()+'</span></span><b>'+g[s.k]+' g</b></div>';}).join('')+'<div class="ing"><span>🍋 Lemon, salt, pepper</span><b>to taste</b></div>';
+    document.getElementById('p3why').textContent = WHY[ph]+' This bowl covers all five sectors, with '+ph.toLowerCase()+' picks in '+SEC.filter(function(s){return c[s.k][2]===1;}).length+' of them.';
+    document.getElementById('p7title').textContent = title();
+    document.getElementById('p4phases').innerHTML = PH.map(function(p){return '<span class="chip'+(p===ph?' on':'')+'" data-ph="'+p+'">'+p+'</span>';}).join('');
+    var g2=''; var o=OPT[ph]; var combos=[[0,0,0,0,0],[1,1,1,1,1],[2,0,2,2,0],[0,2,1,0,2],[1,3,0,3,1],[3,1,3,1,3]];
+    combos.forEach(function(cb,i){var it={};SEC.forEach(function(s,j){it[s.k]=o[s.k][cb[j]%o[s.k].length];});g2+='<div class="thumb">'+plate(96,it)+'<div class="n">'+cap(it.protein[1])+' & '+it.carb[1]+' bowl</div><div class="muted">'+(i%2?'Dinner':'Lunch')+' · '+(15+i*5)+' min · ✦</div></div>';});
+    document.getElementById('p4grid').innerHTML = g2; document.getElementById('p4n').textContent = 9+PH.indexOf(ph)*2;
+    document.getElementById('phaseBar').innerHTML = PH.map(function(p){return '<span class="chip'+(p===ph?' on':'')+'" data-ph="'+p+'">'+p+'</span>';}).join('');
+    renderPantry();
+  }
+  // ── despensa (¿Sin ideas?)
+  var PANTRY=[['🍗','chicken','protein'],['🥚','eggs','protein'],['🫘','lentils','protein'],['🐟','tuna','protein'],['🥬','spinach','veg'],['🍅','tomatoes','veg'],['🥒','cucumber','veg'],['🥦','broccoli','veg'],['🍚','rice','carb'],['🥔','potatoes','carb'],['🍝','pasta','carb'],['🌾','oats','carb'],['🥑','avocado','fat'],['🫒','olive oil','fat'],['🌰','nuts','fat'],['🥣','yogurt','sauce'],['🧀','feta','sauce'],['🍋','lemon','sauce']];
+  var AVOID={Luteal:['pasta'],Menstrual:['pasta'],Follicular:[],Ovulatory:['pasta']};
+  function renderPantry(){
+    document.getElementById('p5chips').innerHTML = PANTRY.map(function(p){return '<span class="chip'+(state.have[p[1]]?' on':'')+'" data-h="'+p[1]+'">'+p[0]+' '+p[1]+'</span>';}).join('');
+    var have = PANTRY.filter(function(p){return state.have[p[1]];}); var by={}; have.forEach(function(p){if(!by[p[2]]) by[p[2]]=p;});
+    var items={}; SEC.forEach(function(s){ if(by[s.k]) items[s.k]=[by[s.k][0],by[s.k][1]]; });
+    document.getElementById('plate6').innerHTML = plate(170, items, {q:true});
+    document.getElementById('p6n').textContent = have.length? '· '+have.length+' items' : '';
+    var ph=state.phase; var picks={}; SEC.forEach(function(s){OPT[ph][s.k].forEach(function(o){picks[o[1]]=o[2];});});
+    document.getElementById('p6found').innerHTML = have.length? have.map(function(p){var base=p[1].replace(/s$/,''); var isPick = Object.keys(picks).some(function(k){return k.indexOf(base)>=0 && picks[k]===1;}); var av = AVOID[ph].indexOf(p[1])>=0; return '<span class="chip'+(isPick?' on':'')+'" style="'+(av?'border-color:#E8B072;color:#8A5A00':'')+'">'+p[0]+' '+p[1]+(isPick?' ✦':'')+(av?' · maybe not today':'')+' <span class="muted">0.9</span></span>';}).join('') : '<span class="muted">Nothing yet — tick items on the previous screen.</span>';
+    var missing = SEC.filter(function(s){return !items[s.k];});
+    var m = document.getElementById('p6missing');
+    if(!have.length){ m.innerHTML='<h4>Your phase today</h4><div style="font-size:11.5px">'+WHY[ph]+'</div>'; }
+    else if(!missing.length){ m.innerHTML='<h4>All five sectors covered ✓</h4><div style="font-size:11.5px">Great fridge. We found 2 recipes in the book that match ≥ 60 % of what you have.</div>'; }
+    else { m.innerHTML='<h4>Missing: '+missing.map(function(s){return s.n.toLowerCase();}).join(', ')+'</h4>'+missing.slice(0,2).map(function(s){return '<div style="font-size:11.5px;margin-top:3px"><b>'+s.n+'</b> — do you have '+OPT[ph][s.k].slice(0,3).map(function(o){return o[0]+' '+o[1];}).join(', ')+'?</div>';}).join('')+'<div class="muted" style="margin-top:4px">Tap one to add it · or we make a recipe with '+(5-missing.length)+'/5 sectors.</div>'; }
+    document.getElementById('p6cta').textContent = have.length? 'Make a recipe with what I have →' : 'Tick what you have first';
+  }
+  document.addEventListener('click', function(e){
+    var sec = e.target.closest('.sector'); if(sec && sec.closest('#plate1')){ var k=sec.getAttribute('data-k'); state.sel[k]=(state.sel[k]+1)%OPT[state.phase][k].length; state.pick=k; render(); return; }
+    var opt = e.target.closest('.opt'); if(opt){ state.sel[state.pick]=+opt.getAttribute('data-i'); render(); return; }
+    var ph = e.target.closest('[data-ph]'); if(ph){ state.phase=ph.getAttribute('data-ph'); state.sel={protein:0,veg:0,carb:0,fat:0,sauce:0}; render(); return; }
+    var h = e.target.closest('[data-h]'); if(h){ var n=h.getAttribute('data-h'); state.have[n]=!state.have[n]; renderPantry(); return; }
+    if(e.target.id==='p5go'){ var el=document.getElementById('plate6'); if(el.scrollIntoView) el.scrollIntoView({behavior:'smooth',block:'center',inline:'center'}); }
+  });
+  state.have={chicken:true,spinach:true,yogurt:true,tomatoes:true};   // nevera de ejemplo
+  render();
+})();
+</script>
+</div></body></html>

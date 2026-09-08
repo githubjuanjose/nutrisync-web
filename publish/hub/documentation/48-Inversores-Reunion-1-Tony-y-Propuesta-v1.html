@@ -1,0 +1,488 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>48 · Inversores — reunión 1 con Tony y el paquete «Value & Business Proposal» v1.0</title>
+<style>
+body{font-family:'Poppins',system-ui,sans-serif;background:#FFFDF8;color:#241D1A;margin:0;line-height:1.65}
+.w{max-width:900px;margin:0 auto;padding:30px 22px 90px}
+h1{font-size:24px;margin:0 0 6px}h2{font-size:17px;margin:30px 0 8px;color:#C73A20}h3{font-size:14px;margin:18px 0 6px}
+p,li{font-size:14px}.meta{color:#8A7F78;font-size:12.5px;margin-bottom:18px}
+code{background:#F4F0EA;border-radius:5px;padding:1px 6px;font-size:12.5px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+th,td{padding:7px 9px;border-bottom:1px solid #EFE3D7;text-align:left;vertical-align:top}
+th{color:#8A7F78;font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.tag{display:inline-block;font-size:10.5px;font-weight:800;border-radius:999px;padding:2px 9px;background:#E8F5EE;color:#0F6E56;margin-right:5px}
+.box{background:#FFF8EF;border-left:3px solid #E8B072;border-radius:0 8px 8px 0;padding:10px 14px;font-size:13px;margin:12px 0}
+.rojo{background:#FFF1EC;border-left:3px solid #E8472A}
+blockquote{margin:12px 0;padding:12px 16px;background:#fff;border:1px solid #EFE3D7;border-radius:10px;font-size:13.5px}
+blockquote p{margin:0 0 10px}
+.btn{display:inline-block;background:#fff;color:#241D1A;font-weight:800;font-size:12.5px;border:1px solid #F0E2D8;border-radius:22px;padding:6px 12px;text-decoration:none;margin:2px 4px 2px 0}
+</style><script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head><body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+/* r16b: la pestaña activa por CLASE con !important — tercera red por si algo
+   pisa el estilo en línea. La pone markActive() y el mini-marcador del final. */
+#ns-hub-navbar .nsnb-tab.on{background:linear-gradient(135deg,#FF7600,#FD400C)!important;color:#fff!important;font-weight:800!important;border-color:#FD400C!important;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)!important}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+.nsnb-tab{cursor:grab}
+.nsnb-tab.nsnb-drag{opacity:.35;cursor:grabbing}
+#nsnb-reset{display:none}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Web de marketing / marketing site"
+     aria-label="Web de marketing" style="text-decoration:none">🏠</a>
+  <a class="nsnb-btn" href="https://admin.nutrisynccollective.com" title="StartUp Admin (contabilidad del build)"
+     aria-label="StartUp Admin" style="text-decoration:none">🛠</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Competitive" href="/hub/competitive.html">🥊 Competencia</a><a class="nsnb-tab nsnb-g1" data-en="Build Roadmap → Go Live" href="/hub/launch-plan.html">🚀 Build Roadmap → Go Live</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g3" data-en="Leads" href="/hub/community-leads.html">🤝 Leads</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync Sprint Planning" href="/hub/backlog-dev.html">🗂 NutriSync Sprint Planning</a><a class="nsnb-tab nsnb-g4" data-en="Release Plan" href="/hub/release-plan.html">🚢 Releases</a><a class="nsnb-tab nsnb-g4" data-en="Compliance" href="/hub/compliance.html">🛡 Compliance</a><a class="nsnb-tab nsnb-g4" data-en="Ideation" href="/hub/roadmap.html">💡 Ideation</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g4" data-en="Design System" href="/hub/design-system.html">🎨 Design System</a><a class="nsnb-tab nsnb-g5" data-en="Documentation" href="/hub/documentation/index.html">📄 Documentación</a><a class="nsnb-tab nsnb-g5" data-en="ERP User Guide" href="/hub/user-guide.html">📖 Guía ERP</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14b (feedback Juanjo): idioma con CONMUTADOR visible y persistente.
+     localStorage ns_lang ('es'|'en') manda; sin él, el navegador decide.
+     Las páginas con data-i leen la misma clave — un idioma, todas las superficies. */
+  function nsLang(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pintaIdioma(){
+    var en=nsLang()==='en';
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      if(!a.getAttribute('data-es'))a.setAttribute('data-es',a.textContent.trim());
+      var em=a.getAttribute('data-es').split(' ')[0];
+      a.textContent=en?(em+' '+a.getAttribute('data-en')):a.getAttribute('data-es');});
+    var b=document.getElementById('nsnb-lang');if(b)b.textContent=en?'ES':'EN';
+  }
+  (function(){
+    var brand=document.querySelector('#ns-hub-navbar .nsnb-btn');
+    if(brand&&!document.getElementById('nsnb-lang')){
+      var b=document.createElement('a');b.id='nsnb-lang';b.className='nsnb-btn';b.href='#';
+      b.title='Cambiar idioma / switch language';
+      b.onclick=function(e){e.preventDefault();
+        try{localStorage.setItem('ns_lang',nsLang()==='en'?'es':'en');}catch(err){}
+        pintaIdioma();
+        document.dispatchEvent(new CustomEvent('ns-lang'));
+        if(typeof relayout==='function')relayout();
+        return false;};
+      brand.parentNode.insertBefore(b,brand);
+    }
+    pintaIdioma();
+    /* r14e: pintor data-i UNIVERSAL — cualquier página del hub con data-i="ES|EN"
+       (o data-i sin valor con "ES|EN" dentro) se vuelve bilingüe gratis. */
+    function pintaDataI(){
+      var en=nsLang()==='en';
+      document.querySelectorAll('[data-i]').forEach(function(n){
+        if(n.closest&&n.closest('#ns-hub-navbar'))return;
+        var src=n.getAttribute('data-i');
+        if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+        var p=src.split('|');
+        n.innerHTML=en?(p[1]||p[0]):p[0];});
+    }
+    document.addEventListener('ns-lang',pintaDataI);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',pintaDataI);
+    else pintaDataI();
+  })();
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  /* r16c (cazado POR JUANJO con el flash del clic): Cloudflare Pages sirve
+     URLs LIMPIAS — /hub/incidents.html se visita como /hub/incidents — así
+     que comparar con ".html" no casaba JAMÁS en carga de página. Se normaliza
+     quitando la extensión en LOS DOS lados. */
+  function nsLimpia(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';}
+  var here=nsLimpia(location.pathname.split('/').pop());
+  var dir=location.pathname.toLowerCase();
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : nsLimpia(f.split('/').pop())===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  /* r16: la marca se queda mientras estés en la página — se repinta al volver
+     del historial (bfcache), al recuperar el foco y al cambiar de pestaña del
+     navegador. Nada la apaga salvo navegar a otra página del hub. */
+  window.addEventListener('pageshow',function(){markActive();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)markActive();});
+  window.addEventListener('focus',function(){markActive();});
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  /* r14e (idea Juanjo): pestañas ARRASTRABLES — cada cual su orden, guardado
+     en este navegador (ns_tab_order). ↺ vuelve al orden de fábrica. */
+  (function(){
+    var KEY='ns_tab_order';
+    function filas(){return [document.getElementById('nsnb-r1'),document.getElementById('nsnb-r2')].filter(Boolean);}
+    function todas(){var t=[];filas().forEach(function(r){t=t.concat([].slice.call(r.querySelectorAll('.nsnb-tab')));});return t;}
+    var ORIG=todas().map(function(a){return a.getAttribute('href');});
+    function guardar(){try{localStorage.setItem(KEY,JSON.stringify(todas().map(function(a){return a.getAttribute('href');})));}catch(e){}
+      var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';}
+    function aplicar(orden){
+      var r1=document.getElementById('nsnb-r1');if(!r1)return;
+      var por={};todas().forEach(function(a){por[a.getAttribute('href')]=a;});
+      orden.forEach(function(h){if(por[h])r1.appendChild(por[h]);});
+      todas().forEach(function(a){if(orden.indexOf(a.getAttribute('href'))<0)r1.appendChild(a);});
+    }
+    try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&sv.length){aplicar(sv);
+      setTimeout(function(){var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';},0);}}catch(e){}
+    var drag=null;
+    todas().forEach(function(a){
+      a.setAttribute('draggable','true');
+      a.title=(a.title?a.title+' · ':'')+'Arrastra para reordenar / drag to reorder';
+      a.addEventListener('dragstart',function(e){drag=a;a.classList.add('nsnb-drag');
+        try{e.dataTransfer.setData('text/plain',a.getAttribute('href'));e.dataTransfer.effectAllowed='move';}catch(err){}});
+      a.addEventListener('dragend',function(){if(drag)drag.classList.remove('nsnb-drag');drag=null;});
+      a.addEventListener('dragover',function(e){e.preventDefault();if(!drag||drag===a)return;
+        var r=a.getBoundingClientRect(),antes=(e.clientX-r.left)<r.width/2;
+        a.parentNode.insertBefore(drag,antes?a:a.nextSibling);});
+      a.addEventListener('drop',function(e){e.preventDefault();guardar();relayout();});
+    });
+    filas().forEach(function(r){r.addEventListener('dragover',function(e){e.preventDefault();});
+      r.addEventListener('drop',function(e){e.preventDefault();if(drag){guardar();relayout();}});});
+    var brand=document.getElementById('nsnb-lang');
+    if(brand&&!document.getElementById('nsnb-reset')){
+      var rb=document.createElement('a');rb.id='nsnb-reset';rb.className='nsnb-btn';rb.href='#';rb.textContent='↺';
+      rb.title='Orden de pestañas original / reset tab order';
+      rb.onclick=function(e){e.preventDefault();try{localStorage.removeItem(KEY);}catch(err){}
+        aplicar(ORIG);rb.style.display='none';relayout();return false;};
+      brand.parentNode.insertBefore(rb,brand);
+    }
+  })();
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+<script>
+/* r16b · MINI-MARCADOR independiente de pestaña activa. Deliberadamente
+   separado y mínimo: si el script grande de la barra muere por lo que sea,
+   ESTE pinta igual. Solo compara el fichero de la URL con el href y pone la
+   clase .on (el CSS !important hace el resto). Se repite unos segundos por si
+   el reordenado o el motor mueven pestañas tarde. */
+(function(){
+  function marca(){
+    try{
+      /* r16c: Pages sirve URLs sin .html — normalizar ambos lados */
+      var lim=function(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';};
+      var here=lim(location.pathname.split('/').pop());
+      var esDoc=location.pathname.toLowerCase().indexOf('/documentation/')>-1;
+      document.querySelectorAll('#ns-hub-navbar .nsnb-tab').forEach(function(a){
+        var f=(a.getAttribute('href')||'').toLowerCase();
+        var on=esDoc ? f.indexOf('/documentation/')>-1 : lim(f.split('/').pop())===here;
+        a.classList.toggle('on',on);
+      });
+    }catch(e){}
+  }
+  marca();
+  var i=0,t=setInterval(function(){marca();if(++i>15)clearInterval(t);},700);
+  window.addEventListener('pageshow',marca);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
+})();
+</script>
+<script>
+/* ns-idle-logout (0.23.0 · UST-06 G1): 30 min sin actividad en el hub → fuera.
+   Central en el navbar = vale para TODAS las páginas /hub sin tocarlas una a
+   una. La sesión vive en localStorage (sb-*-auth-token): borrarla y recargar
+   deja la página en su candado. Solo actúa si HAY sesión — jamás bucles. */
+(function(){
+  try{
+    /* El cierre mudo parecía avería (Pilar, 25-ago): al volver se explica. */
+    if(localStorage.getItem('ns_idle_aviso')==='1'){
+      localStorage.removeItem('ns_idle_aviso');
+      var av=document.createElement('div');
+      av.setAttribute('data-i','');
+      av.style.cssText='position:sticky;top:0;z-index:9999;background:#FFF3E0;color:#7A4A00;'+
+        'border-bottom:1.5px solid #E8B36A;padding:9px 16px;font:600 13px system-ui;text-align:center';
+      av.textContent='🔒 Tu sesión se cerró tras 30 minutos sin actividad (seguridad de datos del piloto). Entra de nuevo en 📬 Waitlist o 📊 MIS y todo vuelve. | Your session closed after 30 idle minutes — log in again at 📬 Waitlist or 📊 MIS.';
+      document.body.insertBefore(av, document.body.firstChild);
+      setTimeout(function(){try{av.remove();}catch(e){}}, 25000);
+    }
+    var LIMITE=30*60*1000, K='ns_idle_ts';
+    var haySesion=function(){
+      for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
+        if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)return true;}
+      return false;};
+    if(!haySesion())return;
+    var toca=function(){try{localStorage.setItem(K,String(Date.now()));}catch(e){}};
+    ['click','keydown','mousemove','scroll','touchstart'].forEach(function(ev){
+      window.addEventListener(ev,toca,{passive:true});});
+    toca();
+    setInterval(function(){
+      try{
+        var t=parseInt(localStorage.getItem(K)||'0',10);
+        if(!t||Date.now()-t<LIMITE)return;
+        if(!haySesion())return;
+        var fuera=[];
+        for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
+          if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)fuera.push(k);}
+        fuera.forEach(function(k){localStorage.removeItem(k);});
+        localStorage.removeItem(K);
+        try{localStorage.setItem('ns_idle_aviso','1');}catch(e){}
+        location.reload();
+      }catch(e){}
+    },60000);
+  }catch(e){}
+})();
+</script>
+<script>
+/* ns-pase-directo (r23 · 28-ago): SSO founders hub↔StartUp Admin.
+   EMISOR: al pinchar un enlace hacia la otra superficie con sesión viva,
+   pide un pase de UN uso a la Edge pase-directo (solo admins) y lo manda en
+   el FRAGMENTO. RECEPTOR: consume el pase en /auth/v1/verify, guarda la
+   sesión nueva y recarga — sin re-teclear contraseña. El MFA de StartUp
+   Admin se pide igual. Cualquier fallo = navegación normal de siempre. */
+(function(){
+  try{
+    var SB='https://nebkqncvapelrarruyqb.supabase.co';
+    var ANON='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+    var SBKEY='sb-nebkqncvapelrarruyqb-auth-token';
+    var FN=SB+'/functions/v1/pase-directo';
+    var sesion=function(){try{var s=JSON.parse(localStorage.getItem(SBKEY)||'null');
+      return (s&&s.access_token)?s:null;}catch(e){return null;}};
+    var esOtra=function(h){try{var u=new URL(h, location.href);return u.hostname==='admin.nutrisynccollective.com';}catch(e){return false;}};
+
+    /* — receptor — */
+    var m=(location.hash||'').match(/[#&]nspase=([^&]+)/);
+    if(m){
+      history.replaceState(null,'',location.pathname+location.search);
+      if(!sesion()){
+        fetch(SB+'/auth/v1/verify',{method:'POST',
+          headers:{apikey:ANON,'content-type':'application/json'},
+          body:JSON.stringify({type:'magiclink',token_hash:decodeURIComponent(m[1])})})
+        .then(function(r){return r.json();})
+        .then(function(j){
+          if(j&&j.access_token){
+            if(!j.expires_at&&j.expires_in)j.expires_at=Math.floor(Date.now()/1000)+j.expires_in;
+            localStorage.setItem(SBKEY,JSON.stringify(j));
+            location.reload();
+          }
+        }).catch(function(){});
+      }
+    }
+
+    /* — reto TOTP: de aal1 a aal2 (r24-r · S15) ————————————————————————————
+       El login del hub (signInWithPassword) y el receptor del pase acuñan
+       sesión aal1 SIN reto. Para un admin con TOTP verificado, is_admin_mfa()
+       exige aal2 → todas las RPC admin mueren con 400. Este gate, sobre el
+       MISMO estilo raw del navbar (sin vendor, sin CDN — po74), detecta la
+       sesión aal1 con factor verificado y refuerza con un teclado barajado.
+       Devuelve una promesa; auto-corre al cargar cualquier página del hub. */
+    var jwtAal=function(tok){try{return JSON.parse(atob(tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).aal;}catch(e){return null;}};
+    window.nsMfaReforzar=function(){
+      return new Promise(function(resolve){
+        var s=sesion();
+        if(!s||!s.access_token||jwtAal(s.access_token)==='aal2'){resolve(true);return;}
+        var H={apikey:ANON,authorization:'Bearer '+s.access_token,'content-type':'application/json'};
+        fetch(SB+'/auth/v1/user',{headers:H}).then(function(r){return r.json();}).then(function(u){
+          var fac=((u&&u.factors)||[]).filter(function(f){return f.factor_type==='totp'&&f.status==='verified';})[0];
+          if(!fac){resolve(false);return;}            // aal1 sin factor: is_admin_mfa perdona
+          var EN=(function(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+            return (v||((navigator.language||'en').toLowerCase().indexOf('es')===0?'es':'en'))==='en';})();
+          var T=function(es,en){return EN?en:es;};
+          var pin='',teclas=[0,1,2,3,4,5,6,7,8,9];
+          for(var i=teclas.length-1;i>0;i--){var k=Math.floor(Math.random()*(i+1));var tmp=teclas[i];teclas[i]=teclas[k];teclas[k]=tmp;}
+          var ov=document.createElement('div');ov.id='ns-mfa-ov';
+          ov.setAttribute('style','position:fixed;inset:0;z-index:99999;background:rgba(20,14,10,.55);display:flex;align-items:center;justify-content:center;font-family:Poppins,system-ui,sans-serif');
+          ov.innerHTML='<div style="background:#FFFDF8;border-radius:18px;max-width:380px;width:92%;padding:22px 20px;box-shadow:0 18px 50px rgba(0,0,0,.3)">'
+            +'<div style="font-weight:800;font-size:16px;color:#241D1A;margin-bottom:4px">🔐 '+T('Refuerza tu sesión','Reinforce your session')+'</div>'
+            +'<div style="font-size:13px;color:#5f564f;margin-bottom:14px">'+T('Introduce el código de tu app de autenticación para usar las herramientas de administradora.','Enter the code from your authenticator app to use the admin tools.')+'</div>'
+            +'<div id="nsmd" style="display:flex;gap:11px;justify-content:center;margin:8px 0 16px"></div>'
+            +'<div id="nsmp" style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:#EFE3D7;border:1px solid #EFE3D7;border-radius:14px;overflow:hidden"></div>'
+            +'<button id="nsmc" style="margin-top:12px;background:none;border:0;font:600 12.5px Poppins,system-ui,sans-serif;color:#8A7F78;cursor:pointer;text-decoration:underline">'+T('Borrar','Clear')+'</button>'
+            +'<div id="nsme" style="color:#D93030;font-size:12.5px;min-height:16px"></div></div>';
+          document.body.appendChild(ov);
+          var dots=ov.querySelector('#nsmd'),pad=ov.querySelector('#nsmp'),err=ov.querySelector('#nsme');
+          var pinta=function(){var h='';for(var d=0;d<6;d++){h+='<div style="width:22px;height:22px;border-radius:50%;border:2px solid '+(d<pin.length?'#0F6E56':'#E8B072')+';background:'+(d<pin.length?'#0F6E56':'#fff')+'"></div>';}dots.innerHTML=h;};
+          pad.innerHTML=teclas.map(function(d){return '<button type="button" data-d="'+d+'" style="background:#fffdfa;border:0;font:800 24px/1 Poppins,system-ui,sans-serif;color:#241D1A;padding:18px 0;cursor:pointer">'+d+'</button>';}).join('');
+          var verifica=function(){
+            err.textContent=T('Comprobando…','Checking…');
+            fetch(SB+'/auth/v1/factors/'+fac.id+'/challenge',{method:'POST',headers:H,body:'{}'})
+            .then(function(r){return r.json();}).then(function(ch){
+              if(!ch||!ch.id){throw new Error(ch&&ch.error_description||'challenge');}
+              return fetch(SB+'/auth/v1/factors/'+fac.id+'/verify',{method:'POST',headers:H,
+                body:JSON.stringify({challenge_id:ch.id,code:pin})}).then(function(r){return r.json();});
+            }).then(function(v){
+              if(v&&v.access_token){
+                if(!v.expires_at&&v.expires_in)v.expires_at=Math.floor(Date.now()/1000)+v.expires_in;
+                localStorage.setItem(SBKEY,JSON.stringify(v));
+                ov.remove(); resolve(true); location.reload();
+              }else{err.textContent=T('Código no válido','Invalid code');pin='';pinta();}
+            }).catch(function(){err.textContent=T('Código no válido','Invalid code');pin='';pinta();});
+          };
+          pad.onclick=function(ev){var b=ev.target.closest('button[data-d]');if(!b||pin.length>=6)return;pin+=b.getAttribute('data-d');pinta();if(pin.length===6)verifica();};
+          ov.querySelector('#nsmc').onclick=function(){pin='';err.textContent='';pinta();};
+          pinta();
+        }).catch(function(){resolve(false);});
+      });
+    };
+    if(sesion()) window.nsMfaReforzar();   // auto: refuerza tras pase o carga con sesión aal1
+
+    /* — emisor — */
+    document.addEventListener('click',function(ev){
+      try{
+        if(ev.defaultPrevented||ev.button!==0||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.altKey)return;
+        var a=ev.target&&ev.target.closest?ev.target.closest('a[href]'):null;
+        if(!a||a.target==='_blank'||!esOtra(a.href))return;
+        var s=sesion(); if(!s)return;
+        ev.preventDefault();
+        var destino=a.href, ac=new AbortController();
+        var t=setTimeout(function(){ac.abort();},2500);
+        fetch(FN,{method:'POST',signal:ac.signal,
+          headers:{apikey:ANON,authorization:'Bearer '+s.access_token,'content-type':'application/json'},
+          body:'{}'})
+        .then(function(r){return r.json();})
+        .then(function(j){clearTimeout(t);
+          location.href=(j&&j.pase)?destino+'#nspase='+encodeURIComponent(j.pase):destino;})
+        .catch(function(){clearTimeout(t);location.href=destino;});
+      }catch(e){}
+    },true);
+  }catch(e){}
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar -->
+<div class="w">
+
+<h1>💼 48 — Inversores: la reunión 1 con Tony y el paquete «Value &amp; Business Proposal» v1.0</h1>
+<div class="meta">Reunión: 7 de septiembre de 2026 (el paquete v1.0 se preparó ese mismo día) · subido al hub el 8-sep · INTERNO — nada de esto circula fuera sin la aprobación de Pilar y Lucía (Anexo J de la propuesta) · Área: comercialización / financiación</div>
+
+<div class="box rojo"><b>Para Pilar, Lucía y Juanjo — qué hay aquí.</b> Los documentos preparados para la conversación con Tony (propuesta detallada de 21 páginas, la hoja de respuestas de una página, el libro de cálculo de capital y go-to-market, y el paquete con los anexos y las fuentes), las notas de la primera reunión con lo importante, la reconciliación de las tres cifras que han circulado y las acciones antes de la segunda reunión. Las cifras del paquete son <b>envolventes de planificación</b>, no previsiones validadas ni una oferta de valores; el paquete lo dice en cada página y aquí se repite.</div>
+
+<h2>1 · Documentos del paquete v1.0</h2>
+<table><tr><th style="width:26%">Entregable</th><th>Contenido</th><th style="width:26%">Ficheros</th></tr>
+<tr><td><b>Propuesta de valor y negocio, detallada</b></td><td>21 páginas: proposición de negocio, niveles de financiación (€15–25K · €250–350K · €2M · €5M), contenido y ejercicio, distribución, marketing, operación en la nube, exploración internacional (Australia, Singapur), embarazo, innovación, mecánica del retorno para el inversor y diez anexos.</td><td><a class="btn" href="/hub/docs/NutriSync_Value_and_Business_Proposal_EN_v1_0.docx">Word</a><a class="btn" href="/hub/docs/NutriSync_Value_and_Business_Proposal_EN_v1_0.pdf">PDF</a><a class="btn" href="/hub/docs/NutriSync_Value_and_Business_Proposal_EN_v1_0.md">Markdown</a></td></tr>
+<tr><td><b>Respuestas para Tony, una página</b></td><td>Ocho respuestas directas para la reunión de seguimiento (propuesta de valor, por qué €15–25K y €250–350K, qué compran €2M y €5M, cuota razonable de mercado, internacional, por qué una empresa cloud necesita inversión, retorno e instrumento).</td><td><a class="btn" href="/hub/docs/NutriSync_Tony_Answers_EN_v1_0.docx">Word</a><a class="btn" href="/hub/docs/NutriSync_Tony_Answers_EN_v1_0.pdf">PDF</a><a class="btn" href="/hub/docs/NutriSync_Tony_Answers_EN_v1_0.md">Markdown</a></td></tr>
+<tr><td><b>Libro de cálculo de capital y go-to-market</b></td><td>Siete hojas con supuestos editables, seis puntos de financiación, asignación de marketing, cálculo de captación y retención, e ilustración del retorno para el inversor (€2M al 20 % de una post-money hipotética de €10M: 1,5× a €20M de salida, 3,75× a €50M — ilustración, no valoración).</td><td><a class="btn" href="/hub/docs/NutriSync_Capital_and_GTM_Planning_EN_v1_0.xlsx">Excel</a></td></tr>
+<tr><td><b>Paquete de propuesta y anexos de fuentes</b></td><td>Todos los entregables nuevos, los originales de fuente disponibles (Propuesta 32 v8, radar comercial, competencia, revisión del deck y del modelo, plan 8-oct…), las fichas de referencia y el registro de documentos (SOURCE_REGISTER, MANIFEST).</td><td><a class="btn" href="/hub/docs/NutriSync_Business_Proposal_and_Annexes_EN_v1_0.zip">ZIP</a></td></tr>
+</table>
+<p class="meta" style="margin-top:4px">Los mismos ficheros están en Notion (Document Hub → «Inversores · Reunión 1 con Tony») y en la carpeta del proyecto <code>Inversores-2026-09-07/</code>. Relacionados en el hub: <a href="finanzas/NutriSync-Necesidad-de-Financiacion-2026-2027.pdf">Necesidad de financiación 2026–2027</a> (💶 Finanzas) · <a href="/hub/investors-business-case.html">Investor business case</a> (deck de agosto, modelo financiero, 10 Types).</p>
+
+<h2>2 · Notas de la reunión 1 — lo importante</h2>
+<p class="meta">Tal como las escribió Juanjo tras la llamada (en inglés, sin editar). Lo que Tony afirma sobre sí mismo sigue sin verificar y el paquete no lo usa como aval.</p>
+<blockquote>
+<p><b>New, specific credential he didn't have before this call:</b> he described a former Action Ventures partner who ran GE Healthcare's health division (3,000 employees, 15 health hubs across the US, Canada, Europe, Asia), who personally selected the health-sector spin-offs the fund invested in — 55 investments over 15 years, only 3 failures by his account. He also mentioned buying medtech spin-offs from Stryker, Meditech, and Philips. That's the first concrete, sector-relevant claim we've seen from him — still unverified, but no longer nothing.</p>
+<p><b>Direct feedback on your deck (this is the valuable part):</b> he said the team and market-size framing work well, but two things are missing — a practical go-to-market section ("this is our reasonable share of the market, and this is how we take it," not just TAM/SAM/SOM), and a clear ROI promise for investors, which you have in your spreadsheet but not in the deck itself. He also noted European decks can state ROI directly, unlike the US post-2008.</p>
+<p><b>The ask conversation, which is the headline:</b> his circle had already asked him "why is Pilar asking so little money." He pushed you twice to raise more — asking if €2M or €5M would let you accelerate faster (you said yes), then assigning homework: think concretely about what that bigger number would actually let you do. He said he has "a trick" for valuation and wants to discuss investment instruments next call. He gave no personal check size and no commitment — his diligence process takes 6–10 weeks.</p>
+<p><b>One thing worth flagging to yourself:</b> live on the call you told him "~€30K to launch, operations only" — a third number alongside the deck's €350K and the financing document's €15–25K. It's close enough to your €24,915 target bridge that it's probably the same figure rounded, but align it explicitly before it comes up again.</p>
+<p><b>Does he sound like he wants to invest big?</b> Genuinely warmer than an average first call. Specific, costly pitch feedback and an unprompted, twice-repeated push toward a much bigger number are real signals — people who don't intend to engage don't usually bother. But it's fair to hold two things at once: his advice to raise more may be sound, and his own business (advisory fees, a bigger deal for his investor club) benefits from you raising more too. Nothing here is a commitment yet — no check size, no term sheet. Call two, when valuation and deal structure are actually on the table, is the real test.</p>
+</blockquote>
+
+<h2>3 · Las tres cifras, reconciliadas</h2>
+<p>Han circulado tres números y una cuarta lectura. No se contradicen si se dice <b>qué alcance compra cada uno</b>; sí se contradicen si se presentan como la misma cosa. Antes de la segunda reunión hay que elegir una cifra de cabecera y contar las otras como niveles.</p>
+<table><tr><th style="width:18%">Cifra</th><th>De dónde sale</th><th>Qué compra</th><th style="width:26%">Qué hay que alinear</th></tr>
+<tr><td><b>≈ €30K</b> (dicho en la llamada)</td><td>Estimación inicial de operación hasta el lanzamiento.</td><td>Lo mismo que el puente, redondeado.</td><td>Queda <b>superada</b> por el puente €15–25K; no volver a usarla.</td></tr>
+<tr><td><b>€15.020 – €24.915</b></td><td>«Necesidad de financiación 2026–2027» (hub 💶 Finanzas, 6-sep): run-rate imputado ≈ €418/mes (≈ €543 con el DPD) + constitución, DPD/EIPD, lanzamiento.</td><td>Salir a producción y sostener la operación <b>16 meses</b> (sep-2026 → dic-2027), fundadoras sin sueldo.</td><td>El paquete v1.0 llama a este mismo nivel «puente de ≈ 90 días de trabajo acotado». <b>Misma cifra, horizonte distinto</b>: decidir cuál se cuenta (16 meses de caja mínima frente a 90 días de trabajo) antes de que Tony lo pregunte.</td></tr>
+<tr><td><b>€250K – €350K</b></td><td>Deck de agosto: la diapositiva dice €350K y las notas €250K.</td><td>Programa de lanzamiento y validación de 12 meses con una pequeña capacidad de entrega, contenido, pruebas de canal, gobernanza y primeros pilotos B2B.</td><td>Son los dos extremos de un mismo nivel; diapositiva, notas y modelo tienen que decir lo mismo.</td></tr>
+<tr><td><b>€2M · €5M</b></td><td>Los deberes de Tony; desarrollados en el paquete v1.0 (§4–§6, §10).</td><td>€2M: ejecución repetible en España, 24 meses, ~6–8 FTE; €5M: trabajo en paralelo + opción internacional controlada, ~12–15 FTE. La prueba comercial del propio paquete: con el embudo de pago del ejemplo, el CAC solo de medios (€75,76) da 1,19× la contribución vitalicia (€90) — <b>no justifica escalar publicidad</b> sin demostrar antes un CAC cargado ≤ ≈ €30.</td><td>Son diseños operativos distintos, no cifras intercambiables; y un puente convertible afecta a la cap table (no se cuenta dos veces).</td></tr>
+</table>
+
+<h2>4 · Acciones antes de la 2ª reunión</h2>
+<table><tr><th style="width:5%">#</th><th>Acción</th><th style="width:18%">Quién</th><th style="width:16%">Cuándo</th></tr>
+<tr><td>1</td><td>Decidir en equipo si estamos abiertos a levantar bastante más de €350K, y modelar qué harían €1–5M con el roadmap y la dilución (el libro de cálculo ya tiene los seis puntos; falta la decisión).</td><td>Pilar · Lucía · Juanjo</td><td>Esta semana (🗳 INV-1)</td></tr>
+<tr><td>2</td><td>Responder a los deberes: qué compran €2M o €5M que €350K no compra (§6 del paquete, en dos diapositivas).</td><td>Pilar (con Juanjo)</td><td>Antes de la llamada</td></tr>
+<tr><td>3</td><td>Construir la sección de go-to-market que pidió: «esta es nuestra cuota razonable y así la tomamos» (§10: rutas, ejemplo trabajado y la prueba del CAC).</td><td>Pilar · Lucía</td><td>Antes de la llamada</td></tr>
+<tr><td>4</td><td>Sacar los números de ROI de la hoja a una diapositiva compartible (hoja «Return illustration»: escenarios, no promesa).</td><td>Juanjo</td><td>Antes de la llamada</td></tr>
+<tr><td>5</td><td>Reconciliar €350K / €15–25K / €30K y liderar con UNA cifra, a propósito (sección 3).</td><td>Pilar · Juanjo</td><td>Antes de la llamada</td></tr>
+<tr><td>6</td><td>Formar un punto de vista propio sobre la estructura (equity con precio, nota convertible o instrumento local) antes de que él enseñe su «truco» de valoración; asesoría jurídica local, no una plantilla SAFE importada.</td><td>Pilar · Lucía (🗳 INV-2)</td><td>Antes de la llamada</td></tr>
+<tr><td>7</td><td>Preguntar discretamente a Beatriz si conoce el círculo de Tony (Sandra, Aksa).</td><td>Pilar</td><td>Esta semana</td></tr>
+<tr><td>8</td><td>Poner la llamada de seguimiento en el calendario, esta semana o principios de la que viene.</td><td>Pilar</td><td>≤ 12-sep</td></tr>
+</table>
+
+<h2>5 · Posición propuesta para la reunión (del paquete, §20)</h2>
+<blockquote><p>NutriSync is a founder-led, cloud-delivered business. We intend to move ahead with our own capabilities and a controlled operating plan. The €15–25K level covers narrowly scoped near-term work; €250–350K supports launch and early validation. A €2M plan would build repeatable execution in Spain, while €5M would allow more parallel product, expert-content, distribution and marketing work, plus selected international readiness and pilots. We are exploring Australia and Singapore as well as European opportunities. We will not count grants, partnerships or investment until the relevant commitments are real. The next decision is which scope can be justified by evidence, capacity and acceptable terms — not simply how much capital is available.</p></blockquote>
+<p class="meta">Requiere la aprobación de las founders antes de circular como posición formal de la empresa.</p>
+
+<h2>6 · Dónde vive cada cosa</h2>
+<p>Hub: esta página y los ficheros en <code>/hub/docs/</code> (candado de Access, solo founders) · Notion: Document Hub → «Inversores · Reunión 1 con Tony» (con los ficheros adjuntos) + tarea «Preparar la 2ª reunión con Tony» en el Task tracker · 🗳 Decisiones: INV-1 (cuánto levantar) e INV-2 (instrumento) · carpeta del proyecto: <code>Inversores-2026-09-07/</code>. El paquete conserva sus originales de fuente; las correcciones al deck van a una versión aprobada aparte, no encima de los ficheros históricos (Anexo E).</p>
+<p class="meta">NutriSync Engineering · 8 de septiembre de 2026 · doc 48</p>
+</div></body></html>
