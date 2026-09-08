@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>49 · App Android en paridad con iOS — revisión completa y UST-15</title>
+<style>
+body{font-family:Inter,system-ui,-apple-system,sans-serif;color:#241D1A;background:#FFF9F5;margin:0;padding:24px 18px 60px;max-width:1180px;margin:auto;line-height:1.45;font-size:14px}
+h1{font-size:24px;margin:8px 0 4px} h2{font-size:18px;color:#E4572E;margin:28px 0 8px;border-bottom:1px solid #F0E3DA;padding-bottom:4px}
+.meta{color:#7A6E67;font-size:12px;margin-bottom:14px} .q{background:#fff;border-left:4px solid #E4572E;padding:10px 14px;border-radius:0 10px 10px 0;font-style:italic}
+.t{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;font-size:12.5px;margin:8px 0 14px}
+.t th{background:#F7F1EC;text-align:left;padding:7px 9px;font-weight:700;vertical-align:top} .t td{padding:7px 9px;border-top:1px solid #F0E3DA;vertical-align:top;color:#4E4540}
+.t td:first-child{font-weight:700;color:#241D1A;white-space:nowrap} .hall td:nth-child(5){font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px}
+.sev{font-weight:800;text-align:center} .sev.P0{background:#F9D7D0} .sev.P1{background:#FBE7D6} .sev.P2{background:#F3F0EE}
+.ok{background:#EEF6EF;border-radius:10px;padding:10px 14px;font-size:12.5px} .btn{display:inline-block;background:#E4572E;color:#fff;border-radius:22px;padding:8px 14px;text-decoration:none;font-weight:700;margin:4px 6px 4px 0;font-size:13px}
+.nota{color:#7A6E67;font-size:12.5px} ol li{margin:4px 0}
+</style><script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head><body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+/* r16b: la pestaña activa por CLASE con !important — tercera red por si algo
+   pisa el estilo en línea. La pone markActive() y el mini-marcador del final. */
+#ns-hub-navbar .nsnb-tab.on{background:linear-gradient(135deg,#FF7600,#FD400C)!important;color:#fff!important;font-weight:800!important;border-color:#FD400C!important;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)!important}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+.nsnb-tab{cursor:grab}
+.nsnb-tab.nsnb-drag{opacity:.35;cursor:grabbing}
+#nsnb-reset{display:none}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Web de marketing / marketing site"
+     aria-label="Web de marketing" style="text-decoration:none">🏠</a>
+  <a class="nsnb-btn" href="https://admin.nutrisynccollective.com" title="StartUp Admin (contabilidad del build)"
+     aria-label="StartUp Admin" style="text-decoration:none">🛠</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Competitive" href="/hub/competitive.html">🥊 Competencia</a><a class="nsnb-tab nsnb-g1" data-en="Build Roadmap → Go Live" href="/hub/launch-plan.html">🚀 Build Roadmap → Go Live</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g3" data-en="Leads" href="/hub/community-leads.html">🤝 Leads</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync Sprint Planning" href="/hub/backlog-dev.html">🗂 NutriSync Sprint Planning</a><a class="nsnb-tab nsnb-g4" data-en="Release Plan" href="/hub/release-plan.html">🚢 Releases</a><a class="nsnb-tab nsnb-g4" data-en="Compliance" href="/hub/compliance.html">🛡 Compliance</a><a class="nsnb-tab nsnb-g4" data-en="Ideation" href="/hub/roadmap.html">💡 Ideation</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g4" data-en="Design System" href="/hub/design-system.html">🎨 Design System</a><a class="nsnb-tab nsnb-g5" data-en="Documentation" href="/hub/documentation/index.html">📄 Documentación</a><a class="nsnb-tab nsnb-g5" data-en="ERP User Guide" href="/hub/user-guide.html">📖 Guía ERP</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14b (feedback Juanjo): idioma con CONMUTADOR visible y persistente.
+     localStorage ns_lang ('es'|'en') manda; sin él, el navegador decide.
+     Las páginas con data-i leen la misma clave — un idioma, todas las superficies. */
+  function nsLang(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pintaIdioma(){
+    var en=nsLang()==='en';
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      if(!a.getAttribute('data-es'))a.setAttribute('data-es',a.textContent.trim());
+      var em=a.getAttribute('data-es').split(' ')[0];
+      a.textContent=en?(em+' '+a.getAttribute('data-en')):a.getAttribute('data-es');});
+    var b=document.getElementById('nsnb-lang');if(b)b.textContent=en?'ES':'EN';
+  }
+  (function(){
+    var brand=document.querySelector('#ns-hub-navbar .nsnb-btn');
+    if(brand&&!document.getElementById('nsnb-lang')){
+      var b=document.createElement('a');b.id='nsnb-lang';b.className='nsnb-btn';b.href='#';
+      b.title='Cambiar idioma / switch language';
+      b.onclick=function(e){e.preventDefault();
+        try{localStorage.setItem('ns_lang',nsLang()==='en'?'es':'en');}catch(err){}
+        pintaIdioma();
+        document.dispatchEvent(new CustomEvent('ns-lang'));
+        if(typeof relayout==='function')relayout();
+        return false;};
+      brand.parentNode.insertBefore(b,brand);
+    }
+    pintaIdioma();
+    /* r14e: pintor data-i UNIVERSAL — cualquier página del hub con data-i="ES|EN"
+       (o data-i sin valor con "ES|EN" dentro) se vuelve bilingüe gratis. */
+    function pintaDataI(){
+      var en=nsLang()==='en';
+      document.querySelectorAll('[data-i]').forEach(function(n){
+        if(n.closest&&n.closest('#ns-hub-navbar'))return;
+        var src=n.getAttribute('data-i');
+        if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+        var p=src.split('|');
+        n.innerHTML=en?(p[1]||p[0]):p[0];});
+    }
+    document.addEventListener('ns-lang',pintaDataI);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',pintaDataI);
+    else pintaDataI();
+  })();
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  /* r16c (cazado POR JUANJO con el flash del clic): Cloudflare Pages sirve
+     URLs LIMPIAS — /hub/incidents.html se visita como /hub/incidents — así
+     que comparar con ".html" no casaba JAMÁS en carga de página. Se normaliza
+     quitando la extensión en LOS DOS lados. */
+  function nsLimpia(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';}
+  var here=nsLimpia(location.pathname.split('/').pop());
+  var dir=location.pathname.toLowerCase();
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : nsLimpia(f.split('/').pop())===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  /* r16: la marca se queda mientras estés en la página — se repinta al volver
+     del historial (bfcache), al recuperar el foco y al cambiar de pestaña del
+     navegador. Nada la apaga salvo navegar a otra página del hub. */
+  window.addEventListener('pageshow',function(){markActive();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)markActive();});
+  window.addEventListener('focus',function(){markActive();});
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  /* r14e (idea Juanjo): pestañas ARRASTRABLES — cada cual su orden, guardado
+     en este navegador (ns_tab_order). ↺ vuelve al orden de fábrica. */
+  (function(){
+    var KEY='ns_tab_order';
+    function filas(){return [document.getElementById('nsnb-r1'),document.getElementById('nsnb-r2')].filter(Boolean);}
+    function todas(){var t=[];filas().forEach(function(r){t=t.concat([].slice.call(r.querySelectorAll('.nsnb-tab')));});return t;}
+    var ORIG=todas().map(function(a){return a.getAttribute('href');});
+    function guardar(){try{localStorage.setItem(KEY,JSON.stringify(todas().map(function(a){return a.getAttribute('href');})));}catch(e){}
+      var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';}
+    function aplicar(orden){
+      var r1=document.getElementById('nsnb-r1');if(!r1)return;
+      var por={};todas().forEach(function(a){por[a.getAttribute('href')]=a;});
+      orden.forEach(function(h){if(por[h])r1.appendChild(por[h]);});
+      todas().forEach(function(a){if(orden.indexOf(a.getAttribute('href'))<0)r1.appendChild(a);});
+    }
+    try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&sv.length){aplicar(sv);
+      setTimeout(function(){var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';},0);}}catch(e){}
+    var drag=null;
+    todas().forEach(function(a){
+      a.setAttribute('draggable','true');
+      a.title=(a.title?a.title+' · ':'')+'Arrastra para reordenar / drag to reorder';
+      a.addEventListener('dragstart',function(e){drag=a;a.classList.add('nsnb-drag');
+        try{e.dataTransfer.setData('text/plain',a.getAttribute('href'));e.dataTransfer.effectAllowed='move';}catch(err){}});
+      a.addEventListener('dragend',function(){if(drag)drag.classList.remove('nsnb-drag');drag=null;});
+      a.addEventListener('dragover',function(e){e.preventDefault();if(!drag||drag===a)return;
+        var r=a.getBoundingClientRect(),antes=(e.clientX-r.left)<r.width/2;
+        a.parentNode.insertBefore(drag,antes?a:a.nextSibling);});
+      a.addEventListener('drop',function(e){e.preventDefault();guardar();relayout();});
+    });
+    filas().forEach(function(r){r.addEventListener('dragover',function(e){e.preventDefault();});
+      r.addEventListener('drop',function(e){e.preventDefault();if(drag){guardar();relayout();}});});
+    var brand=document.getElementById('nsnb-lang');
+    if(brand&&!document.getElementById('nsnb-reset')){
+      var rb=document.createElement('a');rb.id='nsnb-reset';rb.className='nsnb-btn';rb.href='#';rb.textContent='↺';
+      rb.title='Orden de pestañas original / reset tab order';
+      rb.onclick=function(e){e.preventDefault();try{localStorage.removeItem(KEY);}catch(err){}
+        aplicar(ORIG);rb.style.display='none';relayout();return false;};
+      brand.parentNode.insertBefore(rb,brand);
+    }
+  })();
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+<script>
+/* r16b · MINI-MARCADOR independiente de pestaña activa. Deliberadamente
+   separado y mínimo: si el script grande de la barra muere por lo que sea,
+   ESTE pinta igual. Solo compara el fichero de la URL con el href y pone la
+   clase .on (el CSS !important hace el resto). Se repite unos segundos por si
+   el reordenado o el motor mueven pestañas tarde. */
+(function(){
+  function marca(){
+    try{
+      /* r16c: Pages sirve URLs sin .html — normalizar ambos lados */
+      var lim=function(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';};
+      var here=lim(location.pathname.split('/').pop());
+      var esDoc=location.pathname.toLowerCase().indexOf('/documentation/')>-1;
+      document.querySelectorAll('#ns-hub-navbar .nsnb-tab').forEach(function(a){
+        var f=(a.getAttribute('href')||'').toLowerCase();
+        var on=esDoc ? f.indexOf('/documentation/')>-1 : lim(f.split('/').pop())===here;
+        a.classList.toggle('on',on);
+      });
+    }catch(e){}
+  }
+  marca();
+  var i=0,t=setInterval(function(){marca();if(++i>15)clearInterval(t);},700);
+  window.addEventListener('pageshow',marca);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
+})();
+</script>
+<script>
+/* ns-idle-logout (0.23.0 · UST-06 G1): 30 min sin actividad en el hub → fuera.
+   Central en el navbar = vale para TODAS las páginas /hub sin tocarlas una a
+   una. La sesión vive en localStorage (sb-*-auth-token): borrarla y recargar
+   deja la página en su candado. Solo actúa si HAY sesión — jamás bucles. */
+(function(){
+  try{
+    /* El cierre mudo parecía avería (Pilar, 25-ago): al volver se explica. */
+    if(localStorage.getItem('ns_idle_aviso')==='1'){
+      localStorage.removeItem('ns_idle_aviso');
+      var av=document.createElement('div');
+      av.setAttribute('data-i','');
+      av.style.cssText='position:sticky;top:0;z-index:9999;background:#FFF3E0;color:#7A4A00;'+
+        'border-bottom:1.5px solid #E8B36A;padding:9px 16px;font:600 13px system-ui;text-align:center';
+      av.textContent='🔒 Tu sesión se cerró tras 30 minutos sin actividad (seguridad de datos del piloto). Entra de nuevo en 📬 Waitlist o 📊 MIS y todo vuelve. | Your session closed after 30 idle minutes — log in again at 📬 Waitlist or 📊 MIS.';
+      document.body.insertBefore(av, document.body.firstChild);
+      setTimeout(function(){try{av.remove();}catch(e){}}, 25000);
+    }
+    var LIMITE=30*60*1000, K='ns_idle_ts';
+    var haySesion=function(){
+      for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
+        if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)return true;}
+      return false;};
+    if(!haySesion())return;
+    var toca=function(){try{localStorage.setItem(K,String(Date.now()));}catch(e){}};
+    ['click','keydown','mousemove','scroll','touchstart'].forEach(function(ev){
+      window.addEventListener(ev,toca,{passive:true});});
+    toca();
+    setInterval(function(){
+      try{
+        var t=parseInt(localStorage.getItem(K)||'0',10);
+        if(!t||Date.now()-t<LIMITE)return;
+        if(!haySesion())return;
+        var fuera=[];
+        for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
+          if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)fuera.push(k);}
+        fuera.forEach(function(k){localStorage.removeItem(k);});
+        localStorage.removeItem(K);
+        try{localStorage.setItem('ns_idle_aviso','1');}catch(e){}
+        location.reload();
+      }catch(e){}
+    },60000);
+  }catch(e){}
+})();
+</script>
+<script>
+/* ns-pase-directo (r23 · 28-ago): SSO founders hub↔StartUp Admin.
+   EMISOR: al pinchar un enlace hacia la otra superficie con sesión viva,
+   pide un pase de UN uso a la Edge pase-directo (solo admins) y lo manda en
+   el FRAGMENTO. RECEPTOR: consume el pase en /auth/v1/verify, guarda la
+   sesión nueva y recarga — sin re-teclear contraseña. El MFA de StartUp
+   Admin se pide igual. Cualquier fallo = navegación normal de siempre. */
+(function(){
+  try{
+    var SB='https://nebkqncvapelrarruyqb.supabase.co';
+    var ANON='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+    var SBKEY='sb-nebkqncvapelrarruyqb-auth-token';
+    var FN=SB+'/functions/v1/pase-directo';
+    var sesion=function(){try{var s=JSON.parse(localStorage.getItem(SBKEY)||'null');
+      return (s&&s.access_token)?s:null;}catch(e){return null;}};
+    var esOtra=function(h){try{var u=new URL(h, location.href);return u.hostname==='admin.nutrisynccollective.com';}catch(e){return false;}};
+
+    /* — receptor — */
+    var m=(location.hash||'').match(/[#&]nspase=([^&]+)/);
+    if(m){
+      history.replaceState(null,'',location.pathname+location.search);
+      if(!sesion()){
+        fetch(SB+'/auth/v1/verify',{method:'POST',
+          headers:{apikey:ANON,'content-type':'application/json'},
+          body:JSON.stringify({type:'magiclink',token_hash:decodeURIComponent(m[1])})})
+        .then(function(r){return r.json();})
+        .then(function(j){
+          if(j&&j.access_token){
+            if(!j.expires_at&&j.expires_in)j.expires_at=Math.floor(Date.now()/1000)+j.expires_in;
+            localStorage.setItem(SBKEY,JSON.stringify(j));
+            location.reload();
+          }
+        }).catch(function(){});
+      }
+    }
+
+    /* — reto TOTP: de aal1 a aal2 (r24-r · S15) ————————————————————————————
+       El login del hub (signInWithPassword) y el receptor del pase acuñan
+       sesión aal1 SIN reto. Para un admin con TOTP verificado, is_admin_mfa()
+       exige aal2 → todas las RPC admin mueren con 400. Este gate, sobre el
+       MISMO estilo raw del navbar (sin vendor, sin CDN — po74), detecta la
+       sesión aal1 con factor verificado y refuerza con un teclado barajado.
+       Devuelve una promesa; auto-corre al cargar cualquier página del hub. */
+    var jwtAal=function(tok){try{return JSON.parse(atob(tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).aal;}catch(e){return null;}};
+    window.nsMfaReforzar=function(){
+      return new Promise(function(resolve){
+        var s=sesion();
+        if(!s||!s.access_token||jwtAal(s.access_token)==='aal2'){resolve(true);return;}
+        var H={apikey:ANON,authorization:'Bearer '+s.access_token,'content-type':'application/json'};
+        fetch(SB+'/auth/v1/user',{headers:H}).then(function(r){return r.json();}).then(function(u){
+          var fac=((u&&u.factors)||[]).filter(function(f){return f.factor_type==='totp'&&f.status==='verified';})[0];
+          if(!fac){resolve(false);return;}            // aal1 sin factor: is_admin_mfa perdona
+          var EN=(function(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+            return (v||((navigator.language||'en').toLowerCase().indexOf('es')===0?'es':'en'))==='en';})();
+          var T=function(es,en){return EN?en:es;};
+          var pin='',teclas=[0,1,2,3,4,5,6,7,8,9];
+          for(var i=teclas.length-1;i>0;i--){var k=Math.floor(Math.random()*(i+1));var tmp=teclas[i];teclas[i]=teclas[k];teclas[k]=tmp;}
+          var ov=document.createElement('div');ov.id='ns-mfa-ov';
+          ov.setAttribute('style','position:fixed;inset:0;z-index:99999;background:rgba(20,14,10,.55);display:flex;align-items:center;justify-content:center;font-family:Poppins,system-ui,sans-serif');
+          ov.innerHTML='<div style="background:#FFFDF8;border-radius:18px;max-width:380px;width:92%;padding:22px 20px;box-shadow:0 18px 50px rgba(0,0,0,.3)">'
+            +'<div style="font-weight:800;font-size:16px;color:#241D1A;margin-bottom:4px">🔐 '+T('Refuerza tu sesión','Reinforce your session')+'</div>'
+            +'<div style="font-size:13px;color:#5f564f;margin-bottom:14px">'+T('Introduce el código de tu app de autenticación para usar las herramientas de administradora.','Enter the code from your authenticator app to use the admin tools.')+'</div>'
+            +'<div id="nsmd" style="display:flex;gap:11px;justify-content:center;margin:8px 0 16px"></div>'
+            +'<div id="nsmp" style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:#EFE3D7;border:1px solid #EFE3D7;border-radius:14px;overflow:hidden"></div>'
+            +'<button id="nsmc" style="margin-top:12px;background:none;border:0;font:600 12.5px Poppins,system-ui,sans-serif;color:#8A7F78;cursor:pointer;text-decoration:underline">'+T('Borrar','Clear')+'</button>'
+            +'<div id="nsme" style="color:#D93030;font-size:12.5px;min-height:16px"></div></div>';
+          document.body.appendChild(ov);
+          var dots=ov.querySelector('#nsmd'),pad=ov.querySelector('#nsmp'),err=ov.querySelector('#nsme');
+          var pinta=function(){var h='';for(var d=0;d<6;d++){h+='<div style="width:22px;height:22px;border-radius:50%;border:2px solid '+(d<pin.length?'#0F6E56':'#E8B072')+';background:'+(d<pin.length?'#0F6E56':'#fff')+'"></div>';}dots.innerHTML=h;};
+          pad.innerHTML=teclas.map(function(d){return '<button type="button" data-d="'+d+'" style="background:#fffdfa;border:0;font:800 24px/1 Poppins,system-ui,sans-serif;color:#241D1A;padding:18px 0;cursor:pointer">'+d+'</button>';}).join('');
+          var verifica=function(){
+            err.textContent=T('Comprobando…','Checking…');
+            fetch(SB+'/auth/v1/factors/'+fac.id+'/challenge',{method:'POST',headers:H,body:'{}'})
+            .then(function(r){return r.json();}).then(function(ch){
+              if(!ch||!ch.id){throw new Error(ch&&ch.error_description||'challenge');}
+              return fetch(SB+'/auth/v1/factors/'+fac.id+'/verify',{method:'POST',headers:H,
+                body:JSON.stringify({challenge_id:ch.id,code:pin})}).then(function(r){return r.json();});
+            }).then(function(v){
+              if(v&&v.access_token){
+                if(!v.expires_at&&v.expires_in)v.expires_at=Math.floor(Date.now()/1000)+v.expires_in;
+                localStorage.setItem(SBKEY,JSON.stringify(v));
+                ov.remove(); resolve(true); location.reload();
+              }else{err.textContent=T('Código no válido','Invalid code');pin='';pinta();}
+            }).catch(function(){err.textContent=T('Código no válido','Invalid code');pin='';pinta();});
+          };
+          pad.onclick=function(ev){var b=ev.target.closest('button[data-d]');if(!b||pin.length>=6)return;pin+=b.getAttribute('data-d');pinta();if(pin.length===6)verifica();};
+          ov.querySelector('#nsmc').onclick=function(){pin='';err.textContent='';pinta();};
+          pinta();
+        }).catch(function(){resolve(false);});
+      });
+    };
+    if(sesion()) window.nsMfaReforzar();   // auto: refuerza tras pase o carga con sesión aal1
+
+    /* — emisor — */
+    document.addEventListener('click',function(ev){
+      try{
+        if(ev.defaultPrevented||ev.button!==0||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.altKey)return;
+        var a=ev.target&&ev.target.closest?ev.target.closest('a[href]'):null;
+        if(!a||a.target==='_blank'||!esOtra(a.href))return;
+        var s=sesion(); if(!s)return;
+        ev.preventDefault();
+        var destino=a.href, ac=new AbortController();
+        var t=setTimeout(function(){ac.abort();},2500);
+        fetch(FN,{method:'POST',signal:ac.signal,
+          headers:{apikey:ANON,authorization:'Bearer '+s.access_token,'content-type':'application/json'},
+          body:'{}'})
+        .then(function(r){return r.json();})
+        .then(function(j){clearTimeout(t);
+          location.href=(j&&j.pase)?destino+'#nspase='+encodeURIComponent(j.pase):destino;})
+        .catch(function(){clearTimeout(t);location.href=destino;});
+      }catch(e){}
+    },true);
+  }catch(e){}
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar -->
+
+<h1>📱 49 — App Android en paridad con iOS: revisión completa y UST-15 (FIRMADA)</h1>
+<div class="meta">Revisión del código de la app (repos/appdev en 19072ac, la OTA 0.23.4) frente a lo que la misma app hace en iPhone · INTERNO · UST-15 DECIDIDA y FIRMADA por Juanjo (D1–D8: propuesta en todas salvo D5 alternativa) · carril técnico: Lucía y Pilar informadas aquí; Lucía con el encargo de los assets del icono · esta página es la copia legible; la firma y su huella SHA-256 están en el PDF firmado.</div>
+<p><a class="btn" href="/hub/documentation/ust/UST-2026-09-08-15-app-android-en-paridad-con-ios-SIGNED.pdf">UST-15 FIRMADA · PDF</a><a class="btn" href="/hub/documentation/ust/UST-2026-09-08-15-app-android-en-paridad-con-ios-SIGNED.docx">Word</a><a class="btn" href="/hub/documentation/ust/UST-2026-09-08-15-app-android-en-paridad-con-ios-SIGNED.pdf.sha256">.sha256</a> <span class="nota">· propuesta sin firma: <a href="/hub/documentation/ust/UST-2026-09-08-15-app-android-en-paridad-con-ios.pdf">PDF</a></span></p>
+
+<h2>1 · El pedido, literal</h2>
+<p>Juanjo, 8-sep 2026, 15:2x EEST, tras abrir la app en su Android (build 0.22.0 de Play, sin abrir desde el 18-ago):</p>
+<div class="q">«I think that you have to review in detail the Android app for parity with the iPhone app, in the movement screen reads (Apple Health?), also allows you to select Apple Health, very weird, the app menu overlaps with the OS UI controls in the bottom, the dashboard of steps, etc. is not showing, could you do an in depth review of the Android App and check against the IOS version please»</div>
+
+<h2>2 · Lo que hay hoy (medido, no de memoria)</h2>
+<table class="t "><thead><tr><th>Qué</th><th>Hecho</th></tr></thead><tbody><tr><td>El Android de Juanjo</td><td>Build nativo 0.22.0 (access_log: 04-ago → 18-ago, ninguna apertura registrada hoy — ver UST-15 §2). El JS que corría hasta hoy era el del 18-ago (0.22.x, ANTERIOR a los wearables del 25-ago): la OTA se descarga al abrir y se aplica al VOLVER a primer plano o en el siguiente arranque en frío (r22). Lo que vio en la primera apertura de hoy no es la 0.23.4; lo que vea tras cerrar y abrir, sí.</td></tr><tr><td>Qué enseña la 0.23.4 en Android (código, no memoria)</td><td>Movimiento: tarjeta STEPS «— · Syncs with devices» para siempre (no hay fuente de pasos); el switch de Apple Salud y el cockpit están OCULTOS (UST-09 C2, Platform.OS === "ios"); «Manage all devices &amp; apps» → Dispositivos conectados, que LISTA Apple Health («iOS only», botón deshabilitado) y ofrece «Connect» en Health Connect y Samsung Health. Registro diario: la invitación «Your phone can fill this in for you · Connect Health» lleva a la pantalla de consentimiento de Health Connect.</td></tr><tr><td>Health Connect es un callejón sin salida</td><td>sync.ts solo sincroniza apple_health (l.119/131); healthkit.ts devuelve null fuera de iOS (l.66); react-native-health-connect está en package.json y como plugin (compilado en 0.23.0/0.23.1) pero tiene CERO imports en src/. HealthConsentScreen (l.99-103): la rama no-Apple enseña «This build does not include the Health connector yet…» y AUN ASÍ escribe la fila en health_connections como conectada. Resultado: una mujer con Android elige 8 señales, pulsa Connect, ve un aviso y no vuelve a pasar nada, nunca.</td></tr><tr><td>Barra y bordes</td><td>Expo SDK 54 (todos nuestros builds, desde julio) fuerza edge-to-edge en Android: la app dibuja DEBAJO de la barra de estado y de la barra de navegación del sistema. La barra de pestañas flotante es position:absolute · bottom:10 · height:62 sin inset (MainTabs.tsx:44-48) y useSafeAreaInsets tiene CERO usos en todo el código. Con navegación de 3 botones (48 dp) la píldora queda medio tapada; con gestos (~24 dp), rozada. En iPhone el indicador de inicio es una línea fina y nadie lo notó.</td></tr><tr><td>Cockpit de pasos</td><td>Oculto en Android a propósito (C2): sin Health Connect no hay pasos. No es un fallo de la OTA: es que la fuente no existe en Android.</td></tr><tr><td>Quién está en Android hoy</td><td>Dos humanas han abierto la app en Android alguna vez: Juanjo (0.22.0) y merydubois95 (0.23.1, 6-sep). Cinco en la lista de Play. Todo lo de esta UST llega por OTA a las dos; O3 (Health Connect) solo a runtimes 0.23.x — el Android de Juanjo tiene que actualizar desde Play antes.</td></tr></tbody></table>
+<p class="nota">Analogía: en Android la app dibuja edge-to-edge como una web sin <code>env(safe-area-inset-bottom)</code>: el contenido llega hasta el borde físico y la barra del sistema se pinta encima; el inset es exactamente ese <code>env()</code>, y hoy nadie lo usa. Y Health Connect es un endpoint declarado en el manifest sin controlador detrás: la ruta existe, el handler no.</p>
+
+<h2>3 · Hallazgos — Android frente a iOS, con fichero y línea</h2>
+<table class="t hall"><thead><tr><th>#</th><th>Área</th><th>Sev</th><th>Android vs iOS</th><th>Dónde</th><th>Causa → cura</th><th>Vehículo</th></tr></thead><tbody><tr><td>A1</td><td>Barra/bordes</td><td class="sev P1">P1</td><td>La barra de pestañas flotante queda bajo los botones del sistema (lo que viste). En iPhone, intacta.</td><td>MainTabs.tsx:44-48</td><td>bottom:10 fijo, sin insets.bottom; SDK 54 = edge-to-edge siempre. Cura: bottom = 10 + insets.bottom SOLO en Android (iPhone no cambia).</td><td>OTA</td></tr><tr><td>A2</td><td>Barra/bordes</td><td class="sev P1">P1</td><td>El botón principal de Movimiento y el «+ Log New Meal» del historial de comidas quedan DETRÁS de la barra del sistema: intocables con 3 botones.</td><td>MovementLogScreen.tsx:444 (bottom:84) · MealHistoryScreen.tsx:165 (bottom:18, edges top)</td><td>Posición absoluta sin inset. Cura: + insets.bottom / edges [top, bottom].</td><td>OTA</td></tr><tr><td>A3</td><td>Barra/bordes</td><td class="sev P1">P1</td><td>El final de cada lista cae bajo la barra: Home (paddingBottom 30 → la tarjeta Cycle Sync Score se corta), Calendario 92, NutriLog 130, Progreso 110, Movimiento 110; y 26 pantallas apiladas con edges [top] + paddingBottom 40 (Ajustes → Sign Out y versión, Seguridad, Datos → borrar cuenta, Consentimiento → botón Connect…).</td><td>CycleScreen.tsx:91 · CalendarScreen:301 · NutriLogScreen:223 · ProgressScreen:292 · MovementLogScreen:213 · 26 ficheros con edges={['top']}</td><td>Pádings a ojo para iPhone. Cura: edges [top, bottom] en las apiladas; N + insets.bottom en las 5 pestañas.</td><td>OTA</td></tr><tr><td>A4</td><td>Barra/bordes</td><td class="sev P1">P1</td><td>Los tres modales (rueda, idioma, oferta biométrica) atenúan el fondo sin llegar a las barras y las barras del sistema saltan a opaco mientras están abiertos (parpadeo que iOS no tiene).</td><td>WheelSheet.tsx:77 · LanguagePicker.tsx:73 · BioLock.tsx:63</td><td>RN Modal no hereda edge-to-edge. Cura: statusBarTranslucent + navigationBarTranslucent.</td><td>OTA</td></tr><tr><td>A5</td><td>Barra/bordes</td><td class="sev P1">P1</td><td>La rueda (WheelSheet): la fila «Done» queda bajo la barra de 3 botones.</td><td>WheelSheet.tsx:96 (paddingBottom 26)</td><td>26 px = indicador de iOS. Cura: 26 + insets.bottom.</td><td>OTA</td></tr><tr><td>A6</td><td>Barra/bordes</td><td class="sev P2">P2</td><td>La barra de navegación del sistema va con el estilo por defecto (scrim/iconos del sistema sobre nuestro melocotón); iOS no tiene esa superficie.</td><td>App.tsx:37 (solo StatusBar)</td><td>Nunca se estiliza. Cura: &lt;SystemBars style="dark"/&gt; de react-native-edge-to-edge (ya en el binario SDK 54).</td><td>OTA</td></tr><tr><td>A7</td><td>Barra/bordes</td><td class="sev P2">P2</td><td>Al abrir el teclado en Feedback y en las notas del período el área de texto salta/recorta.</td><td>FeedbackScreen.tsx:74 · EditPeriodScreen.tsx:359</td><td>behavior "height" + adjustResize = doble ajuste. Cura: undefined en Android (como ya hacen Auth, MealLog y LogMovement).</td><td>OTA</td></tr><tr><td>A8</td><td>Barra/bordes</td><td class="sev P2">P2</td><td>La hoja de notas del período baja dos veces la barra de estado.</td><td>EditPeriodScreen.tsx:356-358</td><td>SafeAreaView anidado (top dos veces). Cura: quitar top del interior.</td><td>OTA</td></tr><tr><td>B1</td><td>Salud</td><td class="sev P0">P0</td><td>Android «conecta» Health Connect (y Samsung) y no pasa nada nunca; la invitación del registro diario lleva ahí. En iOS, Apple Salud funciona.</td><td>sync.ts:119,131 · healthkit.ts:66 · HealthConsentScreen.tsx:99-103 · WearInvite.tsx:41 · ConnectedDevicesScreen.tsx:133 · providers.ts:13-14</td><td>O3 no existe (0 imports del módulo). Cura AHORA: invitación oculta en Android; filas Health Connect/Samsung «Próximamente» sin botón; rama no-Apple del consentimiento cerrada (no escribe conexión). Cura REAL: O3 (UST propia).</td><td>OTA</td></tr><tr><td>B2</td><td>Salud</td><td class="sev P1">P1</td><td>Android ve «Apple Health» (fila «iOS only» en Dispositivos conectados, nota al pie que la cita, «Today, from Health», «adjust permissions in Health»).</td><td>ConnectedDevicesScreen.tsx:104-117,142 · en.json mob.wear.* · mob.stepsToday</td><td>Lista sin filtro de plataforma y textos escritos para iOS. Cura: no listar proveedores de otra plataforma; textos por plataforma (Salud / Health Connect).</td><td>OTA</td></tr><tr><td>B3</td><td>Salud</td><td class="sev P1">P1</td><td>STEPS «— · Syncs with devices» para siempre y sin cockpit: no hay fuente de pasos en Android (lo que viste).</td><td>MovementLogScreen.tsx:240-243,261,293</td><td>C2 oculta switch y cockpit; no hay alternativa. Cura AHORA: tarjeta honesta «Tus pasos llegan con Health Connect» y sin promesa de dispositivos. Cura REAL: O3 — el módulo nativo YA está en 0.23.0/0.23.1, así que el JS de O3 llega por OTA a esos runtimes (0.22.0 = actualizar desde Play).</td><td>OTA (O3: UST propia)</td></tr><tr><td>B4</td><td>Salud</td><td class="sev P2">P2</td><td>flags.connectors=true enciende toda la capa de salud también en Android.</td><td>flags.ts</td><td>Un solo flag para dos plataformas. Cura: connectors por plataforma (Android apagado hasta O3) — o el gating de B1/B3 (equivalente, más explícito).</td><td>OTA</td></tr><tr><td>B5</td><td>Salud/Play</td><td class="sev P1">P1</td><td>La ficha de Play y la pantalla de permisos de Android anuncian micrófono (RECORD_AUDIO), reconocimiento de actividad y 9 permisos health.* para funciones que no existen; la declaración de Health Connect exige uso demostrado.</td><td>app.json:44-54 (health.*), :88-93 (expo-sensors), :94-99 (expo-camera)</td><td>Plugins y permisos declarados sin código detrás. Cura: quitar expo-camera y expo-sensors (o blockedPermissions); health.* solo con O3 dentro.</td><td>NATIVO 0.24.0</td></tr><tr><td>C1</td><td>Textos</td><td class="sev P1">P1</td><td>«Unlock with Face ID?» / «¿Desbloquear con Face ID?» en un Android.</td><td>BioLock.tsx:66 · en.json:903 · es.json:1215 (+12 catálogos)</td><td>Marca de Apple en un texto común. Cura: «¿Desbloquear con tu cara o tu huella?» en los 14 catálogos.</td><td>OTA</td></tr><tr><td>C2</td><td>Textos</td><td class="sev P1">P1</td><td>Seguridad: «Face ID / Touch ID — Disabled» (y «Authenticator App», «SMS Verification») fijos, en inglés, sin traducir, y «Disabled» aunque el bloqueo esté activo.</td><td>SecurityScreen.tsx:16-18</td><td>Etiquetas escritas a mano. Cura: nombre según supportedAuthenticationTypesAsync + estado real (SecureStore ns.biolock); las filas que no existen, fuera.</td><td>OTA</td></tr><tr><td>C3</td><td>Seguridad</td><td class="sev P2">P2</td><td>El diálogo biométrico de Android enseña «Cancel» del sistema sin traducir; con PIN y sin huella, «biometría» = PIN.</td><td>BioLock.tsx:54,179</td><td>authenticateAsync solo con promptMessage. Cura: cancelLabel/fallbackLabel traducidos; documentar el caso PIN.</td><td>OTA</td></tr><tr><td>C4</td><td>Seguridad</td><td class="sev P1">P1</td><td>Atrás físico en la pantalla de bloqueo SALE de la app; al volver, vuelve a pedir el bloqueo (parece que te echa).</td><td>BioLock.tsx:205-217 (fuera del navegador, sin BackHandler)</td><td>Nadie absorbe el back. Cura: BackHandler → true mientras state === "locked".</td><td>OTA</td></tr><tr><td>C5</td><td>UX</td><td class="sev P2">P2</td><td>Alertas: «destructive» no pinta rojo y el orden de botones es el inverso al de iOS (Borrar/Desconectar donde iOS pone Cancelar).</td><td>notify.ts:13 y 9 confirmaciones</td><td>Convención del sistema. Sin cura de código: documentar; si molesta, hoja propia.</td><td>—</td></tr><tr><td>C6</td><td>UX</td><td class="sev P2">P2</td><td>Cero respuesta táctil en Android: ninguna fila ni botón tiene ripple.</td><td>Buttons.tsx:14,31 y ~380 Pressable</td><td>Solo opacidad iOS-style. Cura: android_ripple en Buttons.tsx y filas de ajustes.</td><td>OTA</td></tr><tr><td>D1</td><td>Feedback</td><td class="sev P1">P1</td><td>Send Feedback con captura: en Android la foto NUNCA sube (fetch(file://) → «Network request failed», tragado por el catch) y la pantalla dice «Screenshot attached ✓».</td><td>FeedbackScreen.tsx:47-51</td><td>Misma familia que r18-b (foto de comida, 14-ago), sin arreglar aquí. Cura: manipulateAsync base64 → bytesDesdeBase64 → upload(ArrayBuffer), como MealPhoto.</td><td>OTA</td></tr><tr><td>D2</td><td>Push</td><td class="sev P1">P1</td><td>Los avisos push llegan EN SILENCIO a la bandeja (sin banner ni sonido); en iOS hay banner.</td><td>push.ts:38-43 (canal default, importance DEFAULT)</td><td>Android no deja subir la importancia de un canal ya creado. Cura: canal NUEVO (HIGH + sonido) + channelId en notify-dispatch (Edge) en el mismo acto.</td><td>OTA + Edge</td></tr><tr><td>D3</td><td>Push</td><td class="sev P1">P1</td><td>Icono de la notificación = mancha blanca (Android pinta la máscara alfa del icono de la app).</td><td>app.json:61-66 (expo-notifications solo color)</td><td>Sin notification icon. Cura: glifo blanco sobre transparente (asset de Lucía).</td><td>NATIVO 0.24.0</td></tr><tr><td>D4</td><td>Icono</td><td class="sev P1">P1</td><td>Icono de la app recortado dentro de un badge blanco en los launchers; sin icono temático (Android 13+).</td><td>app.json (sin android.adaptiveIcon; assets/ sin foreground ni monocromo)</td><td>Cura: adaptiveIcon (foreground 1024 con zona segura + backgroundColor + monochromeImage) — assets de Lucía.</td><td>NATIVO 0.24.0</td></tr><tr><td>D5</td><td>Arranque</td><td class="sev P2">P2</td><td>Tres beiges distintos en el arranque (#FCF1EC → #FFF8F1 → #FBEFE6), más visible en Android 12+ donde el splash del sistema dura más.</td><td>app.json:21-24 · App.tsx:50 · PeachBg</td><td>Colores sueltos. Cura: un solo color (OTA) + imagen de splash (nativo).</td><td>OTA / NATIVO</td></tr><tr><td>D6</td><td>Foto</td><td class="sev P2">P2</td><td>Sin permiso de cámara, la app salta a Ajustes con la alerta aún en pantalla.</td><td>MealPhotoScreen.tsx:210</td><td>openSettings inmediato tras notify. Cura: botón «Abrir Ajustes» dentro de la alerta.</td><td>OTA</td></tr><tr><td>D7</td><td>Foto</td><td class="sev P2">P2</td><td>La línea de escaneo no brilla en Android.</td><td>MealPhotoScreen.tsx:885-888</td><td>Sombra iOS sin elevation. Cura: elevation 2.</td><td>OTA</td></tr><tr><td>D8</td><td>Ajustes</td><td class="sev P2">P2</td><td>Interruptor «Haptic feedback» sin efecto (no hay expo-haptics ni Vibration en el código; ambas plataformas).</td><td>AppPreferencesScreen.tsx:83-85</td><td>UI sin función. Cura: quitar el interruptor (OTA) o añadir expo-haptics (nativo).</td><td>OTA</td></tr><tr><td>E1</td><td>Medición</td><td class="sev P2">P2</td><td>La primera sesión tras iniciar sesión no deja rastro en access_log (tu apertura de hoy).</td><td>SessionProvider.tsx:60-66 · otaAutoApply.ts:18,58 · heartbeat.ts:6</td><td>Ya registrado como item (0.23.5): log_access en SIGNED_IN.</td><td>OTA</td></tr></tbody></table>
+<div class="ok"><b>Verificado OK en Android (no tocar):</b> Google sign-in (PKCE + Custom Tabs, nutrisync://auth) y esquema nutrisync:// generado por prebuild; «Continue with Apple» solo en iOS. · Sesión Supabase (AsyncStorage + PKCE) idéntica; Crashlytics con guardas en Android; HealthKit jamás se carga fuera de iOS (y el paquete no tiene android/). · Foto de comida: ArrayBuffer desde base64 (r18-b), EXIF eliminado por la recompresión, permisos en el punto de uso, mediaTypes en forma SDK 52+. · Push: permiso POST_NOTIFICATIONS pedido, canal creado, FCM cableado (google-services.json = package + project nutrisync-push), token con projectId; la Edge notify-dispatch ya manda channelId «default». · DateTimePicker por plataforma en las tres pantallas; atrás físico en el wizard y en los tres modales (onRequestClose); textAlignVertical en todos los multilínea; Poppins con familia en cada texto; elevation en todas las tarjetas (salvo D7); versionCode remoto (EAS); minSdk 26. · SafeAreaView SIEMPRE de react-native-safe-area-context (36 ficheros, ninguno del RN deprecado).</div>
+
+<h2>4 · Cambios, fila a fila (C = OTA · N = nativo / UST propia)</h2>
+<table class="t "><thead><tr><th>Qué</th><th>Qué se construirá</th><th>Cómo se verificará</th></tr></thead><tbody><tr><td>C1 · Barra de pestañas y bordes (A1–A8)</td><td>useSafeAreaInsets entra en MainTabs (bottom = 10 + inset SOLO en Android), en las 5 pestañas (padding = N + inset), en los dos CTAs absolutos y en la rueda; edges [top, bottom] en las 26 apiladas; los 3 modales translúcidos; SystemBars oscuro; KeyboardAvoidingView sin «height» en Android; SafeAreaView anidado fuera. Una función pura `insetInferior(platform, inset)` con unitarios: iOS → 0, Android → inset.</td><td>Android de Juanjo con 3 botones Y con gestos (Ajustes → Sistema → Navegación): la píldora entera por encima de la barra en las 5 pestañas; CTAs de Movimiento e Historial tocables; Sign Out visible al final de Ajustes; rueda con «Done» visible. iPhone: captura antes/después IDÉNTICA (regresión cero).</td></tr><tr><td>C2 · Android sin callejones de salud (B1, B2, B4)</td><td>WearInvite no se monta en Android. Dispositivos conectados: solo proveedores de la plataforma; Health Connect y Samsung Health como «Próximamente» (sin botón) hasta O3; nota al pie por plataforma. HealthConsent: en Android, sin proveedor válido → vuelve atrás con aviso, y NUNCA escribe health_connections. Función pura `proveedoresVisibles(platform, providers)` con unitarios.</td><td>Android: registro diario sin invitación; Dispositivos conectados sin «Apple Health» y sin ningún «Connect» que no haga nada; ninguna fila nueva en health_connections tras tocar todo. iPhone: igual que hoy (invitación, Apple Health, consentimiento).</td></tr><tr><td>C3 · Tarjeta STEPS honesta en Android (B3)</td><td>STEPS: «Tus pasos llegarán con Health Connect (próxima versión)» en vez de «Syncs with devices»; el cockpit sigue oculto. En iOS no cambia nada. Texto en 14 catálogos.</td><td>Android: la tarjeta lo dice; iPhone: «Today, from Health» + cockpit como hoy.</td></tr><tr><td>C4 · Textos y Seguridad (C1–C3)</td><td>«Unlock with Face ID?» → «¿Desbloquear con tu cara o tu huella?» (14 catálogos; en iOS con Face ID se puede mantener la marca por plataforma). Seguridad: fila biométrica con el nombre real (`nombreBiometria(tipos)`, pura + unitarios: Face ID / Touch ID / Reconocimiento facial / Huella) y estado real (ns.biolock); las filas Authenticator/SMS, fuera hasta que existan. cancelLabel/fallbackLabel traducidos.</td><td>Android con huella: título sin «Face ID», Seguridad dice «Huella · Activado» cuando lo está. iPhone: «Face ID · Activado».</td></tr><tr><td>C5 · Atrás físico en el bloqueo (C4)</td><td>BackHandler absorbe el back mientras la app está bloqueada (no sale de la app; el bloqueo se queda).</td><td>Android: bloqueada → atrás → sigue bloqueada, no sale.</td></tr><tr><td>C6 · Captura de pantalla en Feedback (D1)</td><td>Mismo camino que la foto de comida: manipulateAsync({base64}) → bytesDesdeBase64 → upload(ArrayBuffer); si falla, la UI lo DICE («no se pudo adjuntar») en vez de ✓. Unitario del predicado de estado.</td><td>Android e iPhone: enviar feedback con captura → fila con screenshot_path y el fichero en el bucket feedback-shots (se mira en la base, no en la pantalla).</td></tr><tr><td>C7 · Push con banner en Android (D2)</td><td>Canal nuevo «nutrisync-v2» (HIGH, sonido, vibración, color) creado por la app; notify-dispatch (Edge) manda channelId «nutrisync-v2». Orden: app primero (OTA), Edge después (las apps viejas siguen recibiendo por «default»).</td><td>Push de prueba (curl a notify-dispatch con x-ns-cron, lote 1) al Android de Juanjo: banner + sonido con la app cerrada. iPhone: sin cambio.</td></tr><tr><td>C8 · Detalles (A7, D5-color, D6, D7, D8, C6-ripple)</td><td>Un solo beige de arranque; «Abrir Ajustes» como botón de la alerta; elevation en la línea de escaneo; interruptor háptico fuera; android_ripple en Buttons.tsx y filas de ajustes.</td><td>Revisión visual en Android; iPhone sin cambio.</td></tr><tr><td>N1 · Icono adaptativo + icono de notificación (D3, D4)</td><td>Assets de Lucía: foreground 1024×1024 con zona segura (66 %), color de fondo, monocromo, y glifo blanco 96×96 para notificaciones. app.json android.adaptiveIcon + expo-notifications icon.</td><td>Build 0.24.0: launcher con forma del sistema e icono temático; notificación con el glifo, no una mancha.</td></tr><tr><td>N2 · Plugins y permisos sin uso (B5)</td><td>Quitar expo-camera (RECORD_AUDIO) y expo-sensors (ACTIVITY_RECOGNITION) de app.json y package.json; health.* se quedan SOLO si O3 va en el mismo build.</td><td>Manifest del build (EAS log): sin RECORD_AUDIO ni ACTIVITY_RECOGNITION; ficha de Play → permisos coherentes.</td></tr><tr><td>N3 · O3 · Health Connect de verdad (UST propia)</td><td>Adaptador Health Connect (steps, sleep, menstruation, exercise) con la misma forma que healthkit.ts, pantalla de permisos de Health Connect (rationale obligatorio), sync.ts con dos proveedores, cockpit en Android. El JS puede ir por OTA a 0.23.0/0.23.1 (módulo compilado); 0.22.0 no lo tiene.</td><td>UST-16 (propuesta): pasos de un Android real con Health Connect en el cockpit; 12×14 de Play con app útil en Android.</td></tr><tr><td>N4 · App Links (UST-11)</td><td>assetlinks.json + intentFilter autoVerify para nutrisynccollective.com/app.html; hoy el enlace de activación abre el navegador y no vuelve a la app (ambas plataformas).</td><td>Enlace del correo abre la app en Android e iPhone.</td></tr><tr><td>Lo que NO cambia</td><td>iPhone: ni la barra (D1), ni Apple Salud, ni el cockpit, ni los textos con «Face ID» donde hay Face ID. Nada de base de datos (salvo C7 en la Edge). Ningún dato de usuaria nuevo (DoR 7: no aplica). El CAS, NutriLog, foto de comida, ciclo: intactos.</td><td>jest completo verde; captura iPhone antes/después idéntica; sql-columnas sin cambios.</td></tr></tbody></table>
+
+<h2>5 · Análisis de impacto</h2>
+<table class="t "><thead><tr><th>Dónde</th><th>Qué toca</th><th>Qué NO toca</th></tr></thead><tbody><tr><td>repos/appdev · lógica pura</td><td>src/lib/plataforma.ts (nuevo): insetInferior, proveedoresVisibles, nombreBiometria, estadoBloqueo — con unitarios. src/lib/foto.ts: reutilizado (bytesDesdeBase64) desde Feedback.</td><td>cas, cycleStats, progress, recs, health/mapping, health/sync (salvo un guard de plataforma en el que ya lee apple_health).</td></tr><tr><td>repos/appdev · pantallas</td><td>MainTabs, CycleScreen, CalendarScreen, NutriLogScreen, ProgressScreen, MovementLogScreen, MealHistoryScreen, 26 apiladas (edges), WheelSheet, LanguagePicker, BioLock, SecurityScreen, ConnectedDevicesScreen, HealthConsentScreen, WearInvite, FeedbackScreen, MealPhotoScreen (3 líneas), AppPreferencesScreen, Buttons, App.tsx (SystemBars), push.ts (canal).</td><td>AuthScreen, OnboardingWizard, NutriLog (contenido), foto de comida (pipeline), CycleRing, HormoneCharts, notificaciones (pushTap), OTA (otaAutoApply salvo E1).</td></tr><tr><td>i18n</td><td>3-4 claves nuevas/cambiadas × 14 catálogos (bioTitle, stepsAndroid, secBiometria, feedbackShotFail). Test de catálogos con paridad.</td><td>El resto de los 14 catálogos.</td></tr><tr><td>Backend</td><td>Solo C7: notify-dispatch (Edge) channelId «nutrisync-v2» — despliegue con el .command y verificación en vivo (r16). Cero SQL.</td><td>Tablas, RPC, crons, RLS.</td></tr><tr><td>Nativo (0.24.0, cuando toque)</td><td>app.json: adaptiveIcon, notification icon, plugins expo-camera/expo-sensors fuera, App Links; assets de Lucía.</td><td>No bloquea la OTA: todo lo de C1–C8 sale antes y vale en 0.22.0 y 0.23.x.</td></tr><tr><td>A quién llega</td><td>OTA a los 7 runtimes (0.18.0 … 0.23.1) = TODAS las testers, iPhone incluidas: por eso la regla de esta UST es «iPhone no cambia» y se verifica con captura antes/después. En Android hoy: Juanjo (0.22.0) y merydubois95 (0.23.1); los 5 de la lista de Play cuando instalen.</td><td>—</td></tr><tr><td>Qué puede romper y cómo se sabrá</td><td>Insets mal aplicados en iPhone (píldora subida): captura antes/después. Canal push nuevo sin channelId en la Edge: la app vieja sigue en «default» (por eso la Edge cambia DESPUÉS). Health Connect filas «Próximamente»: nadie pierde una conexión existente (ninguna Android real tiene una). Feedback: si la subida falla, la UI lo dice.</td><td>—</td></tr></tbody></table>
+
+<h2>6 · Decisiones — decididas (Juanjo, 8-sep)</h2>
+<table class="t "><thead><tr><th>#</th><th>Propuesta</th><th>Alternativa</th><th>Decisión</th></tr></thead><tbody><tr><td>D1</td><td>Barra en Android: la píldora sube exactamente insets.bottom SOLO en Android (iPhone intacto, como la diseñó Lucía).</td><td>Aplicar el inset en ambas plataformas (en iPhone la píldora sube ~24 px sobre el indicador).</td><td>DECIDIDO: la PROPUESTA — la píldora sube exactamente insets.bottom SOLO en Android; iPhone intacto.</td></tr><tr><td>D2</td><td>Salud en Android AHORA (C2 + C3): cerrar los callejones — invitación oculta, «Próximamente» sin botón, consentimiento que no escribe, tarjeta STEPS honesta.</td><td>Dejarlo como está hasta O3 (una tester Android puede «conectar» algo que no hace nada).</td><td>DECIDIDO: la PROPUESTA — cerrar los callejones ahora (invitación oculta, «Próximamente» sin botón, consentimiento que no escribe, tarjeta STEPS honesta).</td></tr><tr><td>D3</td><td>O3 Health Connect = UST-16 propia, a continuación: JS por OTA a 0.23.0/0.23.1 (módulo ya compilado) + pantalla de permisos; 0.22.0 actualiza desde Play.</td><td>Esperar al build nativo 0.24.0 para todo O3.</td><td>DECIDIDO: la PROPUESTA — O3 Health Connect como UST-16 propia, JS por OTA a 0.23.0/0.23.1; 0.22.0 actualiza desde Play.</td></tr><tr><td>D4</td><td>Push: canal nuevo HIGH + sonido; la Edge cambia el channelId después de la OTA.</td><td>Dejar el canal DEFAULT (silencioso en Android).</td><td>DECIDIDO: la PROPUESTA — canal nuevo HIGH + sonido; la Edge cambia el channelId después de la OTA.</td></tr><tr><td>D5</td><td>Textos: «tu cara o tu huella» en los 14 catálogos para ambas plataformas; Seguridad con nombre y estado reales.</td><td>«Face ID» se mantiene en iPhone con condicional por plataforma; Android «tu huella o tu cara».</td><td>DECIDIDO: la ALTERNATIVA — «Face ID» se mantiene en iPhone (condicional por plataforma); en Android «tu huella o tu cara». Seguridad con nombre y estado reales en ambas.</td></tr><tr><td>D6</td><td>Nativo 0.24.0 = N1 + N2 + N4 (+ O3 si UST-16 llega a tiempo). Lucía entrega los assets del icono (foreground, monocromo, glifo).</td><td>Solo N1 (icono) ahora; N2/N4 más adelante.</td><td>DECIDIDO: la PROPUESTA — nativo 0.24.0 = N1 + N2 + N4 (+ O3 si UST-16 llega a tiempo); Lucía entrega los assets del icono.</td></tr><tr><td>D7</td><td>Vehículo: OTA 0.23.5 = ESTA UST (C1–C8) + C3 de UST-09 (doble conteo; ambos tocan Movimiento) → 0.23.6 = UST-14.</td><td>0.23.5 = solo doble conteo (como estaba); Android = 0.23.7 después de UST-14.</td><td>DECIDIDO: la PROPUESTA — OTA 0.23.5 = UST-15 (C1–C8) + C3 de UST-09; 0.23.6 = UST-14.</td></tr><tr><td>D8</td><td>Carril: TÉCNICO (Juanjo decide). Lucía informada y con dos encargos (assets del icono; ver la barra en un Android); Pilar informada por los textos.</td><td>Carril producto: firma previa de las dos antes de tocar.</td><td>DECIDIDO: la PROPUESTA — carril técnico: Juanjo decide y ejecuta; Lucía informada con dos encargos (assets del icono; ver la barra en un Android); Pilar informada por los textos.</td></tr></tbody></table>
+
+<h2>7 · Baseline, verificación y marcha atrás</h2>
+<table class="t "><thead><tr><th>Momento</th><th>Qué se comprueba</th></tr></thead><tbody><tr><td>PASO 0 · Baseline (Juanjo, en el Mac, ANTES de que empiece el desarrollo)</td><td>"/Users/juanjo/SKG_AI_Tribe_Projects/NutriSync/tools/ota-baseline.sh" → los 14 update-id vigentes (0.23.4) por runtime y plataforma en archive/logs. appdev 19072ac (main, limpio, = OTA 0.23.4 verificada en iPhone y Android el 7-sep). Edge notify-dispatch: versión servida hoy (curl con x-ns-cron, lote 0). Sin esto no hay marcha atrás, hay adivinanza (regla 7-sep).</td></tr><tr><td>Local (sandbox)</td><td>jest (unitarios nuevos: insetInferior, proveedoresVisibles, nombreBiometria, predicado de captura) + test de catálogos ×14 + tsc 0 + pwa-tests (SystemBars y BackHandler con guard web).</td></tr><tr><td>Android de Juanjo, ANTES de publicar al resto</td><td>Su Android sigue en el build 0.22.0 y es el ÚNICO Android con ese runtime: se publica la OTA primero SOLO a runtime 0.22.0 · android (eas update --platform android con app.json en 0.22.0), se verifica en su móvil, y solo después sale a los 7 runtimes. (Actualizar a 0.23.1 desde Play DESPUÉS: hace falta para O3, no para esta UST.) Lista: barra con 3 botones y con gestos · CTAs de Movimiento e Historial · Ajustes hasta Sign Out · rueda con Done · sin «Apple Health» · Health Connect «Próximamente» · sin invitación en el registro diario · bloqueo + atrás · Feedback con captura → fila en la base con screenshot_path · push de prueba con banner.</td></tr><tr><td>iPhone de Juanjo, ANTES de publicar al resto</td><td>Captura de Movimiento, Home y Ajustes antes/después: idénticas. Apple Salud conectada, cockpit, «Face ID» donde toque.</td></tr><tr><td>Publicar</td><td>OTA NutriSync App.command "UST-15 · Android en paridad + C3 (0.23.5)" → 7 runtimes → curl u.expo.dev con las runtime-version REALES (0.22.0 android · 0.23.1 ios) → cerrar dos veces. Después, Deploy Edge notify-dispatch (channelId) + curl de verificación.</td></tr><tr><td>Marcha atrás</td><td>tools/Rollback OTA NutriSync.command "0.23.4" (republica el estado anterior en los 7 runtimes). Edge: redeploy de la versión anterior de notify-dispatch (git). Nada que revertir en la base.</td></tr></tbody></table>
+
+<h2>8 · What to Test (Android) — para las testers</h2>
+<ol><li>Barra de abajo: en las cinco pestañas la píldora blanca se ve entera por encima de los botones del sistema (o de la línea de gestos).</li><li>Movimiento: el botón coral de abajo se puede pulsar; la tarjeta STEPS dice que los pasos llegarán con Health Connect.</li><li>Dispositivos conectados: no aparece «Apple Health»; Health Connect y Samsung Health dicen «Próximamente» y no tienen botón.</li><li>Registro diario: no sale la tarjeta «Your phone can fill this in for you».</li><li>Ajustes → Seguridad: la fila dice «Huella» o «Reconocimiento facial» con su estado real.</li><li>Bloqueo: con el bloqueo activo, el botón atrás no saca de la app.</li><li>Send Feedback con captura: se envía y NO dice «adjuntada» si no lo está.</li><li>Un aviso push con la app cerrada: banner y sonido.</li></ol>
+
+<h2>9 · La cadena</h2>
+<table class="t "><thead><tr><th>Paso</th><th>Estado</th></tr></thead><tbody><tr><td>UST</td><td>Este documento (propuesta), con el informe de hallazgos completo (§3) y el detalle por fichero.</td></tr><tr><td>Sign-off</td><td>Juanjo, D1–D8 fila a fila (carril técnico, D8). Lucía: assets del icono + mirar la barra en un Android; Pilar: textos.</td></tr><tr><td>Dev</td><td>lib/plataforma.ts (puro, unitarios) → pantallas → catálogos ×14 → push canal → Edge channelId. ≈1 día. Un commit en appdev; uno en el proyecto (Edge).</td></tr><tr><td>Test</td><td>jest + catálogos + tsc + pwa-tests; Android de Juanjo (0.23.1 desde Play) e iPhone ANTES de publicar al resto (regla 7-sep).</td></tr><tr><td>Deployment</td><td>OTA 0.23.5 a los 7 runtimes (primero al runtime de Juanjo) → curl u.expo.dev → Deploy Edge notify-dispatch.</td></tr><tr><td>Verification</td><td>Lista de §7 en ambos dispositivos; What to Test (Android) a merydubois95 y a las 5 de la lista de Play; captura iPhone idéntica.</td></tr><tr><td>hub + Notion</td><td>UST-15 en documentation/ust + doc 49 (este informe) + tablero (0.23.5 con items C1–C8; 0.24.0 con N1–N4; UST-16 propuesta) + Notion cuando vuelva a escribir (tarea a Lucía: assets).</td></tr></tbody></table>
+<p class="nota">NutriSync Engineering · UST-2026-09-08-15 · Firmada por Juanjo el 8-sep (firma electrónica simple: huella SHA-256 + marca de tiempo en el PDF firmado).</p>
+</body></html>
