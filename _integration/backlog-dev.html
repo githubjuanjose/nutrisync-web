@@ -103,7 +103,7 @@ Antes había un desplegable para esto y podía contradecir a la release; ahora h
   <input type="text" id="nTit" placeholder="nuevo item… (qué haremos, en una frase)" style="flex:1;min-width:240px">
   <select id="nTipo"><option value="fix">fix</option><option value="mejora">mejora</option><option value="feature" selected>feature</option><option value="capability">capability</option></select>
   <select id="nPri"><option>P0</option><option>P1</option><option selected>P2</option><option>P3</option></select>
-  <select id="nSpr"><option>S12</option><option>S13</option><option>S14</option><option>S15</option><option>S16</option><option>GA</option><option selected>backlog</option></select>
+  <select id="nSpr"><option selected>backlog</option></select>
   <button class="pri" onclick="window.bkAdd()">＋ Añadir</button>
 </div>
 
@@ -143,8 +143,26 @@ var sb=window.supabase.createClient('https://nebkqncvapelrarruyqb.supabase.co',
 var $=function(i){return document.getElementById(i);};
 var esc=function(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});};
 var D=null;
-var SPRINTS=[['S12','Sprint 12 · 10–14 ago'],['S13','Sprint 13 · 17–21 ago'],['S14','Sprint 14 · 24–28 ago'],
-  ['S15','Sprint 15 · 31 ago–4 sep'],['S16','Sprint 16 · 7–11 sep'],['GA','Camino GA · 8 oct'],['backlog','📥 Backlog (sin sprint)']];
+/* Recalibración S19 (26-sep): el calendario de sprints VIVE EN LA BASE (public.sprints,
+   RPC admin_sprints_list) — regla de oro: si es un dato, va a la base y la página lo pinta.
+   Antes eran fechas escritas a mano aquí y en 🚢, y al saltar de S16 a S19 esta página no
+   sabía ni nombrar el sprint. Lo de abajo es el RESPALDO sin fechas: si la RPC falla, cada
+   sección se llama por su código y nada se queda en blanco (r12-b9). */
+var SPRINTS=['S12','S13','S14','S15','S16','S17','S18','S19','S20','S21','GA','backlog'].map(function(c){
+  return [c,c==='backlog'?'📥 Backlog (sin sprint)':c==='GA'?'Camino GA':'Sprint '+c.slice(1)];});
+var MESES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function sprFecha(iso){var d=new Date(iso+'T12:00:00');return isNaN(d)?'':d.getDate()+' '+MESES[d.getMonth()];}
+function sprEtiqueta(s){
+  var hoy=new Date().toISOString().slice(0,10);
+  var rango=(s.desde&&s.hasta)?' · '+sprFecha(s.desde)+'–'+sprFecha(s.hasta):'';
+  var ahora=(s.desde&&s.hasta&&hoy>=s.desde&&hoy<=s.hasta)?' · ← ahora':'';
+  return (s.codigo==='backlog'?'📥 ':'')+s.nombre+rango+ahora;
+}
+function aplicaSprints(lista){
+  if(Array.isArray(lista)&&lista.length)SPRINTS=lista.map(function(s){return [s.codigo,sprEtiqueta(s)];});
+  var sel=$('nSpr');if(!sel)return;   // con RPC o con respaldo, el desplegable de alta siempre ofrece todos
+  sel.innerHTML=SPRINTS.map(function(sp){return '<option value="'+esc(sp[0])+'"'+(sp[0]==='backlog'?' selected':'')+'>'+esc(sp[0])+'</option>';}).join('');
+}
 
 function fail(e,fn){$('board').innerHTML='';
   $('err').innerHTML='<div class="err"><b>⚠️ Falta aplicar SQL</b> — la consulta <code>'+esc(fn)+'</code> dice: <i>'
@@ -271,7 +289,7 @@ window.bkCsv=function(){
 function bkEsc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function bkFecha(){var d=new Date(),p=function(n){return String(n).padStart(2,'0');};return p(d.getDate())+p(d.getMonth()+1);}
 function bkPorSprint(rows){
-  var orden=['S12','S13','S14','S15','S16','GA','backlog'];
+  var orden=SPRINTS.map(function(sp){return sp[0];});   // el orden lo da la base (o el respaldo), no una lista aparte
   var g={};rows.forEach(function(b){var s=b.sprint||'backlog';(g[s]=g[s]||[]).push(b);});
   Object.keys(g).forEach(function(s){g[s].sort(function(a,b){
     return String(a.prioridad).localeCompare(String(b.prioridad))||String(a.titulo).localeCompare(String(b.titulo));});});
@@ -336,9 +354,13 @@ function cargar(){
        entrega.js). Síntoma real del 14-ago: la 0.22.1 existía en la base y
        «no se podía» elegir. 🚢 y Go Live ya esperaban a las dos (11-ago);
        esta página era la única con la carrera viva. */
-    Promise.all([sb.rpc('admin_releases_list'), sb.rpc('admin_backlog_list')]).then(function(rs){
+    Promise.all([sb.rpc('admin_releases_list'), sb.rpc('admin_backlog_list'), sb.rpc('admin_sprints_list')]).then(function(rs){
       if(rs[0].error)return fail(rs[0].error,'admin_releases_list');
       if(rs[1].error)return fail(rs[1].error,'admin_backlog_list');
+      // El calendario de sprints no es vital: si su RPC falla (SQL 2026-09-26-recalibracion-s19
+      // sin aplicar), la página pinta con los códigos de respaldo y lo dice en consola.
+      if(rs[2].error)console.warn('admin_sprints_list:',rs[2].error.message,'— aplica backend-sql/2026-09-26-recalibracion-s19.sql');
+      aplicaSprints(rs[2].error?null:rs[2].data);
       RELS=rs[0].data||[];D=rs[1].data;render();
     }).catch(function(e){fail(e,'backlog-dev cargar');});
   });
