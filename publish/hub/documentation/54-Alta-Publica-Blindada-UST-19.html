@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>54 · Alta pública blindada: Edge + /api/waitlist + Turnstile + ritmo por IP + vigilancia — UST-19 (propuesta)</title>
+<style>
+body{font-family:Inter,system-ui,-apple-system,sans-serif;color:#241D1A;background:#FFF9F5;margin:0;padding:24px 18px 60px;max-width:1180px;margin:auto;line-height:1.45;font-size:14px}
+h1{font-size:24px;margin:8px 0 4px} h2{font-size:18px;color:#E4572E;margin:28px 0 8px;border-bottom:1px solid #F0E3DA;padding-bottom:4px}
+.meta{color:#7A6E67;font-size:12px;margin-bottom:14px} .q{background:#fff;border-left:4px solid #E4572E;padding:10px 14px;border-radius:0 10px 10px 0;font-style:italic;margin:6px 0}
+.t{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;font-size:12.5px;margin:8px 0 14px}
+.t th{background:#F7F1EC;text-align:left;padding:7px 9px;font-weight:700;vertical-align:top} .t td{padding:7px 9px;border-top:1px solid #F0E3DA;vertical-align:top;color:#4E4540}
+.t td:first-child{font-weight:700;color:#241D1A} .dec td:last-child{background:#FFF9E0}
+.btn{display:inline-block;background:#E4572E;color:#fff;border-radius:22px;padding:8px 14px;text-decoration:none;font-weight:700;margin:4px 6px 4px 0;font-size:13px}
+.nota{color:#7A6E67;font-size:12.5px} ol li{margin:4px 0} .av{background:#FFF6E5;border-left:4px solid #E8A33D;padding:10px 14px;border-radius:0 10px 10px 0;font-size:13px;margin:10px 0}
+</style><script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head><body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+/* r16b: la pestaña activa por CLASE con !important — tercera red por si algo
+   pisa el estilo en línea. La pone markActive() y el mini-marcador del final. */
+#ns-hub-navbar .nsnb-tab.on{background:linear-gradient(135deg,#FF7600,#FD400C)!important;color:#fff!important;font-weight:800!important;border-color:#FD400C!important;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)!important}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+.nsnb-tab{cursor:grab}
+.nsnb-tab.nsnb-drag{opacity:.35;cursor:grabbing}
+#nsnb-reset{display:none}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Web de marketing / marketing site"
+     aria-label="Web de marketing" style="text-decoration:none">🏠</a>
+  <a class="nsnb-btn" href="https://admin.nutrisynccollective.com" title="StartUp Admin (contabilidad del build)"
+     aria-label="StartUp Admin" style="text-decoration:none">🛠</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Competitive" href="/hub/competitive.html">🥊 Competencia</a><a class="nsnb-tab nsnb-g1" data-en="Build Roadmap → Go Live" href="/hub/launch-plan.html">🚀 Build Roadmap → Go Live</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g3" data-en="Leads" href="/hub/community-leads.html">🤝 Leads</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync Sprint Planning" href="/hub/backlog-dev.html">🗂 NutriSync Sprint Planning</a><a class="nsnb-tab nsnb-g4" data-en="Release Plan" href="/hub/release-plan.html">🚢 Releases</a><a class="nsnb-tab nsnb-g4" data-en="Compliance" href="/hub/compliance.html">🛡 Compliance</a><a class="nsnb-tab nsnb-g4" data-en="Ideation" href="/hub/roadmap.html">💡 Ideation</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g4" data-en="Design System" href="/hub/design-system.html">🎨 Design System</a><a class="nsnb-tab nsnb-g5" data-en="Documentation" href="/hub/documentation/index.html">📄 Documentación</a><a class="nsnb-tab nsnb-g5" data-en="ERP User Guide" href="/hub/user-guide.html">📖 Guía ERP</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14b (feedback Juanjo): idioma con CONMUTADOR visible y persistente.
+     localStorage ns_lang ('es'|'en') manda; sin él, el navegador decide.
+     Las páginas con data-i leen la misma clave — un idioma, todas las superficies. */
+  function nsLang(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pintaIdioma(){
+    var en=nsLang()==='en';
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      if(!a.getAttribute('data-es'))a.setAttribute('data-es',a.textContent.trim());
+      var em=a.getAttribute('data-es').split(' ')[0];
+      a.textContent=en?(em+' '+a.getAttribute('data-en')):a.getAttribute('data-es');});
+    var b=document.getElementById('nsnb-lang');if(b)b.textContent=en?'ES':'EN';
+  }
+  (function(){
+    var brand=document.querySelector('#ns-hub-navbar .nsnb-btn');
+    if(brand&&!document.getElementById('nsnb-lang')){
+      var b=document.createElement('a');b.id='nsnb-lang';b.className='nsnb-btn';b.href='#';
+      b.title='Cambiar idioma / switch language';
+      b.onclick=function(e){e.preventDefault();
+        try{localStorage.setItem('ns_lang',nsLang()==='en'?'es':'en');}catch(err){}
+        pintaIdioma();
+        document.dispatchEvent(new CustomEvent('ns-lang'));
+        if(typeof relayout==='function')relayout();
+        return false;};
+      brand.parentNode.insertBefore(b,brand);
+    }
+    pintaIdioma();
+    /* r14e: pintor data-i UNIVERSAL — cualquier página del hub con data-i="ES|EN"
+       (o data-i sin valor con "ES|EN" dentro) se vuelve bilingüe gratis. */
+    function pintaDataI(){
+      var en=nsLang()==='en';
+      document.querySelectorAll('[data-i]').forEach(function(n){
+        if(n.closest&&n.closest('#ns-hub-navbar'))return;
+        var src=n.getAttribute('data-i');
+        if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+        var p=src.split('|');
+        n.innerHTML=en?(p[1]||p[0]):p[0];});
+    }
+    document.addEventListener('ns-lang',pintaDataI);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',pintaDataI);
+    else pintaDataI();
+  })();
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  /* r16c (cazado POR JUANJO con el flash del clic): Cloudflare Pages sirve
+     URLs LIMPIAS — /hub/incidents.html se visita como /hub/incidents — así
+     que comparar con ".html" no casaba JAMÁS en carga de página. Se normaliza
+     quitando la extensión en LOS DOS lados. */
+  function nsLimpia(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';}
+  var here=nsLimpia(location.pathname.split('/').pop());
+  var dir=location.pathname.toLowerCase();
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : nsLimpia(f.split('/').pop())===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  /* r16: la marca se queda mientras estés en la página — se repinta al volver
+     del historial (bfcache), al recuperar el foco y al cambiar de pestaña del
+     navegador. Nada la apaga salvo navegar a otra página del hub. */
+  window.addEventListener('pageshow',function(){markActive();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)markActive();});
+  window.addEventListener('focus',function(){markActive();});
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  /* r14e (idea Juanjo): pestañas ARRASTRABLES — cada cual su orden, guardado
+     en este navegador (ns_tab_order). ↺ vuelve al orden de fábrica. */
+  (function(){
+    var KEY='ns_tab_order';
+    function filas(){return [document.getElementById('nsnb-r1'),document.getElementById('nsnb-r2')].filter(Boolean);}
+    function todas(){var t=[];filas().forEach(function(r){t=t.concat([].slice.call(r.querySelectorAll('.nsnb-tab')));});return t;}
+    var ORIG=todas().map(function(a){return a.getAttribute('href');});
+    function guardar(){try{localStorage.setItem(KEY,JSON.stringify(todas().map(function(a){return a.getAttribute('href');})));}catch(e){}
+      var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';}
+    function aplicar(orden){
+      var r1=document.getElementById('nsnb-r1');if(!r1)return;
+      var por={};todas().forEach(function(a){por[a.getAttribute('href')]=a;});
+      orden.forEach(function(h){if(por[h])r1.appendChild(por[h]);});
+      todas().forEach(function(a){if(orden.indexOf(a.getAttribute('href'))<0)r1.appendChild(a);});
+    }
+    try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&sv.length){aplicar(sv);
+      setTimeout(function(){var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';},0);}}catch(e){}
+    var drag=null;
+    todas().forEach(function(a){
+      a.setAttribute('draggable','true');
+      a.title=(a.title?a.title+' · ':'')+'Arrastra para reordenar / drag to reorder';
+      a.addEventListener('dragstart',function(e){drag=a;a.classList.add('nsnb-drag');
+        try{e.dataTransfer.setData('text/plain',a.getAttribute('href'));e.dataTransfer.effectAllowed='move';}catch(err){}});
+      a.addEventListener('dragend',function(){if(drag)drag.classList.remove('nsnb-drag');drag=null;});
+      a.addEventListener('dragover',function(e){e.preventDefault();if(!drag||drag===a)return;
+        var r=a.getBoundingClientRect(),antes=(e.clientX-r.left)<r.width/2;
+        a.parentNode.insertBefore(drag,antes?a:a.nextSibling);});
+      a.addEventListener('drop',function(e){e.preventDefault();guardar();relayout();});
+    });
+    filas().forEach(function(r){r.addEventListener('dragover',function(e){e.preventDefault();});
+      r.addEventListener('drop',function(e){e.preventDefault();if(drag){guardar();relayout();}});});
+    var brand=document.getElementById('nsnb-lang');
+    if(brand&&!document.getElementById('nsnb-reset')){
+      var rb=document.createElement('a');rb.id='nsnb-reset';rb.className='nsnb-btn';rb.href='#';rb.textContent='↺';
+      rb.title='Orden de pestañas original / reset tab order';
+      rb.onclick=function(e){e.preventDefault();try{localStorage.removeItem(KEY);}catch(err){}
+        aplicar(ORIG);rb.style.display='none';relayout();return false;};
+      brand.parentNode.insertBefore(rb,brand);
+    }
+  })();
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+<script>
+/* r16b · MINI-MARCADOR independiente de pestaña activa. Deliberadamente
+   separado y mínimo: si el script grande de la barra muere por lo que sea,
+   ESTE pinta igual. Solo compara el fichero de la URL con el href y pone la
+   clase .on (el CSS !important hace el resto). Se repite unos segundos por si
+   el reordenado o el motor mueven pestañas tarde. */
+(function(){
+  function marca(){
+    try{
+      /* r16c: Pages sirve URLs sin .html — normalizar ambos lados */
+      var lim=function(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';};
+      var here=lim(location.pathname.split('/').pop());
+      var esDoc=location.pathname.toLowerCase().indexOf('/documentation/')>-1;
+      document.querySelectorAll('#ns-hub-navbar .nsnb-tab').forEach(function(a){
+        var f=(a.getAttribute('href')||'').toLowerCase();
+        var on=esDoc ? f.indexOf('/documentation/')>-1 : lim(f.split('/').pop())===here;
+        a.classList.toggle('on',on);
+      });
+    }catch(e){}
+  }
+  marca();
+  var i=0,t=setInterval(function(){marca();if(++i>15)clearInterval(t);},700);
+  window.addEventListener('pageshow',marca);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
+})();
+</script>
+<script>
+/* ns-idle-logout (0.23.0 · UST-06 G1): 30 min sin actividad en el hub → fuera.
+   Central en el navbar = vale para TODAS las páginas /hub sin tocarlas una a
+   una. La sesión vive en localStorage (sb-*-auth-token): borrarla y recargar
+   deja la página en su candado. Solo actúa si HAY sesión — jamás bucles.
+   UN CANDADO (26-sep, UST-17 · Juanjo): APAGADO. El candado del hub es
+   Cloudflare Access (sesión de 30 días por dispositivo); volver a pedir la
+   contraseña cada 30 min de inactividad era una de las cuatro puertas que se
+   retiran. LIMITE=0 desactiva el cierre sin borrar el mecanismo (marcha atrás
+   = volver a 30*60*1000). */
+(function(){
+  try{
+    var LIMITE=0;   // ms; 0 = sin cierre por inactividad (UST-17)
+    if(!LIMITE){ try{localStorage.removeItem('ns_idle_aviso');localStorage.removeItem('ns_idle_ts');}catch(e){} return; }
+    /* El cierre mudo parecía avería (Pilar, 25-ago): al volver se explica. */
+    if(localStorage.getItem('ns_idle_aviso')==='1'){
+      localStorage.removeItem('ns_idle_aviso');
+      var av=document.createElement('div');
+      av.setAttribute('data-i','');
+      av.style.cssText='position:sticky;top:0;z-index:9999;background:#FFF3E0;color:#7A4A00;'+
+        'border-bottom:1.5px solid #E8B36A;padding:9px 16px;font:600 13px system-ui;text-align:center';
+      av.textContent='🔒 Tu sesión se cerró tras 30 minutos sin actividad (seguridad de datos del piloto). Entra de nuevo en 📬 Waitlist o 📊 MIS y todo vuelve. | Your session closed after 30 idle minutes — log in again at 📬 Waitlist or 📊 MIS.';
+      document.body.insertBefore(av, document.body.firstChild);
+      setTimeout(function(){try{av.remove();}catch(e){}}, 25000);
+    }
+    var K='ns_idle_ts';
+    var haySesion=function(){
+      for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
+        if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)return true;}
+      return false;};
+    if(!haySesion())return;
+    var toca=function(){try{localStorage.setItem(K,String(Date.now()));}catch(e){}};
+    ['click','keydown','mousemove','scroll','touchstart'].forEach(function(ev){
+      window.addEventListener(ev,toca,{passive:true});});
+    toca();
+    setInterval(function(){
+      try{
+        var t=parseInt(localStorage.getItem(K)||'0',10);
+        if(!t||Date.now()-t<LIMITE)return;
+        if(!haySesion())return;
+        var fuera=[];
+        for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
+          if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)fuera.push(k);}
+        fuera.forEach(function(k){localStorage.removeItem(k);});
+        localStorage.removeItem(K);
+        try{localStorage.setItem('ns_idle_aviso','1');}catch(e){}
+        location.reload();
+      }catch(e){}
+    },60000);
+  }catch(e){}
+})();
+</script>
+<script>
+/* ns-pase-directo (r23 · 28-ago): SSO founders hub↔StartUp Admin.
+   EMISOR: al pinchar un enlace hacia la otra superficie con sesión viva,
+   pide un pase de UN uso a la Edge pase-directo (solo admins) y lo manda en
+   el FRAGMENTO. RECEPTOR: consume el pase en /auth/v1/verify, guarda la
+   sesión nueva y recarga — sin re-teclear contraseña. El MFA de StartUp
+   Admin se pide igual. Cualquier fallo = navegación normal de siempre. */
+(function(){
+  try{
+    var SB='https://nebkqncvapelrarruyqb.supabase.co';
+    var ANON='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+    var SBKEY='sb-nebkqncvapelrarruyqb-auth-token';
+    var FN=SB+'/functions/v1/pase-directo';
+    var sesion=function(){try{var s=JSON.parse(localStorage.getItem(SBKEY)||'null');
+      return (s&&s.access_token)?s:null;}catch(e){return null;}};
+    var esOtra=function(h){try{var u=new URL(h, location.href);return u.hostname==='admin.nutrisynccollective.com';}catch(e){return false;}};
+
+    /* — receptor — */
+    var m=(location.hash||'').match(/[#&]nspase=([^&]+)/);
+    if(m){
+      history.replaceState(null,'',location.pathname+location.search);
+      if(!sesion()){
+        fetch(SB+'/auth/v1/verify',{method:'POST',
+          headers:{apikey:ANON,'content-type':'application/json'},
+          body:JSON.stringify({type:'magiclink',token_hash:decodeURIComponent(m[1])})})
+        .then(function(r){return r.json();})
+        .then(function(j){
+          if(j&&j.access_token){
+            if(!j.expires_at&&j.expires_in)j.expires_at=Math.floor(Date.now()/1000)+j.expires_in;
+            localStorage.setItem(SBKEY,JSON.stringify(j));
+            location.reload();
+          }
+        }).catch(function(){});
+      }
+    }
+
+    /* — reto TOTP: de aal1 a aal2 (r24-r · S15) ————————————————————————————
+       El login del hub (signInWithPassword) y el receptor del pase acuñan
+       sesión aal1 SIN reto. Para un admin con TOTP verificado, is_admin_mfa()
+       exige aal2 → todas las RPC admin mueren con 400. Este gate, sobre el
+       MISMO estilo raw del navbar (sin vendor, sin CDN — po74), detecta la
+       sesión aal1 con factor verificado y refuerza con un teclado barajado.
+       Devuelve una promesa; auto-corre al cargar cualquier página del hub. */
+    var jwtAal=function(tok){try{return JSON.parse(atob(tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).aal;}catch(e){return null;}};
+    window.nsMfaReforzar=function(){
+      return new Promise(function(resolve){
+        var s=sesion();
+        if(!s||!s.access_token||jwtAal(s.access_token)==='aal2'){resolve(true);return;}
+        var H={apikey:ANON,authorization:'Bearer '+s.access_token,'content-type':'application/json'};
+        fetch(SB+'/auth/v1/user',{headers:H}).then(function(r){return r.json();}).then(function(u){
+          var fac=((u&&u.factors)||[]).filter(function(f){return f.factor_type==='totp'&&f.status==='verified';})[0];
+          if(!fac){resolve(false);return;}            // aal1 sin factor: is_admin_mfa perdona
+          var EN=(function(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+            return (v||((navigator.language||'en').toLowerCase().indexOf('es')===0?'es':'en'))==='en';})();
+          var T=function(es,en){return EN?en:es;};
+          var pin='',teclas=[0,1,2,3,4,5,6,7,8,9];
+          for(var i=teclas.length-1;i>0;i--){var k=Math.floor(Math.random()*(i+1));var tmp=teclas[i];teclas[i]=teclas[k];teclas[k]=tmp;}
+          var ov=document.createElement('div');ov.id='ns-mfa-ov';
+          ov.setAttribute('style','position:fixed;inset:0;z-index:99999;background:rgba(20,14,10,.55);display:flex;align-items:center;justify-content:center;font-family:Poppins,system-ui,sans-serif');
+          ov.innerHTML='<div style="background:#FFFDF8;border-radius:18px;max-width:380px;width:92%;padding:22px 20px;box-shadow:0 18px 50px rgba(0,0,0,.3)">'
+            +'<div style="font-weight:800;font-size:16px;color:#241D1A;margin-bottom:4px">🔐 '+T('Refuerza tu sesión','Reinforce your session')+'</div>'
+            +'<div style="font-size:13px;color:#5f564f;margin-bottom:14px">'+T('Introduce el código de tu app de autenticación para usar las herramientas de administradora.','Enter the code from your authenticator app to use the admin tools.')+'</div>'
+            +'<div id="nsmd" style="display:flex;gap:11px;justify-content:center;margin:8px 0 16px"></div>'
+            +'<div id="nsmp" style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:#EFE3D7;border:1px solid #EFE3D7;border-radius:14px;overflow:hidden"></div>'
+            +'<button id="nsmc" style="margin-top:12px;background:none;border:0;font:600 12.5px Poppins,system-ui,sans-serif;color:#8A7F78;cursor:pointer;text-decoration:underline">'+T('Borrar','Clear')+'</button>'
+            +'<div id="nsme" style="color:#D93030;font-size:12.5px;min-height:16px"></div></div>';
+          document.body.appendChild(ov);
+          var dots=ov.querySelector('#nsmd'),pad=ov.querySelector('#nsmp'),err=ov.querySelector('#nsme');
+          var pinta=function(){var h='';for(var d=0;d<6;d++){h+='<div style="width:22px;height:22px;border-radius:50%;border:2px solid '+(d<pin.length?'#0F6E56':'#E8B072')+';background:'+(d<pin.length?'#0F6E56':'#fff')+'"></div>';}dots.innerHTML=h;};
+          pad.innerHTML=teclas.map(function(d){return '<button type="button" data-d="'+d+'" style="background:#fffdfa;border:0;font:800 24px/1 Poppins,system-ui,sans-serif;color:#241D1A;padding:18px 0;cursor:pointer">'+d+'</button>';}).join('');
+          var verifica=function(){
+            err.textContent=T('Comprobando…','Checking…');
+            fetch(SB+'/auth/v1/factors/'+fac.id+'/challenge',{method:'POST',headers:H,body:'{}'})
+            .then(function(r){return r.json();}).then(function(ch){
+              if(!ch||!ch.id){throw new Error(ch&&ch.error_description||'challenge');}
+              return fetch(SB+'/auth/v1/factors/'+fac.id+'/verify',{method:'POST',headers:H,
+                body:JSON.stringify({challenge_id:ch.id,code:pin})}).then(function(r){return r.json();});
+            }).then(function(v){
+              if(v&&v.access_token){
+                if(!v.expires_at&&v.expires_in)v.expires_at=Math.floor(Date.now()/1000)+v.expires_in;
+                localStorage.setItem(SBKEY,JSON.stringify(v));
+                ov.remove(); resolve(true); location.reload();
+              }else{err.textContent=T('Código no válido','Invalid code');pin='';pinta();}
+            }).catch(function(){err.textContent=T('Código no válido','Invalid code');pin='';pinta();});
+          };
+          pad.onclick=function(ev){var b=ev.target.closest('button[data-d]');if(!b||pin.length>=6)return;pin+=b.getAttribute('data-d');pinta();if(pin.length===6)verifica();};
+          ov.querySelector('#nsmc').onclick=function(){pin='';err.textContent='';pinta();};
+          pinta();
+        }).catch(function(){resolve(false);});
+      });
+    };
+    /* UN CANDADO (26-sep, UST-17): el reto TOTP ya NO se auto-lanza al cargar —
+       is_admin_mfa() dejó de exigir aal2 (Cloudflare Access es el segundo factor).
+       nsMfaReforzar() sigue disponible para quien quiera reforzar (mfa.html). */
+
+    /* — emisor — */
+    document.addEventListener('click',function(ev){
+      try{
+        if(ev.defaultPrevented||ev.button!==0||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.altKey)return;
+        var a=ev.target&&ev.target.closest?ev.target.closest('a[href]'):null;
+        if(!a||a.target==='_blank'||!esOtra(a.href))return;
+        var s=sesion(); if(!s)return;
+        ev.preventDefault();
+        var destino=a.href, ac=new AbortController();
+        var t=setTimeout(function(){ac.abort();},2500);
+        fetch(FN,{method:'POST',signal:ac.signal,
+          headers:{apikey:ANON,authorization:'Bearer '+s.access_token,'content-type':'application/json'},
+          body:'{}'})
+        .then(function(r){return r.json();})
+        .then(function(j){clearTimeout(t);
+          location.href=(j&&j.pase)?destino+'#nspase='+encodeURIComponent(j.pase):destino;})
+        .catch(function(){clearTimeout(t);location.href=destino;});
+      }catch(e){}
+    },true);
+  }catch(e){}
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar -->
+
+<h1>🛡 54 — Alta pública blindada: la lista de espera se apunta por UNA puerta vigilada, y el endpoint REST que abusaron el 10-sep se cierra (UST-19, propuesta)</h1>
+<div class="meta">INTERNO · PROPUESTA (26-sep-2026) · alcance «2+3+4+5+7» validado por Juanjo en chat; decisiones D1–D10 pendientes de validación fila a fila · carril técnico, con UNA desviación declarada de po74 (Turnstile) que corrobora Pilar · entrega WEB en S19.</div>
+<p><a class="btn" href="/hub/documentation/ust/UST-2026-09-26-19-alta-publica-blindada.pdf">UST-2026-09-26-19 · PDF</a><a class="btn" href="/hub/documentation/ust/UST-2026-09-26-19-alta-publica-blindada.docx">Word</a></p>
+<div class="av"><b>Por qué hace falta aunque las guardas de hoy funcionen:</b> las guardas de UST-18 paran la forma EXACTA del ataque del 10-sep (petición desnuda con solo el email) y limitan cualquier otra a 200 altas/10 min. Un bot que se adapte (una fila, <code>source=web2</code>, formato válido) sigue entrando a ≈28.800/día, y ese tope global también frenaría un pico legítimo (prensa). La cura de fondo es la de cualquier API pública: gateway delante, puerto trasero cerrado.</div>
+
+<h2>1 · El pedido, literal</h2>
+<p>Juanjo, 26-sep 2026, ≈23:00, tras cerrar el incidente de la waitlist (UST-18):</p>
+<div class="q">«como se puede prevenir que un bot meta esos correos falsos»</div><div class="q">«2+3+4+5+7» (sobre las siete capas propuestas: 2 cerrar REST y pasar por Edge · 3 honeypot, ritmo por IP, Origin, tiempo mínimo · 4 proxy en nuestro dominio con WAF/rate limiting de Cloudflare · 5 Turnstile · 7 vigilancia diaria). Fuera del alcance: 6 (doble opt-in → 🗳 WL-2, carril producto).</div>
+<p>Lectura: que apuntarse a la lista de espera sea un CAMINO ÚNICO y vigilado (nuestro dominio → Cloudflare → Pages Function → Edge → base), y que el camino viejo (POST directo a PostgREST con la anon key) deje de existir. Un bot no se «disuade»: se le quita la puerta.</p>
+<p><b>Principio (stack lean, Juanjo 2-ago)</b></p><p>Sin proveedores nuevos: todo con Cloudflare (Pages Functions, WAF, Turnstile) y Supabase (Edge, SQL) que ya tenemos. Cero servidores propios. Coste: 0 €.</p>
+
+<h2>2 · Lo que hay hoy (leído del código y medido en la base)</h2>
+<table class="t "><thead><tr><th>Qué</th><th>Medido</th></tr></thead><tbody><tr><td>Cómo se apunta alguien</td><td>web2 (`src/js/30-forms.js`): `fetch(SB + "/rest/v1/waitlist")` con la anon key y `{email, source:"web2"}`; sin JS, el `&lt;form&gt;` (`tools/patches/waitlist.py`) hace POST directo a `https://nebkqncvapelrarruyqb.supabase.co/rest/v1/waitlist`. El marketing viejo en `/v1/` (`integrate.py` bloque `ns-waitlist-js`) hace lo mismo con `marketing_site`; el pie, `newsletter`. La cifra de la Home sale de la RPC `waitlist_count` (anon).</td></tr><tr><td>La anon key</td><td>Pública por diseño (RLS manda) y visible en el HTML de la web: cualquiera puede llamar al endpoint sin pasar por el formulario. Eso hizo el bot: 630.076 POST en dos ventanas, sin abrir la web.</td></tr><tr><td>Guardas de hoy (UST-18)</td><td>Tope de lote (&gt;20 filas/sentencia) · origen obligatorio para anon (web2 / marketing_site / newsletter) · ritmo GLOBAL 200 altas/10 min · CHECK de formato · `created_at` lo pone el servidor. Probadas en producción (curl → 400/23514).</td></tr><tr><td>Lo que las guardas NO ven</td><td>La IP (un trigger no la tiene de forma fiable), si hay un humano detrás, si la petición viene de nuestra web. Y el ritmo es global: 200/10 min frenaría también un pico legítimo.</td></tr><tr><td>Lo que Cloudflare ve hoy</td><td>Nada del alta: el POST va del navegador (o del bot) directo a `supabase.co`. WAF, rate limiting y bots de Cloudflare protegen nutrisynccollective.com, no el endpoint.</td></tr><tr><td>El patrón ya existe en casa</td><td>Edge `community-lead` (5/6-sep): honeypot `website`, ritmo por email (3/24 h) y por hash de IP (10/h) vía RPC `community_lead_allowed`, Origin en CORS, 303 → página de gracias sin JS, nunca guarda la IP (sha256 truncado). `waitlist-join` es su gemela.</td></tr><tr><td>Vigilancia</td><td>Ninguna: 630.083 filas estuvieron 16 días sin que nadie las viera. El digest de las 07:15 (`founder_pending_summary`) no mira la waitlist.</td></tr></tbody></table>
+<p class="nota"><b>Analogía:</b> hoy la base de datos tiene un puerto publicado a Internet con una ACL por fila (RLS). La arquitectura buena es la de cualquier API: un API gateway en nuestro dominio (Pages Function detrás del WAF de Cloudflare) que autentica la petición (Turnstile = «hay un humano»), la limita (rate limit por IP), la valida (honeypot, Origin, formato) y la reenvía al backend por un canal que solo él conoce (la Edge con un secreto compartido); y el puerto del backend deja de escuchar a Internet (se retira la policy de INSERT anónimo).</p>
+
+<h2>3 · Cambios, fila a fila (propuesta)</h2>
+<table class="t "><thead><tr><th>Qué</th><th>Qué se construirá</th><th>Cómo se verificará</th></tr></thead><tbody><tr><td>C1 · Edge `waitlist-join`</td><td>Gemela de `community-lead`: acepta JSON (fetch) o form-urlencoded (sin JS); campos `email`, `source` (solo de la lista blanca: web2 / marketing_site / newsletter), `locale`, `website` (honeypot), `cf-turnstile-response`, `t0` (instante de carga del formulario). Rechaza si: honeypot relleno (responde OK y no guarda), Origin fuera de nuestros dominios, formulario enviado &lt; 2 s tras cargarse, Turnstile inválido (cuando hay token), o `waitlist_allowed(email, ip_hash)` dice no. Inserta con service_role (Vault). Exige la cabecera `x-ns-gateway` (secreto compartido con la Pages Function): sin ella, 403 — así nadie llama a la Edge saltándose Cloudflare. 409 si el correo ya está; 303 → gracias/error sin JS; JSON `{ok}` con JS.</td><td>Arnés de funciones puras (transpilar con el `typescript` de appdev, como community-lead) para: lista blanca de source, honeypot, tiempo mínimo, forma del hash de IP. Estreno REAL con una llamada por cada camino (r21): fetch OK · sin JS 303 · honeypot 200-sin-fila · sin gateway 403 · Turnstile inválido 400 · duplicado 409.</td></tr><tr><td>C2 · SQL: ritmo por IP y cierre del REST</td><td>`waitlist_allowed(p_email, p_ip_hash)` security definer (≤ 3 altas/24 h por email · ≤ 5/h por hash de IP; sin JS/Turnstile, ≤ 3/h) sobre `waitlist_ritmo` (ip_hash, email_hash, created_at; purga &gt; 48 h en la propia función). `drop policy "anyone can join waitlist"` + `revoke insert on waitlist from anon` (authenticated conserva el grant para la policy `admins * waitlist` del hub). Las guardas de UST-18 se quedan (defensa en profundidad; la Edge entra como service_role y no las pisa).</td><td>Fichero con `begin/commit`, autoprueba (`set local role anon` → INSERT = 42501 permission denied) y verificación final. Arnés PG16 antes de la bandeja. Se ejecuta EL ÚLTIMO (D10): cuando la web ya envía por la puerta nueva.</td></tr><tr><td>C3 · Pages Function `/api/waitlist` (webdeploy)</td><td>`repos/webdeploy/functions/api/waitlist.js`: recibe el POST (JSON o form), añade `cf-connecting-ip` como `x-ns-ip` y `x-ns-gateway` (secreto en variable de entorno del proyecto Pages), reenvía a la Edge y devuelve su respuesta (JSON o 303). Misma URL para web2 (raíz), `/v1/` y m. Ventaja: mismo origen (sin CORS) y la anon key sale del JS de la web.</td><td>web-tests: el módulo se ejecuta en vm con peticiones de forma (JSON, form, honeypot) contra una Edge falsa. smoke-prod: `POST /api/waitlist` con honeypot → 200 `{ok:true}` y `waitlist_count` NO cambia.</td></tr><tr><td>C4 · Cloudflare: WAF y rate limiting (Juanjo, panel)</td><td>Security → WAF → Rate limiting rules: `http.request.uri.path eq "/api/waitlist"` → 10 peticiones / 10 s por IP → bloquear 10 s (la regla gratuita del plan). Bot Fight Mode: NO (D6) — desafiaría también a smoke-prod, curl y Lighthouse, y en el plan Free no admite excepciones.</td><td>Prueba con `ab`/bucle de curl desde el Mac: la 11ª petición en 10 s devuelve 429 de Cloudflare; la Edge no la ve.</td></tr><tr><td>C5 · Turnstile (Cloudflare) en los formularios</td><td>Widget «Managed» (invisible salvo sospecha) en los 3 formularios de alta (web2 Home + Community, `/v1/`, pie newsletter). Site key en el HTML (pública); secret en `supabase secrets` para la Edge, que verifica en `challenges.cloudflare.com/turnstile/v0/siteverify` con la IP. El script `https://challenges.cloudflare.com/turnstile/v0/api.js` es una DESVIACIÓN DECLARADA de po74 («cero CDNs de terceros»): mismo proveedor que ya sirve la web y ya ve todas las peticiones; lista blanca explícita, con el motivo, en pre-deploy (bloque 7), verify-web-pack y smoke. Pilar corrobora y, si procede, una línea en la política de privacidad.</td><td>Capturas ES/EN × 390/1440 (textfit no debe cambiar: el widget va debajo del botón). En vivo: alta con token válido → 201; sin token con JS → 400 «verificación pendiente»; sin JS → camino C1 con límite estricto.</td></tr><tr><td>C6 · web2 y `/v1/`: el formulario habla con `/api/waitlist`</td><td>`30-forms.js`: `fetch("/api/waitlist")` (mismo origen), cuerpo `{email, source, locale, website, t0, cf-turnstile-response}`; `tools/patches/waitlist.py`: `action="/api/waitlist"` (sin JS). `integrate.py` bloque `ns-waitlist-js` (marketing viejo en `/v1/`): misma URL. Mensajes ya existentes (ok/dup/err) + uno nuevo «verificación pendiente».</td><td>verify-web2 + textfit en 5 idiomas × 2 anchos · candidata `v2.` verificada por Juanjo (circuito de 5 pasos, «sin 2 y 3 no hay 4 o 5») · web-tests (snippet `ns-waitlist-js` real en vm).</td></tr><tr><td>C7 · Vigilancia en el digest de las 07:15</td><td>`founder_pending_summary` añade `waitlist_altas_24h` y `waitlist_total`; `founder-reminders` escribe una línea siempre («📬 lista de espera: +N en 24 h · total T») y la marca ⚠ si N &gt; 50. Además, una sonda de solo lectura re-ejecutable (`-sonda-waitlist-crecimiento.sql`).</td><td>Estreno con una llamada real a la Edge (mirar el cuerpo, r16/r20). Arnés: sembrar 60 altas en 24 h → aparece el ⚠.</td></tr><tr><td>C8 · Orden de entrega (el formulario nunca se queda sin puerta)</td><td>(1) SQL de `waitlist_ritmo` + `waitlist_allowed` → (2) `supabase secrets` (Turnstile secret + gateway) y Deploy Edge con verificación en vivo → (3) variable `NS_GATEWAY` en Pages (nutrisync-collective) → (4) web2 candidata → verificada → integrate → Deploy Web (po) → (5) smoke → (6) SOLO ENTONCES el SQL que retira la policy y el grant → (7) smoke otra vez: POST anon a `/rest/v1/waitlist` = 401/42501.</td><td>Cada paso con su comprobación antes del siguiente (regla 7-sep: validar antes de sobreescribir). Baseline antes del paso 1.</td></tr></tbody></table>
+
+<h2>4 · Análisis de impacto</h2>
+<table class="t "><thead><tr><th>Dónde</th><th>Qué toca</th><th>Qué NO toca</th></tr></thead><tbody><tr><td>repos/web2</td><td>`src/js/30-forms.js`, `tools/patches/waitlist.py` (+ Turnstile en la barra), catálogo i18n (1 clave × 5 idiomas), `build.py` sin cambios de forma → circuito de 5 pasos completo.</td><td>Layout, imágenes, Community (sus formularios ya van por Edge), SEO, PWA shell.</td></tr><tr><td>repos/webdeploy</td><td>Nuevo `functions/api/waitlist.js`; `integrate.py` bloque `ns-waitlist-js` (URL) y lista blanca de Turnstile en pre-deploy/verify-web-pack; `_routes.json` si hace falta para `/api/*`.</td><td>Hub (📬 Waitlist y 🧭 Piloto siguen con `sb.from("waitlist")` como admins: policy `admins * waitlist` intacta), legal, adjuntos, middleware pages.dev.</td></tr><tr><td>Backend SQL</td><td>`waitlist_ritmo` (nueva), `waitlist_allowed` (nueva), `founder_pending_summary` (v+1), drop policy + revoke insert anon. Las guardas de UST-18 se quedan.</td><td>Tabla `waitlist` (columnas y filas), RPC `waitlist_count` (sigue anon: lectura barata), `admin_waitlist` (paginación = item aparte S19).</td></tr><tr><td>Edge Functions</td><td>Nueva `waitlist-join`; `founder-reminders` (una línea nueva). Secrets: `TURNSTILE_SECRET`, `NS_GATEWAY_SECRET`.</td><td>`community-lead` (se copia, no se toca), `notify-dispatch`, crons.</td></tr><tr><td>Cloudflare (panel, Juanjo)</td><td>Turnstile: crear widget (site key + secret). WAF: 1 regla de rate limiting. Pages: variable de entorno `NS_GATEWAY`. Access: nada.</td><td>DNS, Zero Trust, Bot Fight Mode (NO se activa, D6).</td></tr><tr><td>Quién lo recibe</td><td>Quien se apunte desde la web (EN/ES/CA/GL/EU) y desde `/v1/`: mismo gesto, un widget más (normalmente invisible). Las founders: línea nueva en el digest.</td><td>Testers y usuarias de la app (la app no escribe en waitlist). Las 168 personas ya apuntadas.</td></tr><tr><td>Riesgos</td><td>Turnstile mal configurado = nadie se apunta → por eso el orden C8 y el camino sin token con límite estricto (D4) como red. Un fallo en la Edge = 303 a la página de error con motivo (nsFail, nada en silencio). La regla WAF demasiado agresiva = 429 a humanos rápidos (10/10 s por IP es holgado para una persona).</td><td>—</td></tr></tbody></table>
+<p class="nota">Desviación declarada (única): el script de Turnstile se carga de `challenges.cloudflare.com`. po74 exige cero CDNs de terceros; Cloudflare no es un tercero nuevo (sirve la web entera desde Pages y ya ve cada petición), pero es un script externo y se registra como excepción con motivo en las tres puertas. Pilar corrobora (compliance) y decide si la política de privacidad lo menciona.</p>
+
+<h2>5 · Decisiones (fila a fila — pendientes de validación; el alcance «2+3+4+5+7» ya está dado)</h2>
+<table class="t dec"><thead><tr><th>#</th><th>Propuesta</th><th>Alternativa</th><th>Decisión</th></tr></thead><tbody><tr><td>D1</td><td>Cerrar el REST para anon: `drop policy "anyone can join waitlist"` + `revoke insert … from anon`. El POST directo a `/rest/v1/waitlist` pasa a 401/42501 para todo el mundo.</td><td>Dejar el REST abierto y añadir solo Turnstile en el HTML (no cierra nada: el bot no usa el HTML).</td><td></td></tr><tr><td>D2</td><td>Puerta ÚNICA `/api/waitlist` en nuestro dominio (Pages Function) → Edge con `x-ns-gateway` (secreto compartido); la Edge rechaza (403) lo que no venga por la puerta. Así Cloudflare ve y limita TODO el tráfico de alta.</td><td>Edge pública como `community-lead` (llamable directo desde el navegador: Cloudflare no la ve y el WAF no aplica).</td><td></td></tr><tr><td>D3</td><td>Turnstile modo «Managed» (invisible salvo sospecha), verificado en la Edge con la IP; site key pública en el HTML; desviación po74 declarada con lista blanca y motivo; Pilar corrobora.</td><td>Sin Turnstile (solo honeypot + ritmo). Más simple, pero un bot con navegador real y una IP distinta por petición sigue entrando al ritmo permitido.</td><td></td></tr><tr><td>D4</td><td>Sin JS (o Turnstile caído): se ACEPTA el alta con honeypot + Origin + ritmo estricto (3/h por IP) — accesibilidad y red de seguridad si Turnstile falla.</td><td>Rechazar todo alta sin token de Turnstile.</td><td></td></tr><tr><td>D5</td><td>Ritmo por IP con hash sha256 truncado (nunca la IP en claro, como community-lead): 5/h por IP · 3/24 h por email; tabla `waitlist_ritmo` purgada a las 48 h dentro de la propia función.</td><td>Solo la regla de rate limiting de Cloudflare (por IP real, sin memoria entre peticiones lentas: 1 alta cada 11 s la pasa).</td><td></td></tr><tr><td>D6</td><td>Regla WAF de rate limiting: `/api/waitlist`, 10 peticiones/10 s por IP → bloqueo 10 s. Bot Fight Mode NO (desafiaría a smoke-prod, curl, Lighthouse; en Free no admite excepciones).</td><td>Bot Fight Mode ON en toda la zona.</td><td></td></tr><tr><td>D7</td><td>El tope global de UST-18 (200/10 min) se queda como red de seguridad de la base (defensa en profundidad), igual que el tope de lote y la guarda de origen.</td><td>Retirarlo al cerrar el REST.</td><td></td></tr><tr><td>D8</td><td>Vigilancia: línea SIEMPRE en el digest de las 07:15 («+N en 24 h · total T») y ⚠ si N &gt; 50; sonda re-ejecutable en backend-sql.</td><td>Cron propio + correo aparte (más piezas, mismo aviso).</td><td></td></tr><tr><td>D9</td><td>Carril técnico: Juanjo decide y ejecuta; Pilar corrobora la desviación po74 (Turnstile) y el texto de privacidad si procede; Lucía, el widget bajo el botón (no cambia el diseño).</td><td>Carril producto (firma previa de las dos).</td><td></td></tr><tr><td>D10</td><td>Orden C8: la web habla con la puerta nueva ANTES de cerrar la vieja; `drop policy` es el ÚLTIMO paso, con smoke antes y después. Entrega WEB en S19 (≈ 4–5 h de trabajo + los 5 pasos del circuito web2).</td><td>Cerrar primero el REST (deja el formulario roto entre pasos).</td><td></td></tr></tbody></table>
+
+<h2>6 · Baseline, verificación y marcha atrás</h2>
+<table class="t "><thead><tr><th>Momento</th><th>Qué se comprueba</th></tr></thead><tbody><tr><td>PASO 0 · Baseline (antes de tocar)</td><td>`tools/baseline.sh` (sha de web2/webdeploy, sellos ns-build, candados) + lista de policies de `waitlist` (`pg_policies`) + `waitlist_count()` + `supabase functions list`. Sin baseline escrita no hay marcha atrás.</td></tr><tr><td>Test antes de desplegar</td><td>Arnés de puras de la Edge · arnés PG16 del SQL (incluida la autoprueba «anon INSERT = 42501») · web-tests (Pages Function + snippet ns-waitlist-js) · verify-web2 + textfit ×5 idiomas · pre-deploy bloque 7 con la lista blanca.</td></tr><tr><td>Estreno real (r21)</td><td>Un POST por camino contra producción: fetch OK (201, aparece en 📬) · sin JS (303 a gracias) · honeypot (200, no aparece) · sin gateway a la Edge (403) · Turnstile inválido (400) · duplicado (409) · 11 peticiones en 10 s (429 de Cloudflare) · POST anon a `/rest/v1/waitlist` (401/42501, tras D1).</td></tr><tr><td>DoD</td><td>Las tres verificaciones del párrafo anterior + una persona (Lucía) se apunta desde su móvil en ES y aparece en 📬 · el digest del día siguiente trae la línea de la waitlist.</td></tr><tr><td>Marcha atrás</td><td>SQL: `create policy "anyone can join waitlist" … with check (true)` + `grant insert on waitlist to anon` (una sentencia cada una; fichero `-rollback` preparado). Web: Cloudflare Pages → Rollback al deploy anterior (web2 candidata y webdeploy). Edge: no hace falta retirarla (sin la policy vieja la web seguiría funcionando por la puerta nueva). WAF: desactivar la regla.</td></tr></tbody></table>
+
+<h2>7 · What to Test (para Pilar y Lucía, cuando esté desplegado)</h2>
+<ol><li>Apuntarse desde la Home (ES y EN) con un correo propio: mensaje de «¡Estás dentro!» y la persona aparece en 📬 Waitlist en el acto. Normalmente no se ve ningún «¿eres humano?»; si aparece, es un clic.</li><li>Apuntarse otra vez con el mismo correo: «ya estabas en la lista» (409), sin duplicado en 📬.</li><li>Desde el pie (newsletter) y desde /v1/: lo mismo.</li><li>En el digest de las 07:15 del día siguiente: línea «📬 lista de espera: +N en 24 h · total T».</li><li>Para Juanjo: el curl del 26-sep (POST anónimo a /rest/v1/waitlist) devuelve ahora 401/42501 en vez de 400/23514 — la puerta ya no existe, no es que esté vigilada.</li></ol>
+
+
+
+<h2>8 · La cadena</h2>
+<table class="t "><thead><tr><th>Paso</th><th>Estado</th></tr></thead><tbody><tr><td>UST</td><td>Este documento (propuesta, 26-sep). Alcance «2+3+4+5+7» validado por Juanjo en chat; D1–D10 pendientes fila a fila.</td></tr><tr><td>Sign-off</td><td>Carril técnico: Juanjo valida D1–D10 (firma electrónica simple). Pilar corrobora la desviación po74 (D3) antes del Deploy Web. Doble opt-in queda fuera: 🗳 WL-2 (Pilar y Lucía).</td></tr><tr><td>Dev</td><td>S19: SQL (ritmo + cierre REST) · Edge `waitlist-join` · Pages Function · web2 (formulario + Turnstile) · integrate.py (`ns-waitlist-js`, lista blanca) · founder-reminders · sonda.</td></tr><tr><td>Test</td><td>Arnés de puras · arnés PG16 · web-tests · verify-web2 + textfit · pre-deploy · estreno real por cada camino.</td></tr><tr><td>Deployment</td><td>Orden C8/D10: SQL ritmo → secrets + Deploy Edge → variable Pages → web2 candidata → verificada → integrate → Deploy Web → smoke → SQL cierre REST → smoke.</td></tr><tr><td>Verification</td><td>DoD arriba (técnica + Lucía desde su móvil + digest del día siguiente).</td></tr><tr><td>hub + Notion</td><td>Hub: este doc 54 + adjunto (po255); as-built al cerrar. Notion: sin bloques → hub.</td></tr></tbody></table>
+<p class="nota">NutriSync Engineering · UST-2026-09-26-19 · propuesta del 26-sep-2026 · alcance 2+3+4+5+7 validado en chat · firma fila a fila pendiente</p>
+</body></html>

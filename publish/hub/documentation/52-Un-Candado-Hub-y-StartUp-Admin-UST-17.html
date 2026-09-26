@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>52 · Un candado: Access como segundo factor, hub y StartUp Admin sin TOTP ni cierre a los 30 min — UST-17 (as-built)</title>
+<style>
+body{font-family:Inter,system-ui,-apple-system,sans-serif;color:#241D1A;background:#FFF9F5;margin:0;padding:24px 18px 60px;max-width:1180px;margin:auto;line-height:1.45;font-size:14px}
+h1{font-size:24px;margin:8px 0 4px} h2{font-size:18px;color:#E4572E;margin:28px 0 8px;border-bottom:1px solid #F0E3DA;padding-bottom:4px}
+.meta{color:#7A6E67;font-size:12px;margin-bottom:14px} .q{background:#fff;border-left:4px solid #E4572E;padding:10px 14px;border-radius:0 10px 10px 0;font-style:italic;margin:6px 0}
+.t{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;font-size:12.5px;margin:8px 0 14px}
+.t th{background:#F7F1EC;text-align:left;padding:7px 9px;font-weight:700;vertical-align:top} .t td{padding:7px 9px;border-top:1px solid #F0E3DA;vertical-align:top;color:#4E4540}
+.t td:first-child{font-weight:700;color:#241D1A} .dec td:last-child{background:#FFF9E0}
+.btn{display:inline-block;background:#E4572E;color:#fff;border-radius:22px;padding:8px 14px;text-decoration:none;font-weight:700;margin:4px 6px 4px 0;font-size:13px}
+.nota{color:#7A6E67;font-size:12.5px} ol li{margin:4px 0} .av{background:#FFF6E5;border-left:4px solid #E8A33D;padding:10px 14px;border-radius:0 10px 10px 0;font-size:13px;margin:10px 0}
+</style><script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head><body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+/* r16b: la pestaña activa por CLASE con !important — tercera red por si algo
+   pisa el estilo en línea. La pone markActive() y el mini-marcador del final. */
+#ns-hub-navbar .nsnb-tab.on{background:linear-gradient(135deg,#FF7600,#FD400C)!important;color:#fff!important;font-weight:800!important;border-color:#FD400C!important;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)!important}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+.nsnb-tab{cursor:grab}
+.nsnb-tab.nsnb-drag{opacity:.35;cursor:grabbing}
+#nsnb-reset{display:none}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Web de marketing / marketing site"
+     aria-label="Web de marketing" style="text-decoration:none">🏠</a>
+  <a class="nsnb-btn" href="https://admin.nutrisynccollective.com" title="StartUp Admin (contabilidad del build)"
+     aria-label="StartUp Admin" style="text-decoration:none">🛠</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Competitive" href="/hub/competitive.html">🥊 Competencia</a><a class="nsnb-tab nsnb-g1" data-en="Build Roadmap → Go Live" href="/hub/launch-plan.html">🚀 Build Roadmap → Go Live</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g3" data-en="Leads" href="/hub/community-leads.html">🤝 Leads</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync Sprint Planning" href="/hub/backlog-dev.html">🗂 NutriSync Sprint Planning</a><a class="nsnb-tab nsnb-g4" data-en="Release Plan" href="/hub/release-plan.html">🚢 Releases</a><a class="nsnb-tab nsnb-g4" data-en="Compliance" href="/hub/compliance.html">🛡 Compliance</a><a class="nsnb-tab nsnb-g4" data-en="Ideation" href="/hub/roadmap.html">💡 Ideation</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g4" data-en="Design System" href="/hub/design-system.html">🎨 Design System</a><a class="nsnb-tab nsnb-g5" data-en="Documentation" href="/hub/documentation/index.html">📄 Documentación</a><a class="nsnb-tab nsnb-g5" data-en="ERP User Guide" href="/hub/user-guide.html">📖 Guía ERP</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="MFA" href="/hub/mfa.html">🔐 MFA</a></div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14b (feedback Juanjo): idioma con CONMUTADOR visible y persistente.
+     localStorage ns_lang ('es'|'en') manda; sin él, el navegador decide.
+     Las páginas con data-i leen la misma clave — un idioma, todas las superficies. */
+  function nsLang(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pintaIdioma(){
+    var en=nsLang()==='en';
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      if(!a.getAttribute('data-es'))a.setAttribute('data-es',a.textContent.trim());
+      var em=a.getAttribute('data-es').split(' ')[0];
+      a.textContent=en?(em+' '+a.getAttribute('data-en')):a.getAttribute('data-es');});
+    var b=document.getElementById('nsnb-lang');if(b)b.textContent=en?'ES':'EN';
+  }
+  (function(){
+    var brand=document.querySelector('#ns-hub-navbar .nsnb-btn');
+    if(brand&&!document.getElementById('nsnb-lang')){
+      var b=document.createElement('a');b.id='nsnb-lang';b.className='nsnb-btn';b.href='#';
+      b.title='Cambiar idioma / switch language';
+      b.onclick=function(e){e.preventDefault();
+        try{localStorage.setItem('ns_lang',nsLang()==='en'?'es':'en');}catch(err){}
+        pintaIdioma();
+        document.dispatchEvent(new CustomEvent('ns-lang'));
+        if(typeof relayout==='function')relayout();
+        return false;};
+      brand.parentNode.insertBefore(b,brand);
+    }
+    pintaIdioma();
+    /* r14e: pintor data-i UNIVERSAL — cualquier página del hub con data-i="ES|EN"
+       (o data-i sin valor con "ES|EN" dentro) se vuelve bilingüe gratis. */
+    function pintaDataI(){
+      var en=nsLang()==='en';
+      document.querySelectorAll('[data-i]').forEach(function(n){
+        if(n.closest&&n.closest('#ns-hub-navbar'))return;
+        var src=n.getAttribute('data-i');
+        if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+        var p=src.split('|');
+        n.innerHTML=en?(p[1]||p[0]):p[0];});
+    }
+    document.addEventListener('ns-lang',pintaDataI);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',pintaDataI);
+    else pintaDataI();
+  })();
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  /* r16c (cazado POR JUANJO con el flash del clic): Cloudflare Pages sirve
+     URLs LIMPIAS — /hub/incidents.html se visita como /hub/incidents — así
+     que comparar con ".html" no casaba JAMÁS en carga de página. Se normaliza
+     quitando la extensión en LOS DOS lados. */
+  function nsLimpia(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';}
+  var here=nsLimpia(location.pathname.split('/').pop());
+  var dir=location.pathname.toLowerCase();
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : nsLimpia(f.split('/').pop())===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  /* r16: la marca se queda mientras estés en la página — se repinta al volver
+     del historial (bfcache), al recuperar el foco y al cambiar de pestaña del
+     navegador. Nada la apaga salvo navegar a otra página del hub. */
+  window.addEventListener('pageshow',function(){markActive();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)markActive();});
+  window.addEventListener('focus',function(){markActive();});
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  /* r14e (idea Juanjo): pestañas ARRASTRABLES — cada cual su orden, guardado
+     en este navegador (ns_tab_order). ↺ vuelve al orden de fábrica. */
+  (function(){
+    var KEY='ns_tab_order';
+    function filas(){return [document.getElementById('nsnb-r1'),document.getElementById('nsnb-r2')].filter(Boolean);}
+    function todas(){var t=[];filas().forEach(function(r){t=t.concat([].slice.call(r.querySelectorAll('.nsnb-tab')));});return t;}
+    var ORIG=todas().map(function(a){return a.getAttribute('href');});
+    function guardar(){try{localStorage.setItem(KEY,JSON.stringify(todas().map(function(a){return a.getAttribute('href');})));}catch(e){}
+      var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';}
+    function aplicar(orden){
+      var r1=document.getElementById('nsnb-r1');if(!r1)return;
+      var por={};todas().forEach(function(a){por[a.getAttribute('href')]=a;});
+      orden.forEach(function(h){if(por[h])r1.appendChild(por[h]);});
+      todas().forEach(function(a){if(orden.indexOf(a.getAttribute('href'))<0)r1.appendChild(a);});
+    }
+    try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&sv.length){aplicar(sv);
+      setTimeout(function(){var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';},0);}}catch(e){}
+    var drag=null;
+    todas().forEach(function(a){
+      a.setAttribute('draggable','true');
+      a.title=(a.title?a.title+' · ':'')+'Arrastra para reordenar / drag to reorder';
+      a.addEventListener('dragstart',function(e){drag=a;a.classList.add('nsnb-drag');
+        try{e.dataTransfer.setData('text/plain',a.getAttribute('href'));e.dataTransfer.effectAllowed='move';}catch(err){}});
+      a.addEventListener('dragend',function(){if(drag)drag.classList.remove('nsnb-drag');drag=null;});
+      a.addEventListener('dragover',function(e){e.preventDefault();if(!drag||drag===a)return;
+        var r=a.getBoundingClientRect(),antes=(e.clientX-r.left)<r.width/2;
+        a.parentNode.insertBefore(drag,antes?a:a.nextSibling);});
+      a.addEventListener('drop',function(e){e.preventDefault();guardar();relayout();});
+    });
+    filas().forEach(function(r){r.addEventListener('dragover',function(e){e.preventDefault();});
+      r.addEventListener('drop',function(e){e.preventDefault();if(drag){guardar();relayout();}});});
+    var brand=document.getElementById('nsnb-lang');
+    if(brand&&!document.getElementById('nsnb-reset')){
+      var rb=document.createElement('a');rb.id='nsnb-reset';rb.className='nsnb-btn';rb.href='#';rb.textContent='↺';
+      rb.title='Orden de pestañas original / reset tab order';
+      rb.onclick=function(e){e.preventDefault();try{localStorage.removeItem(KEY);}catch(err){}
+        aplicar(ORIG);rb.style.display='none';relayout();return false;};
+      brand.parentNode.insertBefore(rb,brand);
+    }
+  })();
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+<script>
+/* r16b · MINI-MARCADOR independiente de pestaña activa. Deliberadamente
+   separado y mínimo: si el script grande de la barra muere por lo que sea,
+   ESTE pinta igual. Solo compara el fichero de la URL con el href y pone la
+   clase .on (el CSS !important hace el resto). Se repite unos segundos por si
+   el reordenado o el motor mueven pestañas tarde. */
+(function(){
+  function marca(){
+    try{
+      /* r16c: Pages sirve URLs sin .html — normalizar ambos lados */
+      var lim=function(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';};
+      var here=lim(location.pathname.split('/').pop());
+      var esDoc=location.pathname.toLowerCase().indexOf('/documentation/')>-1;
+      document.querySelectorAll('#ns-hub-navbar .nsnb-tab').forEach(function(a){
+        var f=(a.getAttribute('href')||'').toLowerCase();
+        var on=esDoc ? f.indexOf('/documentation/')>-1 : lim(f.split('/').pop())===here;
+        a.classList.toggle('on',on);
+      });
+    }catch(e){}
+  }
+  marca();
+  var i=0,t=setInterval(function(){marca();if(++i>15)clearInterval(t);},700);
+  window.addEventListener('pageshow',marca);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
+})();
+</script>
+<script>
+/* ns-idle-logout (0.23.0 · UST-06 G1): 30 min sin actividad en el hub → fuera.
+   Central en el navbar = vale para TODAS las páginas /hub sin tocarlas una a
+   una. La sesión vive en localStorage (sb-*-auth-token): borrarla y recargar
+   deja la página en su candado. Solo actúa si HAY sesión — jamás bucles.
+   UN CANDADO (26-sep, UST-17 · Juanjo): APAGADO. El candado del hub es
+   Cloudflare Access (sesión de 30 días por dispositivo); volver a pedir la
+   contraseña cada 30 min de inactividad era una de las cuatro puertas que se
+   retiran. LIMITE=0 desactiva el cierre sin borrar el mecanismo (marcha atrás
+   = volver a 30*60*1000). */
+(function(){
+  try{
+    var LIMITE=0;   // ms; 0 = sin cierre por inactividad (UST-17)
+    if(!LIMITE){ try{localStorage.removeItem('ns_idle_aviso');localStorage.removeItem('ns_idle_ts');}catch(e){} return; }
+    /* El cierre mudo parecía avería (Pilar, 25-ago): al volver se explica. */
+    if(localStorage.getItem('ns_idle_aviso')==='1'){
+      localStorage.removeItem('ns_idle_aviso');
+      var av=document.createElement('div');
+      av.setAttribute('data-i','');
+      av.style.cssText='position:sticky;top:0;z-index:9999;background:#FFF3E0;color:#7A4A00;'+
+        'border-bottom:1.5px solid #E8B36A;padding:9px 16px;font:600 13px system-ui;text-align:center';
+      av.textContent='🔒 Tu sesión se cerró tras 30 minutos sin actividad (seguridad de datos del piloto). Entra de nuevo en 📬 Waitlist o 📊 MIS y todo vuelve. | Your session closed after 30 idle minutes — log in again at 📬 Waitlist or 📊 MIS.';
+      document.body.insertBefore(av, document.body.firstChild);
+      setTimeout(function(){try{av.remove();}catch(e){}}, 25000);
+    }
+    var K='ns_idle_ts';
+    var haySesion=function(){
+      for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
+        if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)return true;}
+      return false;};
+    if(!haySesion())return;
+    var toca=function(){try{localStorage.setItem(K,String(Date.now()));}catch(e){}};
+    ['click','keydown','mousemove','scroll','touchstart'].forEach(function(ev){
+      window.addEventListener(ev,toca,{passive:true});});
+    toca();
+    setInterval(function(){
+      try{
+        var t=parseInt(localStorage.getItem(K)||'0',10);
+        if(!t||Date.now()-t<LIMITE)return;
+        if(!haySesion())return;
+        var fuera=[];
+        for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
+          if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)fuera.push(k);}
+        fuera.forEach(function(k){localStorage.removeItem(k);});
+        localStorage.removeItem(K);
+        try{localStorage.setItem('ns_idle_aviso','1');}catch(e){}
+        location.reload();
+      }catch(e){}
+    },60000);
+  }catch(e){}
+})();
+</script>
+<script>
+/* ns-pase-directo (r23 · 28-ago): SSO founders hub↔StartUp Admin.
+   EMISOR: al pinchar un enlace hacia la otra superficie con sesión viva,
+   pide un pase de UN uso a la Edge pase-directo (solo admins) y lo manda en
+   el FRAGMENTO. RECEPTOR: consume el pase en /auth/v1/verify, guarda la
+   sesión nueva y recarga — sin re-teclear contraseña. El MFA de StartUp
+   Admin se pide igual. Cualquier fallo = navegación normal de siempre. */
+(function(){
+  try{
+    var SB='https://nebkqncvapelrarruyqb.supabase.co';
+    var ANON='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+    var SBKEY='sb-nebkqncvapelrarruyqb-auth-token';
+    var FN=SB+'/functions/v1/pase-directo';
+    var sesion=function(){try{var s=JSON.parse(localStorage.getItem(SBKEY)||'null');
+      return (s&&s.access_token)?s:null;}catch(e){return null;}};
+    var esOtra=function(h){try{var u=new URL(h, location.href);return u.hostname==='admin.nutrisynccollective.com';}catch(e){return false;}};
+
+    /* — receptor — */
+    var m=(location.hash||'').match(/[#&]nspase=([^&]+)/);
+    if(m){
+      history.replaceState(null,'',location.pathname+location.search);
+      if(!sesion()){
+        fetch(SB+'/auth/v1/verify',{method:'POST',
+          headers:{apikey:ANON,'content-type':'application/json'},
+          body:JSON.stringify({type:'magiclink',token_hash:decodeURIComponent(m[1])})})
+        .then(function(r){return r.json();})
+        .then(function(j){
+          if(j&&j.access_token){
+            if(!j.expires_at&&j.expires_in)j.expires_at=Math.floor(Date.now()/1000)+j.expires_in;
+            localStorage.setItem(SBKEY,JSON.stringify(j));
+            location.reload();
+          }
+        }).catch(function(){});
+      }
+    }
+
+    /* — reto TOTP: de aal1 a aal2 (r24-r · S15) ————————————————————————————
+       El login del hub (signInWithPassword) y el receptor del pase acuñan
+       sesión aal1 SIN reto. Para un admin con TOTP verificado, is_admin_mfa()
+       exige aal2 → todas las RPC admin mueren con 400. Este gate, sobre el
+       MISMO estilo raw del navbar (sin vendor, sin CDN — po74), detecta la
+       sesión aal1 con factor verificado y refuerza con un teclado barajado.
+       Devuelve una promesa; auto-corre al cargar cualquier página del hub. */
+    var jwtAal=function(tok){try{return JSON.parse(atob(tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).aal;}catch(e){return null;}};
+    window.nsMfaReforzar=function(){
+      return new Promise(function(resolve){
+        var s=sesion();
+        if(!s||!s.access_token||jwtAal(s.access_token)==='aal2'){resolve(true);return;}
+        var H={apikey:ANON,authorization:'Bearer '+s.access_token,'content-type':'application/json'};
+        fetch(SB+'/auth/v1/user',{headers:H}).then(function(r){return r.json();}).then(function(u){
+          var fac=((u&&u.factors)||[]).filter(function(f){return f.factor_type==='totp'&&f.status==='verified';})[0];
+          if(!fac){resolve(false);return;}            // aal1 sin factor: is_admin_mfa perdona
+          var EN=(function(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+            return (v||((navigator.language||'en').toLowerCase().indexOf('es')===0?'es':'en'))==='en';})();
+          var T=function(es,en){return EN?en:es;};
+          var pin='',teclas=[0,1,2,3,4,5,6,7,8,9];
+          for(var i=teclas.length-1;i>0;i--){var k=Math.floor(Math.random()*(i+1));var tmp=teclas[i];teclas[i]=teclas[k];teclas[k]=tmp;}
+          var ov=document.createElement('div');ov.id='ns-mfa-ov';
+          ov.setAttribute('style','position:fixed;inset:0;z-index:99999;background:rgba(20,14,10,.55);display:flex;align-items:center;justify-content:center;font-family:Poppins,system-ui,sans-serif');
+          ov.innerHTML='<div style="background:#FFFDF8;border-radius:18px;max-width:380px;width:92%;padding:22px 20px;box-shadow:0 18px 50px rgba(0,0,0,.3)">'
+            +'<div style="font-weight:800;font-size:16px;color:#241D1A;margin-bottom:4px">🔐 '+T('Refuerza tu sesión','Reinforce your session')+'</div>'
+            +'<div style="font-size:13px;color:#5f564f;margin-bottom:14px">'+T('Introduce el código de tu app de autenticación para usar las herramientas de administradora.','Enter the code from your authenticator app to use the admin tools.')+'</div>'
+            +'<div id="nsmd" style="display:flex;gap:11px;justify-content:center;margin:8px 0 16px"></div>'
+            +'<div id="nsmp" style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:#EFE3D7;border:1px solid #EFE3D7;border-radius:14px;overflow:hidden"></div>'
+            +'<button id="nsmc" style="margin-top:12px;background:none;border:0;font:600 12.5px Poppins,system-ui,sans-serif;color:#8A7F78;cursor:pointer;text-decoration:underline">'+T('Borrar','Clear')+'</button>'
+            +'<div id="nsme" style="color:#D93030;font-size:12.5px;min-height:16px"></div></div>';
+          document.body.appendChild(ov);
+          var dots=ov.querySelector('#nsmd'),pad=ov.querySelector('#nsmp'),err=ov.querySelector('#nsme');
+          var pinta=function(){var h='';for(var d=0;d<6;d++){h+='<div style="width:22px;height:22px;border-radius:50%;border:2px solid '+(d<pin.length?'#0F6E56':'#E8B072')+';background:'+(d<pin.length?'#0F6E56':'#fff')+'"></div>';}dots.innerHTML=h;};
+          pad.innerHTML=teclas.map(function(d){return '<button type="button" data-d="'+d+'" style="background:#fffdfa;border:0;font:800 24px/1 Poppins,system-ui,sans-serif;color:#241D1A;padding:18px 0;cursor:pointer">'+d+'</button>';}).join('');
+          var verifica=function(){
+            err.textContent=T('Comprobando…','Checking…');
+            fetch(SB+'/auth/v1/factors/'+fac.id+'/challenge',{method:'POST',headers:H,body:'{}'})
+            .then(function(r){return r.json();}).then(function(ch){
+              if(!ch||!ch.id){throw new Error(ch&&ch.error_description||'challenge');}
+              return fetch(SB+'/auth/v1/factors/'+fac.id+'/verify',{method:'POST',headers:H,
+                body:JSON.stringify({challenge_id:ch.id,code:pin})}).then(function(r){return r.json();});
+            }).then(function(v){
+              if(v&&v.access_token){
+                if(!v.expires_at&&v.expires_in)v.expires_at=Math.floor(Date.now()/1000)+v.expires_in;
+                localStorage.setItem(SBKEY,JSON.stringify(v));
+                ov.remove(); resolve(true); location.reload();
+              }else{err.textContent=T('Código no válido','Invalid code');pin='';pinta();}
+            }).catch(function(){err.textContent=T('Código no válido','Invalid code');pin='';pinta();});
+          };
+          pad.onclick=function(ev){var b=ev.target.closest('button[data-d]');if(!b||pin.length>=6)return;pin+=b.getAttribute('data-d');pinta();if(pin.length===6)verifica();};
+          ov.querySelector('#nsmc').onclick=function(){pin='';err.textContent='';pinta();};
+          pinta();
+        }).catch(function(){resolve(false);});
+      });
+    };
+    /* UN CANDADO (26-sep, UST-17): el reto TOTP ya NO se auto-lanza al cargar —
+       is_admin_mfa() dejó de exigir aal2 (Cloudflare Access es el segundo factor).
+       nsMfaReforzar() sigue disponible para quien quiera reforzar (mfa.html). */
+
+    /* — emisor — */
+    document.addEventListener('click',function(ev){
+      try{
+        if(ev.defaultPrevented||ev.button!==0||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.altKey)return;
+        var a=ev.target&&ev.target.closest?ev.target.closest('a[href]'):null;
+        if(!a||a.target==='_blank'||!esOtra(a.href))return;
+        var s=sesion(); if(!s)return;
+        ev.preventDefault();
+        var destino=a.href, ac=new AbortController();
+        var t=setTimeout(function(){ac.abort();},2500);
+        fetch(FN,{method:'POST',signal:ac.signal,
+          headers:{apikey:ANON,authorization:'Bearer '+s.access_token,'content-type':'application/json'},
+          body:'{}'})
+        .then(function(r){return r.json();})
+        .then(function(j){clearTimeout(t);
+          location.href=(j&&j.pase)?destino+'#nspase='+encodeURIComponent(j.pase):destino;})
+        .catch(function(){clearTimeout(t);location.href=destino;});
+      }catch(e){}
+    },true);
+  }catch(e){}
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar -->
+
+<h1>🔐 52 — Un candado: Cloudflare Access es el segundo factor; el hub y StartUp Admin dejan de pedir TOTP y de cerrar la sesión (UST-17, as-built)</h1>
+<div class="meta">INTERNO · AS-BUILT (26-sep-2026) · carril técnico: decidido por Juanjo, Pilar y Lucía corroboran · desplegado: SQL <code>2026-09-26-un-candado-auth.sql</code>, hub po254 (<code>ns-build 2609-204258</code>), StartUp Admin, Zero Trust a 1 mes. Lo que se afirma está leído del código o medido en la base.</div>
+<p><a class="btn" href="/hub/documentation/ust/UST-2026-09-26-17-un-candado-hub-y-startup-admin.pdf">UST-2026-09-26-17 · PDF</a><a class="btn" href="/hub/documentation/ust/UST-2026-09-26-17-un-candado-hub-y-startup-admin.docx">Word</a></p>
+<div class="av"><b>Para Pilar y Lucía, en una línea:</b> PIN del correo (Cloudflare) una vez al mes por dispositivo · contraseña del hub una vez por dispositivo · nada más. El código de 6 dígitos de la app autenticadora (TOTP) ya no se pide en ningún sitio; quien lo tenga activado lo conserva como refuerzo opcional.</div>
+
+<h2>1 · El pedido, literal</h2>
+<p>Juanjo, 26-sep 2026, por la tarde, tras «No me deja entrar» de Pilar (captura del 21-sep con «canceling statement due to statement timeout» dentro de la caja «sin acceso») y «el Piloto no carga»:</p>
+<div class="q">«simplificar el proceso de autenticación… que no se pida excepto si cambia de ordenador o al expirar el token»</div>
+<p>Lectura: UN reto interactivo, recordado por dispositivo; el resto de la sesión se renueva sola. No «quitar seguridad», sino repartirla: cuatro candados en fila (Access + contraseña + TOTP + cierre a los 30 min) habían conseguido que las dos founders dejaran de entrar — la seguridad protegía el hub de sus dueñas.</p>
+
+
+<h2>2 · Lo que había (medido, no de memoria)</h2>
+<table class="t "><thead><tr><th>Qué</th><th>Medido</th></tr></thead><tbody><tr><td>Capa 1 · Cloudflare Access</td><td>PIN por correo a los 4 gmails founders (team larama-familia-2026, cuenta outlook). Sesión con la duración por defecto; las dos aplicaciones (hub y admin.) con su propia política.</td></tr><tr><td>Capa 2 · Supabase</td><td>Email + contraseña (signInWithPassword) en 📊 MIS o 📬 Waitlist; StartUp Admin con su propia puerta (la sesión no viaja entre dominios).</td></tr><tr><td>Capa 3 · TOTP (r13)</td><td>`is_admin_mfa()` exigía aal2 a quien tuviera TOTP verificado (hub) e `is_sa_admin()` lo exigía SIEMPRE (StartUp Admin) → sin TOTP dado de alta, la contabilidad era una puerta cerrada para Pilar (avisado en cada digest desde el 5-ago, r23).</td></tr><tr><td>Capa 4 · cierre por inactividad</td><td>30 min (po218, r16) en hub-navbar y en adminsite → cada mañana, todo otra vez. Y el pase directo hub↔admin acuñaba sesión aal1 → a un admin con TOTP enrolado le dejaba el hub «roto» (r24).</td></tr><tr><td>Y el Piloto muerto</td><td>No era acceso: `admin_pilot_overview` se pasaba de los 8 s de PostgREST por las 630.083 filas basura de la waitlist (UST-18). El hub lo pintaba en la caja «sin acceso», así que parecía un QUINTO candado.</td></tr><tr><td>Resultado</td><td>Pilar (21-sep) y Lucía sin poder entrar; Juanjo entrando por costumbre. Medido antes de tocar: sonda `2026-09-26-sonda-recalibracion-s19.sql` + `baseline-20260926-191427.txt`.</td></tr></tbody></table>
+<p class="nota"><b>Analogía:</b> antes había cuatro puertas con cuatro llaves distintas una detrás de otra, y la última se cerraba sola cada media hora. Ahora hay un portero (Cloudflare Access) que te reconoce durante un mes por dispositivo, una llave de casa que se guarda en el llavero del navegador (la sesión de Supabase con refresh token), y la caja fuerte (TOTP) queda para quien quiera usarla.</p>
+
+<h2>3 · Cambios, fila a fila (as-built)</h2>
+<table class="t "><thead><tr><th>Qué</th><th>Qué se construyó</th><th>Cómo se verificó</th></tr></thead><tbody><tr><td>C1 · Las dos puertas SQL</td><td>`2026-09-26-un-candado-auth.sql`: `is_admin_mfa()` e `is_sa_admin()` pasan a `exists (select 1 from admins where user_id = auth.uid())`. Mismo nombre (lo llaman &gt;100 funciones), significado nuevo, y un `comment on function` que dice la verdad nueva («Puerta del hub. Un candado…»). Dos items S19 en el tablero (hecho/WEB).</td><td>Ejecutado por Juanjo el 26-sep: true · true · 0 · 4 (las dos definiciones llevan el comentario nuevo · ninguna mira `aal` · 4 admins registradas). Vigilado por `admin-tests` (la última definición de `is_sa_admin` no contiene `aal`).</td></tr><tr><td>C2 · Hub: sin cierre por inactividad ni reto TOTP automático</td><td>`_integration/hub-navbar.html`: `LIMITE=0` (el bloque queda en el código para volver con `30*60*1000`); borra `ns_idle_aviso`/`ns_idle_ts` del localStorage; `nsMfaReforzar()` ya no se auto-lanza. Sale en TODAS las páginas del hub vía integrate.py.</td><td>po254 en producción (ns-build 2609-204258, webdeploy 43c69ed); web-tests 93/93; pre-deploy verde; datos-en-html 87 (trinquete intacto).</td></tr><tr><td>C3 · StartUp Admin: misma regla</td><td>`repos/adminsite/index.html`: cierre por inactividad apagado; `afterSignIn()` entra directo; aviso clicable «🔐 Sesión sin refuerzo TOTP (opcional). Toca para reforzarla» → `gstep(3)` (el paso TOTP sigue existiendo, ya no bloquea).</td><td>Deploy StartUp Admin (Juanjo, 26-sep); admin-tests 52/52 (incluye: la puerta ofrece TOTP como opcional y no lo exige).</td></tr><tr><td>C4 · Zero Trust: sesión de 30 días por dispositivo</td><td>Cloudflare One → Access controls → Access settings: sesión global a «1 month»; Applications → hub y admin. → Configure → Overview → Session Duration «1 month».</td><td>Hecho por Juanjo en el panel («todo hecho», 26-sep). La verificación real es humana: Pilar y Lucía entran un día y vuelven al siguiente sin PIN.</td></tr><tr><td>C5 · TOTP como refuerzo opcional</td><td>`hub/mfa.html` sigue vivo (enroll/challenge/verify/unenroll); `admin_mfa_readiness()` sigue informando. Ninguna RPC exige aal2. El factor de quien lo activó NO se borra.</td><td>Leído del código de mfa.html el 26-sep; `admin-tests` vigila que ninguna puerta lo exija.</td></tr><tr><td>C6 · Lo que NO cambia</td><td>RLS; service_role solo en Vault/Edge; `is_admin_mfa()` en TODA RPC admin nueva; las 8 páginas legales; el rebote pages.dev → dominio propio (r26-c); el pase directo hub↔admin.</td><td>smoke-prod tras el Deploy Web (candado del hub como anónimo = opaqueredirect).</td></tr></tbody></table>
+
+<h2>4 · Análisis de impacto</h2>
+<table class="t "><thead><tr><th>Dónde</th><th>Qué toca</th><th>Qué NO toca</th></tr></thead><tbody><tr><td>Base de datos</td><td>Dos funciones (`is_admin_mfa`, `is_sa_admin`) y dos filas nuevas en `dev_backlog`.</td><td>Tablas, RLS, el resto de RPC (siguen llamando a la misma puerta), `auth.mfa_factors` (nadie pierde su TOTP).</td></tr><tr><td>Hub (webdeploy)</td><td>`hub-navbar.html` (inyectado en todas las páginas del hub) → po254.</td><td>La web pública V2, los formularios, el hub gated de Design, los adjuntos.</td></tr><tr><td>StartUp Admin (adminsite)</td><td>`index.html` (gate + idle) y `admin-tests`.</td><td>Contabilidad `sa_*`, asientos, RPC.</td></tr><tr><td>Cloudflare</td><td>Duración de sesión de Access (global + 2 aplicaciones).</td><td>Políticas de quién entra (los mismos 4 gmails), WAF, Pages.</td></tr><tr><td>Quién lo recibe</td><td>Las 4 cuentas de la tabla `admins` (founders; el hub y StartUp Admin). Ninguna tester, ninguna usuaria de la app.</td><td>App nativa, PWA, correos.</td></tr><tr><td>Riesgo asumido</td><td>Un dispositivo robado con sesión viva entra durante ≤30 días sin reto. Mitigación: revocar en Zero Trust (Access → revoke sessions) + Supabase (cerrar sesiones del usuario); TOTP opcional para quien quiera el tercer factor.</td><td>—</td></tr></tbody></table>
+<p class="nota">Desviación declarada: se retira UST-06 G1 (cierre a los 30 min) y el listón aal2 de r13 («dos puertas, dos listones»). Volver atrás es un `create or replace` de las dos funciones (versión r13 en `2026-08-05-startup-admin.sql` y la de `is_admin_mfa` en su fichero de origen) + `LIMITE=30*60*1000` en navbar y adminsite.</p>
+
+<h2>5 · Decisiones (tomadas por Juanjo el 26-sep, carril técnico)</h2>
+<table class="t dec"><thead><tr><th>#</th><th>Propuesta</th><th>Alternativa</th><th>Decisión</th></tr></thead><tbody><tr><td>D1</td><td>Cloudflare Access es el ÚNICO reto interactivo y hace de segundo factor (posesión del buzón founder + cookie del dispositivo).</td><td>Mantener Access + TOTP y quitar solo el cierre a los 30 min.</td><td>DECIDIDO (Juanjo, 26-sep): la propuesta — Access único reto.</td></tr><tr><td>D2</td><td>Sesión de Access de 30 días por dispositivo (global y en las dos aplicaciones).</td><td>7 días.</td><td>DECIDIDO: 30 días («1 month» en Zero Trust, hecho por Juanjo).</td></tr><tr><td>D3</td><td>Contraseña de Supabase UNA vez por dispositivo; la sesión se renueva sola (refresh token); cierre por inactividad APAGADO (`LIMITE=0`).</td><td>Cierre a las 8 h o al cerrar el navegador.</td><td>DECIDIDO: la propuesta — «que no se pida excepto si cambia de ordenador o al expirar el token».</td></tr><tr><td>D4</td><td>TOTP opcional: nadie lo pierde, ninguna RPC lo exige, no se auto-lanza; StartUp Admin lo ofrece con un aviso clicable.</td><td>Borrar los factores TOTP existentes.</td><td>DECIDIDO: la propuesta — TOTP opcional, nadie lo pierde.</td></tr><tr><td>D5</td><td>Se conserva el NOMBRE `is_admin_mfa()`/`is_sa_admin()` con significado nuevo (deuda declarada: &gt;100 llamadas), con comentario que dice la verdad y test que vigila la última definición.</td><td>Renombrar a `is_admin()` y reescribir las &gt;100 funciones.</td><td>DECIDIDO: la propuesta — mismo nombre, comentario + test.</td></tr><tr><td>D6</td><td>Desviación declarada de UST-06 G1 y del listón aal2 de r13; se documenta aquí y en CLAUDE.md.</td><td>—</td><td>DECIDIDO: desviación declarada.</td></tr><tr><td>D7</td><td>Carril técnico: Juanjo decide y ejecuta; Pilar y Lucía corroboran en el hub (doc 52).</td><td>Carril producto (firma previa de las dos).</td><td>DECIDIDO: carril técnico; corroboración pendiente de Pilar y Lucía.</td></tr></tbody></table>
+
+<h2>6 · Baseline, verificación y marcha atrás</h2>
+<table class="t "><thead><tr><th>Momento</th><th>Qué se comprueba</th></tr></thead><tbody><tr><td>PASO 0 · Baseline (antes de tocar)</td><td>`tools/baseline.sh` → `archive/logs/baseline-20260926-191427.txt` (sha de los 3 repos, sellos ns-build, candados de Access, OTA por runtime, copias). Definiciones anteriores de las dos funciones en el histórico de backend-sql (inmutable).</td></tr><tr><td>Verificación del SQL</td><td>Última sentencia del fichero: true · true · 0 · 4. `admin-tests`: 52/52.</td></tr><tr><td>Verificación del hub</td><td>Deploy Web po254: pre-deploy verde, web-tests 93/93, datos-en-html 87, linkcheck verde; producción sirve ns-build 2609-204258; smoke-prod tras el deploy.</td></tr><tr><td>Verificación de StartUp Admin</td><td>Deploy StartUp Admin (tests → sellado → wrangler) ejecutado por Juanjo el 26-sep.</td></tr><tr><td>Verificación HUMANA (pendiente)</td><td>Pilar y Lucía: entrar hoy (PIN + contraseña una vez) y volver mañana sin que se pida nada; 🧭 Piloto carga; StartUp Admin entra sin TOTP. Cuando lo digan, este documento se marca corroborado.</td></tr><tr><td>Marcha atrás</td><td>SQL: `create or replace` de las dos funciones desde su versión anterior (histórico). Hub: Cloudflare Pages → nutrisync-collective → Deployments → Rollback al deploy anterior a po254, o `LIMITE=30*60*1000` y nuevo po. StartUp Admin: Pages → nutrisync-admin → Rollback. Zero Trust: sesión a 24 h. Ninguna de las cuatro toca datos de usuarias.</td></tr></tbody></table>
+
+<h2>7 · Cómo lo comprueban Pilar y Lucía</h2>
+<ol><li>Abrir nutrisynccollective.com/hub → Cloudflare pide el PIN por correo (una vez) → entra.</li><li>Ir a 📊 MIS → email + contraseña del hub (una vez). Si no la recuerdan: «Contraseña olvidada» en la misma página (llega un correo de recuperación).</li><li>Abrir 🧭 Piloto: carga en unos segundos (ya no «sin acceso» ni «statement timeout»).</li><li>Cerrar la pestaña. Al día siguiente, en el mismo ordenador: entra sin PIN y sin contraseña.</li><li>admin.nutrisynccollective.com (StartUp Admin): PIN por correo (una vez) + contraseña (una vez); NO pide el código de la app autenticadora. Arriba puede salir un aviso «Sesión sin refuerzo TOTP (opcional)»: se puede ignorar.</li><li>Si cambian de ordenador o de móvil: PIN + contraseña otra vez, y ya está hasta dentro de 30 días.</li></ol>
+
+
+
+<h2>8 · La cadena</h2>
+<table class="t "><thead><tr><th>Paso</th><th>Estado</th></tr></thead><tbody><tr><td>UST</td><td>Este documento (as-built del 26-sep). Se escribe el mismo día que se construye, con lo construido y sus desviaciones (regla del 7-sep).</td></tr><tr><td>Sign-off</td><td>Carril técnico: decidido por Juanjo en el chat (26-sep, tarde). Firma electrónica simple pendiente (cuando Juanjo lo indique). Pilar y Lucía corroboran en el hub.</td></tr><tr><td>Dev</td><td>SQL un-candado-auth · hub-navbar (LIMITE=0, sin auto-TOTP) · adminsite (gate, aviso opcional) · admin-tests (52) — 26-sep.</td></tr><tr><td>Test</td><td>admin-tests 52/52 · web-tests 93/93 · pre-deploy verde · datos-en-html 87 · linkcheck verde.</td></tr><tr><td>Deployment</td><td>SQL ejecutado (true · true · 0 · 4) · Deploy Web po254 (ns-build 2609-204258) · Deploy StartUp Admin · Zero Trust sesiones a 1 mes — todo el 26-sep.</td></tr><tr><td>Verification</td><td>Técnica hecha (sello en vivo, tests, verificación del SQL). Humana PENDIENTE: Pilar y Lucía entran y lo dicen.</td></tr><tr><td>hub + Notion</td><td>Hub: este doc 52 + adjunto en documentation/ust (po255). Notion: el workspace sigue sin bloques (desde el 8-sep) — la verdad para ellas es el hub; se anota en CLAUDE.md como pendiente.</td></tr></tbody></table>
+<p class="nota">NutriSync Engineering · UST-2026-09-26-17 · as-built del 26-sep-2026 · firma de Juanjo pendiente</p>
+</body></html>
