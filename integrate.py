@@ -2256,32 +2256,6 @@ if os.path.isdir(_W2) and os.path.exists(os.path.join(_W2, "index.html")) and os
     _hp = os.path.join(PUB, "_headers"); _hb = open(_hp, encoding="utf-8").read() if os.path.exists(_hp) else ""
     _hb = re.sub(r'\n?# ── ns-web2-root[\s\S]*$', '', _hb).rstrip() + "\n"
     _hb += """
-# ── ns-web2-api (UST-19 A, 26-sep): la Pages Function /api/waitlist tiene UNA fuente, repos/web2/functions/api/, y
-#    viaja a webdeploy/functions/api/ byte a byte (la candidata v2. la sirve desde web2; producción, desde aquí).
-#    Idempotente. web-tests comprueba que las dos copias son idénticas y EJECUTA la Function contra una Edge falsa.
-_api_src = os.path.join(_W2G, "functions", "api")
-_api_dst = os.path.join(ROOT, "functions", "api")
-if os.path.isdir(_api_src):
-    os.makedirs(_api_dst, exist_ok=True)
-    _n_api = 0
-    for _f in sorted(os.listdir(_api_src)):
-        if _f.endswith(".js"):
-            _s = open(os.path.join(_api_src, _f), encoding="utf-8").read()
-            _d = os.path.join(_api_dst, _f)
-            if not os.path.exists(_d) or open(_d, encoding="utf-8").read() != _s:
-                open(_d, "w", encoding="utf-8").write(_s)
-            _n_api += 1
-    print("- ns-web2-api: %d Pages Function(s) de web2/functions/api → functions/api (una sola fuente)" % _n_api)
-# publish/_routes.json tiene fuente en _integration/_routes.json (antes solo lo escribía el Deploy al commitear el zip):
-# «/», /hub, /hub/* y /api/* — cada ruta que pasa por Functions se declara aquí y web-tests la vigila.
-_rt = os.path.join(ASSETS, "_routes.json")
-if os.path.exists(_rt):
-    _rt_s = open(_rt, encoding="utf-8").read()
-    _rt_d = os.path.join(PUB, "_routes.json")
-    if not os.path.exists(_rt_d) or open(_rt_d, encoding="utf-8").read() != _rt_s:
-        open(_rt_d, "w", encoding="utf-8").write(_rt_s)
-    print("- ns-web2-api: _routes.json → publish/ (%s)" % json.loads(_rt_s).get("include"))
-
 # ── ns-web2-root (UST-10): la V2 en la raíz · sin noindex global (se indexa) · seguridad SOLO en rutas de la V2 (D5)
 /sw.js
   Cache-Control: no-cache
@@ -2334,3 +2308,30 @@ if os.path.exists(_rt):
           % (_w2_sello, _n, _sello_v1))
 else:
     print("· ns-web2-root: sin repos/web2/publish (o sin index): la raíz sigue siendo la v1")
+
+# ── ns-web2-api (UST-19 A, 26-sep): la Pages Function /api/waitlist tiene UNA fuente, repos/web2/functions/api/, y
+#    viaja a webdeploy/functions/api/ byte a byte (la candidata v2. la sirve desde web2; producción, desde aquí).
+#    Idempotente. web-tests comprueba que las dos copias son idénticas y EJECUTA la Function contra una Edge falsa.
+_api_src = os.path.join(_W2G, "functions", "api")
+_api_dst = os.path.join(ROOT, "functions", "api")
+if os.path.isdir(_api_src):
+    os.makedirs(_api_dst, exist_ok=True)
+    _n_api = 0
+    for _f in sorted(os.listdir(_api_src)):
+        if _f.endswith(".js"):
+            _s = open(os.path.join(_api_src, _f), encoding="utf-8").read()
+            _d = os.path.join(_api_dst, _f)
+            if not os.path.exists(_d) or open(_d, encoding="utf-8").read() != _s:
+                open(_d, "w", encoding="utf-8").write(_s)
+            _n_api += 1
+    print("- ns-web2-api: %d Pages Function(s) de web2/functions/api → functions/api (una sola fuente)" % _n_api)
+# publish/_routes.json tiene fuente en _integration/_routes.json (antes solo lo escribía el Deploy al commitear el zip):
+# «/», /hub, /hub/* y /api/* — cada ruta que pasa por Functions se declara aquí y web-tests la vigila.
+_rt = os.path.join(ASSETS, "_routes.json")
+if os.path.exists(_rt):
+    _rt_s = open(_rt, encoding="utf-8").read()
+    _rt_d = os.path.join(PUB, "_routes.json")
+    if not os.path.exists(_rt_d) or open(_rt_d, encoding="utf-8").read() != _rt_s:
+        open(_rt_d, "w", encoding="utf-8").write(_rt_s)
+    print("- ns-web2-api: _routes.json → publish/ (%s)" % json.loads(_rt_s).get("include"))
+
