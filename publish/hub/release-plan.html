@@ -546,8 +546,23 @@ window.rpTodas=function(abrir){
   REL.forEach(function(r){ABIERTAS[r.version]=abrir;});
   SECCIONES.forEach(function(sec){SECABIERTA[sec[0]]=abrir;});
   SINREL_ABIERTO=abrir;render();};
-var SPRINTS={S11:'Sprint 11 · 3–7 ago',S12:'Sprint 12 · 10–14 ago',S13:'Sprint 13 · 17–21 ago',
-  S14:'Sprint 14 · 24–28 ago',S15:'Sprint 15 · 31 ago–4 sep',S16:'Sprint 16 · 7–11 sep',GA:'Tramo GA',backlog:'Sin sprint'};
+/* Recalibración S19 (26-sep): el calendario de sprints vive en la base (public.sprints, RPC
+   admin_sprints_list), una sola definición compartida con 🗂. Esto es el RESPALDO sin fechas:
+   si la RPC falla, cada grupo se llama por su código y nada se queda en blanco (r12-b9). */
+var SPRINTS={};
+['S11','S12','S13','S14','S15','S16','S17','S18','S19','S20','S21','GA','backlog'].forEach(function(c){
+  SPRINTS[c]=c==='backlog'?'Sin sprint':c==='GA'?'Tramo GA':'Sprint '+c.slice(1);});
+var MESES=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function sprFecha(iso){var d=new Date(iso+'T12:00:00');return isNaN(d)?'':d.getDate()+' '+MESES[d.getMonth()];}
+function aplicaSprints(lista){
+  if(!Array.isArray(lista)||!lista.length)return;
+  var hoy=new Date().toISOString().slice(0,10),m={};
+  lista.forEach(function(s){
+    var rango=(s.desde&&s.hasta)?' · '+sprFecha(s.desde)+'–'+sprFecha(s.hasta):'';
+    var ahora=(s.desde&&s.hasta&&hoy>=s.desde&&hoy<=s.hasta)?' · ← ahora':'';
+    m[s.codigo]=s.nombre+rango+ahora;});
+  SPRINTS=m;   // el orden de las claves es el de la base (orden)
+}
 var ESTADOS=['planificada','en_construccion','en_review','en_tiendas','ga'];
 
 /* Cómo se entrega una release, leído de su propio número (regla Juanjo, 10-ago):
@@ -741,9 +756,11 @@ window.rpSave=function(v,lang){
 function cargar(){
   return sb.auth.getSession().then(function(s){
     if(!s.data.session){$('plan').innerHTML='<p class="hint">Inicia sesión admin desde el hub y recarga.</p>';return;}
-    return Promise.all([sb.rpc('admin_releases_list'),sb.rpc('admin_backlog_list')]).then(function(rs){
+    return Promise.all([sb.rpc('admin_releases_list'),sb.rpc('admin_backlog_list'),sb.rpc('admin_sprints_list')]).then(function(rs){
       if(rs[0].error)return fail(rs[0].error,'admin_releases_list');
       if(rs[1].error)return fail(rs[1].error,'admin_backlog_list');
+      if(rs[2].error)console.warn('admin_sprints_list:',rs[2].error.message,'— aplica backend-sql/2026-09-26-recalibracion-s19.sql');
+      aplicaSprints(rs[2].error?null:rs[2].data);
       REL=rs[0].data||[];ITEMS=(rs[1].data&&rs[1].data.items)||[];render();});
   });
 }
