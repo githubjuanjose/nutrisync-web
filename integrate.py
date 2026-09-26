@@ -138,8 +138,11 @@ KEY = re.search(r"sb_publishable_[^'\"]+", app).group(0)
 idx = os.path.join(PUB, "index.html")
 if os.path.exists(idx):
     ih = open(idx, encoding="utf-8").read()
+    # refresh-on-change (UST-19 A): el bloque viejo (POST a PostgREST) se retira siempre y se vuelve a inyectar el actual;
+    # antes solo entraba si faltaba, y un cambio en el snippet nunca llegaba a la v1 archivada.
+    ih = re.sub(r'<script id="ns-waitlist-js">.*?</script>', '', ih, count=1, flags=re.S)
     if "ns-waitlist-js" not in ih:
-        WL = ('<script id="ns-waitlist-js">(function(){var U="__U__",K="__K__";'
+        WL = ('<script id="ns-waitlist-js">(function(){var U="__U__",K="__K__";window.__nsT0=Date.now();'
           'function v(e){return /^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(e);}'
           'function toast(m){var t=document.createElement("div");t.textContent=m;'
           't.style.cssText="position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:99999;'
@@ -165,9 +168,10 @@ if os.path.exists(idx):
           'if(cb&&!cb.checked){toast("Please tick the consent box first");btn.__nsSent=null;return;}'
           'if(btn.__nsSent===email)return;btn.__nsSent=email;'
           'var src=/you@email\\.com/.test(input.placeholder||"")?"newsletter":"marketing_site";'
-          'fetch(U+"/rest/v1/waitlist",{method:"POST",headers:{"apikey":K,"Authorization":"Bearer "+K,'
-          '"Content-Type":"application/json","Prefer":"return=minimal"},'
-          'body:JSON.stringify({email:email,source:src})}).then(function(r){'
+          # UST-19 A (26-sep): la v1 también entra por la puerta /api/waitlist (same-origin; la anon key ya no viaja en el alta).
+          # Sin Turnstile en la v1 (archivada, noindex): la puerta aplica el ritmo estricto (D4). U y K quedan sin uso aquí a propósito.
+          'fetch("/api/waitlist",{method:"POST",headers:{"Content-Type":"application/json","X-NS-Fetch":"1"},'
+          'body:JSON.stringify({email:email,source:src,locale:(document.documentElement.lang||"en").slice(0,2),website:"",t0:String(window.__nsT0||0)})}).then(function(r){'
           'if(r.status===201){toast("You\'re on the list \\u2713");}'
           'else if(r.status===409){toast("You\'re already subscribed \\u2713");}'
           'else{btn.__nsSent=null;}}).catch(function(){btn.__nsSent=null;});},true);})();</script>')
@@ -2252,6 +2256,32 @@ if os.path.isdir(_W2) and os.path.exists(os.path.join(_W2, "index.html")) and os
     _hp = os.path.join(PUB, "_headers"); _hb = open(_hp, encoding="utf-8").read() if os.path.exists(_hp) else ""
     _hb = re.sub(r'\n?# ── ns-web2-root[\s\S]*$', '', _hb).rstrip() + "\n"
     _hb += """
+# ── ns-web2-api (UST-19 A, 26-sep): la Pages Function /api/waitlist tiene UNA fuente, repos/web2/functions/api/, y
+#    viaja a webdeploy/functions/api/ byte a byte (la candidata v2. la sirve desde web2; producción, desde aquí).
+#    Idempotente. web-tests comprueba que las dos copias son idénticas y EJECUTA la Function contra una Edge falsa.
+_api_src = os.path.join(_W2G, "functions", "api")
+_api_dst = os.path.join(ROOT, "functions", "api")
+if os.path.isdir(_api_src):
+    os.makedirs(_api_dst, exist_ok=True)
+    _n_api = 0
+    for _f in sorted(os.listdir(_api_src)):
+        if _f.endswith(".js"):
+            _s = open(os.path.join(_api_src, _f), encoding="utf-8").read()
+            _d = os.path.join(_api_dst, _f)
+            if not os.path.exists(_d) or open(_d, encoding="utf-8").read() != _s:
+                open(_d, "w", encoding="utf-8").write(_s)
+            _n_api += 1
+    print("- ns-web2-api: %d Pages Function(s) de web2/functions/api → functions/api (una sola fuente)" % _n_api)
+# publish/_routes.json tiene fuente en _integration/_routes.json (antes solo lo escribía el Deploy al commitear el zip):
+# «/», /hub, /hub/* y /api/* — cada ruta que pasa por Functions se declara aquí y web-tests la vigila.
+_rt = os.path.join(ASSETS, "_routes.json")
+if os.path.exists(_rt):
+    _rt_s = open(_rt, encoding="utf-8").read()
+    _rt_d = os.path.join(PUB, "_routes.json")
+    if not os.path.exists(_rt_d) or open(_rt_d, encoding="utf-8").read() != _rt_s:
+        open(_rt_d, "w", encoding="utf-8").write(_rt_s)
+    print("- ns-web2-api: _routes.json → publish/ (%s)" % json.loads(_rt_s).get("include"))
+
 # ── ns-web2-root (UST-10): la V2 en la raíz · sin noindex global (se indexa) · seguridad SOLO en rutas de la V2 (D5)
 /sw.js
   Cache-Control: no-cache
