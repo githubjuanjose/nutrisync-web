@@ -282,9 +282,16 @@ textarea.same{border-color:#e6cf9a;background:#fdf7e9;}
 /* ns-idle-logout (0.23.0 · UST-06 G1): 30 min sin actividad en el hub → fuera.
    Central en el navbar = vale para TODAS las páginas /hub sin tocarlas una a
    una. La sesión vive en localStorage (sb-*-auth-token): borrarla y recargar
-   deja la página en su candado. Solo actúa si HAY sesión — jamás bucles. */
+   deja la página en su candado. Solo actúa si HAY sesión — jamás bucles.
+   UN CANDADO (26-sep, UST-17 · Juanjo): APAGADO. El candado del hub es
+   Cloudflare Access (sesión de 30 días por dispositivo); volver a pedir la
+   contraseña cada 30 min de inactividad era una de las cuatro puertas que se
+   retiran. LIMITE=0 desactiva el cierre sin borrar el mecanismo (marcha atrás
+   = volver a 30*60*1000). */
 (function(){
   try{
+    var LIMITE=0;   // ms; 0 = sin cierre por inactividad (UST-17)
+    if(!LIMITE){ try{localStorage.removeItem('ns_idle_aviso');localStorage.removeItem('ns_idle_ts');}catch(e){} return; }
     /* El cierre mudo parecía avería (Pilar, 25-ago): al volver se explica. */
     if(localStorage.getItem('ns_idle_aviso')==='1'){
       localStorage.removeItem('ns_idle_aviso');
@@ -296,7 +303,7 @@ textarea.same{border-color:#e6cf9a;background:#fdf7e9;}
       document.body.insertBefore(av, document.body.firstChild);
       setTimeout(function(){try{av.remove();}catch(e){}}, 25000);
     }
-    var LIMITE=30*60*1000, K='ns_idle_ts';
+    var K='ns_idle_ts';
     var haySesion=function(){
       for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
         if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)return true;}
@@ -414,7 +421,9 @@ textarea.same{border-color:#e6cf9a;background:#fdf7e9;}
         }).catch(function(){resolve(false);});
       });
     };
-    if(sesion()) window.nsMfaReforzar();   // auto: refuerza tras pase o carga con sesión aal1
+    /* UN CANDADO (26-sep, UST-17): el reto TOTP ya NO se auto-lanza al cargar —
+       is_admin_mfa() dejó de exigir aal2 (Cloudflare Access es el segundo factor).
+       nsMfaReforzar() sigue disponible para quien quiera reforzar (mfa.html). */
 
     /* — emisor — */
     document.addEventListener('click',function(ev){
