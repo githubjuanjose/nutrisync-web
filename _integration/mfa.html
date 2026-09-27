@@ -12,14 +12,13 @@ img.qr{width:190px;height:190px;display:block;margin:10px auto;border:1px solid 
 code{background:#FBEDE6;color:#9a3a25;padding:2px 7px;border-radius:6px;font-size:.9em;word-break:break-all}
 </style></head><body><div class="w">
 <a href="full-hub-gated-site.html#/builders" style="font-size:13px;color:#8A7F78;text-decoration:none">‹ Hub</a>
-<h1>🔐 Doble factor (MFA) de administradora</h1>
-<p>Obligatorio para las 4 cuentas admin (decisión 2A). Se configura una vez con Google Authenticator, 1Password o similar; después, las herramientas del hub pedirán tu sesión reforzada.</p>
+<h1>🔐 Refuerzo opcional (TOTP) de administradora</h1>
+<p><b>Desde UST-17 («un candado») el segundo factor del hub es el PIN de Cloudflare Access</b> que llega a tu Gmail (una vez al mes por dispositivo) + la contraseña del hub (una vez por dispositivo). El código de 6 dígitos de una app de autenticación es un <b>refuerzo opcional</b>: nadie lo necesita para entrar ni para usar StartUp Admin. Si lo activas, se te ofrecerá reforzar la sesión; nunca es un muro.</p>
 <div class="c" id="box">Cargando…</div>
 
-<h2 style="font-size:16px;margin:26px 0 2px">Quién puede entrar en StartUp Admin</h2>
+<h2 style="font-size:16px;margin:26px 0 2px">Quién tiene el refuerzo TOTP (informativo)</h2>
 <p style="margin-top:0">La contabilidad del build (<a href="https://admin.nutrisynccollective.com" style="color:#C73A20;font-weight:600">admin.nutrisynccollective.com</a>)
-exige sesión reforzada <b>sin excepciones</b>: a diferencia del resto del hub, no basta con ser admin.
-Si tu fila sale en rojo, actívalo arriba y listo.</p>
+se abre con ser admin: Access + un código por correo la primera vez en cada dispositivo (o el pase directo desde el hub). El TOTP no es obligatorio en ningún sitio.</p>
 <div class="c" id="ready">Cargando…</div>
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -36,7 +35,7 @@ async function boot(){
   const{data:aal}=await sb.auth.mfa.getAuthenticatorAssuranceLevel();
   if(tot){
     if(aal.currentLevel==='aal2'){
-      box.innerHTML='<p class="ok">✅ MFA activo y sesión reforzada (aal2). Todo listo — las herramientas admin funcionan con normalidad.</p>'
+      box.innerHTML='<p class="ok">✅ TOTP activo y sesión reforzada (aal2). Es un refuerzo opcional: las herramientas funcionan igual con o sin él.</p>'
         +'<button class="sec" id="un">Quitar este factor</button>';
       document.getElementById('un').onclick=async()=>{if(confirm('¿Quitar tu MFA?')){await sb.auth.mfa.unenroll({factorId:tot.id});location.reload();}};
     }else{
@@ -103,7 +102,7 @@ async function boot(){
     if(ch.error){document.getElementById('e').textContent=ch.error.message;return;}
     const v=await sb.auth.mfa.verify({factorId,challengeId:ch.data.id,code:document.getElementById('code').value.trim()});
     if(v.error){document.getElementById('e').textContent=v.error.message;return;}
-    box.innerHTML='<p class="ok">✅ MFA activado y sesión reforzada. Ya puedes usar todas las herramientas.</p>';
+    box.innerHTML='<p class="ok">✅ TOTP activado y sesión reforzada (refuerzo opcional).</p>';
     readiness();
   };
 }
@@ -124,8 +123,8 @@ async function readiness(){
   const filas=(data||[]).map(r=>
     '<tr><td style="padding:7px 6px;border-bottom:1px solid #F2E8DE">'+esc(r.email)+'</td>'+
     '<td style="padding:7px 6px;border-bottom:1px solid #F2E8DE">'+
-      (r.tiene_mfa?'<span class="ok">✅ lista</span>'
-                  :'<span class="err">⛔ le falta activar MFA</span>')+'</td>'+
+      (r.tiene_mfa?'<span class="ok">✅ TOTP activo</span>'
+                  :'<span style="color:#8A7F78">— sin TOTP (opcional)</span>')+'</td>'+
     '<td style="padding:7px 6px;border-bottom:1px solid #F2E8DE;color:#8A7F78;font-size:12px">'+
       (r.ultimo_acceso?esc(String(r.ultimo_acceso).slice(0,10)):'nunca ha entrado')+'</td></tr>').join('');
   const {data:pend}=await sb.rpc('admin_pending_founders');

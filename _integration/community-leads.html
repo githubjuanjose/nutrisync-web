@@ -220,7 +220,7 @@ function exportCSV(){
 function load(){
   return sb.rpc('admin_community_leads',{p_tipo:null,p_limite:1000}).then(function(res){
     if(res.error){$('app').style.display='none';$('gate').style.display='block';
-      $('gerr').textContent=/not authorized|permission/i.test(res.error.message||'')?T('Esa cuenta no es admin (o la sesión no está reforzada: abre 🔐 MFA).','That account is not an admin (or MFA not reinforced — open 🔐 MFA).'):res.error.message;
+      $('gerr').textContent=/not authorized|permission/i.test(res.error.message||'')?T('Esa cuenta no está en la tabla de admins (¿otro correo? los puntos de Gmail crean cuentas distintas).','That account is not in the admins table (another email? Gmail dots create separate accounts).'):res.error.message;
       fail(res.error,'admin_community_leads');return;}
     ALL=res.data||[];$('gate').style.display='none';$('app').style.display='block';
     return sb.rpc('admin_mfa_readiness').then(function(a){ADMINS=(a.data||[]).map(function(x){return x.email;}).filter(Boolean).sort();kpis();pinta();});
@@ -230,8 +230,7 @@ $('go').addEventListener('click',function(){
   $('gerr').textContent='';
   sb.auth.signInWithPassword({email:$('em').value.trim(),password:$('pw').value}).then(function(res){
     if(res.error){$('gerr').textContent=res.error.message;return;}
-    var p=window.nsMfaReforzar?Promise.resolve().then(function(){return window.nsMfaReforzar();}).catch(function(){}):Promise.resolve();
-    p.then(load);
+    load();   // UST-17: sin reto TOTP tras el login (opcional, solo en 🔐 mfa.html)
   });
 });
 $('pw').addEventListener('keydown',function(e){if(e.key==='Enter')$('go').click();});

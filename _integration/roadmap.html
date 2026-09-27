@@ -197,7 +197,7 @@ window.rmEpica=function(id,letra){
     sb.rpc('admin_epica_nueva',{p_nombre:n.trim()}).then(function(r){
       if(r.error){fail(r.error,'admin_epica_nueva');return;}
       var l=(r.data&&r.data.letra)||null;
-      snack('✓ Epic '+l+' · '+n.trim());
+      if(typeof snack==='function') snack('✓ Epic '+l+' · '+n.trim()); else console.info('✓ Epic '+l+' · '+n.trim());
       if(l) sb.rpc('admin_backlog_upsert',{p:{id:id,epic:l}}).then(cargar); else cargar();
     });
     return;

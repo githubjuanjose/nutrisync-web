@@ -437,13 +437,13 @@ _ACCESS_HTML = ('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">'
   '<p class="top"><a href="full-hub-gated-site.html">\u2039 Back to Builders</a></p>'
   '<h1>Who can access Builders &amp; Pitch</h1>'
   '<p>These addresses pass the Cloudflare Access gate (email + one-time PIN) on <code>/hub/*</code>. '
-  'Sessions last 24h. This page is a snapshot \u2014 the live list is the Access policy.</p>'
+  'Sessions last 30 days per device (UST-17, \u00abun candado\u00bb). This page is a snapshot \u2014 the live list is the Access policy.</p>'
   '<table><tr><th>Email</th><th>Who</th></tr>' + _rows + '</table>'
   + '<h2 style="font-size:19px;margin:26px 0 4px">Buzones IONOS \u00b7 IONOS mailboxes</h2>'
   + '<p style="font-size:13px">Foto informativa r14 \u00b7 la fuente de verdad es el panel de IONOS (Pilar). / Informational snapshot \u00b7 source of truth is the IONOS panel (Pilar).</p>'
   + '<table><tr><th>Buz\u00f3n / Mailbox</th><th>Uso / Purpose</th><th>Estado / Status</th></tr>' + _irows + '</table>' 
   '<div class="card"><b>How login works</b>Open any Builders/Pitch link \u2192 enter your email \u2192 '
-  'a 6-digit code arrives by email \u2192 you are in for 24h. Only listed addresses receive codes.</div>'
+  'a 6-digit PIN arrives by email \u2192 you are in for 30 days on that device (the PIN is the hub\u2019s second factor; the hub password is asked once per device). Only listed addresses receive codes.</div>'
   '<div class="card"><b>Add / remove someone</b>Cloudflare dashboard \u2192 Zero Trust \u2192 Access \u2192 '
   'Applications \u2192 <i>NutriSync Builders Hub</i> \u2192 policy <i>Founders</i> \u2192 Include \u2192 Emails. '
   'Changes apply immediately \u2014 no deploy needed. Keep this page in sync (ask Engineering).</div>'
@@ -1976,8 +1976,8 @@ if os.path.exists(_ibc):
         ("nutri-bubble-left.svg",  "JUN 2026", "La idea y el equipo|Idea & founding team", "#0F6E56"),
         ("nutri-bubble-right.svg", "JUL 2026", "Se construye el producto|Building the product", "#0F6E56"),
         ("nutri-bubble-front.svg", "AGO 2026", "Piloto real en 2 stores|Live pilot on both stores", "#FF7600"),
-        ("nutricalendar.svg",      "SEP 2026", "Piloto ampliado + pagos|Expanded pilot + payments", "#FF7600"),
-        ("big-tick.svg",           "8 OCT",    "Lanzamiento comercial|Commercial launch", "#FD400C"),
+        ("nutricalendar.svg",      "SEP\u2013OCT 2026", "Piloto en marcha \u00b7 12\u00d714 de Play|Pilot running \u00b7 Play 12\u00d714", "#FF7600"),
+        ("big-tick.svg",           "NOV 2026", "Lanzamiento comercial (fecha por fijar)|Commercial launch (date to be set)", "#FD400C"),
         ("nutri-bubble-left.svg",  "A\u00d1O 1", "2.634 subs \u00b7 74.772 \u20ac|2,634 subs \u00b7 \u20ac74,772", "#C73A20"),
     ]
     _chips = "".join(

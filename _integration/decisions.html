@@ -59,24 +59,12 @@ a{color:#C73A20}
 </style></head><body><div class="w">
 
 <h1>🗳 Decisiones</h1>
-<p class="lead">Ordenado por cuándo hay que decidirlo, según el plan de lanzamiento del 8 de octubre. Lo que está esperando a las founders, con su recomendación y sus opciones. Al elegir queda registrado quién y cuándo — la conversación puede pasar donde sea, la decisión vive aquí.</p>
+<p class="lead">Ordenado por cuándo hay que decidirlo (este sprint · siguiente · más adelante); el calendario de sprints y el hito de lanzamiento se leen de la base (noviembre, 🗳 GA-1). Lo que está esperando a las founders, con su recomendación y sus opciones. Al elegir queda registrado quién y cuándo — la conversación puede pasar donde sea, la decisión vive aquí.</p>
 
-<div class="tl">
-  <div class="on">Sprint 11 · 3–7 ago</div>
-  <div class="gate">🚩 8 ago · TestFlight iOS</div>
-  <div>Sprint 12 · 10–14 ago</div>
-  <div class="gate">🚩 18 ago · Android closed testing</div>
-  <div>Sprints 14–15 · 24 ago–4 sep</div>
-  <div class="gate">🚩 8 sep · Piloto fase 1</div>
-  <div>Sprint 17 · 14–18 sep</div>
-  <div class="gate">🚩 18 sep · Piloto fase 2</div>
-  <div class="gate">🚩 25 sep · Go/No-Go + envío a stores</div>
-  <div class="hito">🎯 8 oct · producción</div>
-</div>
+<div class="tl" id="tl">Cargando calendario…</div>
 <div class="dict" style="margin-top:14px"><b>Revisión legal recibida · agosto 2026</b>
 Adelante condicionado. Las decisiones marcadas <b>en rojo</b> no se pueden construir como estaban planteadas —
-el dictamen de cada una está en su tarjeta. Tres de ellas bloquean el piloto ampliado del 8 de septiembre,
-no el lanzamiento de octubre.</div>
+el dictamen de cada una está en su tarjeta.</div>
 <div class="kpis" id="kpis"></div>
 <div id="err"></div>
 <div id="lista">Cargando…</div>
@@ -102,7 +90,7 @@ function fail(e,fn){
 
 var HORIZONTES=[
   ['en_curso',        'Ya en marcha',      'No hay que decidir nada — solo seguirlo.'],
-  ['este_sprint',     'Decidir este sprint','Todo esto bloquea la integración con Apple Health. Sin ello, O1 no arranca.'],
+  ['este_sprint',     'Decidir este sprint','Lo que bloquea trabajo del sprint en curso o el camino a producción.'],
   ['siguiente_sprint','Decidir el siguiente','Puede esperar una semana sin coste.'],
   ['roadmap',         'Roadmap · sprints posteriores','No son para ahora. Están aquí para que no se pierdan, no para decidirlas hoy.']
 ];
@@ -112,7 +100,7 @@ var GRUPOS=[
               'Una decisión por señal. El texto ámbar es literalmente lo que verá la usuaria cuando le pidamos el permiso: si no sabemos escribirlo, no la pedimos.'],
   ['decision','Dirección', 'Las decisiones de alcance y calendario.'],
   ['logica',  'Reglas de comportamiento', 'Decisiones de producto disfrazadas de detalle técnico. Si no se fijan, las fija el código por accidente.'],
-  ['diseno',  'Diseño', 'Lo que necesitamos de la línea de Design.']
+  ['diseno',  'Diseño', 'Decisiones de diseño (Lucía).']
 ];
 
 function tarjeta(d, conSprint){
@@ -130,7 +118,7 @@ function tarjeta(d, conSprint){
   h += '<div class="reco"><b>Recomendación:</b> '+esc(d.recomendacion)+'</div>';
   if (d.dictamen) h += '<div class="dict"><b>Revisión legal · agosto 2026</b>'+esc(d.dictamen)+'</div>';
   if (d.bloquea) h += '<div class="meta">Bloquea: '+esc(d.bloquea)+
-      (d.doc_url ? ' · <a href="/'+esc(d.doc_url)+'">ver el razonamiento</a>' : '')+'</div>';
+      (d.doc_url ? ' · <a href="/'+esc(String(d.doc_url).replace(/^\/+/,''))+'">ver el razonamiento</a>' : '')+'</div>';
 
   if (cerrada) {
     h += '<div class="meta">Decidido por '+esc(d.decidido_por_email||'—')+
@@ -141,7 +129,7 @@ function tarjeta(d, conSprint){
     h += '<div class="opts">';
     (d.opciones||[]).forEach(function(op,i){
       // la primera opción es siempre la recomendada: se acepta tal cual
-      h += '<button data-code="'+esc(d.code)+'" data-i="'+i+'" data-op="'+esc(op)+'">'+esc(op)+'</button>';
+      h += '<button data-code="'+esc(d.code)+'" data-idx="'+i+'" data-op="'+esc(op)+'">'+esc(op)+'</button>';
     });
     h += '</div><div data-nota="'+esc(d.code)+'"></div>';
   }
@@ -153,7 +141,7 @@ function pinta(d){
   $('kpis').innerHTML =
     kpi('En rojo', r.rojos||0, 'no construir así') +
     kpi('Este sprint', r.este_sprint||0, 'lo que bloquea ahora') +
-    kpi('Siguiente', r.siguiente||0, 'Sprint 12') +
+    kpi('Siguiente', r.siguiente||0, 'siguiente sprint') +
     kpi('Roadmap', r.roadmap||0, 'sprints posteriores') +
     kpi('Cerradas', r.cerradas||0, 'con firma y fecha');
 
@@ -189,7 +177,7 @@ function enlaza(items){
 
   $('lista').querySelectorAll('button[data-code]').forEach(function(b){
     b.onclick=function(){
-      var code=b.getAttribute('data-code'), i=+b.getAttribute('data-i'), op=b.getAttribute('data-op');
+      var code=b.getAttribute('data-code'), i=+b.getAttribute('data-idx'), op=b.getAttribute('data-op');
       // La primera opción es la recomendada → se acepta directa.
       // Cualquier otra exige explicar qué se decidió: una decisión sin motivo
       // no sirve de nada dentro de tres meses.
@@ -226,6 +214,18 @@ function guarda(code, estado, resolucion){
 }
 
 function carga(){
+  // r27-f (repaso hub): línea de tiempo desde public.sprints + public.plan_hitos, nunca a mano.
+  Promise.all([sb.rpc('admin_sprints_list'), sb.rpc('admin_plan_hitos')]).then(function(rs){
+    var d=new Date(); d.setHours(0,0,0,0);
+    var iso=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    var M=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+    var f=function(x){var p=String(x).slice(0,10).split('-');return (+p[2])+' '+M[+p[1]-1];};
+    var S=(rs[0].data||[]).filter(function(s){return s.hasta&&s.hasta>=iso;}).slice(0,4);
+    var H=(rs[1].data||[]).filter(function(h){return h.estado!=='superado';});
+    var h=S.map(function(s,i){return '<div'+((i===0&&s.desde<=iso)?' class="on"':'')+'>'+esc(s.nombre)+' · '+f(s.desde)+'–'+f(s.hasta)+'</div>';}).join('');
+    h+=H.map(function(x){return '<div class="'+(x.clave==='lanzamiento'?'hito':'gate')+'">'+(x.clave==='lanzamiento'?'🎯 ':'🚩 ')+(x.fecha?f(x.fecha):'por fijar')+' · '+esc(x.titulo_es)+'</div>';}).join('');
+    var tl=document.getElementById('tl'); if(tl) tl.innerHTML=h||'<div>—</div>';
+  }).catch(function(){});
   return sb.rpc('admin_decisions').then(function(r){
     if(r.error){ fail(r.error,'admin_decisions'); return; }
     $('err').innerHTML=''; pinta(r.data);

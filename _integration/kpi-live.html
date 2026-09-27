@@ -41,7 +41,7 @@ function setCard(k,val,sub,subColor){
   setCard(kU, Number(kd.total_users).toLocaleString('en-US'),
     (mom!=null?`▲ ${mom}% MoM real · `:'')+`plan Y1 ${PLAN.users_y1}`, mom!=null&&mom>=0?'var(--good)':'var(--muted)');
   // ── Premium / MRR / Churn: pre-lanzamiento → plan, no atrezzo ──
-  setCard(kP,'—',`pre-lanzamiento · plan ${Math.round(PLAN.conv*100)}% conv (8 oct)`);
+  setCard(kP,'—',`pre-lanzamiento · plan ${Math.round(PLAN.conv*100)}% conv (lanzamiento · noviembre)`);
   setCard(kM,'€0',`pre-lanzamiento · plan Y1 €${PLAN.revenue_y1.toLocaleString('en-US')}`);
   setCard(kC,'—','pre-lanzamiento · se mide desde el piloto F1');
 })();
