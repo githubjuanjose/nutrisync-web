@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>61 · Steps overview · 3 cifras — UST-26 (propuesta)</title>
+<style>
+body{font-family:Inter,system-ui,-apple-system,sans-serif;color:#241D1A;background:#FFF9F5;margin:0;padding:24px 18px 60px;max-width:1180px;margin:auto;line-height:1.45;font-size:14px}
+h1{font-size:24px;margin:8px 0 4px} h2{font-size:18px;color:#E4572E;margin:28px 0 8px;border-bottom:1px solid #F0E3DA;padding-bottom:4px}
+.meta{color:#7A6E67;font-size:12px;margin-bottom:14px} .q{background:#fff;border-left:4px solid #E4572E;padding:10px 14px;border-radius:0 10px 10px 0;font-style:italic;margin:6px 0}
+.t{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;font-size:12.5px;margin:8px 0 14px}
+.t th{background:#F7F1EC;text-align:left;padding:7px 9px;font-weight:700;vertical-align:top} .t td{padding:7px 9px;border-top:1px solid #F0E3DA;vertical-align:top;color:#4E4540}
+.t td:first-child{font-weight:700;color:#241D1A} .dec td:last-child{background:#FFF9E0}
+.btn{display:inline-block;background:#E4572E;color:#fff;border-radius:22px;padding:8px 14px;text-decoration:none;font-weight:700;margin:4px 6px 4px 0;font-size:13px}
+.nota{color:#7A6E67;font-size:12.5px} ol li{margin:4px 0} .av{background:#FFF6E5;border-left:4px solid #E8A33D;padding:10px 14px;border-radius:0 10px 10px 0;font-size:13px;margin:10px 0}
+</style><script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head><body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+/* r16b: la pestaña activa por CLASE con !important — tercera red por si algo
+   pisa el estilo en línea. La pone markActive() y el mini-marcador del final. */
+#ns-hub-navbar .nsnb-tab.on{background:linear-gradient(135deg,#FF7600,#FD400C)!important;color:#fff!important;font-weight:800!important;border-color:#FD400C!important;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)!important}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+.nsnb-tab{cursor:grab}
+.nsnb-tab.nsnb-drag{opacity:.35;cursor:grabbing}
+#nsnb-reset{display:none}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Web de marketing / marketing site"
+     aria-label="Web de marketing" style="text-decoration:none">🏠</a>
+  <a class="nsnb-btn" href="https://admin.nutrisynccollective.com" title="StartUp Admin (contabilidad del build)"
+     aria-label="StartUp Admin" style="text-decoration:none">🛠</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Competitive" href="/hub/competitive.html">🥊 Competencia</a><a class="nsnb-tab nsnb-g1" data-en="Build Roadmap → Go Live" href="/hub/launch-plan.html">🚀 Build Roadmap → Go Live</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g3" data-en="Leads" href="/hub/community-leads.html">🤝 Leads</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync Sprint Planning" href="/hub/backlog-dev.html">🗂 NutriSync Sprint Planning</a><a class="nsnb-tab nsnb-g4" data-en="Release Plan" href="/hub/release-plan.html">🚢 Releases</a><a class="nsnb-tab nsnb-g4" data-en="Compliance" href="/hub/compliance.html">🛡 Compliance</a><a class="nsnb-tab nsnb-g4" data-en="Ideation" href="/hub/roadmap.html">💡 Ideation</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g4" data-en="Design System" href="/hub/design-system.html">🎨 Design System</a><a class="nsnb-tab nsnb-g5" data-en="Documentation" href="/hub/documentation/index.html">📄 Documentación</a><a class="nsnb-tab nsnb-g5" data-en="ERP User Guide" href="/hub/user-guide.html">📖 Guía ERP</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="TOTP (optional)" href="/hub/mfa.html">🔐 TOTP (opcional)</a></div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14b (feedback Juanjo): idioma con CONMUTADOR visible y persistente.
+     localStorage ns_lang ('es'|'en') manda; sin él, el navegador decide.
+     Las páginas con data-i leen la misma clave — un idioma, todas las superficies. */
+  function nsLang(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pintaIdioma(){
+    var en=nsLang()==='en';
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      if(!a.getAttribute('data-es'))a.setAttribute('data-es',a.textContent.trim());
+      var em=a.getAttribute('data-es').split(' ')[0];
+      a.textContent=en?(em+' '+a.getAttribute('data-en')):a.getAttribute('data-es');});
+    var b=document.getElementById('nsnb-lang');if(b)b.textContent=en?'ES':'EN';
+  }
+  (function(){
+    var brand=document.querySelector('#ns-hub-navbar .nsnb-btn');
+    if(brand&&!document.getElementById('nsnb-lang')){
+      var b=document.createElement('a');b.id='nsnb-lang';b.className='nsnb-btn';b.href='#';
+      b.title='Cambiar idioma / switch language';
+      b.onclick=function(e){e.preventDefault();
+        try{localStorage.setItem('ns_lang',nsLang()==='en'?'es':'en');}catch(err){}
+        pintaIdioma();
+        document.dispatchEvent(new CustomEvent('ns-lang'));
+        if(typeof relayout==='function')relayout();
+        return false;};
+      brand.parentNode.insertBefore(b,brand);
+    }
+    pintaIdioma();
+    /* r14e: pintor data-i UNIVERSAL — cualquier página del hub con data-i="ES|EN"
+       (o data-i sin valor con "ES|EN" dentro) se vuelve bilingüe gratis. */
+    function pintaDataI(){
+      var en=nsLang()==='en';
+      document.querySelectorAll('[data-i]').forEach(function(n){
+        if(n.closest&&n.closest('#ns-hub-navbar'))return;
+        var src=n.getAttribute('data-i');
+        if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+        var p=src.split('|');
+        n.innerHTML=en?(p[1]||p[0]):p[0];});
+    }
+    document.addEventListener('ns-lang',pintaDataI);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',pintaDataI);
+    else pintaDataI();
+  })();
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  /* r16c (cazado POR JUANJO con el flash del clic): Cloudflare Pages sirve
+     URLs LIMPIAS — /hub/incidents.html se visita como /hub/incidents — así
+     que comparar con ".html" no casaba JAMÁS en carga de página. Se normaliza
+     quitando la extensión en LOS DOS lados. */
+  function nsLimpia(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';}
+  var here=nsLimpia(location.pathname.split('/').pop());
+  var dir=location.pathname.toLowerCase();
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : nsLimpia(f.split('/').pop())===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  /* r16: la marca se queda mientras estés en la página — se repinta al volver
+     del historial (bfcache), al recuperar el foco y al cambiar de pestaña del
+     navegador. Nada la apaga salvo navegar a otra página del hub. */
+  window.addEventListener('pageshow',function(){markActive();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)markActive();});
+  window.addEventListener('focus',function(){markActive();});
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  /* r14e (idea Juanjo): pestañas ARRASTRABLES — cada cual su orden, guardado
+     en este navegador (ns_tab_order). ↺ vuelve al orden de fábrica. */
+  (function(){
+    var KEY='ns_tab_order';
+    function filas(){return [document.getElementById('nsnb-r1'),document.getElementById('nsnb-r2')].filter(Boolean);}
+    function todas(){var t=[];filas().forEach(function(r){t=t.concat([].slice.call(r.querySelectorAll('.nsnb-tab')));});return t;}
+    var ORIG=todas().map(function(a){return a.getAttribute('href');});
+    function guardar(){try{localStorage.setItem(KEY,JSON.stringify(todas().map(function(a){return a.getAttribute('href');})));}catch(e){}
+      var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';}
+    function aplicar(orden){
+      var r1=document.getElementById('nsnb-r1');if(!r1)return;
+      var por={};todas().forEach(function(a){por[a.getAttribute('href')]=a;});
+      orden.forEach(function(h){if(por[h])r1.appendChild(por[h]);});
+      todas().forEach(function(a){if(orden.indexOf(a.getAttribute('href'))<0)r1.appendChild(a);});
+    }
+    try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&sv.length){aplicar(sv);
+      setTimeout(function(){var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';},0);}}catch(e){}
+    var drag=null;
+    todas().forEach(function(a){
+      a.setAttribute('draggable','true');
+      a.title=(a.title?a.title+' · ':'')+'Arrastra para reordenar / drag to reorder';
+      a.addEventListener('dragstart',function(e){drag=a;a.classList.add('nsnb-drag');
+        try{e.dataTransfer.setData('text/plain',a.getAttribute('href'));e.dataTransfer.effectAllowed='move';}catch(err){}});
+      a.addEventListener('dragend',function(){if(drag)drag.classList.remove('nsnb-drag');drag=null;});
+      a.addEventListener('dragover',function(e){e.preventDefault();if(!drag||drag===a)return;
+        var r=a.getBoundingClientRect(),antes=(e.clientX-r.left)<r.width/2;
+        a.parentNode.insertBefore(drag,antes?a:a.nextSibling);});
+      a.addEventListener('drop',function(e){e.preventDefault();guardar();relayout();});
+    });
+    filas().forEach(function(r){r.addEventListener('dragover',function(e){e.preventDefault();});
+      r.addEventListener('drop',function(e){e.preventDefault();if(drag){guardar();relayout();}});});
+    var brand=document.getElementById('nsnb-lang');
+    if(brand&&!document.getElementById('nsnb-reset')){
+      var rb=document.createElement('a');rb.id='nsnb-reset';rb.className='nsnb-btn';rb.href='#';rb.textContent='↺';
+      rb.title='Orden de pestañas original / reset tab order';
+      rb.onclick=function(e){e.preventDefault();try{localStorage.removeItem(KEY);}catch(err){}
+        aplicar(ORIG);rb.style.display='none';relayout();return false;};
+      brand.parentNode.insertBefore(rb,brand);
+    }
+  })();
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+<script>
+/* r16b · MINI-MARCADOR independiente de pestaña activa. Deliberadamente
+   separado y mínimo: si el script grande de la barra muere por lo que sea,
+   ESTE pinta igual. Solo compara el fichero de la URL con el href y pone la
+   clase .on (el CSS !important hace el resto). Se repite unos segundos por si
+   el reordenado o el motor mueven pestañas tarde. */
+(function(){
+  function marca(){
+    try{
+      /* r16c: Pages sirve URLs sin .html — normalizar ambos lados */
+      var lim=function(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';};
+      var here=lim(location.pathname.split('/').pop());
+      var esDoc=location.pathname.toLowerCase().indexOf('/documentation/')>-1;
+      document.querySelectorAll('#ns-hub-navbar .nsnb-tab').forEach(function(a){
+        var f=(a.getAttribute('href')||'').toLowerCase();
+        var on=esDoc ? f.indexOf('/documentation/')>-1 : lim(f.split('/').pop())===here;
+        a.classList.toggle('on',on);
+      });
+    }catch(e){}
+  }
+  marca();
+  var i=0,t=setInterval(function(){marca();if(++i>15)clearInterval(t);},700);
+  window.addEventListener('pageshow',marca);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
+})();
+</script>
+<script>
+/* ns-idle-logout (0.23.0 · UST-06 G1): 30 min sin actividad en el hub → fuera.
+   Central en el navbar = vale para TODAS las páginas /hub sin tocarlas una a
+   una. La sesión vive en localStorage (sb-*-auth-token): borrarla y recargar
+   deja la página en su candado. Solo actúa si HAY sesión — jamás bucles.
+   UN CANDADO (26-sep, UST-17 · Juanjo): APAGADO. El candado del hub es
+   Cloudflare Access (sesión de 30 días por dispositivo); volver a pedir la
+   contraseña cada 30 min de inactividad era una de las cuatro puertas que se
+   retiran. LIMITE=0 desactiva el cierre sin borrar el mecanismo (marcha atrás
+   = volver a 30*60*1000). */
+(function(){
+  try{
+    var LIMITE=0;   // ms; 0 = sin cierre por inactividad (UST-17)
+    if(!LIMITE){ try{localStorage.removeItem('ns_idle_aviso');localStorage.removeItem('ns_idle_ts');}catch(e){} return; }
+    /* El cierre mudo parecía avería (Pilar, 25-ago): al volver se explica. */
+    if(localStorage.getItem('ns_idle_aviso')==='1'){
+      localStorage.removeItem('ns_idle_aviso');
+      var av=document.createElement('div');
+      av.setAttribute('data-i','');
+      av.style.cssText='position:sticky;top:0;z-index:9999;background:#FFF3E0;color:#7A4A00;'+
+        'border-bottom:1.5px solid #E8B36A;padding:9px 16px;font:600 13px system-ui;text-align:center';
+      av.textContent='🔒 Tu sesión se cerró tras 30 minutos sin actividad (seguridad de datos del piloto). Entra de nuevo en 📬 Waitlist o 📊 MIS y todo vuelve. | Your session closed after 30 idle minutes — log in again at 📬 Waitlist or 📊 MIS.';
+      document.body.insertBefore(av, document.body.firstChild);
+      setTimeout(function(){try{av.remove();}catch(e){}}, 25000);
+    }
+    var K='ns_idle_ts';
+    var haySesion=function(){
+      for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
+        if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)return true;}
+      return false;};
+    if(!haySesion())return;
+    var toca=function(){try{localStorage.setItem(K,String(Date.now()));}catch(e){}};
+    ['click','keydown','mousemove','scroll','touchstart'].forEach(function(ev){
+      window.addEventListener(ev,toca,{passive:true});});
+    toca();
+    setInterval(function(){
+      try{
+        var t=parseInt(localStorage.getItem(K)||'0',10);
+        if(!t||Date.now()-t<LIMITE)return;
+        if(!haySesion())return;
+        var fuera=[];
+        for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
+          if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)fuera.push(k);}
+        fuera.forEach(function(k){localStorage.removeItem(k);});
+        localStorage.removeItem(K);
+        try{localStorage.setItem('ns_idle_aviso','1');}catch(e){}
+        location.reload();
+      }catch(e){}
+    },60000);
+  }catch(e){}
+})();
+</script>
+<script>
+/* ns-pase-directo (r23 · 28-ago): SSO founders hub↔StartUp Admin.
+   EMISOR: al pinchar un enlace hacia la otra superficie con sesión viva,
+   pide un pase de UN uso a la Edge pase-directo (solo admins) y lo manda en
+   el FRAGMENTO. RECEPTOR: consume el pase en /auth/v1/verify, guarda la
+   sesión nueva y recarga — sin re-teclear contraseña. El MFA de StartUp
+   Admin se pide igual. Cualquier fallo = navegación normal de siempre. */
+(function(){
+  try{
+    var SB='https://nebkqncvapelrarruyqb.supabase.co';
+    var ANON='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+    var SBKEY='sb-nebkqncvapelrarruyqb-auth-token';
+    var FN=SB+'/functions/v1/pase-directo';
+    var sesion=function(){try{var s=JSON.parse(localStorage.getItem(SBKEY)||'null');
+      return (s&&s.access_token)?s:null;}catch(e){return null;}};
+    var esOtra=function(h){try{var u=new URL(h, location.href);return u.hostname==='admin.nutrisynccollective.com';}catch(e){return false;}};
+
+    /* — receptor — */
+    var m=(location.hash||'').match(/[#&]nspase=([^&]+)/);
+    if(m){
+      history.replaceState(null,'',location.pathname+location.search);
+      if(!sesion()){
+        fetch(SB+'/auth/v1/verify',{method:'POST',
+          headers:{apikey:ANON,'content-type':'application/json'},
+          body:JSON.stringify({type:'magiclink',token_hash:decodeURIComponent(m[1])})})
+        .then(function(r){return r.json();})
+        .then(function(j){
+          if(j&&j.access_token){
+            if(!j.expires_at&&j.expires_in)j.expires_at=Math.floor(Date.now()/1000)+j.expires_in;
+            localStorage.setItem(SBKEY,JSON.stringify(j));
+            location.reload();
+          }
+        }).catch(function(){});
+      }
+    }
+
+    /* — reto TOTP: de aal1 a aal2 (r24-r · S15) ————————————————————————————
+       El login del hub (signInWithPassword) y el receptor del pase acuñan
+       sesión aal1 SIN reto. Para un admin con TOTP verificado, is_admin_mfa()
+       exige aal2 → todas las RPC admin mueren con 400. Este gate, sobre el
+       MISMO estilo raw del navbar (sin vendor, sin CDN — po74), detecta la
+       sesión aal1 con factor verificado y refuerza con un teclado barajado.
+       Devuelve una promesa; auto-corre al cargar cualquier página del hub. */
+    var jwtAal=function(tok){try{return JSON.parse(atob(tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).aal;}catch(e){return null;}};
+    window.nsMfaReforzar=function(){
+      return new Promise(function(resolve){
+        var s=sesion();
+        if(!s||!s.access_token||jwtAal(s.access_token)==='aal2'){resolve(true);return;}
+        var H={apikey:ANON,authorization:'Bearer '+s.access_token,'content-type':'application/json'};
+        fetch(SB+'/auth/v1/user',{headers:H}).then(function(r){return r.json();}).then(function(u){
+          var fac=((u&&u.factors)||[]).filter(function(f){return f.factor_type==='totp'&&f.status==='verified';})[0];
+          if(!fac){resolve(false);return;}            // aal1 sin factor: is_admin_mfa perdona
+          var EN=(function(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+            return (v||((navigator.language||'en').toLowerCase().indexOf('es')===0?'es':'en'))==='en';})();
+          var T=function(es,en){return EN?en:es;};
+          var pin='',teclas=[0,1,2,3,4,5,6,7,8,9];
+          for(var i=teclas.length-1;i>0;i--){var k=Math.floor(Math.random()*(i+1));var tmp=teclas[i];teclas[i]=teclas[k];teclas[k]=tmp;}
+          var ov=document.createElement('div');ov.id='ns-mfa-ov';
+          ov.setAttribute('style','position:fixed;inset:0;z-index:99999;background:rgba(20,14,10,.55);display:flex;align-items:center;justify-content:center;font-family:Poppins,system-ui,sans-serif');
+          ov.innerHTML='<div style="background:#FFFDF8;border-radius:18px;max-width:380px;width:92%;padding:22px 20px;box-shadow:0 18px 50px rgba(0,0,0,.3)">'
+            +'<div style="font-weight:800;font-size:16px;color:#241D1A;margin-bottom:4px">🔐 '+T('Refuerza tu sesión','Reinforce your session')+'</div>'
+            +'<div style="font-size:13px;color:#5f564f;margin-bottom:14px">'+T('Introduce el código de tu app de autenticación para usar las herramientas de administradora.','Enter the code from your authenticator app to use the admin tools.')+'</div>'
+            +'<div id="nsmd" style="display:flex;gap:11px;justify-content:center;margin:8px 0 16px"></div>'
+            +'<div id="nsmp" style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:#EFE3D7;border:1px solid #EFE3D7;border-radius:14px;overflow:hidden"></div>'
+            +'<button id="nsmc" style="margin-top:12px;background:none;border:0;font:600 12.5px Poppins,system-ui,sans-serif;color:#8A7F78;cursor:pointer;text-decoration:underline">'+T('Borrar','Clear')+'</button>'
+            +'<div id="nsme" style="color:#D93030;font-size:12.5px;min-height:16px"></div></div>';
+          document.body.appendChild(ov);
+          var dots=ov.querySelector('#nsmd'),pad=ov.querySelector('#nsmp'),err=ov.querySelector('#nsme');
+          var pinta=function(){var h='';for(var d=0;d<6;d++){h+='<div style="width:22px;height:22px;border-radius:50%;border:2px solid '+(d<pin.length?'#0F6E56':'#E8B072')+';background:'+(d<pin.length?'#0F6E56':'#fff')+'"></div>';}dots.innerHTML=h;};
+          pad.innerHTML=teclas.map(function(d){return '<button type="button" data-d="'+d+'" style="background:#fffdfa;border:0;font:800 24px/1 Poppins,system-ui,sans-serif;color:#241D1A;padding:18px 0;cursor:pointer">'+d+'</button>';}).join('');
+          var verifica=function(){
+            err.textContent=T('Comprobando…','Checking…');
+            fetch(SB+'/auth/v1/factors/'+fac.id+'/challenge',{method:'POST',headers:H,body:'{}'})
+            .then(function(r){return r.json();}).then(function(ch){
+              if(!ch||!ch.id){throw new Error(ch&&ch.error_description||'challenge');}
+              return fetch(SB+'/auth/v1/factors/'+fac.id+'/verify',{method:'POST',headers:H,
+                body:JSON.stringify({challenge_id:ch.id,code:pin})}).then(function(r){return r.json();});
+            }).then(function(v){
+              if(v&&v.access_token){
+                if(!v.expires_at&&v.expires_in)v.expires_at=Math.floor(Date.now()/1000)+v.expires_in;
+                localStorage.setItem(SBKEY,JSON.stringify(v));
+                ov.remove(); resolve(true); location.reload();
+              }else{err.textContent=T('Código no válido','Invalid code');pin='';pinta();}
+            }).catch(function(){err.textContent=T('Código no válido','Invalid code');pin='';pinta();});
+          };
+          pad.onclick=function(ev){var b=ev.target.closest('button[data-d]');if(!b||pin.length>=6)return;pin+=b.getAttribute('data-d');pinta();if(pin.length===6)verifica();};
+          ov.querySelector('#nsmc').onclick=function(){pin='';err.textContent='';pinta();};
+          pinta();
+        }).catch(function(){resolve(false);});
+      });
+    };
+    /* UN CANDADO (26-sep, UST-17): el reto TOTP ya NO se auto-lanza al cargar —
+       is_admin_mfa() dejó de exigir aal2 (Cloudflare Access es el segundo factor).
+       nsMfaReforzar() sigue disponible para quien quiera reforzar (mfa.html). */
+
+    /* — emisor — */
+    document.addEventListener('click',function(ev){
+      try{
+        if(ev.defaultPrevented||ev.button!==0||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.altKey)return;
+        var a=ev.target&&ev.target.closest?ev.target.closest('a[href]'):null;
+        if(!a||a.target==='_blank'||!esOtra(a.href))return;
+        var s=sesion(); if(!s)return;
+        ev.preventDefault();
+        var destino=a.href, ac=new AbortController();
+        var t=setTimeout(function(){ac.abort();},2500);
+        fetch(FN,{method:'POST',signal:ac.signal,
+          headers:{apikey:ANON,authorization:'Bearer '+s.access_token,'content-type':'application/json'},
+          body:'{}'})
+        .then(function(r){return r.json();})
+        .then(function(j){clearTimeout(t);
+          location.href=(j&&j.pase)?destino+'#nspase='+encodeURIComponent(j.pase):destino;})
+        .catch(function(){clearTimeout(t);location.href=destino;});
+      }catch(e){}
+    },true);
+  }catch(e){}
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar -->
+
+<h1>👣 61 — Movement → «Steps overview»: Today · This phase · This cycle, y nada más (UST-26, propuesta)</h1>
+<div class="meta">INTERNO · PROPUESTA (28-sep-2026) · pedido de Pilar (WhatsApp 09:42) y Juanjo · toca MovementLogScreen + lib/health/cockpit.ts + 14 catálogos · OTA 0.23.8 · D1–D6</div>
+<p><a class="btn" href="/hub/documentation/ust/UST-2026-09-28-26-steps-overview-3-cifras.pdf">UST-2026-09-28-26 · PDF</a><a class="btn" href="/hub/documentation/ust/UST-2026-09-28-26-steps-overview-3-cifras.docx">Word</a></p>
+<div class="av"><b>Lo que la captura de Pilar enseña, además de lo que pide.</b> This cycle = This month = This quarter = Year to date = All time = 126.668: no es casualidad. La sincronización con Salud lee como mucho <b>14 días</b> hacia atrás la primera vez y después solo desde la última señal (<code>ventanaDeSync</code>, sync.ts), así que «All time» nunca es toda la historia de la usuaria: es lo que la app llegó a sincronizar. Las cuatro cifras que se retiran no eran solo redundantes hoy — con esa ventana serían engañosas siempre. La resta que pide Pilar es también la honesta.</div>
+
+<h2>1 · El pedido, literal</h2>
+<p>Pilar (WhatsApp, 28-sep-2026 09:42 y 09:43, con captura de su iPhone a las 08:41) y Juanjo (chat, 28-sep-2026 ~08:50):</p>
+<div class="q">Pilar 09:42: «Como el número de today está correct y me imagino que el de this phase también».</div><div class="q">Pilar 09:43: «Capas es mejor solo mostrar today, this cycle, this phase únicamente».</div><div class="q">Juanjo: «Simplificarlo a Today, This Phase, This Cycle en ese orden que os lo mas relevante, prepara una UST para este cambio, el resto se puede quitar de esta pantalla».</div>
+<p>Lectura: la tarjeta «Steps overview» de la pestaña Movement (Today) pasa de SIETE cifras (Today · This cycle · This phase · This month · This quarter · Year to date · All time) a TRES, en el orden Today · This phase · This cycle. Las otras cuatro desaparecen de esta pantalla; no se mueven a otra ni a un «ver más». Nada más cambia en la pantalla: la tarjeta STEPS de arriba, el switch de Apple Health/Health Connect, «Choose what to track» y «Manage all devices &amp; apps» quedan como están.</p>
+<p><b></b></p><p></p><p><b></b></p><p></p>
+
+<h2>2 · Lo que la app tiene hoy (28-sep, leído del código)</h2>
+<table class="t "><thead><tr><th>Qué</th><th>Medido</th></tr></thead><tbody><tr><td>Pantalla</td><td>`src/screens/main/MovementLogScreen.tsx`, bloque r24-o (líneas ~326–352): tarjeta «Steps overview» condicionada a `flags.connectors &amp;&amp; AD &amp;&amp; healthOn &amp;&amp; cockpit` (solo aparece con la salud conectada y el módulo nativo presente: runtimes 0.23.0/0.23.1); rejilla de 7 celdas al 33,33 % (3 + 3 + 1) con etiquetas `mob.wear.b.*`; cifra 18 pt coral, etiqueta 11 pt gris.</td></tr><tr><td>Lógica</td><td>`src/lib/health/cockpit.ts`: `agregaPasos` (PURA) suma los 7 buckets a partir de las filas de `pasos_por_dia` (RPC v4: una fila por día LOCAL, ventana de 2 años); `BucketPasos` es un tipo cerrado de 7 valores; `inicioTrimestreISO` solo sirve al bucket trimestre. Tests en `src/lib/__tests__/cockpit.test.ts` (agregaPasos por bucket, familiaFase, inicioCicloISO, diasDeFase, zonaHoraria, inicioTrimestreISO).</td></tr><tr><td>Datos</td><td>`health_signal` (pasos por hora fusionados por HealthKit desde la 0.23.5) → `pasos_por_dia` v4. La sincronización (`sync.ts`, `ventanaDeSync`) lee ≤14 días la primera vez y después desde la última señal con 1 día de solape; huecos de más de 14 días sin abrir la app se pierden. Consecuencia: «All time» = lo sincronizado, no la historia; en la captura de Pilar los cuatro largos valen lo mismo que el ciclo.</td></tr><tr><td>Idiomas</td><td>`mob.wear.b.{today,cycle,phase,month,quarter,ytd,total}` existe en los 14 catálogos (bloque `mob.wear` CERRADO en `catalogos.test.ts`: paridad total exigida). Las 3 etiquetas que quedan ya están traducidas en los 14.</td></tr><tr><td>Entrega y baseline</td><td>JS puro → OTA. Última OTA publicada: 0.23.7 (8-sep 22:48Z, O3, en los 7 runtimes); 0.23.6 (UST-14) sigue sin construir; siguiente número libre: 0.23.8. Baseline: appdev `4a75d9f` (8-sep, árbol limpio) · RPC `pasos_por_dia` v4 · ids de OTA por runtime = `tools/ota-baseline.sh` en el Mac como PASO 0 antes de tocar.</td></tr><tr><td>Ticket de Pilar</td><td>27-sep, 🎫 «Apple Health: switch ON…» (creado por SQL desde su feedback): entonces 0 filas en `health_signal`; hoy 2.476 pasos de hoy y 90.839 en la fase. Los datos llegan.</td></tr></tbody></table>
+<p class="nota"><b>Analogía:</b> Es como un dashboard con siete paneles donde cuatro leen la misma serie con distinta etiqueta: no informan, distraen. Y uno de ellos («All time») promete un histórico que la fuente no retiene — un contador que se resetea sin decirlo. Se quitan los cuatro y quedan los tres que responden preguntas distintas: hoy, esta fase, este ciclo.</p>
+
+<h2>3 · Lo que se construirá (F1–F6) y cómo se verificará</h2>
+<table class="t "><thead><tr><th>Qué</th><th>Qué se construirá</th><th>Cómo se verificará</th></tr></thead><tbody><tr><td>F1 · La tarjeta: 3 cifras, en orden</td><td>Misma tarjeta (icono + título «Steps overview», mismos estilos), una sola fila de 3 celdas al tercio: **Today · This phase · This cycle**, en ese orden. Sin celdas de mes, trimestre, YTD ni total. El array de celdas de la pantalla pasa de 7 a 3 entradas y define el orden.</td><td>Captura en un iPhone Y un Android con la salud conectada (paridad): 3 cifras y ninguna más, en ese orden. Sin salud conectada la tarjeta sigue sin aparecer, como hoy.</td></tr><tr><td>F2 · La lógica se estrecha, no se esconde (D2)</td><td>`BucketPasos = 'hoy' | 'fase' | 'ciclo'`; `PasosCockpit` con 3 claves; `agregaPasos` deja de calcular mes/trimestre/ytd/total; `inicioTrimestreISO` se retira (solo servía al trimestre). Código sin consumidor es deuda (r11c-2); git conserva la versión de 7 por si UST-23 (Trends) la necesita — y entonces volvería con su UST y sus tests.</td><td>jest: los casos de hoy/fase/ciclo de `cockpit.test.ts` se conservan tal cual; los de mes/trimestre/ytd/total y `inicioTrimestreISO` se retiran. `tsc` 0. El tipo cerrado de 3 es el guardarraíl: una cuarta cifra no compila.</td></tr><tr><td>F3 · Orden hoy → fase → ciclo</td><td>De lo inmediato a lo largo, como pide Juanjo: Today (hoy), This phase (los días de la fase actual del ciclo en curso, calculados del ciclo), This cycle (desde el día 1). Las definiciones no cambian.</td><td>Un test de `agregaPasos` fija que las claves salen en ese orden (`Object.keys`) y que fase ⊆ ciclo.</td></tr><tr><td>F4 · Idiomas: 4 claves menos en los 14</td><td>Se retiran `mob.wear.b.month/quarter/ytd/total` de los 14 catálogos (no quedan claves muertas); `today/phase/cycle` siguen. Nada nuevo que traducir.</td><td>`catalogos.test.ts` (bloque `mob.wear` cerrado) sigue en verde: paridad 14/14.</td></tr><tr><td>F5 · Lo que NO cambia</td><td>La tarjeta STEPS de arriba (`pasosDeHoy`), el switch de Apple Health / Health Connect, «Choose what to track», «Manage all devices &amp; apps», el checklist de movimiento, la RPC `pasos_por_dia`, `health_signal`, la sincronización (ventana de 14 días: se documenta, no se toca en esta UST). Ningún cambio de plataforma: la misma tarjeta en iOS y Android.</td><td>`git diff --stat` real en el as-built: MovementLogScreen (≈20 líneas), cockpit.ts, cockpit.test.ts, 14 json — y nada más.</td></tr><tr><td>F6 · Entrega OTA 0.23.8, sola</td><td>PASO 0 `ota-baseline.sh` → dev (media jornada) → jest + tsc + `expo config` → publicar primero SOLO al runtime del móvil de Juanjo (patrón r26-p) → captura iPhone + Android → los 7 runtimes → `curl u.expo.dev` por runtime → What to Test. Cierre: 0.23.8 en el CHECK de releases + fila en 🚢 + item hecho + as-built con desviaciones.</td><td>DoD: en el móvil de Juanjo y en el de Pilar la tarjeta enseña Today · This phase · This cycle y nada más; el resto de la pantalla idéntico. Marcha atrás: `Rollback OTA NutriSync.command` al mensaje de la OTA anterior.</td></tr></tbody></table>
+
+<h2>4 · Análisis de impacto</h2>
+<table class="t "><thead><tr><th>Dónde</th><th>Qué toca</th><th>Qué NO toca</th></tr></thead><tbody><tr><td>App (`repos/appdev`)</td><td>`src/screens/main/MovementLogScreen.tsx` (bloque r24-o: array de celdas 7 → 3, orden) · `src/lib/health/cockpit.ts` (tipo, `agregaPasos`, retirar `inicioTrimestreISO`) · `src/lib/__tests__/cockpit.test.ts` · `src/i18n/*.json` ×14 (−4 claves en `mob.wear.b`).</td><td>`sync.ts`, `pasosDeHoy`, `connections`, `HealthConsent`, `cas.ts`, `app.json`, RUNTIMES, nada nativo, nada de Android-específico.</td></tr><tr><td>Base</td><td>Nada.</td><td>`pasos_por_dia` v4, `health_signal`, tablas.</td></tr><tr><td>Quién lo recibe</td><td>Todas las testers de los 7 runtimes (la OTA llega a todos); visible solo con la salud conectada en 0.23.0/0.23.1 (en 0.18–0.22 la tarjeta no existe: sin cambio visible).</td><td>—</td></tr><tr><td>Riesgo</td><td>Bajo: es una resta. El único error posible es de orden o de etiqueta, y lo cazan el test de orden y la captura.</td><td>—</td></tr></tbody></table>
+<p class="nota">Estimación: media jornada de dev + verificación en dos móviles. Un cambio, una OTA (0.23.8), una verificación — no se junta con UST-14 (0.23.6) ni con ninguna otra corrección (regla 7-sep).</p>
+
+<h2>5 · Decisiones (D1–D5 Juanjo, carril técnico; Pilar y Lucía corroboran · D6 Juanjo/Pilar)</h2>
+<table class="t dec"><thead><tr><th>#</th><th>Propuesta</th><th>Alternativa</th><th>Decisión</th></tr></thead><tbody><tr><td>D1</td><td>Confirmar la lectura: 3 cifras, orden Today · This phase · This cycle; las otras cuatro desaparecen de la pantalla (no van a otra pantalla ni a un «ver más»).</td><td>Conservar alguna (p. ej. This month) o un enlace «ver más».</td><td></td></tr><tr><td>D2</td><td>Retirar también el CÁLCULO (lógica pura, tipo y tests) de mes/trimestre/YTD/total, no solo su pintado: código sin consumidor es deuda; si UST-23 (Trends) los necesita, vuelven con su UST y sus tests.</td><td>Conservarlos calculados y ocultos.</td><td></td></tr><tr><td>D3</td><td>Diseño: misma tarjeta, mismos estilos, una fila de 3 al tercio. Es una resta, no necesita pantalla de Lucía; si Lucía quiere otra jerarquía (p. ej. la cifra de hoy más grande), entra en esta OTA si llega antes de construir, o en la siguiente.</td><td>Esperar a un diseño de Lucía antes de construir.</td><td></td></tr><tr><td>D4</td><td>Entrega: OTA 0.23.8 SOLA, primero al runtime del móvil de Juanjo, después a los 7; What to Test para las dos tiendas. Paso 0 `ota-baseline.sh`.</td><td>Juntarla con la 0.23.6 (UST-14) u otra corrección.</td><td></td></tr><tr><td>D5</td><td>La ventana de sincronización de 14 días se DOCUMENTA en esta UST y no se toca: cambiarla (p. ej. 90 días la primera vez) es otra UST con su análisis de coste (muestras por hora × días) y no hace falta para las tres cifras que quedan.</td><td>Ampliar la ventana en esta misma OTA.</td><td></td></tr><tr><td>D6</td><td>Ticket de Pilar (27-sep, Apple Health sin datos): se cierra en 🎫 con la causa que Juanjo/Pilar vieron al revisarlo (hipótesis r24-l: permiso de LECTURA en Ajustes → Salud → Apps → NutriSync, que HealthKit no delata) y una respuesta a Pilar. No depende de esta OTA.</td><td>Dejarlo abierto hasta la OTA.</td><td></td></tr></tbody></table>
+
+<h2>6 · Baseline, verificación y marcha atrás</h2>
+<table class="t "><thead><tr><th>Momento</th><th>Qué se comprueba</th></tr></thead><tbody><tr><td>Antes de construir</td><td>Firma de Juanjo (D1–D6) · `tools/ota-baseline.sh` en el Mac (ids de los 14 update-id) · `backup-estado` verde · appdev limpio en `4a75d9f`.</td></tr><tr><td>Construcción</td><td>Un commit en appdev con su mensaje; jest (cockpit + catálogos) y tsc 0; `npx expo config --type public` OK.</td></tr><tr><td>Publicación</td><td>OTA 0.23.8 primero al runtime del móvil de Juanjo → captura iPhone (Juanjo) + Android → a los 7 runtimes → `curl u.expo.dev` por runtime (los 14 ids nuevos).</td></tr><tr><td>DoD</td><td>En un iPhone y un Android con la salud conectada: Steps overview = Today · This phase · This cycle, en ese orden, y nada más; el resto de Movement idéntico. Pilar lo ve en su móvil (cerrar la app dos veces).</td></tr><tr><td>Marcha atrás</td><td>`tools/Rollback OTA NutriSync.command` con un trozo del mensaje de la OTA anterior (republica el estado bueno en los 7). Sin SQL que revertir.</td></tr></tbody></table>
+
+<h2>7 · What to Test (OTA 0.23.8)</h2>
+<ol><li>Movement → tarjeta «Steps overview»: ahora solo tres cifras, Today · This phase · This cycle, en ese orden. Desaparecen This month, This quarter, Year to date y All time.</li><li>Todo lo demás de la pantalla sigue igual: pasos de hoy arriba, Apple Health / Health Connect, «Choose what to track», el registro del movimiento.</li><li>Si no tienes la salud conectada, la tarjeta no aparece (como hasta ahora).</li></ol>
+
+<h2>8 · Lecciones grabadas (van también a CLAUDE.md)</h2><table class="t "><thead><tr><th>Lección</th><th>Qué cambia</th></tr></thead><tbody><tr><td>Una cifra se pinta cuando su nombre es verdad</td><td>«All time» sumaba lo que la app había sincronizado (≤14 días la primera vez, huecos perdidos), no toda la historia de la usuaria: un total que no puede ser total confunde más que ayuda. Antes de pintar un acumulado largo, comprobar que la fuente lo retiene.</td></tr><tr><td>Siete cifras con cuatro iguales no informan</td><td>Pilar lo vio en un vistazo con datos reales; el cockpit r24-o (3-sep) se diseñó desde el código, sin una captura de tester delante. Las tarjetas de datos se validan con datos de una usuaria real antes de crecer.</td></tr></tbody></table>
+
+<h2>9 · La cadena</h2>
+<table class="t "><thead><tr><th>Paso</th><th>Estado</th></tr></thead><tbody><tr><td>UST</td><td>Este documento (propuesta, 28-sep 08:5x).</td></tr><tr><td>Sign-off</td><td>Juanjo, fila a fila (D1–D6); Pilar y Lucía corroboran (carril técnico).</td></tr><tr><td>Dev</td><td>Media jornada: pantalla + lógica + tests + 14 catálogos, un commit en appdev.</td></tr><tr><td>Test</td><td>jest (cockpit, catálogos) · tsc 0 · expo config · captura iPhone + Android.</td></tr><tr><td>Deployment</td><td>OTA 0.23.8: runtime de Juanjo → 7 runtimes (`tools/OTA NutriSync App.command` con mensaje).</td></tr><tr><td>Verification</td><td>`curl u.expo.dev` por runtime + DoD en dos móviles + Pilar en el suyo.</td></tr><tr><td>hub + Notion</td><td>Doc 61 + adjunto; item en 📚 (propuesto → aceptado S19 al firmar → hecho con la 0.23.8 en 🚢); as-built con desviaciones; Notion sin bloques → hub.</td></tr></tbody></table>
+<p class="nota">NutriSync Engineering · UST-2026-09-28-26 · propuesta del 28-sep-2026 · pedido de Pilar y Juanjo · D1–D6 sin decidir</p>
+</body></html>
