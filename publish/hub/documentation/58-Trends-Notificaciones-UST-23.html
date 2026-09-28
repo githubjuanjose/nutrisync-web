@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>58 · Trends + insights y notificaciones personalizadas — UST-23 (propuesta para playback)</title>
+<style>
+body{font-family:Inter,system-ui,-apple-system,sans-serif;color:#241D1A;background:#FFF9F5;margin:0;padding:24px 18px 60px;max-width:1180px;margin:auto;line-height:1.45;font-size:14px}
+h1{font-size:24px;margin:8px 0 4px} h2{font-size:18px;color:#E4572E;margin:28px 0 8px;border-bottom:1px solid #F0E3DA;padding-bottom:4px}
+.meta{color:#7A6E67;font-size:12px;margin-bottom:14px} .q{background:#fff;border-left:4px solid #E4572E;padding:10px 14px;border-radius:0 10px 10px 0;font-style:italic;margin:6px 0}
+.t{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;font-size:12.5px;margin:8px 0 14px}
+.t th{background:#F7F1EC;text-align:left;padding:7px 9px;font-weight:700;vertical-align:top} .t td{padding:7px 9px;border-top:1px solid #F0E3DA;vertical-align:top;color:#4E4540}
+.t td:first-child{font-weight:700;color:#241D1A} .dec td:last-child{background:#FFF9E0}
+.btn{display:inline-block;background:#E4572E;color:#fff;border-radius:22px;padding:8px 14px;text-decoration:none;font-weight:700;margin:4px 6px 4px 0;font-size:13px}
+.nota{color:#7A6E67;font-size:12.5px} ol li{margin:4px 0} .av{background:#FFF6E5;border-left:4px solid #E8A33D;padding:10px 14px;border-radius:0 10px 10px 0;font-size:13px;margin:10px 0}
+</style><script id="ns-canonical">(function(){var h=location.hostname;if(h.slice(-10)===".pages.dev"){location.replace("https://nutrisynccollective.com"+location.pathname+location.search+location.hash);}})();</script></head><body><!-- ns-hub-navbar -->
+<div id="ns-hub-navbar">
+<style>
+#ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
+#ns-hub-navbar *{box-sizing:border-box}
+/* fila 1 · app bar */
+#ns-hub-navbar .nsnb-app{display:flex;align-items:center;gap:12px;padding:10px 18px}
+#ns-hub-navbar .nsnb-brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#231F20}
+#ns-hub-navbar .nsnb-logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#FF7600,#FD400C);display:flex;align-items:center;justify-content:center;font-size:15px}
+#ns-hub-navbar .nsnb-bt{line-height:1.15}
+#ns-hub-navbar .nsnb-bt b{font-size:14.5px;font-weight:800;letter-spacing:.4px;display:block}
+#ns-hub-navbar .nsnb-bt span{font-size:11px;color:#8A7F78}
+#ns-hub-navbar .nsnb-sp{flex:1}
+#ns-hub-navbar .nsnb-btn{width:34px;height:34px;border:1px solid #E6E0D8;border-radius:9px;background:#fff;color:#5A5148;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+#ns-hub-navbar .nsnb-btn:hover{background:#FFF1EC;color:#E8472A;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-date{font-size:12px;color:#8A7F78;margin-right:2px}
+/* fila 2 · tab strip estilo carpeta */
+#ns-hub-navbar .nsnb-strip{background:#F4F0EA;border-top:1px solid #EEE8E0}
+#ns-hub-navbar .nsnb-tabs{padding:8px 14px 0}
+/* po66: UNA fila mientras quepa; al desbordar, reparto ladrillo (JS relayout) */
+#ns-hub-navbar .nsnb-row{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden}
+#ns-hub-navbar .nsnb-row+.nsnb-row{margin-top:3px;padding-left:64px;flex-wrap:wrap;display:none}
+#ns-hub-navbar .nsnb-tab{flex:0 0 auto;padding:9px 16px;font-size:13px;font-weight:600;color:#6E655D;background:#ECE6DD;text-decoration:none;white-space:nowrap;border:1px solid #E2DACF;border-bottom:none;border-radius:10px 10px 0 0;position:relative;top:1px}
+/* r16b: la pestaña activa por CLASE con !important — tercera red por si algo
+   pisa el estilo en línea. La pone markActive() y el mini-marcador del final. */
+#ns-hub-navbar .nsnb-tab.on{background:linear-gradient(135deg,#FF7600,#FD400C)!important;color:#fff!important;font-weight:800!important;border-color:#FD400C!important;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)!important}
+#ns-hub-navbar .nsnb-tab:hover{background:#FFF6EF;color:#C73A20}
+#ns-hub-navbar .nsnb-exit{color:#C73A20;font-weight:800}
+#ns-hub-navbar .nsnb-exit:hover{background:#FFF1EC;border-color:#F3C8B8}
+#ns-hub-navbar .nsnb-tab.on{background:#FFFDFA;color:#E8472A;font-weight:700;border-color:#E6E0D8;box-shadow:inset 0 3px 0 #FD400C}
+@media (max-width:700px){#ns-hub-navbar .nsnb-row+.nsnb-row{padding-left:22px}}
+@media (max-width:640px){#ns-hub-navbar .nsnb-bt span,#ns-hub-navbar .nsnb-date{display:none}}
+.nsnb-tab.nsnb-g1{box-shadow:inset 0 3px 0 #0F6E56}
+.nsnb-tab.nsnb-g2{box-shadow:inset 0 3px 0 #C73A20}
+.nsnb-tab.nsnb-g3{box-shadow:inset 0 3px 0 #FF7600}
+.nsnb-tab.nsnb-g4{box-shadow:inset 0 3px 0 #1D4ED8}
+.nsnb-tab.nsnb-g5{box-shadow:inset 0 3px 0 #8A7F78}
+.nsnb-tab{cursor:grab}
+.nsnb-tab.nsnb-drag{opacity:.35;cursor:grabbing}
+#nsnb-reset{display:none}
+</style>
+<div class="nsnb-app">
+  <a class="nsnb-brand" href="/hub/full-hub-gated-site.html#/builders">
+    <div class="nsnb-logo">🧡</div>
+    <div class="nsnb-bt"><b>NUTRISYNC</b><span>Builders Hub</span></div>
+  </a>
+  <div class="nsnb-sp"></div>
+  <span class="nsnb-date" id="nsnb-date"></span>
+  <button class="nsnb-btn" onclick="history.back()" title="Atrás" aria-label="Atrás">&#8249;</button>
+  <button class="nsnb-btn" onclick="history.forward()" title="Adelante" aria-label="Adelante">&#8250;</button>
+  <a class="nsnb-btn" href="/hub/full-hub-gated-site.html#/builders" title="Inicio del hub" style="text-decoration:none">⌂</a>
+  <!-- ns-hub-exit: la salida. Sin esto no había NINGÚN enlace que dejara /hub/
+       — para volver a la web pública había que editar la URL a mano. -->
+  <a class="nsnb-btn nsnb-exit" href="/" title="Web de marketing / marketing site"
+     aria-label="Web de marketing" style="text-decoration:none">🏠</a>
+  <a class="nsnb-btn" href="https://admin.nutrisynccollective.com" title="StartUp Admin (contabilidad del build)"
+     aria-label="StartUp Admin" style="text-decoration:none">🛠</a>
+</div>
+<div class="nsnb-strip">
+  <nav class="nsnb-tabs" id="nsnb-tabs">
+    <div class="nsnb-row" id="nsnb-r1"><a class="nsnb-tab nsnb-g1" data-en="Overview" href="/hub/full-hub-gated-site.html#/builders">⌂ Overview</a><a class="nsnb-tab nsnb-g1" data-en="MIS" href="/hub/admin-mis-console.html">📊 MIS</a><a class="nsnb-tab nsnb-g1" data-en="Finance" href="/hub/finance.html">💶 Finanzas</a><a class="nsnb-tab nsnb-g1" data-en="Pitch" href="/hub/investors-business-case.html">🎯 Pitch</a><a class="nsnb-tab nsnb-g1" data-en="Competitive" href="/hub/competitive.html">🥊 Competencia</a><a class="nsnb-tab nsnb-g1" data-en="Build Roadmap → Go Live" href="/hub/launch-plan.html">🚀 Build Roadmap → Go Live</a><a class="nsnb-tab nsnb-g2" data-en="Ops" href="/hub/daily-ops.html">📋 Operación</a><a class="nsnb-tab nsnb-g2" data-en="Incidents" href="/hub/incidents.html">🎫 Incidencias</a><a class="nsnb-tab nsnb-g2" data-en="Feedback" href="/hub/feedback.html">💬 Feedback</a><a class="nsnb-tab nsnb-g2" data-en="Decisions" href="/hub/decisions.html">🗳 Decisiones</a><a class="nsnb-tab nsnb-g2" data-en="Notifications" href="/hub/notifications.html">🔔 Notificaciones</a><a class="nsnb-tab nsnb-g3" data-en="Pilot" href="/hub/pilot.html">🧪 Piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot plan" href="/hub/pilot-planning.html">🗓 Plan piloto</a><a class="nsnb-tab nsnb-g3" data-en="Pilot obs" href="/hub/pilot-observability.html">📡 Obs. piloto</a><a class="nsnb-tab nsnb-g3" data-en="Waitlist" href="/hub/waitlist.html">📬 Waitlist</a><a class="nsnb-tab nsnb-g3" data-en="Leads" href="/hub/community-leads.html">🤝 Leads</a><a class="nsnb-tab nsnb-g4" data-en="NutriSync Sprint Planning" href="/hub/backlog-dev.html">🗂 NutriSync Sprint Planning</a><a class="nsnb-tab nsnb-g4" data-en="Release Plan" href="/hub/release-plan.html">🚢 Releases</a><a class="nsnb-tab nsnb-g4" data-en="Compliance" href="/hub/compliance.html">🛡 Compliance</a><a class="nsnb-tab nsnb-g4" data-en="Ideation" href="/hub/roadmap.html">💡 Ideation</a><a class="nsnb-tab nsnb-g4" data-en="Translations" href="/hub/translations.html">🌍 Traducciones</a><a class="nsnb-tab nsnb-g4" data-en="Review" href="/hub/review.html">🔎 Review</a><a class="nsnb-tab nsnb-g4" data-en="Prototypes" href="/hub/prototypes.html">🧩 Prototipos</a><a class="nsnb-tab nsnb-g4" data-en="Design System" href="/hub/design-system.html">🎨 Design System</a><a class="nsnb-tab nsnb-g5" data-en="Documentation" href="/hub/documentation/index.html">📄 Documentación</a><a class="nsnb-tab nsnb-g5" data-en="ERP User Guide" href="/hub/user-guide.html">📖 Guía ERP</a><a class="nsnb-tab nsnb-g5" data-en="Access" href="/hub/access.html">🔑 Access</a><a class="nsnb-tab nsnb-g5" data-en="TOTP (optional)" href="/hub/mfa.html">🔐 TOTP (opcional)</a></div>
+    <div class="nsnb-row" id="nsnb-r2"></div>
+  </nav>
+</div>
+<script>
+(function(){
+  /* po63: si una herramienta acaba dentro de un iframe (clon del marketing),
+     toda la navegación de la barra toma la ventana superior — adiós bucles */
+  document.querySelectorAll('#ns-hub-navbar a').forEach(function(a){a.target='_top';});
+  /* r14b (feedback Juanjo): idioma con CONMUTADOR visible y persistente.
+     localStorage ns_lang ('es'|'en') manda; sin él, el navegador decide.
+     Las páginas con data-i leen la misma clave — un idioma, todas las superficies. */
+  function nsLang(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+    return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');}
+  function pintaIdioma(){
+    var en=nsLang()==='en';
+    document.querySelectorAll('#ns-hub-navbar .nsnb-tab[data-en]').forEach(function(a){
+      if(!a.getAttribute('data-es'))a.setAttribute('data-es',a.textContent.trim());
+      var em=a.getAttribute('data-es').split(' ')[0];
+      a.textContent=en?(em+' '+a.getAttribute('data-en')):a.getAttribute('data-es');});
+    var b=document.getElementById('nsnb-lang');if(b)b.textContent=en?'ES':'EN';
+  }
+  (function(){
+    var brand=document.querySelector('#ns-hub-navbar .nsnb-btn');
+    if(brand&&!document.getElementById('nsnb-lang')){
+      var b=document.createElement('a');b.id='nsnb-lang';b.className='nsnb-btn';b.href='#';
+      b.title='Cambiar idioma / switch language';
+      b.onclick=function(e){e.preventDefault();
+        try{localStorage.setItem('ns_lang',nsLang()==='en'?'es':'en');}catch(err){}
+        pintaIdioma();
+        document.dispatchEvent(new CustomEvent('ns-lang'));
+        if(typeof relayout==='function')relayout();
+        return false;};
+      brand.parentNode.insertBefore(b,brand);
+    }
+    pintaIdioma();
+    /* r14e: pintor data-i UNIVERSAL — cualquier página del hub con data-i="ES|EN"
+       (o data-i sin valor con "ES|EN" dentro) se vuelve bilingüe gratis. */
+    function pintaDataI(){
+      var en=nsLang()==='en';
+      document.querySelectorAll('[data-i]').forEach(function(n){
+        if(n.closest&&n.closest('#ns-hub-navbar'))return;
+        var src=n.getAttribute('data-i');
+        if(!src){src=n.innerHTML;n.setAttribute('data-i',src);}
+        var p=src.split('|');
+        n.innerHTML=en?(p[1]||p[0]):p[0];});
+    }
+    document.addEventListener('ns-lang',pintaDataI);
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',pintaDataI);
+    else pintaDataI();
+  })();
+  /* po68: fuera la cabecera heredada "NUTRISYNC 🪶 · Member — open the app"
+     (gated, consola MIS y Pitch la traían de serie; llevaba al marketing) */
+  function hideLegacyHeader(){var ep=document.querySelector('.header-eps');if(ep){var hd=ep.closest('header');(hd||ep).style.display='none';}}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideLegacyHeader);else hideLegacyHeader();
+  /* po82: la pestaña ACTIVA se queda marcada. Antes se pintaba una sola vez y el
+     re-render del motor (o el relayout) devolvía el color antiguo: mirando las
+     pestañas no sabías dónde estabas. Ahora el marcado es (1) por atributo y por
+     ESTILO EN LÍNEA — inmune a que el motor reescriba la hoja de estilos —,
+     (2) se recalcula en continuo con MutationObserver, y (3) salta al instante
+     al hacer clic, sin esperar a que cargue la página siguiente. */
+  /* r16c (cazado POR JUANJO con el flash del clic): Cloudflare Pages sirve
+     URLs LIMPIAS — /hub/incidents.html se visita como /hub/incidents — así
+     que comparar con ".html" no casaba JAMÁS en carga de página. Se normaliza
+     quitando la extensión en LOS DOS lados. */
+  function nsLimpia(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';}
+  var here=nsLimpia(location.pathname.split('/').pop());
+  var dir=location.pathname.toLowerCase();
+  /* r16 (petición Juanjo): la pestaña activa se ve DE LEJOS — rellena en coral,
+     texto blanco. Antes era un matiz; ahora es un semáforo. */
+  var ON='background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font-weight:800;border-color:#FD400C;box-shadow:0 4px 14px -5px rgba(253,64,12,.55)';
+  function isHere(a){
+    var f=(a.getAttribute('href')||'').toLowerCase();
+    return (f.indexOf('/documentation/')>-1) ? dir.indexOf('/documentation/')>-1 : nsLimpia(f.split('/').pop())===here;
+  }
+  function paint(a,on){
+    a.classList.toggle('on',!!on);
+    if(on){a.setAttribute('aria-current','page');a.setAttribute('style',ON);}
+    else{a.removeAttribute('aria-current');a.removeAttribute('style');}
+  }
+  function markActive(el){
+    var tabs=document.querySelectorAll('#nsnb-tabs .nsnb-tab');
+    for(var i=0;i<tabs.length;i++)paint(tabs[i],el?tabs[i]===el:isHere(tabs[i]));
+  }
+  markActive();
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest?e.target.closest('#nsnb-tabs .nsnb-tab'):null;
+    if(a)markActive(a);                       // feedback inmediato al navegar
+  },true);
+  var nb=document.getElementById('ns-hub-navbar');
+  if(nb&&window.MutationObserver){
+    var mo=new MutationObserver(function(){
+      var cur=nb.querySelector('.nsnb-tab[aria-current]');
+      if(!cur||!cur.getAttribute('style'))markActive();   // el motor lo borró → repintar
+    });
+    mo.observe(nb,{childList:true,subtree:true,attributes:true,attributeFilter:['class','style']});
+  }
+  var n=0,rp=setInterval(function(){markActive();if(++n>6)clearInterval(rp);},400);
+  /* r16: la marca se queda mientras estés en la página — se repinta al volver
+     del historial (bfcache), al recuperar el foco y al cambiar de pestaña del
+     navegador. Nada la apaga salvo navegar a otra página del hub. */
+  window.addEventListener('pageshow',function(){markActive();});
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)markActive();});
+  window.addEventListener('focus',function(){markActive();});
+  var d=new Date();
+  var el=document.getElementById('nsnb-date');
+  if(el)el.textContent=d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  /* po66: una fila si cabe; si no, corte en el limite y 2o escalon ladrillo */
+  function relayout(){
+    var r1=document.getElementById('nsnb-r1'),r2=document.getElementById('nsnb-r2');
+    if(!r1||!r2)return;
+    var tabs=Array.prototype.slice.call(document.querySelectorAll('#nsnb-tabs .nsnb-tab'));
+    tabs.forEach(function(t){r1.appendChild(t);});
+    r2.style.display='none';
+    if(r1.scrollWidth<=r1.clientWidth+1){pad();return;}
+    var w=r1.clientWidth,acc=0,brk=tabs.length;
+    for(var i=0;i<tabs.length;i++){acc+=tabs[i].offsetWidth+4;if(acc>w){brk=i;break;}}
+    if(brk<1)brk=1;
+    r2.style.display='flex';
+    tabs.slice(brk).forEach(function(t){r2.appendChild(t);});
+    pad();markActive();          // po82: mover pestañas no puede borrar la marca
+  }
+  function pad(){var h=document.getElementById('ns-hub-navbar').offsetHeight||96;document.body.style.paddingTop=(h+6)+'px';}
+  /* r14e (idea Juanjo): pestañas ARRASTRABLES — cada cual su orden, guardado
+     en este navegador (ns_tab_order). ↺ vuelve al orden de fábrica. */
+  (function(){
+    var KEY='ns_tab_order';
+    function filas(){return [document.getElementById('nsnb-r1'),document.getElementById('nsnb-r2')].filter(Boolean);}
+    function todas(){var t=[];filas().forEach(function(r){t=t.concat([].slice.call(r.querySelectorAll('.nsnb-tab')));});return t;}
+    var ORIG=todas().map(function(a){return a.getAttribute('href');});
+    function guardar(){try{localStorage.setItem(KEY,JSON.stringify(todas().map(function(a){return a.getAttribute('href');})));}catch(e){}
+      var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';}
+    function aplicar(orden){
+      var r1=document.getElementById('nsnb-r1');if(!r1)return;
+      var por={};todas().forEach(function(a){por[a.getAttribute('href')]=a;});
+      orden.forEach(function(h){if(por[h])r1.appendChild(por[h]);});
+      todas().forEach(function(a){if(orden.indexOf(a.getAttribute('href'))<0)r1.appendChild(a);});
+    }
+    try{var sv=JSON.parse(localStorage.getItem(KEY)||'null');if(sv&&sv.length){aplicar(sv);
+      setTimeout(function(){var rb=document.getElementById('nsnb-reset');if(rb)rb.style.display='inline-flex';},0);}}catch(e){}
+    var drag=null;
+    todas().forEach(function(a){
+      a.setAttribute('draggable','true');
+      a.title=(a.title?a.title+' · ':'')+'Arrastra para reordenar / drag to reorder';
+      a.addEventListener('dragstart',function(e){drag=a;a.classList.add('nsnb-drag');
+        try{e.dataTransfer.setData('text/plain',a.getAttribute('href'));e.dataTransfer.effectAllowed='move';}catch(err){}});
+      a.addEventListener('dragend',function(){if(drag)drag.classList.remove('nsnb-drag');drag=null;});
+      a.addEventListener('dragover',function(e){e.preventDefault();if(!drag||drag===a)return;
+        var r=a.getBoundingClientRect(),antes=(e.clientX-r.left)<r.width/2;
+        a.parentNode.insertBefore(drag,antes?a:a.nextSibling);});
+      a.addEventListener('drop',function(e){e.preventDefault();guardar();relayout();});
+    });
+    filas().forEach(function(r){r.addEventListener('dragover',function(e){e.preventDefault();});
+      r.addEventListener('drop',function(e){e.preventDefault();if(drag){guardar();relayout();}});});
+    var brand=document.getElementById('nsnb-lang');
+    if(brand&&!document.getElementById('nsnb-reset')){
+      var rb=document.createElement('a');rb.id='nsnb-reset';rb.className='nsnb-btn';rb.href='#';rb.textContent='↺';
+      rb.title='Orden de pestañas original / reset tab order';
+      rb.onclick=function(e){e.preventDefault();try{localStorage.removeItem(KEY);}catch(err){}
+        aplicar(ORIG);rb.style.display='none';relayout();return false;};
+      brand.parentNode.insertBefore(rb,brand);
+    }
+  })();
+  var rT;window.addEventListener('resize',function(){clearTimeout(rT);rT=setTimeout(relayout,150);});
+  relayout();
+})();
+</script>
+<script>
+/* r16b · MINI-MARCADOR independiente de pestaña activa. Deliberadamente
+   separado y mínimo: si el script grande de la barra muere por lo que sea,
+   ESTE pinta igual. Solo compara el fichero de la URL con el href y pone la
+   clase .on (el CSS !important hace el resto). Se repite unos segundos por si
+   el reordenado o el motor mueven pestañas tarde. */
+(function(){
+  function marca(){
+    try{
+      /* r16c: Pages sirve URLs sin .html — normalizar ambos lados */
+      var lim=function(x){return (String(x||'').toLowerCase().replace(/\.html$/,''))||'index';};
+      var here=lim(location.pathname.split('/').pop());
+      var esDoc=location.pathname.toLowerCase().indexOf('/documentation/')>-1;
+      document.querySelectorAll('#ns-hub-navbar .nsnb-tab').forEach(function(a){
+        var f=(a.getAttribute('href')||'').toLowerCase();
+        var on=esDoc ? f.indexOf('/documentation/')>-1 : lim(f.split('/').pop())===here;
+        a.classList.toggle('on',on);
+      });
+    }catch(e){}
+  }
+  marca();
+  var i=0,t=setInterval(function(){marca();if(++i>15)clearInterval(t);},700);
+  window.addEventListener('pageshow',marca);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)marca();});
+})();
+</script>
+<script>
+/* ns-idle-logout (0.23.0 · UST-06 G1): 30 min sin actividad en el hub → fuera.
+   Central en el navbar = vale para TODAS las páginas /hub sin tocarlas una a
+   una. La sesión vive en localStorage (sb-*-auth-token): borrarla y recargar
+   deja la página en su candado. Solo actúa si HAY sesión — jamás bucles.
+   UN CANDADO (26-sep, UST-17 · Juanjo): APAGADO. El candado del hub es
+   Cloudflare Access (sesión de 30 días por dispositivo); volver a pedir la
+   contraseña cada 30 min de inactividad era una de las cuatro puertas que se
+   retiran. LIMITE=0 desactiva el cierre sin borrar el mecanismo (marcha atrás
+   = volver a 30*60*1000). */
+(function(){
+  try{
+    var LIMITE=0;   // ms; 0 = sin cierre por inactividad (UST-17)
+    if(!LIMITE){ try{localStorage.removeItem('ns_idle_aviso');localStorage.removeItem('ns_idle_ts');}catch(e){} return; }
+    /* El cierre mudo parecía avería (Pilar, 25-ago): al volver se explica. */
+    if(localStorage.getItem('ns_idle_aviso')==='1'){
+      localStorage.removeItem('ns_idle_aviso');
+      var av=document.createElement('div');
+      av.setAttribute('data-i','');
+      av.style.cssText='position:sticky;top:0;z-index:9999;background:#FFF3E0;color:#7A4A00;'+
+        'border-bottom:1.5px solid #E8B36A;padding:9px 16px;font:600 13px system-ui;text-align:center';
+      av.textContent='🔒 Tu sesión se cerró tras 30 minutos sin actividad (seguridad de datos del piloto). Entra de nuevo en 📬 Waitlist o 📊 MIS y todo vuelve. | Your session closed after 30 idle minutes — log in again at 📬 Waitlist or 📊 MIS.';
+      document.body.insertBefore(av, document.body.firstChild);
+      setTimeout(function(){try{av.remove();}catch(e){}}, 25000);
+    }
+    var K='ns_idle_ts';
+    var haySesion=function(){
+      for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
+        if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)return true;}
+      return false;};
+    if(!haySesion())return;
+    var toca=function(){try{localStorage.setItem(K,String(Date.now()));}catch(e){}};
+    ['click','keydown','mousemove','scroll','touchstart'].forEach(function(ev){
+      window.addEventListener(ev,toca,{passive:true});});
+    toca();
+    setInterval(function(){
+      try{
+        var t=parseInt(localStorage.getItem(K)||'0',10);
+        if(!t||Date.now()-t<LIMITE)return;
+        if(!haySesion())return;
+        var fuera=[];
+        for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);
+          if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1)fuera.push(k);}
+        fuera.forEach(function(k){localStorage.removeItem(k);});
+        localStorage.removeItem(K);
+        try{localStorage.setItem('ns_idle_aviso','1');}catch(e){}
+        location.reload();
+      }catch(e){}
+    },60000);
+  }catch(e){}
+})();
+</script>
+<script>
+/* ns-pase-directo (r23 · 28-ago): SSO founders hub↔StartUp Admin.
+   EMISOR: al pinchar un enlace hacia la otra superficie con sesión viva,
+   pide un pase de UN uso a la Edge pase-directo (solo admins) y lo manda en
+   el FRAGMENTO. RECEPTOR: consume el pase en /auth/v1/verify, guarda la
+   sesión nueva y recarga — sin re-teclear contraseña. El MFA de StartUp
+   Admin se pide igual. Cualquier fallo = navegación normal de siempre. */
+(function(){
+  try{
+    var SB='https://nebkqncvapelrarruyqb.supabase.co';
+    var ANON='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+    var SBKEY='sb-nebkqncvapelrarruyqb-auth-token';
+    var FN=SB+'/functions/v1/pase-directo';
+    var sesion=function(){try{var s=JSON.parse(localStorage.getItem(SBKEY)||'null');
+      return (s&&s.access_token)?s:null;}catch(e){return null;}};
+    var esOtra=function(h){try{var u=new URL(h, location.href);return u.hostname==='admin.nutrisynccollective.com';}catch(e){return false;}};
+
+    /* — receptor — */
+    var m=(location.hash||'').match(/[#&]nspase=([^&]+)/);
+    if(m){
+      history.replaceState(null,'',location.pathname+location.search);
+      if(!sesion()){
+        fetch(SB+'/auth/v1/verify',{method:'POST',
+          headers:{apikey:ANON,'content-type':'application/json'},
+          body:JSON.stringify({type:'magiclink',token_hash:decodeURIComponent(m[1])})})
+        .then(function(r){return r.json();})
+        .then(function(j){
+          if(j&&j.access_token){
+            if(!j.expires_at&&j.expires_in)j.expires_at=Math.floor(Date.now()/1000)+j.expires_in;
+            localStorage.setItem(SBKEY,JSON.stringify(j));
+            location.reload();
+          }
+        }).catch(function(){});
+      }
+    }
+
+    /* — reto TOTP: de aal1 a aal2 (r24-r · S15) ————————————————————————————
+       El login del hub (signInWithPassword) y el receptor del pase acuñan
+       sesión aal1 SIN reto. Para un admin con TOTP verificado, is_admin_mfa()
+       exige aal2 → todas las RPC admin mueren con 400. Este gate, sobre el
+       MISMO estilo raw del navbar (sin vendor, sin CDN — po74), detecta la
+       sesión aal1 con factor verificado y refuerza con un teclado barajado.
+       Devuelve una promesa; auto-corre al cargar cualquier página del hub. */
+    var jwtAal=function(tok){try{return JSON.parse(atob(tok.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).aal;}catch(e){return null;}};
+    window.nsMfaReforzar=function(){
+      return new Promise(function(resolve){
+        var s=sesion();
+        if(!s||!s.access_token||jwtAal(s.access_token)==='aal2'){resolve(true);return;}
+        var H={apikey:ANON,authorization:'Bearer '+s.access_token,'content-type':'application/json'};
+        fetch(SB+'/auth/v1/user',{headers:H}).then(function(r){return r.json();}).then(function(u){
+          var fac=((u&&u.factors)||[]).filter(function(f){return f.factor_type==='totp'&&f.status==='verified';})[0];
+          if(!fac){resolve(false);return;}            // aal1 sin factor: is_admin_mfa perdona
+          var EN=(function(){var v=null;try{v=localStorage.getItem('ns_lang');}catch(e){}
+            return (v||((navigator.language||'en').toLowerCase().indexOf('es')===0?'es':'en'))==='en';})();
+          var T=function(es,en){return EN?en:es;};
+          var pin='',teclas=[0,1,2,3,4,5,6,7,8,9];
+          for(var i=teclas.length-1;i>0;i--){var k=Math.floor(Math.random()*(i+1));var tmp=teclas[i];teclas[i]=teclas[k];teclas[k]=tmp;}
+          var ov=document.createElement('div');ov.id='ns-mfa-ov';
+          ov.setAttribute('style','position:fixed;inset:0;z-index:99999;background:rgba(20,14,10,.55);display:flex;align-items:center;justify-content:center;font-family:Poppins,system-ui,sans-serif');
+          ov.innerHTML='<div style="background:#FFFDF8;border-radius:18px;max-width:380px;width:92%;padding:22px 20px;box-shadow:0 18px 50px rgba(0,0,0,.3)">'
+            +'<div style="font-weight:800;font-size:16px;color:#241D1A;margin-bottom:4px">🔐 '+T('Refuerza tu sesión','Reinforce your session')+'</div>'
+            +'<div style="font-size:13px;color:#5f564f;margin-bottom:14px">'+T('Introduce el código de tu app de autenticación para usar las herramientas de administradora.','Enter the code from your authenticator app to use the admin tools.')+'</div>'
+            +'<div id="nsmd" style="display:flex;gap:11px;justify-content:center;margin:8px 0 16px"></div>'
+            +'<div id="nsmp" style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:#EFE3D7;border:1px solid #EFE3D7;border-radius:14px;overflow:hidden"></div>'
+            +'<button id="nsmc" style="margin-top:12px;background:none;border:0;font:600 12.5px Poppins,system-ui,sans-serif;color:#8A7F78;cursor:pointer;text-decoration:underline">'+T('Borrar','Clear')+'</button>'
+            +'<div id="nsme" style="color:#D93030;font-size:12.5px;min-height:16px"></div></div>';
+          document.body.appendChild(ov);
+          var dots=ov.querySelector('#nsmd'),pad=ov.querySelector('#nsmp'),err=ov.querySelector('#nsme');
+          var pinta=function(){var h='';for(var d=0;d<6;d++){h+='<div style="width:22px;height:22px;border-radius:50%;border:2px solid '+(d<pin.length?'#0F6E56':'#E8B072')+';background:'+(d<pin.length?'#0F6E56':'#fff')+'"></div>';}dots.innerHTML=h;};
+          pad.innerHTML=teclas.map(function(d){return '<button type="button" data-d="'+d+'" style="background:#fffdfa;border:0;font:800 24px/1 Poppins,system-ui,sans-serif;color:#241D1A;padding:18px 0;cursor:pointer">'+d+'</button>';}).join('');
+          var verifica=function(){
+            err.textContent=T('Comprobando…','Checking…');
+            fetch(SB+'/auth/v1/factors/'+fac.id+'/challenge',{method:'POST',headers:H,body:'{}'})
+            .then(function(r){return r.json();}).then(function(ch){
+              if(!ch||!ch.id){throw new Error(ch&&ch.error_description||'challenge');}
+              return fetch(SB+'/auth/v1/factors/'+fac.id+'/verify',{method:'POST',headers:H,
+                body:JSON.stringify({challenge_id:ch.id,code:pin})}).then(function(r){return r.json();});
+            }).then(function(v){
+              if(v&&v.access_token){
+                if(!v.expires_at&&v.expires_in)v.expires_at=Math.floor(Date.now()/1000)+v.expires_in;
+                localStorage.setItem(SBKEY,JSON.stringify(v));
+                ov.remove(); resolve(true); location.reload();
+              }else{err.textContent=T('Código no válido','Invalid code');pin='';pinta();}
+            }).catch(function(){err.textContent=T('Código no válido','Invalid code');pin='';pinta();});
+          };
+          pad.onclick=function(ev){var b=ev.target.closest('button[data-d]');if(!b||pin.length>=6)return;pin+=b.getAttribute('data-d');pinta();if(pin.length===6)verifica();};
+          ov.querySelector('#nsmc').onclick=function(){pin='';err.textContent='';pinta();};
+          pinta();
+        }).catch(function(){resolve(false);});
+      });
+    };
+    /* UN CANDADO (26-sep, UST-17): el reto TOTP ya NO se auto-lanza al cargar —
+       is_admin_mfa() dejó de exigir aal2 (Cloudflare Access es el segundo factor).
+       nsMfaReforzar() sigue disponible para quien quiera reforzar (mfa.html). */
+
+    /* — emisor — */
+    document.addEventListener('click',function(ev){
+      try{
+        if(ev.defaultPrevented||ev.button!==0||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.altKey)return;
+        var a=ev.target&&ev.target.closest?ev.target.closest('a[href]'):null;
+        if(!a||a.target==='_blank'||!esOtra(a.href))return;
+        var s=sesion(); if(!s)return;
+        ev.preventDefault();
+        var destino=a.href, ac=new AbortController();
+        var t=setTimeout(function(){ac.abort();},2500);
+        fetch(FN,{method:'POST',signal:ac.signal,
+          headers:{apikey:ANON,authorization:'Bearer '+s.access_token,'content-type':'application/json'},
+          body:'{}'})
+        .then(function(r){return r.json();})
+        .then(function(j){clearTimeout(t);
+          location.href=(j&&j.pase)?destino+'#nspase='+encodeURIComponent(j.pase):destino;})
+        .catch(function(){clearTimeout(t);location.href=destino;});
+      }catch(e){}
+    },true);
+  }catch(e){}
+})();
+</script>
+</div>
+<!-- /ns-hub-navbar -->
+
+<h1>📈 58 — Trends del Calendario e insights/notificaciones personalizadas: «tus patrones, no medias de población», con confianza medida y privacidad por defecto — en tres entregas (UST-23, propuesta para playback)</h1>
+<div class="meta">INTERNO · PROPUESTA (27-sep-2026) · fuente: spec v1.0 de las founders · 3 entregas · D1–D10 pendientes (producto/compliance: Pilar y Lucía · clínico: Constanza · técnico: Juanjo) · pantallas: Lucía</div>
+<p><a class="btn" href="/hub/documentation/ust/UST-2026-09-27-23-trends-notificaciones.pdf">UST-2026-09-27-23 · PDF</a><a class="btn" href="/hub/documentation/ust/UST-2026-09-27-23-trends-notificaciones.docx">Word</a></p>
+<div class="av"><b>Tres avisos antes del playback.</b> (1) Es la pieza más grande de las cuatro specs (tablas nuevas, un motor de patrones, un cron, charts, ajustes, push): NO cabe en un sprint; por eso va en tres entregas y cada una se firma sola. (2) Todo lo que infiere patrones de <b>salud y estado de ánimo</b> a partir de los registros es tratamiento de datos de categoría especial: entra en la <b>EIPD</b> de Audidat (Pilar) ANTES de construir la entrega B; la spec ya lo intuye («privacy-first», ánimo y libido nunca por push). (3) Los umbrales (2/3/4 ciclos), la fórmula de confianza y los textos de insight son <b>juicios clínicos y de tono</b>: los firma Constanza (ciencia) y Pilar (deontología); ingeniería implementa lo firmado.</div>
+
+<h2>1 · El pedido, literal</h2>
+<p>Pilar y Lucía (spec «NutriSync — Trends &amp; Personalized Notifications Feature Specification», v1.0), entregada por Juanjo el 27-sep-2026:</p>
+<div class="q">«Transform the Calendar ‘Trends’ tab from a placeholder into a powerful pattern recognition and personalization engine that learns the user's unique cycle over time and surfaces actionable, personalized insights and notifications.»</div><div class="q">Umbrales: «0–1 cycle: We're learning your rhythm · 2 cycles: basic trends (cycle length average, period duration, phase energy/mood averages) · 3 cycles: full pattern recognition (symptoms, cravings, sleep, libido, pain, skin) with confidence · 4+ cycles: correlations, next period predictions with confidence bands, Your Unique Cycle».</div><div class="q">Confianza: «Confidence % = (cycles_where_pattern_appeared / total_cycles) × 100 · ≥80% strong · 60–79% common · 40–59% possible · &lt;40% don't surface».</div><div class="q">Notificaciones: «Proactive · Preparatory · Reactive · In-gate · Banner · Push (optional, off by default for sensitive topics)» · «Mood and libido: in-app only, never push unless user opts in» · ajustes en Settings: banners siempre, push de predicciones off, push de sensibles off con opt-in explícito, frecuencia (diaria/alterna/semanal), temas.</div><div class="q">Tablas propuestas: `user_trends`, `user_notifications`, `users.trends_unlocked/advanced_insights_unlocked`; cálculo «after user logs a new period start (cycle completion)» en background; «daily cron job (6am user local time)» para generar avisos.</div>
+<p>Lectura: (1) un MOTOR de patrones por usuaria que se recalcula al cerrar cada ciclo y guarda resultados con su confianza; (2) una PANTALLA Trends que pinta esos resultados por categoría con charts sencillos y desbloqueo progresivo; (3) un GENERADOR de avisos que cruza los patrones con el día del ciclo de hoy y los muestra en la app (banner, puerta) y, solo si la usuaria lo pide, por push. Ordenado por valor y riesgo: A pantalla básica + predicción → B patrones con confianza + banners → C notificaciones + push + correlaciones.</p>
+<p><b></b></p><p></p><p><b></b></p><p></p>
+
+<h2>2 · Lo que la app tiene hoy (27-sep, leído del código y la base)</h2>
+<table class="t "><thead><tr><th>Qué</th><th>Medido</th></tr></thead><tbody><tr><td>Calendario · Trends</td><td>`CalendarScreen` con vistas month | year | trends (M-1): tarjeta «media personal» (longitud media del ciclo) + sparkline de los últimos 6 ciclos y puerta a Trends. `src/lib/cycleStats.ts` (puro, con unitarios; regla r12-b2: ciclos muñón se saltan). Predicción de la próxima regla: círculo discontinuo en el mes (sin banda de confianza).</td></tr><tr><td>Registros que alimentan los patrones</td><td>`daily_logs`: mood, energy, flow_level, sleep_quality, cravings[], pain_symptoms[], digestion_symptoms[], mood_state[], skin_symptoms[], libido, appetite (puerta de la mañana + Edit Period). Movimiento con intensidad (`LogMovementScreen`). `daily_scores` con fase granular. Es exactamente lo que la spec pide como «data source» — ya se guarda.</td></tr><tr><td>Notificaciones</td><td>Catálogo `notification_templates` (80 mensajes por grupo, editables en el hub 🔔, texto y texto_es) + `notification_prefs` (interruptores) + `notify_due()` (hora LOCAL, eventos de ciclo, dedupe 1/grupo/día, rotación) + Edge `notify-dispatch` cada hora → Expo Push (lotes, tokens muertos se anulan). Críticas = aviso genérico en pantalla bloqueada (revisión inclusiva, r15). `NotificationCenterScreen` en la app.</td></tr><tr><td>Idiomas y voz</td><td>14 catálogos; los textos de notificación viven en la base (no en la app) y se cambian sin OTA. La «voz older sister» ya está definida en la revisión inclusiva de agosto.</td></tr><tr><td>Privacidad</td><td>RLS «solo la dueña» en daily_logs/daily_scores; nada de PII en prompts de IA (Propuesta 32 §2); EIPD de Audidat abierta (J5). Inferir patrones de ánimo/libido/dolor es un tratamiento nuevo que hay que alta en el RAT y en la EIPD.</td></tr></tbody></table>
+<p class="nota"><b>Analogía:</b> Es un pipeline de observabilidad sobre la propia usuaria: los registros diarios son las métricas crudas; el motor de patrones es el job de agregación que corre al cerrar cada ciclo (como un rollup semanal) y escribe series con su intervalo de confianza; Trends es el dashboard; y las notificaciones son las alertas — con la regla de oro de cualquier alerting: sin umbral de confianza no se dispara, y las sensibles no salen del panel.</p>
+
+<h2>3 · Lo que entendemos (F = sección de la spec) y cómo lo haríamos — por entregas</h2>
+<table class="t "><thead><tr><th>Qué</th><th>Nuestra lectura · qué se construiría</th><th>Cómo se verificará · qué necesitamos de vosotras</th></tr></thead><tbody><tr><td>A1 · Desbloqueo por ciclos (F2)</td><td>Un contador de ciclos COMPLETADOS calculado desde los registros de período (no una columna a mano): 0–1 → pantalla «estamos aprendiendo tu ritmo» con barra «1 de 2 ciclos»; 2 → trends básicos con aviso «insights tempranos»; 3 → patrones; 4+ → resumen «Tu ciclo único» + correlaciones. Los umbrales son parámetros en la base (tabla de configuración), no números en el código.</td><td>Constanza confirma los umbrales 2/3/4. Test con la granja QA (12 perfiles con 0, 1, 2, 3, 5 ciclos sintéticos).</td></tr><tr><td>A2 · Trends básicos (F3, F4.1, F4.6, F4.7)</td><td>Sobre lo que ya hay (M-1): longitud media y regularidad (desviación), duración del período, energía y ánimo medios por fase, con «basado en N ciclos». Charts simples (línea con bandas de fase). Todo desde `daily_logs` + `cycleStats` — sin tablas nuevas en A.</td><td>Lucía: pantalla Trends (cabecera, tarjetas por categoría, estado vacío con Nutri). Test: unitarios de `cycleStats` ampliados (medias por fase).</td></tr><tr><td>A3 · Predicción de la próxima regla con confianza (F6)</td><td>Fecha prevista ± N días según la regularidad y un % de confianza (tres tonos: alta ≥ regularidad X · media · baja), pintada en Trends, en el Calendario (tooltip sobre el círculo discontinuo) y bajo el anillo de Inicio («regla prevista en 12 días»). Fórmula = función pura con unitarios; los cortes de confianza los firma Constanza.</td><td>Constanza: cortes (p. ej. σ ≤ 1 día = alta). Test: perfiles regulares/irregulares de la granja → tono correcto.</td></tr><tr><td>B1 · Motor de patrones (F9)</td><td>Tabla `user_trends` (usuaria · tipo · fase · día · valor jsonb · confianza · ciclos observados · fechas) — RLS «solo la dueña». Se recalcula en el servidor al registrar un inicio de período (trigger → job en cola → Edge/SQL), nunca en la pantalla. Confianza = ciclos con el patrón / ciclos totales (fórmula de la spec) y no se enseña por debajo del 40 %.</td><td>Constanza firma la fórmula y el umbral de silencio. Arnés SQL con perfiles sintéticos; test: un patrón presente en 4/5 ciclos → 80 % «fuerte».</td></tr><tr><td>B2 · Categorías de patrones (F4.2–4.13)</td><td>Flujo, síntomas recurrentes, libido, sueño, energía, ánimo, antojos, dolor, piel, rendimiento, foco, hinchazón: cada una = una consulta pura sobre `daily_logs` por fase/día del ciclo + un texto de insight por tono (regular / variable / sin patrón) en 14 idiomas, con «apareció en N de M ciclos». Los textos viven en la base (`content_text`), no en la app.</td><td>Constanza + Pilar firman los ~36 textos de insight (3 por categoría) y la frase de alarma cuando toque (flujo muy abundante → médico). Lucía: tarjeta por categoría con mini-chart (tipo de chart por categoría según F10.3).</td></tr><tr><td>B3 · Banners in-app y mensaje en la puerta (F7.1 Banner · In-gate)</td><td>Con patrón de hoy (día/fase): tarjeta descartable bajo el anillo de Inicio y una línea contextual en la puerta tras registrar energía/ánimo («¿energía baja? es tu normal el día 3»). Siempre in-app, sin push. Se guardan como notificaciones del catálogo con origen «patrón» (extensión de `notification_templates/log`, D6).</td><td>Lucía: banner + línea en la puerta. Test: patrón fuerte + día coincidente → banner; sin patrón → nada; descartar → no vuelve ese día.</td></tr><tr><td>C1 · Avisos personalizados diarios (F7.1 Proactive/Preparatory/Reactive, F9.3)</td><td>El motor de `notify_due()` aprende una fuente nueva: cruzar `user_trends` con el día de ciclo de hoy/mañana → mensaje desde plantillas por categoría (F11) con datos de la usuaria. Reactivo: al registrar algo que coincide con su patrón. Todo pasa por el dedupe y las preferencias existentes.</td><td>Textos: Pilar (voz) + Constanza (ciencia), en la base. Test: la granja QA con patrones sembrados recibe el aviso correcto y una sola vez al día.</td></tr><tr><td>C2 · Push opcional y temas sensibles (F7.1 Push · F7.3)</td><td>Push OFF por defecto para predicciones; ánimo y libido NUNCA por push salvo opt-in explícito y separado; texto de push siempre genérico en pantalla bloqueada (criterio de la revisión inclusiva). Ajustes en `NotificationsScreen`: banners (siempre), push predicciones, push sensibles (opt-in), frecuencia, temas.</td><td>Pilar (deontología + EIPD). Test: preferencia apagada → cero push; sensibles sin opt-in → cero push; con opt-in → texto genérico fuera y detalle dentro.</td></tr><tr><td>C3 · Correlaciones (F5)</td><td>Solo con 4+ ciclos: cruces observacionales (azúcar → ánimo, movimiento → energía, flujo → hierro) como sección «posibles conexiones», tono «lo hemos visto; tú decides». Sin causalidad, sin consejo médico.</td><td>Constanza define qué cruces son admisibles; Pilar la línea roja. Test: sección oculta con &lt; 4 ciclos.</td></tr><tr><td>C4 · Medida y salud del sistema</td><td>Cron horario ya existente; el motor de patrones deja sello por usuaria; el hub (Obs. piloto) enseña recuentos anónimos: usuarias con trends desbloqueados, avisos mostrados/descartados, push activos. Nada por persona.</td><td>admin_automation_health cubre el job nuevo; sonda de sellos tras la primera semana.</td></tr></tbody></table>
+
+<h2>4 · Análisis de impacto</h2>
+<table class="t "><thead><tr><th>Dónde</th><th>Qué toca</th><th>Qué NO toca</th></tr></thead><tbody><tr><td>App (`repos/appdev`)</td><td>A: `CalendarScreen` (Trends), `cycleStats.ts`, Inicio (línea de predicción). B: tarjetas por categoría + charts (librería ya en el proyecto o SVG propio; po74 no aplica a la app pero sí «stack lean»), banner de Inicio, puerta. C: `NotificationsScreen` (ajustes nuevos), `NotificationCenterScreen`.</td><td>Registro de datos (puerta, Edit Period), CAS, NutriLog/Movement, escáner.</td></tr><tr><td>Base</td><td>A: nada (o una tabla de umbrales). B: `user_trends` + job de recálculo + textos en `content_text`. C: fuente nueva en `notify_due()`, columnas de preferencias en `notification_prefs`, plantillas nuevas en `notification_templates`.</td><td>RLS existente (mismo patrón «solo la dueña»), tablas del piloto, alignment_*.</td></tr><tr><td>Servidor / crons</td><td>B: job de patrones al cerrar ciclo (cola + Edge o SQL puro). C: `notify-dispatch` sin cambios de transporte; solo nuevas fuentes.</td><td>El cron horario y el push (Expo) tal cual.</td></tr><tr><td>Compliance</td><td>Alta del tratamiento «inferencia de patrones de salud y ánimo» en RAT + EIPD (Audidat) antes de B; textos con línea roja de Pilar; push sensibles con opt-in separado y registro del consentimiento.</td><td>—</td></tr><tr><td>Entrega</td><td>Todo OTA (JS + SQL); C usa el push nativo ya compilado (0.21.0+). Tres releases `0.23.x/0.24.x`, una por entrega, cada una verificada en iPhone + Android.</td><td>Sin build nativo.</td></tr></tbody></table>
+<p class="nota">Estimación gruesa (tras firmas y pantallas): A ≈ 1 sprint · B ≈ 2 sprints (motor + 12 categorías + textos) · C ≈ 1–2 sprints. La granja de QA (12 perfiles) es el banco de pruebas natural: se le siembran ciclos y patrones conocidos y se comprueba que el motor los encuentra con la confianza esperada.</p>
+
+<h2>5 · Decisiones para el playback (D1–D5 producto/compliance: Pilar y Lucía · D6–D8 técnico: Juanjo · D9–D10 clínico: Constanza)</h2>
+<table class="t dec"><thead><tr><th>#</th><th>Propuesta</th><th>Alternativa</th><th>Decisión</th></tr></thead><tbody><tr><td>D1</td><td>Alcance por entregas: A (Trends básicos + predicción con confianza) → B (patrones + banners in-app) → C (avisos personalizados + push opcional + correlaciones). Cada entrega se firma y sale por separado.</td><td>Todo junto en una release (no cabe en un sprint; DoR 5).</td><td></td></tr><tr><td>D2</td><td>Privacidad por defecto: ánimo y libido SOLO in-app; push de predicciones OFF por defecto; push de sensibles con opt-in explícito y separado; texto de push genérico en pantalla bloqueada. (Es la spec; lo firmamos como regla.)</td><td>Push ON por defecto para todo salvo sensibles.</td><td></td></tr><tr><td>D3</td><td>EIPD/RAT: dar de alta el tratamiento «inferencia de patrones» con Audidat antes de construir B; C no arranca sin ese alta.</td><td>Construir B y regularizar después (riesgo de rehacer o retirar).</td><td></td></tr><tr><td>D4</td><td>Textos de insight y avisos: viven en la base (como el catálogo actual), en 14 idiomas, editables desde el hub sin OTA; voz «older sister» revisada por Pilar; ciencia por Constanza.</td><td>Textos en el código de la app (cada cambio = OTA).</td><td></td></tr><tr><td>D5</td><td>Charts: simples y escaneables (línea, barras, mapa de calor) con colores de fase del sistema de diseño; Lucía decide el tipo por categoría (F10.3 como punto de partida).</td><td>Un solo tipo de chart para todo.</td><td></td></tr><tr><td>D6</td><td>Extender lo que hay en vez de duplicar: los avisos personalizados usan `notification_templates` + `notification_log` + `notification_prefs` + `notify_due()` con una fuente nueva «patrón» (no una tabla `user_notifications` aparte); `users.trends_unlocked` no se guarda, se calcula.</td><td>Tablas nuevas `user_notifications` y columnas `users.*_unlocked` como en la spec (dos sistemas de notificación).</td><td></td></tr><tr><td>D7</td><td>El motor de patrones corre en el servidor (job al registrar un inicio de período; cola + Edge o SQL puro con sello), nunca en la pantalla; resultados en `user_trends` con RLS «solo la dueña».</td><td>Calcular en la app al abrir Trends (lento, inconsistente entre dispositivos).</td><td></td></tr><tr><td>D8</td><td>Banco de pruebas = granja QA con ciclos y patrones sembrados (perfiles con 0/1/2/3/5 ciclos, patrones fuertes/débiles), para verificar desbloqueos, confianzas y avisos sin usuarias reales.</td><td>Probar solo con las founders.</td><td></td></tr><tr><td>D9</td><td>Constanza firma: umbrales de desbloqueo (2/3/4), fórmula y cortes de confianza (80/60/40), cortes de la predicción (regular/irregular) y qué correlaciones son admisibles.</td><td>Usar los números de la spec sin revisión clínica.</td><td></td></tr><tr><td>D10</td><td>Señales de alarma en los insights (flujo muy abundante, dolor incapacitante, ánimo muy bajo sostenido): frase de «habla con tu médico» según las 5 líneas rojas de Pilar; la app no diagnostica.</td><td>Sin frases de alarma.</td><td></td></tr></tbody></table>
+
+<h2>6 · Baseline, verificación y marcha atrás</h2>
+<table class="t "><thead><tr><th>Momento</th><th>Qué se comprueba</th></tr></thead><tbody><tr><td>Antes de construir A</td><td>Firma de Pilar y Lucía (D1, D2, D4, D5), Constanza (D9 para A: umbrales y predicción), pantallas de Lucía (Trends + estado vacío).</td></tr><tr><td>Antes de B</td><td>Alta en RAT/EIPD (D3) · textos de las 12 categorías firmados · `user_trends` y el job probados en el arnés con la granja.</td></tr><tr><td>Antes de C</td><td>Preferencias y opt-in sensibles firmados (D2) · plantillas de aviso firmadas · granja recibe los avisos correctos, una vez al día.</td></tr><tr><td>DoD por entrega</td><td>Verificación en iPhone + Android; What to Test; sonda de sellos a la semana; recuentos anónimos en Obs. piloto.</td></tr><tr><td>Marcha atrás</td><td>OTA: Rollback OTA. Base: tablas nuevas con RLS y sin efecto en lo existente; el job se apaga con `cron.unschedule`; los avisos por patrón se desactivan con un flag en `notification_prefs`.</td></tr></tbody></table>
+
+<h2>7 · What to Test (por entrega)</h2>
+<ol><li>A: con menos de 2 ciclos registrados ves «estamos aprendiendo tu ritmo» y la barra; con 2 o más, la media de tu ciclo, la regularidad y tus medias por fase; en el Calendario, el círculo de la próxima regla enseña la confianza al tocarlo.</li><li>B: con 3+ ciclos, tarjetas por categoría con «apareció en N de M ciclos»; ninguna tarjeta con menos del 40 % de confianza; banner en Inicio el día que coincide con un patrón tuyo, y se puede descartar.</li><li>C: los avisos personalizados llegan dentro de la app; el push de predicciones solo si lo activas; nada de ánimo/libido por push salvo que lo actives aparte; en la pantalla bloqueada el texto es genérico.</li></ol>
+
+<h2>8 · Lecciones grabadas (van también a CLAUDE.md)</h2><table class="t "><thead><tr><th>Lección</th><th>Qué cambia</th></tr></thead><tbody><tr><td>Una spec grande se firma por entregas o no se firma</td><td>13 secciones y 4 fases no caben en un sprint (DoR 5); partirla en A/B/C hace que cada firma sea real y cada release verificable.</td></tr><tr><td>Inferir salud es un tratamiento nuevo</td><td>Guardar ánimo y libido ya está cubierto; deducir patrones y avisarlos es otra cosa para el RAT y la EIPD — se da de alta antes de construir, no después.</td></tr></tbody></table>
+
+<h2>9 · La cadena</h2>
+<table class="t "><thead><tr><th>Paso</th><th>Estado</th></tr></thead><tbody><tr><td>UST</td><td>Este documento (propuesta para playback, 27-sep) con la spec como adjunto de referencia.</td></tr><tr><td>Sign-off</td><td>Pilar y Lucía (D1–D5) · Constanza (D9–D10) · Juanjo (D6–D8) · Audidat (alta EIPD antes de B) · pantallas de Lucía por entrega.</td></tr><tr><td>Dev</td><td>A → B → C, cada una con su UST corta de as-built.</td></tr><tr><td>Test</td><td>cycleStats/unitarios · arnés SQL con la granja QA · iPhone + Android.</td></tr><tr><td>Deployment</td><td>SQL en la bandeja + OTA por entrega.</td></tr><tr><td>Verification</td><td>DoD por entrega; sonda de sellos; Obs. piloto.</td></tr><tr><td>hub + Notion</td><td>Doc 58 + adjunto; 3 items en backlog (propuesto) hasta la firma; Notion sin bloques → hub.</td></tr></tbody></table>
+<p class="nota">NutriSync Engineering · UST-2026-09-27-23 · propuesta del 27-sep-2026 para playback · spec v1.0 de las founders · 3 entregas (A · B · C) · D1–D10 sin decidir</p>
+</body></html>
