@@ -23,7 +23,7 @@
   var ANON='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
   var SBKEY='sb-nebkqncvapelrarruyqb-auth-token';
   var SUP='hub', DIA=24*60*60*1000, CADA=2*60*1000;
-  var RESET='https://nutrisynccollective.com/reset.html', SALIDA='/cdn-cgi/access/logout';
+  var RESET='https://nutrisynccollective.com/reset.html';
   var K_TS='ns_login_ts', K_MOT='ns_muro_motivo';
   var ov=null, card=null, interactivo=false, enVuelo=false, abierto=false, caducando=false, repinta=null, teclaActiva=null;
   var ls={get:function(k){try{return localStorage.getItem(k);}catch(e){return null;}},
@@ -272,16 +272,18 @@
 
   /* — 24 h absolutas en el cliente (F8·4): fuera de Supabase (SOLO esta sesión:
        scope=local — global cerraría la app en el móvil de una founder, D14) y de
-       Access, para que las tres caducidades colapsen en UN momento. El motivo
-       espera en localStorage al muro que viene tras el PIN. — */
+       Access — REVISADO: ya no (ver caduca). El motivo guardado en localStorage
+       (K_MOT) sigue sirviendo para enseñarlo tras una recarga. — */
   var caduca=function(m){
     if(caducando)return; caducando=true;
-    ls.set(K_MOT,m||'expired');
     var s=sesion(); olvida();
-    var c=cierra(); c.innerHTML=titulo('🔒','Cerrando la sesión…','Closing the session…')
-      +sub('Han pasado 24 h: PIN de Cloudflare, contraseña y llave de nuevo.','24 hours have passed: Cloudflare PIN, password and key again.');
-    avisa('caduca',{motivo:m||'expired',url:SALIDA});
-    var fin=function(){location.href=SALIDA;};
+    avisa('caduca',{motivo:m||'expired'});
+    /* Revisión 30-sep 01:4x: NO se sale de Cloudflare Access aquí. La cookie de Access (24 h desde el PIN) caduca
+       SIEMPRE antes que este reloj (que arranca después del PIN): el segundo día la founder pasaría el PIN y
+       acto seguido aterrizaría en la página de logout de Access — parecería «no me deja entrar». Basta con cerrar
+       la sesión de Supabase (scope=local: jamás global, D14) y enseñar el muro con el motivo; el PIN lo vuelve a
+       pedir Access con su propio reloj de 24 h (panel). Desviación de F8(4), declarada en el as-built. */
+    var fin=function(){caducando=false;pasoLogin(m||'expired');};
     if(s&&s.access_token){fetch(SB+'/auth/v1/logout?scope=local',{method:'POST',headers:H(s.access_token)}).then(fin,fin);}else fin();
   };
   var relojDia=function(){
