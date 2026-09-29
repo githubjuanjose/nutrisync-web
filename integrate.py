@@ -1578,6 +1578,12 @@ if os.path.exists(_bd):
     import re as _re
     _h = _re.sub(r'<script id="ns-room-gate">[\s\S]*?</script>', '', _h)
     _h = _h.replace("hubCode: '123456'", "hubCode: ''")   # sin código de teatro en el HTML
+    # UST-27 F1 (30-sep, aviso de una tester): el botón «Verify & enter» de Design solo miraba la
+    # LONGITUD (seis cifras cualesquiera abrían su BUILDER ROOM estática por debajo de nuestra
+    # cortinilla). Se desactiva: la sala de Design ya no se abre desde su botón; la única entrada
+    # sigue siendo la cortinilla, que no abre la sala: salta al hub (Access). Lo vigila web-tests r27-p.
+    _h = _h.replace("verifyHub: () => { if (this.state.hubCode.length === 6) {",
+                    "verifyHub: () => { if (false) {")
     _h = _h.replace("This room is protected with two-factor authentication. Enter your 6-digit code to continue.",
                     "Sala del equipo \u00b7 team room")
     _GATE = ('<script id="ns-room-gate">(function(){'
