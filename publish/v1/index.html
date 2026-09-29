@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="robots" content="noindex"><meta name="ns-build" content="2909-233153"><meta charset="utf-8">
+<head><meta name="robots" content="noindex"><meta name="ns-build" content="3009-001913"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preload" href="/assets/fonts/files/ns-eb4c6b37.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/fonts/files/ns-e00fe7ec.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/fonts/files/ns-4078e99d.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/assets/fonts/files/ns-7d471a86.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/assets/fonts/fonts.css?v=dc16b895"><style id="ns-type-system">html,body,button,input,select,textarea{font-family:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}h1,h2,h3{font-family:'Bricolage Grotesque','Poppins',sans-serif}</style>
 <script src="/assets/vendor/react.production.min.js"></script>
@@ -3845,7 +3845,7 @@ class Component extends DCLogic {
       otpBoxes: [0, 1, 2, 3, 4, 5].map((i) => ({ char: st.hubCode[i] || '', boxStyle: 'width:44px;height:54px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:\'Bricolage Grotesque\';font-weight:800;font-size:24px;color:#231F20;border:2px solid ' + (st.hubCode[i] ? '#E8472A' : '#E6D2C2') + ';background:' + (st.hubCode[i] ? '#FFF3EE' : '#fff') + ';' })),
       verifyDisabled: st.hubCode.length !== 6,
       verifyStyle: 'width:100%;margin-top:14px;border:none;border-radius:100px;padding:15px;font-family:\'Poppins\';font-weight:600;font-size:16px;color:#fff;transition:all .2s;' + (st.hubCode.length === 6 ? 'cursor:pointer;background:linear-gradient(90deg,#FF7600,#FD400C);box-shadow:0 14px 30px -12px rgba(253,64,12,.7);' : 'cursor:not-allowed;background:#E4B9A6;'),
-      verifyHub: () => { if (this.state.hubCode.length === 6) { this.setState({ hubUnlocked: true }); try { window.scrollTo(0, 0); } catch (e) {} } },
+      verifyHub: () => { if (false) { this.setState({ hubUnlocked: true }); try { window.scrollTo(0, 0); } catch (e) {} } },
       isDesktopApp: st.view === 'app' && st.isWide, asideDisplay: (st.view === 'app' && st.isWide) ? 'flex' : 'none', appPadLeft: st.isWide ? '248px' : '0px', ...deskNav,
       isDeskHome: st.view === 'app' && st.isWide && st.screen === 'home',
       isDeskProgress: st.view === 'app' && st.isWide && st.screen === 'progress',
