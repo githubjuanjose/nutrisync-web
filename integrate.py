@@ -360,12 +360,13 @@ if os.path.exists(_gsite):
         open(_gsite, "w", encoding="utf-8").write(_gs)
         print("- ns-docs-path: iframe de documentación → hub/documentation/index.html")
 
-# ns-default-route v2 (po62→po63): el redirect de Cloudflare Access PIERDE el
-# hash (#/builders no sobrevive) → entrada pública con ?r=<ruta> (la query SÍ
-# sobrevive) que aquí se convierte en hash; sin nada → #/builders (detrás de
-# Access solo hay founders). Además FRAME-BUST: si el gated acaba dentro de un
-# iframe (clon del marketing → "páginas en bucle"), toma la ventana superior.
-# Refresh-on-change.
+# ns-default-route v3 (po62→po63 · UST-27 D7, 30-sep): el redirect de Cloudflare
+# Access PIERDE el hash (#/builders no sobrevive) → entrada pública con ?r=<ruta>
+# (la query SÍ sobrevive) que aquí se convierte en hash; sin nada → /hub/pilot.html
+# (UST-27 D7: UN solo «por defecto», Piloto — antes #/builders, el Overview de
+# Design; ⌂ Overview sigue en la barra con su #/builders). Además FRAME-BUST: si
+# el gated acaba dentro de un iframe (clon del marketing → "páginas en bucle"),
+# toma la ventana superior. Refresh-on-change.
 if os.path.exists(_gsite):
     _gs0 = open(_gsite, encoding="utf-8").read()
     _gs = re.sub(r'<script id="ns-default-route">.*?</script>', "", _gs0, flags=re.S)
@@ -382,14 +383,14 @@ if os.path.exists(_gsite):
              "try{if(window.top!==window.self&&window.top.location.host===location.host){window.top.location=location.pathname+location.hash;return;}}catch(e){}"
              "var r=new URLSearchParams(location.search).get('r');"
              "if(r&&/^[a-z-]+$/.test(r)){location.replace(location.pathname+'#/'+r);return;}"
-             "if(!location.hash||location.hash==='#'||location.hash==='#/'){location.replace(location.pathname+'#/builders');}"
+             "if(!location.hash||location.hash==='#'||location.hash==='#/'){location.replace('/hub/pilot.html');}"
              "})();</script>")
     _mm = re.search(r"<body[^>]*>", _gs)
     if _mm:
         _gs = _gs[:_mm.end()] + _snip + _gs[_mm.end():]
     if _gs != _gs0:
         open(_gsite, "w", encoding="utf-8").write(_gs)
-        print("- ns-default-route v2: ?r=→hash + sin-hash→#/builders + frame-bust")
+        print("- ns-default-route v3: ?r=→hash + sin-hash→/hub/pilot.html (UST-27 D7) + frame-bust")
 
 # ── Builders "Access" page: who can enter the gated areas + how it works. ──
 # Informational SNAPSHOT (the live source of truth is the Cloudflare Access
@@ -434,19 +435,33 @@ _ACCESS_HTML = ('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">'
   '.card{background:#fff;border-radius:14px;padding:16px 18px;margin:12px 0;box-shadow:0 10px 30px -18px rgba(0,0,0,.18);font-size:14px}'
   '.card b{display:block;margin-bottom:4px}'
   'a{color:#D8452F;font-weight:700}.top{font-size:13px}</style></head><body><div class="wrap">'
-  '<p class="top"><a href="full-hub-gated-site.html">\u2039 Back to Builders</a></p>'
+  # UST-27 D7: sin ruta, el gated manda a Piloto \u2014 el enlace de vuelta lleva su #/builders (Overview).
+  '<p class="top"><a href="full-hub-gated-site.html#/builders">\u2039 Back to Builders</a></p>'
   '<h1>Who can access Builders &amp; Pitch</h1>'
-  '<p>These addresses pass the Cloudflare Access gate (email + one-time PIN) on <code>/hub/*</code>. '
-  'Sessions last 30 days per device (UST-17, \u00abun candado\u00bb). This page is a snapshot \u2014 the live list is the Access policy.</p>'
+  # UST-27 F9 (30-sep-2026, firmada): tres llaves, 24 h, una sesi\u00f3n por persona y superficie.
+  # Sustituye a \u00ab30 days per device (UST-17, un candado)\u00bb; web-tests vigila \u00ab24 h\u00bb y la ausencia de \u00ab30 days\u00bb.
+  '<p>These addresses pass the Cloudflare Access gate (email + one-time PIN) on <code>/hub/*</code> and on <code>admin.</code> (StartUp Admin). '
+  'Access sessions last 24 h per device (UST-27 \u00abtres llaves y un d\u00eda\u00bb). This page is a snapshot \u2014 the live list is the Access policy.</p>'
   '<table><tr><th>Email</th><th>Who</th></tr>' + _rows + '</table>'
   + '<h2 style="font-size:19px;margin:26px 0 4px">Buzones IONOS \u00b7 IONOS mailboxes</h2>'
   + '<p style="font-size:13px">Foto informativa r14 \u00b7 la fuente de verdad es el panel de IONOS (Pilar). / Informational snapshot \u00b7 source of truth is the IONOS panel (Pilar).</p>'
   + '<table><tr><th>Buz\u00f3n / Mailbox</th><th>Uso / Purpose</th><th>Estado / Status</th></tr>' + _irows + '</table>' 
-  '<div class="card"><b>How login works</b>Open any Builders/Pitch link \u2192 enter your email \u2192 '
-  'a 6-digit PIN arrives by email \u2192 you are in for 30 days on that device (the PIN is the hub\u2019s second factor; the hub password is asked once per device). Only listed addresses receive codes.</div>'
+  '<div class="card"><b>How login works \u00b7 C\u00f3mo se entra (UST-27, three keys and one day)</b>'
+  'Three keys, in this order, once every 24 h on each device: '
+  '(1) <b>Cloudflare PIN by email</b> \u2014 open any Builders/Pitch/StartUp Admin link, enter your email, a 6-digit PIN arrives; the Access session lasts 24 h per device. '
+  '(2) <b>Hub password</b> (Supabase; \u201cForgot password?\u201d on the wall sends the reset email). '
+  '(3) <b>Third key</b>: three positions of the 8-digit <b>team key</b> (shared password manager), or your authenticator app (<b>TOTP</b>) if you set one up \u2014 either one works. '
+  'One open session per person and per surface (hub \u00b7 StartUp Admin): verifying the key on another device closes the previous session on that surface (\u201cone session per person\u201d). '
+  'Sessions last 24 h at most; afterwards PIN \u2192 password \u2192 key again. Jumping hub \u2194 StartUp Admin inherits the key. Only listed addresses receive PINs.'
+  '<br><br>Tres llaves, en este orden, una vez cada 24 h en cada dispositivo: '
+  '(1) <b>PIN de Cloudflare por correo</b> \u2014 abre cualquier enlace de Builders/Pitch/StartUp Admin, teclea tu correo y llega un PIN de 6 cifras; la sesi\u00f3n de Access dura 24 h por dispositivo. '
+  '(2) <b>Contrase\u00f1a del hub</b> (Supabase; \u00ab\u00bfOlvidaste la contrase\u00f1a?\u00bb en el muro manda el correo de recuperaci\u00f3n). '
+  '(3) <b>Tercera llave</b>: tres posiciones de la <b>clave de equipo</b> de 8 cifras (gestor compartido), o tu app de autenticaci\u00f3n (<b>TOTP</b>) si la activaste \u2014 valen las dos. '
+  'Una sesi\u00f3n abierta por persona y superficie (hub \u00b7 StartUp Admin): verificar la llave en otro dispositivo cierra la sesi\u00f3n anterior en esa superficie (\u00abuna sesi\u00f3n por persona\u00bb). '
+  'Las sesiones duran 24 h como m\u00e1ximo; despu\u00e9s, PIN \u2192 contrase\u00f1a \u2192 llave otra vez. Saltar hub \u2194 StartUp Admin hereda la llave. Solo las direcciones de la lista reciben el PIN.</div>'
   '<div class="card"><b>Add / remove someone</b>Cloudflare dashboard \u2192 Zero Trust \u2192 Access \u2192 '
-  'Applications \u2192 <i>NutriSync Builders Hub</i> \u2192 policy <i>Founders</i> \u2192 Include \u2192 Emails. '
-  'Changes apply immediately \u2014 no deploy needed. Keep this page in sync (ask Engineering).</div>'
+  'Applications \u2192 <i>NutriSync Builders Hub</i> (and the <i>StartUp Admin</i> application) \u2192 policy <i>Founders</i> \u2192 Include \u2192 Emails. '
+  'Changes apply immediately \u2014 no deploy needed. Keep this page in sync (ask Engineering). Session duration (24 h) lives in Zero Trust \u2192 Settings \u2192 Authentication and in each application.</div>'
   '<div class="card"><b>Related but separate</b>Reading app feedback / admin KPIs uses the <code>public.admins</code> '
   'allowlist in Supabase (SQL editor) \u2014 being on this page does not grant that automatically.</div>'
   '</div></body></html>')
@@ -1541,10 +1556,15 @@ for _hp in _glob.glob(os.path.join(PUB, "hub", "*.html")):
         open(_hp, "w", encoding="utf-8").write(_s)
         print(f"- pastilla \u2039 Hub en {_bn}")
 
+# UST-27 D7 (30-sep, firmada): UN solo «por defecto» — /hub aterriza en 🧭 Piloto (pilot.html).
+# Antes (r16, 9-ago) la casa era 🎫 Incidencias. La fuente es _integration/hub-index.html.
 _hidx = os.path.join(ASSETS, "hub-index.html")
 if os.path.exists(_hidx):
     shutil.copy(_hidx, os.path.join(PUB, "hub", "index.html"))
-    print("- hub/index.html (puerta /hub) creado → incidents.html (r16: la casa es 🎫)")
+    if "pilot.html" in open(_hidx, encoding="utf-8").read():
+        print("- hub/index.html (puerta /hub) creado → pilot.html (UST-27 D7: un solo por defecto, Piloto)")
+    else:
+        print("! hub/index.html: _integration/hub-index.html NO apunta a pilot.html (UST-27 D7) — revisar")
 
 # ---------------------------------------------------------------------------
 # ── ns-doors-grid v2 (r14h, regresión pescada por Juanjo): el contenedor del
@@ -1566,12 +1586,16 @@ if os.path.exists(_dg):
     else:
         print("! ns-doors-grid v2: el contenedor flex del pie no está donde esperaba — SIN TOCAR")
 
-# ── ns-room-gate (r14i, diseño de Juanjo para el PIN admin): las tarjetas
+# ── ns-room-gate v2 (r14i → UST-27 F2/F5, 30-sep, firmada): las tarjetas
 # Pitch/Builders del pie abren su sala; nosotros VESTIMOS la cortinilla del
-# código con el patrón banca (6 puntos · 2 posiciones aleatorias de 888000 ·
-# teclado barajado, nada que teclear) y, al acertar, saltamos DIRECTO al hub —
-# la «BUILDER ROOM» de Design nunca se llega a ver. Cosmético: la seguridad
-# real sigue siendo Cloudflare Access + sesión dentro de /hub/.
+# código con el patrón banca — ahora 8 puntos, 3 posiciones que elige el
+# SERVIDOR (ns_room_challenge), teclado barajado, UN intento por reto
+# (ns_room_gate_check) y límite de intentos con espera (D11) — y, al acertar,
+# saltamos DIRECTO al hub según la tarjeta (D7/F5): Builders → Piloto ·
+# Pitch → Pitch (?r=investors). La «BUILDER ROOM» de Design nunca se llega a
+# ver. La clave de la puerta vive en Supabase (room_gate, 8 cifras): aquí no
+# hay ningún literal (web-tests r14h). La seguridad real sigue siendo
+# Cloudflare Access + contraseña + tercera llave dentro de /hub/.
 _bd = os.path.join(PUB, "index.html")
 if os.path.exists(_bd):
     _h = open(_bd, encoding="utf-8").read()
@@ -1585,24 +1609,35 @@ if os.path.exists(_bd):
     _h = _h.replace("verifyHub: () => { if (this.state.hubCode.length === 6) {",
                     "verifyHub: () => { if (false) {")
     _h = _h.replace("This room is protected with two-factor authentication. Enter your 6-digit code to continue.",
-                    "Sala del equipo \u00b7 team room")
+                    "Sala del equipo · team room")
     _GATE = ('<script id="ns-room-gate">(function(){'
-      "var HUB='/hub/full-hub-gated-site.html?r=builders';"
-      "var SB='https://nebkqncvapelrarruyqb.supabase.co/rest/v1/rpc/ns_room_gate_check';"
+      # Destino por tarjeta (UST-27 D7/F5): la cabecera de la tarjeta de Design dice
+      # «Builder access» o «Investor access» — es lo único que distingue las dos salas
+      # en el DOM (el motor no toca el hash). Sin cabecera reconocible → Piloto.
+      "var PILOTO='/hub/pilot.html',PITCH='/hub/full-hub-gated-site.html?r=investors';"
+      "var RPC='https://nebkqncvapelrarruyqb.supabase.co/rest/v1/rpc/';"
       "var AK='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';"
-      "function nuevas(){var a=Math.floor(Math.random()*6),b=Math.floor(Math.random()*6);"
-        "while(b===a)b=Math.floor(Math.random()*6);return a<b?[a,b]:[b,a];}"
-      "var PIDE=nuevas(), puestos=['',''], cursor=0;"
-      "var teclas=[0,1,2,3,4,5,6,7,8,9];"
-      "for(var i=teclas.length-1;i>0;i--){var k=Math.floor(Math.random()*(i+1));var tt=teclas[i];teclas[i]=teclas[k];teclas[k]=tt;}"
       "var ES=(navigator.language||'en').toLowerCase().indexOf('es')===0;"
       "try{var L=localStorage.getItem('ns_lang');if(L)ES=(L==='es');}catch(e){}"
       "function T(es,en){return ES?es:en;}"
+      # reto = {challenge, pos:[i,j,k]} que devolvió el servidor (0-based, ascendente);
+      # puestos = las 3 cifras tecleadas; ocupado = hay una RPC en vuelo.
+      "var reto=null,puestos=['','',''],cursor=0,ocupado=false,teclas=[];"
+      "function baraja(){teclas=[0,1,2,3,4,5,6,7,8,9];"
+        "for(var i=teclas.length-1;i>0;i--){var k=Math.floor(Math.random()*(i+1));var tt=teclas[i];teclas[i]=teclas[k];teclas[k]=tt;}}"
+      # Toda RPC: POST /rest/v1/rpc/<nombre>; cualquier fallo (HTTP o red) sale con el
+      # NOMBRE de la RPC en el mensaje (r12-b9: nunca una cortinilla muda).
+      "function rpc(nombre,body){return fetch(RPC+nombre,{method:'POST',headers:{'content-type':'application/json','apikey':AK,'authorization':'Bearer '+AK},body:JSON.stringify(body||{})})"
+        ".then(function(r){return r.text().then(function(t){var j=null;try{j=t?JSON.parse(t):null;}catch(e){}"
+          "if(!r.ok){throw new Error(nombre+': HTTP '+r.status+((j&&(j.message||j.hint))?' — '+(j.message||j.hint):(t?' — '+t.slice(0,160):'')));}"
+          "return j;});})"
+        ".catch(function(e){var s=String(e&&e.message||e);if(s.indexOf(nombre)===0)throw e;throw new Error(nombre+': '+s);});}"
+      "function destino(el){var c=el.parentNode,h=c&&c.querySelector?c.querySelector('h1'):null,t=h?(h.textContent||''):'';return /investor|pitch/i.test(t)?PITCH:PILOTO;}"
       "function css(){return '<style id=\"nsg-css\">"
         ".nsg{margin:22px 0 0;text-align:center}"
         ".nsg-msg{font:600 14px/1.5 Poppins,system-ui,sans-serif;color:#6B615C;margin:0 0 16px}.nsg-msg b{color:#C73A20}"
-        ".nsg-dots{display:flex;gap:12px;justify-content:center;margin:0 0 20px}"
-        ".nsg-dot{width:24px;height:24px;border-radius:50%;border:2px solid #C9BEB4;background:#C9BEB4}"
+        ".nsg-dots{display:flex;gap:10px;justify-content:center;margin:0 0 20px}"
+        ".nsg-dot{width:22px;height:22px;border-radius:50%;border:2px solid #C9BEB4;background:#C9BEB4}"
         ".nsg-dot.pide{background:#fff;border-color:#E1946C}"
         ".nsg-dot.activo{box-shadow:0 0 0 5px rgba(225,148,108,.30)}"
         ".nsg-dot.hecho{background:#0F6E56;border-color:#0F6E56}"
@@ -1611,40 +1646,54 @@ if os.path.exists(_bd):
         ".nsg-k:hover{background:#FFF1EC;color:#C73A20}.nsg-k:active{transform:scale(.95)}"
         ".nsg-clr{margin-top:12px;background:none;border:0;font:600 12.5px Poppins,system-ui,sans-serif;color:#8A7F78;cursor:pointer;text-decoration:underline}"
         ".nsg-err{color:#C73A20;font-weight:800}</style>';}"
-      "function pinta(el){var d='';for(var i=0;i<6;i++){var idx=PIDE.indexOf(i),pide=idx>-1;"
+      "function msg(el,html,err){var m=el.querySelector('#nsg-msg');if(m){m.innerHTML=html;m.className='nsg-msg'+(err?' nsg-err':'');}}"
+      # 8 puntos (nsg-8); los 3 del reto van marcados; sin reto no hay teclado, solo «Reintentar».
+      "function pinta(el){var d='';for(var i=0;i<8;i++){var idx=reto?reto.pos.indexOf(i):-1,pide=idx>-1;"
           "var cls='nsg-dot'+(pide?' pide':'')+(pide&&puestos[idx]?' hecho':'')+(pide&&idx===cursor&&!puestos[idx]?' activo':'');"
           "d+='<div class=\"'+cls+'\"></div>';}"
-        "var k='';for(var j=0;j<teclas.length;j++)k+='<button type=\"button\" class=\"nsg-k\" data-d=\"'+teclas[j]+'\">'+teclas[j]+'</button>';"
-        "el.innerHTML=css()+'<div class=\"nsg-msg\" id=\"nsg-msg\">'"
-          "+T('Completa las posiciones <b>'+(PIDE[0]+1)+'</b> y <b>'+(PIDE[1]+1)+'</b> de la clave del equipo',"
-             "'Complete positions <b>'+(PIDE[0]+1)+'</b> and <b>'+(PIDE[1]+1)+'</b> of the team key')"
-          "+'</div><div class=\"nsg-dots\">'+d+'</div><div class=\"nsg-pad\">'+k+'</div>'"
-          "+'<button type=\"button\" class=\"nsg-clr\" id=\"nsg-clr\">'+T('Borrar','Clear')+'</button>';"
+        "var k='';if(reto){for(var j=0;j<teclas.length;j++)k+='<button type=\"button\" class=\"nsg-k\" data-d=\"'+teclas[j]+'\">'+teclas[j]+'</button>';}"
+        "var m=reto?T('Completa las posiciones <b>'+(reto.pos[0]+1)+'</b>, <b>'+(reto.pos[1]+1)+'</b> y <b>'+(reto.pos[2]+1)+'</b> de la clave del equipo',"
+                    "'Complete positions <b>'+(reto.pos[0]+1)+'</b>, <b>'+(reto.pos[1]+1)+'</b> and <b>'+(reto.pos[2]+1)+'</b> of the team key')"
+                 ":T('Pidiendo el reto…','Requesting the challenge…');"
+        "el.innerHTML=css()+'<div class=\"nsg-msg\" id=\"nsg-msg\">'+m+'</div><div class=\"nsg-dots nsg-8\">'+d+'</div>'"
+          "+(reto?'<div class=\"nsg-pad\">'+k+'</div>':'')"
+          "+'<button type=\"button\" class=\"nsg-clr\" id=\"nsg-clr\">'+(reto?T('Borrar','Clear'):T('Reintentar','Retry'))+'</button>';"
         "el.querySelectorAll('.nsg-k').forEach(function(b){b.onclick=function(){pulsa(el,b.getAttribute('data-d'));};});"
-        "el.querySelector('#nsg-clr').onclick=function(){puestos=['',''];cursor=0;pinta(el);};}"
-      "function pulsa(el,d){if(cursor>1)return;puestos[cursor]=String(d);cursor++;pinta(el);"
-        "if(cursor===2){var m=document.getElementById('nsg-msg');"
-          "if(m)m.innerHTML=T('Comprobando\u2026','Checking\u2026');"
-          "fetch(SB,{method:'POST',headers:{'content-type':'application/json','apikey':AK,'authorization':'Bearer '+AK},"
-            "body:JSON.stringify({p_positions:[PIDE[0],PIDE[1]],p_digits:puestos[0]+puestos[1]})})"
-          ".then(function(r){return r.json();}).then(function(res){"
-            "if(res&&res.ok){if(m)m.innerHTML=T('\u2713 Correcto \u2014 entrando\u2026','\u2713 Correct \u2014 entering\u2026');"
-              "setTimeout(function(){location.href=HUB;},450);}"
-            "else{if(m){m.innerHTML=T('Esas cifras no son \u2014 prueba otra vez','Wrong digits \u2014 try again');m.className='nsg-msg nsg-err';}"
-              "PIDE=nuevas();setTimeout(function(){puestos=['',''];cursor=0;pinta(el);},900);}"
-          "}).catch(function(){if(m){m.innerHTML=T('Error de red \u2014 reintenta','Network error \u2014 retry');m.className='nsg-msg nsg-err';}"
-            "PIDE=nuevas();setTimeout(function(){puestos=['',''];cursor=0;pinta(el);},900);});}}"
+        "el.querySelector('#nsg-clr').onclick=function(){if(ocupado)return;if(reto){puestos=['','',''];cursor=0;pinta(el);}else{pideReto(el);}};}"
+      # {ok:false, wait:true, minutes:N} → bloqueo honesto y bilingüe (D11).
+      "function espera(el,res){reto=null;puestos=['','',''];cursor=0;pinta(el);var n=(res&&res.minutes)||15;"
+        "msg(el,T('Demasiados intentos: espera '+n+' minutos','Too many attempts: wait '+n+' minutes'),true);}"
+      "function falla(el,e){ocupado=false;reto=null;puestos=['','',''];cursor=0;pinta(el);"
+        "msg(el,T('Error: ','Error: ')+String(e&&e.message||e)+' — '+T('reintenta','retry'),true);}"
+      # Reto nuevo: el servidor elige las 3 posiciones (si esa IP ya tiene uno abierto, devuelve el mismo).
+      "function pideReto(el){ocupado=true;reto=null;puestos=['','',''];cursor=0;pinta(el);"
+        "rpc('ns_room_challenge').then(function(res){ocupado=false;"
+          "if(res&&res.ok&&res.challenge&&res.positions&&res.positions.length===3){"
+            "reto={challenge:res.challenge,pos:res.positions.slice().sort(function(a,b){return a-b;})};baraja();pinta(el);}"
+          "else if(res&&res.wait){espera(el,res);}"
+          "else{falla(el,new Error('ns_room_challenge: '+T('respuesta inesperada','unexpected response')+' '+JSON.stringify(res)));}"
+        "}).catch(function(e){falla(el,e);});}"
+      # 3 cifras → ns_room_gate_check(reto, cifras). Un intento por reto: fallo → reto nuevo.
+      "function pulsa(el,d){if(!reto||ocupado||cursor>2)return;puestos[cursor]=String(d);cursor++;pinta(el);"
+        "if(cursor===3){ocupado=true;msg(el,T('Comprobando…','Checking…'));var r0=reto;"
+          "rpc('ns_room_gate_check',{p_challenge:r0.challenge,p_digits:puestos.join('')}).then(function(res){ocupado=false;"
+            "if(res&&res.ok){msg(el,T('✓ Correcto — entrando…','✓ Correct — entering…'));var ir=destino(el);setTimeout(function(){location.href=ir;},450);}"
+            "else if(res&&res.wait){espera(el,res);}"
+            "else if(res&&res.ok===false){reto=null;ocupado=true;msg(el,T('Esas cifras no son — prueba otra vez','Wrong digits — try again'),true);setTimeout(function(){pideReto(el);},900);}"
+            "else{falla(el,new Error('ns_room_gate_check: '+T('respuesta inesperada','unexpected response')+' '+JSON.stringify(res)));}"
+          "}).catch(function(e){falla(el,e);});}}"
       "function montar(){var inp=document.querySelector('input[placeholder=\"Enter code\"]');"
         "if(!inp)return;var card=inp.parentNode;if(!card||card.querySelector('.nsg'))return;"
         "inp.style.display='none';var prev=inp.previousElementSibling;if(prev)prev.style.display='none';"
         "var nx=inp.nextElementSibling;if(nx&&nx.tagName==='BUTTON')nx.style.display='none';"
-        "var box=document.createElement('div');box.className='nsg';card.insertBefore(box,inp);pinta(box);}"
+        "var box=document.createElement('div');box.className='nsg';card.insertBefore(box,inp);"
+        "if(reto){pinta(box);}else{pideReto(box);}}"
       "if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',montar);else montar();"
       "setInterval(montar,900);"
       "})();</script>")
     _h = _h.replace("</body>", _GATE + "</body>", 1)
     open(_bd, "w", encoding="utf-8").write(_h)
-    print("- ns-room-gate: PIN admin con tu diseño (puntos + teclado barajado, 888000)")
+    print("- ns-room-gate v2 (UST-27 F2/F5): 8 puntos · 3 posiciones del servidor · un intento por reto · Builders→Piloto · Pitch→?r=investors")
 
 # ── ns-sala-deeplink (r17, 10-ago) ──────────────────────────────────────────
 # Desde la WV2 (u otra superficie) se entra a las salas SIEMPRE por la puerta:
