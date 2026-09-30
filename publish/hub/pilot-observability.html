@@ -30,6 +30,340 @@ td.msg{max-width:520px;white-space:pre-wrap}
 .warn{background:#FFF8EF;border:1.5px dashed #E8B072;border-radius:10px;padding:10px 12px;font-size:12.5px;color:#7A5A33}
 </style><script src="/assets/vendor/supabase.js"></script></head><body><!-- ns-hub-navbar -->
 <div id="ns-hub-navbar">
+<!-- ns-muro (UST-27 · 30-sep · F4/F8 · D8/D10/D14/D15): MURO UNIVERSAL de /hub.
+     La barra se inyecta justo tras <body>, así que este <style> ESTÁTICO llega
+     antes que cualquier contenido: no se pinta NADA (ni el gated de Design)
+     hasta tener (1) sesión de Supabase y (2) tercera llave de ESTA sesión
+     (ns_key_session_ok). El script de abajo lo retira al abrir. Es experiencia
+     de uso: la garantía es la del servidor (is_admin_mfa v3 exige la fila). -->
+<style id="ns-muro-css">body>*:not(#ns-hub-navbar):not(#ns-muro){visibility:hidden!important}</style>
+<noscript><div id="ns-muro" style="position:fixed;inset:0;z-index:99980;background:#FBF3EA;display:flex;align-items:center;justify-content:center;font:600 15px Poppins,system-ui,sans-serif;color:#241D1A;padding:20px;text-align:center">El hub necesita JavaScript | The hub needs JavaScript</div></noscript>
+<script>
+/* ns-muro (UST-27 F4/F8): un solo muro para las 29 páginas de /hub.
+   Secuencia: Cloudflare Access (PIN, fuera de aquí) → contraseña → tercera
+   llave (TOTP si hay factor verificado, o 3 posiciones de la clave del equipo
+   elegidas por el SERVIDOR) → contenido. Reloj de 24 h en el cliente
+   (ns_login_ts) por si el servidor no contesta; sondeo de ns_key_session_ok
+   cada 2 min y al volver a la pestaña: sin fila → muro con el motivo inferido
+   (24 h · otro dispositivo). Todo raw fetch, sin vendor ni CDN (po74).
+   Cualquier RPC que falle se enseña con su nombre (r12-b9): jamás en blanco.
+   Estados → evento document 'ns-muro' {estado, …} (tests y páginas). */
+(function(){
+  var SB='https://nebkqncvapelrarruyqb.supabase.co';
+  var ANON='sb_publishable_GYj7DKlcWZ2cxdwv-GkyHQ_WBbQWHau';
+  var SBKEY='sb-nebkqncvapelrarruyqb-auth-token';
+  var SUP='hub', DIA=24*60*60*1000, CADA=2*60*1000;
+  var RESET='https://nutrisynccollective.com/reset.html';
+  var K_TS='ns_login_ts', K_MOT='ns_muro_motivo';
+  var ov=null, card=null, interactivo=false, enVuelo=false, abierto=false, caducando=false, repinta=null, teclaActiva=null;
+  var ls={get:function(k){try{return localStorage.getItem(k);}catch(e){return null;}},
+          set:function(k,v){try{localStorage.setItem(k,v);}catch(e){}},
+          del:function(k){try{localStorage.removeItem(k);}catch(e){}}};
+  /* idioma: la misma regla que nsLang() de la barra (ns_lang manda) */
+  var nsLang=function(){var v=ls.get('ns_lang');return v||(((navigator.language||'').slice(0,2)==='es')?'es':'en');};
+  var T=function(es,en){return nsLang()==='en'?en:es;};
+  var esc=function(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});};
+  var avisa=function(estado,extra){try{var d={estado:estado};if(extra)for(var k in extra)d[k]=extra[k];
+    document.dispatchEvent(new CustomEvent('ns-muro',{detail:d}));}catch(e){}};
+  var sesion=function(){try{var s=JSON.parse(ls.get(SBKEY)||'null');return (s&&s.access_token)?s:null;}catch(e){return null;}};
+  var guarda=function(j){if(!j.expires_at&&j.expires_in)j.expires_at=Math.floor(Date.now()/1000)+j.expires_in;ls.set(SBKEY,JSON.stringify(j));};
+  var olvida=function(){ls.del(SBKEY);ls.del(K_TS);};
+  var H=function(tok){var h={apikey:ANON,'content-type':'application/json'};if(tok)h.authorization='Bearer '+tok;return h;};
+  var lee=function(r){return r.text().then(function(t){var j=null;try{j=JSON.parse(t);}catch(e){}return {ok:r.ok,status:r.status,j:j,t:t||''};});};
+  var detalle=function(x){return (x.j&&(x.j.message||x.j.hint||x.j.error_description||x.j.msg||x.j.error))||x.t.slice(0,160);};
+  /* RPC con la anon key + JWT, como el resto de la barra. 401 = sesión muerta
+     (se vuelve al login); cualquier otro fallo = Error con el NOMBRE de la RPC. */
+  var rpc=function(fn,args,tok){
+    return fetch(SB+'/rest/v1/rpc/'+fn,{method:'POST',headers:H(tok),body:JSON.stringify(args||{})}).then(lee).then(function(x){
+      if(x.status===401){var e=new Error('401');e.sinSesion=true;throw e;}
+      if(!x.ok){var d=detalle(x);throw new Error('RPC '+fn+' → HTTP '+x.status+(d?' · '+d:''));}
+      return x.j;});
+  };
+  /* JWT de 1 h: si está a punto de caducar, se renueva con el refresh token
+     ANTES de preguntar al servidor (si no, cada visita tras 1 h moriría en 401). */
+  var fresca=function(){
+    var s=sesion(); if(!s)return Promise.resolve(null);
+    var exp=(+s.expires_at||0)*1000;
+    if(!exp||exp-Date.now()>60000||!s.refresh_token)return Promise.resolve(s);
+    return fetch(SB+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:H(),body:JSON.stringify({refresh_token:s.refresh_token})}).then(lee).then(function(x){
+      if(x.ok&&x.j&&x.j.access_token){guarda(x.j);return x.j;}
+      if(x.status>=400&&x.status<500){olvida();return null;}   // refresh token quemado → login
+      return s;                                                 // red caída: se intenta con lo que hay
+    }).catch(function(){return s;});
+  };
+  /* — el muro (overlay) y la regla que oculta el body — */
+  var css=function(on){var e=document.getElementById('ns-muro-css');
+    if(on&&!e){e=document.createElement('style');e.id='ns-muro-css';e.textContent='body>*:not(#ns-hub-navbar):not(#ns-muro){visibility:hidden!important}';(document.head||document.documentElement).appendChild(e);}
+    if(!on&&e&&e.parentNode)e.parentNode.removeChild(e);};
+  var muro=function(){
+    if(!ov||!ov.parentNode){
+      ov=document.getElementById('ns-muro');
+      if(!ov){ov=document.createElement('div');ov.id='ns-muro';
+        ov.setAttribute('style','position:fixed;inset:0;z-index:99980;background:#FBF3EA;overflow:auto;display:flex;align-items:flex-start;justify-content:center;padding:118px 12px 30px;font-family:Poppins,system-ui,sans-serif');
+        (document.body||document.documentElement).appendChild(ov);}
+      card=null;
+    }
+    if(!card){card=document.createElement('div');card.id='ns-muro-card';
+      card.setAttribute('style','background:#FFFDF8;border-radius:18px;max-width:380px;width:100%;padding:22px 20px;box-shadow:0 18px 50px rgba(0,0,0,.18);color:#241D1A');
+      ov.innerHTML='';ov.appendChild(card);}
+    return card;
+  };
+  var cierra=function(){css(true);abierto=false;teclaActiva=null;return muro();};
+  var abre=function(){
+    if(interactivo){location.reload();return;}   // la página ya corrió sin sesión/llave: que se pinte con ellas
+    css(false);if(ov&&ov.parentNode)ov.parentNode.removeChild(ov);ov=null;card=null;abierto=true;teclaActiva=null;avisa('abierto');
+  };
+  var S_IN='display:block;width:100%;box-sizing:border-box;padding:12px 14px;border:1px solid #EADFD5;border-radius:12px;font:14.5px Poppins,system-ui,sans-serif;margin-bottom:10px;background:#fff;color:#241D1A';
+  var S_BT='display:block;width:100%;border:0;cursor:pointer;background:linear-gradient(135deg,#FF7600,#FD400C);color:#fff;font:700 15px Poppins,system-ui,sans-serif;padding:13px;border-radius:100px;margin-top:4px';
+  var S_LK='color:#E8472A;font-weight:600;text-decoration:underline;font-size:12.5px;cursor:pointer';
+  var S_ERR='color:#D93030;font-size:12.5px;min-height:16px;margin-top:8px;line-height:1.4';
+  var titulo=function(ico,es,en){return '<div style="font-weight:800;font-size:16px;margin-bottom:4px">'+ico+' '+T(es,en)+'</div>';};
+  var sub=function(es,en){return '<div style="font-size:13px;color:#5f564f;margin-bottom:14px;line-height:1.45">'+T(es,en)+'</div>';};
+  /* Los avisos son INFERENCIAS (F8), bilingües. Por el muro viaja la CLAVE
+     ('expired'|'replaced') y el texto se resuelve al pintar: así el 🌐 de la
+     barra cambia el aviso en caliente. */
+  var MOTIVO={
+    expired:function(){return T('Tu sesión se cerró: han pasado 24 h','Your session closed: 24 hours have passed');},
+    replaced:function(){return T('Tu sesión se cerró: probablemente has entrado desde otro dispositivo (una sesión por persona)','Your session closed: most likely you signed in from another device (one session per person)');}
+  };
+  var lineaMotivo=function(m){return (m&&MOTIVO[m])?'<div id="nsm-motivo" style="background:#FFF3E0;color:#7A4A00;border:1px solid #E8B36A;border-radius:10px;padding:9px 12px;font-size:12.5px;font-weight:600;margin-bottom:12px;line-height:1.4">🔒 '+esc(MOTIVO[m]())+'</div>':'';};
+  var leeMotivo=function(){var m=ls.get(K_MOT);if(m)ls.del(K_MOT);return (m&&MOTIVO[m])?m:null;};
+
+  /* — paso 1 · contraseña (F4): correo + contraseña, «¿Olvidaste la contraseña?» — */
+  var pasoLogin=function(motivo){
+    interactivo=true; repinta=function(){pasoLogin(motivo);};
+    var c=cierra();
+    c.innerHTML=lineaMotivo(motivo)+titulo('🔐','Entrar en el hub','Sign in to the hub')
+      +sub('Tu cuenta de founder de NutriSync: correo y contraseña. Después, la tercera llave.','Your NutriSync founder account: email and password. Then the third key.')
+      +'<form id="nsm-f" autocomplete="on">'
+      +'<input id="nsm-em" type="email" required autocomplete="username" placeholder="'+T('Correo','Email')+'" style="'+S_IN+'">'
+      +'<input id="nsm-pw" type="password" required autocomplete="current-password" placeholder="'+T('Contraseña','Password')+'" style="'+S_IN+'">'
+      +'<button id="nsm-go" type="submit" style="'+S_BT+'">'+T('Entrar','Sign in')+'</button></form>'
+      +'<div style="margin-top:12px"><a href="#" id="nsm-olv" style="'+S_LK+'">'+T('¿Olvidaste la contraseña?','Forgot password?')+'</a></div>'
+      +'<div id="nsm-err" style="'+S_ERR+'"></div>';
+    var em=c.querySelector('#nsm-em'),pw=c.querySelector('#nsm-pw'),err=c.querySelector('#nsm-err'),go=c.querySelector('#nsm-go');
+    c.querySelector('#nsm-f').onsubmit=function(ev){ev.preventDefault();
+      var e=(em.value||'').trim(),p=pw.value||''; if(!e||!p)return;
+      go.disabled=true;err.style.color='#5f564f';err.textContent=T('Comprobando…','Checking…');
+      fetch(SB+'/auth/v1/token?grant_type=password',{method:'POST',headers:H(),body:JSON.stringify({email:e,password:p})}).then(lee).then(function(x){
+        if(x.ok&&x.j&&x.j.access_token){guarda(x.j);ls.set(K_TS,String(Date.now()));avisa('sesion');comprueba(false);return;}
+        go.disabled=false;err.style.color='#D93030';
+        var d=detalle(x);
+        err.textContent=(x.status===400&&/invalid/i.test(d))?T('Correo o contraseña incorrectos','Wrong email or password'):(T('No se pudo entrar','Could not sign in')+' (auth/v1/token) · HTTP '+x.status+(d?' · '+d:''));
+      }).catch(function(e2){go.disabled=false;err.style.color='#D93030';err.textContent=T('Sin respuesta de Supabase','No answer from Supabase')+' (auth/v1/token) · '+e2.message;});
+    };
+    c.querySelector('#nsm-olv').onclick=function(ev){ev.preventDefault();
+      var e=(em.value||'').trim(); if(!e){err.style.color='#D93030';err.textContent=T('Escribe tu correo y vuelve a pulsar el enlace','Type your email and click the link again');try{em.focus();}catch(e3){}return;}
+      err.style.color='#0F6E56';err.textContent=T('Enviando…','Sending…');
+      fetch(SB+'/auth/v1/recover?redirect_to='+encodeURIComponent(RESET),{method:'POST',headers:H(),body:JSON.stringify({email:e,redirect_to:RESET})}).then(lee).then(function(x){
+        if(x.ok){err.style.color='#0F6E56';err.textContent=T('Si el correo existe, te llega un enlace para crear una contraseña nueva (mira también spam).','If the email exists, a link to set a new password is on its way (check spam too).');}
+        else{err.style.color='#D93030';var d=detalle(x);err.textContent=T('No se pudo enviar','Could not send')+' (auth/v1/recover) · HTTP '+x.status+(d?' · '+d:'');}
+      }).catch(function(e2){err.style.color='#D93030';err.textContent=T('Sin respuesta de Supabase','No answer from Supabase')+' (auth/v1/recover) · '+e2.message;});
+    };
+    avisa('login',{motivo:motivo||null});
+    try{em.focus();}catch(e){}
+  };
+
+  /* — teclado barajado compartido (mismo estilo que nsMfaReforzar) — */
+  var baraja=function(){var t=[0,1,2,3,4,5,6,7,8,9];for(var i=t.length-1;i>0;i--){var k=Math.floor(Math.random()*(i+1));var x=t[i];t[i]=t[k];t[k]=x;}return t;};
+  var pad=function(o){
+    var c=cierra(), pin='', bloq=false;
+    c.innerHTML=lineaMotivo(o.motivo)+titulo(o.ico,o.es,o.en)+sub(o.subEs,o.subEn)
+      +'<div id="nsm-d" style="display:flex;gap:8px;justify-content:center;margin:8px 0 16px;flex-wrap:wrap"></div>'
+      +'<div id="nsm-p" style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:#EFE3D7;border:1px solid #EFE3D7;border-radius:14px;overflow:hidden"></div>'
+      +'<button id="nsm-c" type="button" style="margin-top:12px;background:none;border:0;font:600 12.5px Poppins,system-ui,sans-serif;color:#8A7F78;cursor:pointer;text-decoration:underline">'+T('Borrar','Clear')+'</button>'
+      +'<div id="nsm-e" style="'+S_ERR+'"></div>'
+      +'<div style="margin-top:12px;display:flex;gap:16px;flex-wrap:wrap">'
+      +(o.enlace?'<a href="#" id="nsm-alt" style="'+S_LK+'">'+o.enlace+'</a>':'')
+      +'<a href="#" id="nsm-otra" style="'+S_LK+';color:#8A7F78">'+T('Cambiar de cuenta','Switch account')+'</a></div>';
+    var dots=c.querySelector('#nsm-d'),p=c.querySelector('#nsm-p'),err=c.querySelector('#nsm-e');
+    /* puntos: o.puntos en total; o.marcadas = posiciones (0-based) que se piden;
+       el k-ésimo marcado se rellena con la k-ésima cifra tecleada. */
+    var pinta=function(){var s='';for(var d=0;d<o.puntos;d++){
+      var marc=o.marcadas.indexOf(d)>-1, lleno=o.marcadas.slice(0,pin.length).indexOf(d)>-1;
+      s+='<div style="width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:700 11px Poppins,system-ui,sans-serif;'
+        +'border:2px solid '+(marc?(lleno?'#0F6E56':'#E8472A'):'#E6E0D8')+';background:'+(lleno?'#0F6E56':(marc?'#fff':'#F4F0EA'))+';color:'+(lleno?'#fff':'#C73A20')+';opacity:'+(marc?1:.55)+'">'
+        +((marc&&o.puntos>o.marcadas.length)?(d+1):'')+'</div>';}
+      dots.innerHTML=s;};
+    var mete=function(d){
+      if(bloq||pin.length>=o.largo)return; pin+=d; pinta();
+      if(pin.length===o.largo){bloq=true;err.style.color='#5f564f';err.textContent=T('Comprobando…','Checking…');
+        o.completa(pin,function(msgEs,msgEn){bloq=false;pin='';pinta();err.style.color='#D93030';err.textContent=T(msgEs,msgEn);});}
+    };
+    p.innerHTML=baraja().map(function(d){return '<button type="button" data-d="'+d+'" style="background:#fffdfa;border:0;font:800 24px/1 Poppins,system-ui,sans-serif;color:#241D1A;padding:18px 0;cursor:pointer">'+d+'</button>';}).join('');
+    p.onclick=function(ev){var b=ev.target&&ev.target.closest?ev.target.closest('button[data-d]'):null;if(b)mete(b.getAttribute('data-d'));};
+    teclaActiva=function(ev){if(/^[0-9]$/.test(ev.key)){mete(ev.key);ev.preventDefault();}
+      else if(ev.key==='Backspace'&&!bloq){pin=pin.slice(0,-1);pinta();ev.preventDefault();}};
+    c.querySelector('#nsm-c').onclick=function(){if(bloq)return;pin='';err.textContent='';pinta();};
+    if(o.enlace)c.querySelector('#nsm-alt').onclick=function(ev){ev.preventDefault();o.alt();};
+    c.querySelector('#nsm-otra').onclick=function(ev){ev.preventDefault();olvida();pasoLogin(null);};
+    pinta();
+    if(o.avisoEs){err.textContent=T(o.avisoEs,o.avisoEn);}
+  };
+
+  /* — paso 2 · tercera llave (D3/D10): TOTP si hay factor verificado; si no, la clave del equipo — */
+  var pasoLlave=function(motivo){
+    interactivo=true; repinta=function(){pasoLlave(motivo);};
+    var s=sesion(); if(!s){pasoLogin(motivo);return;}
+    var c=cierra(); c.innerHTML=lineaMotivo(motivo)+titulo('🔑','Tercera llave','Third key')+sub('Comprobando si tienes app de autenticación…','Checking whether you have an authenticator app…');
+    avisa('llave',{motivo:motivo||null});
+    fetch(SB+'/auth/v1/user',{headers:H(s.access_token)}).then(lee).then(function(x){
+      if(x.status===401){olvida();pasoLogin(motivo);return;}
+      var fac=((x.j&&x.j.factors)||[]).filter(function(f){return f.factor_type==='totp'&&f.status==='verified';})[0];
+      if(fac)padTotp(motivo,fac);else padClave(motivo,null,null,null);
+    }).catch(function(){padClave(motivo,null,null,null);});   // /user sin respuesta: la clave del equipo siempre vale (D10)
+  };
+  var padTotp=function(motivo,fac){
+    repinta=function(){padTotp(motivo,fac);};
+    var s=sesion(); if(!s){pasoLogin(motivo);return;}
+    var HH=H(s.access_token);
+    pad({motivo:motivo,ico:'🔐',es:'Tercera llave · app de autenticación',en:'Third key · authenticator app',
+      subEs:'Introduce el código de 6 cifras de tu app de autenticación.',subEn:'Enter the 6-digit code from your authenticator app.',
+      puntos:6,marcadas:[0,1,2,3,4,5],largo:6,
+      enlace:T('usar la clave del equipo','use the team key'),alt:function(){padClave(motivo,null,null,null);},
+      completa:function(pin,falla){
+        fetch(SB+'/auth/v1/factors/'+fac.id+'/challenge',{method:'POST',headers:HH,body:'{}'}).then(lee).then(function(ch){
+          if(!ch.ok||!ch.j||!ch.j.id)throw new Error('auth/v1/factors/challenge · HTTP '+ch.status+' · '+detalle(ch));
+          return fetch(SB+'/auth/v1/factors/'+fac.id+'/verify',{method:'POST',headers:HH,body:JSON.stringify({challenge_id:ch.j.id,code:pin})}).then(lee);
+        }).then(function(v){
+          if(!(v.ok&&v.j&&v.j.access_token)){falla('Código no válido','Invalid code');return;}
+          guarda(v.j);                                   // sesión aal2 nueva
+          return rpc('ns_key_from_totp',{p_surface:SUP},v.j.access_token).then(function(j){
+            if(j&&j.ok){abre();return;}
+            var r=(j&&j.reason)||'?';
+            if(r==='no_admin'){pasoNoAdmin();return;}
+            falla('La sesión no quedó reforzada (ns_key_from_totp: '+r+'). Prueba con la clave del equipo.','Session not reinforced (ns_key_from_totp: '+r+'). Try the team key.');
+          });
+        }).catch(function(e){if(e&&e.sinSesion){olvida();pasoLogin(motivo);return;}falla(e.message,e.message);});
+      }});
+    avisa('totp');
+  };
+  /* reto = {challenge, positions}; si viene, se repinta sin pedir otro (cambio de idioma). */
+  var padClave=function(motivo,reto,avisoEs,avisoEn){
+    var s=sesion(); if(!s){pasoLogin(motivo);return;}
+    var monta=function(j){
+      repinta=function(){padClave(motivo,j,null,null);};
+      var pos=j.positions.slice().sort(function(a,b){return a-b;});
+      var hum=pos.map(function(i){return i+1;}).join(' · ');
+      pad({motivo:motivo,ico:'🔑',es:'Tercera llave · clave del equipo',en:'Third key · team key',
+        subEs:'Teclea las posiciones <b>'+hum+'</b> de la clave del equipo (8 cifras; ficha «Clave del equipo NutriSync» del gestor compartido).',
+        subEn:'Type positions <b>'+hum+'</b> of the team key (8 digits; card "Clave del equipo NutriSync" in the shared password manager).',
+        puntos:8,marcadas:pos,largo:3,avisoEs:avisoEs,avisoEn:avisoEn,
+        completa:function(pin,falla){
+          rpc('ns_team_key_check',{p_challenge:j.challenge,p_digits:pin,p_surface:SUP},s.access_token).then(function(k){
+            if(k&&k.ok){abre();return;}
+            if(k&&k.reason==='no_admin'){pasoNoAdmin();return;}
+            if(k&&k.wait){pasoEspera(motivo,k.minutes);return;}
+            padClave(motivo,null,'Clave incorrecta. Nuevo reto: otras posiciones.','Wrong key. New challenge: other positions.');   // UN intento por reto
+          }).catch(function(e){if(e&&e.sinSesion){olvida();pasoLogin(motivo);return;}falla(e.message,e.message);});
+        }});
+      avisa('clave',{positions:pos});
+    };
+    if(reto&&reto.challenge&&reto.positions){monta(reto);return;}
+    repinta=function(){padClave(motivo,null,avisoEs,avisoEn);};
+    var c=cierra(); c.innerHTML=lineaMotivo(motivo)+titulo('🔑','Tercera llave · clave del equipo','Third key · team key')+sub('Pidiendo el reto…','Requesting the challenge…');
+    rpc('ns_team_key_challenge',{},s.access_token).then(function(j){
+      if(j&&j.ok&&j.challenge&&j.positions){monta(j);return;}
+      if(j&&j.reason==='no_admin'){pasoNoAdmin();return;}
+      if(j&&j.wait){pasoEspera(motivo,j.minutes);return;}
+      pasoError(new Error('respuesta inesperada: '+JSON.stringify(j).slice(0,160)),'ns_team_key_challenge',function(){padClave(motivo,null,null,null);});
+    }).catch(function(e){if(e&&e.sinSesion){olvida();pasoLogin(motivo);return;}pasoError(e,'ns_team_key_challenge',function(){padClave(motivo,null,null,null);});});
+  };
+  var pasoEspera=function(motivo,min){
+    repinta=function(){pasoEspera(motivo,min);};
+    var n=parseInt(min,10)||15;
+    var c=cierra(); c.innerHTML=lineaMotivo(motivo)+titulo('⏳','Demasiados intentos','Too many attempts')
+      +sub('Demasiados intentos: espera '+n+' minutos. Después vuelve a pulsar Reintentar.','Too many attempts: wait '+n+' minutes. Then press Retry.')
+      +'<button id="nsm-re" type="button" style="'+S_BT+'">'+T('Reintentar','Retry')+'</button>'
+      +'<div style="margin-top:12px"><a href="#" id="nsm-otra" style="'+S_LK+';color:#8A7F78">'+T('Cambiar de cuenta','Switch account')+'</a></div>';
+    c.querySelector('#nsm-re').onclick=function(){padClave(motivo,null,null,null);};
+    c.querySelector('#nsm-otra').onclick=function(ev){ev.preventDefault();olvida();pasoLogin(null);};
+    avisa('espera',{minutos:n});
+  };
+  var pasoNoAdmin=function(){
+    interactivo=true; repinta=pasoNoAdmin;
+    var c=cierra(); c.innerHTML=titulo('⛔','Esta cuenta no es administradora','This account is not an admin')
+      +sub('El hub es solo para las founders. Si eres una, comprueba que has entrado con el correo de tu cuenta de admin (los puntos de Gmail crean cuentas distintas).','The hub is founders-only. If you are one, check you signed in with your admin account email (Gmail dots create different accounts).')
+      +'<button id="nsm-salir" type="button" style="'+S_BT+'">'+T('Salir y entrar con otra cuenta','Sign out and use another account')+'</button>';
+    c.querySelector('#nsm-salir').onclick=function(){olvida();pasoLogin(null);};
+    avisa('no_admin');
+  };
+  /* r12-b9: la RPC que no contesta se enseña con su nombre, nunca en blanco */
+  var pasoError=function(e,fn,reintenta){
+    repinta=function(){pasoError(e,fn,reintenta);};
+    var msg=String((e&&e.message)||e);
+    var c=cierra(); c.innerHTML=titulo('⚠️','El muro no pudo comprobar tu acceso','The wall could not check your access')
+      +sub('No es tu contraseña: una consulta al servidor no responde. Pásale a Juanjo el texto de abajo.','Not your password: a server query is not answering. Send Juanjo the text below.')
+      +'<div style="font:12px/1.45 ui-monospace,Menlo,monospace;background:#FFF1EC;color:#7A2A12;border:1px solid #F3C8B8;border-radius:10px;padding:10px 12px;word-break:break-word">'+esc(fn)+': '+esc(msg)+'</div>'
+      +'<button id="nsm-re" type="button" style="'+S_BT+';margin-top:12px">'+T('Reintentar','Retry')+'</button>';
+    c.querySelector('#nsm-re').onclick=reintenta;
+    avisa('error',{fn:fn,mensaje:msg});
+  };
+
+  /* — 24 h absolutas en el cliente (F8·4): fuera de Supabase (SOLO esta sesión:
+       scope=local — global cerraría la app en el móvil de una founder, D14) y de
+       Access — REVISADO: ya no (ver caduca). El motivo guardado en localStorage
+       (K_MOT) sigue sirviendo para enseñarlo tras una recarga. — */
+  var caduca=function(m){
+    if(caducando)return; caducando=true;
+    var s=sesion(); olvida();
+    avisa('caduca',{motivo:m||'expired'});
+    /* Revisión 30-sep 01:4x: NO se sale de Cloudflare Access aquí. La cookie de Access (24 h desde el PIN) caduca
+       SIEMPRE antes que este reloj (que arranca después del PIN): el segundo día la founder pasaría el PIN y
+       acto seguido aterrizaría en la página de logout de Access — parecería «no me deja entrar». Basta con cerrar
+       la sesión de Supabase (scope=local: jamás global, D14) y enseñar el muro con el motivo; el PIN lo vuelve a
+       pedir Access con su propio reloj de 24 h (panel). Desviación de F8(4), declarada en el as-built. */
+    var fin=function(){caducando=false;pasoLogin(m||'expired');};
+    if(s&&s.access_token){fetch(SB+'/auth/v1/logout?scope=local',{method:'POST',headers:H(s.access_token)}).then(fin,fin);}else fin();
+  };
+  var relojDia=function(){
+    var ts=parseInt(ls.get(K_TS)||'0',10);
+    if(!ts){ts=Date.now();ls.set(K_TS,String(ts));}   // sesión anterior a UST-27: el reloj arranca ahora (el servidor manda igual)
+    if(Date.now()-ts>DIA){caduca('expired');return false;}
+    return true;
+  };
+
+  /* — la pregunta central: ¿hay fila viva de admin_key_ok para ESTA sesión? — */
+  var comprueba=function(silencio){
+    if(enVuelo||caducando)return; enVuelo=true;
+    fresca().then(function(s){
+      if(!s){enVuelo=false;pasoLogin(leeMotivo());return;}
+      return rpc('ns_key_session_ok',{p_surface:SUP},s.access_token).then(function(j){
+        enVuelo=false;
+        if(j&&j.ok){if(!abierto)abre();return;}
+        var r=j&&j.reason;
+        if(r==='expired'){caduca('expired');return;}
+        if(r==='no_admin'){pasoNoAdmin();return;}
+        pasoLlave(r==='replaced'?'replaced':null);                  // 'none' (o desconocido): pedir la llave
+      });
+    }).catch(function(e){enVuelo=false;
+      if(e&&e.sinSesion){olvida();pasoLogin(null);return;}
+      if(silencio&&abierto)return;                                  // sondeo de fondo con la red caída: la próxima vuelta reintenta
+      pasoError(e,'ns_key_session_ok',function(){comprueba(false);});
+    });
+  };
+  var arranca=function(){
+    try{
+      if(!sesion()&&/[#&]nspase=/.test(location.hash||'')){        // pase directo: lo consume el receptor de abajo y recarga
+        var c=cierra(); c.innerHTML=titulo('🎫','Entrando con tu pase…','Signing in with your pass…')+sub('Un momento.','One moment.');
+        avisa('pase');
+        setTimeout(function(){try{if(!sesion())pasoLogin(null);}catch(e){}},8000);
+        return;
+      }
+      if(!sesion()){pasoLogin(leeMotivo());return;}
+      if(!relojDia())return;
+      comprueba(false);
+    }catch(e){pasoError(e,'ns-muro',function(){location.reload();});}
+  };
+  setInterval(function(){try{if(!abierto||!relojDia())return;comprueba(true);}catch(e){}},CADA);
+  document.addEventListener('visibilitychange',function(){try{if(document.hidden||!abierto||!relojDia())return;comprueba(true);}catch(e){}});
+  setInterval(function(){try{if(abierto&&sesion())relojDia();}catch(e){}},60000);
+  document.addEventListener('ns-lang',function(){try{if(repinta&&!abierto)repinta();}catch(e){}});
+  document.addEventListener('keydown',function(ev){try{if(teclaActiva&&!abierto)teclaActiva(ev);}catch(e){}});
+  window.nsMuro={comprueba:function(){comprueba(false);},version:'r27-q'};
+  arranca();
+})();
+</script>
 <style>
 #ns-hub-navbar{position:fixed;top:0;left:0;right:0;z-index:99990;font-family:'Poppins',system-ui,sans-serif;background:#FFFFFF;box-shadow:0 1px 0 #E6E0D8}
 #ns-hub-navbar *{box-sizing:border-box}
@@ -338,8 +672,11 @@ td.msg{max-width:520px;white-space:pre-wrap}
    EMISOR: al pinchar un enlace hacia la otra superficie con sesión viva,
    pide un pase de UN uso a la Edge pase-directo (solo admins) y lo manda en
    el FRAGMENTO. RECEPTOR: consume el pase en /auth/v1/verify, guarda la
-   sesión nueva y recarga — sin re-teclear contraseña. El MFA de StartUp
-   Admin se pide igual. Cualquier fallo = navegación normal de siempre. */
+   sesión nueva y recarga — sin re-teclear contraseña. Cualquier fallo =
+   navegación normal de siempre.
+   UST-27 D15 (30-sep): el pase HEREDA la tercera llave en dos pasos — el
+   emisor manda {to:'admin'} y la Edge deja una fila pendiente; el receptor,
+   tras verify, la reclama con ns_key_claim(p_pase) y entonces recarga. */
 (function(){
   try{
     var SB='https://nebkqncvapelrarruyqb.supabase.co';
@@ -355,15 +692,24 @@ td.msg{max-width:520px;white-space:pre-wrap}
     if(m){
       history.replaceState(null,'',location.pathname+location.search);
       if(!sesion()){
+        var pase=decodeURIComponent(m[1]);
         fetch(SB+'/auth/v1/verify',{method:'POST',
           headers:{apikey:ANON,'content-type':'application/json'},
-          body:JSON.stringify({type:'magiclink',token_hash:decodeURIComponent(m[1])})})
+          body:JSON.stringify({type:'magiclink',token_hash:pase})})
         .then(function(r){return r.json();})
         .then(function(j){
           if(j&&j.access_token){
             if(!j.expires_at&&j.expires_in)j.expires_at=Math.floor(Date.now()/1000)+j.expires_in;
             localStorage.setItem(SBKEY,JSON.stringify(j));
-            location.reload();
+            try{localStorage.setItem('ns_login_ts',String(Date.now()));}catch(e){}
+            /* UST-27 D15 (paso 2): la Edge dejó la llave PENDIENTE ligada al
+               pase; esta sesión NUEVA la reclama con su propio JWT (session_id)
+               antes de recargar. Sin fila (origen sin llave) el muro pedirá la
+               llave: correcto. El pase es el MISMO string que consumió verify. */
+            fetch(SB+'/rest/v1/rpc/ns_key_claim',{method:'POST',
+              headers:{apikey:ANON,authorization:'Bearer '+j.access_token,'content-type':'application/json'},
+              body:JSON.stringify({p_pase:pase})})
+            .catch(function(){}).then(function(){location.reload();});
           }
         }).catch(function(){});
       }
@@ -438,9 +784,11 @@ td.msg{max-width:520px;white-space:pre-wrap}
         ev.preventDefault();
         var destino=a.href, ac=new AbortController();
         var t=setTimeout(function(){ac.abort();},2500);
+        /* UST-27 D15: {to} = superficie de DESTINO; con llave viva en el hub la
+           Edge deja la fila pendiente que StartUp Admin reclama (ns_key_claim). */
         fetch(FN,{method:'POST',signal:ac.signal,
           headers:{apikey:ANON,authorization:'Bearer '+s.access_token,'content-type':'application/json'},
-          body:'{}'})
+          body:JSON.stringify({to:'admin'})})
         .then(function(r){return r.json();})
         .then(function(j){clearTimeout(t);
           location.href=(j&&j.pase)?destino+'#nspase='+encodeURIComponent(j.pase):destino;})
